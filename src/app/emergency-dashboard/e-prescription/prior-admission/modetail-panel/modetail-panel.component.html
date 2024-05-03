@@ -1,0 +1,47 @@
+<ng-template #addmodetailpanel>
+  <div class="modeta-border">
+    <div class="d-flex textbaseline m-3">
+      <form action="" class="ma-border w-100"
+        #ngForm>
+        <ul class="d-flex ma-borderbottom">
+          <li class="px-4 py-2 m-0 font-weight-bold
+            c-pointer"
+            (click)="onClickTabChange(
+            'Medicationdata')"
+            [ngClass]="tabmodetail === 'Medicationdata' ?
+            'active':''">Medication
+            Details</li>
+          <li class="px-4 py-2 m-0 font-weight-bold
+            c-pointer"
+            (click)="onClickTabChange(
+            'Eventdata')"
+            [ngClass]="tabmodetail === 'Eventdata' ?
+            'active':''">Events
+          </li>
+        </ul>
+        <div class="ma-tab-content">
+          <ng-container *ngIf="tabmodetail ===
+            'Medicationdata'">
+            <medication-tabs
+              [medicationdetailsdate]="{item: configurationData,
+              userData:
+              this.addministrationService.medicationAdministrative}"
+              (medication)="this.addministrationService.medicationAdministrative=
+              $event">
+            </medication-tabs>
+          </ng-container>
+          <ng-container *ngIf="tabmodetail ===
+            'Eventdata'">
+            <medication-profile-events
+              [filtereventData]="ePrescriptionService.MedicationdFilterData"
+              [medicationprofileeventsdata]="configurationData"></medication-profile-events>
+          </ng-container>
+        </div>
+      </form>
+      <img src="assets/img/close.svg" height="20"
+        (click)="closeModetail()"
+        class="iconsminds-cursor-click mr-3 ml-2
+        c-pointer">
+    </div>
+  </div>
+</ng-template>

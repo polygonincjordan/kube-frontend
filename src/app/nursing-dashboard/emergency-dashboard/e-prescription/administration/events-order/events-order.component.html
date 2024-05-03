@@ -1,0 +1,82 @@
+<ul class="w-100 d-flex ml-2">
+  <li class="w-32 d-flex align-items-center">
+    <span for="" class="w-21 pr-1">Order Department</span>
+    <input type="text" class="form-control" class="form-control w-55"
+      [disabled]="true"
+      value="{{this.addministrationService.medicationAdministrative.OrderDepartment}}">
+  </li>
+  <li class="w-32 d-flex align-items-center">
+    <span for="" class="w-21 pr-1">Ordering To</span>
+    <input type="text" class="form-control w-55" [disabled]="true"
+      value="{{this.addministrationService.medicationAdministrative.OrderingTo}}">
+  </li>
+</ul>
+<form action="" [formGroup]="eventsorderForm" class=" ml-2">
+  <div class="w-100 ml-5 pl-3 mt-5 mb-5">
+    <div class="border-0 w-50 ml-5 event-scroll">
+      <table>
+        <thead class="z-index-1 sticky-top">
+          <tr class="text-center w-25 ml-5 badge-secondary mb-3">
+            <td class="w-8 border-0 p-0 py-2">Planned Date & Time</td>
+            <td class="w-3 border-0 p-0 py-2">Dosage</td>
+            <td class="w-3 border-0 p-0 py-2">Unit</td>
+            <td class="w-3 border-0 p-0 py-2">Status</td>
+            <td class="w-8 border-0 p-0 py-2">Status Date & Time</td>
+          </tr>
+        </thead>
+        <tbody formArrayName="eventsOrderData">
+          <tr class=" ml-5 mt-2" *ngFor="let item of eventArray.controls; let i=
+            index" [formGroupName]="i">
+            <td class="w-8 border-0 mb-2 p-0">
+              <tr>
+                <td class=" border-0 w-5 pr-2 p-1">
+                  <input type="text" class="form-control"
+                    formControlName="Pbdad"
+                    [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+                    dateInputFormat:
+                    'DD.MM.YYYY'}"
+                    bsDatepicker readonly>
+                </td>
+                <td class=" border-0 w-3 pr-2 p-1">
+                  <input type="text" class="form-control"
+                    formControlName="Pbtad"
+                    step="2" readonly>
+                </td>
+              </tr>
+            </td>
+            <td class="w-3 border-0 pr-2 p-1">
+              <input type="number" class="form-control" formControlName="Dose"
+                readonly>
+            </td>
+            <td class="w-3 border-0 pr-2 p-1">
+              <input type="text" class="form-control" formControlName="Unit"
+                readonly>
+            </td>
+            <td class="w-3 border-0 pr-2 p-1">
+              <input type="text" class="form-control"
+                formControlName="Evdescr" readonly>
+            </td>
+            <td class="w-8 border-0 pr-2 p-0">
+              <tr>
+                <td class=" border-0 w-5 pr-2 p-1">
+                  <input type="text" class="form-control"
+                    formControlName="EvstaDate" (change)="getdata($event)"
+                    [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+                    dateInputFormat:
+                    'DD.MM.YYYY'}"
+                    bsDatepicker readonly>
+                </td>
+                <td class=" border-0 w-3 pr-2 p-1">
+                  <input type="text" class="form-control"
+                    formControlName="EvstaTime" readonly>
+                </td>
+              </tr>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form>
+<div class="badge-secondary p-3 ma-radius">
+</div>

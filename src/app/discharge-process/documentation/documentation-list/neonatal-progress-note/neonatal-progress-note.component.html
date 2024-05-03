@@ -1,0 +1,91 @@
+<!-- FRIST  SECTION CODE START -->   
+<form [formGroup]="neoNatalForm" class="neonatal">
+<div class="box-date-time">
+  <div class="container">
+  <div class="row">
+  <div class="col-3">
+  <ul>
+  <li><span>Date</span> <input  type="text"
+    placeholder="Date"
+    #dp="bsDatepicker"
+    bsDatepicker
+    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
+    class="form-control"
+    formControlName="Datee"></li>
+  </ul>
+  
+  </div>
+  <div class="col-3">
+  <ul>
+  <li><span>Time</span> <input  type="time"
+    class="form-control p-1"
+    placeholder="HH:mm:ss"
+    style="width:31%;margin: 0px 0px 0px -23px;" formControlName="Timee"></li>
+  </ul>
+  
+  </div>  
+  </div>
+  </div>
+  </div>
+  <div class="box-ga-weeks">
+  <div class="container">
+  <div class="row">
+  <div class="col-12">
+  <ul>
+  <li class="half-boxes"><span>GA</span> <input type="text" placeholder="" formControlName="Ga"> Weeks</li>
+  <li class="half-boxes"><input type="text" placeholder="" formControlName="GaDays"> Days</li>
+  </ul>
+  <ul>
+  <li class="half-boxes"><span>CGA</span> <input type="text" placeholder="" formControlName="Cga"> Weeks</li>
+  <li class="half-boxes"><input type="text" placeholder="" formControlName="CgaDays"> Days</li>
+  <li class="full-width-boxes"><span>Chronological Age</span> <input type="text" placeholder="" formControlName="ChronoAge"> Days</li>
+  <li class="full-width-boxes"><span>Birth Weight</span> <input type="text" placeholder="" formControlName="BirthWeight">
+    <select class="form-select" aria-label="Default select example" formControlName="BirthWgtUnit" style="padding-right: 0 !important;">
+    <option value=""></option>
+    <option value="0">0 gm</option>
+    <option value="1">1 kg</option>
+  </select> 
+  </li>
+  <li class="full-width-boxes"><span>Current Weight</span> <input type="text" placeholder="" formControlName="CurrentWeight">
+    <select class="form-select" aria-label="Default select example" formControlName="CurrentWgtUnit" style="padding-right: 0 !important;">
+    <option value=""></option>
+    <option value="0">0 gm</option>
+    <option value="1">1 kg</option>
+  </select> 
+  </li>
+  <li class="full-width-boxes check-box-bottom">
+    <div class="form-check" style=" padding: 0px;">
+    <input class="form-check-input" type="checkbox" formControlName="HeadCircumf" (change)="handleCheckboxHeadCircum()">
+    <label class="form-check-label" for="flexCheckDefault">
+     Head Circumference
+    </label> 
+    <input type="text" placeholder="" formControlName="Km"> cm
+    </div>
+  </li>
+  
+  
+  </ul>
+  
+  </div>
+   
+  </div>
+  </div>
+  </div>
+  
+  <div class="box-subjective">
+  <div class="container">
+  <div class="row">
+  <div class="col-12">
+  <ul>
+  <li><p><span>Subjective</span></p> <textarea formControlName="Subjective"> </textarea> </li>
+  <li><p><span>Objective</span></p> <textarea formControlName="Objective"> </textarea> </li>
+  <li><p><span>Assessment/Problem List</span></p> <textarea formControlName="Assessment"> </textarea> </li>
+  <li><p><span>Plan</span></p> <textarea formControlName="Plann"> </textarea> </li>
+  </ul>
+  
+  </div>
+    
+  </div>
+  </div>
+  </div>
+</form>

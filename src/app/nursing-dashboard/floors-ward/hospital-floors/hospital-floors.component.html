@@ -1,0 +1,50 @@
+<div class="px-2 py-4">
+  <form [formGroup]="floorsWardsform">
+  <div class="overflow-auto floo-overflow">
+  <table class="w-100">
+    <thead class="position-sticky">
+      <tr class="tr-font-floor">
+        <th class="pl-3 font-weight-bold w-5 text-left pb-2">Date</th>
+        <th class="pl-2 font-weight-bold w-5 text-left pb-2">Time</th>
+        <th class="pl-2 font-weight-bold w-5 text-left pb-2">Dept.Ou</th>
+        <th class="pl-2 font-weight-bold w-10 text-left pb-2">Attending Physician</th>
+        <th class="pl-2 font-weight-bold w-5 text-left pb-2">Room ID</th>
+        <th class="pl-2 font-weight-bold w-5 text-left pb-2">Bed ID</th>
+        <th class="pl-2 font-weight-bold w-15 text-left pb-2">Patient/Sex/Age</th>
+        <th class="pl-2 font-weight-bold w-5 text-left pb-2">Case</th>
+        <th class="pl-2 font-weight-bold w-5 text-left pb-2">Patient</th>
+        <th class="pl-2 font-weight-bold w-35 text-left pb-2">Flags</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="floorsWardsdata">
+      <tr *ngFor="let item of floorsWardsArray.controls; let i=
+      index" [formGroupName]="i" class="border-bottom-floor">
+        <td class="hight-data py-1"><input type="text" formControlName="Date" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="Time" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="DeptOu" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="Attenting" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="Roomid" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="Bedid" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="PatientSex" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="Case" class="form-data py-3"></td>
+        <td class="hight-data py-1"><input type="text" formControlName="Patient" class="form-data py-3"></td>
+        <td class="hight-data py-1">
+          <table class="w-100">
+            <tr>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/man-sharp.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/alert-fill.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/Calender.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/Calender.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/Calender.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/Calender.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/Calender.svg" alt="" height="15"></div></td>
+              <td><div class="form-data border-right-0 mx-2 p-0 icon-data d-flex justify-content-center align-items-center"><img src="assets/img/text-solid.svg" alt="" height="15"></div></td>
+            </tr>
+          </table>
+         </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</form>
+</div>

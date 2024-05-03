@@ -1,0 +1,23 @@
+.chemo-bg{
+  background-color: #0056B0;
+}
+.font-chemo{
+  font-size: 15px;
+  color: #fff;
+}
+.patient-data{
+  text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 60%;
+}
+.pati-financ{
+    border-radius: 16px;
+    padding: 3px 13px 3px 13px;
+    background-color: #1768bc;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        color: #fff;
+        width: 100px;
+}

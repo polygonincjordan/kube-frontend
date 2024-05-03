@@ -1,0 +1,338 @@
+<div class="edash-rightSide">
+  <div class="edash-mainContent">
+    <div class="container-fluid check-in-table">
+      <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" />
+      </div>
+      <table class="table checkin-table custom-table-striped">
+        <thead>
+          <tr class="checkin-table-header">
+            <th scope="col">
+              Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              MRN
+              <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              Date
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              Time  <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              Risk
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center" class="pl-2 w-3">
+              Allergy
+            </th>
+            <!-- <th scope="col" style="padding-left: 0px; text-align: center; min-width: 70px">
+              Triage <i class="fa fa-sort" aria-hidden="true" (click)="sortTriage()"></i>
+            </th> -->
+            <th scope="col" style="padding-left: 0px; text-align: center" class="pl-2 w-3">
+              Vitals
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              Status
+            </th>
+            <th scope="col" style="padding-left: 0px"  class="pl-2 w-7">
+              Financial Category <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
+            </th>
+            <!-- <th scope="col">
+              Assigned physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
+            </th> -->
+            <th scope="col">
+              Attending Doctor <i class="fa fa-sort" aria-hidden="true"></i>
+            </th>
+            <!-- <th scope="col">
+              Assigned Nurse <i class="fa fa-sort" aria-hidden="true"></i>
+            </th> -->
+            <!-- <th scope="col" style="padding-left: 0px">
+              Waiting Time <i class="fa fa-sort" aria-hidden="true" (click)="sortWaitTime()" ></i>
+            </th> -->
+            <th scope="col" style="padding-left: 0px">
+              Service Description
+            </th>
+            <th scope="col" style="text-align: center">Actions</th>
+          </tr>
+        </thead>
+        &nbsp;
+        <tbody>
+          <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.PatnrName" class="border-top-none" (click)="redirectToTreatByName(item)">
+              {{ item.PatnrName }}
+            </td>
+            <td style="width: 5%; padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
+            <td style="width: 1%; padding-left: 0px" class="border-top-none" [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
+              {{ getDate(item.Bwidt) | date : "dd.MM.y" }}
+            </td>
+            <td scope="row" class="border-top-none" style="width: 5%; padding-left: 0px; text-align: center" [title]="getTime(item.Bwizt)">
+              {{ getTime(item.Bwizt) }}
+            </td>
+            <td class="border-left" style="width: 3%" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+              <span>
+                <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;" (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
+              </span>
+            </td>
+            <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"  [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  " >
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies" style="width: 23px" (click)="openModalForAllergy('', item)" />
+            </td>
+            <td class="border-right"scope="row" style="padding-left: 0px; text-align: center" [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
+              <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals"/>
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.RoomidName" class="pl-2 w-6">
+              {{ item.RoomidName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.StatusName"class="pl-2 w-6">
+              {{ item.StatusName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.KostrName"class="pl-2 w-10">
+              {{ item.KostrName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.PernrName"class="pl-2 w-10">
+              {{ item.PernrName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.Leitx" class="pl-2 w-12">
+              {{ item.Leitx }}
+            </td>
+            <!-- <td class="border-right"scope="row" style="padding-left: 0px; text-align: center" [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
+              <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals"/>
+            </td> -->
+            <!-- <td style="width: 7%;" [title]="item.BehraumKb" class="border-top-none" (click)="openModalForErBed(item)">
+              {{ item.BehraumKb }}
+            </td> -->
+            <!-- <td style="width: 10%; padding-left: 0px; text-align: center" [title]="item.StatusTxt" class="border-top-none">
+              <span [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start': '', item.StatusTxt == 'Called' ? 'status-called' : '']">
+                {{ item.StatusTxt }}
+              </span>
+            </td> -->
+            <!-- <td scope="row" style="width: 11%; padding-left: 0px" [title]="item.ZzfinCat" class="border-top-none">
+              {{ item.ZzfinCat }}
+            </td>
+            <td style="width: 14%" [title]="item.Behpersname" class="border-top-none">
+              {{ item.Behpersname }}
+            </td>
+            <td style="width: 14%" [title]="item.ZznurseName" class="border-top-none">{{item.ZznurseName}}</td>
+            <td scope="row" style="width: 10%; padding-left: 0px" [title]="item.assignedTime" class="border-top-none">
+              <div [ngClass]="item.assignedTime ? 'waiting-time-td':''" title="Waiting Time">
+                {{ item.assignedTime }}
+              </div>
+            </td> -->
+            <td style="width: 1%" class="border-left border-right" [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">
+              <div style="display: flex; justify-content: end; line-height: 14px;align-items:end">
+                <!-- <div style="margin-left: 3px; margin-right: 3px">
+                  <img src="assets/img/nur-emr-bottle.svg" style="width: 32px; cursor: pointer" title="Check Out"/>
+                </div> -->
+                <div style="margin-left: 3px; margin-right: 3px" (click)="assignMe(item)">
+                  <img src="assets/img/nur-emr-user.svg" style="width: 32px; cursor: pointer" title="Assign to Me"/>
+                </div>
+                <!-- <div style="margin-left: 3px; margin-right: 3px">
+                  <img src="assets/img/nur-emr-plus.svg" style="width: 32px; cursor: pointer" title="Assign to Doctor"/>
+                </div> -->
+                <div>
+                  <img src="assets/img/information.jfif" style="width: 31px;
+                  height: 26px;;cursor: pointer;position: relative;
+                  bottom: 5px;" title="Visit Comments" (click)="openVisitComments(visitCommentsModal,item)" *ngIf="item.VisitComments != ''">
+                  <img src="assets/img/information_grey.png" style="width: 23px;
+                  height: 22px;
+                  cursor: pointer;
+                  position: relative;
+                  bottom: 2px;
+                  margin-left: 7px;" title="No visit comment" *ngIf="item.VisitComments == ''">
+                  </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="ERlistData?.length == 0" style="text-align: center">
+        No results
+      </div>
+    </div>
+  </div>
+</div>
+<app-er-bed #erBed (reloadCheckin)="reload($event)"></app-er-bed>
+<app-er-vitals #erVitalsModal></app-er-vitals>
+
+<ng-template #visitCommentsModal>
+  <div class="modal-body">
+    <div style="float: right;
+    position: relative;
+    bottom: 21px;
+    left: 21px;">
+      <img src="assets/img/CloseTab.svg" (click)="modalRef.hide()">
+    </div>
+    <form style="pointer-events: none;">
+      <div class="progress-document">
+        <div class="progress-contant">
+          <div class="medical-value-list">
+            <div class="col-md-12 display-center">
+              <strong>Visit Comments</strong>
+            </div>
+            <div class="col-md-12 mt-2">
+              <textarea
+              class="form-control"
+              placeholder="Write a subjective"
+              [(ngModel)]="visitComments"
+              [ngModelOptions]="{standalone: true}"
+            ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #riskModal>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Risk History</span>
+      </div>
+      <div class="risk-history-main">
+        <ul class="allergy-header-ul d-flex">
+          <li class="allergy-header-item" style="margin-left: 10%">
+            Patient Name : <span>{{ selectedERList.Patient }}</span>
+          </li>
+          <li class="allergy-header-item">MRN: {{ selectedERList.Patnr }}</li>
+          <li class="allergy-header-item">
+            Admission date:
+            {{ getDate(selectedERList.Erdat) | date : "dd.MM.y" }}
+          </li>
+          <li class="close-icon allergy-header-item">
+            <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <form [formGroup]="updateRiskForm" (keydown.enter)="$event.preventDefault()">
+      <div class="mt-3 mb-3 update-risk-main">
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Risk code" style="height: 33px" formControlName="Rsfna" [ngClass]="updateRiskForm.get('Rsfna').errors && isFormValidError ? 'ep-error-message': ''"
+              (dblclick)="openCommonModal(commonColModal, 'RiskCode')" (keyup.enter)="openCommonModal(commonColModal, 'RiskCode')" />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control risk-short-disc" placeholder="Short description" formControlName="Rsfkb" />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control risk-short-disc" placeholder="Risk description" formControlName="Rsfna"/>
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input class="form-control" type="text" placeholder="Reported on" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+              [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" style="height: 33px" />
+          </div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4" style="text-align: end">
+            <button class="update-risk-save-btn" (click)="saveRiskJsonFormat()">Save</button>
+            <button class="update-risk-save-btn" (click)="resetUpdateRiskForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="riskform" style="max-height: 296px; overflow: auto">
+      <table class="table table-bordered risk-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center">
+          <tr>
+            <th scope="col">Risk Code</th>
+            <th scope="col">Short Description</th>
+            <th scope="col">Risk Description</th>
+            <th scope="col">Reported On</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff">
+          <ng-container formArrayName="riskFormitems">
+            <ng-container *ngFor="let item of riskform.get('riskFormitems')['controls']; let i = index">
+              <tr [formGroupName]="i">
+                <td class="risk-item-rsfnr">
+                  <ng-select appendTo="body" placeholder="Search" formControlName="Rsfnr" title="aaaaaaaa">
+                    <ng-option *ngFor="let riskV of riskValues" [value]="riskV.Rsfnr">
+                      {{ riskV.Rsfna }}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td class="risk-item-rsfkb">
+                  <input type="text" class="form-control" formControlName="Rsfkb" [title]="item.get('Rsfkb').value"/>
+                </td>
+                <td class="risk-item-rsfna">
+                  <input type="text" class="form-control" formControlName="Rsfna" [title]="item.get('Rsfna').value"/>
+                </td>
+                <td class="risk-item-repdt">
+                  <input class="form-control" style="background-color: #e9ecef !important;" type="text" #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+                    [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" [title]="item.get('Repdt').value"/>
+                </td>
+                <td class="risk-item-image">
+                  <img class="cursor-pointer" src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(riskList[i])" title="Edit" />
+                  <img class="cursor-pointer" src="assets/img/Delete.svg" (click)="confirmationForRiskDelete('D', riskList[i])" style="margin-left: 11px" title="Delete"/>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #commonColModal>
+  <div class="modal-body p-0">
+    <div class="infoModel-title" style="background: #0056b0">
+      <h4 class="m-0 pl-3">{{ colName }}</h4>
+    </div>
+    <div class="search-functionality search-image-comman col-md-10 pl-0 mt-2" *ngIf="this.colName == 'Allergen' || this.colName == 'RiskCode'">
+      <img src="assets/img/pres-search-icon.svg" alt="" />
+      <input type="text" placeholder="Search" id="searchFilter" class="form-control w-100" [(ngModel)]="searchString" (input)="someMethod(searchString)" />
+    </div>
+    <div style="max-height: 30em; overflow: auto; padding: 11px">
+      <table class="table table-bordered">
+        <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
+          <tr>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff">
+          <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
+            <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText || item.TypText || item.Rsfna}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+<app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
+<app-er-triage #triageModal ></app-er-triage>
+<ng-template #selectIconPdf>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer
+      [src]="pdfUrl"
+      height="80vh"
+      [backgroundColor]="'#525659'"
+      [zoom]="'80'"
+      [sidebarVisible]="true"
+      [showOpenFileButton]="false"
+      [showBookmarkButton]="false"
+      >
+    </ngx-extended-pdf-viewer>
+
+    <div class="mt-2" style="text-align: center">
+      <button
+        class="btn btn-primary"
+        (click)="selectedIconPdf.hide()"
+        style="background-color: #0082c8; border: #0082c8"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,163 @@
+<ng-template #pastSurgicalKardexModal>
+  <div>
+    <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+    <div class="allergy-header">
+      <div style="
+      font-size: 18px;
+      font-weight: bold">
+      <span>Past Surgical History</span>
+      </div>
+      <div style="display: flex;
+    justify-content: end;align-items: center;flex:1">
+    <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{storageService.patientData.name}}</span></li><li  class="allergy-header-item">MRN: {{storageService.patnr}}</li>
+      <li  class="allergy-header-item">Admission date: {{storageService.patientData.periodStart | date : "dd.MM.y"}}</li>
+    <li  class="close-icon allergy-header-item" style="border: none;
+      padding: 0;
+      margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float: right;" (click)="closePastSurgModal()"></li></ul>
+    </div>
+      </div>
+  </div>
+    <div class="modal-body">
+      <form [formGroup]="updateSurgForm" (keydown.enter)="$event.preventDefault()">
+        <div class="mt-3 mb-3" style="border: 1px solid #d9d9d9;
+        border-radius: 8px;padding: 6px;">
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Surgery" style="height: 33px;" formControlName="Surgeryname" (dblclick)="openCommonModal(commonColModal)" (keyup.enter)="openCommonModal(commonColModal)">
+            </div>
+            <div class="col-md-4">
+              <input
+              class="form-control"
+              type="text"
+              placeholder="Date"
+              [minDate]=""
+              [maxDate]=""
+              #dp="bsDatepicker"
+              bsDatepicker
+              formControlName="Date"
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+              style="height: 33px;
+              "
+            />
+              </div>
+              <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Remarks" style="height: 33px;" formControlName="Remarks">
+                </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            
+            </div>
+            <div class="col-md-4">
+             
+              </div>
+              <div class="col-md-4" style="text-align: end;">
+                <button style="    border: 1px solid;
+                background: #0056b0;
+                color: #fff;
+                padding: 8px 20px;
+                border-radius: 16px px;
+                font-weight: 700;
+                border-radius: 24px;" (click)="saveSurgJsonFormat()">Save</button>
+                 <button style="    border: 1px solid;
+                 background: #0056b0;
+                 color: #fff;
+                 padding: 8px 20px;
+                 border-radius: 16px px;
+                 font-weight: 700;
+                 border-radius: 24px;" (click)="resetupdateMedForm()">Cancel</button>
+                </div>
+        </div>
+        </div>
+      </form>
+      <div class="modal-body" style="padding: 0 11px 0px;">
+        <form [formGroup]="pastsurgform" style="max-height: 296px;
+        overflow: auto;">
+      <table class="table table-bordered past-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center;">
+          <tr>
+           
+            <th scope="col">Surgery Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Comments</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff;">
+          <ng-container formArrayName="pastSurgFormitems">
+            <ng-container  *ngFor="let item of pastsurgform.get('pastSurgFormitems')['controls']; let i = index;"
+            >
+          <tr [formGroupName]="i">
+           
+            <td style="padding-left: 2px;
+            padding-right: 2px;
+            width: 47%;pointer-events: none;"><input type="text" formControlName="Surgeryname" class="form-control"></td>
+            <td style="padding-left: 2px;
+            padding-right: 2px;
+            width: 11%;"><input
+          class="form-control"
+          type="text"
+          placeholder=""
+          [minDate]=""
+          [maxDate]=""
+          #dp="bsDatepicker"
+          bsDatepicker
+          formControlName="Date"
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+          style="height: 37px;
+          font-size: 14px;pointer-events: none;"
+        /></td>
+            <td style="padding-left: 2px;
+            padding-right: 2px;
+            width: 41%;pointer-events: none;"><input type="text" class="form-control" formControlName="Remarks"></td>
+           <td style="padding-left: 2px;
+           padding-right: 2px;
+           width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg"><img src="assets/img/Delete.svg" style="margin-left: 11px;" (click)="confirmationForPastSurgDelete(pastSurgList[i])">
+          </tr>
+         </ng-container>
+         </ng-container>
+        
+         
+        </tbody>
+      </table>
+      </form>
+    
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #commonColModal>
+    <div class="modal-body" style="padding: 0 !important;">
+      <div class="infoModel-title" style="background:#0056b0">
+        <h4 class="m-0 pl-3">Surgery</h4>
+      </div>
+      <div  class="search-functionality col-md-10 pl-0 mt-2"><img  src="assets/img/pres-search-icon.svg" alt="" style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%);"><input  type="text" placeholder="Search" id="searchFilter" class="form-control w-100" style="height: 38px; font: 600 14px/1.5 Nunito,sans-serif; color: #848f96; border-radius: 8px!important; box-shadow: none; padding: 10px 10px 10px 42px;margin-left: 8px;" [(ngModel)]="searchString" 
+        (input)="someMethod(searchString)">
+      </div>
+      <div style="    max-height: 30em;
+      overflow: auto;padding: 11px;">
+        <table class="table table-bordered">
+            <thead style="
+            position: sticky;
+            top: -10px;
+            z-index: 9;background: #e4edf5;">
+          <tr>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody style="    background: #fbfcff;">
+              <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (dblclick)="selectValueFromList(item)">
+            <td>{{item.Bcpname}}</td>
+           
+          </tr>
+        </tbody>
+      
+        </table>
+      </div>
+    </div>
+  </ng-template>

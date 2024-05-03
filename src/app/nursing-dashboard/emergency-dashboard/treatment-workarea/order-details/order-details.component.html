@@ -1,0 +1,642 @@
+<div class="container-fluid">
+  <div class="row" style="font-weight: bold;color: #7b8087;">
+  <div class="col-md-4">
+   <div  style="border: solid 2px
+   #0082c8;border-radius: 6px;width: fit-content;
+      padding: 5px 10px;">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+      <label class="form-check-label" for="inlineCheckbox1">All orders</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+      <label class="form-check-label" for="inlineCheckbox2">Completed</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+      <label class="form-check-label" for="inlineCheckbox2">Active/Not done</label>
+    </div>
+  </div>
+  </div>
+  <div class="col-md-8" style="display: flex;
+  justify-content: end;align-items: center;">
+  <div>
+    <img src="assets/img/selected.png" style="width: 14px;">
+    <label class="ml-2">Add Clinical Order</label>
+  </div>
+  <div class="ml-2">
+    <img src="assets/img/selected.png" style="width: 14px;">
+    <label class="ml-2">Add Medication Order</label>
+  </div>
+  </div>
+  </div>
+  <hr style="border: none;
+  height: 2px;
+  background-color: #7b8087;">
+  <div class="row">
+  <div class="col-md-12 pl-0">
+    <div id="accordion" >
+      <div class="card" style="
+      border: 1px solid #7b8087;
+      border-bottom: 20px solid #7b8087;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 10px;">
+        <div class="card-header" id="headingOne" style="border-bottom: 1px solid;height: 27px;">
+          <h5 class="mb-0">
+            <!-- <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Collapsible Group Item #1
+            </button> -->
+            <span style="font-size: 11px;
+            font-weight: bold;">Laboratory Details</span>
+            <img src="assets/img/close.svg" style="float: right;cursor: pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          </h5>
+        </div>
+    
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body" style="padding: 20px 8px 10px">
+           <i class="fa fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-target="#collapseActive" aria-expanded="false" aria-controls="collapseActive" style="margin-left: 18px;"><label style="color:#7b8087;font-weight: bold;">Active</label></i>
+            <div class="collapse" id="collapseActive" style="margin-top: -18px;">
+              <form [formGroup]="activeLabForm" style="max-height: 50vh;
+              overflow: auto;">
+                <ng-container formArrayName="activeLabFormItems">
+                  <ng-container *ngFor="let item of activeLabForm.get('activeLabFormItems')['controls']; let i = index;"
+                  >
+              <div class="mt-1">
+                <div [formGroupName]="i">
+                <div style="padding-top: 12px;width: 15px;display: inline-block;">
+                  <input type="checkbox"/>
+                </div>
+                <div class="ml-1" style="width: 40%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;margin-top: 18px;" *ngIf="i == 0">Service description</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Leitxt" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="width: 20%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;" *ngIf="i == 0">Category</label>
+                  <input type="text" class="form-control cpoe-input"/>
+                </div>
+                <div class="ml-1" style="width: 10%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;" *ngIf="i == 0">Code</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Leistung" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Service date</label>
+                  <!-- <input type="text" class="form-control cpoe-input" formControlName="Ebgdt"/> -->
+                  <input
+          class="form-control"
+          type="text"
+          placeholder=""
+          [minDate]=""
+          [maxDate]=""
+          #dp="bsDatepicker"
+          bsDatepicker
+          formControlName="Ebgdt"
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+          style="height: 32px;
+          font-size: 13px;"
+        />
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Service time</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Ebzt" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="
+                width: 20px;
+                display: inline-flex;
+                padding-left: 10px;
+            ">
+                  <img src="assets/img/delete-icon.svg" style="width: 14px;
+                  ;">
+                </div>
+              </div>
+              </div>
+              </ng-container>
+              </ng-container>
+            </form>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 20px 8px 10px">
+            <i class="fa fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-target="#collapseCompleted" aria-expanded="false" aria-controls="collapseCompleted" style="margin-left: 18px;"><label style="color:#7b8087;font-weight: bold;margin-bottom: 0px;">Completed</label></i>
+             <div class="collapse" id="collapseCompleted" style="margin-top: -18px;">
+              <form [formGroup]="completedLabForm">
+                <ng-container formArrayName="completedLabFormItems">
+                  <ng-container *ngFor="let item of completedLabForm.get('completedLabFormItems')['controls']; let i = index;"
+                  >
+              <div class="mt-1">
+                <div [formGroupName]="i">
+                <div style="padding-top: 12px;width: 15px;display: inline-block;">
+                  <input type="checkbox"/>
+                </div>
+                <div class="ml-1" style="width: 40%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;margin-top: 18px;">Service description</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Leitxt" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="width: 20%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;">Category</label>
+                  <input type="text" class="form-control cpoe-input"/>
+                </div>
+                <div class="ml-1" style="width: 10%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;">Code</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Leistung" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;">Service date</label>
+                  <!-- <input type="text" class="form-control cpoe-input" formControlName="Ebgdt"/> -->
+                  <input
+          class="form-control"
+          type="text"
+          placeholder=""
+          [minDate]=""
+          [maxDate]=""
+          #dp="bsDatepicker"
+          bsDatepicker
+          formControlName="Ebgdt"
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+          style="height: 32px;
+          font-size: 13px;"
+        />
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;">Service time</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Ebzt" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="
+                width: 20px;
+                display: inline-flex;
+                padding-left: 10px;
+            ">
+                  <!-- <img src="assets/img/delete-icon.svg" style="width: 14px;
+                  "> -->
+                   <i class="fa fa-file-pdf-o c-pointer" aria-hidden="true" style="font-size: 18px;
+                      "></i>
+                </div>
+              </div>
+              </div>
+              </ng-container>
+              </ng-container>
+            </form>
+             
+             </div>
+           </div>
+        </div>
+      </div>
+     
+    </div>
+    <div id="accordion" >
+      <div class="card" style="
+      border: 1px solid #7b8087;
+      border-bottom: 20px solid #7b8087;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 10px;">
+        <div class="card-header" id="headingOne" style="border-bottom: 1px solid;height: 27px;">
+          <h5 class="mb-0">
+            <!-- <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Collapsible Group Item #1
+            </button> -->
+            <span style="font-size: 11px;
+            font-weight: bold;">Radiology Details</span>
+            <img src="assets/img/close.svg" style="float: right;cursor: pointer;" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          </h5>
+        </div>
+    
+        <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body" style="padding: 20px 8px 10px">
+           <i class="fa fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-target="#collapseRadActive" aria-expanded="false" aria-controls="collapseRadActive" style="margin-left: 18px;"><label style="color:#7b8087;font-weight: bold;">Active</label></i>
+            <div class="collapse" id="collapseRadActive" style="margin-top: -18px;">
+              <form [formGroup]="activeRadForm" style="max-height: 50vh;
+              overflow: auto;">
+                <ng-container formArrayName="activeRadFormItems">
+                  <ng-container *ngFor="let item of activeRadForm.get('activeRadFormItems')['controls']; let i = index;"
+                  >
+              <div class="mt-1">
+                <div [formGroupName]="i">
+                <div style="padding-top: 12px;width: 15px;display: inline-block;">
+                  <input type="checkbox"/>
+                </div>
+                <div class="ml-1" style="width: 40%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;margin-top: 18px;" *ngIf="i == 0">Service description</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Ktxt1" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="width: 20%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;" *ngIf="i == 0">Category</label>
+                  <input type="text" class="form-control cpoe-input" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="width: 10%;display: inline-block;">
+                  <label style="font-size: 11px;
+                   color: #7b8087;
+                   font-weight: bold;" *ngIf="i == 0">Code</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Lnrls" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Service date</label>
+                  <input
+                  class="form-control"
+                  type="text"
+                  placeholder=""
+                  [minDate]=""
+                  [maxDate]=""
+                  #dp="bsDatepicker"
+                  bsDatepicker
+                  formControlName="Edate"
+                  [bsConfig]="{
+                    showWeekNumbers: false,
+                    dateInputFormat: 'DD.MM.YYYY'
+                  }"
+                  style="height: 32px;
+                  font-size: 13px;"
+                />
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Service time</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Etime" style="height: 37px;
+                  font-size: 13px;"/>
+                </div>
+                <div class="ml-1" style="
+                width: 20px;
+                display: inline-flex;
+                padding-left: 10px;
+            ">
+                  <img src="assets/img/delete-icon.svg" style="width: 14px;
+                  ">
+                </div>
+              </div>
+              </div>
+              </ng-container>
+              </ng-container>
+              </form>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 20px 8px 10px">
+            <i class="fa fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-target="#collapseRadCompleted" aria-expanded="false" aria-controls="collapseRadCompleted" style="margin-left: 18px;"><label style="color:#7b8087;font-weight: bold;margin-bottom: 0px;">Completed</label></i>
+             <div class="collapse" id="collapseRadCompleted" style="margin-top: -18px;">
+              <form [formGroup]="completedRadForm" style="max-height: 50vh;
+              overflow: auto;">
+                <ng-container formArrayName="completedRadFormItems">
+                  <ng-container *ngFor="let item of completedRadForm.get('completedRadFormItems')['controls']; let i = index;"
+                  >
+                  <div class="mt-1">
+                    <div [formGroupName]="i">
+                    <div style="padding-top: 12px;width: 15px;display: inline-block;">
+                      <input type="checkbox"/>
+                    </div>
+                    <div class="ml-1" style="width: 40%;display: inline-block;">
+                      <label style="font-size: 11px;
+                       color: #7b8087;
+                       font-weight: bold;margin-top: 18px;" *ngIf="i == 0">Service description</label>
+                      <input type="text" class="form-control cpoe-input" formControlName="Ktxt1" style="height: 37px;
+                      font-size: 13px;"/>
+                    </div>
+                    <div class="ml-1" style="width: 20%;display: inline-block;">
+                      <label style="font-size: 11px;
+                       color: #7b8087;
+                       font-weight: bold;" *ngIf="i == 0">Category</label>
+                      <input type="text" class="form-control cpoe-input" style="height: 37px;
+                      font-size: 13px;"/>
+                    </div>
+                    <div class="ml-1" style="width: 10%;display: inline-block;">
+                      <label style="font-size: 11px;
+                       color: #7b8087;
+                       font-weight: bold;" *ngIf="i == 0">Code</label>
+                      <input type="text" class="form-control cpoe-input" formControlName="Lnrls" style="height: 37px;
+                      font-size: 13px;"/>
+                    </div>
+                    <div class="ml-1" style="
+                    width: 10%;
+                    display: inline-block;text-align: center;
+                ">
+                      <label style="font-size: 11px;
+                      color: #7b8087;
+                      font-weight: bold;" *ngIf="i == 0">Service date</label>
+                      <input
+                      class="form-control"
+                      type="text"
+                      placeholder=""
+                      [minDate]=""
+                      [maxDate]=""
+                      #dp="bsDatepicker"
+                      bsDatepicker
+                      formControlName="Edate"
+                      [bsConfig]="{
+                        showWeekNumbers: false,
+                        dateInputFormat: 'DD.MM.YYYY'
+                      }"
+                      style="height: 37px;
+                      font-size: 13px;"
+                    />
+                    </div>
+                    <div class="ml-1" style="
+                    width: 10%;
+                    display: inline-block;text-align: center;
+                ">
+                      <label style="font-size: 11px;
+                      color: #7b8087;
+                      font-weight: bold;" *ngIf="i == 0">Service time</label>
+                      <input type="text" class="form-control cpoe-input" formControlName="Etime" style="height: 37px;
+                      font-size: 13px;"/>
+                    </div>
+                    <div class="ml-1" style="
+                    width: 20px;
+                    display: inline-flex;
+                    padding-left: 10px;
+                ">
+                      <i class="fa fa-file-pdf-o c-pointer" aria-hidden="true" style="font-size: 18px;
+                      " (click)="openRadPdf(i)"></i>
+                      <img src="assets/img/er-rad.png" style="width: 14px;margin-left: 7px;
+                  ">
+                    </div>
+                  </div>
+                  </div>
+               
+             </ng-container>
+             </ng-container>
+             </form>
+             </div>
+           </div>
+        </div>
+      </div>
+     
+    </div>
+    <div id="accordion" >
+      <div class="card" style="
+      border: 1px solid #7b8087;
+      border-bottom: 20px solid #7b8087;
+      border-radius: 10px;
+      margin: 10px;
+      padding: 10px;">
+        <div class="card-header" id="headingOne" style="border-bottom: 1px solid;height: 27px;">
+          <h5 class="mb-0">
+            <!-- <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Collapsible Group Item #1
+            </button> -->
+            <span style="font-size: 11px;
+            font-weight: bold;">Medication Details</span>
+            <img src="assets/img/close.svg" style="float: right;cursor: pointer;" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+          </h5>
+        </div>
+    
+        <div id="collapseThree" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body" style="padding: 20px 8px 10px">
+           <i class="fa fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-target="#collapseNotAdm" aria-expanded="false" aria-controls="collapseNotAdm" style="margin-left: 18px;"><label style="color:#7b8087;font-weight: bold;">Not Administered</label></i>
+            <div class="collapse" id="collapseNotAdm" style="margin-top: -18px;">
+              <form [formGroup]="notCompletedMedForm" style="max-height: 50vh;
+              overflow: auto;">
+                <ng-container formArrayName="notCompletedMedFormItems">
+                  <ng-container *ngFor="let item of notCompletedMedForm.get('notCompletedMedFormItems')['controls']; let i = index;"
+                  >
+              <div class="mt-1">
+                <div [formGroupName]="i">
+                <div style="padding-top: 12px;width: 15px;display: inline-block;">
+                  <input type="checkbox"/>
+                </div>
+                <div class="ml-1" style="width: 27%;display: inline-block;">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;margin-top: 18px;" *ngIf="i == 0">Medication Name</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Motx"/>
+                </div>
+                <div class="ml-1" style="width: 6%;display: inline-block;text-align: center;">
+                 <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Dose</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Dose"/>
+                </div>
+                <div class="ml-1" style="width: 10%;display: inline-block;text-align: center;">
+                 <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Dose Unit</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="DoseUnit"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Cycle</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Cycle"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Duration</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Duration"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Duration Unit</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="DurationUnit"/>
+                </div>
+               <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Start date</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Movdf"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Start time</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Movtf"/>
+                </div>
+                <div class="ml-1" style="
+                width: 20px;
+                display: inline-flex;
+                padding-left: 10px;
+            ">
+                  <img src="assets/img/delete-icon.svg" style="width: 14px;
+                  ">
+                </div>
+              </div>
+              </div>
+              </ng-container>
+              </ng-container>
+              </form>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 20px 8px 10px">
+            <i class="fa fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-target="#collapseAdm" aria-expanded="false" aria-controls="collapseAdm" style="margin-left: 18px;"><label style="color:#7b8087;font-weight: bold;margin-bottom: 0px;">Administered</label></i>
+             <div class="collapse" id="collapseAdm" style="margin-top: -18px;">
+              <form [formGroup]="completedMedForm" style="max-height: 50vh;
+              overflow: auto;">
+                <ng-container formArrayName="completedMedFormItems">
+                  <ng-container *ngFor="let item of completedMedForm.get('completedMedFormItems')['controls']; let i = index;"
+                  >
+              <div class="mt-1">
+                <div [formGroupName]="i">
+                <div style="padding-top: 12px;width: 15px;display: inline-block;">
+                  <input type="checkbox"/>
+                </div>
+                <div class="ml-1" style="width: 27%;display: inline-block;">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Medication Name</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Motx"/>
+                </div>
+                <div class="ml-1" style="width: 6%;display: inline-block;text-align: center;">
+                 <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Dose</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Dose"/>
+                </div>
+                <div class="ml-1" style="width: 10%;display: inline-block;text-align: center;">
+                 <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Dose Unit</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="DoseUnit"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Cycle</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Cycle"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Duration</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Duration"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Duration Unit</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="DurationUnit"/>
+                </div>
+               <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Start date</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Movdf"/>
+                </div>
+                <div class="ml-1" style="
+                width: 10%;
+                display: inline-block;text-align: center;
+            ">
+                  <label style="font-size: 11px;
+                  color: #7b8087;
+                  font-weight: bold;" *ngIf="i == 0">Start time</label>
+                  <input type="text" class="form-control cpoe-input" formControlName="Movtf"/>
+                </div>
+                <div class="ml-1" style="
+                width: 20px;
+                display: inline-flex;
+                padding-left: 10px;
+            ">
+                  <img src="assets/img/delete-icon.svg" style="width: 14px;
+                  ">
+                </div>
+              </div>
+              </div>
+              </ng-container>
+              </ng-container>
+              </form>
+             
+             </div>
+           </div>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+  </div>
+  </div>
+  <ng-template #erradpdfmodal>
+    <div class="modal-body">
+      <div class="row">
+            <iframe [src]="pdfUrl" width="1000" height="500">
+       </iframe>
+      </div>
+      <div class="mt-2" style="text-align: center;">
+        <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8">Close</button>
+      </div>
+  
+    </div>
+  </ng-template>
+  

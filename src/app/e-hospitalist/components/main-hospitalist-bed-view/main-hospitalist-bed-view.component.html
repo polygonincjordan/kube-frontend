@@ -1,0 +1,11 @@
+<div class="bed-view-main"
+>
+  <app-bed-view-item
+    [item]="item"
+    (openModuleKardex)="redirectToeKardex($event)"
+    (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event)"
+    (openModuleDischargeProcessEvent)="openModuleDischargeProcess($event)"
+    *ngFor="let item of listItem 
+    | search : 'PatientName,Mrn,AttendingDoctorName,RoomidText,AdmissionDate,FinancialCategory' : searchString"
+  ></app-bed-view-item>
+</div>

@@ -1,0 +1,436 @@
+<div class="main">
+  <div class="edash-rightSide">
+    <div class="d-flex justify-content-between">
+      <div class="first-row">
+        <div class="row w-100">
+          <div class="col-3">
+            <div class="conent">
+              <label for="" class="">Patient:</label>
+              <span class="ml-1 inputboxsize"[title]="missedMedPatientList.Patname">{{missedMedPatientList.Patname}}</span>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="conent">
+              <label for="" class="">MRN:</label>
+              <span class="ml-1 inputboxsize" [title]="missedMedPatientList.Patnr">{{missedMedPatientList.Patnr}}</span>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="conent">
+              <label for="" class="">DOB:</label>
+              <span class="ml-1 inputboxsize" [title]="getDate(missedMedPatientList.PatientDob) | date : 'dd.MM.y'">{{
+                getDate(missedMedPatientList.PatientDob) | date : "dd.MM.y" }}</span>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="conent">
+              <label for="" class="">Allergies:</label>
+              <span class="ml-1 inputboxsize"
+                [title]="missedMedPatientList.Allergies">{{missedMedPatientList.Allergies}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="assets/img/CloseTab.svg" class="c-pointer" height="30" (click)="removeData(false)" />
+    </div>
+    <div class="table-section check-in-table" style="max-height: 18vh !important;">
+      <table class="table checkin-table custom-table-striped table-responsive-sm">
+        <thead>
+          <tr class="checkin-table-header">
+            <th></th>
+            <th scope="col">
+              Medication Name
+            </th>
+            <th scope="col">
+              Dosage
+            </th>
+            <th scope="col">
+              Duration/Unit
+            </th>
+            <th scope="col">
+              Created By
+            </th>
+            <th scope="col">
+              Valid Form
+            </th>
+            <th scope="col" style="padding-left: 28px;">
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody style="box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);">
+          <tr *ngFor="let item of MedicationAdministrationList">
+            <td><input type="checkbox" [checked]="item.isChecked" (change)="checkboxChangedMedication($event, item)">
+            </td>
+            <td [title]="item.Descrlt">{{item.Descrlt}}</td>
+            <td *ngIf="item.Indisdos === 'Apply'" title="Apply {{item.Formatdescr}} {{item.N1id}}">
+              {{item.Indisdos}} {{item.Formatdescr}} {{item.N1id}}</td>
+            <td *ngIf="item.Indisdos !== 'Apply'"
+              title="{{item.N1id === 'DEFTIM' || item.N1id === 'DAILY' ? item.Dosdef : item.Quan | removeTrailingZeros}}{{' '+ item.Quanunit}} {{item.Routedescr}} {{item.Formatdescr}} {{item.N1id}}">
+              {{item.N1id === 'DEFTIM' || item.N1id === 'DAILY' ? item.Dosdef : item.Quan | removeTrailingZeros}}{{' '+
+              item.Quanunit}} {{item.Routedescr}} {{item.Formatdescr}} {{item.N1id}}</td>
+            <td [title]="item.Pdur || item.Pduru">{{durationConvert(item.Pdur | customDecimal)}}<span
+                *ngIf="item.Pdur && item.Durunittxt"> </span>{{item.Durunittxt}}</td>
+            <td [title]="item.EmpRespNm">{{item.EmpRespNm}}</td>
+            <td [title]="getDate(item.StartD) | date : 'dd.MM.y'">{{ getDate(item.StartD) |
+              date : "dd.MM.y" }}</td>
+            <td [title]="item.MosidDesc">
+              <button class="btn"
+                [ngClass]="{'activeclass': item.MosidDesc === 'Active', 'endedclass': item.MosidDesc === 'Ended'}">{{item.MosidDesc}}</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card mt-3" *ngIf="checkboxclicktable">
+      <div class="card-body pt-3 medication-administration-tabs">
+        <ul class="nav nav-tabs nav-tabs-bordered mt-n2">
+          <div class="col-md-8" style="display: flex;">
+            <li class="nav-item mt-n2">
+              <button class="nav-link"
+                [ngClass]="administered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+                (click)="changeEvents('Administered')">Administer</button>
+            </li>
+
+            <li class="nav-item mt-n2">
+              <button class="nav-link"
+                [ngClass]="notadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+                (click)="changeEvents('Notadministered')">Not Administered</button>
+            </li>
+
+            <li class="nav-item mt-n2">
+              <button class="nav-link"
+                [ngClass]="additionalsupply ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+                (click)="changeEvents('Aditionalsupply')">Additional Supply</button>
+            </li>
+
+            <li class="nav-item mt-n2">
+              <button class="nav-link"
+                [ngClass]="drugreturn ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+                (click)="changeEvents('Drugreturn')">Drug Return</button>
+            </li>
+          </div>
+          <div class="col-md-4" style="text-align: end;">
+            <li class="nav-item">
+              <div class="header-button"><button class="btn" (click)="Administerdata()">Save</button>
+                &nbsp; <button class="btn">Manage Batch</button></div>
+            </li>
+          </div>
+        </ul>
+        <form [formGroup]="administratiForm" class="mt-n2">
+          <div class="tab-content pt-2">
+            <div *ngIf="administered" formGroupName="Administrator">
+              <div class="row g-3" *ngIf="eventSet.length > 0"
+                style="padding: 0px; border: 1px solid #cddfff; border-radius: 10px; background: #f6f9ff;        overflow-x: hidden; height: calc(100vh - 466px)">
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Medication</label>
+                  <input type="text" class="form-control col-md-10" id="inputPassword" style="font-size: 11px;"
+                    title="{{administratiForm.value.Administrator.Descrlt}}" formControlName="Descrlt" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;"></label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;"
+                    title="{{administratiForm.value.Administrator.CombineofDose}}" formControlName="CombineofDose"
+                    readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Dose</label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;" id="inputPassword"
+                    formControlName="Admindose" title="{{administratiForm.value.Administrator.Admindose}}" readonly>
+                </div>
+
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Time</label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;" [value]="administratiForm.value.Administrator.time | date : 'dd.MM.y HH:mm:ss'"
+                    title="{{administratiForm.value.Administrator.time | date : 'dd.MM.y HH:mm:ss'}}"  readonly />
+                </div>
+
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Admin Dose</label>
+                  <input type="text" class="form-control event-font col-md-5" id="inputPassword"
+                    formControlName="Rdrugdq" [title]="administratiForm.value.Administrator?.Quan">
+
+                  <div class="col-md-5 p-0" style="display: flex;">
+                    <input type="text" class="form-control event-font ml-1" id="inputPassword" formControlName="Quanunit"
+                      title="{{administratiForm.value.Administrator.Quanunit}}">
+                  </div>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Change Reason</label>
+                  <ng-select formControlName="Rdosdif" [appendTo]="'body'" class="col-md-10 ml-1 p-0" id="inputPassword" title="{{administratiForm.value.Administrator.Rdosdif}}">
+                  <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
+                    {{ administeredReason.Descr }}
+                  </ng-option>
+                </ng-select>
+                </div>
+
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Admin Time</label>
+                  <input type="text" class="form-control event-font col-md-10" style="font-size: 11px;" type="text"
+                    title="{{administratiForm.value.Administrator.Rbdad | date : 'dd.MM.y HH:mm:ss'}}" formControlName="Rbdad"
+                    [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss', adaptivePosition: true}"
+                    bsDatepicker />
+                </div>
+
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Change Reason</label>
+                  <ng-select formControlName="Rtimdif" class="col-md-10 ml-1 p-0" [appendTo]="'body'" id="inputPassword" title="{{administratiForm.value.Administrator.Rtimdif}}">
+                    <ng-option *ngFor=" let administeredReason of TimeReason" [value]="administeredReason.Rcodeid">
+                      {{ administeredReason.Descr }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-12 mt-1" style="display: flex;">
+                  <label class="form-label col-md-1" style="padding: 0px; font-size: 11px;">Check Cond</label>
+                  <div class="col-md-11">
+                    <input class="form-check-input mt-2" type="checkbox" formControlName="Prn" isEndedDisabled>
+                    <input type="text" formControlName="Prncond" style="font-size: 11px; margin-left: 20px;"
+                     readonly
+                      [disabled]="true" class="form-control event-font"
+                      title="{{administratiForm.value.Administrator.Prncond}}">
+                  </div>
+                </div>
+                <div class="col-md-12 mt-1" style="display: flex;">
+                  <label class="form-labe col-md-1 mt-2" style="padding: 0px; font-size: 11px;">Comments</label>
+                  <input type="text" class="form-control event-font col-md-11" id="inputPassword"
+                    formControlName="Adnotestx" title="{{administratiForm.value.Administrator.Adnotestx}}">
+                </div>
+
+
+                <div class="col-md-4 mt-1" style="display: flex;">
+                  <label class="form-label col-md-3" style="padding: 0px; font-size: 11px;">Admin User</label>
+                  <input type="text" class="form-control event-font col-md-9" style="font-size: 11px;"
+                    id="inputPassword" isEndedDisabled formControlName="Meresp1" readonly
+                    title="{{administratiForm.value.Administrator.Meresp1}}">
+                </div>
+                <div class="col-md-4 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 10px;">File Source</label>
+                  <ng-select formControlName="Fsource" class="col-md-10 p-0" style="font-size: 11px;" [appendTo]="'body'" id="inputPassword" title="{{administratiForm.value.Administrator.Fsource}}" (change)="FillSourcedata(administratiForm.value.Administrator)">
+                    <ng-option *ngFor=" let administeredDrugReason of FillSource" [value]="administeredDrugReason.Fsource">
+                      {{ administeredDrugReason.Fsource }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-4 mt-1" style="display: flex;">
+                  <label class="form-label col-md-3" style="padding: 0px; font-size: 11px;">Witnessed By</label>
+                  <input type="text" class="form-control col-md-9 event-font" style="font-size: 11px;"
+                    id="inputPassword" formControlName="Meresp2" readonly
+                    title="{{administratiForm.value.Administrator.Meresp2}}">
+                </div>
+              </div>
+              <div *ngIf="eventSet.length == 0">
+                <p style="text-align: center;">You don't have event to administer</p>
+              </div>
+            </div>
+
+            <div *ngIf="notadministered" formGroupName="NotAdminister">
+              <div class="row g-3" *ngIf="eventSet.length > 0"
+                style="padding: 10px; border: 1px solid #cddfff; border-radius: 10px; background: #f6f9ff;     overflow: auto; height: 35vh;">
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Medication</label>
+                  <input type="text" class="form-control col-md-10" id="inputPassword" style="font-size: 11px;"
+                    title="{{administratiForm.value.NotAdminister.Descrlt}}" formControlName="Descrlt" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;"></label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;"
+                    title="{{administratiForm.value.NotAdminister.CombineofDose}}" formControlName="CombineofDose"
+                    readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Dose</label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;" id="inputPassword"
+                    formControlName="Admindose" title="{{administratiForm.value.NotAdminister.Admindose}}" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Time</label>
+                    <input type="text" class="form-control col-md-10" style="font-size: 11px;" [value]="administratiForm.value.Administrator.time | date : 'dd.MM.y HH:mm:ss'"
+                    title="{{administratiForm.value.Administrator.time | date : 'dd.MM.y HH:mm:ss'}}"  readonly />
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Admin Dose</label>
+                  <input type="text" class="form-control event-font col-md-5" id="inputPassword"
+                    formControlName="Rdrugdq" [title]="administratiForm.value.NotAdminister?.Quan">
+
+                  <div class="col-md-5 p-0" style="display: flex;">
+                    <input type="text" class="form-control event-font ml-1" id="inputPassword" formControlName="Quanunit"
+                      title="{{administratiForm.value.NotAdminister.Quanunit}}">
+                  </div>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Change Reason</label>
+                  <ng-select formControlName="Rdosdif" [appendTo]="'body'" class="col-md-10 p-0 ml-1" style="font-size: 11px;" id="inputPassword" title="{{administratiForm.value.NotAdminister.Fsource}}">
+                    <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid" style="z-index:9999">
+                      {{ administeredReason.Descr }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-12 mt-1" style="display: flex;">
+                  <label class="form-labe col-md-1 mt-2" style="padding: 0px; font-size: 11px;">Comments</label>
+                  <input type="text" class="form-control event-font col-md-11" id="inputPassword"
+                    formControlName="Adnotestx" title="{{administratiForm.value.NotAdminister.Adnotestx}}">
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Admin User</label>
+                  <input type="text" class="form-control event-font col-md-10" style="font-size: 11px;"
+                    id="inputPassword" isEndedDisabled formControlName="Meresp1" readonly
+                    title="{{administratiForm.value.NotAdminister.Meresp1}}">
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Witnessed By</label>
+                  <input type="text" class="form-control col-md-10 event-font" style="font-size: 11px;"
+                    id="inputPassword" formControlName="Meresp2" readonly
+                    title="{{administratiForm.value.NotAdminister.Meresp2}}">
+                </div>
+              </div>
+              <div *ngIf="eventSet.length == 0">
+                <p style="text-align: center;">You don't have event to not administer</p>
+              </div>
+            </div>
+
+            <div *ngIf="additionalsupply" formGroupName="AdditionalSupply">
+              <div class="row g-3"
+                style="padding: 10px; border: 1px solid #cddfff; border-radius: 10px; background: #f6f9ff; overflow: auto; height: 35vh;">
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Medication</label>
+                  <input type="text" class="form-control col-md-10" id="inputPassword" style="font-size: 11px;"
+                    title="{{administratiForm.value.AdditionalSupply.Descrlt}}" formControlName="Descrlt" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;"></label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;"
+                    title="{{administratiForm.value.AdditionalSupply.CombineofDose}}" formControlName="CombineofDose"
+                    readonly>
+                </div>
+           
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Dose</label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;" id="inputPassword"
+                    formControlName="Admindose" title="{{administratiForm.value.AdditionalSupply.Admindose}}" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Time</label>
+                    <input type="text" class="form-control col-md-10" style="font-size: 11px;" [value]="administratiForm.value.AdditionalSupply.time | date : 'dd.MM.y HH:mm:ss'"
+                    title="{{administratiForm.value.AdditionalSupply.time | date : 'dd.MM.y HH:mm:ss'}}"  readonly />
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Request Date</label>
+                  <input type="text" class="form-control event-font col-md-10" id="inputPassword" formControlName="Pdate"
+                    [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY'}" title="{{administratiForm.value.AdditionalSupply.Pdate | date : 'dd.MM.y HH:mm:ss'}}"
+                    bsDatepicker>
+                </div>
+
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Request Time</label>
+                    <input type="text" class="form-control col-md-10" style="font-size: 11px;" [value]="parseDuration(administratiForm.value.AdditionalSupply.Ptime)"
+                    [title]="parseDuration(administratiForm.value.AdditionalSupply.Ptime)"  readonly />
+                </div>
+
+                <div class="col-md-12 mt-1" style="display: flex;">
+                  <label class="form-label col-md-1" style="padding: 0px; font-size: 10px;">Request Reason</label>
+                  <ng-select formControlName="Rcodeid" [appendTo]="'body'" class="col-md-11 p-0" style="font-size: 11px;" id="inputPassword" title="{{administratiForm.value.AdditionalSupply.Rcodeid}}">
+                    <ng-option *ngFor=" let administeredReason of ReasonSet" [value]="administeredReason.Rcodeid" style="z-index:9999">
+                      {{ administeredReason.Descr }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Request QTY</label>
+                  <input type="text" class="form-control col-md-10 event-font" id="inputPassword" formControlName="Pamount" title="{{administratiForm.value.AdditionalSupply.Pamount}}">
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Request Unit</label>
+                  <input type="text" class="form-control col-md-10 event-font" id="inputPassword" formControlName="Pamountu" title="{{administratiForm.value.AdditionalSupply.Pamountu}}">
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">User Name</label>
+                  <input type="text" class="form-control col-md-10 event-font" id="inputPassword" formControlName="Empid" title="{{administratiForm.value.AdditionalSupply.Empid}}"
+                    readonly>
+                </div>
+                
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Ward OU</label>
+                  <ng-select formControlName="Nursingou" [appendTo]="'body'" class="col-md-10 p-0" style="font-size: 11px;" id="inputPassword" title="{{administratiForm.value.AdditionalSupply.Nursingou}}">
+                    <ng-option *ngFor=" let administrativeOrdering of AdminiOrderingList" [value]="administrativeOrdering.Orgid" style="z-index:9999">
+                      {{ administrativeOrdering.Orgna }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+
+            </div>
+
+            <div *ngIf="drugreturn" formGroupName="DrugAdminister">
+              <div class="row g-3"
+                style="padding: 10px; border: 1px solid #cddfff; border-radius: 10px; background: #f6f9ff; overflow: auto; height: 35vh;">
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Medication</label>
+                  <input type="text" class="form-control col-md-10" id="inputPassword" style="font-size: 11px;"
+                    title="{{administratiForm.value.DrugAdminister.Descrlt}}" formControlName="Descrlt" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;"></label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;"
+                    title="{{administratiForm.value.DrugAdminister.CombineofDose}}" formControlName="CombineofDose"
+                    readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Dose</label>
+                  <input type="text" class="form-control col-md-10" style="font-size: 11px;" id="inputPassword"
+                    formControlName="Admindose" title="{{administratiForm.value.DrugAdminister.Admindose}}" readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Planned Time</label>
+                    <input type="text" class="form-control col-md-10" style="font-size: 11px;" [value]="administratiForm.value.AdditionalSupply.time | date : 'dd.MM.y HH:mm:ss'"
+                    title="{{administratiForm.value.AdditionalSupply.time | date : 'dd.MM.y HH:mm:ss'}}"  readonly />
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Return Qty</label>
+                  <input type="number" class="form-control event-font col-md-10"  style="font-size: 11px;" id="inputPassword" formControlName="Pamount" title="{{administratiForm.value.DrugAdminister.Pamount}}">
+                </div>
+
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Return Unit</label>
+                  <input type="text" class="form-control event-font col-md-10" style="font-size: 11px;" id="inputPassword" formControlName="Pamountu" title="{{administratiForm.value.DrugAdminister.Pamountu}}">
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Return Reason</label>
+                <ng-select formControlName="Rcodeid" [appendTo]="'body'" class="col-md-10 p-0" style="font-size: 11px;" id="inputPassword" title="{{administratiForm.value.DrugAdminister.Rcodeid}}">
+                  <ng-option *ngFor=" let administeredDrugReason of DrugReason" [value]="administeredDrugReason.Rcodeid" style="z-index:9999">
+                    {{ administeredDrugReason.Descr }}
+                  </ng-option>
+                </ng-select>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label for="inputPassword" class="col-md-2 col-form-label mt-2" style="padding: 0px; font-size: 11px;">Request Status</label>
+                <ng-select formControlName="Status" [appendTo]="'body'" class="col-md-10 p-0" style="font-size: 11px;" id="inputPassword" title="{{administratiForm.value.DrugAdminister.Status}}">
+                  <ng-option *ngFor=" let administeredDrugReason of RequestStatus" [value]="administeredDrugReason.Dvalue" style="z-index:9999">
+                    {{ administeredDrugReason.Dtext }}
+                  </ng-option>
+                </ng-select>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Material Code</label>
+                  <input type="text" class="form-control col-md-10 event-font" style="font-size: 11px;" id="inputPassword" formControlName="Material" title="{{administratiForm.value.DrugAdminister.Material}}"
+                    readonly>
+                </div>
+                <div class="col-md-6 mt-1" style="display: flex;">
+                  <label class="form-label col-md-2" style="padding: 0px; font-size: 11px;">Batch#</label>
+                  <input type="text" class="form-control col-md-10 event-font" style="font-size: 11px;" id="inputPassword" formControlName="Batch" title="{{administratiForm.value.DrugAdminister.Batch}}"
+                    readonly>
+                </div>
+                
+                <div class="col-md-12 mt-1" style="display: flex;">
+                  <label class="form-label col-md-1" style="padding: 0px; font-size: 11px;">User Name</label>
+                  <input type="text" class="form-control col-md-11" style="font-size: 11px;" id="inputPassword" formControlName="Empid" title="{{administratiForm.value.DrugAdminister.Empid}}"
+                  readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<e-mar-witness #Witnessid></e-mar-witness>

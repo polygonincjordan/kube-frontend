@@ -1,0 +1,227 @@
+<div class="subg-color mt-3">
+  <!-- <h6 class="m-0 p-3 ml-4 Month-font" *ngIf="isSelected">
+    {{ currentMonthYear }}
+  </h6> -->
+  <!-- <div id="weekly-calendar-table"
+          *ngFor="let element of days"
+          [ngClass]="(currentDate | date: 'yyyy-mm-dd') === (element.date | date: 'yyyy-mm-dd') ? 'active' : ''"
+          class="col header-width p-0">
+          <div class="p-2 week-position su-thead-color">
+            <div
+              class="heading-title su-border d-flex flex-wrap justify-content-center align-content-center">
+              <h3 class="text-center font-h3 w-100 m-0">
+                {{ element.day }}
+              </h3>
+              <h3 class="text-center font-h3 w-100 m-0">
+                {{ element.dayName }}
+              </h3>
+            </div>
+          </div>
+          <div class="heading-item mt-2 mb-2">
+            <div
+              *ngFor="let item of element.events"
+              [ngClass]="item.Color"
+              class="heading-dayitems">
+             
+            </div>
+            <div
+              *ngIf="element.events && element.events.length === 0"
+              class="no-events d-flex justify-content-center align-items-center not-brder font-weight-bold h-100">
+              Not Available
+            </div>
+          </div>
+        </div> -->
+  <div class="su-table ml-4 mr-4">
+    <div class="m-0 heading-border">
+      <div class="col-12">
+        <div class="d-flex w-100 justify-content-between align-items-center">
+          <div
+            class="d-flex c-pointer justify-content-center align-items-center su-imager mt-4"
+            (click)="previousDays()"
+          >
+            <img class="" src="assets/img/prev-arrow.svg" alt="" />
+          </div>
+          <div class="w-100 text-center">
+            <div class="p-0 font-weight-bold day-font mt-4">
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+                *ngIf="isSelected"
+              >
+                {{ currentMonthYear }}
+              </div>
+            </div>
+          </div>
+          <div
+            class="d-flex c-pointer justify-content-center align-items-center su-imager mr-2 mt-4"
+            (click)="nextDays()"
+          >
+            <img src="assets/img/next-arrow.svg" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div id="weekly-calendar-table">
+        <div class="d-flex row overflow-data mt-5">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" class="header-name">Sun</th>
+                  <th scope="col" class="header-name">Mon</th>
+                  <th scope="col" class="header-name">Tue</th>
+                  <th scope="col" class="header-name">Wed</th>
+                  <th scope="col" class="header-name">Thu</th>
+                  <th scope="col" class="header-name">Fri</th>
+                  <th scope="col" class="header-name">Sat</th>
+                </tr>
+              </thead>
+              <tbody
+                class="p-2 week-position su-thead-color heading-title su-border flex-wrap justify-content-center align-content-center"
+              >
+                <tr
+                  class=""
+                  style="width: 200px"
+                  *ngFor="let element of dataArray; let i = index"
+                >
+                  <ng-container *ngFor="let dayIndex of [0, 1, 2, 3, 4, 5, 6]">
+                    <td style="width: 100px" class="heading-title su-border">
+                      <div
+                        (click)="getEvent(element[dayIndex])"
+                        data-toggle="modal"
+                        data-target=".bd-example-modal-xl"
+                      >
+                        <!-- <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 0">
+                    {{ fnGetCalendarData(element[dayIndex], 0) }}
+                  </span>
+                  <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 1">
+                    {{ fnGetCalendarData(element[dayIndex], 1) }}
+                  </span>
+                  <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 2">
+                    {{ fnGetCalendarData(element[dayIndex], 2) }}
+                  </span>
+
+                  <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 3">
+                    {{ fnGetCalendarData(element[dayIndex], 3) }}
+                  </span>
+                  
+                  <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 4">
+                    {{ fnGetCalendarData(element[dayIndex], 4) }}
+                  </span>
+
+                  
+                  <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 5">
+                    {{ fnGetCalendarData(element[dayIndex], 5) }}
+                  </span>
+
+                  
+                  <span class="text-center font-h3 w-100" *ngIf="element[dayIndex]?.date?.getDay() === 6" >
+                    {{ fnGetCalendarData(element[dayIndex], 6) }}
+                  </span> -->
+                        <!-- *ngIf="element[dayIndex] != null" -->
+                        <span class="text-center font-h3 w-100">
+                          <span style="font-size: 15px; cursor: pointer">
+                            <span style="float: inline-start">
+                              <ng-container
+                                *ngFor="let event of element[dayIndex]?.events"
+                              >
+                                {{ event.Nname }}
+                              </ng-container></span
+                            >
+                            <span style="float: inline-end">
+                              {{ element[dayIndex]?.day }}</span
+                            ></span
+                          >
+                          <div
+                            *ngIf="
+                              element.events &&
+                              element[dayIndex].events.length === 0
+                            "
+                            class="no-events d-flex justify-content-center align-items-center not-brder font-weight-bold h-100"
+                          >
+                            Not Available
+                          </div>
+                        </span>
+                      </div>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade bd-example-modal-xl"
+  style="text-align: justify"
+  id="exampleModalLong"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myExtraLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header" style="padding: 15px !important">
+        <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Time</th>
+              <th scope="col">MRN</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Age</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Surgery Name</th>
+              <th scope="col">Room</th>
+              <th scope="col">Assistant Surgeon</th>
+              <!-- <th scope="col">Operation Name</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of eventDetails?.events">
+              <td>
+                {{ event.Fromdatetime | date : "hh:mm a" }}
+                -
+                {{ event.Todatetime | date : "hh:mm a" }}
+              </td>
+              <td>{{ event.Patnr }}</td>
+              <td>{{ event.Nname }}-{{ event.Vname }}</td>
+              <td>{{ event.Age }}</td>
+              <td>{{ event.Gender }}</td>
+              <td>{{event.SurgSrvDescr}}</td>
+              <td>{{ event.Baukb }}</td>
+              <td>{{ event.SurgassistRespNam }}</td>
+              <!-- <td>{{ event.Nname }}</td> -->
+            </tr>
+          </tbody>
+        </table>
+        <!-- <ul class="navmenu">
+<li>Full Name : <span style="font-weight: 500;">{{ event.Nname }}-{{ event.Vname }}</span></li> &nbsp; &nbsp;
+<li>Room : <span style="font-weight: 500;">{{ event.Baukb }}</span></li>&nbsp; &nbsp;
+<li>Age : <span style="font-weight: 500;">{{ event.Age }}</span></li>&nbsp; &nbsp;
+<li>Time : <span style="font-weight: 500;">{{ event.Fromdatetime | date : "hh:mm a" }} - {{ event.Todatetime | date : "hh:mm a" }}</span></li>&nbsp; &nbsp;
+<li>Assistant Surgeon : <span style="font-weight: 500;">{{ event.SurgassistRespNam }}</span></li>
+<li>Operation Name : <span style="font-weight: 500;">{{ event.Nname }}</span></li>
+<hr>
+</ul> -->
+      </div>
+    </div>
+  </div>
+</div>

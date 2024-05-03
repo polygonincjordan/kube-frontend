@@ -1,0 +1,110 @@
+<div class="container-fluid d-flex">
+  <div class="card w-100">
+    <div class="card-body" style="padding: 0 16px 16px 16px">
+      <div class="row medicationRow">
+        <div class="col-lg-12 col-md-6 col-sm-12" style="overflow: auto;
+          max-height: 61vh">
+          <table class="table table-bordered">
+            <thead style="background: #0082c8 !important; color:
+              white;position: sticky;
+              top: 0;z-index: 99;">
+              <tr>
+                <th scope="col" class="w-8">MRN</th>
+                <th scope="col" class="w-8">Patient</th>
+                <th scope="col" class="w-14">Ward</th>
+                <th scope="col" class="w-10">Room/Bad</th>
+                <th scope="col" class="w-10">Attending Physician</th>
+                <th scope="col" class="w-10">Specialty</th>
+                <th scope="col" class="w-10">Action</th>
+              </tr>
+            </thead>
+            <tbody class="medicationList">
+              <tr class="highlightPatient" *ngFor="let item of listItem | filter
+                : searchString" [ngClass]="!!this.missedMedicationService.parameters && this.missedMedicationService.parameters && this.missedMedicationService.parameters.Falnr
+                === item.Falnr ? 'active-case': ''">
+                <td [ngClass]="{}" (click)="this.missedMedicationService.onTodayEMAREventData(item)">{{item?.Mrn }}</td>
+
+                <td class="set-width-3" [ngClass]="{}" (click)="this.missedMedicationService.onTodayEMAREventData(item)">{{
+                  item?.PatientName }}</td>
+
+                <td (click)="this.missedMedicationService.onTodayEMAREventData(item)">{{ item?.Floor }}</td>
+
+                <td (click)="this.missedMedicationService.onTodayEMAREventData(item)">{{ item?.RoomidText }}</td>
+
+                <td (click)="this.missedMedicationService.onTodayEMAREventData(item)">{{ item?.AttendingDoctorName }}</td>
+
+                <td (click)="this.missedMedicationService.onTodayEMAREventData(item)">{{ item?.DeptouDesc}}</td>
+                <td style="text-align: center">
+                  <div>
+                    <div class="dropdown">
+                      <i
+                        class="fa fa-ellipsis-v dropdown-toggle"
+                        aria-hidden="true"
+                        style="cursor: pointer"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item c-pointer" (click)="openModalForPhyOrder(phyordertemplate, item)">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="this.missedMedicationService.missedMedicationList &&
+    (this.missedMedicationService.missedMedicationList.medicationData &&
+    this.missedMedicationService.missedMedicationList.medicationData.length)">
+    <div class="w-100">
+      <missed-medication-events [medicationData]="this.missedMedicationService.missedMedicationList"></missed-medication-events>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #phyordertemplate>
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: white">
+        Removing Patient from “Missed/Not administered Doses” list
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="row" style="display: block; padding: 0 0 0 12px">
+        <p style="margin: 0; font-weight: bold; color: #82949e">
+          Are you sure you want to Remove “{{phyOrderData.PatientName}}” from this list?
+        </p>
+        <!-- <p style="color: navy; font-weight: bold; word-break: break-word">
+          {{ phyOrderData.OrderShortText }}
+        </p> -->
+      </div>
+
+      <div class="modal-footer" style="padding: 5px 0 0 0">
+        <div style="display: flex">
+          <span style="display: flex">
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="removePhysicianOrder(phyOrderData)"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="modalRef.hide()"
+            >
+              Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+</ng-template>

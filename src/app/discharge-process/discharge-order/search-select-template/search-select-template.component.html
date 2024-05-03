@@ -1,0 +1,10 @@
+<ng-container>
+  <ng-select [typeahead]="searchTerm" [openOnEnter]="true" [markFirst]="false"
+    (keyup)="someMethod($event, searchTypeOnKeyEnter)"
+    (change)="broadcastEvent($event)" placeholder="Search template here">
+    <ng-option *ngFor=" let templateDrug of templateDrugList"
+      [value]="templateDrug">
+      {{ templateDrug.Descr }}
+    </ng-option>
+  </ng-select>
+</ng-container>

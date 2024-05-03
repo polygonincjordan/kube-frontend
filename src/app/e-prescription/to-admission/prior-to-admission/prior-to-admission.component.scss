@@ -1,0 +1,48 @@
+.prior-content {
+  height: auto !important;
+  max-height: 507px;
+}
+
+.prior-admission-checkbox{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  &:checked{
+    ~.prior-radio{
+      background: #0064FE;
+      position: relative;
+      border: 2px solid #0A5BD8;
+      &::before{
+        position: absolute;
+        content: "";
+        background-image: url("../../../../assets/img/check-icon.svg");
+        border: 2px solid #0A5BD8;
+        background-color: #0064FE;
+        background-size: contain;
+        background-position: center;
+        left: -2px;
+        top: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 3px;
+      }
+    }
+  }
+  ~.prior-radio{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 1px solid #000;
+    border-radius: 3px;
+    opacity: 2;
+  }
+}
+.dosevalue{
+  font-size: 9px !important;
+  padding: 0 !important;
+  background: #fff !important;
+  top: 7px !important;
+}

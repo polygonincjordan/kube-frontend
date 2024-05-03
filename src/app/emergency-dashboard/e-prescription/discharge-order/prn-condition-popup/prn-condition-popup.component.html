@@ -1,0 +1,10 @@
+<ng-template #prnCondition>
+  <div class="additional-input additional-input p-3">
+    <label for="additionalInfo w-100">PRN Condition</label>
+    <textarea type="text" [value]="isDefaultCondition" #additionalInfo class="w-100"></textarea>
+  </div>
+  <div class="button-group d-flex justify-content-end p-3">
+    <button (click)="updatePrnInfo(additionalInfo.value)" class="d-flex align-items-center mr-2"><img src="assets/img/update-icon.svg" class="mr-1">Update</button>
+    <button (click)="cancelPrnInfo(additionalInfo.value)" class="d-flex align-items-center"><img src="assets/img/cancel-icon.svg" class="mr-1">Cancle</button>
+  </div>
+</ng-template>

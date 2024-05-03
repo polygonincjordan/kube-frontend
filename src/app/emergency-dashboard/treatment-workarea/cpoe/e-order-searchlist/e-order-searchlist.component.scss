@@ -1,0 +1,29 @@
+.searc-data {
+  border: 1px solid #D9D9D9;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.lab-color {
+  background-color: #FBFCFF;
+  border: 1px solid #F1F2F5 !important;
+  margin-right: 10px;
+  border-radius: 6px;
+  width: calc(100% - 50px) !important;
+}
+
+.star-color {
+  background-color: #E4EDF5;
+  border: 1px solid #293A4A;
+  border-radius: 9px;
+}
+
+.se-fontsize {
+  font-size: 12px;
+  font-weight: bolder;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  max-width: 100%;
+}

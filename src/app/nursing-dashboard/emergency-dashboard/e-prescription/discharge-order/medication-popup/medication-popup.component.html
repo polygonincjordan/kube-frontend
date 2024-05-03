@@ -1,0 +1,65 @@
+<ng-template #medicationPopup>
+  <div class="medication-popup" *ngIf="configurationData &&
+    configurationData.length">
+    <div class="medication-header d-flex w-100 align-items-center pl-2">
+      <div class="medicate-select line-height-0 p-1 bg-white">
+        <input type="checkbox" width="25" height="25"
+          (change)="onCheckallMedicationData($event)"
+          class="isbigcheckbox">
+      </div>
+      <div class="medicate-data d-flex w-100 pl-3">
+        <div class="medication-title w-40 px-3">
+          <h4 class="m-0">DrugName</h4>
+        </div>
+        <div class="medication-title w-20 px-3">
+          <h4 class="m-0 text-center">Dosage/Unit</h4>
+        </div>
+        <div class="medication-title w-15 px-3">
+          <h4 class="m-0 text-center">Route</h4>
+        </div>
+        <div class="medication-title w-25 px-3">
+          <h4 class="m-0 text-center">Frequency</h4>
+        </div>
+      </div>
+      <div class="medicate-icon" (click)="setSelectedMedication()">
+        <img src="assets/img/texteditor.png" width="40" class="p-1
+          bg-white">
+      </div>
+    </div>
+    <div class="medication-body">
+      <div class="medication-inner-body d-flex w-100 align-items-center pl-2
+        mt-2" *ngFor="let element of configurationData">
+        <div class="medicate-select line-height-0 p-1">
+          <input type="checkbox" width="25" height="25"
+            [(ngModel)]="element.isSelected" class="isbigcheckbox">
+        </div>
+        <div class="medication-data d-flex w-100 pl-3">
+          <div class="medication-field w-40 pr-2">
+            <input type="text" class="form-control m-0"
+              [value]="element.Descrlt" readonly>
+          </div>
+          <div class="medication-field w-20 d-flex">
+            <div class="medication-inner-field pr-2">
+              <input type="text" class="form-control m-0"
+                value="{{element.Quan}}" readonly>
+            </div>
+            <div class="medication-inner-field w-55 pr-2">
+              <input type="text" class="form-control m-0"
+                [value]="element.Quantunittxt" readonly>
+            </div>
+          </div>
+          <div class="medication-field w-15 pr-2 flex-15">
+            <input type="text" class="form-control m-0"
+              [value]="element.Routedescr" readonly>
+          </div>
+          <div class="medication-field w-25 pr-2 flex-25">
+            <input type="text" class="form-control m-0"
+              [value]="element.N1ztxt" readonly>
+          </div>
+        </div>
+        <div class="medicate-icon" style="width: 40px;">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,56 @@
+<div class="pt-0 pl-4 pr-4 pb-4 vh-100">
+<div [ngClass]="checkin ? 'checkin-header' : 'er-header'" *ngIf="checkin && this.floorsWardsService.IsFloors" class="d-flex justify-content-between align-items-center mt-3 p-3 px-3 bg-hospita">
+  <div class="d-flex align-items-center">
+    <div class="icon-floor d-flex justify-content-center align-items-center">
+      <i class="fa fa-chevron-left fa-font" aria-hidden="true" (click)="previousDate()"></i>
+    </div>
+    <div class="date-function mr-0 ml-2">
+      <input class="form-control form-check" type="text" #dp="bsDatepicker" bsDatepicker [(bsValue)]="currentDate" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'dddd DD.MM.YYYY '}"/>
+    </div>
+   <div class="icon-floor d-flex justify-content-center align-items-center">
+    <i class="fa fa-chevron-right fa-font" aria-hidden="true"  (click)="upcomingDate()"></i>
+   </div>
+  </div>
+  <div class=" text-center Wards-font font-weight-bold">Hospital Floors/Wards</div>
+  <div class="floo-refresh py-2 px-4">
+      <i class="fa fa-refresh" aria-hidden="true" (click)="refreshERhistory()"></i>
+      <span class="ml-2 font-weight-bold">Refresh</span>
+  </div>
+</div>
+
+<div class="d-flex" [ngClass]="(checkin || erhistory ) ? 'checkin-edash-main' : 'treatment-edash-main'">
+  <div class="edash-leftSide left-menu mt-0 ml-0 pt-3">
+    <div class="col-xm-1 text-center">
+      <div class="mb-2 m-1 c-pointer">
+        <img [src]="checkin ? 'assets/img/black-Patient.svg' : 'assets/img/iconizer-Patient.svg'" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Check In" [ngClass]="checkin ? 'er-selected-notif-icon' : 'er-notif-icon'" (click)="selectModule('checkin')" />
+      </div>
+      <div class="mb-2 m-1 c-pointer">
+        <img [src]="treatmentarea ? 'assets/img/black-HeartBeat.svg' : 'assets/img/HeartBeat.svg '" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Treatment Workarea" [ngClass]="treatmentarea ? 'er-selected-notif-icon' : 'er-notif-icon'"  (click)="selectModule('treatmentarea')" />
+      </div>
+      <div class="mb-2 m-1 c-pointer">
+        <img [src]="dischargeorder ? 'assets/img/black-doctorPrescription.svg' : 'assets/img/doctorPrescription.svg '" data-bs-toggle="tooltip"
+          data-bs-placement="right" title="E-Prescription" [ngClass]="dischargeorder ? 'er-selected-notif-icon' : 'er-notif-icon'" (click)="selectModule('dischargeorder')"/>
+      </div>
+      <div class="mb-2 m-1 c-pointer">
+        <img [src]="'assets/img/Folder.svg'" data-bs-toggle="tooltip" data-bs-placement="right" title="My InPatients" [ngClass]="Folderorder ? 'er-selected-notif-icon' : 'er-notif-icon'"  (click)="selectModule('Folderorder')" class="er-notif-icon" />
+      </div>
+      <div class="mb-2 m-1 c-pointer">
+        <img [src]="erhistory ? 'assets/img/black-Timer.svg' : 'assets/img/Timer.svg'" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="ER history" [ngClass]="erhistory ? 'er-selected-notif-icon' : 'er-notif-icon'" (click)="selectModule('erhistory')"/>
+      </div>
+      <div class="mb-2 m-1 c-pointer">
+        <img [src]="'assets/img/DataManagement.svg'" data-bs-toggle="tooltip" [ngClass]="DataManagement ? 'er-selected-notif-icon' : 'er-notif-icon'"  (click)="selectModule('DataManagement')" data-bs-placement="right" title="Analysis" class="er-notif-icon"
+          />
+      </div>
+      <div class="mb-2 m-1 c-pointer">
+        <img src="assets/img/DataManagement.svg" data-bs-toggle="tooltip" [ngClass]="userconfig ? 'er-selected-notif-icon' : 'er-notif-icon'"  (click)="selectModule('userconfig')" data-bs-placement="right" title="User configuration" class="er-notif-icon" />
+      </div>
+    </div>
+  </div>
+ <div class="bg-white right-menu">
+  <hospital-floors *ngIf="checkin && this.floorsWardsService.IsFloors"></hospital-floors>
+ </div>
+</div>
+</div>

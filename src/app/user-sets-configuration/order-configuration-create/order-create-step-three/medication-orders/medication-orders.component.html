@@ -1,0 +1,411 @@
+<div class="clinical-tab">
+    <p [ngClass]="_ordersDashboardService.isActiveMedication ? 'active-tab' : ''" (click)="changeTab('medication')">Administration</p>
+    <p [ngClass]="_ordersDashboardService.isActiveDispensing ? 'active-tab' : ''" (click)="changeTab('dispensing')">Dispensing</p>
+  </div>
+  <div *ngIf="_ordersDashboardService.isActiveMedication">
+      <form action="" [formGroup]="medicationForm">
+          <div class="px-2 mt-4 order-details-form">
+            <table class="table administration-table mb-0 third-step-create">
+              <tbody>
+                <ng-container formArrayName="medicationListForm" *ngFor="let item of medicationForm.get('medicationListForm')['controls']; let i = index">
+                  <tr class="borderbottom cursor-pointer" *ngIf="!item.value.Delete" (click)="selectOrderIndex(i, item)">
+                    <td class="p-0" [ngClass]="selectedOrderIndex == i ? 'select-order-tab' : ''" [formGroupName]="i" >
+                      <table class="w-100">
+                        <tr>
+                          <td class="align-middle borderright w-40 p-1">
+                            <table class="w-100">
+                              <tr>
+                                <td class="align-middle border-0 p-1" colspan="4"  (click)="$event.stopPropagation()" >
+                                  <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Medication Name</span>
+                                    <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                        <ng-select class="d-grid-am" [typeahead]="searchTerm" (change)="onSelectMedicine($event, i, 'medication')" formControlName="ResultDrugName" [markFirst]="false"
+                                          [title]="item.get('ResultDrugName').value !== null ? item.get('ResultDrugName').value : ''" (focus)="onFieldFocus(i,'admini')"
+                                          [ngClass]="fieldTouchAdministration[i] && item.get('ResultDrugName').errors ? 'ep-error-message': ''" appendTo="body">
+                                          <ng-option *ngFor="let medicationDrug of addministrationService.medicationDrugList" [value]="medicationDrug">  {{ medicationDrug.Drugname }} </ng-option>
+                                        </ng-select>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 w-15 p-1"  (click)="$event.stopPropagation()" >
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2" >
+                                    <span class="input-title z-indexlabel">Formula</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="text" class="form-control font-weight-bold" formControlName="FormulaText" (focus)="onFieldFocus(i,'admini')" [title]="item.get('FormulaText').value !== null ?
+                                      item.get('FormulaText').value : ''" [ngClass]="fieldTouchAdministration[i] && item.get('FormulaText').errors ? 'ep-error-message': ''"/>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 w-15 p-1"  (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Route</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <ng-select class="font-weight-bold" formControlName="Route" appendTo="body" (focus)="onFieldFocus(i,'admini')" [ngClass]="fieldTouchAdministration[i] && item.get('Route').errors ? 'ep-error-message': ''" [title]="routeTitle(item.get('Route').value, 'route')">
+                                        <ng-option *ngFor=" let routeDropdownItem of addministrationService.routeDropdownList" [value]="routeDropdownItem.Aprouid">
+                                        {{ routeDropdownItem.Descr }} </ng-option>
+                                      </ng-select>
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="align-middle border-0 w-12 p-1" colspan="1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Dosage</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="text" class="form-control font-weight-bold"  formControlName="Dosage" appDigitDecimaNumber [ngClass]="fieldTouchAdministration[i] && item.get('Dosage').errors ? 'ep-error-message': ''"
+                                      [readonly]="item.value.Complex" [title]="item.get('Dosage').value !== null ?
+                                      item.get('Dosage').value : ''"/>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 p-1 frequency-w" colspan="1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 fontsize position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Dosage Unit</span>
+                                    <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                      <ng-select [searchable]="true" formControlName="DosageUnit" appendTo="body" [ngClass]="fieldTouchAdministration[i] &&
+                                          item.get('DosageUnit').errors ? 'ep-error-message': ''"
+                                          [disabled]="item.value.Complex" (change)="onChangeDosageUnit(item.get('AgentidResult').value, $event, i)" [title]="item.get('DosageUnit').value !== null ?
+                                          item.get('DosageUnit').value : ''" (focus)="onFieldFocus(i,'admini')">
+                                        <ng-option *ngFor="let medicationDosageUnit of item.get('AgentidResult').value"
+                                        [value]="medicationDosageUnit.Meinh">
+                                        {{ medicationDosageUnit.OptionField }}
+                                        </ng-option>
+                                      </ng-select>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 p-1 frequency-w" colspan="2" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 fontsize position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Frequency</span>
+                                    <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                      <ng-select  formControlName="Frequency" appendTo="body"
+                                        [ngClass]="fieldTouchAdministration[i] && item.get('Frequency').errors ? 'ep-error-message': ''"
+                                        (change)="onChangeFrequencySet(item.get('Frequency').value,i, $event)" [readonly]="item.value.Complex"  
+                                        [title]="routeTitle(item.get('Frequency').value, 'frequncy')" (focus)="onFieldFocus(i,'admini')">
+                                        <ng-option *ngFor=" let medicationFrequency of addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
+                                        {{ medicationFrequency.OptionField }} </ng-option>
+                                      </ng-select>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 w-12 p-1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Duration</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="textbox" min="0" formControlName="Duration" appDigitDecimaNumber class="form-control font-weight-bold" [title]="item.get('Duration').value !== null ? item.get('Duration').value : ''"/>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 w-18 p-1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Duration Unit</span>
+                                    <span class="input-text-field d-inline-block align-top w-100 font-weight-bold">
+                                      <ng-select [searchable]="true" formControlName="DurationUnit" appendTo="body"
+                                      [readonly]="item.value.Complex" [title]="routeTitle(item.get('DurationUnit').value, 'durationUnit')">
+                                      <ng-option
+                                        *ngFor=" let medicationDurationUnit of
+                                        addministrationService.durationUnitList"
+                                        [value]="medicationDurationUnit.Unit">
+                                        {{ medicationDurationUnit.Text }}
+                                      </ng-option>
+                                    </ng-select>
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td class="align-middle borderright w-25 p-1 checkbox-panel">
+                            <table class="border-0 w-100">
+                              <tr>
+                                <td class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Valid On Day</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="text" class="form-control font-weight-bold" formControlName="ValidOn" numbersOnly [title]="item.get('ValidOn').value !== null ? item.get('ValidOn').value : ''"/>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Valid Till Day</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="text" class="form-control font-weight-bold" type="text" formControlName="ValidTill" numbersOnly [title]="item.get('ValidTill').value !== null ? item.get('ValidTill').value : ''"/>
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">Priority</span>
+                                    <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                      <ng-select [searchable]="true" formControlName="Priority" [title]="item.get('Priority').value !== null ? item.get('Priority').value : ''" appendTo="body" >
+                                      <ng-option *ngFor=" let priorityOptions of priorityArray" [value]="priorityOptions.Value">
+                                        {{ priorityOptions.Desc }}
+                                      </ng-option>
+                                    </ng-select>
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="align-middle border-0 p-1" colspan="3" (click)="$event.stopPropagation()">
+                                  <div class="d-flex align-items-center position-relative">
+                                    <div class="position-relative d-flex align-items-center pt-2">
+                                      <input type="checkbox" formControlName="Prn" class="checkbox-panel" (change)="addValidation(item)"/>
+                                      <span class="mr-2 admin d-inline-block"></span>
+                                      <label class="m-0 pr-1 color">PRN</label>
+                                    </div>
+                                    <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                                      <span class="input-title z-indexlabel">PRN Condition</span>
+                                      <span class="input-text-field d-inline-block align-top w-100">
+                                        <input type="text" class="form-control font-weight-bold" formControlName="Prncond" [readonly]="item.get('Prn').value ? false : true" [title]="item.get('Prncond').value !== null ? item.get('Prncond').value : ''"/>
+                                      </span>
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td class="align-middle borderright w-15 p-1">
+                            <table class="border-0 w-100">
+                              <tr>
+                                <td colspan="2" class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                  <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                    <span class="input-title z-indexlabel"> Additional Info</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="text" class="form-control font-weight-bold" formControlName="Descr" [title]="item.get('Descr').value !== null ? item.get('Descr').value : ''"/>
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td class="border-0" colspan="1" (click)="$event.stopPropagation()">
+                                  <div class="d-flex align-items-center position-relative">
+                                    <input type="checkbox" class="mr-1 checkbox-panel" formControlName="Complex">
+                                    <span class="mr-2 admin"></span>
+                                    <label class="m-0"> Complex</label>
+                                  </div>
+                                </td>
+                             
+                                <td class="border-0 white-space" colspan="1" (click)="$event.stopPropagation()">
+                                  <div class="d-flex align-items-center">
+                                    <input type="checkbox" class="mr-1 checkbox-panel" formControlName="Autoselect">
+                                    <label class="m-0">Selected by Default</label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+      </form>
+  </div>
+  <div *ngIf="_ordersDashboardService.isActiveDispensing">
+    <form action="" [formGroup]="dispensingForm">
+        <div class="px-2 mt-4 order-details-form">
+          <table class="table administration-table mb-0 third-step-create">
+            <tbody>
+              <ng-container formArrayName="dispensingListForm" *ngFor="let item of dispensingForm.get('dispensingListForm')['controls']; let i = index">
+                <tr class="borderbottom cursor-pointer" *ngIf="!item.value.Delete" (click)="selectOrderIndex(i, item)">
+                  <td class="p-0" [ngClass]="selectedOrderIndex == i ? 'select-order-tab' : ''" [formGroupName]="i" >
+                    <table class="w-100">
+                      <tr>
+                        <td class="align-middle borderright w-40 p-1">
+                          <table class="w-100">
+                            <tr>
+                              <td class="align-middle border-0 p-1" colspan="4"  (click)="$event.stopPropagation()" >
+                                <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Medication Name</span>
+                                  <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                      <ng-select class="d-grid-am" (change)="onSelectMedicine($event, i, 'dispensing')" formControlName="ResultDrugName" [markFirst]="false" (focus)="onFieldFocus(i,'dispen')"
+                                        [title]="item.get('ResultDrugName').value !== null ? item.get('ResultDrugName').value : ''" [typeahead]="searchTerm"
+                                        [ngClass]="fieldTouchDispensing[i] && item.get('ResultDrugName').errors ? 'ep-error-message': ''" appendTo="body">
+                                        <ng-option *ngFor="let medicationDrug of addministrationService.medicationDrugList" [value]="medicationDrug">  {{ medicationDrug.Drugname }} </ng-option>
+                                      </ng-select>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 w-15 p-1"  (click)="$event.stopPropagation()" >
+                                <span class="d-flex align-items-center p-0 position-relative pt-2" >
+                                  <span class="input-title z-indexlabel">Formula</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <input type="text" class="form-control font-weight-bold" formControlName="FormulaText" (focus)="onFieldFocus(i,'dispen')" [title]="item.get('FormulaText').value !== null ?
+                                    item.get('FormulaText').value : ''" [ngClass]="fieldTouchDispensing[i] && item.get('FormulaText').errors ? 'ep-error-message': ''"/>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 w-15 p-1"  (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Route</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <ng-select class="font-weight-bold" formControlName="Route" appendTo="body" (focus)="onFieldFocus(i,'dispen')" [ngClass]="fieldTouchDispensing[i] && item.get('Route').errors ? 'ep-error-message': ''" [title]="routeTitle(item.get('Route').value, 'route')">
+                                      <ng-option *ngFor=" let routeDropdownItem of addministrationService.routeDropdownList" [value]="routeDropdownItem.Aprouid">
+                                      {{ routeDropdownItem.Descr }} </ng-option>
+                                    </ng-select>
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-middle border-0 w-12 p-1" colspan="1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Dosage</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <input type="text" class="form-control font-weight-bold"  formControlName="Dosage" appDigitDecimaNumber
+                                    [readonly]="item.value.Complex" [title]="item.get('Dosage').value !== null ?
+                                    item.get('Dosage').value : ''"/>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 p-1 frequency-w" colspan="1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 fontsize position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Dosage Unit</span>
+                                  <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                    <ng-select [searchable]="true" formControlName="DosageUnit" [ngClass]="fieldTouchDispensing[i] &&
+                                        item.get('DosageUnit').errors ? 'ep-error-message': ''"
+                                        [disabled]="item.value.Complex" (change)="onChangeDosageUnit(item.get('AgentidResult').value, $event, i)" [title]="item.get('DosageUnit').value !== null ?
+                                        item.get('DosageUnit').value : ''" appendTo="body" (focus)="onFieldFocus(i,'dispen')">
+                                      <ng-option *ngFor="let medicationDosageUnit of item.get('AgentidResult').value" [value]="medicationDosageUnit.Meinh">
+                                      {{ medicationDosageUnit.OptionField }}
+                                      </ng-option>
+                                    </ng-select>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 p-1 frequency-w" colspan="2" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 fontsize position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Frequency</span>
+                                  <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                                    <ng-select  formControlName="Frequency" (focus)="onFieldFocus(i,'dispen')"
+                                      [ngClass]="fieldTouchDispensing[i] && item.get('Frequency').errors ? 'ep-error-message': ''"
+                                      [readonly]="item.value.Complex" [title]="routeTitle(item.get('Frequency').value, 'frequncy')" appendTo="body">
+                                      <ng-option *ngFor=" let medicationFrequency of addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
+                                        {{ medicationFrequency.OptionField }} </ng-option>
+                                    </ng-select>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 w-12 p-1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Duration</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <input type="textbox" min="0" formControlName="Duration" appDigitDecimaNumber class="form-control font-weight-bold" [title]="item.get('Duration').value !== null ? item.get('Duration').value : ''" 
+                                      [ngClass]="fieldTouchDispensing[i] && item.get('Duration').errors ? 'ep-error-message': ''" (focus)="onFieldFocus(i,'dispen')"/>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 w-18 p-1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Duration Unit</span>
+                                  <span class="input-text-field d-inline-block align-top w-100 font-weight-bold">
+                                    <ng-select [searchable]="true" formControlName="DurationUnit" appendTo="body"
+                                    [ngClass]="fieldTouchDispensing[i] && item.get('DurationUnit').errors ? 'ep-error-message': ''"
+                                    [readonly]="item.value.Complex" [title]="routeTitle(item.get('DurationUnit').value, 'durationUnit')" (focus)="onFieldFocus(i,'dispen')">
+                                    <ng-option *ngFor=" let medicationDurationUnit of addministrationService.durationUnitList" [value]="medicationDurationUnit.Unit">
+                                      {{ medicationDurationUnit.Text }}
+                                    </ng-option>
+                                  </ng-select>
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="align-middle borderright w-25 p-1 checkbox-panel">
+                          <table class="border-0 w-100">
+                            <tr>
+                              <td class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Valid On Day</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <input type="text" class="form-control font-weight-bold" formControlName="ValidOn" numbersOnly [title]="item.get('ValidOn').value !== null ? item.get('ValidOn').value : ''"/>
+                                  </span>
+                                </span>
+                              </td>
+                              <td class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel">Valid Till Day</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <input type="text" class="form-control font-weight-bold" type="text" formControlName="ValidTill" numbersOnly [title]="item.get('ValidTill').value !== null ? item.get('ValidTill').value : ''"/>
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="align-middle border-0 p-1" colspan="3" (click)="$event.stopPropagation()">
+                                <div class="d-flex align-items-center position-relative">
+                                  <div class="position-relative d-flex align-items-center pt-2">
+                                    <input type="checkbox" formControlName="Prn" class="checkbox-panel" (change)="addValidation(item)"/>
+                                    <span class="mr-2 admin d-inline-block"></span>
+                                    <label class="m-0 pr-1 color">PRN</label>
+                                  </div>
+                                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                                    <span class="input-title z-indexlabel">PRN Condition</span>
+                                    <span class="input-text-field d-inline-block align-top w-100">
+                                      <input type="text" class="form-control font-weight-bold" formControlName="Prncond" [readonly]="item.get('Prn').value ? false : true" [title]="item.get('Prncond').value !== null ? item.get('Prncond').value : ''"/>
+                                    </span>
+                                  </span>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="align-middle borderright w-15 p-1">
+                          <table class="border-0 w-100">
+                            <tr>
+                              <td colspan="2" class="align-middle border-0 w-30 p-1" (click)="$event.stopPropagation()">
+                                <span class="d-flex align-items-center p-0 position-relative pt-2">
+                                  <span class="input-title z-indexlabel"> Additional Info</span>
+                                  <span class="input-text-field d-inline-block align-top w-100">
+                                    <input type="text" class="form-control font-weight-bold" formControlName="Descr" [title]="item.get('Descr').value !== null ? item.get('Descr').value : ''"/>
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="border-0 white-space" colspan="1" (click)="$event.stopPropagation()">
+                                <div class="d-flex align-items-center">
+                                  <input type="checkbox" class="mr-1 checkbox-panel" formControlName="Autoselect">
+                                  <label class="m-0">Selected by Default</label>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+    </form>
+  </div>
+  
+<ng-template #deleteMedicationModal>
+    <div class="modal-body p-0">
+      <div class="update-template-title">
+        <h4 class="m-0 pl-3">Delete Medication</h4>
+      </div>
+      <div class="p-3">
+        <div class="update-template-contant">
+          <p>
+            Are you sure you want to delete this medication?</p>
+        </div>
+        <div class="text-right mt-3">
+          <button type="button" class="update-Exsiting mr-3" (click)="removeMedicationAPI()">
+            Continue
+          </button>
+          <button type="button" class="update-Exsiting" (click)="modalRefForMedication.hide()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>

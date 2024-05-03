@@ -1,0 +1,23 @@
+::ng-deep.template-med {
+  display: flex;
+  justify-content: center;
+
+  .modal-content {
+    width: 500px !important;
+  }
+}
+::ng-deep.template-med-data{
+  display: flex;
+  justify-content: center;
+  .modal-content {
+    width: 100% !important;
+  }
+}
+.save-bg {
+
+  background-color: #f3f3f3;
+}
+
+.button-bg {
+  background-color: #17668c;
+}

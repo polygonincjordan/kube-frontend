@@ -1,0 +1,76 @@
+<form [formGroup]="soapDocForm">
+  <div class="progress-document">
+    <div class="progress-contant">
+      <div class="medical-value-list">
+        <div class="col-md-2 display-center">
+          <strong>Visit Date</strong>
+        </div>
+        <div class="col-md-10">
+          <input
+            type="text"
+            formControlName="VisitDate"
+            placeholder=""
+            [minDate]=""
+            [maxDate]=""
+            #dp="bsDatepicker"
+            bsDatepicker
+            [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD.MM.YYYY'
+            }"
+            class="form-control w-25"
+            style="height: 30px"
+          />
+        </div>
+      </div>
+      <div class="medical-value-list">
+        <div class="col-md-2 display-center">
+          <strong>Subjective</strong>
+        </div>
+        <div class="col-md-10">
+          <textarea
+            class="form-control"
+            placeholder="Write a subjective"
+            formControlName="Subjective"
+          ></textarea>
+        </div>
+      </div>
+      <div class="medical-value-list">
+        <div class="col-md-2 display-center">
+          <strong>Objective</strong>
+        </div>
+        <div class="col-md-10">
+          <textarea
+            class="form-control"
+            placeholder="Write a objective"
+            formControlName="Objective"
+          ></textarea>
+        </div>
+      </div>
+      <div class="medical-value-list">
+        <div class="col-md-2 display-center">
+          <strong>Assessment</strong>
+        </div>
+        <div class="col-md-10">
+          <textarea
+            class="form-control"
+            placeholder="Write a assessment"
+            formControlName="Assessment"
+          ></textarea>
+        </div>
+      </div>
+      <div class="medical-value-list">
+        <div class="col-md-2 display-center">
+          <strong>Plan</strong>
+        </div>
+        <div class="col-md-10">
+          <textarea
+            class="form-control"
+            placeholder="Write a plan"
+            formControlName="Plann"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

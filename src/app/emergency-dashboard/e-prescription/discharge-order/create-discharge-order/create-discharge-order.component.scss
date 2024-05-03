@@ -1,0 +1,226 @@
+@import "../../../../../assets/css/sass/_mixins.scss";
+// defualt SCSS
+$default-font-family: "Roboto", sans-serif;
+$default-color-black: #000;
+$default-color-white: #fff;
+$default-color-dark-blue: #3552b3;
+$default-color-gray: #eeeef0;
+$default-color-medium-gray: #dee5ea;
+$default-color-dark-gray: #7f9abf;
+$default-text-dark-gray: #7f9abf;
+$default-bg-light-blue: #F2F5FC;
+$default-gradient: linear-gradient(180deg, #2758fd, #2856fa 60%, #2144c8 85%);
+.bg-order{
+ border-radius: 20px !important;
+}
+.er-discharge-table .bg-color{
+  background: #e4edf5 !important;
+}
+.er-discharge-table tbody .row-table > tr td.border-td {
+    border: 1px solid #DEDEDE !important;
+}
+.er-discharge-table tbody .row-table {
+    padding: 0px !important;
+    border: 0px solid #5272A5 !important;
+}
+.cm-action{
+    font: 500 15px/1.5 "Roboto", sans-serif;
+    color: black;
+    margin: 0;
+    display: inline-block;
+    padding: 15px 0;
+    margin-left: 8px;
+}
+.action-plus{
+    display: inline-block;
+    background-color: #0056b0;
+    color: white;
+    height: 51px;
+    width: 36px;
+    line-height: 51px;
+    text-align: center;
+    font-size: 30px;
+    float: right;
+}
+tbody .row-table .ng-select > .ng-select-container {
+    width: calc(100% - 10px);
+    border: 1px solid #fbfcff !important;
+    margin: 0 5px !important;
+    border-radius: 3px !important;
+    font-size: 13px;
+    padding: 0 5px !important;
+    box-shadow: none !important;
+    background-color: #fbfcff!important;
+}
+tbody .row-table input.form-control[readonly], .er-discharge-table tbody .row-table .ng-select > .ng-select-container:disabled, .er-discharge-table tbody .row-table .ng-select > .ng-select-container[readonly] {
+    background-color: #fbfcff ;
+}
+tbody .row-table .ng-select > .ng-select-container {
+    border: 1px solid #fbfcff ;
+}
+ tbody .row-table input.form-control,
+ tbody .row-table .ng-select > .ng-select-container {
+    border: 1px solid #fbfcff ;
+}
+ tbody .row-table .ng-select > .ng-select-container {
+    border: 1px solid #fbfcff ;
+}
+.ng-select .ng-select-container{
+    background-color: #fbfcff !important;
+}
+ input {
+    background-color: #fbfcff !important;
+}
+.ng-select-container {
+    background: #fbfcff;
+
+    border-color: #fbfcff !important;
+}
+.er-discharge-table {
+
+    thead,
+    tfoot {
+
+      tr.bg-color,
+      td.bg-color {
+        background: #f7f7f9;
+
+        th {
+          padding: 15px 10px;
+          font: 500 15px/1.5 $default-font-family;
+          color: black;
+
+          @include respond-below(exxl) {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+
+    tbody {
+      .mx-100px .ng-select {
+        display: grid;
+      }
+
+      .row-main-table {
+        >tr>td {
+          padding: 1rem 0 0;
+        }
+      }
+
+    .ep-error-message,
+      .ep-error-message .ng-select-container {
+        border-color: red !important;
+        border: 1px solid ;
+      }
+
+
+      .row-table {
+        padding: 5px;
+        border: 2px solid #5272A5;
+        border-collapse: separate;
+        border-radius: 10px;
+
+        >tr td.border-td {
+          border-right: 2px solid #DEDEDE;
+        }
+
+        input.form-control,
+        .ng-select>.ng-select-container {
+          width: calc(100% - 10px);
+          border: 1px solid #fbfcff ;
+          margin: 0 5px !important;
+          border-radius: 3px !important;
+          font-size: 13px;
+          padding: 0 5px !important;
+          box-shadow: none !important;
+          background-color: #fbfcff !important;
+          &:focus {
+            border-color: #000;
+          }
+
+          &:disabled,
+          &[readonly] {
+            background-color: #fbfcff !important;
+          }
+
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            appearance: none !important;
+          }
+        }
+      }
+
+      .prn-input {
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
+  .er-discharge-table{
+    tr{
+      td {
+        padding: 0 !important;
+      }
+    }
+  }
+  .er-prescription{
+    ::ng-deep.ng-select{
+      .ng-select-container{
+        background: none !important;
+        border: 0;
+      }
+  .ng-clear-wrapper{
+        border: 1px solid;
+    border-radius: 20px;
+    background-color: #c6c8ca;
+    color: white;
+    text-align: center;
+      }
+    }
+  }
+  .er-btn-create{
+  border: none;
+  padding: 10px 27px;
+  background-color: #0056b0;
+  border-radius: 40px;
+  font-size: 14px;
+  color: #ffffff;
+  width: 100%;
+  }
+  .er-discharge-table{
+    table{
+      th{
+        border-right: 2px solid #DEDEDE;
+      }
+    }
+
+  }
+  .table-row-body {
+    height: 334px !important;
+    overflow-y: overlay;
+}
+
+.value-Drugname{
+  font-size: 12px;
+  font-weight: 700;
+}
+.value-Drugname:focus{
+  border: none;
+  box-shadow: none;
+}
+
+::ng-deep.all-vital{
+  .modal-content{
+    width: 800px !important;
+  }
+}
+.font-siz{
+  font-size: 13px !important;
+  border: none !important;
+}
+::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 139px !important;
+}

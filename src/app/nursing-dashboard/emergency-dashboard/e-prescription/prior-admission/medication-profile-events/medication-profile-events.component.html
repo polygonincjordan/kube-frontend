@@ -1,0 +1,451 @@
+<ul class="w-100 d-flex ml-2 mb-1">
+  <li class="w-32 d-flex align-items-center">
+    <span for="" class="w-21 pr-1">Order Department</span>
+    <input type="text" class="form-control" class="form-control w-55
+      Medica-font-size"
+      [disabled]="true"
+      value="{{this.addministrationService.medicationAdministrative.OrderDepartment}}">
+  </li>
+  <li class="w-32 d-flex align-items-center">
+    <span for="" class="w-21 pr-1">Ordering To</span>
+    <input type="text" class="form-control w-55 Medica-font-size"
+      [disabled]="true"
+      value="{{this.addministrationService.medicationAdministrative.OrderingTo}}">
+  </li>
+</ul>
+<form action="" class=" ml-2" [formGroup]="eventsprofileForm">
+  <div class="w-100 mt-2 mb-4 d-flex justify-content-center ">
+    <div class="border-0 w-100 event-scroll">
+      <div class="position-relative p-0 bg-border-color d-flex
+        align-items-center
+        w-fit-content mb-2">
+
+        <div class="p-2 c-pointer event-hover d-flex
+          align-items-center
+          align-middle popover-width"
+          (click)="popupStatus('isCreatePopup'); Createeventdata()"
+          [popover]="CreateActionRef"
+          [popoverContext]="{item:
+          this.eventsprofileForm.get('MedicationCreate')
+          ,createPopover:createPopover}" placement="right" title="Create"
+          #createPopover="bs-popover">
+          <img src="assets/img/add.png" alt="" height="27">
+        </div>
+
+        <div class="p-2 d-flex align-items-center c-pointer
+          event-hover
+          popover-width"
+          (click)="deleteeventAction()" title="Delete">
+          <img src="assets/img/delete-icon.svg" alt="" height="27">
+        </div>
+
+        <div class="p-2 c-pointer event-hover d-flex
+          align-items-center
+          align-middle popover-width"
+          [popover]="HoldActionRef"
+          (click)="medicationHoldAction();Createeventdata()"
+          [popoverContext]="{item:
+          this.eventsprofileForm.get('MedicationHold')
+          , holdPopover: holdPopover}" placement="right"
+          [isOpen]="configurationPopup ===
+          'isHoldPopup'" title="Suspend" #holdPopover="bs-popover">
+          <img src="assets/img/roundexactly-hold.jpg" alt=""
+            height="28">
+        </div>
+
+        <div class="p-2 d-flex align-items-center c-pointer
+          event-hover
+          popover-width"
+          [popover]="ResumeActionRef"
+          (click)="popupStatus('isResumePopup');"
+          [popoverContext]="{item:
+          this.eventsprofileForm.get('MedicationResume')
+          ,resumePopover:resumePopover}" placement="right" [outsideClick]="true"
+          title="Resume" #resumePopover="bs-popover">
+          <img src="assets/img/rightarrow.jpg" alt="" height="27">
+        </div>
+
+        <div class="p-2 c-pointer event-hover d-flex
+          align-items-center
+          align-middle popover-width"
+          [popover]="editActionRef"
+          (click)="medicationEndAction();popupStatus('iseditPopup')"
+          [popoverContext]="{item:
+          this.eventsprofileForm.get('MedicationEdit')
+          ,editPopover:editPopover}" placement="right"
+          [outsideClick]="true" title="Edit" #editPopover="bs-popover">
+          <img src="assets/img/pen-icon-edit.jpg" alt="" height="30"
+            class="c-pointer">
+        </div>
+
+        <div class="p-2 c-pointer event-hover d-flex
+          align-items-center
+          popover-width"
+          [popover]="EndActionRef"
+          [popoverContext]="{item:
+          this.eventsprofileForm.get('MedicationEnd')
+          ,endPopover:endPopover}" placement="right"
+          (click)="medicationEndAction();popupStatus('isEndPopup')"
+          title="End" #endPopover="bs-popover">
+          <img src="assets/img/editable-img.jpg" alt="" height="30"
+            class="c-pointer" (click)="Createeventdata()">
+        </div>
+
+
+        <div class="p-1 event-border m-1"></div>
+        <div class="p-2 c-pointer d-flex align-items-center
+          arrow-design">
+          <div [ngClass]="ePrescriptionService.Sortingevent ==='test'?
+            'event-background': ''" id="test"
+            (click)="ePrescriptionService.prioradmission('Sortingevent',$event)">
+            <img src="assets/img/uparrow.png" alt="" height="26"
+              [ngClass]="ePrescriptionService.Sortingevent ==='test'?
+              'filter-color': ''">
+          </div>
+        </div>
+        <div class="p-2 c-pointer arrow-design">
+          <div [ngClass]="ePrescriptionService.Sortingevent
+            === 'testnu'? 'event-background': ''" id="testnu"
+            (click)="ePrescriptionService.prioradmission('Sortingevent',
+            $event)">
+            <img src="assets/img/downarrow.png" alt="" height="26"
+              [ngClass]="ePrescriptionService.Sortingevent
+              === 'testnu'? 'filter-color': ''">
+          </div>
+          <!-- <img src="assets/img/downarrow.png" alt="" height="26"
+                [ngClass]="ePrescriptionService.Sortingevent
+                === 'testnu'? 'event-background': ''"
+                (click)="ePrescriptionService.prioradmission('Sortingevent',
+                $event)"
+                id="testnu"> -->
+        </div>
+      </div>
+      <div class="event-overflow">
+        <table class="w-100">
+          <thead class="z-index-1 sticky-top bg-white">
+            <tr class="text-center w-100 ml-5 mb-3">
+              <td class=" border-0 p-0 py-2">
+                <input type="checkbox">
+              </td>
+              <table class="w-100">
+                <tr class=" badge-secondary">
+                  <td class="w-18 border-0 p-0 py-2">Planned Date & Time</td>
+                  <td class="w-10 border-0 p-0 py-2">Dosage</td>
+                  <td class="w-8 border-0 p-0 py-2">Unit</td>
+                  <td class="w-8 border-0 p-0 py-2">Status</td>
+                  <td class="w-18 border-0 p-0 py-2">Status Date & Time</td>
+                  <td class="w-8 border-0 p-0 py-2">Change By</td>
+                  <td class="w-8 border-0 p-0 py-2">Dosage adm</td>
+                  <td class="w-8 border-0 p-0 py-2">Unit</td>
+                  <td class="w-12 border-0 p-0 py-2">ADM comments</td>
+                </tr>
+              </table>
+            </tr>
+          </thead>
+          <tbody formArrayName="eventsProfileData">
+            <tr class=" ml-5 mt-2" *ngFor="let item of drugArray.controls
+              | eventfilter:
+              this.ePrescriptionService.Sortingevent
+              :'Pbdad' ;
+              let i=
+              index" [formGroupName]="i">
+              <td class=" border-0 p-1">
+                <input type="checkbox" [checked]="item.value.isSelected"
+                  (change)="selectCheckBox(i, $event); Createeventdata()">
+              </td>
+              <table>
+                <tr>
+                  <td class="w-18 border-0 p-1">
+                    <tr>
+                      <td class=" border-0 w-5 p-1">
+                        <input type="text" class="form-control Medica-font-size"
+                          formControlName="Pbdad" (change)="getdata($event)"
+                          [bsConfig]="{withTimepicker:
+                          false,showWeekNumbers:false,
+                          dateInputFormat:
+                          'DD.MM.YYYY'}"
+                          bsDatepicker readonly>
+
+                      </td>
+                      <td class=" border-0 w-3 pr-2 p-1">
+                        <input type="text" class="form-control Medica-font-size"
+                          formControlName="Pbtad" readonly>
+                      </td>
+                    </tr>
+                  </td>
+                  <td class="w-10 border-0 p-1">
+                    <input type="textbox" class="form-control Medica-font-size"
+                      formControlName="Dose" [readOnly]="!item.value.Editdata"
+                      appDigitDecimaNumber>
+                  </td>
+                  <td class="w-8 border-0 p-1">
+                    <input type="text" class="form-control Medica-font-size"
+                      formControlName="Unit" readonly>
+                  </td>
+                  <td class="w-8 border-0 p-1">
+                    <input type="text" class="form-control Medica-font-size"
+                      formControlName="Evdescr" readonly>
+                  </td>
+                  <td class="w-18 border-0 p-1">
+                    <tr>
+                      <td class=" border-0 w-5 p-1">
+                        <input type="text" class="form-control Medica-font-size"
+                          formControlName="EvstaDate"
+                          [bsConfig]="{withTimepicker:
+                          false,showWeekNumbers:false,
+                          dateInputFormat:
+                          'DD.MM.YYYY'}"
+                          bsDatepicker readonly>
+                      </td>
+                      <td class=" border-0 w-3 p-1">
+                        <input type="text" class="form-control Medica-font-size"
+                          formControlName="EvstaTime" readonly>
+                      </td>
+                    </tr>
+                  </td>
+                  <td class="w-8 border-0 p-1">
+                    <input type="text" class="form-control Medica-font-size"
+                      formControlName="Upusr" readonly>
+                  </td>
+                  <td class="w-8 border-0 p-1">
+                    <input type="text" class="form-control Medica-font-size"
+                      formControlName="DoseAdm" readonly>
+                  </td>
+                  <td class="w-8 border-0 p-1">
+                    <input type="text" class="form-control Medica-font-size"
+                      formControlName="UnitAdm" readonly>
+                  </td>
+                  <td class="w-12 border-0 p-1">
+                    <input type="text" class="form-control Medica-font-size"
+                      formControlName="Admcomment" readonly>
+                  </td>
+                </tr>
+              </table>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #CreateActionRef let-item="item" let-index="index"
+  let-createPopover="createPopover" >
+  <form action="" [formGroup]="item" class="p-2">
+    <div class="ma-template p-1">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+            (click)="CreateeventAction(createPopover);">Create Event</button>
+          <div>
+            <img src="assets/img/close.svg" alt="" height="20px"
+              (click)="createPopover.hide()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="" class="font-weight-bolder ">Dose</label>
+          <input type="textbox" class="evntdose form-control Medica-font-size"
+            formControlName="Dose"
+            min="0" appDigitDecimaNumber>
+        </td>
+      </tr>
+      <td class="w-100 border-0 p-1">
+        <label for="" class="font-weight-bolder ">Dosage Unit</label>
+        <input type="text" class="evntdose form-control Medica-font-size"
+          formControlName="DoseUnit" readonly>
+      </td>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="" class="font-weight-bolder">Time From</label>
+          <timepicker [formControlName]="'Timefrom'"
+            [(ngModel)]="CurrentDateTime" [showMeridian]="false"></timepicker>
+        </td>
+      </tr>
+    </table>
+  </form>
+</ng-template>
+
+<ng-template #HoldActionRef let-item="item" let-index="index"
+  let-holdPopover="holdPopover">
+  <form action="" [formGroup]="item" class="p-2">
+    <div class="ma-template p-1">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+            (click)="SuspendAction();Createeventdata()"
+            [disabled]="item.invalid">Suspend Event</button>
+          <div>
+            <img src="assets/img/close.svg" alt="" height="20px"
+              (click)="holdPopover.hide()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td class="w-100 border-0 p-1 display-grid">
+          <label for="" class="font-weight-bolder">Suspend Reason</label>
+          <input type="text" formControlName="Comments" name="" id=""
+            class="form-control font-weight-bolder input-medication
+            font-weight-bolder
+            input-medication">
+          <!-- <ng-select [searchable]="true"
+            class="font-weight-bolder
+            input-medication" formControlName="Stoid">
+            <ng-option
+              *ngFor=" let cancelAction of
+              medicationCancellationReason"
+              [value]="cancelAction.Stoid">
+              {{ cancelAction.N1stotx}}
+            </ng-option>
+          </ng-select> -->
+        </td>
+      </tr>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="" class="font-weight-bolder">Date From</label>
+          <input type="text" class="form-control" type="text"
+            formControlName="Datefrom"
+            [ngClass]="item.touched &&
+            item.get('Datefrom').errors &&
+            isFormSubmitted ?
+            'ep-error-message': ''"
+            [bsConfig]="{withTimepicker:
+            true,showWeekNumbers:false,
+            dateInputFormat:
+            'DD.MM.YYYY HH:mm:ss'}"
+            bsDatepicker/>
+        </td>
+      </tr>
+
+    </table>
+  </form>
+</ng-template>
+
+<ng-template #ResumeActionRef let-item="item" let-index="index"
+  let-resumePopover="resumePopover">
+  <form action="" [formGroup]="item" class="p-2">
+    <div class="ma-template p-1">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+            (click)="ResumeeventAction()">Resume Event</button>
+          <div>
+            <img src="assets/img/close.svg" alt="" height="20px"
+              (click)="resumePopover.hide()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td class="w-100 border-0 p-1 display-grid">
+          <label for="" class="font-weight-bolder">Resume Reason</label>
+          <input type="text" formControlName="Comments" name="" id=""
+            class="form-control font-weight-bolder input-medication
+            font-weight-bolder
+            input-medication">
+        </td>
+      </tr>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="" class="font-weight-bolder">Date From</label>
+          <input type="text" class="form-control" type="text"
+            formControlName="Datefrom"
+            [ngClass]="item.touched &&
+            item.get('Datefrom').errors &&
+            isFormSubmitted ?
+            'ep-error-message': ''"
+            [bsConfig]="{withTimepicker:
+            true,showWeekNumbers:false,
+            dateInputFormat:
+            'DD.MM.YYYY HH:mm:ss'}"
+            bsDatepicker/>
+        </td>
+      </tr>
+
+    </table>
+  </form>
+</ng-template>
+
+<ng-template #editActionRef let-item="item" let-index="index"
+  let-editPopover="editPopover">
+  <form action="" [formGroup]="item" class="p-2">
+    <div class="ma-template p-1">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+            (click)="editEventAction()">Edit Event</button>
+          <div>
+            <img src="assets/img/close.svg" alt="" height="20px"
+              (click)="editPopover.hide()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="" class="font-weight-bolder">Dose</label>
+          <input type="number" class="form-control Medica-font-size"
+            formControlName="Dose">
+        </td>
+      </tr>
+
+    </table>
+  </form>
+</ng-template>
+
+
+<ng-template #EndActionRef let-item="item" let-index="index"
+  let-endPopover="endPopover">
+  <form action="" [formGroup]="item" class="p-2">
+    <div class="ma-template p-1">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+            (click)="endEventAction()">End Event</button>
+          <img src="assets/img/close.svg" alt="" height="20px"
+            (click)="editPopover.hide()">
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="medicationspopup w-100" class="font-weight-bolder">End
+            Reason</label>
+          <ng-select [searchable]="true"
+            class="font-weight-bolder
+            input-medication" formControlName="Rcodeid">
+            <ng-option
+              *ngFor=" let endAction of
+              endEventActiondata"
+              [value]="endAction.Rcodeid">
+              {{ endAction.Descr}}
+            </ng-option>
+          </ng-select>
+        </td>
+      </tr>
+      <tr>
+        <td class="w-100 border-0 p-1">
+          <label for="" class="font-weight-bolder">Date From</label>
+          <input type="text" class="form-control" type="text"
+            formControlName="Datefrom"
+            [bsConfig]="{withTimepicker:
+            true,showWeekNumbers:false,
+            dateInputFormat:
+            'DD.MM.YYYY HH:mm:ss'}"
+            bsDatepicker/>
+        </td>
+      </tr>
+
+    </table>
+  </form>
+</ng-template>
+<div class="badge-secondary p-3 eventprofile-border">
+</div>

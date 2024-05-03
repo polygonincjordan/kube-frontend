@@ -1,0 +1,247 @@
+<div class="main_soap visit_doc_modal">
+  <div class="head">Visit Note Document</div>
+  <div class="details">
+    <div>
+      <span class="label_box">Visit Date</span>
+      <input
+        type="text"
+        readonly
+        name=""
+        [ngModel]="patientVisitFormData.VisitDate | date : 'dd.MM.YYYY'"
+        id=""
+        class="f-size-field"
+        />
+      <input
+        type="date"
+        [ngModel]="patientVisitFormData.VisitDate | date : 'yyyy-MM-dd'"
+        (ngModelChange)="patientVisitFormData.VisitDate= $event"
+        name=""
+        id=""
+        class="f-size-field"
+        />
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Reason for Visit</span>
+      <textarea
+        name=""
+        id=""
+        cols="40"
+        rows="3"
+        [(ngModel)]="patientVisitFormData.ReasonForVisit"
+        class="w-100 f-size-field"></textarea>
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Diagnosis</span>
+      <div class="w-100 d-flex align-items-center flex-wrap">
+        <ng-select class="d-grid soap-form-select" [typeahead]="searchTerm"
+          [addTag]="true" (change)="diagnosisChange($event)" [clearable]="true" [(ngModel)]="diagnosis">
+          <ng-option
+            *ngFor=" let diagnosisItem of diagnosisSearchList"
+            [value]="diagnosisItem" >
+            <span [title]="diagnosisItem.Dtext1">{{ diagnosisItem.Dtext1 }}</span>
+          </ng-option>
+        </ng-select>
+        <!-- <input type="search" [(ngModel)]="diagnosisSearchText" /> -->
+        <a (click)="openModalForFavrDiagnosis(favrDiagnosisModal)"><img src="assets/img/imgpsh_fullsize_anim.png" class="mw-15" /></a>
+        <!-- <a><img src="assets/img/star.png" class="mw-15" /></a> -->
+        <a (click)="openModalForSaveDiagnosis(saveDiagnosisModal)"><img
+            src="assets/img/texteditor.png" class="mw-15"
+            /></a>
+        <div
+          class="inner_ckeckbox w-100"
+          *ngIf="patientVisitFormData.VISITTODIAGNOSIS &&
+          patientVisitFormData.VISITTODIAGNOSIS.results &&
+          patientVisitFormData.VISITTODIAGNOSIS.results.length> 0 ">
+          <div
+            class="d-flex mb-2"
+            *ngFor="let diagnosisData of
+            patientVisitFormData.VISITTODIAGNOSIS.results; let i = index">
+            <input type="text" *ngIf="diagnosisData.freeText" class="w-100" [(ngModel)]="diagnosisData.text" [ngClass]="diagnosisData.freeText? 'font-weight-bold':''" [readonly]="!diagnosisData.freeText"/>
+            <input type="text" class="w-100" *ngIf="!diagnosisData.freeText" value="{{diagnosisData.text}} {{diagnosisData.code}}" [ngClass]="diagnosisData.freeText? 'font-weight-bold':''" [readonly]="!diagnosisData.freeText"/>
+            <input type="text" style="min-width: 100px" *ngIf="!diagnosisData.freeText" value="{{diagnosisData.code}}" [ngClass]="diagnosisData.freeText? 'font-weight-bold':''" [readonly]="!diagnosisData.freeText"/>
+            <div>
+              <img (click)="close(i)" src="assets/img/close.png" class="mw-15">
+            </div>
+            <!-- <input type="checkbox" name="" id="" /><label>Primary</label>
+            <input type="checkbox" name="" id="" /><label>Secondary</label>
+            <input type="checkbox" name="" id="" /><label>Initial</label> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Assesment</span>
+      <quill-editor
+        cols="58"
+        rows="6"
+        [preserveWhitespace]="true"
+        [placeholder]="''"
+        [(ngModel)]="patientVisitFormData.Assessmenttext">
+      </quill-editor>
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Attachment</span>
+      <div class="w-100">
+        <label for="file-input" class="file-curser"><img
+            src="assets/img/camera.svg" /> Upload</label>
+        <input
+          type="file"
+          (change)="handleInputChange($event)"
+          name=""
+          id="file-input"
+          accept="image/png, image/gif, image/jpeg, application/pdf"
+          class="opacity-0"
+          />
+        <div
+          class="inner_ckeckbox attchment_btns"
+          *ngIf="
+          patientVisitFormData.VISITTOATTACHMENTS != undefined &&
+          patientVisitFormData.VISITTOATTACHMENTS.results.length> 0
+          "
+          >
+          <div
+            class="d-flex mb-2"
+            *ngFor="
+            let attachmentData of
+            patientVisitFormData.VISITTOATTACHMENTS.results
+            ">
+            <input
+              type="text"
+              name=""
+              [(ngModel)]="attachmentData.FileName"
+              id=""
+              /><button (click)="viewFile(attachmentData)">View</button><button
+              (click)="deleteFile(attachmentData)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <button (click)="saveForm()">Save</button>
+    <button (click)="releaseForm()">Release</button>
+    <button *ngIf="!isCreateRequest && !isCopyRequest" (click)="deleteForm()">
+      Delete
+    </button>
+    <button (click)="updateForm(false)">Close</button>
+  </div>
+</div>
+
+<ng-template #SearchModal let-modal>
+  <div class="modal-body">
+    <div class="options_modal">
+      <div class="inner_box">
+        <div class="main_bg">
+          <div class="text-center h6 font-weight-bold">Choose Diagnosis</div>
+          <form>
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="search" class="search-modal-input-fields w-75" />
+              </div>
+            </div>
+          </form>
+          <div
+            class="d-flex flex-column"
+            *ngFor="let list of diagnosisModalListData | slice : 0 : 10">
+            <div
+              class="d-flex flex-row align-items-center w-100
+              search-modal-main-box-style">
+              <input type="checkbox" class="mr-2" />
+              <span class="label_box w-100 lh-sm font-weight-bold">{{
+                list
+                }}</span>
+              <span class="label_box lh-sm font-weight-bold">{{ list }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn button-add-search">Cancel</button>
+        <button type="button" class="btn button-add-search">Add</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #saveDiagnosisModal>
+  <div class="modal-body diagnosis-modal p-3">
+    <div class="header">
+      <h4>Import Diagnosis</h4>
+    </div>
+    <div class="modal-content-diagnosis">
+      <div class="search-input col-md-12">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input
+          type="text"
+          placeholder="Search"
+          class="form-control w-100"
+          id="searchFilter"
+          (input)="onSearchChange($event)"
+          />
+      </div>
+      <div class="modal-diagnosis-list mt-3">
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let diagnosis of diagnosisImportList | filter:
+              seachImportDiagnosis">
+              <td>
+                <input type="checkbox" [(ngModel)]="diagnosis.isSelected"/>
+              </td>
+              <td><p class="m-0" *ngIf="!diagnosis.DiagText">{{
+                  diagnosis.DiagShorttext }} <br></p><span>{{ diagnosis.DiagText
+                  }}</span> </td>
+              <td *ngIf="!diagnosis.DiagText">{{ diagnosis.DiagKey1 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <button (click)="selectDiagnosisData()" class="add-diagnosis mr-3">
+        Add
+      </button>
+      <button class="add-diagnosis" (click)="modalRefForSaveDiagnosis.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #favrDiagnosisModal>
+  <div class="modal-body diagnosis-modal p-3">
+    <div class="header d-flex mb-3">
+      <h4 [ngClass]="isMyfavorite ? 'active' : ''" class="cursor-pointer mainTitel" (click)="favDiagnosisTab('my')">My Favorites</h4>
+      <h4 [ngClass]="isDptfavorite ? 'active' : ''" class="ml-3 cursor-pointer mainTitel" (click)="favDiagnosisTab('dpt')">Dpt. Favorites</h4>
+    </div>
+    <div class="modal-content-diagnosis">
+      <div class="search-input col-md-12">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input type="text" placeholder="Search" class="form-control w-100" id="searchFilter" [(ngModel)]="searchFavrDiagnosis" (input)="onFavrDiagnosisSearch($event)"/>
+      </div>
+      <div class="modal-diagnosis-list mt-3">
+        <table *ngIf="isMyfavorite" class="table">
+          <tbody>
+            <tr *ngFor="let diagnosis of myFavrDiagnosisList | filter: searchFavrDiagnosis">
+              <td style="width: 10px"><input type="checkbox" (click)="selectFavrDiagnosis(diagnosis)" [(ngModel)]="diagnosis.isSelected"/></td>
+              <td>{{ diagnosis.Dtext1 }}</td>
+              <td>{{ diagnosis.Dkey }}</td>
+              <td><img (click)="diagnosisFavDeleteAction(diagnosis)" class="cursor-pointer" src="assets/img/delete-icon.svg" style="width: 18px; margin-left: 10px"/></td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="isDptfavorite" class="table">
+          <tbody>
+            <tr *ngFor="let diagnosis of dptFavrDiagnosisList | filter: searchFavrDiagnosis">
+              <td style="width: 10px"><input type="checkbox" (click)="selectFavrDiagnosis(diagnosis)" [(ngModel)]="diagnosis.isSelected"/></td>
+              <td>{{ diagnosis.Dtext1 }}</td>
+              <td>{{ diagnosis.Dkey }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="add-diagnosis mr-3" (click)="selectFaviouriteData()">Add</button>
+      <button class="add-diagnosis" (click)="modalRef.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+

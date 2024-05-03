@@ -1,0 +1,90 @@
+<div class="stepperContainer">
+  <img width="52px" class="c-pointer goback-icon" (click)="goback('')" style="margin: auto" [ngClass]="selectedback == 'goback' ? '': 'goback'" title="Default view" src="assets/img/doctor.png"/>
+  <img
+    class="stepperLineArrowImage ml-1"
+    src="assets/img/arrow-left.png"
+    (click)="scrollLeft()"
+  />
+  <div class="stepperMainCont" id="target">
+    <div  *ngFor="let item of listItem; index as i">
+      <div class="stepMainContainer">
+        <div class="stepperCircleCont" style="min-height: 60px">
+          <img
+            class="stepperCircleImageStyle"  [ngStyle]="getImageBorderLogic(item)" [src]="getImageLogic(item)" *ngIf="showItem(item)"/>
+
+          <div class="stepper-Circle-Triangle-down" [ngStyle]="getImageBorderTriangleLogic(item)" *ngIf="showItem(item)"></div>
+        </div>
+        <div class="stepperLineCont c-pointer" (click)="Refreshdata(item)">
+          <div class="stepper-Line-Highlight-Style">
+            <div class="stepperLineStyle"></div>
+            <div
+              *ngIf="showStepperLineLeftHighlightDiv(item)"
+              class="stepperLineLeftHighlightDiv"
+            ></div>
+            <div
+              *ngIf="item.MovementType === 'OS' || item.MovementType === 'MI'"
+              class="stepperLineSurgeryLeftHighlightDiv"
+            ></div>
+          </div>
+          <div
+            class="stepper-small-circle-design"
+            [ngStyle]="getImageBorderLogic(item)"
+            >
+            <div
+              class="stepper-small-circle-inside-design"  [ngClass]="selectedData?.Case == item?.Case ? 'active': ''"
+              [ngStyle]="getCircleBGLogic(item)"
+            ></div>
+          </div>
+          <div class="stepper-Line-Highlight-Style">
+            <div class="stepperLineStyle"></div>
+
+            <div
+              *ngIf="showStepperLineRightHighlightDiv(item)"
+              class="stepperLineRightHighlightDiv"
+            ></div>
+
+            <div
+              *ngIf="item.MovementType === 'OS' || item.MovementType === 'MI'"
+              class="stepperLineSurgeryRightHighlightDiv"
+            ></div>
+          </div>
+        </div>
+
+        <div class="" style="font-size: 12px">
+          {{
+            item.MovementType === "OS" || item.MovementType === "MI"
+              ? "Surgery"
+              : ""
+          }}
+        </div>
+
+        <div class="" style="font-size: 14px" *ngIf="showItem(item)">
+          {{
+            (item.CaseType === "1" && "IP") ||
+              (item.CaseType === "2" && "OP") ||
+              (item.CaseType === "3" && "DC")
+          }}
+          - {{ item.DeptUnitName }}
+        </div>
+
+        <div class="" style="font-size: 14px" *ngIf="showItem(item)">
+          {{ item.PersonName }}
+          {{
+            item.MovementType === "RD" ||
+            item.MovementType === "LW" ||
+            item.MovementType === "EX" ||
+            item.MovementType === "DE" ||
+            item.MovementType === "AM"
+              ? item.EndDate
+              : item.StartDate
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <img
+    class="stepperLineArrowImage"
+    src="assets/img/arrow-right.png"
+    (click)="scrollRight()"
+  />
+</div>

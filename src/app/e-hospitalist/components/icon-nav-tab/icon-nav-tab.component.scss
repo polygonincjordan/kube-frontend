@@ -1,0 +1,25 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  padding: 18px 36px;
+  box-shadow: none;
+  cursor: pointer;
+}
+.img-cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  overflow: hidden;
+}
+.img-style {
+  width: 100px;
+}
+.text-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  padding-left: 0.5rem;
+}

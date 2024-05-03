@@ -1,0 +1,568 @@
+<div class="edash-rightSide" style="background-color: white;border-radius: 10px;">
+  <div class="edash-mainContent" style="display: flex;padding-right: 0px;
+  padding-left: 0px;">
+    <div class="container-fluid" style="max-height: 72vh;overflow: auto;">
+      <table class="table checkin-table">
+        <thead style="position: sticky;
+        top: 0;
+        z-index: 9 !important;background-color:white ;">
+          <tr style="background-color: #e4edf5;font-size: 12px;
+          font-weight: bold;">
+            <th scope="col"></th>
+            <th scope="col" style="padding-left: 0px;">Patient Name</th>
+            <th scope="col" style="padding-left: 0px;text-align: center;">MRN</th>
+            <!-- <th scope="col" style="padding-left: 0px;">Sex & Age</th> -->
+            <th scope="col" style="padding-left: 0px;text-align: center;">Date</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Check-In</th>
+            <th scope="col">Risk</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Allergy</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Triage</th>
+            <th scope="col" style="padding-left: 0px;text-align: center;">Vital</th>
+            <th scope="col">Assigned physician</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Room</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
+            <th scope="col" style="padding-left: 0px;">Financial category</th>
+            <th scope="col" style="text-align: center;">Actions</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ERlistData;let i = index;">
+            <td scope="row" style="width: 0px;"><input type="checkbox" style="position: relative;
+              top: 3px;"></td>
+            <td scope="row" style="width: 16%;    padding-left: 0px;cursor: pointer;" (click)="redirectToTreatByName(item)">{{item.Patient}}</td>
+            <td style="width: 5%;padding-left: 0px;">{{item.Patnr}}</td>
+            <!-- <td style="width: 6%;padding-left: 0px;">F-40Y</td> -->
+            <td style="width: 1%;padding-left: 0px;">{{getDate(item.Erdat)| date : "dd.MM.y"}}</td>
+            <td scope="row" style="width: 5%;padding-left: 0px;">{{getTime(item.ZeitIntern)}}</td>
+            <td style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;" (click)="openModalForRisk(riskModal,item)"></td>
+            <td style="padding-left: 0px;text-align: center;"><img src="assets/img/Allergy.svg" style="width: 23px;" (click)="openModalForAllergy(allergyModal,item)"></td>
+            <td style="padding-left: 0px;width:4%;text-align: center;" (click)="openModalForTriage(triageModal,item,i)">
+              <span [style.background-color]="item?.TriageColor" class="triage-circle">{{item?.TriagePriorityCode}}</span>
+              <img src="assets/img/er-triage.png" style="width: 30px;" *ngIf="!item?.TriagePriorityCode">
+              </td>
+            <td scope="row" style="padding-left: 0px;text-align: center;"><img src="assets/img/er-vital.png" style="width: 23px;" (click)="openModalVital(item)"></td>
+            <td style="width: 14%;">
+            {{item.Behpersname}}
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;background-color: #939da178;" class="checkinrow-input" [value]="item.Behpersname" disabled> -->
+              </td>
+            <td style="width: 7%;padding-left: 0px;">
+              {{item.BehraumKb}}
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;" class="checkinrow-input" [value]="item.BehraumKb"> -->
+              </td>
+            <td style="width: 10%;padding-left: 0px;text-align: center;">
+              <span [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start' : '',  item.StatusTxt == 'Called' ? 'status-called' : '']">
+              {{item.StatusTxt}}
+            </span>
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.StatusTxt" disabled> -->
+              </td>
+            <td scope="row" style="width:10%;padding-left: 0px;">
+              {{item.ZzfinCat}}
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.ZzfinCat" disabled> -->
+              </td>
+            <td style="width: 1%;">
+            <div style="display: flex;justify-content: end;    line-height: 14px;">
+              <div><img src="assets/img/nursing.png" style="width: 28px;
+                margin-top: -6px;cursor: pointer;"></div>
+              <div style="border: 1px solid #dee2e6;
+              background-color: #dee2e6;
+              color: black;margin-left: 3px;
+              margin-right: 3px;font-size: 10px;
+              font-weight: bold;
+              padding: 2px;
+              height: 18px;
+              width: 36px;
+              text-align: center;
+              ">{{item.assignedTime}}</div>
+                   <div style="margin-left: 3px;
+                   margin-right: 3px;"><img src="assets/img/in-patient-dropdown.png" style="width: 20px;cursor: pointer;" (click)="actionPhysicianSet(item)"></div>
+                   <div class="dropdown" style="margin-left: 3px;
+                   margin-right: 3px;">
+                    <i
+                      class="fa fa-ellipsis-v dropdown-toggle"
+                      aria-hidden="true"
+                      style="cursor: pointer;font-size: 18px;"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <!-- <div
+                      class="dropdown-menu dropdown-menu-right"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item c-pointer">Reply</a>
+                      <a class="dropdown-item c-pointer" >Completed</a>
+                      <a class="dropdown-item c-pointer">Progress Entry</a>
+                    </div> -->
+                  </div>
+            </div>
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
+      <div
+            *ngIf="
+            ERlistData?.length == 0
+            "
+            style="text-align: center">
+            No results
+          </div>
+    </div>
+
+ </div>
+
+</div>
+<!-- risk modal -->
+<ng-template #riskModal>
+  <div>
+    <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+    <div class="allergy-header">
+      <div style="
+      font-size: 23px;
+      font-weight: bold">
+      <span>Risk History</span>
+      </div>
+      <div style="display: flex;
+    justify-content: end;align-items: center;">
+    <ul class="allergy-header-ul"><li class="allergy-header-item">Patient Name : <span >{{selectedERList.Patient}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Patnr}}</li>
+      <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.Erdat) | date : "dd.MM.y"}}</li>
+    <li  class="close-icon allergy-header-item" style="border: none;
+      padding: 0;
+      margin: 0;"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;" (click)="closeRiskModal()"></li></ul>
+    </div>
+      <!-- <div class="col-md-2" style="display: flex;
+      justify-content: end;align-items: center;">
+      <div>
+        <button class="c-pointer save-risk" (click)="checkDataForRisk('I')">Save</button>
+      </div>
+      <div class="ml-2">
+        <img src="assets/img/add.png" class="c-pointer" style="width: 23px;" (click)="addNewItemForRisk()">
+      </div>
+      <div class="ml-2">
+        <img src="assets/img/delete-icon.svg" class="c-pointer" style="width: 20px;" (click)="confirmationForRiskDelete('D')">
+      </div>
+      </div> -->
+      </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <form [formGroup]="updateRiskForm">
+      <div class="mt-3 mb-3" style="border: 1px solid #d9d9d9;
+      border-radius: 8px;padding: 6px;">
+      <div class="row create-form-inputs">
+        <div class="col-md-4">
+          <!-- <ng-select appendTo="body" placeholder="Risk code" formControlName="Rsfnr">
+            <ng-option *ngFor=" let riskV of riskValues"
+              [value]="riskV.Rsfnr">
+              {{ riskV.Rsfna }}
+            </ng-option>
+          </ng-select> -->
+          <input type="text" class="form-control" placeholder="Risk code" style="height: 33px;" formControlName="Rsfna" (dblclick)="openCommonModal(commonColModal,'RiskCode')">
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Short description" style="height: 33px;background-color: #f3f9ff;pointer-events: none;" formControlName="Rsfkb">
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" placeholder="Risk description" style="height: 33px;background-color: #f3f9ff;pointer-events: none;" formControlName="Rsfna">
+              </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-4">
+          <input
+        class="form-control"
+        type="text"
+        placeholder="Reported on"
+        [minDate]=""
+        [maxDate]=""
+        #dp="bsDatepicker"
+        bsDatepicker
+        formControlName="Repdt"
+        [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+        }"
+        style="height: 33px;
+        "
+      />
+          </div>
+          <div class="col-md-4">
+            </div>
+            <div class="col-md-4" style="text-align: end;">
+              <button style="    border: 1px solid;
+              background: #0056b0;
+              color: #fff;
+              padding: 8px 20px;
+              border-radius: 16px px;
+              font-weight: 700;
+              border-radius: 24px;" (click)="saveRiskJsonFormat()">Save</button>
+               <button style="    border: 1px solid;
+               background: #0056b0;
+               color: #fff;
+               padding: 8px 20px;
+               border-radius: 16px px;
+               font-weight: 700;
+               border-radius: 24px;" (click)="resetUpdateRiskForm()">Cancel</button>
+              </div>
+      </div>
+      </div>
+    </form>
+    <form [formGroup]="riskform" style="max-height: 296px;
+    overflow: auto;">
+  <table class="table table-bordered risk-table">
+    <thead style="background-color: #e4edf5;
+    color: black;text-align: center;">
+      <tr>
+        <!-- <th scope="col"></th> -->
+        <th scope="col">Risk Code</th>
+        <th scope="col">Short Description</th>
+        <th scope="col">Risk Description</th>
+        <th scope="col">Reported On</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody style="background-color: #fbfcff;">
+      <ng-container formArrayName="riskFormitems">
+      <ng-container
+      *ngFor="let item of riskform.get('riskFormitems')['controls']; let i = index;">
+      <tr [formGroupName]="i">
+        <!-- <td style="padding-top: 23px;padding-right: 3px;"><input type="checkbox" class="form-check" formControlName="isChecked"></td> -->
+        <td style="padding-left: 0;
+        padding-right: 0;
+        width: 9%;pointer-events: none;">
+        <!-- <input type="text" class="form-control" formControlName="Rsfnr"> -->
+        <ng-select appendTo="body" placeholder="Search" formControlName="Rsfnr">
+          <ng-option *ngFor=" let riskV of riskValues"
+            [value]="riskV.Rsfnr">
+            {{ riskV.Rsfna }}
+          </ng-option>
+        </ng-select>
+      </td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 34%;pointer-events: none;"><input type="text" class="form-control" style="height: 37px;
+        font-size: 14px;" formControlName="Rsfkb" ></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 44%;pointer-events: none;"><input type="text" class="form-control" style="height: 37px;
+        font-size: 14px;" formControlName="Rsfna"></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 15%;pointer-events: none;">
+        <input
+        class="form-control"
+        type="text"
+        placeholder=""
+        [minDate]=""
+        [maxDate]=""
+        #dp="bsDatepicker"
+        bsDatepicker
+        formControlName="Repdt"
+        [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+        }"
+        style="height: 37px;
+        font-size: 13px;"
+      />
+        <!-- <input type="text" class="form-control" formControlName="Repdt"> -->
+      </td>
+      <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(riskList[i])"><img src="assets/img/Delete.svg" (click)="confirmationForRiskDelete('D',riskList[i])" style="margin-left: 11px;">
+
+      </td>
+      </tr>
+      </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</form>
+  </div>
+</ng-template>
+<!-- allergy modal -->
+<ng-template #allergyModal>
+  <div>
+    <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+    <div class="allergy-header">
+      <div style="
+        font-size: 23px;
+        font-weight: bold">
+        <span>Allergy History</span>
+        </div>
+        <div style="display: flex;
+      justify-content: end;align-items: center;">
+      <ul class="allergy-header-ul"><li class="allergy-header-item">Patient Name : <span >{{selectedERList.Patient}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Patnr}}</li>
+        <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.Erdat) | date : "dd.MM.y"}}</li>
+      <li  class="close-icon allergy-header-item" style="border: none;
+        padding: 0;
+        margin: 0;"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;" (click)="closeAllergyModal()"></li></ul>
+      </div>
+        </div>
+    <div class="row mt-3" style="font-weight: bold;">
+      <div class="col-md-12">
+       <div  style="border-radius: 6px;
+          padding: 5px 13px;
+    background: #fbfcff;">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="X" [(ngModel)]="noAllergies"
+          (change)="updateAllergyCheckboxes(noAllergies,'noallergy')" [disabled]="isCheckboxesDisabled ? true : false">
+          <label class="form-check-label" for="inlineCheckbox1">No known allergies</label>
+        </div>
+        <div class="form-check form-check-inline ml-5">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="X" [(ngModel)]="noCollection"
+          (change)="updateAllergyCheckboxes(noCollection,'nocollection')" [disabled]="isCheckboxesDisabled ? true : false">
+          <label class="form-check-label" for="inlineCheckbox2">Assessment not possible</label>
+        </div>
+        <div class="form-check form-check-inline ml-5" style="width: 64%;">
+          <label class="form-check-label" for="inlineCheckbox2">Comments</label>
+          <input class="form-control ml-1" type="text" id="inlineCheckbox2" style="height: 34px;
+          " [(ngModel)]="StateComment">
+        </div>
+      </div>
+      </div>
+      </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <form [formGroup]="updateAllergyForm">
+    <div class="mt-3 mb-3" style="border: 1px solid #d9d9d9;
+    border-radius: 8px;padding: 6px;">
+
+      <div class="row create-form-inputs">
+       <div class="col-md-4">
+       <input type="text" class="form-control" placeholder="Allergen" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Allergen')" formControlName="Allergen">
+       </div>
+       <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Evaluation" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Evaluation')" formControlName="EvalTxt">
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="Allergy Type" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Allergy type')" formControlName="TypText">
+          </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Allergen Group" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Allergen group')" formControlName="AllergenGrp">
+        </div>
+        <div class="col-md-4">
+         <input type="text" class="form-control" placeholder="Allergic Reaction" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Allergic reaction')" formControlName="ReaText">
+         </div>
+         <div class="col-md-4">
+           <input type="text" class="form-control" placeholder="Comments" style="height: 33px;" formControlName="Adcomment">
+           </div>
+       </div>
+       <div class="row create-form-inputs">
+        <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Certainty" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Certainty')" formControlName="CerText">
+        </div>
+        <div class="col-md-4">
+         <input type="text" class="form-control" placeholder="Severity" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Severity')" formControlName="SoaText">
+         </div>
+         <div class="col-md-4" style="text-align: end;">
+           <button style="    border: 1px solid;
+           background: #0056b0;
+           color: #fff;
+           padding: 8px 20px;
+           border-radius: 16px px;
+           font-weight: 700;
+           border-radius: 24px;" (click)="saveAllergyJsonFormat()">Save</button>
+            <button style="    border: 1px solid;
+            background: #0056b0;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 16px px;
+            font-weight: 700;
+            border-radius: 24px;" (click)="resetUpdateAllergyForm()">Cancel</button>
+       </div>
+       </div>
+    </div>
+  </form>
+    <form [formGroup]="allergyform" style="max-height: 296px;
+    overflow: auto;">
+  <table class="table table-bordered allergy-table">
+    <thead style="background-color: #e4edf5;
+    color: black;text-align: center;">
+      <tr>
+        <!-- <th scope="col"></th> -->
+        <th scope="col">Allergen</th>
+        <th scope="col">Allergen group</th>
+        <th scope="col">Certainty</th>
+        <th scope="col">Evaluation</th>
+        <th scope="col">Allergic reaction</th>
+        <th scope="col">Severity</th>
+        <th scope="col">Allergy type</th>
+        <th scope="col">Comments</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody style="background: #fbfcff;">
+      <ng-container formArrayName="allergyFormitems">
+        <ng-container
+        *ngFor="let item of allergyform.get('allergyFormitems')['controls']; let i = index;">
+      <tr [formGroupName]="i">
+        <!-- <td style="padding-top: 23px;padding-right: 3px;"><input type="checkbox" class="form-check" formControlName="isChecked"></td> -->
+        <td style="padding-left: 0;
+        padding-right: 0;
+        width: 15%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="Allergen">
+          <ng-option *ngFor=" let item of allergenValues"
+            [value]="item">
+            {{ item.Bcpname }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 11%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="AllergenGrp">
+          <ng-option *ngFor=" let item of allergenGroupValues"
+            [value]="item">
+            {{ item.Bcpname }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 11%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="CerText">
+          <ng-option *ngFor=" let item of allergyCertaintyValues"
+            [value]="item">
+            {{ item.CerText }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 8%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="EvalTxt">
+          <ng-option *ngFor=" let item of allergyEvaluationValues"
+            [value]="item">
+            {{ item.EvalTxt }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 15%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="ReaText">
+          <ng-option *ngFor=" let item of allergyReactionValues"
+            [value]="item">
+            {{ item.ReaText }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 12%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="SoaText">
+          <ng-option *ngFor=" let item of severityValues"
+            [value]="item">
+            {{ item.SoaText }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 15%;pointer-events: none;"><ng-select appendTo="body" placeholder="Search" formControlName="TypText">
+          <ng-option *ngFor=" let item of allergyTypeValues"
+            [value]="item">
+            {{ item.TypText }}
+          </ng-option>
+        </ng-select></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 15%;pointer-events: none;"><input type="text" class="form-control" formControlName="AdCommentLt" style="font-size: 15px;"></td>
+        <td style="padding-left: 2px;
+        padding-right: 2px;
+        width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromTable(allergyList[i])"><img src="assets/img/Delete.svg" (click)="confirmationForAllergyDelete('D',allergyList[i])" style="margin-left: 11px;">
+
+      </td>
+      </tr>
+     </ng-container>
+     </ng-container>
+
+
+    </tbody>
+  </table>
+  </form>
+
+  </div>
+</ng-template>
+<ng-template #commonColModal>
+  <div class="modal-body p-0">
+    <div class="infoModel-title" style="background:#0056b0">
+      <h4 class="m-0 pl-3">{{colName}}</h4>
+    </div>
+    <div style="    max-height: 30em;
+    overflow: auto;padding: 11px;">
+      <table class="table table-bordered">
+          <thead style="
+          position: sticky;
+          top: -10px;
+          z-index: 9;background: #e4edf5;">
+        <tr>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody style="    background: #fbfcff;">
+            <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (dblclick)="selectValueFromList(item)">
+          <td>{{item.Bcpdescription || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText || item.TypText || item.Rsfna}}</td>
+
+        </tr>
+      </tbody>
+
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- triage level -->
+<ng-template #triageModal>
+  <div>
+    <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+    <div class="allergy-header">
+      <div style="
+      font-size: 23px;
+      font-weight: bold">
+      <span>Triage Level</span>
+      </div>
+      <div style="display: flex;
+    justify-content: end;align-items: center;">
+    <ul class="allergy-header-ul"><li class="allergy-header-item">Patient Name : <span >{{selectedERList.Patient}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Patnr}}</li>
+      <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.Erdat) | date : "dd.MM.y"}}</li>
+    <li  class="close-icon allergy-header-item" style="border: none;
+      padding: 0;
+      margin: 0;"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;" (click)="closeTriageModal()"></li></ul>
+    </div>
+      </div>
+  </div>
+  <div class="modal-body d-flex" style="padding: 0 11px 0px;">
+   <div class="col-md-6 mt-2">
+    <table class="table">
+      <thead>
+        <tr style="background-color: #e4edf5; font-size: 12px; font-weight: bold;">
+          <th colspan="3">Allergen</th>
+          <th scope="col">Triage</th>
+        </tr>
+      </thead>
+      <tbody style="background-color:  #fbfcff;">
+        <tr class="c-pointer"  (click)="selectedRow(item,i)" *ngFor="let item of allTriageData;let i = index;" [ngStyle]="{'background-color':item.isActive ? 'antiquewhite' : '' }">
+          <td colspan="3">{{item.Allergen}}</td>
+          <td><span class="triage-circle" [style.background-color]="item?.color">{{item.Triage}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+   </div>
+   <div class="col-md-6 mt-2" style="text-align: end;">
+    <div>
+      <button style="    border: 1px solid;
+              background: #0056b0;
+              color: #fff;
+              padding: 8px 20px;
+              border-radius: 16px px;
+              font-weight: 700;
+              border-radius: 24px;" (click)="saveTriage()">Save</button>
+               <button style="    border: 1px solid;
+               background: #0056b0;
+               color: #fff;
+               padding: 8px 20px;
+               border-radius: 16px px;
+               font-weight: 700;
+               border-radius: 24px;" (click)="closeTriageModal()">Cancel</button>
+    </div>
+   </div>
+
+  </div>
+</ng-template>
+<app-er-vitals #erVitalsModal></app-er-vitals>

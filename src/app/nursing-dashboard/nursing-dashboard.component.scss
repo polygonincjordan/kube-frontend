@@ -1,0 +1,49 @@
+.floors-border{
+  background-color: #fff;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  .floo-radius{
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    background-color: #FFBA8A;
+  }
+  .Ward-font{
+    font-size: 16px;
+    color: black;
+  }
+  .floor-data{
+    font-size: 20px;
+    color: #0056B0;
+  }
+}
+
+.border-active{
+  border: 2px solid #0056B0;
+}
+
+
+.floors-color{
+  background-color: #0056B0;
+  .floors-head {
+    color: white;
+    font-size: 23px;
+  }
+  .adjust-icons{
+    div{
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50%;
+      background-color:  #1768BC;
+      color: #badbfd;
+      font-size: 15px;
+    }
+  }
+}
+
+.floors-Clin{
+  background: linear-gradient(to top, #8AABFF 17%, #677DFF 93%, #8AABFF 140%);
+}
+.floors-Emerg{
+  background: linear-gradient(to bottom, #AC8AEF 23%, #D471C8 70%, #FE559C 111%);
+}

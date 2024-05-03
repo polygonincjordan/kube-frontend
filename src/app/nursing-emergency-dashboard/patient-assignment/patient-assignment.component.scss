@@ -1,0 +1,295 @@
+span.pn-input-title {
+    position: absolute !important;
+    cursor: text;
+    font-size: 12px;
+    opacity: 1;
+    left: 7;
+    z-index: 3;
+    line-height: 2px !important;
+    color: #b2b4b7;
+    padding: 0 10px;
+    background-color: white;
+  }
+  .edash-rightSide {
+    background-color: white;
+    border-radius: 10px;
+  }
+  .edash-mainContent {
+    display: flex;
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .check-in-table {
+    max-height: 72vh;
+    overflow-x: inherit;
+  }
+
+  .search-functionality {
+    min-width: 90% !important;
+    width: 100% !important;
+  }
+  
+  .border-left {
+    border-left: 1px solid #e4edf5 !important;
+  }
+  .border-top {
+    border-top: 1px solid #e4edf5 !important;
+  }
+  .border-bottom {
+    border-bottom: 1px solid #e4edf5 !important;
+  }
+  .border-top-left {
+    border-left: 1px solid #e4edf5 !important;
+    border-top-left-radius: 10px !important;
+    border-top: 1px solid #e4edf5 !important;
+  }
+  .border-top-right {
+    border-right: 1px solid #e4edf5 !important;
+    border-top-right-radius: 10px !important;
+    border-top: 1px solid #e4edf5 !important;
+  }
+  .border-bottom-right {
+    border-right: 1px solid #e4edf5 !important;
+    border-bottom-right-radius: 10px !important;
+    border-bottom: 1px solid #e4edf5 !important;
+  }
+  .border-bottom-left {
+    border-left: 1px solid #e4edf5 !important;
+    border-bottom-left-radius: 10px !important;
+    border-bottom: 1px solid #e4edf5 !important;
+  }
+  .border-top-action {
+    border-left: 1px solid #e4edf5 !important;
+    border-top: 1px solid #e4edf5 !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-right: 1px solid #e4edf5 !important;
+  }
+  .border-bottom-action {
+    border-left: 1px solid #e4edf5 !important;
+    border-bottom: 1px solid #e4edf5 !important;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    border-right: 1px solid #e4edf5 !important;
+  }
+  .border-right {
+    border-right: 1px solid #e4edf5 !important;
+  }
+  .border-bottom {
+    border-bottom: 1px solid #e4edf5 !important;
+  }
+
+  .border-top-none {
+    border-top: none !important;
+  }
+
+  .close-icon {
+    border: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+  }
+  .img-size {
+    width: 35px;
+    float: right;
+    cursor: pointer;
+  }
+
+.modal-body{
+  p{
+    margin: 0px;
+      font-size: 15px;
+      padding: 20px;
+      font-weight: bold;
+      color: black;
+  }
+}
+
+.modal-footer {
+  border: none;
+  padding: 1rem !important;
+}
+
+.event-component{
+  // padding-top: 10px;
+  // margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.search-section{
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.admin-dose{
+  padding-left: 10px;
+    padding-right: 10px;
+}
+
+.header-button{
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  width: 70%;
+
+  .btn{
+    background-color: #0056b0 !important;
+    color: #f3f9ff;
+  }
+}
+
+
+.toggle-left img {
+  position: absolute;
+  top: 0px;
+  left: -5px;
+  z-index: 99;
+}
+
+.toggle img {
+  position: absolute !important;
+  position: absolute !important;
+  top: auto !important;
+  left: 80px !important;
+  z-index: 99;
+}
+.search-box{
+    border: 1px solid #D2EAFF;
+    border-radius: 15px;
+}
+.search-functionality {
+    min-width: 61% !important;
+    img {
+      position: absolute;
+      top: 53%;
+      left: 26px;
+      transform: translateY(-50%);
+    }
+  
+    input {
+      height: 38px;
+      font: 600 14px/1.5 Nunito, sans-serif;
+      color: #848f96;
+      border-radius: 8px !important;
+      box-shadow: none;
+      padding: 10px 10px 10px 42px;
+    }
+  }
+  .date-function{
+    span.pn-input-title{
+        position: absolute !important;
+          top:17px;
+          left:7px;
+          cursor: text;
+          font-size: 12px;
+          opacity: 1;
+          left: 7;
+          z-index: 3;
+          line-height: 2px !important;
+          // font-weight: bold;
+          color: #0056b0;
+          padding: 0 10px;
+          background-color: white;
+      }
+}
+  .nav-tabs .nav-link.active::before, .nav-tabs .nav-item.show .nav-link::before {
+    content: " ";
+    background: none !important;
+    color: white;
+    border-radius: 10px;
+    position: absolute;
+    width: calc(100% - 1rem);
+    height: 5px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+  .nav-item .active{
+      color: #0890c5;
+      border-bottom: 2px solid #0890c5;
+  }
+  .nav-link{
+    background: none;
+    color: #7066e0;
+    font-weight: 600;
+    border: 0;
+}
+
+.events-leftbar-active{
+    color: #0890c5;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 2px solid #0890c5;
+    
+  }
+
+  .events-leftbar-inactive{
+    font-size: 16px;
+    font-weight: 600;
+    color: #002754;
+    }
+
+    .h-border{
+        width: 91%;
+        position: relative;
+        top: -15px;
+        left: 14px;
+        border-bottom: 1px solid #C6C8CA;
+    }
+
+    .card-box{
+    gap: 17px;
+    height: 63vh;
+    overflow-y: auto;
+    .room-card{
+        width: 252px;
+        height: 125px;
+        border: 1px solid #BED2FA;
+        border-radius: 15px;
+        padding: 14px;
+    }
+    .rooms{
+        font-size: 16px;
+        font-weight: 700;
+        color:#272A2E
+    }
+    .hr-border{
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid #C6C8CA;
+    }
+    .asssigned-text{
+        font-size: 14px;
+        font-weight: 500;
+        color: #8A919A;
+    }
+    }
+    .input-size{
+      width: 60% !important;
+    }
+    .inp-form-control{
+      margin-top: -4px;
+      display: block;
+      width: 100%;
+      height: calc(1.5em + 0.35rem + 2px) !important;
+      // padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      // border: 1px solid #ced4da;
+      border: none; 
+      border-bottom: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    ::ng-deep bs-daterangepicker-container:has(> .daterangepicker){
+      left: 8px !important;
+      top: 2px !important;
+  }

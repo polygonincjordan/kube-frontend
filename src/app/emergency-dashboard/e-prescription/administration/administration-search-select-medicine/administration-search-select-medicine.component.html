@@ -1,0 +1,18 @@
+<ng-container *ngIf="group" [formGroup]="group">
+  <ng-select class="d-grid-am" formControlName="Result_Drug_Name"
+    (keyup)="someMethod($event, searchTypeOnKeyEnter)"[markFirst]="false"
+    [title]="group.get('Result_Drug_Name').value !== null ?
+    group.get('Result_Drug_Name').value : ''" [typeahead]="searchTerm"
+    (change)="broadcastEvent($event)"
+    (clear)="broadcastEvent($event)"
+    [appendTo]="'body'"
+    [ngClass]="group.touched &&
+    group.get('Result_Drug_Name').errors && isSubmitted ?
+    'ep-error-message': ''">
+    <ng-option
+      *ngFor=" let medicationDrug of medicationDrugList"
+      [value]="medicationDrug">
+        <span title="{{medicationDrug.Drugname + ' - ' + ' Phin' + '(' +medicationDrug.Phin + ')' +' - '+' Pher'+ '('  +medicationDrug.Pher+ ')'}} ">{{ medicationDrug.Drugname }}{{' - '+' Phin' + '(' +medicationDrug.Phin + ')' }}{{' - '+' Pher'+ '('  +medicationDrug.Pher+ ')' }}</span>
+    </ng-option>
+  </ng-select>
+</ng-container>

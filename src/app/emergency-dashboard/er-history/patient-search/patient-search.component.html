@@ -1,0 +1,126 @@
+<ng-template #patientSearchModal style="max-width: 392px">
+  <!-- <div class="modal-header">
+    <h4 class="modal-title pull-left">Patient Search Result</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <div class="modal-body">
+    <div class="col">
+      <h4 style="text-align: center"><strong>Patient Search Result</strong></h4>
+      <form [formGroup]="form">
+        <label><strong>Date of birth</strong></label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder=""
+          [minDate]=""
+          [maxDate]=""
+          #dp="bsDatepicker"
+          bsDatepicker
+          formControlName="dob"
+          [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+          }"
+          />
+        <label><strong> MRN</strong></label>
+        <input type="text" class="form-control" formControlName="mrn" />
+        <label><strong>Patient First Name</strong></label>
+        <input type="text" class="form-control" formControlName="firstName" />
+        <label><strong>Patient Last Name</strong></label>
+        <input type="text" class="form-control" formControlName="lastName" />
+        <label><strong>Telephone Number</strong></label>
+        <input type="text" class="form-control" formControlName="telephone" />
+        <div class="col text-center">
+          <button
+            class="btn btn-primary"
+            style="
+            background-color: #096798 !important;
+            border-color: #096798 !important;
+            color: #fff;
+            margin-top: 7px;
+            "
+            (click)="patientSearchByField(patientsearchtemplate)"
+            >
+            Find
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<ng-template #patientsearchtemplate style="min-width: 392px">
+  <!-- <div class="modal-header">
+    <h4 class="modal-title pull-left">Patient Search Result</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <div class="modal-body">
+    <div class="input-group mb-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="fa
+            fa-search"
+            aria-hidden="true"></i></span>
+      </div>
+      <input class="form-control" type="text" placeholder="search..."
+      [(ngModel)]="searchString"/>
+    </div>
+    <div class="col-lg-12 col-md-6 col-sm-12" style="    max-height: calc(100vh - 180px);
+    overflow: auto;">
+      <table class="table table-bordered table-hover">
+        <thead
+          style="
+          background: #0082c8 !important;
+          color: white;
+          position: sticky;
+          top: 0;
+          ">
+          <tr>
+            <th scope="col">Patient</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Birthdate</th>
+            <th scope="col">Sex</th>
+            <th scope="col">Telephone</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of patientSearchData | filter : searchString;let i = index" (click)="showHideList(item,i)">
+          <tr>
+            <td>{{ item.Patnr }}</td>
+            <td>{{ item.Nname }}</td>
+            <td>{{ item.Vname }}</td>
+            <td>{{ item.Pname }}</td>
+            <td>{{ getDate(item.Gbdat) | date : "dd.MM.y" }}</td>
+            <td>{{ item.Gschltxt }}</td>
+            <td>{{ item.Telnr }}</td>
+          </tr>
+          <tr style="background-color: #dee2e6;text-align: center;" *ngIf="item.isVisible">
+            <th scope="col"></th>
+            <th scope="col">Admission Date</th>
+            <th scope="col">Admission Time</th>
+            <th scope="col">Department</th>
+            <th scope="col">Attending Doctor</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+          <ng-container *ngIf="item.isVisible">
+        <tr 
+          style="font-weight: bold;    background: antiquewhite;text-align: end;" *ngFor="let el of item.ToVisitsHistory.results" (click)="selectedVisitDetailsData(el)">
+          <td>{{el.BwartName}}</td>
+          <td>{{getDate(el.Bwidt)| date : "dd.MM.y"}}</td>
+          <td>{{getTime(el.Bwizt)}}</td>
+          <td>{{el.Bwart}}</td>
+          <td>{{el.PernrName}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-container>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+</ng-template>

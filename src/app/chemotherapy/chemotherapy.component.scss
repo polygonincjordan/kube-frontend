@@ -1,0 +1,178 @@
+.chemoborder{
+  border: 2px solid #D2EAFF;
+  border-radius: 13px;
+  background-color: #FBFCFF;
+}
+.color-chemo{
+  color: #293A4A !important;
+  line-height: 0.3 !important;
+}
+.input-group{
+  border: 1px solid #C6C8CA !important;
+  border-radius: 5px;
+}
+.fonrlabel{
+  font-size: 14px;
+  color: #000000;
+  font-weight: 900 ;
+}
+.fonrProtocols{
+  font-size: 13px;
+  color: #000000;
+}
+
+.msup{
+  color: #0056B0 !important;
+}
+.top-position{
+  top: 7px !important;
+}
+.height-data{
+  height: calc(1.5em + 0.75rem - 2px) !important;
+}
+.chemo-ul{
+  li {
+    list-style: disc !important;
+  }
+}
+.top-2{
+  top: 2px;
+}
+.PhysicianOrders{
+  background-color: #f3f9ff;
+  color: #0056B0;
+  // transform: translatey(-27px);
+}
+.chem-button{
+  background: #0056B0;
+  border: none;
+  float: right;
+  border-radius: 50px;
+}
+.camera-icon{
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background-color: #E4EDF5;
+}
+
+.fontinput{
+font-size: 15px !important;
+}
+
+.fonrlabel {
+    @media (max-width: 1496px) {
+      font-size: 13px !important;
+    }
+}
+.Import-img{
+  filter: brightness(0.5);
+}
+.Import-pdf{
+  width:35px;
+  height:35px;
+  border-radius: 50px;
+  float: right;
+  background-color: #E4EDF5;
+}
+.input-group::placeholder{
+  font-size: 12px !important;
+ margin: 20px !important;
+}
+.Protocol-name{
+  color: #293A4A !important;
+  line-height: 1 !important;
+}
+.badge-data{
+  border-radius: 50px !important;
+  border-color: #0056B0;
+}
+.badge-color{
+  background-color: #0056B0 !important;
+}
+::ng-deep.input-group{
+  .ng-select {
+    height: auto !important;
+    .ng-select-container{
+      border: none !important;
+    }
+  }
+}
+::ng-deep.input-group {
+  .ng-select-container{
+    border: none !important;
+  }
+}
+.button-sub{
+  background-color: #0056B0 !important;
+  box-shadow: none !important;
+}
+.looped-element> * {
+  flex: 0 0 calc(50% - 7.5px);
+  max-width: calc(50% - 7.5px);
+}
+.looped-element {
+  flex-wrap: wrap;
+  column-gap: 15px ;
+}
+.bg-color{
+  background-color: #1a80d3 !important;
+}
+
+::ng-deep .search-input img {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+}
+
+::ng-deep .search-input input#searchFilter {
+  height: 42px;
+  font: 600 14px/1.5 Nunito, sans-serif;
+  color: #848f96;
+  border-radius: 8px !important;
+  box-shadow: none;
+  padding: 10px 10px 10px 42px;
+}
+.ep-error-message{
+  border: 1px solid red !important;
+}
+.modal-diagnosis-list {
+  height: 225px !important;
+  overflow: auto !important;
+}
+
+.fontProtocol{
+  font-size: 11px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+::ng-deep.document.modal-dialog {
+  max-width: 1000px !important;
+}
+.color-white{
+  color: #fff;
+}
+::ng-deep.Attachpopup.modal-dialog {
+  max-width: 770px  !important;
+}
+
+.posi-top{
+    top: 7px;
+    left: 30px;
+}
+
+.fontweight{
+  font-weight:600 !important;
+}
+
+.indexchemo{
+  z-index: 1;
+  position: relative;
+}
+
+.fontsize{
+  font-size: 11px;
+}

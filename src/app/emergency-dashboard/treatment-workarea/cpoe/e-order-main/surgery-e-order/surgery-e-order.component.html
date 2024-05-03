@@ -1,0 +1,268 @@
+<div class="row p-2 m-0">
+  <div class="surgery-order-main diagnosis-list">
+    <div class="surgery-order-header">
+      <label>Details</label>
+      <div>
+        <img src="assets/img/add.png" width="20" class="mr-2 cursor-pointer" (click)="addFormArray()" />
+        <img src="assets/img/imgpsh_fullsize_anim.png" width="22" class="mr-3 cursor-pointer" (click)="openFavList(favrDiagnosisModal)"/>
+        <button type="text" class="btn btn-primary mr-3" (click)="createSurgeryOrder()">
+          Create Order
+        </button>
+        <button type="text" class="btn btn-primary">Cancel</button>
+      </div>
+    </div>
+    <form [formGroup]="surgeryForm">
+      <ng-conatiner formArrayName="surgeryFormArray" *ngFor="
+          let item of surgeryForm.get('surgeryFormArray')['controls'];
+          let i = index">
+        <div class="row m-0 justify-content-between surgery-card" [formGroupName]="i">
+          <div class="col-md-6 row">
+            <div class="col-md-12 row">
+              <div class="col-md-8">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                    <span class="input-title z-indexlabel">Service Description</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <ng-select class="d-grid-am" (change)="onSelectService($event, i)" formControlName="ServiceText"
+                        [markFirst]="false" [typeahead]="searchTerm" id="ServiceText" name="input"
+                        ng-model="example.value" [ngClass]="
+                          item.touched && item.get('ServiceText').errors
+                            ? 'ep-error-message'
+                            : ''
+                        ">
+                        <ng-option *ngFor="let service of serviceTextList" [value]="service">
+                          {{ service.Ktext }}
+                        </ng-option>
+                      </ng-select>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                    <span class="input-title z-indexlabel">Code</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <input type="text" class="form-control" formControlName="Talst" [readOnly]="true" />
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 row">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-50 position-relative pt-2 mr-2">
+                    <span class="input-title z-indexlabel">Treatment OU</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <ng-select class="d-grid-am" (change)="onSelectTreatmentOU($event, i)" formControlName="Trtoe"
+                        [markFirst]="false" [typeahead]="searchTermTreatmentOU" [ngClass]="
+                          item.touched && item.get('Trtoe').errors
+                            ? 'ep-error-message'
+                            : ''
+                        ">
+                        <ng-option *ngFor="let service of treatmentOUList" [value]="service">
+                          {{ service.Orgna }}
+                        </ng-option>
+                      </ng-select>
+                    </span>
+                  </span>
+                  <span class="d-flex align-items-center p-0 w-50 position-relative pt-2">
+                    <span class="input-title z-indexlabel"></span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <input type="text" class="form-control" formControlName="TrtoeText" [readOnly]="true" />
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-50 position-relative pt-2 mr-2">
+                    <span class="input-title z-indexlabel">Department OU</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <ng-select class="d-grid-am" (change)="onSelectDepartmentOU($event, i)" formControlName="Orgfa"
+                        [markFirst]="false" [typeahead]="searchTermDepartmentOU" [ngClass]="
+                          item.touched && item.get('Orgfa').errors
+                            ? 'ep-error-message'
+                            : ''
+                        ">
+                        <ng-option *ngFor="let service of departmentOUList" [value]="service">
+                          {{ service.Orgna }}
+                        </ng-option>
+                      </ng-select>
+                    </span>
+                  </span>
+                  <span class="d-flex align-items-center p-0 w-50 position-relative pt-2">
+                    <span class="input-title z-indexlabel"></span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <input type="text" formControlName="OrgfaText" class="form-control" [readOnly]="true" />
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 row">
+              <div class="d-flex align-items-center position-relative w-100">
+                <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                  <span class="input-title z-indexlabel">Additional Info</span>
+                  <span class="input-text-field d-inline-block align-top w-100">
+                    <input type="text" class="form-control" formControlName="AddInfo" />
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12 row">
+              <div class="col-md-5">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                    <span class="input-title z-indexlabel">Surgery Date</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <input class="form-control" style="font-weight: 800; color: #000" type="text"
+                        formControlName="Wbgdt" [minDate]="minDate" [maxDate]="" #dp="bsDatepicker" bsDatepicker
+                        [bsConfig]="{
+                          showWeekNumbers: false,
+                          dateInputFormat: 'DD.MM.YYYY'
+                        }" [ngClass]="
+                          item.touched && item.get('Wbgdt').errors
+                            ? 'ep-error-message'
+                            : ''
+                        " />
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                    <span class="input-title z-indexlabel">Surgery Time</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <input type="time" class="form-control" id="exampleInput" name="input" ng-model="example.value"
+                        formControlName="Wbgzt" placeholder="HH:mm:ss" min="08:00:00" max="17:00:00" [ngClass]="
+                          item.touched && item.get('Wbgzt').errors
+                            ? 'ep-error-message'
+                            : ''
+                        " />
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-2 mt-auto mb-auto">
+                <img src="assets/img/star-false.svg" width="22" class="mr-2" (click)="updateFavorite(item,i)" *ngIf="!item.value.Favorite"/>
+                <img src="assets/img/star-solid.svg" width="22" class="mr-2" *ngIf="item.value.Favorite" (click)="updateFavorite(item,i)"/>
+                <img src="assets/img/delete-icon.svg" width="18" class="cursor-pointer" (click)="removeSurgery(i)" />
+              </div>
+            </div>
+            <div class="col-md-12 row">
+              <div class="d-flex align-items-center position-relative w-100">
+                <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                  <span class="input-title z-indexlabel">Order Type</span>
+                  <span class="input-text-field d-inline-block align-top w-100">
+                    <input type="text" class="form-control" value="Surgical Procedure" [readOnly]="true" />
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12 row">
+              <div class="col-md-5">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                    <span class="input-title z-indexlabel">Primary Surgeon</span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <ng-select class="d-grid-am" (change)="onSelectSurgeon($event, i)" formControlName="Surgeon"
+                        [markFirst]="false">
+                        <ng-option *ngFor="let service of assignUsersList" [value]="service">
+                          {{ service.NamString }}<span hidden>{{service.Gpart}}</span>
+                        </ng-option>
+                      </ng-select>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="d-flex align-items-center position-relative">
+                  <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+                    <span class="input-title z-indexlabel"></span>
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <input type="text" class="form-control" formControlName="SurgeonName" [readOnly]="true" />
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mt-2">
+              <div class="anesthetist-checkbox">
+                <input type="checkbox" formControlName="Anerf" />
+                <label class="m-0 font-bold">Anesthetist Required</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-conatiner>
+    </form>
+  </div>
+</div>
+<ng-template #favrDiagnosisModal>
+  <div class="modal-body diagnosis-modal p-3">
+    <div class="header d-flex mb-3">
+      <h4
+        
+        class="cursor-pointer active"
+        
+      >
+        My Favorites
+      </h4>
+    </div>
+    <div class="modal-content-diagnosis">
+      <div class="search-input col-md-12">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input
+          type="text"
+          placeholder="Search"
+          class="form-control w-100"
+          id="searchFilter"
+          
+        />
+      </div>
+      <div class="modal-diagnosis-list mt-3">
+        <table class="table">
+          <tbody>
+            <tr
+              *ngFor="let item of myFavArr;let i=index"
+            >
+              <td style="width: 10px">
+                <input
+                  type="checkbox"
+                 (click)="selectOrderFromFav(item,i)"
+                />
+              </td>
+              <td style="width: 66%;
+              text-align: left;">{{item.Ktext}}</td>
+              <td>{{item.Talst}}</td>
+              <td style="width: 25%;
+              text-align: center;">{{item.SurgeonName}}</td>
+              <td>
+                <img
+                  (click)="updateFavoriteFromModal(item,i)"
+                  class="cursor-pointer"
+                  src="assets/img/delete-icon.svg"
+                  style="width: 18px; margin-left: 10px"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+       
+      </div>
+    </div>
+    <div class="footer">
+      <button class="add-diagnosis mr-3" (click)="importFavInForm()">
+        Add
+      </button>
+      <button class="add-diagnosis" (click)="closeFavModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,1011 @@
+@import "../documentation-list.component.scss";
+
+.physician-conatinar {
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    .admission-date {
+      white-space: pre;
+      font-size: 14px;
+      font-weight: bolder;
+      margin: 0;
+    }
+
+    .header-filter {
+      display: flex;
+      width: 30%;
+      align-items: center;
+    }
+  }
+
+  .chief-complain {
+    textarea {
+      height: 100px;
+      border-radius: 10px;
+      font-size: 12px;
+      border: 1px solid #0056b0;
+    }
+
+    span.text-area-label {
+      position: relative !important;
+      cursor: text;
+      font-size: 12px;
+      opacity: 1;
+      top: 0.6em;
+      left: 20px;
+      z-index: 3;
+      line-height: 0.2 !important;
+      font-weight: bold;
+      color: #0890c5;
+      background: #fff;
+      padding: 0 10px;
+    }
+
+    .z-indexlabel {
+      z-index: 999;
+    }
+  }
+}
+
+.date-function {
+  input {
+    font-size: 12px;
+  }
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 14px;
+  }
+}
+
+.border {
+  border: 1px solid #cacaca !important;
+  padding: 4px 10px 4px 10px;
+  align-items: center;
+  border-radius: 6px;
+  margin: 10px 30px 0px 0px;
+}
+
+.checkbox-list {
+  border: 1px solid #cacaca;
+  border-radius: 10px;
+  padding: 0 10px 10px 15px;
+}
+
+.impression {
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+
+  .header {
+    padding: 10px;
+    border-bottom: 1px solid #cacaca;
+  }
+}
+
+.personal-hist-drop {
+  display: flex;
+  align-items: center;
+  background-color: #f3f3f3;
+  padding: 0 0 0 10px;
+  border-radius: 6px;
+  justify-content: space-between;
+}
+
+.drop-down-list {
+  display: flex;
+  justify-content: space-between;
+  height: 28px;
+}
+
+.h-28 {
+  max-height: 28px !important;
+  height: 28px !important;
+}
+
+.comment-input {
+  width: 100%;
+  display: flex;
+  padding: 5px 15px 0 25px;
+  align-items: center;
+}
+
+.create-diagnosis {
+  border: 1px solid;
+  background: #3b82f6;
+  color: #fff;
+  padding: 5px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  height: fit-content;
+}
+
+.table th,
+.table td {
+  border-color: #5d5c5c !important;
+  padding-top: 8px !important;
+}
+
+.nav-item a {
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  cursor: default;
+  margin: 0 3px;
+  padding: 10px 3px;
+  float: left;
+  position: relative;
+  background-color: #0056b0;
+  border: 1px solid #0056b0;
+  border-radius: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  width: 70px;
+}
+
+.nav-item .selected {
+  background-color: #fff;
+  color: #0056b0 !important;
+}
+
+.admitting-physician {
+  white-space: pre;
+  font-size: 14px;
+  font-weight: bolder;
+  margin: 0;
+}
+
+.main-border {
+  border: 2px solid #bababc;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+// 
+
+/*REMOVE THIS CSS */
+.container.container-width {
+  background: #FBFCFF;
+  border: 1px solid #D2EAFF;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 15px auto 0px;
+  max-width: 98%;
+  width: 98%;
+}
+
+/*REMOVE THIS CSS CLOSE */
+
+
+ul {
+  margin: 0px;
+  padding: 0;
+  list-style: none;
+}
+
+.container-width {
+  background: #FBFCFF;
+  border: 1px solid #D2EAFF;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 15px 0px;
+}
+
+.box-appretite ul li {
+  font-size: 16px;
+  font-weight: 500;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.box-appretite ul li span.head-appretite {
+  width: 188px;
+  display: inline-block;
+}
+
+.box-appretite ul li span.select-boxes {
+  width: 67%;
+  display: inline-block;
+}
+
+.box-appretite ul li span.select-boxes select.form-select {
+  background: #fff;
+  border: 1px solid #bebebe;
+  width: 100%;
+  display: inline-block;
+  height: 30px;
+  padding: 0 5px;
+}
+
+span.box-simple-input input {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #bebebe;
+  width: 100%;
+  display: inline-block;
+  height: 30px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+span.box-simple-textarea textarea {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #bebebe;
+  width: 100%;
+  display: inline-block;
+  height: 30px;
+  padding: 10px;
+  border-radius: 4px;
+  height: 100%;
+}
+
+.box-appretite ul.middle-box li.half-box-middle {
+  width: 48.5%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.box-appretite ul.middle-box li.half-box-middle span.head-appretite {
+  width: 75%;
+  display: inline-block;
+}
+
+.box-appretite ul.middle-box li.half-box-middle span.box-simple-input {
+  display: inline-block;
+  width: 22%;
+}
+
+.box-appretite ul li span.select-boxes select.form-select:focus-visible,
+span.box-simple-input input:focus-visible {
+  outline: none;
+}
+
+.last-colum .check-box input {
+  position: relative;
+  margin: 0px;
+  width: 20px !important;
+  height: 20px !important;
+  top: 5px;
+}
+
+.last-colum .check-box label.form-check-label {
+  padding-left: 5px;
+  font-weight: 500;
+}
+
+.last-colum ul li.half-box-middle span.head-appretite {
+  width: 30%;
+  margin-right: 28px;
+}
+
+.box-appretite ul.middle-box li.half-box-middle input {
+  border-radius: 0px;
+}
+
+.col-4.last-colum ul li.half-box-middle {
+  display: flex;
+  align-items: center;
+}
+
+.last-colum ul li.half-box-middle span.box-simple-input input {
+  border-radius: 0px;
+}
+
+.last-colum ul li.half-box-middle span.box-simple-input {
+  width: 10%;
+  border-radius: 0px !important;
+}
+
+.personal-history {
+  background: #0056b0;
+  border: 0px;
+  color: #fff;
+  font-size: 16px;
+  padding: 8px 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.personal-history:hover {
+  background: #000;
+}
+
+.last-colum {
+  position: relative;
+}
+
+.last-colum .check-box {
+  position: absolute;
+  bottom: 40px;
+}
+
+.last-colum ul {
+  position: absolute;
+  bottom: 0;
+}
+
+ul.bottom-last-comment-box li span.select-boxes {
+  width: 65% !important;
+}
+
+.box-appretite .head-spritual {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.physical-examination .container {
+  width: 98%;
+  padding: 15px;
+  margin: 15px;
+  max-width: 100%;
+}
+
+.physical-examination .New-border {
+  border: 1px solid #355473;
+  padding: 10px;
+  border-radius: 15px;
+  height: 100%;
+  box-shadow: 0px 0px 2px #355473;
+}
+
+.physical-examination .mode-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+.physical-examination .New-border ul.general-boxes {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+  background: #e9edee;
+  position: relative;
+  font-size: 13px;
+  color: #000;
+  font-weight: 500;
+}
+
+.physical-examination .New-border ul.general-boxes li {
+  padding: 8px 5px;
+  border-bottom: 1px solid #c8cccf;
+}
+
+.physical-examination select.new-slect-box,
+.physical-examination .input-boxes input {
+  width: 100%;
+  border: 1px solid #0056b0;
+  border-radius: 5px;
+  width: 100%;
+  height: 35px;
+  margin-bottom: 6px !important;
+  padding: 0px 5px;
+  font-size: 14px;
+  box-shadow: 0px 0px 1px #0056b0 !important;
+}
+
+.physical-examination select.new-slect-box:last-child,
+.physical-examination input:last-child {
+  margin: 0px;
+}
+
+.physical-examination select.new-slect-box:focus-visible,
+.physical-examination input:focus-visible {
+  border: 1px solid #324c7d;
+  background: #fff !important;
+  outline: none;
+}
+
+.personal-history-textarea {
+  width: 85%;
+}
+
+
+
+/*REMOVE THIS CSS */
+.container.container-width {
+  background: #FBFCFF;
+  border: 1px solid #D2EAFF;
+  border-radius: 15px;
+  padding: 20px 10px;
+  margin: 15px auto 0px;
+  max-width: 99%;
+  width: 99%;
+}
+
+.container-width {
+  background: #FBFCFF;
+  border: 1px solid #D2EAFF;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 15px 0px;
+}
+
+ul {
+  margin: 0px;
+  padding: 0;
+  list-style: none;
+}
+
+/*REMOVE THIS CSS CLOSE */
+.col-12.top-head-review-systm {
+  margin-bottom: 30px;
+  gap: 30px;
+  align-items: baseline;
+}
+
+.tabs-content-scin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tabs-content-scin::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+.tabs-content-scin {
+  // height: 210px !important;
+  overflow: auto;
+  display: block;
+  overflow-x: auto;
+  margin-bottom: 20px !important;
+}
+
+.tabs-content-scin::-webkit-scrollbar-thumb {
+  background-color: #2f353d;
+  border-radius: 20px;
+  border: 2px solid #eeeeee;
+}
+
+.review-of-systems h3 {
+  font-size: 20px;
+  text-transform: capitalize;
+  margin: 0px;
+  width: fit-content;
+  display: inline-block;
+}
+
+.top-bar-check-box input.form-check-input {
+  position: relative;
+  border: 2px solid #000;
+  border-radius: 0px;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+  margin: -4px 0px 0px 0px;
+  outline: 0;
+  padding: 0 !important;
+  height: 20px;
+  width: 20px;
+  -webkit-appearance: none;
+  opacity: .5;
+  vertical-align: middle;
+}
+
+.review-of-systems .top-bar-check-box input.form-check-input[type=checkbox]:hover {
+  opacity: 1;
+}
+
+.review-of-systems .top-bar-check-box input.form-check-input[type=checkbox]:checked {
+  background-color: #0075ff;
+  opacity: 1;
+  border-color: #0075ff;
+}
+
+.review-of-systems .top-bar-check-box input.form-check-input[type=checkbox]:before {
+  content: '';
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #FFF;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+}
+
+.review-of-systems .top-bar-check-box {
+  width: fit-content;
+  display: inline-block;
+  margin-left: 80px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.top-head-review-systm .top-bar-check-box input.form-check-input {
+  position: relative;
+}
+
+.top-head-review-systm .top-bar-check-box input.form-check-input:checked {
+  background-color: #0075ff;
+  opacity: 1;
+  border-color: #0075ff;
+}
+
+.top-head-review-systm .top-bar-check-box input.form-check-input:before {
+  content: "";
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #FFF;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+}
+
+.review-of-systems .top-bar-check-box label.form-check-label {
+  margin: 0px;
+  padding: 0px 0px 0px 5px;
+  position: relative;
+  cursor: pointer;
+
+}
+
+.list-simple-new .top-bar-check-box {
+  margin: 0px;
+  width: 100%;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.list-simple-new {
+  margin: 0px 0px 30px;
+}
+
+.list-simple-new span.type-of-rashes-head {
+  margin: 0px 20px 0px 0px;
+  width: fit-content;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.list-simple-new li {
+  margin-bottom: 10px;
+}
+
+.list-simple-new li.box-half-rashes {
+  width: 13%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.list-simple-new li.box-half-rashes.right-box-half {
+  width: 25%;
+}
+
+.list-simple-new li select {
+  background: #fff;
+  border: 1px solid #bebebe;
+  width: 100%;
+  display: inline-block;
+  height: 30px;
+}
+
+.list-simple-new li.box-half-rashes span.type-of-rashes-head-select-boxes {
+  width: 50%;
+  display: inline-block;
+}
+
+ul.bottom-last-comment-boxes li span.head-comments {
+  font-size: 14px;
+  font-weight: 500;
+  vertical-align: top;
+  margin-right: 15px;
+  width: 6%;
+  display: inline-block;
+}
+
+ul.bottom-last-comment-boxes li textarea {
+  /* width: 100%; */
+  background: #fff;
+  border: 1px solid #bebebe;
+  width: 100%;
+  display: inline-block;
+  // height: 30px;
+}
+
+ul.bottom-last-comment-boxes li span.textarea-boxes {
+  width: 92%;
+  display: inline-block;
+}
+
+.list-simple-new li:last-child {
+  margin: 0px;
+}
+
+select:focus-visible,
+input:focus-visible {
+  outline: none;
+}
+
+.eyes-tab li.box-half-rashes {
+  width: 16%;
+  margin-right: 5px;
+}
+
+.ent-tabs ul.tab-content-skin li .check-box-content-ent .top-bar-check-box-half.lip-color input {
+  width: 55%;
+  margin-left: 15px;
+  background: #fff;
+  border: 1px solid #bebebe;
+  display: inline-block;
+  height: 30px;
+}
+
+/*ENT TAB CSS START*/
+.ent-tabs ul.tab-content-skin.list-simple-new.top-bar-check-box {
+  width: 100%;
+  margin: 0px;
+  display: block;
+  font-size: 14px;
+}
+
+.ent-tabs ul.tab-content-skin li .ent-content-head {
+  width: 15%;
+  display: inline-block;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.ent-tabs ul.tab-content-skin li .check-box-content-ent {
+  width: 83%;
+  display: inline-block;
+  margin-left: 20px;
+  vertical-align: top;
+}
+
+.ent-tabs ul.tab-content-skin li .check-box-content-ent .top-bar-check-box-half {
+  width: 18.8%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.ent-tabs ul.tab-content-skin li .check-box-content-ent .top-bar-check-box-half.last-box-ent-half {
+  margin-right: 0px !important;
+}
+
+.ent-tabs ul.tab-content-skin li {
+  margin-bottom: 30px;
+}
+
+.container-review-system {
+  .nav-item {
+    margin-right: 10px;
+  }
+
+  .nav-item a {
+    width: 100%;
+    min-width: 60px;
+    padding: 10px;
+  }
+}
+
+.list-width li.box-half-rashes {
+  width: 19%;
+}
+
+.list-width-gastro {
+  li.eyes-box-half {
+    width: 24%;
+  }
+
+  li.eyes-box-half-width {
+    width: 35%;
+  }
+
+  li .review-system-input-width {
+    width: 60%;
+    margin-left: 15px;
+    background: #fff;
+    border: 1px solid #bebebe;
+    display: inline-block;
+    height: 30px;
+  }
+}
+
+.list-width-musculos {
+  li.eyes-box-half {
+    width: 19%;
+  }
+}
+
+.list-width-neuro {
+  li.eyes-box-half {
+    width: 16%;
+  }
+
+  li.eyes-box-half-width {
+    width: 25%;
+  }
+}
+
+.list-width-psychia {
+  li.eyes-box-half {
+    width: 23.5%;
+  }
+
+  li.eyes-box-half-width {
+    width: 38%;
+    position: relative;
+  }
+}
+
+.list-width-psychia li.eyes-box-half-width input.form-check-input {
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+
+// .list-width-psychia li.eyes-box-half-width label.form-check-label {
+//   padding-left: 30px !important;
+// }
+/*PROBLEM POINTS TAB CSS START*/
+span.all-points-applicable {
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: block;
+}
+
+ul.problems-point-tab-content-select-box li {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+ul.problems-point-tab-content-select-box li span.content-box {
+  width: 27%;
+  display: inline-block;
+}
+
+ul.problems-point-tab-content-select-box li select.content-select {
+  border-color: #eaeaea;
+  width: 10%;
+  height: 35px;
+  border-width: 2px;
+  padding: 5px 5px;
+}
+
+ul.problems-point-tab-content-select-box li select.content-select:focus-visible {
+  outline: none;
+}
+
+/*PROBLEM POINTS TAB CSS CLOSE*/
+
+/*INTIAL PLAN TAB CSS STRAT*/
+.intial-plan-top-bar-check-box input.form-check-input {
+  position: relative;
+  border: 2px solid #000;
+  border-radius: 0px;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+  margin: -4px 0px 0px 0px;
+  outline: 0;
+  padding: 0 !important;
+  height: 20px;
+  width: 20px;
+  -webkit-appearance: none;
+  opacity: .5;
+  vertical-align: middle;
+}
+
+.intial-plan-top-bar-check-box input.form-check-input[type=checkbox]:hover {
+  opacity: 1;
+}
+
+.intial-plan-top-bar-check-box input.form-check-input[type=checkbox]:checked {
+  background-color: #0075ff;
+  opacity: 1;
+  border-color: #0075ff;
+}
+
+.intial-plan-top-bar-check-box input.form-check-input[type=checkbox]:before {
+  content: '';
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 4px;
+  height: 10px;
+  border: solid #FFF;
+  border-width: 0 2px 2px 0;
+  margin: -1px -1px 0 -1px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+}
+
+.intial-plan-top-bar-check-box {
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #555555;
+}
+
+.intial-plan-top-bar-check-box:last-child,
+ul.problems-point-tab-content-select-box li:last-child,
+ul.list-risk:last-child {
+  margin-bottom: 0px;
+}
+
+
+
+/*RISK TAB CSS START*/
+ul.list-risk {
+  border: 1px solid #c6c6c6;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+ul.list-risk .highest-point-heading {
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: block;
+}
+
+ul.list-risk li {
+  position: relative;
+  display: inline-block;
+  width: 49%;
+  margin: 5px 0px;
+}
+
+.intial-plan-top-bar-check-box label.form-check-label {
+  padding-left: 10px;
+}
+
+/*RISK TAB CSS CLOSED*/
+.spiritual-cultural-main-box .col-3 ul li span.head-appretite {
+  position: relative;
+  top: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+@media screen and (max-width:2430px) {
+  .box-appretite ul li span.head-appretite {
+    width: 175px;
+  }
+
+  .box-appretite ul li span.select-boxes {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width:2155px) {
+  .box-appretite ul li span.head-appretite {
+    width: 165px;
+  }
+
+}
+
+@media screen and (max-width:2044px) {
+  .box-appretite ul li span.select-boxes {
+    width: 63%;
+  }
+}
+
+@media screen and (max-width:1955px) {
+  .box-appretite ul li span.select-boxes {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width:1920px) {
+  .box-appretite ul li span.head-appretite {
+    width: 145px;
+  }
+
+  .box-appretite ul li span.select-boxes {
+    width: 63%;
+  }
+
+}
+
+@media screen and (max-width:1868px) {
+  .box-appretite ul li span.select-boxes {
+    width: 60%;
+  }
+
+}
+
+@media screen and (max-width:1628px) {
+
+  .box-appretite ul li span.select-boxes {
+    width: 55%;
+  }
+
+}
+
+@media screen and (max-width:1565px) {
+  .box-appretite ul li span.select-boxes {
+    width: 55%;
+  }
+
+}
+
+@media screen and (max-width:1474px) {
+
+  .box-appretite ul li span.select-boxes {
+    width: 53%;
+  }
+
+}
+
+@media screen and (max-width:1345px) {
+  .box-appretite ul.middle-box li.half-box-middle span.head-appretite {
+    width: 70%;
+  }
+
+  .box-appretite ul li span.head-appretite {
+    width: 160px;
+  }
+
+  .box-appretite ul li span.select-boxes {
+    width: 53%;
+  }
+
+  ul.bottom-last-comment-box li span.select-boxes {
+    width: 67% !important;
+  }
+}
+
+@media screen and (max-width:1555px) {
+  .box-appretite ul li span.select-boxes {
+    width: 55%;
+
+  }
+
+}
+
+@media screen and (max-width:3000px) {
+
+  .container-review-system ul.nav.nav-pills li.nav-item {
+    width: 11.6%;
+    margin: 0px 5px 5px 0px;
+  }
+
+  .container-review-system ul.nav.nav-pills li.nav-item a {
+    font-size: 12px;
+    padding: 10px 5px !important;
+  }
+
+}
+
+@media screen and (max-width:1453px) {
+  .box-appretite ul li span.select-boxes {
+    width: 39%;
+  }
+
+}
+
+@media screen and (max-width:1392px) {
+  .box-appretite ul li span.select-boxes {
+    width: 40%;
+  }
+
+}
+
+@media screen and (max-width:1361px) {
+
+  .container-review-system ul.nav.nav-pills li.nav-item {
+    width: 11.6%;
+    margin: 0px 5px 5px 0px;
+  }
+
+  .container-review-system ul.nav.nav-pills li.nav-item a {
+    font-size: 11px;
+    padding: 10px 3px !important;
+  }
+
+}

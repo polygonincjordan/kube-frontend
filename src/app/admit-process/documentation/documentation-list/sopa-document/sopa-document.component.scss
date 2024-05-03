@@ -1,0 +1,20 @@
+@import url("../documentation-list.component.scss");
+
+.progress-document {
+  border: none !important;
+}
+
+.display-center {
+  display: flex;
+  align-items: center;
+
+  strong {
+    font-size: 14px;
+  }
+}
+
+  .form-control {
+    box-shadow: none !important;
+    font-size: 14px;
+    height: 70px;
+  }

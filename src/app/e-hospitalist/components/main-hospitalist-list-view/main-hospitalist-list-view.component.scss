@@ -1,0 +1,46 @@
+.td-pointer{
+cursor: pointer;
+}
+
+.td-pointer:hover {
+    color: blue;
+  }
+
+  .e-hospi-home-table td {
+    border: 1px solid black;
+    min-width: 102px;
+    max-width: 267px!important;
+    overflow: hidden;
+
+    .allergy {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .dropup, .dropright, .dropdown, .dropleft {
+      position: inherit;
+    }
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+}
+
+.main-hospital-home {
+  overflow: auto; 
+  max-height: 61vh; 
+  margin: 0px 6px; 
+  width: 100%
+}
+
+.set-width-3 {
+  width: 250px !important; 
+  max-width: 250px !important; 
+  min-width: 250px !important;
+}
+
+.table-row-width {
+  width: 170px !important;
+  max-width: 170px !important;
+  min-width: 170px !important;
+}

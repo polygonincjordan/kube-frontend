@@ -1,0 +1,543 @@
+<div (click)="hideShowConfiguration()">
+  <app-header></app-header>
+  <div class="icon-nav-cont-style">
+    <div style="display: flex; flex: 1">
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '02' ? 'active-tab':''" title="Admitted"
+        [subText]="hospitalCountData?.Admissions.toString()" url="assets/img/admitted-icon.png"
+        (onClickBox)="onClickNavTabBox('02')"></app-icon-nav-tab>
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '03' ? 'active-tab':''" title="New Admissions"
+        [subText]="hospitalCountData?.Newadmissions.toString()" url="assets/img/new-admission.png"
+        (onClickBox)="onClickNavTabBox('03')"></app-icon-nav-tab>
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '04' ? 'active-tab':''" title="Planned Discharges"
+        [subText]="hospitalCountData?.Planneddischarges.toString()" url="assets/img/planned-icon.png"
+        (onClickBox)="onClickNavTabBox('04')"></app-icon-nav-tab>
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '05' ? 'active-tab':''" title="Discharges"
+        [subText]="hospitalCountData?.Discharges.toString()" url="assets/img/discharge-icon.png"
+        (onClickBox)="onClickNavTabBox('05')"></app-icon-nav-tab>
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '06' ? 'active-tab':''" title="Dialysis"
+        [subText]="hospitalCountData?.Dialysis.toString()" url="assets/img/dialysis-e-hospital.png"
+        (onClickBox)="onClickNavTabBox('06')"></app-icon-nav-tab>
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '07' ? 'active-tab':''" title="LDR"
+        [subText]="inHospitalist.length" url="assets/img/ldr-icon.png"
+        (onClickBox)="onClickNavTabBox('07')"></app-icon-nav-tab>
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center">
+      <button class="btn btn-primary" id="graphAnalysisButton" style="
+          display: flex;
+          padding: 0px;
+          background-color: #0082c8;
+          border: #0082c8;
+          width: 30px;
+          height: 30px;
+          justify-content: center;
+          align-items: center;
+          border-radius: 360px;
+        " (click)="clickShowGraphicalAnalysis()">
+        <i class="fa" id="graphAnalysisButton" [ngClass]="showGraphicalAnalysis ? 'fa-compress' : 'fa-bar-chart'"
+          aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <app-graphical-analysis (click)="$event.stopPropagation()" [countData]="hospitalCountData"
+      [selectedChartCountType]="graphChartCountType" (dataCount)="getCountsByType($event)"
+      *ngIf="showGraphicalAnalysis"></app-graphical-analysis>
+  </div>
+  <div class="container-fluid">
+    <div class="card" style="margin-top: 15px">
+      <div class="card-body" style="padding: 0 16px 16px 16px">
+        <div class="table-header">
+          <span style="margin-left: 11px">{{getHospitalistTableTitle()}} <span *ngIf="!selectTab">-
+              ({{navTabBoxActiveValue !== '07' ? inHospitalistList?.length : inHospitalist?.length}})</span>
+            {{selectTab}}</span>
+          <!-- Admitted Patients -->
+          <div class="table-icon config-box">
+            <span style="margin-right: 15px; cursor: pointer;"><img src="assets/img/excel.png"  title="Export to excel" style="width: 20px;" (click)="exportToExcel()" *ngIf="home"></span>
+            <span style="margin-right: 15px">
+              <i class="fa fa-cog" aria-hidden="true" style="font-size: 18px;" title="User's Settings" id="configurationButton"
+                (click)="clickShowConfiguration();$event.stopPropagation()"></i>
+            </span>
+            <div *ngIf="showConfiguration" class="card config" id="configurationCard">
+              <!-- (click)="$event.stopPropagation()" -->
+              <div class="card-body" style="padding: 7px" (click)="$event.stopPropagation();">
+                <div style="
+                    display: flex;
+                    justify-content: space-between;
+                    height: 25px;
+                  ">
+                  <h5 class="card-title">Configuration Options</h5>
+                  <span style="position: relative; bottom: 14px">
+                    <img src="assets/img/refresh.png" style="width: 29px" (click)="resetConfigToolsFields()" />
+                    <img src="assets/img/save.png" style="width: 19px" (click)="saveConfigTools()" />
+                    <!-- <i
+                    aria-hidden="true"
+                    class="fa fa-times"
+                    (click)="showConfigFn($event)"
+                  ></i> -->
+                  </span>
+                </div>
+                <p class="card-text" style="margin: 0">Default view</p>
+                <div class="row">
+                  <div>
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateView('Bed view', $event)" [(ngModel)]="showColumnsListView.Bedview_modal" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Bed View
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateView('List view', $event)" [(ngModel)]="showColumnsListView.Listview_modal" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        List View
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <p style="margin: 0">Show Colums</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="Admitted At" id="flexCheckDefault"
+                        (change)="updateColums('Admitted At', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Admitted_At_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Admitted At
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Planned discharge', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Planned_discharge_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Planned discharge
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'" (change)="updateColums('LOS', $event)"
+                        [(ngModel)]="showColumnsListView.LOS_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        LOS
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        (change)="updateColums('Allergy', $event)" [(ngModel)]="showColumnsListView.Allergy_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Allergy
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Speciality', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Speciality_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Speciality
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Financial Category', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Financial_Category_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Financial Category
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'" (change)="updateColums('VIP', $event)"
+                        [(ngModel)]="showColumnsListView.VIP_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        VIP
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'" (change)="updateColums('Case', $event)"
+                        [(ngModel)]="showColumnsListView.Case_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Case
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        (change)="updateColums('Isolation', $event)"
+                        [(ngModel)]="showColumnsListView.Isolation_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Isolation
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Emergency Admission', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Emergency_Admission_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Emergency Admission
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Risk Factor', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Risk_Factor_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Risk Factor
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Last surgery date', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Last_surgery_date_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Last surgery date
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Days for isolation', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Days_for_isolation_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Days for isolation
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Days since surgery', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Days_since_surgery_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Days since surgery
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Admission diagnosis', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Admission_diagnosis_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Admission diagnosis
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Treatment diagnosis', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Treatment_diagnosis_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Treatment diagnosis
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Study Flag', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Study_name_model" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Study Flag
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Case Diagnosis', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Case_Diagnosis_modal" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Case Diagnosis
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check" style="font-size: 10px; display: flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (change)="updateColums('Attending Doctor', $event)"
+                        [disabled]="this.showColumnsListView.DefaultView == '1'"
+                        [(ngModel)]="showColumnsListView.Attending_Doctor_modal" />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Attending Doctor
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 ward-list-select">
+                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
+                      [placeholder]="'Ward'" [(ngModel)]="wardSelectForConfig" [data]="getWards"
+                      (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                    </ng-multiselect-dropdown>
+                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialtyConfig"
+                      [placeholder]="'Choose Speciality'" [(ngModel)]="specialtySelectForConfig"
+                      [data]="specialtyListConfig" (onSelect)="onItemSelect1($event)">
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span style="margin-right: 15px"><i class="fa fa-refresh" style="font-size: 18px;" title="Refresh List" (click)="getConfigTools()"
+                aria-hidden="true"></i></span>
+            <span style="margin-right: 15px"><i class="fa fa-filter" style="font-size: 18px;" title="Filter list" aria-hidden="true" id="filterButton"
+                (click)="clickShowFilter();$event.stopPropagation()"></i>
+              <div *ngIf="showFilter" class="card card config" style="
+                  width: 15rem;
+                  position: absolute;
+                  z-index: 999999;
+                  right: 45px;
+                  color: black;
+                  font-size: 12px;
+                ">
+                <div class="card-body" (click)="$event.stopPropagation()" style="padding: 4px 21px 21px 21px">
+                  <div class="">
+                    <div>
+                      <span style="margin: 0; margin-right: 6px; font-size: 20px">In-Patient Filter</span>
+                    </div>
+                    <form [formGroup]="form">
+                      <div>
+                        <p *ngIf="navTabBoxActiveValue == '03'"
+                          style="margin: auto; margin-top: 5px; margin-bottom: 10px;"> Note: Data is Displayed from 6:00
+                          am</p>
+                        <p *ngIf="navTabBoxActiveValue == '04'"
+                          style="margin: auto; margin-top: 5px; margin-bottom: 10px;"> Note: Data is displayed for the
+                          last 24 hours</p>
+
+                        <div
+                          *ngIf="navTabBoxActiveValue == '02' || navTabBoxActiveValue == '05' || navTabBoxActiveValue == '06' || navTabBoxActiveValue == '07'">
+                          <p style="margin: auto; margin-top: 5px"> Date from</p>
+
+                          <input formControlName="admittedFrom" class="form-control" type="text" placeholder=""
+                            [minDate]="" [maxDate]="dateTo" #dp="bsDatepicker" bsDatepicker [(bsValue)]="dateFrom"
+                            [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD.MM.YYYY'
+                          }" />
+
+                          <p style="margin: auto; margin-top: 5px">Date To</p>
+                          <input formControlName="admittedTo" class="form-control" type="text" [(bsValue)]="dateTo"
+                            placeholder="" [minDate]="dateFrom" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD.MM.YYYY'
+                          }" />
+                        </div>
+                        <div *ngIf="navTabBoxActiveValue != '06' && navTabBoxActiveValue != '07'">
+                          <p style="margin: auto; margin-top: 5px">Ward</p>
+                          <!-- <select
+                            class="custom-select"
+                            id="inputGroupSelect01"
+                            formControlName="wardNo">
+                            <option selected value="">Choose ward</option>
+                            <option [value]="item.Ward" *ngFor="let item of getWards">
+                              {{ item.Name }}
+                            </option>
+                          </select> -->
+                          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
+                            [placeholder]="'Ward'" formControlName="wardNo" [data]="getWards"
+                            (onSelect)="onItemSelect1($event)">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <p style="margin: auto; margin-top: 5px">
+                          Attending Physician
+                        </p>
+                        <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue != '07'" class="multiselect-adjust"
+                          [settings]="dropdownSettingsForAttendPhy" [placeholder]="'Choose Physician'"
+                          formControlName="patientStatus" [data]="inAttendPhyList" (onSelect)="onItemSelect1($event)">
+                        </ng-multiselect-dropdown>
+
+                        <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue == '07'" class="multiselect-adjust"
+                          [settings]="dropdownSettingsForLDRAttendPhy" [placeholder]="'Choose Physician'"
+                          formControlName="patient" [data]="inLDRAttendPhyList" (onSelect)="onItemSelect1($event)">
+                        </ng-multiselect-dropdown>
+                        <!-- <select class="custom-select" id="inputGroupSelect01" formControlName="patientStatus">
+                          <option selected value="">Choose Physician</option>
+                          <option value="Physician 1">Physician 1</option>
+                          <option value="Physician 2">Physician 2</option>
+                        </select> -->
+                        <div *ngIf="navTabBoxActiveValue != '06' && navTabBoxActiveValue != '07'">
+                          <p style="margin: auto; margin-top: 5px">Speciality</p>
+                          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
+                            [placeholder]="'Choose Speciality'" formControlName="specialty" [data]="getSpecialtyData"
+                            (onSelect)="onItemSelect1($event)">
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <div style="display: flex; justify-content: space-around">
+                          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                            (click)="inPatientListByFilter()" *ngIf="navTabBoxActiveValue != '07'">
+                            Filter
+                          </button>
+                          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                          (click)="inPatientLDRListByFilter()" *ngIf="navTabBoxActiveValue == '07'">
+                          Filter
+                        </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <span style="margin-right: 15px"><i class="fa" style="font-size: 18px;" title="Bed View" [ngClass]="!showList ? 'fa-th-list' : 'fa-bed'"
+                aria-hidden="true" (click)="clickShowListAndBed()"></i></span>
+            <!-- fa-bed -->
+          </div>
+        </div>
+        <div class="input-group mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
+          </div>
+          <input type="text" [(ngModel)]="searchString" class="form-control" placeholder="Search..."
+            aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+
+        <div class="d-flex">
+          <div class="notif-card">
+            <div class="notif-icon" [ngClass]="home ? 'selected-notif-icon': ''">
+              <img class="img-style cursor-pointer" src="assets/img/home.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="My InPatients" (click)="navModule('home')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Abnormal Lab Results" (click)="navModule('home')"
+              url="assets/img/lab.png"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="abnormalLabResult ? 'selected-notif-icon': ''">
+              <span class="rounded-circle notif-value" *ngIf="labCount != 0">{{labCount}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/lab.png" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Abnormal/Pending Lab Results"
+                (click)="navModule('Abnormal_Lab_Results')" />
+              <!-- <div class="red-dot"></div> -->
+            </div>
+            <!-- <app-icon-box-side-menu title="Abnormal Lab Results" (click)="navModule('home')"
+              url="assets/img/lab.png"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="abnormalRadFindings ? 'selected-notif-icon': ''">
+              <span class="rounded-circle notif-value" *ngIf="radCount != 0">{{radCount}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/icon_radiology.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Abnormal/Pending Rad Findings"
+                (click)="navModule('Abnormal_Rad_Findings')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Abnormal Rad Findings"
+              url="assets/img/icon_radiology.jpg"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="missedMediDoses ? 'selected-notif-icon': ''">
+              <span class="rounded-circle notif-value" *ngIf="missedDosesCount != 0">{{missedDosesCount}}</span>
+              <img class="img-style cursor-pointer pt-2" src="assets/img/drugs.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Missed/Not Administered Doses"
+                (click)="navModule('Missed_Medications_Doses')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Missed Medications Doses"
+              url="assets/img/drugs.jpg"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="notReleasedDoc ? 'selected-notif-icon': ''">
+              <img class="img-style cursor-pointer" src="assets/img/docu.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Missing/Not Released Documents"
+                (click)="navModule('Not_Released_Documents')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Missing/Not Released Documents"
+              url="assets/img/docu.jpg"></app-icon-box-side-menu> -->
+            <div [ngClass]="notExecutedPhysicianOrder ? 'selected-notif-icon': ''" class="notif-icon">
+              <span class="rounded-circle notif-value" *ngIf="phyOrderCount != 0">{{phyOrderCount}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/phord.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Not Executed Physician Order"
+                (click)="navModule('Not_Executed_Physician_Order')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Not Executed Physician Order"
+              url="assets/img/phord.jpg"></app-icon-box-side-menu> -->
+          </div>
+
+          <div *ngIf="showList && home" style="overflow: hidden; width: 100%">
+            <app-main-hospitalist-list-view [searchString]="searchString" [listItem]="inHospitalistList"
+              [listType]="navTabBoxActiveValue" [LDRBirthUnit]="inHospitalist"
+              [showColumnsListView]="showColumnsListView" (openModuleKardex)="redirectToeKardex($event)"
+              (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
+              (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'discharge-process')" (onClickBox)="onClickNavTabBox('07')"
+              style="width: 100%; margin-right: 6px"></app-main-hospitalist-list-view>
+          </div>
+
+          <div *ngIf="home">
+            <app-main-hospitalist-bed-view *ngIf="!showList" [searchString]="searchString" style="width: 100%"
+              [listItem]="inHospitalistList" (openModuleKardex)="redirectToeKardex($event)"
+              (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
+              (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"></app-main-hospitalist-bed-view>
+          </div>
+
+          <div class="w-100" *ngIf="abnormalLabResult" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-patient-lab (openModuleKardex)="redirectToeKardex($event)" (reloadTableData)="reloadTable($event)" [searchString]="searchString"
+              [listItem]="dataOnTableForLabPatients"></app-patient-lab>
+          </div>
+
+          <div class="w-100" *ngIf="abnormalRadFindings" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-patient-rad-reports (openModuleKardex)="redirectToeKardex($event)" [radPatientList]="radPatientList" [searchString]="searchString"
+              (reloadTableData)="reloadTable($event)"></app-patient-rad-reports>
+          </div>
+
+          <div *ngIf="notExecutedPhysicianOrder" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-in-patients (openModuleKardex)="redirectToeKardex($event)" [listItem]="physicianOrderPatientList" [searchString]="searchString"
+              (reloadTableData)="realoadTable($event)" style="width: 100%; margin-right: 6px"></app-in-patients>
+          </div>
+
+          <div class="w-100" *ngIf="missedMediDoses" style="overflow: auto; max-height: 61vh; width: 100%">
+            <missed-medications-doses [listItem]="missedMedPatientList" [searchString]="searchString"
+              (openModuleKardex)="redirectToeKardex($event)" (reloadTableData)="realoadTable($event)"
+              (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
+              (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"></missed-medications-doses>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

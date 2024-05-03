@@ -1,0 +1,47 @@
+<form action="" [formGroup]="frequencyForm" class="cycleborder">
+
+
+  <div class="cycleborder m-0 w-100">
+    <div class="pt-3 px-3 w-100">
+      <table class="border-collapse w-100">
+        <thead class="z-index-1">
+          <tr class="tab-color text-center">
+            <th class="tab-color border-0 w-25 p-0">Dose</th>
+            <th class="tab-color border-0 w-50 p-0">Dosage Unit</th>
+            <th class="tab-color border-0 w-25 p-0">Time</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="deftimcycleData" class="m-0">
+          <tr *ngFor="let item of drugArray.controls; let i=
+            index" [formGroupName]="i">
+            <td class="py-1 border-0 p-0 px-1">
+              <input type="number" class="form-control" formControlName="deftimDose" min="1">
+            </td>
+            <td class="py-1 border-0 p-0 px-1">
+              <ng-select class="border-0 form-control p-0 font-weight-bold" formControlName="deftimDosageUnit" [disabled]="disabledosage"
+                [readonly]="disabledosage">
+                <ng-option *ngFor=" let medicationDosageUnit of
+                  dosageUnitList" [value]="medicationDosageUnit.Meinh">
+                  {{ medicationDosageUnit.Mseht }}</ng-option>
+              </ng-select>
+            </td>
+            <td class="py-1 border-0 p-0 px-1 ">
+              <input type="text" class="form-control" formControlName="deftimTime" [bsConfig]="{withTimepicker:
+                true,showWeekNumbers:false,
+                dateInputFormat: 'HH:mm', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true">
+            </td>
+            <td class="py-1 border-0 p-0 px-1 align-middle"><img src="assets/img/delete-icon.svg" height="20"
+                class="iconsminds-cursor-click c-pointer" (click)="deletecycleData(i)"></td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+    <div class="d-flex mt-3 badge-secondary p-2 ma-radius bor-data" (click)="addcycleData()">
+      <img src="assets/img/add.png" height="20" class="c-pointer filter-color">
+      <p class="font-weight-bolder ml-1 mb-0 p-0">Add new</p>
+    </div>
+
+
+  </div>
+</form>

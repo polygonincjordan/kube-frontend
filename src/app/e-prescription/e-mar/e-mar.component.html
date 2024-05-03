@@ -1,0 +1,126 @@
+<form action="" [formGroup]="this.ePrescriptionService.formDetailGroup">
+  <div class="tab-search-panel row d-flex align-items-center">
+    <div class="date-function ml-3 col-md-2">
+      <img src="assets/img/date-icon.svg" alt="">
+      <input #drp="bsDaterangepicker" bsDaterangepicker
+        [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+        'DD.MM.YYYY', containerClass: 'daterangepickerdata ', showWeekNumbers:
+        false}" class="form-control font-bsDaterangepicker" formControlName="DateRange"/>
+      <p class="m-0 d-flex h-100 align-items-center "
+        (click)="ePrescriptionService.onTodayEMAREventData()">Today</p>
+    </div>
+    <div class="search-functionality col-md-3 ml-3 pl-0">
+      <img src="assets/img/pres-search-icon.svg" alt="">
+      <input type="text" placeholder="Search" class="form-control w-100"
+        formControlName="SearchData">
+    </div>
+
+    <!-- <div class="select-functionality text-left col-md-2" >
+      <form>
+        <ng-select #multiSelect
+        placeholder="Orders' Statuses" [items]="data"
+        [searchable]="true"
+        [(ngModel)]="ePrescriptionService.selectedItems"
+        [ngModelOptions]="{standalone: true}"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        (ngModelChange)="onSelect($event)"
+        (onChange)="filterItems(data)">
+        <ng-template ng-label-tmp let-item="item">
+          {{ item.item_text }}
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          {{ item.item_text }}
+        </ng-template>
+      </ng-select>
+      </form>
+    </div> -->
+    <div class="select-functionality text-left col-md-2" >
+    <form action=""  #overLineForm="ngForm">
+      <label class="form-group m-0 has-float-label">
+        <ng-select [items]="data" [addTag]="addTagFn" [hideSelected]="true"
+          [multiple]="true"  placeholder="Orders' Statuses" value="data" [(ngModel)]="ePrescriptionService.selectedItems"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="onSelect($event)" bindLabel="item_text" required ngModel #tags2="ngModel" name="tags2">
+        </ng-select>
+      </label>
+    </form>
+   </div>
+
+    <!-- <div class="select-functionality text-left col-md-2" >
+      <ng-multiselect-dropdown #multiSelect
+      placeholder="Orders' Statuses" [settings]="settings"
+      [data]="data"
+      [(ngModel)]="ePrescriptionService.selectedItems"
+      [ngModelOptions]="{standalone: true}"
+      (onSelect)="ePrescriptionService.prioradmissiondata($event)">
+     </ng-multiselect-dropdown>
+    </div> -->
+
+
+    <div class="btn-history-group d-flex ml-0 p-0 col-md-4">
+      <form action="" class="form-e-mar">
+        <ul class="d-flex py-2 px-3 m-0">
+          <label class="d-flex justify-content-center align-items-center m-0 order-data mr-2">Events' Statuses:</label>
+          <li class="d-flex align-items-center m-0 mr-3">
+            <input type="checkbox"
+              (change)="ePrescriptionService.EMAREventDataFilter('NotAdministered',
+              $event)">
+            <span class="mr-2"></span>
+            <label for="not-administered" class="m-0">Not Administered</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3">
+            <input type="checkbox"
+              (change)="ePrescriptionService.EMAREventDataFilter('Cancelled', $event)">
+            <span class="mr-2"></span>
+            <label for="cancelled" class="m-0">Cancelled</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3">
+            <input type="checkbox"
+              (change)="ePrescriptionService.EMAREventDataFilter('Administered',
+              $event)">
+            <span class="mr-2"></span>
+            <label for="administered" class="m-0">Administered</label>
+          </li>
+        </ul>
+      </form>
+
+
+
+ <!--<form class="">
+        <ul class="d-flex py-2 px-3 m-0 prior-media">
+          <label class="d-flex justify-content-center align-items-center m-0 order-data mr-2">Orders'Statuses:</label>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" (change)="ePrescriptionService.prioradmission('Active',
+              $event)" id="Active">
+            <span class="mr-2"></span>
+            <label for="Active" class="m-0 font-widht">Active</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" (change)="ePrescriptionService.prioradmission('Suspended',
+              $event)" id="Suspended">
+            <span class="mr-2"></span>
+            <label for="Suspended" class="m-0 font-widht">Suspended</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" (change)="ePrescriptionService.prioradmission('Ended',
+              $event)" id="Ended">
+            <span class="mr-2"></span>
+            <label for="Ended" class="m-0 font-widht">Ended</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" (change)="ePrescriptionService.prioradmission('Cancelled',
+              $event)" id="Cancelled">
+            <span class="mr-2"></span>
+            <label for="Cancelled" class="m-0 font-widht">Cancelled</label>
+          </li>
+        </ul>
+      </form> -->
+    </div>
+    <div class="reload-data d-flex mr-4 justify-content-end align-items-center"
+      (click)="ePrescriptionService.loadEmarPanelData()">
+      <img src="assets/img/reload-icon.svg" alt="">
+    </div>
+  </div>
+</form>
+
+

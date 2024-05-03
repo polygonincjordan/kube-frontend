@@ -1,0 +1,33 @@
+.search-functionalitypl-0 {
+  .tab-search-panel {
+    .search-functionality {
+      min-width: 35%;
+    }
+
+    .select-functionality {
+      min-width: 25%;
+    }
+  }
+}
+
+.sort-btn {
+  width: auto;
+  border-radius: 15px;
+  color: white;
+  background: #0082c8;
+  border-color: snow;
+  border: none;
+  margin-left: 10px;
+  height: 28px;
+}
+
+.education-assess {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 10px 20px 10px;
+  strong {
+    font-size: 16px;
+  }
+}

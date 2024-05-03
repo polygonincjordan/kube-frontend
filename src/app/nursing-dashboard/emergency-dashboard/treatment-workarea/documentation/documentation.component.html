@@ -1,0 +1,614 @@
+<div class="">
+  <div class="er-physician-assessment">
+  <div class="top-header">
+  <ul class="list-simple">
+  <li style="width: 30.7em;" (click)="selectAssessment('phy',latestDocList[0])"   [ngClass]="phyAssess ? 'selected-li' : ''"><span style="font-weight: bold;">Er Physician Assessment</span> : <span class="draf">{{latestDocList[0]?.StatusTxt || 'N/A'}}</span><span class="header-date">{{getDate(latestDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}|</span><span style="    display: inline-block;
+    width: 61px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;padding: 5px;" [title]="latestDocList[0]?.PhyNm">{{latestDocList[0]?.PhyNm || '-'}}</span></li>
+  <li (click)="selectAssessment('nursing',latestDocList[0])" [ngClass]="nursAssess ? 'selected-li' : ''"><span style="font-weight: bold;">Er Nursing Assessment</span> : <span class="draf"> N/A </span> | <span class="header-date">18-09-2023 | Dr.Yaxan</span></li>
+  <li class="right-icons" title="Refresh"><img src="assets/img/DocRefresh.svg" (click)="refresh()"> </li> 
+  <li class="right-icons" title="Delete" [ngStyle]="{'pointer-events': latestDocList[0]?.StatusTxt == 'Draft' ? '' : 'none' }"><img src="assets/img/DocDelete.svg" (click)="delete()"> </li> 
+  <li class="right-icons" title="Copy"><img src="assets/img/DocCopy.svg"> </li> 
+  <li class="right-icons" title="Release" [ngStyle]="{'pointer-events': latestDocList[0]?.StatusTxt == 'Draft' ? '' : 'none' }"><img src="assets/img/DocRelease.svg" (click)="release()"> </li>
+  <li class="right-icons" title="Edit" [ngStyle]="{'pointer-events': latestDocList[0]?.StatusTxt == 'Draft' ? '' : 'none' }"><img src="assets/img/DocEdit.svg" (click)="update()"> </li>
+  <li class="right-icons" title="Create" [ngStyle]="{'pointer-events': latestDocList[0]?.StatusTxt == 'Draft' ? 'none' : '' }"><img src="assets/img/DocAdd.svg" (click)="create()"> </li> 
+    
+  </ul>
+  </div>
+  <div class="mb-3">
+    <ul class="list-simple">
+    <li style="width: 30.7em;"><span style="font-weight: bold;">Er Discharge Summary</span> : <span class="draf"> N/A </span> | <span class="header-date">18-09-2023 | Dr.Yaxan</span></li>
+    <li style="width: 27.5em;"><span style="font-weight: bold;">Sick Leave Report</span> : <span class="draf"> N/A </span> | <span class="header-date">18-09-2023 | Dr.Yaxan</span></li>
+    </ul>
+  </div>
+  <div style="border-bottom: 10px solid #f2f4f6; width: 103%; position: relative; left: -21px; margin-top: 1em;"></div>
+  <app-er-physician *ngIf="phyAssess" [docDetails]="phyDocList"></app-er-physician>
+  <div class="container mt-2" style="max-width: 100%;" *ngIf="nursAssess">
+    <div class="box-commun">    
+    <div class="row top-bar-templete-new">
+    <div class="col-md-5">
+    <div class="box-border-top">
+    <span style="font-weight: bold;">Mode Of Arrival Date/Time:</span> <input  placeholder="Date"> <input  placeholder="Time">
+    </div>
+    </div>
+    <div class="col-md-5">
+    <div class="box-border-top">
+   <span style="font-weight: bold;">Accompanied by Date/Time:</span> <input  placeholder="Date"> <input  placeholder="Time">
+    </div>
+    </div>
+    </div>
+    <div class="row top-bar-templete-new-textarea">
+    <div class="col-md-12">
+    <b style="font-size: 13px;display: block;margin: 10px 0px;"> Chief Complaint </b>
+    <textarea   id="exampleFormControlTextarea1" placeholder="Write or choose  chief complaint templete" style="min-height: 115px;"></textarea>
+    
+        </div>
+    </div>
+    <div class="row tab-new">
+      <div class="col-md-12">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button [ngClass]="functional ? 'nav-link isactive' : 'nav-link'" (click)="selectNursAssessment('functional')">Functional Assessment</button>
+          <button [ngClass]="nutritional ? 'nav-link isactive' : 'nav-link'" (click)="selectNursAssessment('nutritional')">Nutritional Assessment</button>
+          <button [ngClass]="patienteducation ? 'nav-link isactive' : 'nav-link'" (click)="selectNursAssessment('patienteducation')">Patient Education Obstetrics & Gynaecology</button>
+          <button [ngClass]="fallrisk ? 'nav-link isactive' : 'nav-link'" (click)="selectNursAssessment('fallrisk')">Fall Risk Screening</button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent" >
+        <div class="tab-content-boxes" *ngIf="functional">
+          <b style="font-size: 13px;display: block;margin: 10px 0px;"> Self-Caring</b>
+          <div class="border-box-tab"> 
+            <div class="d-flex">
+              <div class="col-md-6">
+                <div class="form-check same-five-boxes w-100">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                No Past OBGYN History Known
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check same-five-boxes w-100">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Needs Supervision/Totally Dependent
+              </label>
+            </div>
+          </div>
+          </div>
+          <div class="d-flex">
+            <div class="col-md-3">
+              <div class="form-check same-five-boxes w-100">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+            <label class="form-check-label" for="flexCheckChecked">
+              Feeding
+            </label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-check same-five-boxes w-100">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+            <label class="form-check-label" for="flexCheckChecked">
+              Hygiene
+            </label>
+          </div>
+        </div>
+          <div class="col-md-3">
+            <div class="form-check same-five-boxes w-100">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+          <label class="form-check-label" for="flexCheckChecked">
+            Toileting
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-check same-five-boxes w-100">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+          <label class="form-check-label" for="flexCheckChecked">
+            Amulation
+          </label>
+        </div>
+      </div>
+        </div>
+              </div>
+              <b style="font-size: 13px;display: block;margin: 10px 0px;">Muskuloskeletal</b>
+              <div class="border-box-tab"> 
+                <div class="d-flex">
+                  <div class="col-md-5">
+                    <div class="form-check same-five-boxes w-100">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                  <label class="form-check-label" for="flexCheckChecked">
+                    No Problem Identified
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-check same-five-boxes w-100">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Problem Identified
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-2 functional" style="line-height: 47px;">
+                <input type="text" placeholder="Template">
+              </div>
+              </div>
+                  </div>
+                  <b style="font-size: 13px;display: block;margin: 10px 0px;">Use of Assissting Equipment</b>
+              <div class="border-box-tab"> 
+                <div class="d-flex">
+                  <div class="col-md-3">
+                    <div class="form-check same-five-boxes w-100">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                  <label class="form-check-label" for="flexCheckChecked">
+                    None
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-check same-five-boxes w-100">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Use Of
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-2 functional" style="line-height: 47px;">
+                <input type="text" placeholder="Template">
+              </div>
+              <div class="col-md-4 functional" style="line-height: 47px;">
+                <input type="text" placeholder="Impression And Plan Of Care">
+              </div>
+              </div>
+                  </div>
+                  <div class="row top-bar-templete-new mt-2">
+                    <div class="col-md-4">
+                    <div class="box-border-top functional d-flex">
+                    <span style="font-weight: bold;">Requires Dr. Notification:</span> <input  placeholder="Notification">
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="box-border-top functional d-flex">
+                   <span style="font-weight: bold;line-height: 35px;">Notified:</span> <input  placeholder="Notification">
+                    </div>
+                    </div>
+                    </div>
+        </div>
+        <div class="tab-content-boxes" *ngIf="nutritional">
+          <div class="border-box-tab" style="font-weight: bold"> 
+          
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (3) Pregnancy
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (3) Underweight
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (3) Malnutrition
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked" style="text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              width: 163px;    vertical-align: middle;">
+                (3) Renal Disease Hepatitis
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (3) Diabetes
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (3) HIV/AIDS
+              </label>
+            </div>
+            
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (2) CHF
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (2) CAD
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (2) Eating Disorder
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                HTM
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (2) COPD
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (2) C I Disorder
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (1) Vomiting's > 48 H 
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (1) Food Allergies
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked" style="text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              width: 163px;    vertical-align: middle;">
+                (2)HTM
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (1) Chronic Constipation 
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked" style="text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              width: 163px;    vertical-align: middle;" title="Hospital Admission / Procedures">
+                (1) Chewing Problem
+              </label>
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (1) Low Alburnin
+              </label>
+            </div>
+            <div class="form-check same-five-boxes" style="border: none;">
+              
+            </div>
+            <div class="form-check same-five-boxes">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                (1) HTM
+              </label>
+            </div>
+            </div>
+            <div class="d-flex" style="    gap: 16px;">
+            <div>
+            <b style="font-size: 13px;display: block;margin: 10px 0px;">Requires Dr. Notification</b>
+            <div class="border-box-tab" > 
+              <div class="d-flex">
+            <div class="col functional" style="line-height: 47px;">
+              <input type="text" placeholder="Template">
+            </div>
+            </div>
+                </div>
+              </div>
+              <div>
+                <b style="font-size: 13px;display: block;margin: 10px 0px;">Notification</b>
+            <div class="border-box-tab" > 
+              <div class="d-flex">
+            <div class="col functional" style="line-height: 47px;">
+              <input type="text" placeholder="Template">
+            </div>
+            </div>
+                </div>
+              </div>
+              <div>
+                <b style="font-size: 13px;display: block;margin: 10px 0px;">Patient's Risk Source</b>
+            <div class="border-box-tab" > 
+              <div class="d-flex">
+            <div class="col functional" style="line-height: 47px;">
+              <input type="text" placeholder="Template">
+            </div>
+            </div>
+                </div>
+              </div>
+              <div style="    flex: 0 0 44%;">
+                <b style="font-size: 13px;display: block;margin: 10px 0px;">Risk level</b>
+            <div class="border-box-tab" > 
+              <div class="d-flex">
+            <div class="col functional" style="line-height: 47px;">
+              <input type="text" placeholder="Write a risk level..">
+            </div>
+            </div>
+                </div>
+              </div>
+            </div>
+            <div class="row top-bar-templete-new-textarea">
+              <div class="col-md-12">
+              <b style="font-size: 13px;display: block;margin: 10px 0px;"> Comments</b>
+              <textarea   id="exampleFormControlTextarea1" placeholder="Write a comment.." style="min-height: 115px;"></textarea>
+              
+                  </div>
+              </div>
+              <b style="font-size: 13px;display: block;margin: 10px 0px; ">Nutritional Assessment Adult</b>
+             <div class="col-md-12 border-box-tab" style="background: #fbfcff;"> 
+                  <div class="d-flex">
+                <div class="col functional d-flex" style="line-height: 47px;align-items: center;">
+                  <span style="font-weight: bold;">Appetite</span>
+                  <input type="text" placeholder="Appetite">
+                </div>
+                <div class="col functional d-flex" style="line-height: 47px;align-items: center;">
+                  <span style="font-weight: bold;flex: 0 0 32%;">General Appearance</span>
+                  <input type="text" placeholder="General Appearance">
+                </div>
+                <div class="col functional d-flex" style="line-height: 47px;align-items: center;">
+                  <span style="font-weight: bold;flex: 0 0 32%;">National support</span>
+                  <input type="text" placeholder="National support">
+                </div>
+                </div>
+                <div class="d-flex">
+                  <div class="col-md-4 functional d-flex" style="line-height: 47px;align-items: center;gap: 25px;">
+                    <span style="font-weight: bold;">Diet</span>
+                    <input type="text" placeholder="Diet">
+                  </div>
+                  <div class="col-md-4 functional d-flex" style="line-height: 47px;align-items: center;">
+                    <span style="font-weight: bold;flex: 0 0 32%;">Feeling Difficulties</span>
+                    <input type="text" placeholder="Feeling Difficulties">
+                  </div>
+                </div>
+                </div>
+                <b style="font-size: 13px;display: block;margin: 10px 0px; ">Change In Weight</b>
+                <div class="col-md-12 border-box-tab" style="background: #fbfcff;padding:4px"> 
+                <div class="d-flex">
+                 <div class="col-md-4 functional d-flex">
+                    <span style="font-weight: bold;width:51px">Last 1 month</span>
+                    <input type="text" placeholder="Kg">
+                  </div>
+                  <div class="col-md-4 functional d-flex" style="line-height: 36px">
+                    <span style="font-weight: bold;flex: 0 0 32%;">Last 3 months</span>
+                    <input type="text" placeholder="Kg">
+                  </div>
+                  <div class="col-md-4 functional d-flex" style="line-height: 36px">
+                    <span style="font-weight: bold;flex: 0 0 32%;">BMI</span>
+                    <input type="text" placeholder="Kg/M2">
+                  </div>
+                  </div>
+                </div>
+        </div>
+        <div class="tab-content-boxes" *ngIf="patienteducation">
+        <b style="font-size: 13px;display: block;margin: 10px 0px;    font-weight: 600;"> Requires Physician To Be Notified For Physiotherapy Referral Assesssments</b>
+         <div class="border-box-tab" style="font-weight: bold;"> 
+          
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Baby's Best Chance
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Rest / Preterm Labor
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Prenatal Education
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked" style="text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 163px;    vertical-align: middle;" title="Vaginal Birth After Caesarian (VBAC)">
+          Vaginal Birth After Caesarian (VBAC)
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          HIV Testing
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Generic Counseling
+        </label>
+      </div>
+      
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Breast/Nipple Care
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Breast Feeding Plans To BF
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          GBS Managements
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Baby Care / F. Planing
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Exercises
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Labor Stages
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Pain Management
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked" style="text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 163px;    vertical-align: middle;" title="Maternal Serum Screening Offered">
+          Maternal Serum Screening Offered
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          C Section
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked" style="text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 163px;    vertical-align: middle;" title="Hospital Admission / Procedures">
+          Hospital Admission / Procedures
+        </label>
+      </div>
+      <div class="form-check same-five-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Other
+        </label>
+      </div>
+      
+      
+      </div>
+        </div>
+          <div class="tab-content-boxes fall-risk" *ngIf="fallrisk">
+              <div class="border-box-tab"> 
+                <div class="row top-bar-templete-new">
+                  <div class="col-md-4">
+                  <div class="box-border-top">
+                  <span style="font-weight: bold;">Age Group <= 2 Years Old:</span> <input  placeholder="Search here">
+                  </div>
+                  </div>
+                  <div class="col-md-4">
+                  <div class="box-border-top">
+                 <span style="font-weight: bold;">Gait Disturbances:</span> <input  placeholder="Search here" style="margin-left: 2em;">
+                  </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="box-border-top">
+                   <span style="font-weight: bold;">Impaired Vision:</span> <input  placeholder="Search here">
+                    </div>
+                    </div>
+                  </div>
+                  <div class="row top-bar-templete-new">
+                    <div class="col-md-4">
+                    <div class="box-border-top">
+                    <span style="font-weight: bold;">History of Siezures:</span> <input  placeholder="Search here" style="margin-left: 3.4em;">
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="box-border-top">
+                   <span style="font-weight: bold;">User Cranes/Crutches:</span> <input  placeholder="Search here">
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="box-border-top">
+                     <span style="font-weight: bold;">On Insulin:</span> <input  placeholder="Search here" style="margin-left: 2.7em;">
+                      </div>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+          <div class="form-check same-five-boxes three-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Education
+        </label>
+      </div>
+      <div class="form-check same-five-boxes three-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Fall Risk Score
+        </label>
+      </div>
+      <div class="form-check same-five-boxes three-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Procedure
+        </label>
+      </div>
+      <div class="form-check same-five-boxes three-boxes">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Attached Yellow Brand
+        </label>
+      </div>
+    </div>
+       </div>
+          </div>
+      </div>
+      
+      </div>
+      </div>
+    
+    
+    </div>
+    </div>
+</div>
+  </div>
+  <ng-template #releasepdfmodal>
+    <div class="modal-body">
+      <div class="row">
+        <iframe [src]="pdfUrl" width="1000" height="500"> </iframe>
+      </div>
+      <div class="mt-2" style="text-align: center">
+        <button
+          class="btn btn-primary"
+          (click)="modalRef.hide()"
+          style="background-color: #0082c8; border: #0082c8"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </ng-template>

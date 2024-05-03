@@ -1,0 +1,17 @@
+<div class="dignosis-data-table">
+  <table class="table table-bordered in-patient-table m-0">
+    <thead>
+      <tr>
+        <td scope="col" class="text-center" *ngFor="let element of
+          tableHeaderData" [ngClass]="element.class">{{element.columnTitle}}</td>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="tableConfigureData && tableConfigureData.length">
+        <tr *ngFor="let data of tableConfigureData">
+          <td *ngFor="let item of tableHeaderData">{{data[item.fieldName]}}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

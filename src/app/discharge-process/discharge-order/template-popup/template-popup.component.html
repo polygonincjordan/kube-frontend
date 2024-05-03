@@ -1,0 +1,60 @@
+<ng-template #templatePopup>
+  <div class="pt-3 pl-3 popup pr-3 pb-0">
+    <input  #inputField  class="form-control template-data" type="text" name="search" autofocus="autofocus" [(ngModel)]="templateSearchQuery" autocomplete="off" placeholder="Search Template Name">
+  </div>
+  <div class="medication-popup" *ngIf="configurationData &&
+    configurationData.length">
+    <div class="medication-header d-flex w-100 align-items-center pl-2">
+      <div class="medicate-data d-flex w-100 pl-3">
+        <div class="medication-title w-65 px-3">
+          <h4 class="m-0">Template Name <i (click)="onSortClick($event,'Descr')"  class="my-icon fa fa-chevron-up"></i></h4>
+        </div>
+        <div class="medication-title w-25 px-3">
+          <h4 class="m-0">Level <i (click)="onSortClick($event,'Tmpaccesslevel')"  class="my-icon fa fa-chevron-up"></i></h4>
+        </div>
+        <div class="medication-title w-10 px-3">
+          <h4 class="m-0">Detail</h4>
+        </div>
+      </div>
+      <div class="medicate-icon" (click)="setSelectedTemplate();">
+        <img src="assets/img/texteditor.png" width="40" class="p-1
+          bg-white">
+      </div>
+    </div>
+    <div class="medication-body template-med-body">
+      <div class="medication-inner-body d-flex w-100 align-items-center mt-3"
+        *ngFor="let element of configurationData | templatesearch : templateSearchQuery">
+        <div class="medication-data d-flex align-items-center w-100 pl-3">
+          <div class="medication-field w-65 pr-2 d-flex align-items-center">
+            <input type="checkbox" width="25" height="25"
+              [(ngModel)]="element.isSelected" class="mr-2 isbigcheckbox" (click)="onOpenTemplateDetail(element)">
+            <p class="m-0">{{element.Descr}}</p>
+          </div>
+          <div class="medication-field w-25 d-flex">
+            <div class="medication-inner-field pr-2 w-100">
+              <select class="form-control input-type-select"
+                [disabled]="element.Tmpaccesslevel !== '' ? true : false" (change)="onTemplateLevelUpdate(element)">
+                <option value="" *ngIf="element.Tmpaccesslevel !== 'G'">User Level</option>
+                <option value="G" *ngIf="element.Tmpaccesslevel !== 'G'">Global
+                  Level</option>
+                <option value="G" *ngIf="element.Tmpaccesslevel !== ''">Global
+                  Level</option>
+              </select>
+            </div>
+          </div>
+          <div class="medication-field w-10 d-flex">
+            <div class="medication-inner-field pr-2 w-100 text-center">
+              <button _ngcontent-bvl-c191="" type="button" (click)="onOpenTemplateDetail(element.Prscrid)">
+                <img src="assets/img/detail-icon.svg" alt="">
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="medicate-icon" style="width: 40px;">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<template-detail-popup #templateDetailPopup></template-detail-popup>

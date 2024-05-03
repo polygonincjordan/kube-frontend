@@ -1,0 +1,61 @@
+.medicationImage img{
+  height: 36px;
+  width: auto;
+}
+
+.medicationImage{
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}
+
+.top-0{
+  top: 0;
+}
+
+.right-0{
+  right: 0;
+}
+.left-0{
+  left:0;
+}
+.missed-bg-gray{
+  background: #999da0;
+
+  &.p-2{
+    padding: 0.2rem !important;
+  }
+  img{
+    filter: brightness(0) invert(1);
+  }
+  &:disabled{
+    background: #999da0;
+    img{
+      filter: none;
+    }
+  }
+}
+
+.button-left{
+  border-radius: 10px 0px 0px 10px!important;
+}
+.button-right{
+  border-radius: 0 10px 10px 0!important;
+}
+
+.d-grid{
+  display: grid;
+}
+
+.medicinecolor{
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: gray;
+}
+.media-hi{
+  white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+}

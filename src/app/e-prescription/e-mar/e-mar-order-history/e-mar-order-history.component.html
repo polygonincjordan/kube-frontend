@@ -1,0 +1,122 @@
+<div class="e-mar-history-panel pr-3">
+  <div class="container-fluid data-list-main table-hours">
+    <div class="row align-items-center">
+      <div class="col-md-4 order-data-part">
+        <div class="row align-items-center">
+          <div class="col-md-7 h-order-title">
+            <h4 class="m-0">Medication Order</h4>
+          </div>
+          <div class="col-md-5 h-order-title">
+            <h4 class="m-0">Order Date</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row align-items-center m-0">
+          <div class="col-12 p-0">
+            <div class="drug-data drug-hours">
+              <div class="drug-data-table d-flex w-100 m-0">
+                <ng-container *ngFor="let i of hours">
+                  <div class="drug-data-td align-middle text-center" [ngClass]="+i === currentHour ? 'active' : ''"
+                    *ngIf="+i >= startHour && +i <= endHour">
+                    <div class="drug-hours-data d-flex align-items-end
+                        justify-content-center m-0">
+                      <p class="m-0">{{+i <= 9 ? "0" + (i) : i}}</p>
+                    </div>
+                  </div>
+                </ng-container>
+                <div class="slider-control slider-arrow-control d-flex
+                    flex-wrap" *ngIf="hours.length> 13">
+                  <button type="button" (click)="nextHours()" [disabled]="this.endHour === 23 ? true : false">
+                    <img src="assets/img/next-arrow.svg" alt="">
+                  </button>
+                  <button type="button" (click)="prevHours()" [disabled]="this.startHour === 0 ? true : false">
+                    <img src="assets/img/prev-arrow.svg" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="history-data-overflow history-data-panel">
+      <ng-container *ngIf="configurationData && configurationData.length">
+        <div class="row mt-2" *ngFor="let element of
+            configurationData | filterOrderStatus: ePrescriptionService.selectedItems | filter :
+            ePrescriptionService.formgroupData.SearchData  ">
+            <!-- {{configurationData}} -->
+          <div class="col-md-4">
+            <div class="order-data-part">
+              <div class="row">
+                <div class="col-md-7 pr-1">
+                  <div class="e-mar-Order-data d-flex flex-wrap h-100">
+                    <!-- {{element.Mesid}} -->
+                    <h4 class="m-0 w-100">{{element.Descrlt}}</h4>
+                    <p class="m-0 w-100"
+                      title="{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}} {{element.Unit}}{{'- ' + element.Routedescr}}{{'- ' + element.Formatdescr}}{{'- ' + element.N1ztxt}}{{'- ' + element.Userst}}{{element.Prncond ? '-' : '' }}{{element.Prncond}}">
+                      {{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}}{{element.Unit}}
+                      {{element.Routedescr ? '-' : '' }} {{element.Routedescr}}
+                      {{element.Formatdescr ? '-' : '' }}{{element.Formatdescr}}
+                      {{element.N1ztxt ? '-' : '' }}{{element.N1ztxt}}
+                      {{element.Prncond ? '-' : '' }}{{element.Prn === true ? 'PRN ': ''}}{{element.Prncond ? '(' : '' }}{{element.Prncond}}{{element.Prncond ? ')' : '' }}</p>
+                  </div>
+                </div>
+                <div class="col-md-5 pl-1">
+                  <div class="e-mar-Order-data d-flex flex-wrap h-100 c-pointer">
+                    <p class="m-0 w-100">{{element.ViewOrderDate}}</p>
+                    <p class="m-0 w-100">{{element.TherapeCls}}</p>
+                    <p class="m-0 w-100">{{element.Descr}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="row m-0 h-100">
+              <div class="col-12 p-0">
+                <div class="drug-data drug-daytime pt-0 pb-0 h-100">
+                  <div class="drug-data-table d-flex w-100 m-0 h-100">
+                    <ng-container *ngFor="let item of element.Schedule">
+                      <div class="drug-data-td align-middle text-center" *ngIf="item.Hour>= startHour && item.Hour<=endHour">
+                        <div class="drug-inner-data drugtime-data m-0 h-100
+                              align-content-center d-flex flex-wrap
+                              justify-content-center c-pointer" [ngClass]="item.Color" (click)="openModalForDrugEvent(item,element)">
+                          <!-- <div *ngIf="item.MultipleEvent && item.MultipleEvent.length">
+                              <i [popover]="hourPopover" container="body" [ngTemplateOutlet]="hourPopover">dfd</i>
+                            </div> -->
+                          <h4 class="m-0 w-100">{{item.Label}}</h4>
+                          <span class="m-0">{{item.SubLabel}}</span>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="slider-control slider-button-control d-flex
+        justify-content-end mt-4" *ngIf="isMultidate">
+    <button type="button" (click)="prevDate()" [disabled]="startDate === currentDate" class="d-flex
+          align-items-center px-2 py-1 justify-content-center w-auto">
+      <img src="assets/img/prev-arrow.svg">
+      <p class="d-inline-block m-0 ml-1"><b>Prev</b></p>
+    </button>
+    <input type="text" class="text-center form-control w-auto" [value]="this.currentDate | date: 'dd.MM.yyyy'" disabled>
+    <button type="button" (click)="nextDate()" [disabled]="endDate === currentDate" class="d-flex
+          align-items-center px-2 py-1 justify-content-center w-auto">
+      <p class="d-inline-block m-0 mr-1"><b>Next</b></p>
+      <img src="assets/img/next-arrow.svg">
+    </button>
+  </div>
+</div>
+<!--
+    <ng-template #hourPopover let-item>
+      {{item | json}}
+      <div class="abc"></div>
+    </ng-template> -->
+<app-drug-events-admin #drugEvents></app-drug-events-admin>

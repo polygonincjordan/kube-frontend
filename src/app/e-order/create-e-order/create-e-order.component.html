@@ -1,0 +1,440 @@
+<div class="e-order-history-content" *ngIf="customData && customData.length">
+  <div class="e-order-history-panel" *ngFor="let keyData of customData">
+    <div class="e-order-inner-panel" *ngIf="keyData.type !== 'MED' &&
+      keyData.type !== 'TEMPLATE'">
+      <div class="e-order-title">
+        <h4>{{ keyData.type }} Orders</h4>
+      </div>
+      <div class="e-order-info">
+        <div class="history-table table-responsive edit-history-table m-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="border-0 text-center">Service Description</th>
+                <th class="border-0 text-center">Desired Date</th>
+                <th class="border-0 text-center">Service Time</th>
+                <th class="border-0 text-center">Fasting</th>
+                <th class="border-0 text-center">Localization</th>
+                <th class="border-0 text-center">Comments</th>
+                <th class="border-0 text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container>
+                <tr *ngFor="let element of keyData.groupItem">
+                  <td class="align-middle border-0 w-30">
+                    <span class="d-flex align-items-center p-0">
+                      <span
+                        class="input-text-field d-inline-block align-top w-100">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="element.text"
+                          disabled="true"
+                          [title]="element.text"
+                          />
+                      </span>
+                    </span>
+                  </td>
+                  <td class="align-middle border-0">
+                    <span class="d-inline-block align-top w-100">
+                      <input
+                        type="date"
+                        class="form-control input-type-date"
+                        min="{{ element.date }}"
+                        [(ngModel)]="element.date"
+                        />
+                    </span>
+                  </td>
+                  <td class="align-middle border-0">
+                    <span class="d-inline-block align-top w-100">
+                      <input
+                        type="time"
+                        class="form-control input-type-time"
+                        [(ngModel)]="element.time"
+                        />
+                    </span>
+                  </td>
+                  <td class="align-middle border-0">
+                    <span class="d-inline-block align-top w-100 text-center">
+                      <input
+                        type="checkbox"
+                        class="checkbox-input"
+                        [checked]="element.isFastingRequired"
+                        [(ngModel)]="element.isFastingRequired"
+                        />
+                    </span>
+                  </td>
+                  <td class="align-middle border-0 w-15 mw-small">
+                    <span class="d-inline-block align-top w-100">
+                      <!-- <select id="localization-select" class="form-control input-type-select" [(ngModel)]="element.localization">
+                        <option *ngFor="let localElement of element.locationtype" [value]="localElement.code">
+                          {{localElement.description}}</option>
+                      </select> -->
+                      <ng-select
+                        [searchable]="true"
+                        [(ngModel)]="element.localization">
+                        <ng-option
+                          *ngFor="let localElement of element.locationtype"
+                          [value]="localElement.code">{{
+                          localElement.description }}
+                        </ng-option>
+                      </ng-select>
+                    </span>
+                  </td>
+                  <td class="align-middle border-0">
+                    <span class="d-inline-block align-top w-100">
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="element.note"
+                        [title]="element.note"
+                        (click)="openComments(additionalInfo,element)"
+                        />
+                    </span>
+                  </td>
+                  <td class="align-middle border-0">
+                    <span
+                      class="trash-icon"
+                      (click)="eorderService.onDeleteOrder(element)">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512">
+                        <path
+                          d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96
+                          32 96H416c17.7 0 32-14.3
+                          32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0
+                          284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416
+                          128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0
+                          46.3-19.7 47.9-45L416 128z"
+                          />
+                        </svg>
+                      </span>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="e-order-inner-panel" *ngIf=" keyData.type === 'MED'">
+        <div class="e-order-title">
+          <h4>Medication</h4>
+        </div>
+        <div class="e-order-info">
+          <div
+            class="history-table table-responsive edit-history-table m-0
+            medication-data">
+            <table class="table" *ngFor="let element of keyData.groupItem">
+              <ng-container>
+                <tr>
+                  <tbody>
+                    <tr>
+                      <td class="align-middle border-0 w-40 pt-2 pb-2"
+                        colspan="2">
+                        <span class="input-title">Medication Name</span>
+                        <span class="d-flex align-items-center p-0">
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input type="text"
+                              class="form-control" [(ngModel)]="element.text"
+                              disabled="true"
+                              />
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-5 pt-2 pb-2">
+                        <span class="input-title">Dosage</span>
+                        <span class="d-inline-block align-top w-100">
+                          <input
+                            type="number"
+                            class="form-control number-input text-center"
+                            [(ngModel)]="element.dosageCount"
+                            min="0"
+                            />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-15 mw-small pt-2 pb-2">
+                        <span class="input-title">Dosage Unit</span>
+                        <span class="d-inline-block align-top w-100">
+                          <!-- <div *ngIf="element.editItem">
+                            <input type="text"
+                              class="form-control" [(ngModel)]="element.unitDescription"
+                              disabled/>
+                          </div> -->
+                          <div>
+                            <ng-select
+                              [(ngModel)]="element.Meins"
+                              [searchable]="true"
+                              (change)="eorderService.selectedValue(element.dosageCountDesc,eorderService.ePrescriptionObject.NAVDRUGFORMATROUTEUNITS.results,'DRUGFORMAT', element)">
+                              <ng-option
+                                *ngFor="let dosageUnit of element.dosageUnit"
+                                [value]="dosageUnit.unit">
+                                {{dosageUnit.text}}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-30 mw-small pt-2 pb-2">
+                        <span class="input-title">Frequency</span>
+                        <span class="d-inline-block align-top w-100">
+                          <ng-select [searchable]="true"
+                            [(ngModel)]="element.frequencyDesc"
+                            (change)="eorderService.selectedValue(element.frequencyDesc,eorderService.frequencyObject, 'FREQUENCY', element) ">
+                            <ng-option
+                              *ngFor="let frequencyItem of
+                              eorderService.frequencyObject"
+                              [value]="frequencyItem.frequencyDesc">{{
+                              frequencyItem.frequencyDesc }}
+                            </ng-option>
+                          </ng-select>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0">
+                        <span
+                          class="trash-icon"
+                          (click)="eorderService.onDeleteOrder(element)">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 448 512">
+                            <path
+                              d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0
+                              64S14.3 96 32 96H416c17.7 0 32-14.3
+                              32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8
+                              296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6
+                              17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9
+                              45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                              />
+                            </svg>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle border-0 mw-small pt-2 pb-2">
+                          <span class="input-title">Formula</span>
+                          <span class="d-inline-block align-top w-100">
+                            <input
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="element.formulaDesc"
+                              disabled="true"
+                              [value]="element.formId"/>
+                          </span>
+                        </td>
+                        <td class="align-middle border-0 mw-small pt-2 pb-2">
+                          <span class="input-title">Route</span>
+                          <span class="d-inline-block align-top w-100">
+                            <input type="text" class="form-control"
+                              [(ngModel)]="element.routeDesc" disabled="true"/>
+                          </span>
+                        </td>
+                        <td class="align-middle border-0 w-8 pt-2 pb-2">
+                          <span class="input-title">Duration</span>
+                          <span class="d-inline-block align-top w-100">
+                            <input
+                              type="number"
+                              class="form-control text-center number-input"
+                              [(ngModel)]="element.durationCount"
+                              min="0"
+                              />
+                          </span>
+                        </td>
+                        <td class="align-middle border-0 w-20 mw-small pt-2
+                          pb-2">
+                          <span class="input-title">Duration Unit</span>
+                          <span class="d-inline-block align-top w-100">
+                            <ng-select
+                              [searchable]="true"
+                              [(ngModel)]="element.durationDesc">
+                              <ng-option
+                                *ngFor="
+                                let durationItem of eorderService.durationObject
+                                "
+                                [value]="durationItem.durationid">{{
+                                durationItem.durationDesc }}
+                              </ng-option>
+                            </ng-select>
+                          </span>
+                        </td>
+                        <td class="align-middle border-0 mw-small pt-2 pb-2">
+                          <span class="input-title">Comment</span>
+                          <span class="d-inline-block align-top w-100">
+                            <input
+                              type="text"
+                              class="form-control"
+                              [(ngModel)]="element.comment"
+                              [title]="element.comment"
+                              />
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </tr>
+                </ng-container>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="e-order-inner-panel" *ngIf="keyData.type === 'TEMPLATE'">
+          <div class="e-order-title">
+            <h4>Template Medication</h4>
+          </div>
+          <div class="e-order-info">
+            <div
+              class="history-table table-responsive edit-history-table m-0
+              medication-data">
+              <table class="table" *ngFor="let element of keyData.groupItem">
+                <ng-container>
+                  <tr>
+                    <td class="align-middle border-0 w-40 pt-2 pb-2"
+                      colspan="2">
+                      <span class="input-title">Medication Name</span>
+                      <span class="d-flex align-items-center p-0">
+                        <span
+                          class="input-text-field d-inline-block align-top
+                          w-100">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="element.text"
+                            disabled="true"
+                            />
+                        </span>
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-5 pt-2 pb-2">
+                      <span class="input-title">Dosage</span>
+                      <span class="d-inline-block align-top w-100">
+                        <input
+                          type="number"
+                          class="form-control number-input text-center"
+                          [(ngModel)]="element.dosageCount"
+                          min="0"
+                          />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-15 mw-small pt-2 pb-2">
+                      <span class="input-title">Dosage Unit</span>
+                      <span class="d-inline-block align-top w-100">
+                        <input
+                          type="text"
+                          class="form-control text-center"
+                          [(ngModel)]="element.dosageCountDesc"
+                          min="0"
+                          />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-30 mw-small pt-2 pb-2">
+                      <span class="input-title">Frequency</span>
+                      <span class="d-inline-block align-top w-100">
+                        <input
+                          type="text"
+                          class="form-control text-center"
+                          [(ngModel)]="element.frequencyDesc"
+                          min="0"
+                          />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span
+                        class="trash-icon"
+                        (click)="eorderService.onDeleteOrder(element)">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512">
+                          <path
+                            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0
+                            64S14.3 96 32 96H416c17.7 0 32-14.3
+                            32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8
+                            296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6
+                            17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9
+                            45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                            />
+                          </svg>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="align-middle border-0 mw-small pt-2 pb-2">
+                        <span class="input-title">Formula</span>
+                        <span class="d-inline-block align-top w-100">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="element.formulaDesc"
+                            disabled="true"
+                            />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 mw-small pt-2 pb-2">
+                        <span class="input-title">Route</span>
+                        <span class="d-inline-block align-top w-100">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="element.routeDesc"
+                            disabled="true"
+                            />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-8 pt-2 pb-2">
+                        <span class="input-title">Duration</span>
+                        <span class="d-inline-block align-top w-100">
+                          <input
+                            type="number"
+                            class="form-control text-center number-input"
+                            [(ngModel)]="element.durationCount"
+                            min="0"
+                            />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-20 mw-small pt-2 pb-2">
+                        <span class="input-title">Duration Unit</span>
+                        <span class="d-inline-block align-top w-100">
+                          <input
+                            type="text"
+                            class="form-control text-center"
+                            [(ngModel)]="element.durationDesc"
+                            min="0"
+                            />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 mw-small pt-2 pb-2">
+                        <span class="input-title">Comment</span>
+                        <span class="d-inline-block align-top w-100">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="element.comment"
+                            [title]="element.comment"
+                            />
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #configureoption>
+        <div class="modal-body">
+          <div class="modal-inner-body"></div>
+        </div>
+      </ng-template>
+      <ng-template #additionalInfo>
+        <div class="additional-input additional-input p-3">
+          <label for="additionalInfo w-100">Additional Information</label>
+          <textarea type="text" [(ngModel)]="selectedData.note" #additionalInfo
+            class="w-100"></textarea>
+        </div>
+        <div class="button-group d-flex justify-content-end p-3">
+          <button  class="d-flex
+            align-items-center mr-2" (click)="modalRef.hide()">Save</button>
+          <button class="d-flex align-items-center" (click)="modalRef.hide()">Cancel</button>
+        </div>
+      </ng-template>

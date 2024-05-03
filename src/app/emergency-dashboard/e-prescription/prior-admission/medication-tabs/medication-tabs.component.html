@@ -1,0 +1,69 @@
+<form action="" [formGroup]="medicationForm">
+
+  <div class="d-flex w-100 mt-5 mb-5 ml-3 mr-2">
+    <table class="tableborder w-25 h-25 mx-3">
+      <tr>
+        <th colspan="3" class="text-center p-1">vaildity</th>
+      </tr>
+      <tr>
+        <td class="medication-color font-weight-bold border-0 p-1">vaild form</td>
+        <td class="p-1 border-0 text-center font-weight-bold">{{medicationValidity.StartD
+          | date: "dd.MM.YYYY"}}</td>
+        <td class="p-1 border-0 text-center font-weight-bold">{{parseTime(medicationValidity.StartD)}}</td>
+      </tr>
+      <tr class="row-bgcolor">
+        <td class="medication-color font-weight-bold p-1 border-0">Duration</td>
+        <td class="p-1 border-0 text-center font-weight-bold">{{medicationValidity.Pdur}}</td>
+        <td class="p-1 border-0 text-center font-weight-bold">{{this.durationUnit}}</td>
+      </tr>
+      <tr>
+        <td class="medication-color font-weight-bold p-1 border-0">vaild To</td>
+        <td class="p-1 border-0 text-center font-weight-bold">{{medicationValidity.EndD
+          | date: "dd.MM.YYYY"}}</td>
+        <td class="p-1 border-0 text-center font-weight-bold">{{parseTime(medicationValidity.EndD)}}</td>
+      </tr>
+    </table>
+
+    <table class="tableborder w-30 h-25 mx-3"
+      *ngIf="administrationService.medicationAdministrative">
+      <tr>
+        <th colspan="3" class="text-center p-1">Administrative Data</th>
+      </tr>
+      <tr>
+        <td class="medication-color font-weight-bold border-0 p-1">Employee
+          Responsible</td>
+        <td class="p-1 border-0 font-weight-bold ">
+          <ng-select class="border-0 selectbordernone"
+            formControlName="EmpResp">
+            <ng-option class="border-0"
+              *ngFor=" let employeeresponsibal of
+              administrationService.AdminiEmployeeresponsible"
+              [value]="employeeresponsibal.Moresp1">
+              {{ employeeresponsibal.Moresp1name }}
+            </ng-option>
+          </ng-select>
+        </td>
+      </tr>
+      <tr class="row-bgcolor">
+        <td class="medication-color font-weight-bold p-1 border-0">Order.Department</td>
+        <td class="p-1 border-0 font-weight-bold">
+          {{medicationForm.value.OrderDepartment}}</td>
+      </tr>
+      <tr>
+        <td class="medication-color font-weight-bold p-1 border-0">Ordering To</td>
+        <td class="p-1 border-0 font-weight-bold">
+          <ng-select class="border-0 selectbordernone"
+            formControlName="OrderingTo">
+            <ng-option
+              *ngFor=" let administrativeOrdering of
+              administrationService.AdminiOrderingList"
+              [value]="administrativeOrdering.Orgid">
+              {{ administrativeOrdering.Orgna}}
+            </ng-option>
+          </ng-select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="form-btn text-right p-3 bg-color-me mt-2 rounded-bottom"></div>
+</form>

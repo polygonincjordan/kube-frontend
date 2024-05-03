@@ -1,0 +1,10 @@
+<ng-template #additionalInfo>
+  <div class="additional-input additional-input p-3">
+    <label for="additionalInfo w-100">Additional Information</label>
+    <textarea type="text" [value]="isDefaultComment" #additionalInfo class="w-100"></textarea>
+  </div>
+  <div class="button-group d-flex justify-content-end p-3">
+    <button (click)="updateAdditionalInfo(additionalInfo.value)" class="d-flex align-items-center mr-2"><img src="assets/img/update-icon.svg" class="mr-1">Update</button>
+    <button (click)="cancelAdditionalInfo()" class="d-flex align-items-center"><img src="assets/img/cancel-icon.svg" class="mr-1">Cancle</button>
+  </div>
+</ng-template>

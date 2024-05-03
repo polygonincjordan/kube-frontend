@@ -1,0 +1,13 @@
+.hover-effect{
+  display: inline-block;
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 9px;
+  bottom: 3px;
+  background: #fff;
+}
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

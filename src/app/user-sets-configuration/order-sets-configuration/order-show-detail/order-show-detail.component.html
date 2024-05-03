@@ -1,0 +1,575 @@
+<ng-template #orderDetailModal>
+  <div class="order-main">
+    <div class="order-header-title">
+      <h4>Order Set Header</h4>
+    </div>
+    <div class="order-header-contant">
+      <div class="w-60 d-flex border-right-custom p-3">
+        <div class="w-45">
+          <div class="row m-0 mt-1">
+            <div class="col-sm-4 p-0">
+              <label class="control-label">Odrer Set Name</label>
+            </div>
+            <div class="col-sm-8">
+              <input readonly class="w-100 form-control" [title]="getOrderDetails?.Name" [value]="getOrderDetails?.Name" />
+            </div>
+          </div>
+          <div class="row m-0 mt-1">
+            <div class="col-sm-4 p-0">
+              <label class="control-label">Specialty</label>
+            </div>
+            <div class="col-sm-6">
+              <input readonly class="w-100 form-control" [value]="getOrderDetails?.DeptOuDesc" [title]="getOrderDetails?.DeptOuDesc"/>
+            </div>
+          </div>
+          <div class="row m-0 mt-1">
+            <div class="col-sm-4 p-0">
+              <label class="control-label">Patinet Gender</label>
+            </div>
+            <div class="col-sm-6">
+              <input readonly class="w-100 form-control" [value]="getOrderDetails?.GenderDesc" [title]="getOrderDetails?.GenderDesc"/>
+            </div>
+          </div>
+        </div>
+        <div class="w-35">
+          <div class="row m-0 mt-1">
+            <div class="col-sm-4 p-0">
+              <label class="control-label">Patient Case</label>
+            </div>
+            <div class="col-sm-8">
+              <input readonly class="w-100 form-control" [value]="getOrderDetails?.PatientTypeDesc" [title]="getOrderDetails?.PatientTypeDesc"/>
+            </div>
+          </div>
+          <div class="row m-0 mt-1">
+            <div class="col-sm-4 p-0">
+              <label class="control-label">Patient Age</label>
+            </div>
+            <div class="col-sm-8">
+              <input readonly class="w-100 form-control" [value]="getOrderDetails?.AgeDesc" [title]="getOrderDetails?.AgeDesc"/>
+            </div>
+          </div>
+          <div class="row m-0 mt-1">
+            <div class="col-sm-4 p-0">
+              <label class="control-label">Valid Days</label>
+            </div>
+            <div class="col-sm-8">
+              <input readonly class="w-100 form-control" [value]="getOrderDetails?.ValidDays" [title]="getOrderDetails?.ValidDays"/>
+            </div>
+          </div>
+        </div>
+        <div class="w-20 pl-5">
+          <div class="mb-3">
+            <span [ngStyle]="getImageBorderLogic(getOrderDetails)" class="badge badge-pill">{{getOrderDetails?.StatusAprDesc}}</span>
+          </div>
+          <div class="mb-2">
+            <label class="m-0 p-0" *ngIf="getOrderDetails?.AccessLevel == '1'">General Level</label>
+            <label class="m-0 p-0" *ngIf="getOrderDetails?.AccessLevel == '2'">User Level</label>
+          </div>
+          <div class="mb-2">
+            <label class="switch">
+              <input disabled="disabled" [ngModel]="checkStatusValue(getOrderDetails?.Status)" type="checkbox" name="graduate" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="w-20 assign-user border-right-custom">
+        <p class="">Assigned Users</p>
+        <div *ngFor="let assign of getOrderDetails?.ToAccess.results">
+          <span>{{ assign?.Pernr }} - {{ assign?.Name }}</span>
+        </div>
+      </div>
+      <div class="w-20 assign-user border-right-custom">
+        <p class="">Assigned Diagnosis</p>
+        <div *ngFor="let assign of getOrderDetails?.ToDiag.results">
+          <span>{{ assign?.Dkey }} - {{ assign?.Dtext }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="main-contant">
+      <div class="contant-details">
+        <div class="left-border"></div>
+        <div class="accordion d-flex" id="accordionExample" aria-expanded="true" *ngFor="let item of getOrderDetails?.ToSubtitle?.results; let i = index">
+          <div class="arrow-left"></div>
+          <ul class="dots">
+            <li><a>Home</a></li>
+          </ul>
+          <div class="card collapse-card w-100 mb-3">
+            <div class="card-header" id="headingOne">
+              <h2 class="mb-0 position-relative">
+                <button type="button" class="btn btn-link">
+                  <i data-toggle="collapse" [attr.data-target]="'#collapseOne' + i"></i>
+                  <label class="collaspe-label ml-5 w-30 mb-0" [title]="item?.Name">{{ item?.Name }}</label>
+                  <label class="w-10 ml-5 mb-0">Seq<span class="collapse-seq ml-3" [title]="item?.Seqno">{{ item?.Seqno }}</span></label>
+                  <label class="ml-5 mb-0">Pre-Checked<input class="precheck-input ml-3" disabled [checked]="item.Autoselect" type="checkbox" /></label>
+                </button>
+              </h2>
+            </div>
+            <div [id]="'collapseOne' + i" class="collapse show">
+              <div class="card-body position-relative">
+                <span hidden>{{fetchSubtitleRecords(item.Stid)}}</span>
+                <div *ngIf="medicationListNew.length>0" class="Medication-title">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Medication' + i">Medication</h4>
+                  <div [id]="'Medication' + i" class="collapse show">
+                    <ng-container *ngFor="let meducation of medicationListNew">
+                      <div class="w-100 d-flex mt-2 border-buttom-custom">
+                        <div class="w-80 border-right-custom">
+                          <div class="d-flex">
+                            <div class="align-middle border-0 p-1">
+                              <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                                <span class="input-text-field d-inline-block align-top">
+                                  <input [(ngModel)]="meducation.Autoselect" disabled="disabled" type="checkbox" class="form-check" />
+                                </span>
+                              </span>
+                            </div>
+                            <div class="align-middle border-0 p-1 w-45">
+                              <app-input-text fieldName="Medication Name" [value]="meducation?.Drugname"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 p-1">
+                              <app-input-text fieldName="Formula" [value]="meducation?.FormulaText"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 p-1">
+                              <app-input-text fieldName="Route" [value]="meducation?.RouteText"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-15 p-1">
+                              <app-input-text fieldName="Dosage" [value]="parseFloat(meducation?.Dosage)"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 p-1">
+                              <app-input-text [value]="meducation?.DosageUnit" fieldName="Dosage Unit"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 p-1 w-15">
+                              <app-input-text fieldName="Frequency" [value]="meducation?.FrequencyText"></app-input-text>
+                            </div>
+                          </div>
+                          <div class="d-flex">
+                            <div style="width: 25px" class="align-middle border-0 p-1">
+                              <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                                <span class="input-text-field d-inline-block align-top"></span>
+                              </span>
+                            </div>
+                            <div class="align-middle border-0 w-10 pr-2">
+                              <app-input-text fieldName="Duration" [value]="parseFloat(meducation?.Duration)"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-12 pr-2">
+                              <app-input-text fieldName="Duration Unit" [value]="meducation?.DurationUnitText"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 pr-2">
+                              <app-input-text fieldName="Valid On" [value]="meducation?.ValidOn"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-9 pr-2">
+                              <app-input-text fieldName="Valid Till" [value]="meducation?.ValidTill"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-20 pr-2">
+                              <app-input-text fieldName="Order Purpose" [value]="purposeValue(meducation?.Purpose)"></app-input-text>
+                            </div>
+                            <div class="position-relative d-flex align-items-center pt-2 pr-2 w-9">
+                              <app-input-text fieldName="Complex" fieldType="checkbox" [value]="meducation.Complex"></app-input-text>
+                            </div>
+                            <div class="position-relative d-flex align-items-center pt-2">
+                              <app-input-text fieldName="PRN" fieldType="checkbox" [value]="meducation.Prn"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 pl-1 w-22">
+                              <app-input-text fieldName="PRN Condition" [value]="meducation?.Prncond"></app-input-text>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-20">
+                          <div class="align-middle border-0 p-1 w-100">
+                            <app-input-text fieldName="Additional Info" [value]="meducation?.Descr"></app-input-text>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="dispensingListView.length>0" class="Medication-title mt-2">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#dispensing' + i">Dispensing</h4>
+                  <div [id]="'dispensing' + i" class="collapse show">
+                    <ng-container *ngFor="let meducation of dispensingListView">
+                      <div class="w-100 d-flex mt-2 border-buttom-custom">
+                        <div class="w-80 border-right-custom">
+                          <div class="d-flex">
+                            <div class="align-middle border-0 p-1">
+                              <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                                <span class="input-text-field d-inline-block align-top">
+                                  <input [(ngModel)]="meducation.Autoselect" disabled="disabled" type="checkbox" class="form-check" />
+                                </span>
+                              </span>
+                            </div>
+                            <div class="align-middle border-0 p-1 w-45">
+                              <app-input-text fieldName="Medication Name" [value]="meducation?.Drugname"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 p-1">
+                              <app-input-text fieldName="Formula" [value]="meducation?.FormulaText"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 p-1">
+                              <app-input-text fieldName="Route" [value]="meducation?.RouteText"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-15 p-1">
+                              <app-input-text fieldName="Dosage" [value]="parseFloat(meducation?.Dosage)"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 p-1">
+                              <app-input-text [value]="meducation?.DosageUnit" fieldName="Dosage Unit"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 p-1 w-15">
+                              <app-input-text fieldName="Frequency" [value]="meducation?.FrequencyText"></app-input-text>
+                            </div>
+                          </div>
+                          <div class="d-flex">
+                            <div style="width: 25px" class="align-middle border-0 p-1">
+                              <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                                <span class="input-text-field d-inline-block align-top"></span>
+                              </span>
+                            </div>
+                            <div class="align-middle border-0 w-10 pr-2">
+                              <app-input-text fieldName="Duration" [value]="parseFloat(meducation?.Duration)"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-12 pr-2">
+                              <app-input-text fieldName="Duration Unit" [value]="meducation?.DurationUnitText"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-10 pr-2">
+                              <app-input-text fieldName="Valid On" [value]="meducation?.ValidOn"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-9 pr-2">
+                              <app-input-text fieldName="Valid Till" [value]="meducation?.ValidTill"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 w-20 pr-2">
+                              <app-input-text fieldName="Order Purpose" [value]="purposeValue(meducation?.Purpose)"></app-input-text>
+                            </div>
+                            <!-- <div class="position-relative d-flex align-items-center pt-2 pr-2 w-9">
+                              <app-input-text fieldName="Complex" fieldType="checkbox" [(ngModel)]="meducation.Complex"></app-input-text>
+                            </div> -->
+                            <div class="position-relative d-flex align-items-center pt-2">
+                              <app-input-text fieldName="PRN" fieldType="checkbox" [value]="meducation.Prn"></app-input-text>
+                            </div>
+                            <div class="align-middle border-0 pl-1 w-22">
+                              <app-input-text fieldName="PRN Condition" [value]="meducation?.Prncond"></app-input-text>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-20">
+                          <div class="align-middle border-0 p-1 w-100">
+                            <app-input-text fieldName="Additional Info" [value]="meducation?.Descr"></app-input-text>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="labListNew.length>0" class="Laboratory-title mt-2 border-buttom-custom">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Laboratory' + i">Laboratory</h4>
+                  <div [id]="'Laboratory' + i" class="collapse show">
+                    <ng-container *ngFor="let lab of labListNew">
+                      <div class="w-100 d-flex mt-2">
+                        <div class="align-middle border-0 p-1">
+                          <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                            <span class="input-text-field d-inline-block align-top">
+                              <input type="checkbox" [(ngModel)]="lab.Autoselect" disabled class="form-check" />
+                            </span>
+                          </span>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-30">
+                          <app-input-text fieldName="Service description" [value]="lab?.ServiceText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-15 p-1">
+                          <app-input-text fieldName="Code" [value]="lab?.Talst"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-15 p-1">
+                          <app-input-text fieldName="Category" [value]="lab?.TrtoeText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-10 p-1">
+                          <app-input-text fieldName="Valid On" [value]="lab?.ValidOn"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-15 p-1">
+                          <app-input-text fieldName="Localization" [value]="lab?.ValidTill"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-10 d-flex align-items-center">
+                          <app-input-text fieldName="Fasting" fieldType="checkbox" [value]="lab?.Fasting"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-10 d-flex align-items-center">
+                          <app-input-text fieldName="Cycle" fieldType="checkbox" [value]="lab?.Cycle"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-15">
+                          <app-input-text fieldName="Code" value=""></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-10">
+                          <app-input-text fieldName="Days" [value]="lab?.CycleDays"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-30">
+                          <app-input-text fieldName="Additional info" [value]="lab?.AddInfo"></app-input-text>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="radListNew.length>0" class="radiology-title mt-2 border-buttom-custom">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Radiology' + i">Radiology</h4>
+                  <div [id]="'Radiology' + i" class="collapse show">
+                    <ng-container *ngFor="let rad of radListNew">
+                      <div class="w-100 d-flex mt-2">
+                        <div class="align-middle border-0 p-1" (click)="item.isRadiology = true">
+                          <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                            <span class="input-text-field d-inline-block align-top">
+                              <input type="checkbox" [(ngModel)]="rad.Autoselect" disabled class="form-check" />
+                            </span>
+                          </span>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-30">
+                          <app-input-text fieldName="Service description" [value]="rad?.ServiceText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-15 p-1">
+                          <app-input-text fieldName="Code" [value]="rad?.Talst"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-15 p-1">
+                          <app-input-text fieldName="Category" [value]="rad?.TrtoeText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-10 p-1">
+                          <app-input-text fieldName="Valid On" [value]="rad?.ValidOn"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-10 p-1">
+                          <app-input-text fieldName="Valid Till" [value]="rad?.ValidTill"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-15 p-1">
+                          <app-input-text fieldName="Localization" [value]="rad?.LocalizationText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-30">
+                          <app-input-text fieldName="Additional info" [value]="rad?.AddInfo"></app-input-text>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="phyOrderListNew.length>0"  class="physician-title mt-2 border-buttom-custom">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Physician' + i">Physician Orders</h4>
+                  <div [id]="'Physician' + i" class="collapse show">
+                    <ng-container *ngFor="let physician of physicianListView">
+                      <div class="w-100 mt-2">
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                                <input type="checkbox" [(ngModel)]="physician.Autoselect" disabled class="form-check" />
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Occuptional Group" [value]="physician?.ProfGroupText"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 w-30 p-1">
+                            <app-input-text fieldName="Physician Order Text" [value]="physician?.ZphysOrder"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-30">
+                            <app-input-text fieldName="Valid on day" [value]="physician?.ValidOn"></app-input-text>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="procerdureListNew.length>0" class="procedures-title mt-2">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Procedures' + i">Procedures Orders</h4>
+                  <div [id]="'Procedures' + i" class="collapse show">
+                    <ng-container *ngFor="let procedures of procerdureListNew">
+                      <div class="w-100 d-flex mt-2">
+                        <div class="align-middle border-0 p-1">
+                          <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                            <span class="input-text-field d-inline-block align-top">
+                              <input type="checkbox" [(ngModel)]="procedures.Autoselect" disabled class="form-check" />
+                            </span>
+                          </span>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-30">
+                          <app-input-text fieldName="Service description" [value]="procedures?.ServiceText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 w-10 p-1">
+                          <app-input-text fieldName="Code" [value]="procedures?.Service"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-15">
+                          <app-input-text fieldName="Category" [value]="procedures?.CategoryText"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-15">
+                          <app-input-text fieldName="Valid On" [value]="procedures?.ValidOn"></app-input-text>
+                        </div>
+                        <div class="align-middle border-0 p-1 w-15">
+                          <app-input-text fieldName="Additional Inform" [value]="procedures?.AddInfo"></app-input-text>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="diagnosisListView.length>0" class="procedures-title mt-2">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Diagnosis' + i">Diagnosis</h4>
+                  <div [id]="'Diagnosis' + i" class="collapse show">
+                    <ng-container *ngFor="let diagnosis of diagnosisListView">
+                      <div class="w-100 mt-2">
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                                <input type="checkbox" [(ngModel)]="diagnosis.Autoselect" disabled class="form-check" />
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Code" [value]="diagnosis?.DiagKey1"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 w-30 p-1">
+                            <app-input-text fieldName="Diagnosis Description" [value]="diagnosis?.Dtext1"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-30">
+                            <app-input-text fieldName="Free Text Diagnosis" [value]="diagnosis?.DiagText"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-15">
+                            <app-input-text fieldName="Treatment" [value]="getTreatmentName(diagnosis?.TreatmentDia)"></app-input-text>
+                          </div>
+                        </div>
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1" style="width: 20px;">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-50">
+                            <app-input-text fieldName="Comments" [value]="diagnosis?.ShortText"></app-input-text>
+                          </div>
+                          <div class="diagnosis-checkbox d-flex align-items-center position-relative justify-content-between w-30 p-1">
+                            <div class="d-flex align-items-center">
+                              <input class="mr-1 largerCheckbox" [(ngModel)]="diagnosis.AdmissionDia" type="checkbox" disabled/>
+                              <label class="m-0">Admission Diag.</label>
+                            </div>
+                            <div class="d-flex align-items-center">
+                              <input class="mr-1 largerCheckbox" [(ngModel)]="diagnosis.SurgeryDia" type="checkbox" disabled/>
+                              <label class="m-0">Surgery Diag.</label>
+                            </div>
+                            <div class="d-flex align-items-center">
+                              <input class="mr-1 largerCheckbox" type="checkbox" [(ngModel)]="diagnosis.PreopDiagInd" disabled/>
+                              <label class="m-0">Preop Diag.</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="surgeryOrderListView.length>0" class="procedures-title mt-2">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#Surgery' + i">Surgery Orders</h4>
+                  <div [id]="'Surgery' + i" class="collapse show">
+                    <ng-container *ngFor="let surgery of surgeryOrderListView">
+                      <div class="w-100 mt-2">
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                                <input type="checkbox" [(ngModel)]="surgery.Autoselect" disabled class="form-check" />
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-10">
+                            <app-input-text fieldName="Code" [value]="surgery?.Talst"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Service Description" [value]="surgery?.ServiceText"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-10">
+                            <app-input-text fieldName="Treatment OU" [value]="surgery?.Trtoe"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Treatment Department" [value]="surgery?.TrtoeText"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-15">
+                            <app-input-text fieldName="Catogory" [value]="''"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-10">
+                            <app-input-text fieldName="Valid On" [value]="surgery?.ValidOn"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-10">
+                            <app-input-text fieldName="Time On" [value]="surgery?.Wbgzt"></app-input-text>
+                          </div>
+                        </div>
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1" style="width: 20px;">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-10">
+                            <app-input-text fieldName="Surgeon" [value]="surgery?.Surgeon"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Surgeon Name" [value]="surgery?.SurgeonName"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-10">
+                            <app-input-text fieldName="Department OU" [value]="surgery?.Orgfa"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Department Name" [value]="surgery?.OrgfaText"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-25">
+                            <app-input-text fieldName="Additional Infor" [value]="surgery?.AddInfo"></app-input-text>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <input class="mr-1 largerCheckbox" type="checkbox" [(ngModel)]="surgery.Anerf" disabled/>
+                            <label class="m-0">Anesthetist Required</label>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="admissionOrderListView.length>0" class="procedures-title mt-2">
+                  <h4 class="collapse-title" data-toggle="collapse" [attr.data-target]="'#admission' + i">Admission Orders</h4>
+                  <div [id]="'admission' + i" class="collapse show">
+                    <ng-container *ngFor="let surgery of admissionOrderListView">
+                      <div class="w-100 mt-2">
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                                <input type="checkbox" [(ngModel)]="surgery.Autoselect" disabled class="form-check" />
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Treatment OU" [value]="surgery?.Trtoe"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Treatment Department" [value]="surgery?.TrtoeText"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Physician" [value]="surgery?.Trtgp"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="" [value]="surgery?.TrtgpName"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Valid On" [value]="surgery?.ValidOn"></app-input-text>
+                          </div>
+                        </div>
+                        <div class="d-flex">
+                          <div class="align-middle border-0 p-1" style="width: 20px;">
+                            <span class="d-flex fontsize align-items-center p-0 position-relative pt-2">
+                              <span class="input-text-field d-inline-block align-top">
+                              </span>
+                            </span>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Department OU" [value]="surgery?.Orgfa"></app-input-text>
+                          </div>
+                          <div class="align-middle border-0 p-1 w-20">
+                            <app-input-text fieldName="Department Name" [value]="surgery?.OrgfaText"></app-input-text>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

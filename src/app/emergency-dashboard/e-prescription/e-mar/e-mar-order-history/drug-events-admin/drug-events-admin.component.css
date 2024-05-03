@@ -1,0 +1,16 @@
+.events-leftbar-inactive{
+    box-shadow: 2px 2px 6px 3px skyblue;
+    height: 34px;
+    border-radius: 13px;  
+    text-align: center;
+    line-height: 34px;
+}
+.events-leftbar-active{
+    box-shadow: 2px 2px 6px 3px skyblue;
+    height: 34px;
+    border-radius: 13px;  
+    text-align: center;
+    line-height: 34px;
+    background: linear-gradient(180deg, #2758fd, #2856fa 60%, #2144c8 85%);
+    color: white;
+}

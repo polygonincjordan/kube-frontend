@@ -1,0 +1,348 @@
+<div class="main-document row" *ngIf="showDocumentList()">
+  <div class="col-md-6">
+    <div class="document-contant">
+      <div class="document-header">
+        <img width="30" src="assets/img/info-document.png" />
+        <h6 class="font-weight-bold ml-3">Current visit document</h6>
+      </div>
+      <div class="document-detail-list">
+        <ng-container *ngFor="let item of currentVisitDocumet | filter: searchString; let i = index ">
+          <div class="document-list m-1 p-2"  [ngClass]="selectedIndex == i? 'selected-item': ''">
+            <div class="row mr-0 ml-0 align-items-center">
+              <div class="col-md-4 p-0" (click)="selectDocument(item, i)">
+                <strong class="" [title]="getTitleName(item)">{{ item.DtidText }} {{item.Dokvr ? dockVer(item.Dokvr) : ''}}</strong>
+              </div>
+              <div class="col-md-2 p-0" (click)="selectDocument(item, i)">
+                <strong class="color-43aee7" [title]="item.NodocText">{{ item.NodocText ? item.NodocText : item.DokstText }}</strong>
+              </div>
+              <div class="col-md-2 p-0" (click)="selectDocument(item, i)">
+                <strong class="in-line" [title]="getDate(item.Dodat) | date: 'dd-MM-y'"><span *ngIf="item.Dodat">|</span> {{ item.NodocText ? '' : getDate(item.Dodat) | date: "dd-MM-y" }}</strong>
+              </div>
+              <div class="col-md-3 p-0" (click)="selectDocument(item, i)">
+                <strong class="in-line" [title]="item.MitarbName"><span *ngIf="item.MitarbName">|</span> {{ item.NodocText ? '' : item.MitarbName }}</strong>
+              </div>
+               <div class="col-md-1 p-0 d-flex align-items-center" (click)="$event.preventDefault()">
+                <div class="col-md-6 p-0" *ngIf="item.NodocText !='N/A'">
+                  <img src="assets/img/eye-icon.svg" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" />
+                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="item?.DokstText == 'Released' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')"></i>
+                </div>
+                  <div class="col-md-6 p-0">
+                    <div class="d-flex" style="width: 100%;"
+                    (click)="onReleaseHistoryDataCurrent(item.Dockey, item, documentVersionList)">
+                    <select *ngIf="item.NodocText !='N/A' && item.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="document-contant">
+      <div class="document-header">
+        <img width="30" src="assets/img/info-document.png" />
+        <h6 class="font-weight-bold ml-3">Patient profile document</h6>
+      </div>
+      <div class="document-detail-list">
+        <div class="row  m-1" *ngFor="let item of patientProfileDocumet | keyvalue | filter: searchString; let i = index">
+          <div class="witdh-16 pl-2 mt-3">
+            <strong class="list-doc-date" [title]="getDate(item.key) | date: 'dd-MM-y'">{{ getDate(item.key) | date: "dd-MM-y" || '-' }}</strong>
+          </div>
+          <div class="w-100 mt-1   ml-1 document-list mr-0 ml-0 align-items-center row m-0 p-2" *ngFor="let member of item.value; let i = index" [ngClass]="i > 0 ? 'mt-1':''">
+            <div class="col-md-4 pl-0">
+              <strong class="" [title]="member.Dktxt">{{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</strong>
+            </div>
+            <div class="col-md-2 pl-0">
+              <strong class="color-43aee7" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</strong>
+            </div>
+            <div class="col-md-2 p-0">
+              <strong class="in-line" [title]="getDate(member.Dodat) | date: 'dd-MM-y'"><span *ngIf="member.Dodat">|</span> {{ getDate(member.Dodat) | date: "dd-MM-y" }}</strong>
+            </div>
+            <div class="col-md-3 pl-0">
+              <strong class="in-line" [title]="member.MitarbName"><span *ngIf="member.MitarbName">|</span> {{ member.MitarbName }}</strong>
+            </div>
+            <div class="col-md-1 pl-0 d-flex align-items-center" (click)="$event.preventDefault()">
+              <div class="col-md-6 p-0 mr-2" *ngIf="member.NodocText !='N/A'">
+                <!-- <img src="assets/img/eye-icon.svg" (click)="getReleasedPdf(item, labpdfmodal)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" /> -->
+                <img width="25" src="assets/img/rad-patient-image.png" (click)="getReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'image/bmp' || member.AttMimeType === 'url'" />
+                <i aria-hidden="true" (click)="getReleasedPdf(member, labpdfmodal)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="member.AttMimeType === 'PDF'"></i>
+                <img src="assets/img/document-html.png" width="15px" height="15px" (click)="getReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'HTML'" />
+                <!-- <i class="fa fa-html5" aria-hidden="true" (click)="getReleasedPdf(item, labpdfmodal)" *ngIf="item.AttMimeType === 'HTML'"></i> -->
+              </div>
+                <div class="col-md-6 p-0">
+                  <div class="d-flex" style="width: 100%;"
+                  (click)="onReleaseHistoryData(member.Dockey, member)">
+                  <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="education-AddEdit-form" *ngIf="admissionService.isAddEditDocVisitForm">
+  <app-doc-visit-note [soapFormEvent]="soapFormEvent"  (reloadTableList)="realodEducationList($event)"
+    ></app-doc-visit-note>
+</div>
+
+<div class="education-AddEdit-form" *ngIf="admissionService.isAddEditEducationAsset">
+  <app-education-form [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)" [isExpanded]="isExpanded"></app-education-form>
+</div>
+
+<div class="medical-AddEdit-Form" *ngIf="admissionService.isAddEditMedicalForm">
+  <app-medical-report  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-medical-report>
+</div>
+<div *ngIf="admissionService.isAddEditPhysicianForm">
+  <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)">
+  </app-physician-form>
+</div>
+
+<div *ngIf="admissionService.isAddEditObsVteAnt">
+  <app-obs-vte-anteptm [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-obs-vte-anteptm>
+</div>
+
+<div *ngIf="admissionService.isAddEditSopaDocument">
+  <app-sopa-document  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-sopa-document>
+</div>
+
+<div *ngIf="admissionService.isAddEditDischargeSummery">
+  <app-discharge-summary [userConfigSet]="userconfig" [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-discharge-summary>
+</div>
+
+<div *ngIf="admissionService.isAddEditObstetricRisk">
+  <app-obstetric-risk (reloadTableList)="realodEducationList($event)" [soapFormEvent]="soapFormEvent"></app-obstetric-risk>
+</div>
+<div *ngIf="admissionService.isAddEditObsGynForm">
+  <app-obs-gyn [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-obs-gyn>
+</div>
+<div *ngIf="admissionService.isAddEditOperationReport">
+  <app-operation-report [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-operation-report>
+</div>
+<div *ngIf="admissionService.isAddEditNeonatal">
+  <app-neonatal-progress-note [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-neonatal-progress-note>
+</div>
+<div *ngIf="admissionService.isAddEditNeonatalMR">
+  <app-neonatal-medical-report [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-neonatal-medical-report>
+</div>
+<ng-template #labpdfmodal>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer
+    *ngIf="pdfUrlType == 'pdf'"
+        [src]="pdfUrl"
+        height="80vh"
+        [backgroundColor]="'#525659'"
+        [zoom]="'80'"
+        [sidebarVisible]="true"
+        [showOpenFileButton]="false"
+        [showBookmarkButton]="false"
+        >
+      </ngx-extended-pdf-viewer>
+    <div class="row" >
+      <!-- <iframe [src]="pdfUrl" width="2000" height="600"> </iframe> -->
+    </div>
+    <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
+      <img [src]="releaseDocumentImage" style="height: 70vh;" />
+    </div>
+    <div class="w-100" *ngIf="pdfUrlType == 'html'">
+      <div [innerHTML]="htmlData"></div>
+    </div>
+    <div class="mt-2" style="text-align: center">
+      <button
+        class="btn btn-primary"
+        (click)="closePdfModal()"
+        style="background-color: #0082c8; border: #0082c8"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #releasepdfmodal>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer
+      [src]="pdfUrl"
+      height="80vh"
+      [backgroundColor]="'#525659'"
+      [zoom]="'80'"
+      [sidebarVisible]="true"
+      [showOpenFileButton]="false"
+      [showBookmarkButton]="false"
+    >
+    </ngx-extended-pdf-viewer>
+    <iframe *ngIf="isImageFrame" [src]="pdfUrl" width="2000" height="600"> </iframe>
+    <div class="mt-2" style="text-align: center">
+      <button
+        class="btn btn-primary"
+        (click)="closePdfModal()"
+        style="background-color: #0082c8; border: #0082c8"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<diagnosis-history-popup #diagnosisHistory
+  (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)"
+  (onAttachmentClose)="onOpenAttachment($event)"></diagnosis-history-popup>
+
+  <ng-template #documentVersionList>
+    <div class="medication-popup px-3 py-2" *ngIf="configurationData &&
+      configurationData.length">
+      <div
+        *ngFor="let data of configurationData"
+        class="detail_row" (click)="onOpenAttachmentForCurrent(data)">
+        <div class="d-flex align-items-center w-100">
+          <span>{{ formatDate(data.Erdattim) }}</span>
+          <p class="attending-section" style="width: 100%">
+            <strong> Attending Doctor:</strong>{{ data.Mitarbname }} - {{
+            data.Orgdo }}
+          </p>
+          <span class="fix-width mw-135 version-class">{{
+            data.DtidText }} {{ dockVer(data.Dokvr) }}</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="d-flex" style="min-width: 72.6%!important;">
+              <span class="border-0 mw-135 txt-al-ctr doc-status">{{
+                data.Released ? "Released" : "Draft"
+                }}</span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #currentDocPdfVer>
+    <div class="modal-body">
+        <ngx-extended-pdf-viewer
+          *ngIf="!isImageFrame"
+          [src]="pdfUrl"
+          height="80vh"
+          [backgroundColor]="'#525659'"
+          [zoom]="'80'"
+          [sidebarVisible]="true"
+          [showOpenFileButton]="false"
+          [showBookmarkButton]="false"
+          >
+        </ngx-extended-pdf-viewer>
+        <iframe *ngIf="isImageFrame" [src]="sanitizeBase64()" width="2000" height="600"> </iframe>
+      <div class="mt-2" style="text-align: center">
+        <button
+          class="btn btn-primary"
+          (click)="selectedIconPdf.hide()"
+          style="background-color: #0082c8; border: #0082c8"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #selectIconPdf>
+    <div class="modal-body">
+      <ngx-extended-pdf-viewer
+        *ngIf="pdfUrlType == 'pdf'"
+        [src]="pdfUrl"
+        height="80vh"
+        [backgroundColor]="'#525659'"
+        [zoom]="'80'"
+        [sidebarVisible]="true"
+        [showOpenFileButton]="false"
+        [showBookmarkButton]="false"
+        >
+      </ngx-extended-pdf-viewer>
+      <div class="row">
+        <!-- <iframe [src]="pdfUrl" width="2000" height="600"> </iframe> -->
+      </div>
+      <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
+        <img [src]="releaseDocumentImage" style="height: 70vh;" />
+      </div>
+      <div class="w-100" *ngIf="pdfUrlType == 'html'">
+        <div [innerHTML]="htmlData"></div>
+      </div>
+
+      <div class="mt-2" style="text-align: center">
+        <button
+          class="btn btn-primary"
+          (click)="selectedIconPdf.hide()"
+          style="background-color: #0082c8; border: #0082c8"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #attachmentmodal>
+    <div class="modal-body">
+      <div class="main-white-boxes">
+        <div class="attachment-main-new">
+          <h4 class="top-head-h4">Attachments</h4>
+        </div>
+        <form [formGroup]="createAttachmentForm">
+          <div class="attachment-main-new">
+            <div class="attachment">
+              <span> Attachment Type</span>
+              <ng-select placeholder="Search" formControlName="attachmentType"
+                style="font-size: 12px; width: 65%;" [ngClass]="{'error-border': createAttachmentForm.get('attachmentType')?.hasError('required') && (createAttachmentForm.get('attachmentType')?.touched || createAttachmentForm.get('attachmentType')?.dirty)}">
+                <ng-option *ngFor="let item of attachmentList" [value]="item.Id">
+                  {{ item.Descr }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="attachment-main-new upload-box">
+            <span class="top-head-new"> Upload Attachment</span>
+            <div class="d-flex"
+              style="align-items: center;justify-content: space-between;">
+              <div class="attachment position-relative">
+                <input type="file" id="docpicker" style="display: none;"
+                  formControlName="attachmentFile"
+                  accept="image/png, image/gif, image/jpeg, application/pdf"
+                  (change)="handleFileChange($event)" >
+                <label id="myfile" class="w-100 pl-2 m-0" >
+                  <label for="docpicker" class="choose-filebut"
+                    *ngIf="!this.file"
+                    [ngClass]="{'error-border': createAttachmentForm.get('attachmentFile')?.hasError('required') && (createAttachmentForm.get('attachmentFile')?.touched || createAttachmentForm.get('attachmentFile')?.dirty)}">
+                    Choose file
+                  </label>
+                  <div
+                    class="choose-filename d-flex justify-content-between align-items-center"
+                    *ngIf="this.file">
+                    <div title="{{filename}}">{{filename}}</div>
+                    <img src="./assets/img/close.png" title="remove"
+                      class="cursor-pointer" *ngIf="this.file"
+                      (click)="removeFile(); createAttachmentForm.get('attachmentFile').markAsTouched()"  height="13" />
+                  </div>
+                </label>
+                <div class="attachment-btn d-flex position-absolute" >
+                  <button class="border-0 px-1 fs-6"
+                    (click)="onFileSelected(documentUrlpdf)" title="view"
+                    *ngIf="this.file"><img style="filter: grayscale(1);"
+                      src="./assets/img/eye-icon.svg" /></button>
+                </div>
+              </div>
+
+              <div class="btns-save-cancel d-flex">
+                <button class="btn-save me-1 " (click)="createAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
+                <button class="btn-save" (click)="resetAttachment()">
+                  Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #documentUrlpdf>
+  <div *ngIf="this.documentUrl">
+    <iframe width="100%" height="700" [src]="documentUrl" frameborder="0"
+      allowfullscreen></iframe>
+  </div>
+</ng-template>

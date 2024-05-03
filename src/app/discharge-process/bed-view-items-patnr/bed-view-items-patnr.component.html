@@ -1,0 +1,28 @@
+<div class="card" style="margin: 8px">
+    <div class="card-body" style="padding: 10px 10px 20px 10px">
+      <div style="display: flex; justify-content: space-between">
+        <span>{{item?.BedidText}}</span>
+        <span><strong style="font-size: 11px">{{item?.RoomidText}}</strong></span>
+        <span><strong style="font-size: 11px"> {{item?.Floor}}</strong></span>
+      </div>
+      <div style="text-align: center">
+        <img [src]="getImgSrc()" 
+        (click)="redirectToAdmissionProcess(item)" style="width: 97px; cursor: pointer;" />
+      </div>
+      <div style="position: relative; top: 9px; font-weight: bold">
+        <div class="d-flex justify-content-between">
+            <p class="card-text" style="margin: 0;">
+              {{item?.PatientName}}
+            </p>
+            <span class="card-text" style="margin: 0">MRN# {{item?.Mrn}}</span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <p class="card-text" style="margin: 0;">
+              ({{item?.PatientGender}},&nbsp;{{item?.PatientAge}})
+            </p>
+            <span class="card-text" style="margin: 0">{{ getDate(item.AdmissionDate) | date : "dd.MM.yyyy" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>

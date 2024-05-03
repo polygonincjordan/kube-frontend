@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-between align-items-center mt-2">
+  <div class="search-input col-md-3 ml-3 pl-0">
+    <img src="assets/img/pres-search-icon.svg" alt="" />
+    <input (input)="onSearchChange($event)"
+      type="text"
+      placeholder="Search"
+      class="form-control w-100"
+      id="searchFilter"
+    />
+  </div>
+  <div class="header-content d-flex align-items-center">
+    <div class="d-flex align-items-center mr-3" style="border: 1px solid #e2e3e4;
+    padding: 8px;
+    border-radius: 11px;">
+      <input
+        [checked]="isEnCounterCheck"
+        (click)="selectCheckBox('Encounter')"
+        class="mr-1 largerCheckbox"
+        type="checkbox"
+      />
+      <label class="m-0">Encounter Diagnosis</label>
+    </div>
+    <div class="d-flex align-items-center" style="border: 1px solid #e2e3e4;
+    padding: 8px;
+    border-radius: 11px;">
+      <input
+        [checked]="isPatientCheck"
+        (click)="selectCheckBox('Patient')"
+        class="mr-1 largerCheckbox"
+        type="checkbox"
+      />
+      <label class="m-0">Patient Diagnosis</label>
+    </div>
+  </div>
+</div>
+<div style="border-bottom: 10px solid #f2f4f6;
+width: 104%;
+position: relative;
+left: -21px;margin-top: 1em;"></div>

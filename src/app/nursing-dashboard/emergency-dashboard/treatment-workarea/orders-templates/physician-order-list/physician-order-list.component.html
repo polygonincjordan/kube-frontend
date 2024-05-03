@@ -1,0 +1,50 @@
+<div>
+<table class="table table-hover" style="border-collapse: separate;
+border-spacing: 2px;">
+  <thead
+    style="
+      background: #e4edf5 !important;
+      position: sticky;
+      top: 0;
+      z-index: 9;
+    "
+  >
+    <tr>
+      <th colspan="1" scope="col">Order Date</th>
+      <th colspan="1" scope="col">Status</th>
+      <th colspan="2" scope="col">Occupational Group</th>
+      <th colspan="2" scope="col">Employee</th>
+      <th colspan="4" scope="col">Physician Order</th>
+      <th colspan="1" scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody style="background-color: #fbfcff;">
+    <tr *ngFor="let phyOrder of physicianOrderList" style="font-weight: 600">
+      <td colspan="1">{{ getDate(phyOrder.CreationDate) | date : "d.MM.y" }}</td>
+      <td colspan="1"><span style="background: #fff5eb;
+        padding: 9px 14px;
+        border-radius: 34px;
+        color: #ab5c14;">{{ phyOrder.StatusText }}</span></td>
+      <td colspan="2">{{ phyOrder?.ProfessionalGroupText }}</td>
+      <td colspan="2">{{ phyOrder.EmployeeRespName }}</td>
+      <td colspan="4">{{ phyOrder.ZphysOrder }}</td>
+      <td colspan="1" style="text-align: center; overflow: visible !important">
+        <div class="dropdown">
+          <i
+            class="fa fa-ellipsis-v dropdown-toggle"
+            aria-hidden="true"
+            style="cursor: pointer"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          ></i>
+          <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item c-pointer">New Admission</a>
+          </div> -->
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

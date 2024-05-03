@@ -1,0 +1,40 @@
+<form action="" [formGroup]="ePrescriptionService.formDetailGroup">
+  <div class="tab-search-panel d-flex align-items-center">
+    <div class="patient-medication" (click)="onOpenTemplatePopup()">
+      <img src="assets/img/File.svg" height="25px"
+        class="pdf-print">
+    </div>
+    <div class="search-functionality col-md-3 ml-3 pl-0">
+      <img src="assets/img/pres-search-icon.svg">
+      <ctrl-search-select-template [defaultTemplateMedication]="this.ePrescriptionService.templateMedicationData" (onClose)="broadCastEvent($event)"></ctrl-search-select-template>
+    </div>
+    <!-- <div class="texteditor">
+      <h5 class="mb-0">Patient Medications</h5>
+      <img src="assets/img/texteditor.png" width="40" (click)="onOpenMedicationPopup()">
+    </div> -->
+    <div class="texteditor">
+      <!-- <span class="form-btn text-right" style="
+      margin-right: 8px;">
+        <button type="button" class="er-btn-create"(click)="TemplateDischargeOrder()">Create Template</button>
+      </span> -->
+      <span class="form-btn text-right" style="
+      margin-right: 8px;">
+        <button type="button" class="er-btn-create" (click)="CreateDischargeOrder()">Create</button>
+      </span>
+      <span class="form-btn text-right" style="
+      margin-right: 8px;">
+        <button type="button" class="er-btn-create" (click)="TemplateDischargeOrder()">Create Template</button>
+      </span>
+      <span class="mb-0 c-pointer" style="border: 1px solid #848f96;
+      border-radius: 19px;
+      padding: 11px;
+    font-size: 13px;
+    font-weight: 800;" (click)="onOpenMedicationPopup()">Patient Medications</span>
+      <!-- <img src="assets/img/texteditor.png" width="40" (click)="onOpenMedicationPopup()"> -->
+    </div>
+  </div>
+</form>
+
+<medication-popup #medicationPopup></medication-popup>
+<template-popup #templatePopup></template-popup>
+<template-detail-popup #templateDetailPopup></template-detail-popup>

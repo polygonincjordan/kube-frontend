@@ -1,0 +1,27 @@
+::ng-deep.accordion-group{
+  .card{
+      background: #EDF6FD !important;
+      margin: 10px;
+      .accordion-toggle{
+       .btn.btn-link {
+         font-size: 15px !important;
+         font-weight: bold;
+       }
+      }
+      .panel-collapse {
+       background: white !important;
+       .panel-body.card-block.card-body{
+         padding: 0 !important;
+       }
+      }
+   }
+ }
+ .pull-right{
+   font: normal normal normal 14px/1 FontAwesome;
+   font-size: inherit;
+   text-rendering: auto;
+   -webkit-font-smoothing: antialiased;
+   font-size: 20px;
+   margin-top: -17px;
+ }
+

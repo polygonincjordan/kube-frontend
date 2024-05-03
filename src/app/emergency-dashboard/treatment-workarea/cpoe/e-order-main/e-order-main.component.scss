@@ -1,0 +1,17 @@
+.tab-navigation-part {
+  height: calc(100vh - 200px) !important;
+  background: none !important;
+  border: 1px solid #cacaca !important;
+}
+
+.clinical-order {
+  height: calc(100vh - 270px);
+  overflow: auto;
+}
+.e-order-sidewrap .active-order-panel.e-order-wrapper-main {
+  height: calc(100vh - 320px) !important;
+}
+
+.tab-navigation-part .tab-navigate .tab-nav {
+  padding: 0 !important;
+}

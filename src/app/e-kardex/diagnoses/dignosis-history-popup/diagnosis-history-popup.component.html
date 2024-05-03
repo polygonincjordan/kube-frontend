@@ -1,0 +1,30 @@
+<ng-template #releaseHistory>
+  <div class="medication-popup px-3 py-2" *ngIf="configurationData &&
+    configurationData.length">
+    <div
+      *ngFor="let data of configurationData"
+      class="detail_row">
+      <div class="d-flex align-items-center w-100" (click)="onOpenModelInpatient(data)">
+        <span>{{ formatDate(data.Erdattim) }}</span>
+        <p class="attending-section" style="width: 100%">
+          <strong> Attending Doctor:</strong>{{ data.Mitarbname }} - {{
+          data.Orgdo }}
+        </p>
+        <span class="fix-width mw-135 version-class">{{
+          data.DtidText }} (v{{ data.Dokvr }})</span>
+      </div>
+      <div class="d-flex align-items-center">
+          <div class="d-flex" style="min-width: 72.6%!important;">
+            <span class="border-0 mw-135 txt-al-ctr doc-status">{{
+              data.Released ? "Released" : "Draft"
+              }}</span>
+          </div>
+          <div class="mw-15" style="min-width: 15px" (click)="onOpenAttachmentInpatient(data.DocKey)">
+            <a *ngIf="data.Released"><img
+                src="assets/img/attach.png" class="mw-15"
+                /></a>
+          </div>
+        </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,63 @@
+<table id="table" class="table table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columnsList" [ngClass]="col === 'Created On' || col == 'Created At' ? 'main-table-th' : ''">
+          {{ col }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of radPatientList;let i=index">
+        <tr>
+          <td>{{ getDate(item.Datetime) | date : "dd.MM.yyyy" }}</td>
+          <td>{{ getDate(item.Datetime) | date : "HH:mm" }}</td>
+          <td>{{ item.Erusr }}</td>
+          <td>{{ item.Patnr }}</td>
+          <td class="td-pointer"  (click)="redirectToeKardex(item)">{{ item.Patname }}</td>
+          <td>{{ item.Floor }}</td>
+          <td>{{ item.RoomidText }}</td>
+          <td class="rad-text-overflow" [title]="item.Leitxt">{{ item.Leitxt }}</td>
+          <td>{{ item.Status }}</td>
+          <td>
+            <img width="35px" *ngIf="item.Img" class="mr-2 cursor-pointer" src="assets/img/rad-patient-image.png" (click)="openImageActionSet(item)" />
+          </td>
+          <td style="text-align: center">
+            <i *ngIf="item.Pdf" class="fa fa-file-pdf-o cursor-pointer" aria-hidden="true" style="font-size: 17px; color: red"  (click)="getPdf(item)"></i>
+          </td>
+          <td style="text-align: center">
+            <i class="fa fa-circle cursor-pointer" aria-hidden="true" style="color: red; font-size: 23px" *ngIf="item?.Criticalflag"></i>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <ng-template #labpdfmodal>
+    <div class="modal-body">
+      <div class="row">
+        <iframe [src]="pdfUrl" width="1000" height="500"> </iframe>
+      </div>
+      <div class="mt-2" style="text-align: center">
+        <button
+          class="btn btn-primary"
+          (click)="closePdfModal()"
+          style="background-color: #0082c8; border: #0082c8"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #imageModal>
+    <div class="modal-body">
+      <div class="row">
+            <iframe [src]="imageUrl" width="1000" height="500">
+       </iframe>
+      </div>
+      <div class="mt-2" style="text-align: center;">
+        <button class="btn btn-primary" (click)="closeImageModal()" style="background-color: #0082c8; border: #0082c8">Close</button>
+      </div>
+  
+    </div>
+  </ng-template>

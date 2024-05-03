@@ -1,0 +1,81 @@
+.btn-color {
+  background-color: #0056B0;
+  border-color: #0056B0;
+  color: #fff;
+}
+
+.btn-color-data {
+  background-color: #F2F4F6;
+  border-color: #F2F4F6;
+  color: black;
+}
+
+.emr-border {
+  border-radius: 10px;
+  border: 1px solid #D9D9D9;
+}
+
+.emer-color {
+  border-radius: 10px;
+  background-color: #F2F4F6;
+  // height: 450px;
+
+  .emer-data {
+    background-color: #E4EDF5;
+    font-size: 18px;
+    color: #72767A;
+    font-weight: bold;
+    border-radius: 10px 10px 0px 0px;
+    padding: 14px !important;
+  }
+}
+
+.overflow-lab {
+  // height: calc(100vh - 48px) !important;
+  overflow: auto;
+  height: 400px;
+}
+
+.lab-border {
+  border: 1px solid #1976D2;
+  border-radius: 8px;
+  padding: 11px;
+}
+
+.img-color {
+  background-color: #DAF4FF;
+  border-radius: 7px;
+}
+
+.fliter-data {
+  background-color: #F3F7FF;
+  border-radius: 50px;
+}
+
+.padding-data {
+  padding-right: 3px !important;
+}
+
+.cursor-Patients {
+  width: 200px;
+}
+
+.font-size {
+  font-size: 11px;
+  font-weight: bolder;
+  color: #272A2E;
+}
+
+.fliter-Lab {
+  background-color: #F3F7FF;
+  border-radius: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.Result-color {
+  background-color: #EDF6FD;
+  border-radius: 10px 10px 0px 0px !important;
+  font-size: 16px;
+}

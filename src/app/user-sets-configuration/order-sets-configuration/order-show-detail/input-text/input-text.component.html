@@ -1,0 +1,13 @@
+<span
+  *ngIf="fieldType == 'text'"
+  class="d-flex align-items-center p-0 position-relative pt-2"
+>
+  <span class="input-title z-indexlabel">{{ fieldName }}</span>
+  <span class="input-text-field d-inline-block align-top w-100">
+    <input readonly [type]="fieldType" [value]="value" [title]="value" class="form-control" [ngClass]="fieldName === 'Additional Info' ? 'info-input' : '' " />
+  </span>
+</span>
+<div class="d-flex" *ngIf="fieldType === 'checkbox'">
+  <input disabled [checked]="value" [type]="fieldType" style="text-align: center" />
+  <label class="m-0 pr-1 color ml-1">{{fieldName}}</label>
+</div>

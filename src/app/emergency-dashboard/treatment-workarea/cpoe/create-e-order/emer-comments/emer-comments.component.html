@@ -1,0 +1,16 @@
+<ng-template #additionalInfo>
+  <div class="additional-input additional-input w-100">
+    <div class="d-flex justify-content-between align-items-center bg-comm p-2">
+      <label for="additionalInfo" class="w-100">Comment</label>
+      <div>
+        <img src="assets/img/CloseTab.svg" alt="" (click)="cancelAdditionalInfo()">
+      </div>
+    </div>
+    <textarea type="text" [value]="isDefaultComment" placeholder="write a comment" #additionalInfo class="widht-data m-2"></textarea>
+  </div>
+  <div class="button-group d-flex justify-content-center align-content-center p-3">
+    <button (click)="updateAdditionalInfo(additionalInfo.value)" class="d-flex
+      align-items-center w-100 mr-2 bg-color justify-content-center">Save</button>
+    <!-- <button (click)="cancelAdditionalInfo()" class="d-flex align-items-center"><img src="assets/img/cancel-icon.svg" class="mr-1">Cancle</button> -->
+  </div>
+</ng-template>

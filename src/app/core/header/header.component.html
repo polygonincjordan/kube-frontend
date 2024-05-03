@@ -1,0 +1,342 @@
+<div class="emr-header">
+  <span><img
+      style="height: 44px; width: 27px; float: left"
+      src="assets/img/banner-left-part-1.svg" title="Profile"
+      /></span>
+  <span>Abdali Hospital - The Kube</span>
+  <div class="adjust-icons">
+    <span><i
+        class="fa fa-search" title="Patient Search"
+        aria-hidden="true"
+        (click)="openModal(template)"></i></span>&nbsp;
+    <!-- <span *ngIf="isPhysician"><i
+        class="fa fa-th"
+        aria-hidden="true"
+        (click)="openSideWidget($event)"></i></span>&nbsp; -->
+    <span><i
+        class="fa fa-user-circle-o"
+        aria-hidden="true"
+        (click)="openProfileMenu($event)"></i></span>
+  </div>
+  <img
+    style="height: 44px; width: 27px; float: right"
+    src="assets/img/banner-right-part-2.svg"
+    />
+</div>
+<!-- modal -->
+<!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">button</button> -->
+<ng-template #template style="max-width: 392px">
+  <!-- <div class="modal-header">
+    <h4 class="modal-title pull-left">Patient Search Result</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <div class="modal-body">
+    <div class="col">
+      <h4 style="text-align: center"><strong>Patient Search Result</strong></h4>
+      <form [formGroup]="form">
+        <label><strong>Date of birth</strong></label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder=""
+          [minDate]=""
+          [maxDate]=""
+          #dp="bsDatepicker"
+          bsDatepicker
+          formControlName="dob"
+          [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+          }"
+          />
+        <label><strong> MRN</strong></label>
+        <input type="text" class="form-control" formControlName="mrn" />
+        <label><strong>Patient First Name</strong></label>
+        <input type="text" class="form-control" formControlName="firstName" />
+        <label><strong>Patient Last Name</strong></label>
+        <input type="text" class="form-control" formControlName="lastName" />
+        <label><strong>Telephone Number</strong></label>
+        <input type="text" class="form-control" formControlName="telephone" />
+        <div class="col text-center">
+          <button
+            class="btn btn-primary"
+            style="
+            background-color: #096798 !important;
+            border-color: #096798 !important;
+            color: #fff;
+            margin-top: 7px;
+            "
+            (click)="patientSearch(patientsearchtemplate)">
+            Find
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<!-- modal end -->
+<!-- open side widget -->
+<div class="card sidewidget" *ngIf="sideWidget">
+  <div class="card-body">
+    <div class="row">
+      <i class="fa fa-cog" aria-hidden="true" style="font-size: 22px"></i>
+      <h5 class="card-title" style="margin: 0 15px 13px">
+        Widget Configuration
+      </h5>
+      <i
+        class="fa fa-times"
+        aria-hidden="true"
+        style="font-size: 22px"
+        (click)="openSideWidget($event)"></i>
+      <div class="col">
+        <div
+          class="card"
+          style="width: 14rem; height: 5rem; margin: 13px"
+          *ngFor="let item of widgetsSet">
+          <div class="card-body">
+            <div class="row">
+              <i
+                *ngIf="item.Assigned"
+                class="fa fa-unlock"
+                aria-hidden="true"
+                style="font-size: 22px"></i>
+              <i
+                *ngIf="!item.Assigned"
+                class="fa fa-lock"
+                aria-hidden="true"
+                style="font-size: 22px"></i>
+              <h5
+                class="card-title"
+                style="margin: 0 15px 13px;
+                font-size: 11px;
+                font-weight: bold;
+                width: 66px;
+                overflow-wrap: break-word;">
+                {{ item.Descr }}
+              </h5>
+              <span
+                class="subscribed"
+                *ngIf="item.Assigned"
+                (click)="deleteWidgetConfigSet(item.Widgetid)">Subscribed</span>
+              <span
+                class="provisioned"
+                *ngIf="!item.Assigned"
+                (click)="postWidgetConfigSet(item.Widgetid)">Provisioned</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end side widget -->
+<!-- open profile -->
+<div class="card header-shadow profilemenu header-radius" style="width: 23rem"
+  *ngIf="showprofilemenu" (click)="$event.stopPropagation()">
+  <div class="p-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex">
+        <img src="assets/img/avatar-default.png" class="card-img-top
+          header-radiusimg" alt="..."/>
+        <div class="d-flex align-content-center flex-wrap pl-3">
+          <div class="font-weight-bolder w-100 font-family-roboto
+            header-fontsize
+            text-black ">{{
+            profileResponse.GpartName }}</div>
+          <p class="hea-fontsize w-100 font-weight-bolder font-family-roboto
+            text-dark-gray m-0">
+            {{profileResponse.ProfGroupTxt }}
+            {{profileResponse.Gpart}}
+          </p>
+        </div>
+      </div>
+      <div class="ha-grid mr-4">
+        <img src="assets/img/up-arrow.png" alt="" class="header-margin"
+          height="6">
+        <img src="assets/img/down-arrow.png" alt="" height="6">
+      </div>
+    </div>
+    <hr class="ha-bordercol" *ngIf="outpatientlistdata">
+    <div class="ml-4" *ngIf="outpatientlistdata">
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <!-- <h4 class="ml-3 font-weight-bold ha-color ">ln-Patients Dashboard</h4> -->
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/e-hospitalist" (click)="askQuestion('/e-hospitalist')"><h4 class="ml-3
+            font-weight-bold ha-color">In-Patients Dashboard</h4></a>
+      </div>
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/emergencydashboard" (click)="askQuestion('/emergencydashboard')"><h4 class="ml-3
+            font-weight-bold ha-color">Emergency Dashboard</h4></a>
+      </div>
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/orders-dashboard" (click)="askQuestion('/orders-dashboard')"><h4 class="ml-3
+            font-weight-bold ha-color">Orders Sets</h4></a>
+      </div>
+    </div>
+    <hr class="ha-bordercol" *ngIf="outpatientlistdata">
+    <div class="ml-4" *ngIf="widgetsSet && widgetsSet.length &&
+      this.hospitalistdate && outpatientlistdata">
+      <h4 class="mb-3 hea-color font-weight-bold">Dashboard Widgets</h4>
+      <div class="d-flex m-1 hea-custom" *ngFor="let item of widgetsSet">
+        <div class="custom-control ml-4 custom-switch">
+          <input type="checkbox" class="custom-control-input c-pointer"
+            (change)="DashboardConfigSet($event,item.Widgetid)"
+            id="{{ item.Descr }}" [checked]="item.Assigned">
+          <label class="custom-control-label mb-3 ha-label font-weight-bold
+            ha-color c-pointer"
+            for="{{ item.Descr }}">{{ item.Descr }}</label>
+        </div>
+      </div>
+    </div>
+    <hr class="ha-bordercol" *ngIf="widgetsSet && widgetsSet.length &&
+      hospitalistdate">
+    <div class="ml-3">
+      <div class="d-flex m-1">
+        <img src="assets/img/Settings.png" alt="" height="29">
+        <h4 class=" font-weight-bold ha-color ml-3">Profile Settings</h4>
+      </div>
+      <div class="d-flex m-1 c-pointer"
+        (click)="openModal(Changepassword)">
+        <img src="assets/img/PassWord.png" alt="" height="27">
+        <h4 class=" font-weight-bold ha-color ml-3">Change Password</h4>
+      </div>
+      <div class="d-flex m-1 ">
+        <img src="assets/img/Logout.png" alt="" class="c-pointer" height="27 "
+          (click)="logOut()">
+        <h4 class=" font-weight-bold ha-color c-pointer ml-3"
+          (click)="logOut()">Logout</h4>
+      </div>
+    </div>
+    <hr class="ha-bordercol">
+    <ul class=" ml-3 d-flex m-0">
+      <div class=" ml-2 hea-color font-weight-bold hea-fontsize">v1</div>
+      <li class=" mb-0 ml-2 ql-color-gray font-weight-bold hea-color
+        hea-fontsize"><img
+          src="assets/img/dot.png" alt=""
+          height="5px"
+          class="mb-1 mr-1"> Kube</li>
+      <li class=" mb-0 ml-2 ql-color-gray font-weight-bold hea-color
+        hea-fontsize"><img
+          src="assets/img/dot.png" alt=""
+          height="5px"
+          class="mb-1 mr-1">Polygon-inc
+        Development</li>
+    </ul>
+
+    <!-- <p>
+        <i
+          class="fa fa-power-off"
+          aria-hidden="true"
+          style="font-size: 21px; cursor: pointer"
+          (click)="logOut()"></i><span
+          style="
+          position: relative;
+          bottom: 2px;
+          left: 20px;
+          font-size: 19px;
+          cursor: pointer;
+          "
+          (click)="logOut()">Log out</span>
+      </p> -->
+  </div>
+</div>
+
+<ng-template #Changepassword>
+  <div class="text-center ">
+    <div class="p-3 password-bgcolor text-center">
+      Change Password
+    </div>
+    <div class="p-4" [formGroup]="passform">
+      <div class="">
+        <div class="text-left">
+          <label for="" class="font-weight-bold">Current Password</label>
+          <input type="password" class="form-control mb-2" formControlName="currentPass">
+        </div>
+        <div class="text-left">
+          <label for="" class="font-weight-bold">New Password</label>
+          <input type="password" class="form-control mb-2" formControlName="newPass">
+        </div>
+        <div class="text-left">
+          <label for="" class="font-weight-bold">Confirm Password</label>
+          <input type="password" class="form-control mb-2" formControlName="confirmNewPass">
+        </div>
+      </div>
+      <div class=" ">
+        <button class="btn btn-secondary rounded-sm w-100" (click)="savePassword()">DONE</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+
+
+
+
+<!-- end profile -->
+<!-- patient search modal -->
+<!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">button</button> -->
+<ng-template #patientsearchtemplate style="min-width: 392px">
+  <!-- <div class="modal-header">
+    <h4 class="modal-title pull-left">Patient Search Result</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <div class="modal-body">
+    <div class="input-group mb-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="fa
+            fa-search"
+            aria-hidden="true"></i></span>
+      </div>
+      <input class="form-control" type="text" placeholder="search..."
+        [(ngModel)]="searchString"/>
+    </div>
+    <div class="col-lg-12 col-md-6 col-sm-12">
+      <table class="table table-bordered table-hover">
+        <thead
+          style="
+          background: #0082c8 !important;
+          color: white;
+          position: sticky;
+          top: 0;
+          ">
+          <tr>
+            <th scope="col">Patient</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Birthdate</th>
+            <th scope="col">Sex</th>
+            <th scope="col">Telephone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of patientSearchData | filter : searchString"
+            style="font-weight: bold;" (click)="openPatientSearch(item)">
+            <td>{{ item.PATNR }}</td>
+            <td>{{ item.NNAME }}</td>
+            <td>{{ item.VNAME }}</td>
+            <td>{{ item.PNAME }}</td>
+            <td>{{ item.GBDAT | date : "dd.MM.yyyy" }}</td>
+            <td>{{ item.GSCHLTXT }}</td>
+            <td>{{ item.TELNR }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- patient search modal end -->

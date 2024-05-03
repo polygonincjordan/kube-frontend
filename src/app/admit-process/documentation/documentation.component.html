@@ -1,0 +1,208 @@
+<div class="search-functionalitypl-0">
+  <form action="" [formGroup]="formDetailGroup" *ngIf="showMainHeader()">
+    <div class="tab-search-panel d-flex align-items-center justify-content-between">
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div class="d-flex w-70">
+          <div class="search-functionality mr-2">
+            <img src="assets/img/pres-search-icon.svg" class="pl-2" alt="" />
+            <input type="text" (input)="onSearchChange($event)" formControlName="SearchData" placeholder="Search"
+              class="form-control w-100" id="searchFilter" />
+          </div>
+          <div class="date-function mr-4">
+            <img src="assets/img/date-icon.svg" alt="" />
+            <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{ rangeInputFormat: 'DD.MM.YYYY', dateInputFormat: 'DD.MM.YYYY',
+                containerClass: 'daterangepicker documentation-datepicker', showWeekNumbers: false }"
+              class="form-control" formControlName="DateRange" (ngModelChange)="onDateChange($event)" />
+          </div>
+          <div class="select-functionality text-left">
+            <ng-select [searchable]="true" placeholder="Document Type" (change)="documentFilter($event)"
+              formControlName="SelectDropdown">
+              <ng-option *ngFor="let data of this.admissionService.documentTypeFilter" [value]="data.Dtid">{{
+                data.DtidText }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div>
+          <img class="cursor-pointer" (click)="this.admissionService.educationAddForm('add')" title="Create" width="30"
+            src="assets/img/add-document.png" />
+          <img class="ml-2 cursor-pointer" (click)="this.admissionService.educationAddForm('edit')" title="Edit"
+            width="30" src="assets/img/edit-document.png" />
+          <img class="ml-2 cursor-pointer" width="30" src="assets/img/flat-document.png" title="Release"
+            (click)="toReleaseSoapDoc()" />
+          <img class="ml-2 cursor-pointer" width="30" (click)="this.admissionService.educationAddForm('clone')"
+            title="Copy" src="assets/img/clone-document.png" />
+          <img class="ml-2 cursor-pointer" width="30" src="assets/img/delete-document.png" (click)="deleteSelectData()"
+            title="Delete" />
+          <img class="ml-2 cursor-pointer" width="30" src="assets/img/DocRefresh.svg" (click)="resetFilter()"
+            title="Reset" />
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Education Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditEducationAsset">
+    <strong>Education Assessment</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditEducationAsset">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditEducationAsset">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Medication Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditMedicalForm">
+    <strong>Medical report</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditMedicalDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditMedicalDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Physician Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditPhysicianForm">
+    <strong>Physician Assessment</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditPhysicianForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditPhysicianForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Soap Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditSopaDocument">
+    <strong>SOPA Documents</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditSoapDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditSoapDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Discharge Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditDischargeSummery">
+    <strong>Physician Discharge Summary</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditDischargeSummery">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditDischargeSummery">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Obstetric risk Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditObstetricRisk">
+    <strong>Obstetric VTE Risk Assess&Mgt Postaprtum</strong>
+    <div *ngIf="!admissionService.isPDFObstetricRisk">
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditObstetricRisk">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditObstetricRisk">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+    <div *ngIf="admissionService.isPDFObstetricRisk">
+      <button class="sort-btn" *ngIf="!admissionService.isCopyBtnHide" (click)="addEditForm('copy')">Copy</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Obstetric risk Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditObsVteAnt">
+    <strong>Obstetric VTE Risk Assess&Mgt Antepartum</strong>
+    <div *ngIf="!admissionService.isPDFObsVteAnt">
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditObsVteAnt">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsVteAnt">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+    <div *ngIf="admissionService.isPDFObsVteAnt">
+      <button class="sort-btn" *ngIf="!admissionService.isCopyBtnHide" (click)="addEditForm('copy')">Copy</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+  <!-- Obs Gyn Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditObsGynForm">
+    <strong>Obstetrics & Gynecology Physician Assessment</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditObsGynDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsGynDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+  <!-- Neonatal Progress Notes Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditNeonatal">
+    <strong>Neonatal Progress Note</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditNeonatal">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditNeonatal">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+  <!-- Neonatal Medical report Form Header -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditNeonatalMR">
+    <strong>Neonatal Medical Report</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditNeonatalMR">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditNeonatalMR">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Visit Note Form -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditDocVisitForm">
+    <strong>Visit Note Form</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditVisitForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditVisitForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
+ <!-- Transfer Assessment Form -->
+ <div class="education-assess" *ngIf="admissionService.isAddEditTransferAssestForm">
+  <strong>Transer Assessment Form</strong>
+  <div>
+    <button class="sort-btn" (click)="addEditForm('save')"
+      *ngIf="!this.admissionService.isEditTransferAssestForm">Save</button>
+    <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditTransferAssestForm">Save</button>
+    <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+    <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+  </div>
+</div>
+
+<!-- Oparation report -->
+
+<div class="education-assess" *ngIf="admissionService.isAddEditOperationReport">
+  <strong>Operation Report</strong>
+  <div>
+    <button class="sort-btn" (click)="addEditForm('save')"
+      *ngIf="!this.admissionService.isEditOperationReport">Save</button>
+    <button class="sort-btn" (click)="addEditForm('edit')"
+      *ngIf="this.admissionService.isEditOperationReport">Save</button>
+    <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+    <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+  </div>
+</div>

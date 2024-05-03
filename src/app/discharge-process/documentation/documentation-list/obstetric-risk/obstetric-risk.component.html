@@ -1,0 +1,263 @@
+<form [formGroup]="obstetricForm">
+  <div class="row">
+    <div class="date-time col-md-12">
+      <strong class="m-0">Date/Time</strong>
+      <div class="col-md-2 pl-0 ml-3">
+        <input
+          #drp="bsDatepicker"
+          bsDatepicker
+          formControlName="Datee"
+          [bsConfig]="{
+            dateInputFormat: 'DD.MM.YYYY',
+            showWeekNumbers: false
+          }"
+          class="form-control height-normal"
+        />
+      </div>
+      <div class="col-md-2 pl-0">
+        <input
+          type="time"
+          class="form-control height-normal"
+          id="surgery-time"
+          formControlName="Timee"
+        />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="checkbox-diplay checkbox-header">
+        <input type="checkbox" formControlName="HighRisk" /><strong
+          >High Risk</strong
+        >
+      </div>
+      <div class="risk-check-manu h-80">
+        <div class="checkbox-diplay">
+          <input formControlName="HPrevVte" type="checkbox" /><label
+            >Any previous VTE</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="HLmwh" /><label
+            >Anyone required antenatal LMWH</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="HLrThrombophilia" /><label
+            >High Risk Thrombophila</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="HHrThrombophilia" /><label
+            >Low Risk Thrombophila and family history of VTE</label
+          >
+        </div>
+        <div class="checkbox-diplay"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="checkbox-diplay checkbox-header">
+        <input type="checkbox" formControlName="IntermediateRisk" /><strong
+          >Intermediate Risk</strong
+        >
+      </div>
+      <div class="risk-check-manu h-80">
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="ICaesarianLabor" /><label
+            >Caesarian labor</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="IBmi40" /><label
+            >BMI > 40</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="IReAdmission" /><label
+            >Re admission, prolonged admission >= 3 days</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="ISurgicalProc" /><label
+            >Any surgical procedure post partum</label
+          >
+        </div>
+        <div class="checkbox-diplay">
+          <input type="checkbox" formControlName="IMedical" /><label
+            >Medical co-morbidity</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="checkbox-diplay checkbox-header">
+        <input type="checkbox" formControlName="LowRisk" /><strong
+          >Low Risk</strong
+        >
+      </div>
+      <div class="risk-check-manu row m-0">
+        <div class="col-md-6 pl-0">
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LAge35" /><label
+              >Age 35 years</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LObesity" /><label
+              >Obesity (BMI >= 30 kg/m2)</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LParity" /><label
+              >Parity >= 3</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LSmoker" /><label
+              >Smoker</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LElective" /><label
+              >Elective Caesarian Section</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LFamilyHistory" /><label
+              >Family History of VTE</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LLrThrombophilia" /><label
+              >Low Risk Thrombophilia</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LGrossVaricose" /><label
+              >Gross Varicose Veins</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LSystemicInfection" /><label
+              >Current Systemic Infection</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6 pl-4">
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LImmobility" /><label
+              >Immobility</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LLongDistance" /><label
+              >Long Distance Travel</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LPreEclampsia" /><label
+              >Current Pre Eclampsia</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LMultiplePregnancy" /><label
+              >Multiple Pregnancy</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LPreTermDelivery" /><label
+              >Pre-term Delivery</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LStillBirth" /><label
+              >Still birth</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LMidCavity" /><label
+              >Mid-cavity rotational or operative delivery</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LProlongedLabor" /><label
+              >Prolonged Labor (> 24hrs)</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input type="checkbox" formControlName="LPhh" /><label
+              >PHH >1 liter or blood transfusion</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-md-12 mt-3">
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <strong>Final risk</strong>
+        <ng-select
+          [searchable]="true"
+          class="form-control p-0"
+          formControlName="FinalRisk"
+        >
+          <ng-option *ngFor="let item of finalRisk" [value]="item.value">{{
+            item.label
+          }}</ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-3">
+        <strong>Plan</strong>
+        <ng-select
+          [searchable]="true"
+          class="form-control p-0"
+          formControlName="FPlan"
+        >
+          <ng-option *ngFor="let item of plan" [value]="item.value">{{
+            item.label
+          }}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-md-12 mt-2">
+      <div class="risk-check-manu d-flex color-f3f3f3">
+        <div class="col-md-6 p-0 d-flex flex-column">
+          <strong>Weight</strong>
+          <strong>< 50</strong>
+          <strong>50-90 kg</strong>
+          <strong>91-130 kg</strong>
+          <strong>131-170 kg</strong>
+          <strong>> 170 kg</strong>
+          <strong>High prophylatic dose for women weighing 50 - 90 kg</strong>
+          <strong>The suggested prophylatic dose of LMWH by the MRCOG</strong>
+        </div>
+        <div class="col-md-2 p-0 d-flex flex-column">
+          <strong>Enoxaparin</strong>
+          <strong>20 mg daily</strong>
+          <strong>40 mg daily</strong>
+          <strong>60 mg daily*</strong>
+          <strong>80 mg daily*</strong>
+          <strong>0.6 mg/kg/day*</strong>
+          <strong>40 mg 12 hourly</strong>
+        </div>
+        <div class="col-md-2 p-0 d-flex flex-column">
+          <strong>Dalteparin</strong>
+          <strong>2500 units daily</strong>
+          <strong>5500 units daily</strong>
+          <strong>7500 units daily</strong>
+          <strong>10000 units daily</strong>
+          <strong>75 u/kg/day</strong>
+          <strong>5000 unit 12 hourly</strong>
+        </div>
+        <div class="col-md-2 p-0 d-flex flex-column">
+          <strong>Tinzaparin</strong>
+          <strong>3500 units daily</strong>
+          <strong>4500 units daily</strong>
+          <strong>7000 units daily*</strong>
+          <strong>9000 units daily*</strong>
+          <strong>75 u/kg/day*</strong>
+          <strong>4500 units 12 hourly</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,223 @@
+<form action="" class="edit-data" [formGroup]="editprofileForm">
+  <table class="w-100">
+    <tr>
+      <td class="align-middle border-0 p-1  edit-select" colspan="4">
+        <span class="d-flex fontsize align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Medication Name</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100
+            font-weight-bolder ">
+            <input type="text" class="form-control Medica-font-size" formControlName="Descrlt" [ngClass]="editprofileForm.touched &&
+                          editprofileForm.get('Descrlt').errors &&
+                          isFormSubmitted ?
+                          'ep-error-message': ''" [readOnly]="!editprofileForm.value.isCollapsed" />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Formula</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100">
+            <input type="text" class="form-control Medica-font-size" formControlName="Formatdescr" [readOnly]="editprofileForm.value" />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Route</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100 edit-select">
+            <ng-select [searchable]="true" formControlName="Aprouteid" class="font-weight-bold Medica-font-size editing-grid">
+              <ng-option *ngFor=" let routeDropdownItem of
+                addministrationService.routeDropdownList" [value]="routeDropdownItem.Aprouid">
+                {{ routeDropdownItem.Descr }}
+              </ng-option>
+            </ng-select>
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Dosage</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100">
+            <input type="textbox" class="evntdose form-control Medica-font-size" formControlName="Quan" appDigitDecimaNumber
+              [readonly]="editprofileForm.value.Indisdos === 'Apply'" />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Dosage unit</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100 edit-select">
+            <ng-select [searchable]="true" formControlName="Quanunit" class="Medica-font-size editing-grid"
+              [readonly]="editprofileForm.value.Indisdos === 'Apply'">
+              <ng-option *ngFor=" let medicationDosageUnit of
+                editprofileForm.get('AgentidResult').value" [value]="medicationDosageUnit.Meinh">
+                {{ medicationDosageUnit.OptionField }}
+              </ng-option>
+            </ng-select>
+          </span>
+        </span>
+      </td>
+
+    </tr>
+    <tr>
+      <td class="align-middle border-0 w-14 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Frequency</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100 edit-select">
+            <ng-select [searchable]="true" formControlName="N1znr" class="Medica-font-size editing-grid"
+              (change)="validFromTobaseonDuration(editprofileForm.value);">
+              <ng-option *ngFor=" let medicationFrequency of
+                addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
+                {{ medicationFrequency.OptionField}}
+              </ng-option>
+            </ng-select>
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-10 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Comment</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100 edit-select">
+            <input type="text" class="form-control Medica-font-size" formControlName="Mostx" (change)="Commentprncond()" />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-8 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Duration</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100">
+            <input type="textbox" min="0" class="form-control Medica-font-size" formControlName="Pdur"
+              (input)="validFromTobaseonDuration(editprofileForm.value)" appDigitDecimaNumber CustomDecimalPipe />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-9 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Duration unit</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100 edit-select">
+            <ng-select [searchable]="true" formControlName="Pduru" class="Medica-font-size editing-grid"
+              (change)="validFromTobaseonDuration(editprofileForm.value)">
+              <ng-option *ngFor=" let medicationDurationUnit of
+                addministrationService.durationUnitList" [value]="medicationDurationUnit.Unit">
+                {{ medicationDurationUnit.Text }}
+              </ng-option>
+            </ng-select>
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Validate From</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100">
+            <input type="text" class="form-control Medica-font-size" formControlName="StartD" [bsConfig]="{withTimepicker:
+              true,showWeekNumbers:false,
+              dateInputFormat:
+              'DD.MM.YYYY HH:mm:ss'}" bsDatepicker />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Validate To</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100">
+            <input type="text" class="form-control Medica-font-size" formControlName="EndD" [bsConfig]="{withTimepicker:
+              true,showWeekNumbers:false,
+              dateInputFormat:
+              'DD.MM.YYYY HH:mm:ss'}" bsDatepicker />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Physician</span>
+          <span class="input-text-field d-inline-block align-top
+            w-100 edit-select">
+            <ng-select class="border-0 selectbordernone Medica-font-size editing-grid" formControlName="Moresp1"
+              (click)="this.addministrationService.employeeresponsible()">
+              <ng-option class="border-0" *ngFor=" let employeeresponsibal of
+                addministrationService.AdminiEmployeeresponsible" [value]="employeeresponsibal.Moresp1">
+                {{ employeeresponsibal.Moresp1name }}
+              </ng-option>
+            </ng-select>
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1">
+        <div class="d-flex ">
+          <div class="d-flex align-items-center
+            position-relative ml-2">
+            <input type="checkbox" class="mr-1 checkbox-panel" formControlName="Prn">
+            <span class="mr-2 admin"></span>
+            <label class="m-0">PRN</label>
+          </div>
+          <div class="d-flex align-items-center
+          position-relative">
+            <div class="p-2 Mp-hover">
+              <img src="assets/img/prncond.png" alt="" height="30" class="c-pointer" title="PRN Condition"
+                (click)="onOpenInfoPopup(editprofileForm.value)">
+            </div>
+          </div>
+          <div class="d-flex align-items-center
+            position-relative ml-4" [popover]="hourPopover" [popoverContext]="{index: editdata}">
+            <input type="checkbox" class="mr-1 checkbox-panel">
+            <span class="mr-2 admin"></span>
+            <label class="m-0">POM</label>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="badge-secondary form-btn text-right p-1 bg-color-me mt-2
+    rounded-bottom">
+    <button (click)="onEditAction()" class="btn edit-color mr-2
+      rounded-sm ml-2">Edit</button>
+  </div>
+</form>
+
+<ng-template #hourPopover let-index="index">
+  <form action="" [formGroup]="editprofileForm">
+    <div class="p-3">
+      <span class="position-relative d-flex align-items-center w-100 mb-3">
+        <input type="radio" name="pom-condition{{index}}" class="mr-1
+          checkbox-panel" id="administrationByNurse" value="1" (change)="onChangePom(1, $event)" [checked]="editprofileForm.value.Pom === '1'">
+        <span class="mr-2 admin d-inline-block"></span>
+        <label for="" class="m-0 font-weight-semibold">Administration by the nurse</label>
+      </span>
+      <span class="position-relative d-flex align-items-center w-100">
+        <input type="radio" class="mr-1 checkbox-panel" id="administrationBySelf" name="pom-condition{{index}}" value="2"
+          (change)="onChangePom(2, $event)" [checked]="editprofileForm.value.Pom === '2'">
+        <span class="mr-2 admin d-inline-block"></span>
+        <label for="administrationBySelf" class="m-0 font-weight-semibold">Self
+          administration by the patient</label>
+      </span>
+    </div>
+  </form>
+</ng-template>
+<!-- <addition-infoprn-popup #additionalPopupcond
+  (onUpdateprnData)="onUpdatedAdditionalInfoprn($event)"></addition-infoprn-popup> -->
+
+<prn-condition-popup #prnCondition (onUpdateData)="onUpdatedAdditionalInfoprn($event)"></prn-condition-popup>

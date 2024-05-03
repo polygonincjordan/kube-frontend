@@ -1,0 +1,148 @@
+<ng-template #historyPopup>
+    <div class="allergy-header">
+      <div class="font-weight-bold" style="
+        font-size: 23px;">
+        <span>History</span>
+      </div>
+      <div class="d-flex justify-content-end align-items-center" style="flex:1">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon allergy-header-item p-0 m-0 border-0" style="flex:1" (click)="closePopup()">
+            <img src="assets/img/CloseTab.svg" class="img-size w-2 float-right">
+          </li>
+        </ul>
+      </div>
+    </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <form  [formGroup]="updateAllergyForm">
+      <div class="mt-3 mb-3" style="border: 1px solid #d9d9d9;
+          border-radius: 8px;padding: 6px;">
+        <div class="row create-form-inputs">
+          <!-- <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">MRN</span>
+            <input type="text" class="form-control" formControlName="Patnr">
+          </div> -->
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Protocol ID</span>
+            <ng-select [openOnEnter]="true" [markFirst]="false"
+            class="input-group border-0 font-weight-bold" formControlName="ProtoId"
+            [searchFn]="serachInput"
+            (change)="cycleNolistNumbar($event)"
+            [ngClass]="this.updateAllergyForm.controls.touched && isFormSubmitted ? 'ep-error-message': ''">
+            <ng-option *ngFor="let ProtoId of protocolIdlist" [value]="ProtoId">
+              {{ ProtoId.ProtoDesc}}
+            </ng-option>
+          </ng-select>
+          </div>
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Protocol Description</span>
+            <input type="text" class="form-control" formControlName="ProtoDesc">
+          </div>
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Cycle Number</span>
+         <ng-select [openOnEnter]="true" [markFirst]="false" class="input-group border-0 font-weight-bold" formControlName="CycleId">
+          <ng-option *ngFor="let cycle of cyclenumbar" [value]="cycle.CycleId">
+            {{cycle.CycleDesc}}
+          </ng-option>
+        </ng-select>
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Monitoring Parameters</span>
+            <input type="text" class="form-control" formControlName="MonitParam">
+          </div>
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Notes</span>
+            <input type="text" class="form-control" formControlName="Notes">
+          </div>
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Comments</span>
+            <input type="text" class="form-control" formControlName="Comments">
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Order Start Date</span>
+            <input type="text" class="form-control" formControlName="OrderDate" [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+              dateInputFormat:
+              'DD/MM/YYYY', selectFromOtherMonth: true }" bsDatepicker>
+          </div>
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Created on</span>
+            <input type="text" class="form-control" formControlName="Erdat" [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+              dateInputFormat:
+              'DD/MM/YYYY', selectFromOtherMonth: true }" bsDatepicker readonly>
+          </div>
+          <div class="col-md-4 position-relative">
+            <span class="input-title z-indexlabel">Created by</span>
+            <input type="text" class="form-control" formControlName="Erusr">
+          </div>
+        </div>
+        <div class="row create-form-inputs align-items-center">
+          <!-- <div class="col-md-4 position-relative">
+            <div class="d-flex align-items-center position-relative">
+              <input type="checkbox" class="mr-1 checkbox-panel" formControlName="Manual">
+              <span class="mr-2 admin admin-gray"></span>
+              <label class="m-0 input-title">Manual</label>
+             </div>
+          </div> -->
+          <div class="col-md-12 mt-2" style="text-align: end;">
+            <button class="button-hist" (click)="savePopup()">Save</button>
+            <button class="button-hist" (click)="CancelPopup()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form style="max-height: 296px;
+    overflow: auto;" [formGroup]="historyform">
+      <table class="table table-bordered allergy-table">
+        <thead style="background-color: #e4edf5;
+    color: black; top: 0;" class="text-center position-sticky" *ngIf="this.ChemoHistorylength !== undefined && this.ChemoHistorylength >= 0">
+          <tr>
+            <!-- <th scope="col">MRN</th> -->
+            <!-- <th scope="col">Protocol ID</th> -->
+            <th class="w-20" (click)="SortData('ProtoDesc')">Protocol Description</th>
+            <th class="w-5">Cycle</th>
+            <th class="w-15">Monitoring Parameters</th>
+            <th scope="col">Notes</th>
+            <th class="w-15">Comments</th>
+            <th scope="col">Created by</th>
+            <th scope="col">Created on</th>
+            <th class="w-9" (click)="SortData('OrderDate')">Order Date</th>
+            <th class="w-10">Manual Entry</th>
+            <th class="w-3"></th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff;">
+          <ng-container>
+            <ng-container formArrayName="historyformarray">
+              <tr *ngFor="let deta of historyArray.controls; let i = index;" [formGroupName]="i">
+                <!-- <td class="pl-1 pr-1"><input type="text" class="form-control history-font" formControlName="Patnr" readonly></td> -->
+                <!-- <td class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.ProtoId" formControlName="ProtoId" readonly></td> -->
+                <td  class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.ProtoDesc" formControlName="ProtoDesc" readonly></td>
+                <td  class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.CycleId" formControlName="CycleId" readonly></td>
+                <td  class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.MonitParam" formControlName="MonitParam" readonly></td>
+                <td  class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.Notes" formControlName="Notes" readonly></td>
+                <td class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.Comments" formControlName="Comments" readonly></td>
+                <td class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.Erusr" formControlName="Erusr" readonly></td>
+                <td class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.Erdat" formControlName="Erdat" [bsConfig]="{withTimepicker: false,showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY', selectFromOtherMonth: true }" bsDatepicker readonly></td>
+                <td  class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.OrderDate" formControlName="OrderDate" [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+                  dateInputFormat:
+                  'DD/MM/YYYY', selectFromOtherMonth: true }" bsDatepicker readonly></td>
+                <td  class="pl-1 pr-1"><input type="text" class="form-control history-font" [title]="deta.value.Manual" formControlName="Manual" readonly></td>
+                <td  class="pl-1 pr-1 text-center d-flex justify-content-center align-items-center">
+                 <div class="d-flex mt-2">
+                  <img src="assets/img/Delete.svg" title="Delete" (click)="deletrow(i)">
+                 </div>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+
+  </div>
+</ng-template>
+
+

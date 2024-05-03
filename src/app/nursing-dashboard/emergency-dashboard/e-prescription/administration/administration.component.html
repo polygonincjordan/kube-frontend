@@ -1,0 +1,26 @@
+<form action="">
+  <div class="tab-search-panel d-flex align-items-center
+    justify-content-between">
+    <div class="tab-left-panel d-flex align-items-center col
+      justify-content-start">
+      <p class="mb-0 h6 font-weight-bold ep-color-light-gray pr-3">Medication
+        Order Type</p>
+      <!-- <ng-select [ngClass]="'select-dropdown'" [searchable]="false" [(ngModel)]="selectedAccount" bindValue="Val" bindLabel="Val">
+        <ng-option *ngFor="let item of orderType" [value]="item.Val">{{item.Val}}</ng-option>
+      </ng-select> -->
+      <ng-select [items]="orderType" [ngClass]="'select-dropdown'" [searchable]="false"  bindValue="Val" bindLabel="Desc" [(ngModel)]="selectedAccount" [ngModelOptions]="{standalone: true}">
+      </ng-select>
+    </div>
+    <div class="d-flex col justify-content-end p-0">
+      <div (click)="onOpenTemplatePopup()">
+        <img src="assets/img/pdf-print.png" height="40px" class="pdf-print">
+      </div>
+      <div class="search-functionality col-md-6 ml-3 pl-0 mw-100">
+        <img src="assets/img/pres-search-icon.svg">
+        <administration-search-select-template
+          [defaultTemplateMedication]="this.ePrescriptionService.administrationTemplateData"></administration-search-select-template>
+      </div>
+    </div>
+  </div>
+</form>
+<administration-template-popup #templatePopup></administration-template-popup>

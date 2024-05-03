@@ -1,0 +1,45 @@
+.form-data{
+  border-right: 1px solid #E4EDF5;
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0;
+  display: block;
+  height: 10px;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #35373a;
+  background-color: #FBFCFF;
+  background-clip: padding-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.hight-data{
+  height: 26px;
+  background-color: #FBFCFF;
+}
+.tr-font-floor{
+  th{
+    font-size: 14px;
+    color: black;
+  }
+}
+.border-bottom-floor{
+  border-bottom: 2px solid #fff;
+}
+.icon-data{
+  width: 30px;
+  height: 30px !important;
+  background-color:#EDF6FD ;
+  border-radius: 50px;
+}
+.floo-overflow{
+  height: 500px;
+  thead{
+  background-color: #fff;
+  top: 0;
+  }
+}

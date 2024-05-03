@@ -1,0 +1,1294 @@
+<div class="end-container">
+  <form [formGroup]="triageForm">
+    <label class="box-label">Arrival & Triage Data</label>
+    <div class="container-fluid">
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Mode of Arrival</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select placeholder="Select Mode of Arrival" formControlName="ArrivalMode">
+            <ng-option *ngFor="let item of modeArrivalList" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" style="height: 33px" formControlName="ArrivalModeTxt"
+            [disabled]="triageForm.value.ArrivalMode != '6'" [readonly]="triageForm.value.ArrivalMode != '5'" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Accompanied By</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select placeholder="Select Accompanied By" formControlName="Accompanied">
+            <ng-option *ngFor="let item of accompaniedList" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" style="height: 33px" formControlName="AccompaniedTxt"
+            [disabled]="triageForm.value.Accompanied != '6'" [readonly]="triageForm.value.Accompanied != '6'" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Language Spoken</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" formControlName="Language" [disabled]="true" [readOnly]="true" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Arrival Time</label>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" style="height: 33px" formControlName="ArrivalTime" [readOnly]="true" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <!-- <div class="col-md-12 row m-0"> -->
+        <div class="col-md-2">
+          <label>Triage Priority</label>
+        </div>
+        <div class="col-md-10">
+          <ul class="d-flex m-0 prior-media">
+            <ng-container *ngFor="let priority of triagePriorities">
+              <li class="checkbox-margin">
+                <input type="radio" name="TriagePriority" id="{{ 'flexRadioDefault' + priority.value }}"
+                  formControlName="TriagePriority" [value]="priority.value" />
+                <span class="mr-2"></span>
+                <label for="{{ 'flexRadioDefault' + priority.value }}" class="m-0 font-width"
+                  [title]="'Triage ' + priority.value">
+                  {{ priority.label }}
+                  <span class="mr-2"></span>
+                  <span class="triage-circle" [style.backgroundColor]="priority.backgroundColor"
+                    [style.border]="'2px solid ' + priority.borderColor" [style.color]="priority.fontColor">
+                    {{ priority.value }}
+                  </span>
+                </label>
+              </li>
+            </ng-container>
+          </ul>
+
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+    <div>
+      <div class="chief-complain mt-3 ml-4 mb-3 mr-3">
+        <span class="text-area-label">Chief Complaint</span>
+        <textarea class="form-control" formControlName="ChiefComplaint"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="end-container">
+  <div class="scale-box-main">
+    <label class="box-label">Allergies & Vitals</label>
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+              <li class="d-flex m-0 align-items-center" (click)="switchTabs('allergies')"
+                [ngClass]="allergy ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Allergies</p>
+              </li>
+              <li (click)="switchTabs('vitals')" class="d-flex m-0 align-items-center"
+                [ngClass]="vitals ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Vitals</p>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="allergy" class="secound-bar-vital-sign" (click)="openModalForAllergy()">
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+          </div>
+          <div *ngIf="vitals" class="secound-bar-vital-sign" (click)="openModalVital()">
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+          </div>
+        </div>
+        <div class="tab-content">
+          <div *ngIf="allergy">
+            <div class="allergy-box">
+              <table class="table table-bordered past-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Group </th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of toAllergyArr;let i=index;">
+                    <td>{{item.Agroup || item.AllergenGrp}}</td>
+                    <td>{{item.Description || item.Allergen}}</td>
+                    <td><img src="assets/img/Delete.svg" alt="delete" (click)="deleteFromAllergy(item,i)" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- <div *ngIf="diagnosis">
+            <div class="d-flex mb-2" style="justify-content: space-between;
+              padding-right: 22px">
+              <div style="display: flex;
+              align-items: center;
+              gap: 10px;">
+                <input type="checkbox" style="width: 36px;
+                height: 22px;" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+                <label class="admitting-physician">No Diagnosis Applicable</label>
+              </div>
+              <div>
+                <button class="create-diagnosis" (click)="openModalForDiagnosis()"
+                  [disabled]="enableCreateDiagnosis">Create & Import</button>
+              </div>
+
+            </div>
+            <div style="max-height: 296px;
+              overflow: auto;">
+              <table class="table table-bordered past-table">
+                <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                  <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Description </th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Administion Diag.</th>
+                    <th scope="col">Surgery Diag.</th>
+                    <th scope="col">Preop Diag.</th>
+                    <th scope="col">Discharge Diag.</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #fbfcff;">
+                  <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                    <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                    <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                    <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DAdmission"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DSurgery"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DPreoperative"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DDischarge"></td>
+                    <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
+                        src="assets/img/Delete.svg" style="position: relative;
+                      top: 6px;" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> -->
+          <div *ngIf="vitals">
+            <div class="allergy-box">
+              <div class="allergy-checkbox-section">
+                <input type="checkbox" (change)="handleCheckboxVitals()" id="noVitalSignsApplicable"
+                  [attr.disabled]="toVitalsArr.length >0 ? true:null" />
+                <label class="admitting-physician" for="noVitalSignsApplicable">No Vitals Signs Applicable</label>
+              </div>
+            </div>
+            <div style="max-height: 296px;
+              overflow: auto;">
+              <table class="table table-bordered past-table">
+                <thead style="background-color: #e4edf5; color: black; ">
+                  <tr>
+                    <th scope="col">Description</th>
+                    <th scope="col">Measured Value </th>
+                    <th scope="col">Normal Range</th>
+                    <th scope="col">Date/Time</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #fbfcff;">
+                  <tr class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 3%;text-align: center;" (click)="deleteVitalsFromTable(item,i)"><img
+                        src="assets/img/Delete.svg" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="end-container">
+  <div class="scale-box-main">
+    <label class="box-label">Scales</label>
+    <div class="container-fluid">
+      <div class="row create-form-inputs">
+        <div class="scale-box">
+          <div class="scale-box-checkbox">
+            <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
+              [ngModelOptions]="{ standalone: true }" />
+            <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
+          </div>
+          <div class="scale-box-table">
+            <table class="table table-bordered past-table">
+              <thead>
+                <tr>
+                  <th scope="col">Description</th>
+                  <th scope="col">Measured Value </th>
+                  <th scope="col">Normal Range</th>
+                  <th scope="col">Date/Time</th>
+                  <th scope="col" colspan="2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of scalesList;let i=index">
+                  <td>{{item.ScaleType}}</td>
+                  <td>{{item.LastScore}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.Datetimee}}</td>
+                  <td>
+                    <a (click)="openGlosgowComaModel(item)">Create</a>
+                  </td>
+                  <td>
+                    <a (click)="viewGlosgowModel(item)">View</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="end-container">
+  <div class="sph-box">
+    <label class="box-label">Social & Psychological History</label>
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+              <li class="d-flex m-0 align-items-center" (click)="socialAndPsychologicalTabs('social')"
+                [ngClass]="socialHistory ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Social history</p>
+              </li>
+              <li (click)="socialAndPsychologicalTabs('psychological')" class="d-flex m-0 align-items-center"
+                [ngClass]="psychologicalHistory ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Psychological history</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="tab-content" style="border-radius: 7px;">
+          <div *ngIf="socialHistory" class="psychological-main">
+            <div class="scale-box-checkbox">
+              <input type="checkbox" id="noHabitApplicable" [(ngModel)]="noHabitApplicable"
+                [ngModelOptions]="{ standalone: true }" />
+              <label class="admitting-physician" for="noHabitApplicable">No habits applicable</label>
+            </div>
+            <div class="main-tab-contant">
+              <div>
+                <table class="table table-bordered table-er-traige">
+                  <thead>
+                    <tr>
+                      <th scope="col">Habit</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Consumpation quantity </th>
+                      <th scope="col">Duration</th>
+                      <th scope="col">Year</th>
+                      <th scope="col">Last Update</th>
+                      <th scope="col">Add Habit</th>
+                      <th scope="col">No Consumpation</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: #fbfcff;">
+                    <tr style="height: 30px;" *ngFor="let item of socialHistoryList;let i=index">
+                      <td>{{ item.label }}</td>
+                      <td>{{ item.Status }}</td>
+                      <td>{{ item.Quantity }}</td>
+                      <td>{{ item.Duration }}</td>
+                      <td>{{ item.Year }}</td>
+                      <td>{{ getDate(item.DateFrom) | date: 'dd/MM/yyyy' }}</td>
+                      <td class="text-center"><input type="checkbox" [checked]="item.Status && item.Status != 'No'"
+                          [disabled]="noHabitApplicable" style="height: 16px;"
+                          (click)="openModelForAddHabitSocial(i,item)" /></td>
+                      <td class="text-center"><input type="checkbox" [checked]="item.Status && item.Status == 'No'"
+                          [disabled]="noHabitApplicable" style="height: 16px;"
+                          (click)="noConsumeSocial(i, item, 'noConsume')" /></td>
+                      <td><img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer"
+                          style="margin-left: 11px;" (click)="deleteData(i, item)"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4">
+                <div class="row">
+                  <div class="col-md-3 row m-0 align-items-center">
+                    <div class="col-md-6">Marital Status</div>
+                    <div class="col-md-6">
+                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [disabled]="true" />
+                    </div>
+                  </div>
+                  <div class="col-md-2 row m-0 align-items-center">
+                    <div class="col-md-3">Since</div>
+                    <div class="col-md-8">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-md-3 row m-0 align-items-center">
+                    <div class="col-md-6">Number of spouse</div>
+                    <div class="col-md-6">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-12 row m-0 align-items-center">
+                    <div class="col-md-1" style="margin-right: 38px ;">
+                      <label>Comments</label>
+                    </div>
+                    <div class="col-md-10">
+                      <textarea class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="triageForm">
+            <div *ngIf="psychologicalHistory" class="psychological-main">
+              <div class="d-flex mb-2">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" id="PsyNoProblem" formControlName="PsyNoProblem"
+                    (change)="onCheckboxChange($event)" />
+                  <label class="admitting-physician" for="PsyNoProblem">No Psychological Applicable</label>
+                </div>
+              </div>
+              <div class="row checbox-list">
+                <div class="col-md-2 d-flex align-items-center habit-box-checkbox"
+                  *ngFor="let item of psychologicalHistoryList">
+                  <input type="checkbox" [formControlName]="item.controlname" [id]="item.label"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                </div>
+              </div>
+              <div class="row align-items-center">
+                <div class="col-md-2">
+                  <label class="admitting-physician">Comments</label>
+                </div>
+                <div class="col-md-10">
+                  <textarea class="form-control" formControlName="PsyComments"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="end-container">
+  <div class="sph-box">
+    <label class="box-label">Assessment</label>
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+              <li class="d-flex m-0 align-items-center" (click)="changeAssessment('Functional')"
+                [ngClass]="functionalAssessmentTab ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Functional</p>
+              </li>
+              <li class="d-flex m-0 align-items-center" (click)="changeAssessment('Nutritional')"
+                [ngClass]="nutritionalAssessmentTab ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Nutritional</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="tab-content" style="border-radius: 7px;">
+
+
+          <div *ngIf="functionalAssessmentTab" class="psychological-main">
+            <div class="notice-bar">
+              <p>Requires Physician to be notified for physiotherapy referral</p>
+            </div>
+            <form [formGroup]="triageForm">
+              <div class="main-tab-contant">
+                <div class="option-box">
+                  <label class="box-label-inner">Self-Caring</label>
+                  <div class="option-section row">
+                    <div class="col-md-2">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="noProblemIdentify" formControlName="noProblemIdentifySelfCaring"
+                          (change)="changeSelfCaring($event, 'No Problem Identified')" />
+                        <label class="admitting-physician" for="noProblemIdentify">No Problem Identified</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-10">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="neeSupervision" formControlName="needSuperVisionTotalDependent"
+                          (change)="changeSelfCaring($event, 'Needs supervision / Totally Dependent')" />
+                        <label class="admitting-physician" for="neeSupervision">Needs supervision / Totally
+                          Dependent</label>
+                      </div>
+                      <div class="checkbox-list">
+                        <div class="scale-box-checkbox" *ngFor="let item of needSupervisionList">
+                          <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                          <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="option-box ">
+                  <label class="box-label-inner">Musculoskeletal</label>
+                  <div class="option-section row">
+                    <div class="col-md-2">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="noProblemIdentifyMuscu" formControlName="noProblemIdentifyMuscu"
+                          (change)="changeMusculoskeletal($event, 'No Problem Identified')" />
+                        <label class="admitting-physician" for="noProblemIdentifyMuscu">No Problem Identified</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-10">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="problemidentified" formControlName="problemIdenfifyMuscu"
+                          (change)="changeMusculoskeletal($event, 'Problem Idenfify')" />
+                        <label class="scale-box-checkbox-label sm-0" for="problemidentified">Problem identified</label>
+                        <ng-select class="drop-down-list" formControlName="problemIdenfifyMuscuOption">
+                          <ng-option *ngFor="let item of problemIdentifiedList"
+                            [value]="item.value">{{item.label}}</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="option-box">
+                  <label class="box-label-inner">Use of assisting equipment</label>
+                  <div class="option-section row">
+                    <div class="col-md-2">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="noequipment" formControlName="noEquipment"
+                          (change)="changeEquipmentAssignment($event, 'No Equipment')" />
+                        <label class="admitting-physician" for="noequipment">None</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-10">
+                      <div class="use-of-box">
+                        <div class="scale-box-checkbox">
+                          <input type="checkbox" id="useOf" formControlName="usedEquipments"
+                            (change)="changeEquipmentAssignment($event, 'Use Of Equipment')" />
+                          <label class="scale-box-checkbox-label sm-1" for="useOf">Use Of</label>
+                        </div>
+                        <div class="scale-box-checkbox">
+                          <ng-select class="drop-down-list" formControlName="usedEquipmentsOption"
+                            (change)="changeUseEquipment($event)">
+                            <ng-option *ngFor="let item of usedEquipments"
+                              [value]="item.value">{{item.label}}</ng-option>
+                          </ng-select>
+                          <input type="text" class="form-control other-box" formControlName="usedEquipmentsOtherOpt"
+                            [disabled]="isUseOf" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="option-box">
+                  <label class="box-label-inner">Notification</label>
+                  <div class="option-section row">
+                    <div class="col-md-4">
+                      <div class="use-of-box">
+                        <div class="scale-box-checkbox">
+                          <label class="admitting-physician sm-2">Requires Dr. Notification</label>
+                          <ng-select class="drop-down-list" formControlName="drNotificationOption">
+                            <ng-option *ngFor="let item of doctorNotication"
+                              [value]="item.value">{{item.label}}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="use-of-box">
+                        <div class="scale-box-checkbox">
+                          <label class="admitting-physician sm-3">Notified</label>
+                          <ng-select class="drop-down-list" formControlName="notifiedOption">
+                            <ng-option *ngFor="let item of notication" [value]="item.value">{{item.label}}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="nutritionalAssessmentTab" class="psychological-main">
+            <div class="notice-bar">
+              <p>Requires Physician to be notified for physiotherapy referral</p>
+            </div>
+            <form [formGroup]="triageForm">
+              <div class="main-tab-contant">
+                <div class="option-box">
+                  <label class="box-label-inner">Nutritional Risk</label>
+                  <div class="option-section row mr-0 ml-5">
+                    <div class="col-md-3" *ngFor="let item of nutritionalRisk">
+                      <div class="use-of-box">
+                        <div class="scale-box-checkbox">
+                          <input type="checkbox" [id]="item.label" [formControlName]="item.controlname"
+                            (change)="selectNutritionalRiskOptions($event, item)" />
+                          <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="option-section row risk-section">
+                    <div class="col-md-4">
+                      <div class="use-of-box">
+                        <div class="scale-box-checkbox">
+                          <label class="admitting-physician">Patient's Risk Score</label>
+                          <input type="text" class="form-control risk-score" formControlName="nutritionalRiskScore" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="use-of-box">
+                        <div class="scale-box-checkbox">
+                          <label class="admitting-physician">Risk level</label>
+                          <input type="text" class="form-control risk-level" formControlName="nutritionalRiskValue" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="option-box">
+                      <label class="box-label-inner">Nutritional Assessment Adult</label>
+                      <div class="option-section row">
+
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician" for="useOf">Appetite</label>
+                          </div>
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="AppetiteValue">
+                              <ng-option *ngFor="let item of appetiteList"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="scale-box-list">
+                            <input type="text" class="form-control" formControlName="AppetiteOtherValue" />
+                          </div>
+                        </div>
+
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician" for="useOf">General Appearance</label>
+                          </div>
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="generalApperenceValue">
+                              <ng-option *ngFor="let item of generalApperianceList"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="scale-box-list">
+                            <input type="text" class="form-control" formControlName="generalApperenceOtherValue" />
+                          </div>
+                        </div>
+
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician" for="useOf">Nutritional Support</label>
+                          </div>
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="nutritionalSupportValue">
+                              <ng-option *ngFor="let item of nutritionalSupportList"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="scale-box-list">
+                            <input type="text" class="form-control" formControlName="nutritionalSupportOtherValue" />
+                          </div>
+                        </div>
+
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician" for="useOf">Diet</label>
+                          </div>
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="dietValue">
+                              <ng-option *ngFor="let item of dietList" [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="scale-box-list">
+                            <input type="text" class="form-control" formControlName="dietOtherValue" />
+                          </div>
+                        </div>
+
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician" for="useOf">Feeding defficulties</label>
+                          </div>
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="feedingDefficultiesValue">
+                              <ng-option *ngFor="let item of feedingDefficulties"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="scale-box-list">
+                            <input type="text" class="form-control" formControlName="feedingDefficultiesOtherValue" />
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <div class="option-box">
+                      <label class="box-label-inner">Change in weight (kg)</label>
+                      <div class="option-section row">
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-kg-list">
+                            <label class="admitting-physician" for="useOf">Last 1 month</label>
+                          </div>
+                          <div class="scale-box-kg-list">
+                            <input type="text" class="form-control" formControlName="wightOneMonth" />
+                            <label>kg</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-kg-list">
+                            <label class="admitting-physician" for="useOf">Last 3 month</label>
+                          </div>
+                          <div class="scale-box-kg-list">
+                            <input type="text" class="form-control" formControlName="wightThreeMonth" />
+                            <label>kg</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-12">
+                          <div class="scale-box-kg-list">
+                            <label class="admitting-physician" for="useOf">BMI</label>
+                          </div>
+                          <div class="scale-box-kg-list">
+                            <input type="text" class="form-control" formControlName="bmi" />
+                            <label>(kg/m2)</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="nutritional-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="nutriComment"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="option-box">
+                      <label class="box-label-inner">Notification</label>
+                      <div class="row option-section">
+                        <div class="use-of-box col-md-2 ">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician">Requires Dr. Notification</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-4">
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="drNotificationOptionNutri">
+                              <ng-option *ngFor="let item of doctorNotication"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-2 ">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician">Notified</label>
+                          </div>
+
+                        </div>
+                        <div class="use-of-box col-md-4 ">
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list" formControlName="notifiedOptionNutri">
+                              <ng-option *ngFor="let item of notication" [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="end-container">
+  <div class="system-review-box">
+    <label class="box-label">Review of System</label>
+    <form [formGroup]="triageForm">
+      <div class="container-fluid">
+        <div class="main-box-checkbox">
+          <input type="checkbox" id="cannotbeAssessed" formControlName="CannotAssessedReview" />
+          <label class="admitting-physician" for="cannotbeAssessed">Cannot be Assessed</label>
+        </div>
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav">
+              <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+                <li class="d-flex m-0 align-items-center" *ngFor="let item of reviewSystemTabList"
+                  [ngClass]="{ 'active': item.label === activeReviewSystemTab }"
+                  (click)="changeReviewofSystem(item.label)">
+                  <!-- <img [src]="item.image" /> -->
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">{{item.label}}</p>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-content" style="border-radius: 7px;">
+
+              <div *ngIf="activeReviewSystemTab == 'Skin'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-4 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="SNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of skinIssueList">
+
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+                    <div class="tab-box-checkbox">
+                      <label class="admitting-physician sm-2">Type of Rash</label>
+                      <ng-select class="drop-down-list" formControlName="STypeRash">
+                        <ng-option *ngFor="let item of skinRashist" [value]="item.value">{{item.label}}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="SComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Head'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-6 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="HNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of headIssueList">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+                    <div class="tab-box-inputbox">
+                      <label class="admitting-physician sm-2">Head Circumference (cm)</label>
+                      <input type="text" class="form-control" formControlName="HHeadCircumference" />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="HComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Eyes'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="ENoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of eyesIssueList">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="EComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'ENT'" class="tab-content-box">
+                <div class="row mr-3 ml-3">
+                  <div class="col-md-3">
+                    <div class="tab-box-checkbox">
+                      <label class="admitting-physician" for="noReportedAbnormalities">EARS</label>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="tab-box-checkbox">
+                          <input type="checkbox" id="noReportedAbnormalitiesEars"
+                            formControlName="EneNoReportedAbnorma" />
+                          <label class="admitting-physician" for="noReportedAbnormalitiesEars">No reported
+                            abnormalities</label>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="checkbox-list-no-justtification">
+                          <div class="tab-box-checkbox" *ngFor="let item of earsIssueList">
+                            <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                            <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mr-3 ml-3">
+                  <div class="col-md-3">
+                    <div class="tab-box-checkbox">
+                      <label class="admitting-physician" for="noReportedAbnormalities">NOSE/SINUSES</label>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="tab-box-checkbox">
+                          <input type="checkbox" id="noReportedAbnormalitiesNose"
+                            formControlName="EnnNoReportedAbnorm" />
+                          <label class="admitting-physician" for="noReportedAbnormalitiesNose">No reported
+                            abnormalities</label>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="checkbox-list-no-justtification">
+                          <div class="tab-box-checkbox" *ngFor="let item of noseSinusesIssueList">
+                            <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                            <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mr-3 ml-3">
+                  <div class="col-md-3">
+                    <div class="tab-box-checkbox">
+                      <label class="admitting-physician" for="noReportedAbnormalities">MOUTH/THROAT</label>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="tab-box-checkbox">
+                          <input type="checkbox" id="noReportedAbnormalitiesMouth"
+                            formControlName="EnmNoReportedAbnorm" />
+                          <label class="admitting-physician" for="noReportedAbnormalitiesMouth">No reported
+                            abnormalities</label>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="checkbox-list-no-justtification">
+                          <div class="tab-box-checkbox" *ngFor="let item of mouthIssueList">
+                            <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                            <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                          </div>
+                          <div class="tab-box-inputbox">
+                            <label class="admitting-physician sm-2">Lip Color </label>
+                            <input type="text" class="form-control" formControlName="EnmLipColor" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="EnmComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Neck'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="NNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of neckIssueList">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="NComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Breast'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="BNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of breastIssueList">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="BComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Respriration/Cardiac'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="RNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2 ml-4 mr-4" *ngFor="let item of cardiacIssueList">
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="RComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Gastrointestinal'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities1"
+                        formControlName="GNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities1">No reported
+                        abnormalities</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row ml-3 mr-3">
+                  <div class="col-md-3" *ngFor="let item of gasIssueList">
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row ml-3 mr-3">
+                  <div class="col-md-2">
+                    <div class="tab-box-checkbox">
+                      <label class="admitting-physician" for="noReportedAbnormalities">ELIMINATION</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2 ">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities2" formControlName="GToiletTrained" />
+                      <label class="admitting-physician" for="noReportedAbnormalities2">Toilet Trained
+                      </label>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="tab-box-inputbox">
+                      <label class="admitting-physician sm-2">Freq. </label>
+                      <input type="text" class="form-control" formControlName="GTfreq" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row ml-3 mr-3">
+                  <div class="col-md-2">
+                    <div class="tab-box-checkbox">
+                      <label class="admitting-physician" for="noReportedAbnormalities"></label>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities3" formControlName="GUsesDiaper" />
+                      <label class="admitting-physician" for="noReportedAbnormalities3">Uses Diaper
+                      </label>
+                    </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="tab-box-inputbox">
+                      <label class="admitting-physician sm-2">Freq. </label>
+                      <input type="text" class="form-control" formControlName="GUfreq" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="GComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Urinary'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="UNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2 ml-4 mr-3" *ngFor="let item of urinaryIssueList">
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="UComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Peripheral Vescular'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="PNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list" *ngFor="let item of peripheralVascularIssueList">
+                      <div class="tab-box-checkbox">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="PComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Musculoskeletal'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="MNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of musculoskeletalIssueList">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="MComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Neurologic'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="NuNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mr-3 ml-3">
+                  <div class="col-md-3" *ngFor="let item of neurologicIssueList">
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="NuComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Hematologic'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="HeNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list" *ngFor="let item of hematologicIssueList">
+                      <div class="tab-box-checkbox">
+
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="HeComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Endocrine'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="EdNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of endocrineIssueList">
+
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="EdComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="activeReviewSystemTab == 'Psychiatric'" class="tab-content-box">
+                <div class="row">
+                  <div class="col-md-12 ml-4 mr-4">
+                    <div class="tab-box-checkbox">
+                      <input type="checkbox" id="noReportedAbnormalities"
+                        formControlName="PsNoReportedAbnorm" />
+                      <label class="admitting-physician" for="noReportedAbnormalities">No reported
+                        abnormalities</label>
+                    </div>
+                    <div class="checkbox-list">
+                      <div class="tab-box-checkbox" *ngFor="let item of psychiatricIssueList">
+                        <input type="checkbox" [id]="item.label" [formControlName]="item.controlname" />
+                        <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-12">
+                    <div class="type-of-complain">
+                      <span class="text-area-label">Comment</span>
+                      <textarea class="form-control" formControlName="PsComments"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>
+<app-er-vital #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vital>
+<app-social-habit #socialAddHabit (saveHabitData)="saveHabitData($event)"></app-social-habit>
+<app-glos-gow-comma-scale-popup #scalesGlosgow (glasgowValue)="glasgowValue($event)"></app-glos-gow-comma-scale-popup>
+<app-face-pain-scale-popup #scalesFacePain (facePainValue)="facePainValue($event)"></app-face-pain-scale-popup>
+<app-numeric-rating-scale-popup #scalesNumericRating
+  (numericValue)="numericValue($event)"></app-numeric-rating-scale-popup>

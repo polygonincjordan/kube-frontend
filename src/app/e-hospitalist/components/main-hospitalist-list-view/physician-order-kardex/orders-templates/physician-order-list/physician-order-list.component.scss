@@ -1,0 +1,32 @@
+table {
+  border-spacing: 0px;
+  table-layout: fixed;
+  margin-left: auto;
+  margin-right: auto;
+
+  thead {
+    background: #0082c8 !important;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+}
+
+th {
+  color: #ffff;
+  border: 1px solid black;
+}
+
+td {
+  border: 1px solid black;
+  word-wrap: break-word;
+}
+
+.modal-header {
+  display: flex;
+  padding: 17px;
+  background-color: #0082c8;
+  color: white;
+  border-radius: 16px 16px 0 0;
+}

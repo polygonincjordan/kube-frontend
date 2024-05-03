@@ -1,0 +1,13 @@
+<ng-template #templatecontent>
+  <div class="p-2">
+    <div class="template-popup">
+      <div *ngFor="let item of configurationdata; let i=
+        index" class="d-flex justify-content-between p-2 m-1 border-bottom
+        font-weight-bolder"
+        (click)="onSelectedOrganization(item)">
+        <div>{{item.TrtoeDescr}}</div>
+        <div>{{item.Trtoe}}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>

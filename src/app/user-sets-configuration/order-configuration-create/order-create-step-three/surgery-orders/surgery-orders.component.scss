@@ -1,0 +1,20 @@
+@import '../clinical-orders/clinical-orders.component.scss';
+
+.surgery-list {
+  padding: 10px;
+  border: 1px solid #cacaca;
+  border-radius: 12px;
+}
+.diagnosis-form {
+  height: calc(100vh - 390px);
+  overflow: auto;
+}
+
+.select-order-tab {
+    border: 2px solid #007bff !important;
+    border-color: #007bff !important;
+  }
+  .ep-error-message {
+    border-color: red !important;
+    border: 1px solid red !important;
+  }

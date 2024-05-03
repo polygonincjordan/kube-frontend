@@ -1,0 +1,65 @@
+<div class="search-card-list">
+  <ul class="m-0">
+    <li
+      class="d-flex justify-content-between"
+      *ngFor="let element of customData; let i = index"
+    >
+      <p class="m-0 d-flex align-items-center">
+        <input
+          type="checkbox"
+          id="{{ element.type }}data{{ i + 1 }}"
+          (change)="eOrderServ.onAddOrderCheckbox($event, element)"
+          [(ngModel)]="element.isSelected"
+        />
+        <label for="{{ element.type }}data{{ i + 1 }}" class="m-0" [title]="element.text
+        ">{{
+          element.text
+        }}</label>
+      </p>
+      <div (click)="markFavourite(element)">
+        <div *ngIf="element.icon === 'star'">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_107_2)">
+              <path
+                d="M17.9842 6.95227C17.9462 6.83563 17.8454 6.75057 17.7239 6.73285L11.8954 5.88581L9.28885 0.604406C9.23472 0.494215 9.1226 0.424622 9.00017 0.424622C8.87773 0.424622 8.76529 0.494215 8.71148 0.604406L6.10461 5.88613L0.276126 6.73318C0.154659 6.7509 0.0541344 6.83563 0.0157934 6.95259C-0.0219033 7.0689 0.0093495 7.19713 0.0973084 7.28252L4.31515 11.3937L3.31925 17.199C3.29863 17.3198 3.34824 17.4419 3.44716 17.5141C3.54672 17.5869 3.67849 17.5963 3.78643 17.5386L9.00017 14.798L14.2133 17.5386C14.2603 17.5634 14.3122 17.5756 14.3634 17.5756C14.4301 17.5756 14.4965 17.555 14.5529 17.5141C14.6521 17.4419 14.7017 17.3198 14.6808 17.199L13.6852 11.394L17.903 7.28252C17.9907 7.19649 18.0222 7.06858 17.9842 6.95227Z"
+                fill="#17668C"
+              ></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_107_2">
+                <rect width="18" height="18" fill="white"></rect>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div *ngIf="element.icon !== 'star'">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_702_26)">
+              <path
+                d="M18 7.266L11.529 6.708L9 0.75L6.471 6.717L0 7.266L4.914 11.523L3.438 17.85L9 14.493L14.562 17.85L13.095 11.523L18 7.266ZM9 12.81L5.616 14.853L6.516 11.001L3.528 8.409L7.47 8.067L9 4.44L10.539 8.076L14.481 8.418L11.493 11.01L12.393 14.862L9 12.81Z"
+                fill="#17668C"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_702_26">
+                <rect width="18" height="18" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,133 @@
+<form action="" [formGroup]="complexorderForm" class="ml-4 mr-4" *ngIf="isFormReady">
+  <table class=" w-100 mt-5 mb-5">
+    <tr class="main_row">
+      <th class="text-center border-0 p-0">Seq</th>
+      <th class="text-center border-0 p-0">Dose</th>
+      <th class="text-center border-0 p-0">Dose Unit</th>
+      <th class="text-center border-0 p-0">Cycle</th>
+      <th class="text-center border-0 p-0">Duration</th>
+      <th class="text-center border-0 p-0">Duration Unit</th>
+      <th class="text-center border-0 p-0">Start Date</th>
+      <th class="text-center border-0 p-0">Start Time</th>
+      <th class="text-center border-0 p-0">End Date</th>
+      <th class="text-center border-0 p-0">End Time</th>
+    </tr>
+    <tbody formArrayName="complexRowData">
+      <tr class="mb-3" *ngFor="let item of complexArray.controls; let i=
+        index" [formGroupName]="i">
+        <!-- <td class="py-1 w-2 border-0 pr-2 p-0 align-middle">
+          <span>
+            <input type="checkbox" class="form-control h-auto"/>
+          </span>
+        </td> -->
+        <td class="py-1 w-5 border-0 p-0 px-1">
+          <span>
+            <input type="text" class="form-control text-center" formControlName="Seqno" />
+          </span>
+        </td>
+        <td class="py-1 w-8 border-0 p-0 px-1">
+          <span>
+            <input type="number" min="0" class="form-control " formControlName="Quan" [ngClass]="item.touched &&
+              item.get('Quan').errors &&
+              isFormSubmitted ?
+              'ep-error-message': ''" />
+          </span>
+        </td>
+        <td class="py-1 w-10 border-0 p-0 px-1 font-weight-bold">
+          <span>
+            <input type="text" class="form-control" formControlName="Quanunit" readonly />
+            <!-- <ng-select [searchable]="true"
+            formControlName="Quanunit"
+            [ngClass]="item.touched &&
+            item.get('Quanunit').errors &&
+            isFormSubmitted ?
+            'ep-error-message': ''">
+            <ng-option
+            *ngFor=" let medicationDosageUnit of
+            dosageUnitList"
+            [value]="medicationDosageUnit.Unit">
+            {{ medicationDosageUnit.Text }}
+          </ng-option>
+          </ng-select> -->
+          </span>
+        </td>
+        <td class="py-1 w-18 border-0 p-0 px-1 font-weight-bold">
+          <span>
+            <ng-select [searchable]="true" formControlName="N1znr" [ngClass]="item.touched &&
+              item.get('N1znr').errors && isFormSubmitted
+              ?
+              'ep-error-message': ''" (change)="validFromTobaseonDuration(i,
+              item.value)">
+              <ng-option *ngFor=" let medicationFrequency of
+                administrationService.frequencyList" [value]="medicationFrequency.CycleKey">
+                {{ medicationFrequency.OptionField}}
+              </ng-option>
+            </ng-select>
+          </span>
+        </td>
+        <td class="py-1 w-8 border-0 p-0 px-1">
+          <span>
+            <input type="textbox" min="0" class="form-control" formControlName="Pdur" [ngClass]="!(complexArray.controls.length === i+1) && item.touched &&
+              item.get('Pdur').errors &&
+              isFormSubmitted ?
+              'ep-error-message': ''" (input)="validFromTobaseonDuration(i,
+              item.value)" numbersOnly />
+          </span>
+        </td>
+        <td class="py-1 w-10 border-0 p-0 px-1 font-weight-bold">
+          <span>
+            <ng-select [searchable]="true" formControlName="Pduru" [ngClass]="item.touched &&
+              item.get('Pduru').errors &&
+              isFormSubmitted ?
+              'ep-error-message': ''" (change)="validFromTobaseonDuration(i,
+              item.value)" [readonly]="disableDuration">
+              <ng-option *ngFor=" let medicationDurationUnit of
+                administrationService.durationUnitList" [value]="medicationDurationUnit.Unit">
+                {{ medicationDurationUnit.Text }}
+              </ng-option>
+            </ng-select>
+            <!-- <input type="text" class="form-control" formControlName="Pduru"
+              readonly/> -->
+          </span>
+        </td>
+        <td class="py-1 w-12 border-0 p-0 px-1">
+          <span>
+            <input type="text" class="form-control" formControlName="StartD" [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+              dateInputFormat:
+              'DD.MM.YYYY', selectFromOtherMonth: true }" bsDatepicker />
+          </span>
+        </td>
+        <td class="py-1 w-8 border-0 p-0 px-1">
+          <span>
+            <input type="text" class="form-control" step="2" formControlName="StartT" [bsConfig]="{withTimepicker:
+              true,showWeekNumbers:false,
+              dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
+          </span>
+        </td>
+        <td class="py-1 w-11 border-0 p-0 px-1">
+          <span>
+            <input type="text" class="form-control" formControlName="EndD" [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+              dateInputFormat:
+              'DD.MM.YYYY', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" readonly />
+          </span>
+        </td>
+        <td class="py-1 w-8 border-0 p-0 px-1">
+          <span>
+            <input type="text" class="form-control" step="2" formControlName="EndT" [bsConfig]="{withTimepicker:
+              true,showWeekNumbers:false,
+              dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
+          </span>
+        </td>
+        <td class="py-1 border-0 p-0 px-1 align-middle">
+          <img src="assets/img/delete-icon.svg" height="20" (click)="deleteRowData(i ,complexArray.controls.length)" class="iconsminds-cursor-click c-pointer">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+<div class="badge-secondary p-3 ma-radius d-flex">
+  <div class="d-flex align-items-center justify-content-start border-0 " (click)="addRowData()">
+    <img src="assets/img/add.png" height="25" class="c-pointer filter-color">
+    <p class="font-weight-bolder ml-1 mb-0 p-0 c-pointer">Add new Sequence</p>
+  </div>
+</div>

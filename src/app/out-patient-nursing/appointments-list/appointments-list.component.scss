@@ -1,0 +1,303 @@
+.appointments-content {
+  background-color: #f6f7f9;
+  .available-docotrs-status {
+    border-radius: 25px 25px 0 0;
+    background-color: #0056b0;
+    .btn {
+      .next {
+        filter: brightness(0) invert(1);
+      }
+    }
+    .next-btn {
+      right: 0;
+      top: 10px;
+      z-index: 10;
+    }
+  }
+  .available-docotrs-calendar {
+    background-color: #fff;
+    .appointment-content {
+      &.bg-red {
+        border-bottom: 1px dashed #ca06066e;
+        background-color: #ca060621;
+        p {
+          color: #000;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 10px;
+          border-bottom: 1px dashed #ca06066e;
+        }
+      }
+      &.bg-green {
+        border-bottom: 1px dashed #28a745;
+        background-color: #28a74521;
+        p {
+          color: #000;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 10px;
+          border-bottom: 1px dashed #28a745;
+        }
+      }
+      &.bg-yellow {
+        border-bottom: 1px dashed #cdcd00;
+        background-color: #ffff0017;
+        p {
+          color: #000;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 10px;
+          border-bottom: 1px dashed #cdcd00;
+        }
+      }
+      &.bg-purple {
+        border-bottom: 1px dashed #007bff2e;
+        background-color: #007bff2e;
+        p {
+          color: #000;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 10px;
+          border-bottom: 1px dashed #007bff2e;
+        }
+      }
+      &.bg-silver {
+        border-bottom: 1px dashed #6d6969;
+        background-color: #6d69691c;
+        p {
+          color: #000;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 10px;
+          border-bottom: 1px dashed #6d6969;
+        }
+      }
+      .appoint-details {
+        padding: 2px 10px;
+        label {
+          color: #000;
+          font-size: 15px;
+          font-weight: 700;
+          margin: 0;
+          span {
+            font-size: 13px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+    .appointment-row {
+      height: calc(100% + 30px);
+      border-radius: 15px;
+      background-color: #dcebfb;
+      h3 {
+        color: #0056b0;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1.5;
+        margin: 10px 0 0 0;
+      }
+      p {
+        color: #000000;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+.appointment-bg {
+  background-color: #f6f7f9;
+  // height: calc(100vh - 66px);
+  height: 100%;
+  .appointment-popup {
+    border-radius: 20px;
+    background-color: #dcebfb;
+    .selector-wrapper {
+      gap: 20px;
+    }
+    .selected-doctors {
+      .doctors-name {
+        color: #000000;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+        &::before {
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 2px;
+          display: block;
+          border-radius: 5px;
+          background-color: #ffffff;
+          bottom: -10px;
+          left: 0;
+          z-index: 10;
+        }
+      }
+    }
+  }
+  .next-preview {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #706e6e;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    background-color: rgba(0, 85, 176, 0.075);
+  }
+  .date-year-btn {
+    cursor: text;
+    color: #0056b0;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    background-color: transparent;
+  }
+  .available-docotrs {
+    height: calc(100vh - 180px);
+    .available-docotrs-table {
+      overflow: auto;
+      scrollbar-width: thin;
+      thead {
+        tr {
+          th {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.5;
+            padding: 8px 0;
+            text-align: center;
+            &:first-child {
+              border-radius: 20px 0 0 0;
+            }
+            &:last-child {
+              border-radius: 0 20px 0 0;
+            }
+          }
+        }
+      }
+      tbody {
+        tr {
+          &:first-child {
+            margin-top: 30px;
+          }
+          td {
+            padding: 0;
+            &:first-child {
+              max-width: fit-content;
+              min-width: fit-content;
+            }
+            max-width: 315px;
+            min-width: 315px;
+            position: relative;
+            .date-wrapper {
+              height: 150px;
+              width: 66px;
+              position: relative;
+              background-color: #dcebfb;
+              border-radius: 10px 10px 0 0;
+            }
+            .appointment-time {
+              height: 155px;
+              gap: 10px;
+              border-radius: 7px 7px 0 0;
+              background-color: #dcebfb;
+              padding: 0 25px;
+              position: absolute;
+              top: 0;
+              left: 0;
+              .hour {
+                color: #0056b0;
+                font-size: 20px;
+                font-weight: bolder;
+              }
+              .minutes {
+                color: #000;
+                font-size: 14px;
+                font-weight: 400;
+              }
+            }
+          }
+        }
+      }
+      .next-preview {
+        img {
+          filter: brightness(0) invert(1);
+        }
+      }
+    }
+  }
+}
+.title {
+  color: #0056b0;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+::ng-deep .datepicker {
+  bs-daterangepicker-inline-container {
+    width: 100%;
+    .bs-datepicker {
+      display: block;
+      .bs-datepicker-container {
+        .bs-calendar-container {
+          .bs-media-container {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+::ng-deep .input-dropdown {
+  width: 150px;
+  border-radius: 6px;
+  background-color: #ddeeff;
+  .ng-select-container {
+    border: none !important;
+    border-radius: 6px !important;
+    background-color: #ddeeff !important;
+    .ng-arrow-wrapper {
+      .ng-arrow {
+        border-color: #0056b0 transparent transparent;
+      }
+    }
+  }
+}
+::ng-deep .common-input {
+  border-radius: 5px;
+  background-color: #ffffff;
+  .ng-select-container {
+    border: none !important;
+  }
+}
+.bg-appointment {
+  background-color: #0056b0;
+}
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+  width: 2rem;
+}
+.custom-day:hover,
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.bg-primary {
+  border-radius: 1rem;
+}
+.no-appointment {
+  background-color: #f6f7f9;
+}
+.height {
+  height: 90% !important;
+}
+
+.doctors-main{
+  overflow: auto;
+  width: calc(100vh - 250px);
+}

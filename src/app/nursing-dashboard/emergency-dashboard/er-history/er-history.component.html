@@ -1,0 +1,121 @@
+<div class="edash-rightSide" style="background-color: white;border-radius: 10px;">
+  <div class="edash-mainContent" style="display: flex;padding-right: 0px;
+  padding-left: 0px;">
+    <div class="container-fluid" style="max-height: 72vh;overflow: auto;">
+      <table class="table checkin-table">
+        <thead style="position: sticky;
+        top: 0;
+        z-index: 9 !important;background-color:white ;">
+          <tr style="background-color: #e4edf5;font-size: 12px;
+          font-weight: bold;">
+            <th scope="col"></th>
+            <th scope="col" style="padding-left: 0px;">Patient Name</th>
+            <th scope="col" style="padding-left: 0px;text-align: center;">MRN</th>
+            <!-- <th scope="col" style="padding-left: 0px;">Sex & Age</th> -->
+            <th scope="col" style="padding-left: 0px;text-align: center;">Date</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Check-In</th>
+            <th scope="col">Risk</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Allergy</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Triage</th>
+            <th scope="col" style="padding-left: 0px;text-align: center;">Isolation</th>
+            <th scope="col">Assigned physician</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Room</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
+            <th scope="col" style="padding-left: 0px;">Financial category</th>
+            <th scope="col" style="text-align: center;">Actions</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ERlistData;let i = index;">
+            <td scope="row" style="width: 0px;"><input type="checkbox" style="position: relative;
+              top: 3px;"></td>
+            <td scope="row" style="width: 16%;    padding-left: 0px;cursor: pointer;" >{{item.Patient}}</td>
+            <td style="width: 5%;padding-left: 0px;">{{item.Patnr}}</td>
+            <!-- <td style="width: 6%;padding-left: 0px;">F-40Y</td> -->
+            <td style="width: 1%;padding-left: 0px;">{{getDate(item.Erdat)| date : "dd.MM.y"}}</td>
+            <td scope="row" style="width: 5%;padding-left: 0px;">{{getTime(item.ZeitIntern)}}</td>
+            <td style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;" ></td>
+            <td style="padding-left: 0px;text-align: center;"><img src="assets/img/Allergy.svg" style="width: 23px;" ></td>
+            <td style="padding-left: 0px;width:4%;text-align: center;">
+              <span [style.background-color]="item?.TriageColor" class="triage-circle">{{item?.TriagePriorityCode}}</span>
+              <img src="assets/img/er-triage.png" style="width: 30px;" *ngIf="!item?.TriagePriorityCode">
+              </td>
+            <td scope="row" style="padding-left: 0px;text-align: center;"><img src="assets/img/isolation.png" style="width: 23px;" *ngIf="item.Risiko != ''"></td>
+            <td style="width: 14%;">
+            {{item.Behpersname}}
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;background-color: #939da178;" class="checkinrow-input" [value]="item.Behpersname" disabled> -->
+              </td>
+            <td style="width: 7%;padding-left: 0px;">
+              {{item.BehraumKb}}
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;" class="checkinrow-input" [value]="item.BehraumKb"> -->
+              </td>
+            <td style="width: 10%;padding-left: 0px;text-align: center;">
+              <span [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start' : '',  item.StatusTxt == 'Called' ? 'status-called' : '',item.StatusTxt == 'Checked Out' ? 'status-checkedout' :'']">
+              {{item.StatusTxt}}
+            </span>
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.StatusTxt" disabled> -->
+              </td>
+            <td scope="row" style="width:10%;padding-left: 0px;">
+              {{item.ZzfinCat}}
+            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
+              font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.ZzfinCat" disabled> -->
+              </td>
+            <td style="width: 1%;">
+            <div style="display: flex;justify-content: end;    line-height: 14px;">
+              <div><img src="assets/img/nursing.png" style="width: 28px;
+                margin-top: -6px;cursor: pointer;"></div>
+              <div style="border: 1px solid #dee2e6;
+              background-color: #dee2e6;
+              color: black;margin-left: 3px;
+              margin-right: 3px;font-size: 10px;
+              font-weight: bold;
+              padding: 2px;
+              height: 18px;
+              width: 36px;
+              text-align: center;
+              ">{{item.assignedTime}}</div>
+                   <!-- <div style="margin-left: 3px;
+                   margin-right: 3px;"><img src="assets/img/in-patient-dropdown.png" style="width: 20px;cursor: pointer;" (click)="actionPhysicianSet(item)"></div> -->
+                   <div class="dropdown" style="margin-left: 3px;
+                   margin-right: 3px;">
+                    <i
+                      class="fa fa-ellipsis-v dropdown-toggle"
+                      aria-hidden="true"
+                      style="cursor: pointer;font-size: 18px;"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <!-- <div
+                      class="dropdown-menu dropdown-menu-right"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item c-pointer">Reply</a>
+                      <a class="dropdown-item c-pointer" >Completed</a>
+                      <a class="dropdown-item c-pointer">Progress Entry</a>
+                    </div> -->
+                  </div>
+            </div>
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
+      <div
+            *ngIf="
+            ERlistData?.length == 0
+            "
+            style="text-align: center">
+            No results
+          </div>
+    </div>
+
+ </div>
+
+</div>

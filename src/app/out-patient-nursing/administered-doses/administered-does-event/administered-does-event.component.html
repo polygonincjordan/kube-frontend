@@ -1,0 +1,120 @@
+<div class="main">
+<div class="edash-rightSide">
+    <div class="d-flex justify-content-between">
+        <div class="first-row">
+            <div class="row w-100">
+                <div class="col-3">
+                    <div class="conent">
+                        <label for="" class="">patient:</label>
+                        <span class="ml-1">Test</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="conent">
+                        <label for="" class="">MRN:</label>
+                        <span class="ml-1">1101112</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="conent">
+                        <label for="" class="">DOB:</label>
+                        <span class="ml-1">07/11/2024</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="conent">
+                        <label for="" class="">Allergies:</label>
+                        <span class="ml-1">No</span>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <img src="assets/img/CloseTab.svg" class="c-pointer" height="30"  (click)="Removedata()"/> 
+    </div>
+     
+    <div class="table-section">
+        <table class="table checkin-table custom-table-striped table-responsive-sm">
+            <thead>
+              <tr class="checkin-table-header">
+                <th scope="col" style="padding-left: 11px;">
+                  Medication Name
+                </th>
+                <th scope="col" style="padding-left: 0px; ">
+                  Dosage
+                </th>
+                <th scope="col" style="padding-left: 0px; ">
+                  Duration/Unit
+                </th>
+                <th scope="col" style="padding-left: 0px; ">
+                  Created By
+                </th>
+                <th scope="col" style="padding-left: 0px; ">
+                  Valid Form
+                </th>
+                <th scope="col" style="padding-left: 0px;">Diagnosis</th>
+                <th scope="col" style="padding-left: 0px; ">
+                 Status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+              <!-- <tr *ngFor="let item of MedicationAdministrationList let i = index" >
+                <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">
+                  {{item?.Patnr }}
+                </td>
+                <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patname"> {{item?.Patname }}</td>
+                <td class="border-top-none" style="padding-left: 1px;" >
+                  
+                </td>
+                <td class="border-top-none" style="padding-left: 1px;" [title]="item.RoomidText || item.BedidText">
+                  {{ item?.RoomidText }} {{item?.BedidText}}
+                </td>
+                <td class="border-top-none" style="padding-left: 1px;" [title]="item.Allergies">
+                  {{ item?.Allergies}}
+                </td>
+                <td class="border-top-none allergy" style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden;" [title]="item.Diagnosis">
+                  {{ item?.Diagnosis }}
+                </td>
+                <td class="border-top-none" style="padding-left: 1px;" [title]="item.AttendingDoctorName">
+                  {{ item?.AttendingDoctorName}}
+                </td>
+                <td class="border-top-none" style="padding-left: 1px;" [title]="item.NurseName">
+                  {{ item?.NurseName}}
+              
+              </tr> -->
+            </tbody>
+          </table>
+          <!-- <div  style="text-align: center">
+            No results
+          </div> -->
+    </div>
+        
+</div>
+</div>

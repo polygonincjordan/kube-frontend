@@ -1,0 +1,532 @@
+<div class="e-order-history-content">
+  <div class="e-order-history-panel">
+    <div class="e-order-title">
+      <h4>Orders History</h4>
+    </div>
+    <div class="e-order-info">
+      <accordion [closeOthers]="true" [isAnimated]="true">
+        <accordion-group
+          *ngFor="let order of orderHistory | filter: eorderService.historysearchString"
+          [panelClass]="'border'"
+        >
+          <div accordion-heading>
+            {{ order.Gpartname }} - {{ order.creationDate }}
+          </div>
+          <div
+            class="history-category-panel"
+            *ngIf="order.TOLABSET.results.length"
+          >
+            <div class="e-order-title">
+              <h4>{{ order.TOLABSET.results[0].type }} Orders</h4>
+            </div>
+            <div class="history-table table-responsive">
+              <div class="select-date">
+                <input type="checkbox" (change)="eorderService.SelectDateEOrder($event, order.TOLABSET.results)">
+              </div>
+              <table class="table">
+                <tbody>
+                  <ng-container
+                    *ngIf="
+                      order.TOLABSET.results && order.TOLABSET.results.length
+                    "
+                  >
+                    <tr *ngFor="let item of order.TOLABSET.results">
+                      <td class="align-middle border-0 w-40">
+                        <span class="d-flex align-items-center p-0">
+                          <span
+                            class="checkbox-input mr-2 d-inline-block align-top"
+                          >
+                            <input type="checkbox" [(ngModel)]="item.isSelected"
+                            />
+                          </span>
+                          <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                            <span class="input-title">Service Description</span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              [title]="item.text"
+                              [(ngModel)]="item.text"
+                              [disabled]="true"
+                            />
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Desired Date</span>
+                          <input
+                            type="date"
+                            class="form-control input-type-date"
+                            [(ngModel)]="item.date"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Service Time</span>
+                          <input
+                            type="time"
+                            class="form-control input-type-time"
+                            [(ngModel)]="item.time"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 position-relative pt-2 pb-2">
+                        <span class="input-title position-relative p-0" style="top: 12px;">Fasting</span>
+                        <span class="d-inline-block align-top w-100 text-center">
+                          <input
+                            type="checkbox"
+                            class="checkbox-input mt-1 mx-2"
+                            [(ngModel)]="item.Patnue"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-15">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Localization</span>
+                          <select
+                            class="form-control input-type-select"
+                            [(ngModel)]="item.Lsloktext"
+                            [disabled]="true"
+                          >
+                            <option selected [value]="item.Lsloktext">
+                              {{ item.Lsloktext }}
+                            </option>
+                          </select>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-25">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Comments</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.Ergtx"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0">
+                        <span
+                          class="trash-icon"
+                          (click)="eorderService.onDeleteHistory(item)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 448 512"
+                          >
+                            <path
+                              d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                            />
+                          </svg>
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="history-category-panel"
+            *ngIf="order.TORADSET.results.length"
+          >
+            <div class="e-order-title">
+              <h4>{{ order.TORADSET.results[0].type }} Orders</h4>
+            </div>
+            <div class="history-table table-responsive">
+              <div class="select-date">
+                <input type="checkbox" (change)="eorderService.SelectDateEOrder($event, order.TORADSET.results)">
+              </div>
+              <table class="table">
+                <tbody>
+                  <ng-container
+                    *ngIf="
+                      order.TORADSET.results && order.TORADSET.results.length
+                    "
+                  >
+                  <tr *ngFor="let item of order.TORADSET.results">
+                    <td class="align-middle border-0 w-40">
+                      <span class="d-flex align-items-center p-0">
+                        <span
+                          class="checkbox-input mr-2 d-inline-block align-top"
+                        >
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="item.isSelected"
+                          />
+                        </span>
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Service Description</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [title]="item.text"
+                            [(ngModel)]="item.text"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Desired Date</span>
+                        <input
+                          type="date"
+                          class="form-control input-type-date"
+                          [(ngModel)]="item.date"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Service Time</span>
+                        <input
+                          type="time"
+                          class="form-control input-type-time"
+                          [(ngModel)]="item.time"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 position-relative pt-2 pb-2">
+                      <span class="input-title position-relative p-0" style="top: 12px;">Fasting</span>
+                      <span class="d-inline-block align-top w-100 text-center">
+                        <input
+                          type="checkbox"
+                          class="checkbox-input mt-1 mx-2"
+                          [(ngModel)]="item.Patnue"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-15">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Localization</span>
+                        <select
+                          class="form-control input-type-select"
+                          [(ngModel)]="item.Lsloktext"
+                          [disabled]="true"
+                        >
+                          <option selected [value]="item.Lsloktext">
+                            {{ item.Lsloktext }}
+                          </option>
+                        </select>
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-25">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Comments</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.Ergtx"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span
+                        class="trash-icon"
+                        (click)="eorderService.onDeleteHistory(item)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                        >
+                          <path
+                            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                          />
+                        </svg>
+                      </span>
+                    </td>
+                  </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="history-category-panel"
+            *ngIf="order.TOPROCSET.results.length"
+          >
+            <div class="e-order-title">
+              <h4>{{ order.TOPROCSET.results[0].type }} Orders</h4>
+            </div>
+            <div class="history-table table-responsive">
+              <div class="select-date">
+                <input type="checkbox" (change)="eorderService.SelectDateEOrder($event, order.TOPROCSET.results)">
+              </div>
+              <table class="table">
+                <tbody>
+                  <ng-container
+                    *ngIf="
+                      order.TOPROCSET.results && order.TOPROCSET.results.length
+                    "
+                  >
+                  <tr *ngFor="let item of order.TOPROCSET.results">
+                    <td class="align-middle border-0 w-40">
+                      <span class="d-flex align-items-center p-0">
+                        <span
+                          class="checkbox-input mr-2 d-inline-block align-top"
+                        >
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="item.isSelected"
+                          />
+                        </span>
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Service Description</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [title]="item.text"
+                            [(ngModel)]="item.text"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Desired Date</span>
+                        <input
+                          type="date"
+                          class="form-control input-type-date"
+                          [(ngModel)]="item.date"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Service Time</span>
+                        <input
+                          type="time"
+                          class="form-control input-type-time"
+                          [(ngModel)]="item.time"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 position-relative pt-2 pb-2">
+                      <span class="input-title position-relative p-0" style="top: 12px;">Fasting</span>
+                      <span class="d-inline-block align-top w-100 text-center">
+                        <input
+                          type="checkbox"
+                          class="checkbox-input mt-1 mx-2"
+                          [(ngModel)]="item.Patnue"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-15">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Localization</span>
+                        <select
+                          class="form-control input-type-select"
+                          [(ngModel)]="item.Lsloktext"
+                          [disabled]="true"
+                        >
+                          <option selected [value]="item.Lsloktext">
+                            {{ item.Lsloktext }}
+                          </option>
+                        </select>
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-25">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Comments</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.Ergtx"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span
+                        class="trash-icon"
+                        (click)="eorderService.onDeleteHistory(item)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                        >
+                          <path
+                            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                          />
+                        </svg>
+                      </span>
+                    </td>
+                  </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="history-category-panel"
+            *ngIf="order.TOMEDICSET.results.length"
+          >
+            <div class="e-order-title">
+              <h4>{{ order.TOMEDICSET.results[0].type }} Orders</h4>
+            </div>
+            <div class="history-table table-responsive">
+              <div class="select-date">
+                <input type="checkbox" (change)="eorderService.SelectDateEOrder($event, order.TOMEDICSET.results)">
+              </div>
+              <table
+                class="table"
+                *ngFor="let item of order.TOMEDICSET.results"
+              >
+                <tbody>
+                  <ng-container *ngIf="order.TOMEDICSET.results && order.TOMEDICSET.results.length">
+                    <tr>
+                      <td class="align-middle border-0 text-center w-30 pb-0 pt-0" colspan="2">
+                        <span class="d-flex align-items-center p-0">
+                          <span
+                          class="checkbox-input mr-2 d-inline-block align-top"
+                          >
+                          <input
+                              type="checkbox"
+                              [(ngModel)]="item.isSelected"
+                            />
+                          </span>
+                          <span
+                          class="input-text-field d-inline-block align-top w-100 position-relative pt-2 pb-2"
+                          >
+                          <span class="input-title">Medication Name</span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              [title]="item.text"
+                              [(ngModel)]="item.text"
+                              [disabled]="true"
+                            />
+                          </span>
+                        </span>
+                      </td>
+                      <td
+                      class="align-middle border-0 text-center text center w-8 pb-0 pt-0"
+                    >
+                    <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Dosage</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.dosageCount"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 text-center w-15 pb-0 pt-0">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Dosage Unit</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.QUANTUNITTXT"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 text-center w-20 pb-0 pt-0">
+                      <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                        <span class="input-title">Frequency</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.frequencyDesc"
+                          [disabled]="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0 w-5">
+                      <span
+                        class="trash-icon"
+                        (click)="eorderService.onDeleteHistory(item)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                        >
+                          <path
+                            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                          />
+                        </svg>
+                      </span>
+                    </td>
+                    </tr>
+                    <tr>
+                      <td class="align-middle border-0 text-center pb-0 pt-0" style="padding-left: 26px;">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Formula</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.formulaDesc"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 text-center pb-0 pt-0">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Route</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.routeDesc"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 text-center w-5 pb-0 pt-0">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Duration</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.durationCount"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 text-center w-15 pb-0 pt-0">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Duration Unit</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.DURUNITTXT"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 text-center w-20 pb-0 pt-0">
+                        <span class="d-inline-block align-top w-100 position-relative pt-2 pb-2">
+                          <span class="input-title">Comment</span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.comment"
+                            [disabled]="true"
+                          />
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+</div>

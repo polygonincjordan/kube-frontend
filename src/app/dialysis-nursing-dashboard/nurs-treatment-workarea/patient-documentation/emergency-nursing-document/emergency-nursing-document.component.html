@@ -1,0 +1,460 @@
+<div class="end-container">
+  <form [formGroup]="triageForm">
+    <label class="box-label">Arrival & Triage Data</label>
+    <div class="container-fluid">
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Mode of Arrival</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select placeholder="Select Mode of Arrival" formControlName="ArrivalMode">
+            <ng-option *ngFor="let item of modeArrivalList" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" formControlName="ArrivalModeTxt" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Accompanied By</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select placeholder="Select Accompanied By" formControlName="Accompanied">
+            <ng-option *ngFor="let item of accompaniedList" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" formControlName="AccompaniedTxt" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Language Spoken</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" formControlName="Language" [disabled]="true" [readOnly]="true" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Arrival Time</label>
+        </div>
+        <div class="col-md-4">
+          <!-- <input type="time" step="2" class="form-control height-normal" id="surgery-time" min="08:00:00" max="17:00:00" formControlName="ArrivalTime" > -->
+          <input class="form-control" formControlName="ArrivalTime" [readOnly]="true" />
+        </div>
+      </div>
+
+      <div class="row create-form-inputs">
+        <!-- <div class="col-md-12 row m-0"> -->
+        <div class="col-md-2">
+          <label>Triage Priority</label>
+        </div>
+        <div class="col-md-10">
+          <ul class="d-flex m-0 prior-media">
+            <ng-container *ngFor="let priority of triagePriorities">
+              <li class="checkbox-margin">
+                <input type="radio" name="TriagePriority" id="{{ 'flexRadioDefault' + priority.value }}"
+                  formControlName="TriagePriority" [value]="priority.value" />
+                <span class="mr-2"></span>
+                <label for="{{ 'flexRadioDefault' + priority.value }}" class="m-0 font-width"
+                  [title]="'Triage ' + priority.value">
+                  {{ priority.label }}
+                  <span class="mr-2"></span>
+                  <span class="triage-circle" [style.backgroundColor]="priority.backgroundColor"
+                    [style.border]="'2px solid ' + priority.borderColor" [style.color]="priority.fontColor">
+                    {{ priority.value }}
+                  </span>
+                </label>
+              </li>
+            </ng-container>
+          </ul>
+
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+    <div>
+      <div class="chief-complain mt-3 ml-4 mb-3 mr-3">
+        <span class="text-area-label">Chief Complaint</span>
+        <textarea class="form-control" formControlName="ChiefComplaint"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="end-container">
+  <form>
+    <label class="box-label">Allergies & Vitals</label>
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+              <li class="d-flex m-0 align-items-center" (click)="switchTabs('allergies')"
+                [ngClass]="allergy ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Allergies</p>
+              </li>
+              <li (click)="switchTabs('vitals')" class="d-flex m-0 align-items-center"
+                [ngClass]="vitals ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Vitals</p>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="allergy" class="secound-bar-vital-sign" (click)="openModalForAllergy()">
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+          </div>
+          <div *ngIf="vitals" class="secound-bar-vital-sign" (click)="openModalVital()">
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+          </div>
+        </div>
+        <div class="tab-content">
+          <div *ngIf="allergy">
+            <div class="allergy-box">
+              <table class="table table-bordered past-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Group </th>
+                    <th scope="col">Description</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of toAllergyArr;let i=index">
+                    <td>{{item.Agroup || item.AllergenGrp}}</td>
+                    <td>{{item.Description || item.Allergen}}</td>
+                    <td (click)="deleteFromTable(item,i)"><img src="assets/img/Delete.svg" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- <div *ngIf="diagnosis">
+            <div class="d-flex mb-2" style="justify-content: space-between;
+              padding-right: 22px">
+              <div style="display: flex;
+              align-items: center;
+              gap: 10px;">
+                <input type="checkbox" style="width: 36px;
+                height: 22px;" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+                <label class="admitting-physician">No Diagnosis Applicable</label>
+              </div>
+              <div>
+                <button class="create-diagnosis" (click)="openModalForDiagnosis()"
+                  [disabled]="enableCreateDiagnosis">Create & Import</button>
+              </div>
+
+            </div>
+            <div style="max-height: 296px;
+              overflow: auto;">
+              <table class="table table-bordered past-table">
+                <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                  <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Description </th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Administion Diag.</th>
+                    <th scope="col">Surgery Diag.</th>
+                    <th scope="col">Preop Diag.</th>
+                    <th scope="col">Discharge Diag.</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #fbfcff;">
+                  <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                    <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                    <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                    <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DAdmission"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DSurgery"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DPreoperative"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DDischarge"></td>
+                    <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
+                        src="assets/img/Delete.svg" style="position: relative;
+                      top: 6px;" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> -->
+          <div *ngIf="vitals">
+            <div class="allergy-box">
+              <div class="allergy-checkbox-section">
+                <!-- <input type="checkbox" style="width: 36px;
+                height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
+                <input type="checkbox" (change)="handleCheckboxVitals()"
+                  [attr.disabled]="toVitalsArr.length >0 ? true:null" />
+                <label class="admitting-physician">No Vitals Signs Applicable</label>
+              </div>
+              <!-- <div>
+                <button class="create-diagnosis" (click)="openModalVital()" [disabled]="enableCreateVitals">Create & Import</button>
+              </div> -->
+              <!-- <div class="secound-bar-vital-sign">
+                <ul class="list-simple m-0">
+                  <li class="icon-pdf" (click)="openModalVital()"><img src="assets/img/file1.svg" title="Create & Import" class="img-size" style="width: 23px;"></li>
+                </ul>
+              </div> -->
+            </div>
+            <div style="max-height: 296px;
+              overflow: auto;">
+              <table class="table table-bordered past-table">
+                <thead style="background-color: #e4edf5; color: black; ">
+                  <tr>
+                    <th scope="col">Description</th>
+                    <th scope="col">Measured Value </th>
+                    <th scope="col">Normal Range</th>
+                    <th scope="col">Date/Time</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #fbfcff;">
+                  <tr class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+                    <td style="    padding: 10px !important;
+                  width: 3%;text-align: center;" (click)="deleteVitalsFromTable(item,i)"><img
+                        src="assets/img/Delete.svg" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="end-container">
+  <form>
+    <label class="box-label">Scales</label>
+    <div class="container-fluid">
+      <div class="row create-form-inputs">
+        <div class="scale-box">
+          <div class="scale-box-checkbox">
+            <!-- <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
+            <input type="checkbox" [(ngModel)]="noScaleAppicable" [ngModelOptions]="{ standalone: true }" />
+            <label class="admitting-physician">No Scale Applicable</label>
+          </div>
+          <div class="scale-box-table">
+            <table class="table table-bordered past-table">
+              <thead>
+                <tr>
+                  <th scope="col">Description</th>
+                  <th scope="col">Measured Value </th>
+                  <th scope="col">Normal Range</th>
+                  <th scope="col">Date/Time</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="past-med-input" *ngFor="let item of scalesList;let i=index">
+                  <td>{{item.ScaleType}}</td>
+                  <td>{{item.LastScore}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.Datetimee}}</td>
+                  <td (click)="openGlosgowComaModel(item)">Create
+                  </td>
+                  <td (click)="viewGlosgowModel(item)">View</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="end-container">
+  <div class="sph-box">
+    <label class="box-label">Social & Psychological History</label>
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+              <li class="d-flex m-0 align-items-center" (click)="socialAndPsychologicalTabs('social')"
+                [ngClass]="socialHistory ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Social history</p>
+              </li>
+              <li (click)="socialAndPsychologicalTabs('psychological')" class="d-flex m-0 align-items-center"
+                [ngClass]="psychologicalHistory ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Psychological history</p>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="allergy" class="secound-bar-vital-sign" (click)="openModalForAllergy()">
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+            <!-- <ul class="list-simple m-0">
+              <li class="icon-pdf" ><img src="assets/img/file1.svg"
+                  title="Create & Import" class="img-size" style="width: 23px;"></li>
+            </ul> -->
+          </div>
+          <div *ngIf="vitals" class="secound-bar-vital-sign" (click)="openModalVital()">
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+            <!-- <ul class="list-simple m-0">
+              <li class="icon-pdf" ><img src="assets/img/file1.svg" title="Create & Import"
+                  class="img-size" style="width: 23px;"></li>
+            </ul> -->
+          </div>
+        </div>
+        <div class="tab-content" style="border-radius: 7px;">
+          <div *ngIf="socialHistory">
+            <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" style="width: 15px; height: 22px;" [(ngModel)]="noHabitApplicable"
+                  [ngModelOptions]="{ standalone: true }" />
+                <label class="admitting-physician">No habits applicable</label>
+              </div>
+              <!-- <div class="secound-bar-vital-sign">
+                <ul class="list-simple m-0">
+                  <li class="icon-pdf"><img src="assets/img/file1.svg" title="Create & Import" class="img-size" style="width: 23px;"></li>
+                </ul>
+              </div> -->
+            </div>
+            <div class="main-tab-contant">
+              <div>
+                <table class="table table-bordered table-er-traige">
+                  <thead
+                    style="position: sticky; top: 0; z-index: 9 !important; background-color: #e4edf5; color: black;">
+                    <tr>
+                      <th scope="col">Habit</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Consumpation quantity </th>
+                      <th scope="col">Duration</th>
+                      <th scope="col">Year</th>
+                      <th scope="col">Last Update</th>
+                      <th scope="col">Add Habit</th>
+                      <th scope="col">No Consumpation</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: #fbfcff;">
+                    <tr style="height: 30px;" *ngFor="let item of socialHistoryList;let i=index">
+                      <td>{{ item.label }}</td>
+                      <td>{{ item.Status }}</td>
+                      <td>{{ item.Quantity }}</td>
+                      <td>{{ item.Duration }}</td>
+                      <td>{{ item.Year }}</td>
+                      <td>{{ getDate(item.DateFrom) | date: 'dd/MM/yyyy' }}</td>
+                      <td class="text-center"><input type="checkbox" [checked]="item.Status && item.Status != 'No'"
+                          [disabled]="noHabitApplicable" style="height: 16px;"
+                          (click)="openModelForAddHabitSocial(i,item)" /></td>
+                      <td class="text-center"><input type="checkbox" [checked]="item.Status && item.Status == 'No'"
+                          [disabled]="noHabitApplicable" style="height: 16px;"
+                          (click)="noConsumeSocial(i, item, 'noConsume')" /></td>
+                      <td><img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer"
+                          style="margin-left: 11px;" (click)="deleteData(i, item)"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4">
+                <div class="row">
+                  <div class="col-md-3 row m-0 align-items-center">
+                    <div class="col-md-6">Marital Status</div>
+                    <div class="col-md-6">
+                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [disabled]="true" />
+                    </div>
+                  </div>
+                  <div class="col-md-2 row m-0 align-items-center">
+                    <div class="col-md-3">Since</div>
+                    <div class="col-md-8">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-md-3 row m-0 align-items-center">
+                    <div class="col-md-6">Number of spouse</div>
+                    <div class="col-md-6">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-12 row m-0 align-items-center">
+                    <div class="col-md-1" style="margin-right: 38px ;">
+                      <label>Comments</label>
+                    </div>
+                    <div class="col-md-10">
+                      <textarea class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="triageForm">
+            <div *ngIf="psychologicalHistory" class="psychological-main">
+              <div class="d-flex mb-2 mt-2" style="justify-content: space-between; padding-right: 22px">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <input type="checkbox" formControlName="PsyNoProblem" />
+                  <label class="admitting-physician">No Psychological Applicable</label>
+                </div>
+              </div>
+              <div class="row mt-3 mb-3">
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyAnxious"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Anxious</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyUncooperative"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Uncooperative</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyDepressed"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Depressed</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyAngry"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Angry</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyAgitated"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Agitated</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyCombative"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Combative</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input type="checkbox" class="mr-2" formControlName="PsyOther"
+                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
+                  <label class="admitting-physician">Other</label>
+                </div>
+              </div>
+              <div class="row align-items-center">
+                <div class="col-md-2">
+                  <label class="admitting-physician">Comments</label>
+                </div>
+                <div class="col-md-10">
+                  <textarea class="form-control" formControlName="PsyComments"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

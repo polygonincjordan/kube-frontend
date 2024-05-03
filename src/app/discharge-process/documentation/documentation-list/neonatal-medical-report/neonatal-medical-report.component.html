@@ -1,0 +1,113 @@
+<!-- FRIST  SECTION CODE START -->   
+<form [formGroup]="neoNatalForm" class="neonatal">
+  <div class="box-date-time">
+    <div class="container">
+    <div class="row">
+    <div class="col-3">
+    <ul>
+    <li><span>Date</span> <input  type="text"
+      placeholder="Date"
+      #dp="bsDatepicker"
+      bsDatepicker
+      [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
+      class="form-control"
+      formControlName="Datee"></li>
+    </ul>
+    
+    </div>
+    <div class="col-3">
+    <ul>
+    <li><span>Time</span> <input  type="time"
+      class="form-control p-1"
+      placeholder="HH:mm:ss"
+      style="width:31%;margin: 0px 0px 0px -23px;" formControlName="Timee"></li>
+    </ul>
+    
+    </div>  
+    </div>
+    </div>
+    </div>
+    <div class="box-ga-weeks">
+    <div class="container">
+    <div class="row">
+    <div class="col-12">
+    <ul>
+    <li class="half-boxes"><span>GA</span> <input type="text" placeholder="" formControlName="Ga"> Weeks</li>
+    <li class="half-boxes"><input type="text" placeholder="" formControlName="GaDays"> Days</li>
+
+    <li class="half-boxes" style="    width: 18%;"><span style="margin-right: 6%;">APGAR</span> <input type="text" placeholder="" formControlName="Min1" style="    width: 38%;">1min</li>
+    <li class="half-boxes" style="    width: 13%;"><input type="text" placeholder="" formControlName="Min5" style="    width: 46%;">5mins</li>
+    <li class="half-boxes" style="    width: 13%;"><input type="text" placeholder="" formControlName="Min10" style="    width: 46%;">10mins</li>
+    </ul>
+    <ul>
+    <li class="half-boxes"><span>CGA</span> <input type="text" placeholder="" formControlName="Cga"> Weeks</li>
+    <li class="half-boxes"><input type="text" placeholder="" formControlName="CgaDays"> Days</li>
+    <li class="full-width-boxes"><span>Chronological Age</span> <input type="text" placeholder="" formControlName="ChronoAge"> Days</li>
+    <li class="half-boxes" style="width:50%"><span style="width: 50%;">Date Of Birth</span> <input type="text" placeholder="" #dp="bsDatepicker"
+      bsDatepicker
+      [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" formControlName="BirthDate" style="width:22%"></li>
+    <li class="half-boxes" style="width:50%"><span style="width: 26%;">Time Of Birth</span> <input type="time" placeholder="" formControlName="BirthTime" style="width:22%"></li>
+    <li class="half-boxes" style="width:50%"><span style="width: 50%;">Date Of Admission</span> <input type="text" placeholder="" #dp="bsDatepicker"
+      bsDatepicker
+      [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" formControlName="AdmDate" style="width:22%"></li>
+    <li class="half-boxes" style="width:50%"><span style="width: 26%;">Time Of Admission</span> <input type="time" placeholder="" formControlName="AdmTime" style="width:22%"></li>
+    <li class="full-width-boxes"><span>Gender</span>
+      <select class="form-select" aria-label="Default select example" formControlName="Gender" style="padding-right: 0 !important;">
+      <option value=""></option>
+      <option value="0">Male</option>
+      <option value="1">Female</option>
+      <option value="3">Unknown</option>
+    </select> 
+    </li>
+    <li class="full-width-boxes"><span>Type Of Delivery</span>
+      <select class="form-select" aria-label="Default select example" formControlName="TypeDelivery" style="padding-right: 0 !important;">
+      <option value=""></option>
+      <option value="0">C/S</option>
+      <option value="1">Forceps VD</option>
+      <option value="2">Normal VD</option>
+      <option value="3">Not Stated</option>
+      <option value="4">Vacuum VE</option>
+    </select> 
+    </li>
+    <li class="full-width-boxes"><span>Birth Weight</span> <input type="text" placeholder="" formControlName="BirthWeight">
+      <select class="form-select" aria-label="Default select example" formControlName="BirthWgtUnit" style="padding-right: 0 !important;margin-left: 5px;">
+      <option value=""></option>
+      <option value="0">0 gm</option>
+      <option value="1">1 kg</option>
+    </select> 
+    </li>
+    <li class="full-width-boxes"><span>Current Weight</span> <input type="text" placeholder="" formControlName="CurrentWeight">
+      <select class="form-select" aria-label="Default select example" formControlName="CurrentWgtUnit" style="padding-right: 0 !important;margin-left: 5px;">
+      <option value=""></option>
+      <option value="0">0 gm</option>
+      <option value="1">1 kg</option>
+    </select> 
+    </li>
+    <li class="full-width-boxes"><span>Attending Physician</span> <input type="text" placeholder="" formControlName="AttendingPhy" style="width:22%"></li>
+    
+    
+    </ul>
+    
+    </div>
+     
+    </div>
+    </div>
+    </div>
+    
+    <div class="box-subjective">
+    <div class="container">
+    <div class="row">
+    <div class="col-12">
+    <ul>
+    <li><p><span>Problem List</span></p> <textarea formControlName="Problem"> </textarea> </li>
+    <!-- <li><p><span>Objective</span></p> <textarea formControlName="Objective"> </textarea> </li> -->
+    <li><p><span>Assessment</span></p> <textarea formControlName="Assessment"> </textarea> </li>
+    <li><p><span>Plan</span></p> <textarea formControlName="Plann"> </textarea> </li>
+    </ul>
+    
+    </div>
+      
+    </div>
+    </div>
+    </div>
+  </form>

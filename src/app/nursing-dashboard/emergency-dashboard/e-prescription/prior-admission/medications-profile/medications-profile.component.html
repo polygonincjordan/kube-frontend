@@ -1,0 +1,483 @@
+<form action="" [formGroup]="MedicationorderForm">
+  <div class="mt-4">
+    <div class="bg-order bg-border-color bg-border-grey">
+      <div class="p-2 madiborder-bottom d-flex m-0 justify-content-between
+        z-index-1 sticky-top bg-white">
+        <h4 class="m-0 pl-5 font-weight-bold">{{ (!this.filterConfig.Active && !this.filterConfig.Suspended && !this.filterConfig.Ended && !this.filterConfig.Cancelled) ? 'This Case Medication Orders' : this.filterConfig.Active === true ? 'Active Orders' : this.filterConfig.Suspended === true ? 'Suspended Orders' : this.filterConfig.Ended === true? 'Ended Orders':this.filterConfig.Cancelled === true?'Cancelled Orders':''}}</h4>
+        <div class="">
+          <img src="assets/img/close.svg" alt="" height="20"
+            (click)="closeActivedata()" role="button" aria-expanded="false"
+            aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
+            ml-2
+            c-pointer" *ngIf="MedicationorderForm.value.isActiveOrder">
+          <img src="assets/img/open-penal.png" alt=""
+            (click)="closeActivedata()" role="button" aria-expanded="false"
+            aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
+            ml-2
+            c-pointer" *ngIf="!MedicationorderForm.value.isActiveOrder">
+        </div>
+      </div>
+      <div #collapse="ngbCollapse"
+        [(ngbCollapse)]="!MedicationorderForm.value.isActiveOrder"
+        class="table-overfllow"
+        *ngIf="drugArray.controls &&
+        drugArray.controls.length">
+        <table class="w-100">
+          <thead class="z-index-1 sticky-top">
+            <tr>
+              <td class="p-2 bg-color-me ">
+                <table class=" text-black-100 w-100">
+                  <tr class="text-center ml-5 mb-3 colorwhite">
+                    <th class="text-center w-2 "></th>
+                    <th class="text-center profile-width-19">Medication Name</th>
+                    <th class="text-center w-9 ">Dosage</th>
+                    <th class="text-center w-6 ">Duration</th>
+                    <th class="text-center w-8 ">Duration Unit</th>
+                    <th class="text-center w-8 ">Valid From</th>
+                    <th class="text-center w-9 ">Valid To</th>
+                    <th class="text-center w-4 "></th>
+                    <th class="text-center w-4 profile-width"></th>
+                    <th class=" w-1 ">Purpose</th>
+                    <th class="text-center w-7 ">Physician</th>
+                    <th class="text-center w-6 ">Status</th>
+                    <th class="text-center w-11 "></th>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </thead>
+          <tbody class="mb-3" formArrayName="MedicationorderData">
+            <tr *ngFor="let item of drugArray.controls | customSearch:
+              addministrationService.searchMedicationProfile | filterPipe:
+              filterConfig.Sorting:filterConfig.MedicationSorting; let i=
+              index" [formGroupName]="i">
+              <td>
+                <table class="w-100 ">
+                  <tr>
+                    <td class=" w-2 pl-3">
+                      <input type="checkbox">
+                    </td>
+                    <td class="p-1 align-middle border-0 w-20">
+                      <span
+                        class="input-medication d-inline-block align-top
+                        w-100
+                        font-weight-bolder">
+                        <input type="text" class="form-control Medica-font-size"
+                          formControlName="Descrlt" [ngClass]="item.touched &&
+                          item.get('Descrlt').errors &&
+                          isFormSubmitted ?
+                          'ep-error-message': ''"
+                          [readOnly]="!item.value.isCollapsed"/>
+                      </span>
+                    </td>
+                    <td class="w-9 p-1">
+                      <input type="text" *ngIf="item.value.indisdos === 'X'" class="form-control Medica-font-size"
+                        title="Apply {{item.value.Formatdescr}} {{item.value.N1id}}"
+                        value="Apply {{item.value.Formatdescr}} {{item.value.N1id}}"
+                        [readOnly]="!item.value.isCollapsed"/>
+                        <input type="text" *ngIf="item.value.indisdos !== 'X'" class="form-control Medica-font-size"
+                        title="{{item.value.Quan | customDecimal}} {{item.value.Quanunit}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                        value="{{item.value.Quan | customDecimal}} {{item.value.Quanunit}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                        [readOnly]="!item.value.isCollapsed"/>
+                    </td>
+                    <td class="w-6 p-1">
+                      <span class="input-text-field
+                        d-inline-block align-top w-100">
+                        <input
+                          type="textbox" class="form-control
+                          Medica-font-size" value="{{durationConvert(item.value.Pdur | customDecimal) }}"
+                          (input)="validFromTobaseonDuration(i, item.value); pdurdata(item.value)" [readOnly]="!item.value.IsEditMode" appDigitDecimaNumber >
+                      </span>
+                    </td>
+                    <td class="w-8 p-1 ">
+                      <span
+                        class="input-text-field d-inline-block align-top
+                        w-100 edit-select">
+                        <input type="text" formControlName="Durunittxt" class="form-control Medica-font-size" [readOnly]="!item.value.isCollapsed" *ngIf="!item.value.IsEditMode ">
+                        <!-- <ng-select [searchable]="true" *ngIf="!item.value.IsEditMode && !item.value.Isrenewed"
+                          formControlName="Pduru"  class="Medica-font-size"
+                          (change)="validFromTobaseonDuration(i, item.value)" >
+                          <ng-option
+                            *ngFor=" let medicationDurationUnit of
+                            addministrationService.durationUnitList"
+                            [value]="medicationDurationUnit.Unit">
+                            {{ medicationDurationUnit.Text }}
+                          </ng-option>
+                        </ng-select> -->
+
+                        <ng-select [searchable]="true" *ngIf="item.value.IsEditMode "
+                        formControlName="Pduru"  class="Medica-font-size"
+                        (change)="validFromTobaseonDuration(i, item.value)" >
+                        <ng-option
+                          *ngFor=" let medicationDurationUnit of
+                          addministrationService.durationUnitList"
+                          [value]="medicationDurationUnit.Unit">
+                          {{ medicationDurationUnit.Text }}
+                        </ng-option>
+                      </ng-select>
+                      </span>
+
+                    </td>
+                    <td class="w-9 p-1 ">
+                      <input type="text" class="form-control font-weight-bolder
+                      Medica-font-size"
+                      formControlName="StartD"
+                      [ngClass]="item.touched &&
+                      item.get('StartD').errors &&
+                      isFormSubmitted ?
+                      'ep-error-message': ''"
+                      [bsConfig]="{withTimepicker:
+                      true,showWeekNumbers:false,
+                      dateInputFormat:
+                      'DD.MM.YYYY'}"
+                      bsDatepicker
+                      [isDisabled]="item.value"
+                      [readOnly]="!item.value.isCollapsed" *ngIf="item.value.MosidDesc !== 'Ended'"/>
+                      <input type="text" class="form-control font-weight-bolder
+                        Medica-font-size"
+                        formControlName="StartD"
+                        [ngClass]="item.touched &&
+                        item.get('StartD').errors &&
+                        isFormSubmitted ?
+                        'ep-error-message': ''"
+                        [bsConfig]="{withTimepicker:
+                        true,showWeekNumbers:false,
+                        dateInputFormat:
+                        'DD.MM.YYYY HH:mm:ss'}"
+                        bsDatepicker
+                        [isDisabled]="item.value"
+                        [readOnly]="!item.value.isCollapsed" *ngIf="item.value.MosidDesc === 'Ended'"/>
+                    </td>
+                    <td class=" w-9 p-1 ">
+                      <input type="text" class="form-control font-weight-bolder
+                        Medica-font-size" formControlName="EndD"
+                        [ngClass]="item.touched &&
+                        item.get('EndD').errors &&
+                        isFormSubmitted ?
+                        'ep-error-message': ''"
+                        [bsConfig]="{withTimepicker:
+                        true,showWeekNumbers:false,
+                        dateInputFormat:
+                        'DD.MM.YYYY'}"
+                        bsDatepicker [readOnly]="!item.value.IsEditMode " *ngIf="item.value.MosidDesc !== 'Ended'"/>
+                        <input type="text" class="form-control font-weight-bolder
+                        Medica-font-size" formControlName="EndD"
+                        [ngClass]="item.touched &&
+                        item.get('EndD').errors &&
+                        isFormSubmitted ?
+                        'ep-error-message': ''"
+                        [bsConfig]="{withTimepicker:
+                        true,showWeekNumbers:false,
+                        dateInputFormat:
+                        'DD.MM.YYYY HH:mm:ss'}"
+                        bsDatepicker [readOnly]="!item.value.IsEditMode " *ngIf="item.value.MosidDesc === 'Ended'"/>
+                    </td>
+                    <td class="w-4 p-1 text-center">
+                      <div>
+                        <div class="d-flex align-items-center
+                          position-relative">
+                          <input type="checkbox" class="mr-1 checkbox-panel"
+                            [checked]="item.get('Prn').value"
+                            disabled (change)="onOpenInfoPopupprn(item,
+                            i)" title="{{item.get('Prncond').value}}">
+                          <span class="mr-2 admin admin-gray"></span>
+                          <label class="m-0">PRN</label>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="w-4 p-1 text-center">
+                      <div>
+                        <div class="d-flex align-items-center
+                          position-relative">
+                          <input type="checkbox" class="mr-1 checkbox-panel"
+                            [checked]="item.get('Pom').value"
+                           title="{{item.get('Pom').value === '1' ? 'Administration by the nurse':item.get('Pom').value === '2'? 'Self administration by the patient':''}}" [popover]="hourPopover"
+                           [popoverContext]="{index: i}" disabled>
+                          <span class="mr-2 admin admin-gray"></span>
+                          <label class="m-0">POM</label>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="w-0 text-center Mp-hover">
+                      <div *ngIf="item.value.Purpose === '3'">
+                          <img src="assets/img/Administration.png" alt="" height="40" class="c-pointer" title="Administration">
+                      </div>
+                      <div *ngIf="item.value.Purpose === '1'">
+                        <img src="assets/img/Dispensing.png" alt="" height="30" class="c-pointer" title="Dispensing">
+                    </div>
+                     <div *ngIf="item.value.Purpose === '2'">
+                      <img src="assets/img/prescription-purpose.png" alt="" height="30" class="c-pointer" title="Print Prescription">
+                     </div>
+                    </td>
+                    <td class="w-9 p-1 ">
+                      <input class="form-control font-weight-bolder
+                        Medica-font-size" formControlName="EmpRespNm"
+                        [readOnly]="!item.value.isCollapsed">
+                    </td>
+                    <td class="w-9 p-1 ">
+                      <input type="text" class="form-control font-weight-bolder
+                        Medica-font-size"
+                        formControlName="MosidDesc"
+                        [readOnly]="!item.value.isCollapsed">
+                    </td>
+                    <td class="w-14 p-1 d-flex">
+                      <div class="p-2 Mp-hover">
+                        <img src="assets/img/Additional-Info.jpg" alt=""
+                          (click)="onOpenInfoPopup(item, i)"
+                          height="20" class="c-pointer" title="Info">
+                      </div>
+                      <div class="p-2 c-pointer Mp-hover">
+                        <img src="assets/img/selected-icon.png" alt=""
+                          height="20" class="c-pointer"
+                          (click)="openMoDetailPanel(i, item.value)"
+                          [ngClass]="item.value.IsmoDetails? 'open-mo-detail':
+                          ''" [ngClass]=" isFormSubmitted ?
+                          'ep-error-message':''" title="Events’ Actions">
+                      </div>
+                      <div class="p-2 c-pointer Mp-hover"
+                        [popover]="actionData"
+                        [popoverContext]="{item: item, index: i}"
+                        placement="left">
+                        <img src="assets/img/more-line.png" alt="" height="20" title="Order’s Actions" >
+                      </div>
+                      <!-- <div class="c-pointer" *ngIf="item.value.IsEditMode"
+                        (click)="onEditAction(item.value, i)">
+                        <div type="button" class="btn
+                          rounded-sm editbutton p-1">
+                          <img src="assets/img/pen-icon-edit.jpg" alt=""
+                            height="25">
+                        </div>
+                      </div> -->
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="13" class="p-0 border-0">
+                      <ng-container *ngIf="item.value.IsEditMode ">
+                        <div class="ma-tab-content
+                          d-flex
+                          edit-border">
+                          <edit-medication
+                            [editdata]="item.value" (onUpdateprnData)="updatePrnCondition($event, i)" class="w-100"></edit-medication>
+                          <div class="mt-4 mr-3">
+                            <img src="assets/img/close.svg" alt="" height="20px"
+                              (click)="closeeditModetail(i)">
+                          </div>
+                        </div>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-btn text-right p-3 bg-color-me mt-2">
+      </div>
+    </div>
+  </div>
+</form>
+
+<form action="" [formGroup]="MedicationorderForm">
+  <div class="mt-4">
+    <div class="bg-order bg-border-color">
+      <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
+        <h3 class="m-0 pl-5 font-weight-bold">Prior to Admission</h3>
+        <div class="">
+          <img src="assets/img/close.svg" alt="" height="20">
+        </div>
+      </div>
+      <div class="form-btn text-right p-3 bg-color-me mt-2">
+      </div>
+    </div>
+  </div>
+</form>
+
+<form action="" [formGroup]="MedicationorderForm">
+  <div class="mt-4">
+    <div class="bg-order bg-border-color">
+      <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
+        <h3 class="m-0 pl-5 font-weight-bold">Patient Profile History</h3>
+        <div class="">
+          <img src="assets/img/close.svg" alt="" height="20">
+        </div>
+      </div>
+      <div class="form-btn text-right p-3 bg-color-me mt-2">
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<ng-template #actionData let-item="item" let-index="index" >
+  <div class="d-flex justify-content-between abc position-relative p-0">
+    <button class="p-2 c-pointer Mp-hover button-color border-0"
+      [popover]="endActionRef"
+      [popoverContext]="{item:
+      item.get('MedicationEnd'), index:
+      index
+      }" placement="left"
+      (click)="medicationEndAction(index);"
+      title="End" #endaction="bs-popover">
+      <img src="assets/img/editable-img.jpg" alt="" height="25">
+    </button>
+    <button class="p-2 c-pointer Mp-hover button-color border-0"
+      [popover]="HoldActionRef"
+      [popoverContext]="{item: item.get('MedicationHold'), index:
+      index}" placement="left" [disabled]="item.value.MosidDesc === 'Suspended'"
+      (click)="medicationCancellationAction(index)" [isOpen]="configurationPopup
+      ===
+      'isHoldPopup'" title="Hold">
+      <img src="assets/img/roundexactly-hold.jpg" alt="" height="25">
+    </button>
+
+    <!-- <div class="p-2 d-flex align-items-center c-pointer
+      event-hover
+      popover-width" *ngIf="replaceSuspendtoResume === 'Resume'"
+      [popover]="ResumeActionRef"
+      (click)="popupStatus('isResumePopup');"
+      [popoverContext]="{item:
+      item.get('MedicationResume')
+      }" placement="right" [outsideClick]="true" title="ResumeAction">
+      <img src="assets/img/rightarrow.jpg" alt="" height="27">
+    </div> -->
+    <div class="p-2 c-pointer Mp-hover" title="Edit" (click)="askQuestion(index)">
+      <img src="assets/img/pen-icon-edit.jpg" alt="" height="25"
+        (click)="item.patchValue({ IsEditMode: true ,IsmoDetails:false})">
+    </div>
+    <div class="p-2 c-pointer Mp-hover" [popover]="cancelActionRef"
+      [popoverContext]="{item: item.get('MedicationCancel'), index:
+      index}" placement="left" title="Cancel"
+      (click)="medicationCancellationAction(index)">
+      <img src="assets/img/delete-icon.svg" alt="" height="25">
+    </div>
+    <div class="p-2 c-pointer Mp-hover" title="Renew" >
+      <img src="assets/img/reload-icon2-refresh.jpg" alt="" height="25"
+        (click)="copyorder(item.value, index)">
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #endActionRef let-item="item" let-index="index" class="end">
+  <form action="" [formGroup]="item">
+    <div class="ma-template p-3">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+        [disabled]="!item.valid" (click)="Endorder(item.value, index)">End
+          Status</button>
+      </div>
+      <bs-datepicker-inline [bsConfig]="{withTimepicker:
+        true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}"
+        (bsValueChange)="setDateInAction($event, 'MedicationEnd', index)"
+        [bsValue]="CurrentDateTime"></bs-datepicker-inline>
+      <div class="additional-input additional-input py-3">
+        <label for="medicationspopup w-100">End Reason</label>
+        <ng-select
+          class="font-weight-bolder
+          input-medication " formControlName="Rcodeid">
+          <ng-option
+            *ngFor=" let endAction of
+            medicationEndReason"
+            [value]="endAction.Rcodeid">
+            {{endAction.Descr}}
+          </ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #HoldActionRef let-item="item" let-index="index">
+  <form action="" [formGroup]="item">
+    <div class="ma-template p-3">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+        [disabled]="!item.valid"  (click)="HoldAction(item.value, index)">Hold
+          Status</button>
+      </div>
+      <bs-datepicker-inline [bsConfig]="{withTimepicker:
+        true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}"
+        (bsValueChange)="setDateInAction($event, 'MedicationHold', index)"
+        [bsValue]="CurrentDateTime"></bs-datepicker-inline>
+      <table>
+        <tr>
+          <td class="w-100 border-0 p-1 display-grid">
+            <label for="" class="font-weight-bolder">Suspend Reason</label>
+            <input type="text" formControlName="Comments" name="" id=""
+              class="form-control font-weight-bolder input-medication
+              font-weight-bolder
+              input-medication">
+            <!-- <ng-select [searchable]="true"
+              class="font-weight-bolder
+              input-medication" formControlName="Stoid">
+              <ng-option
+                *ngFor=" let cancelAction of
+                medicationCancellationReason"
+                [value]="cancelAction.Stoid">
+                {{ cancelAction.N1stotx}}
+              </ng-option>
+            </ng-select> -->
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</ng-template>
+
+
+<ng-template #cancelActionRef let-item="item" let-index="index">
+  <form action="" [formGroup]="item">
+    <div class="ma-template p-3">
+      <div class="e-order-history-btn p-0 border-0 m-0 text-right">
+        <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+          [disabled]="!item.valid" (click)="cancelAction(item.value, index)">Cancel
+          Status</button>
+      </div>
+      <div class="additional-input additional-input py-3 abc">
+        <label for="medicationspopup w-100">Cancellation Reason</label>
+        <ng-select [searchable]="true"
+          class="font-weight-bolder
+          input-medication" formControlName="Stoid">
+          <ng-option
+            *ngFor=" let cancelAction of
+            medicationCancellationReason"
+            [value]="cancelAction.Stoid">
+            {{ cancelAction.N1stotx}}
+          </ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<addition-infoprn-popup #additionalPopup
+  (onUpdateprnData)="onUpdatedAdditionalInfoprn($event)" [editPrncond]="this.MedicationorderForm" ></addition-infoprn-popup>
+<!-- <addition-info-popup #additionalPopup
+  (onUpdateData)="onUpdatedAdditionalInfo($event)"></addition-info-popup> -->
+<modetail-panel #modetailpanel></modetail-panel>
+
+
+
+<ng-template #hourPopover let-index="index">
+  <div class="p-3 medication-widht">
+    <span class="position-relative d-flex align-items-center w-100 mb-3">
+      <input type="radio" name="pom-condition{{index}}" class="mr-1
+        checkbox-panel"
+        id="administrationByNurse"
+        value="1" (change)="onChangePom(index, $event)"
+        [checked]="this.drugArray.controls[index].value.Pom === '1'">
+      <span class="mr-2 admin d-inline-block"></span>
+      <label for="" class="m-0 font-weight-semibold">Administration by the nurse</label>
+    </span>
+    <span class="position-relative d-flex align-items-center w-100">
+      <input type="radio" class="mr-1 checkbox-panel"
+        id="administrationBySelf" name="pom-condition{{index}}"
+        value="2" (change)="onChangePom(index, $event)"
+        [checked]="this.drugArray.controls[index].value.Pom === '2'">
+      <span class="mr-2 admin d-inline-block"></span>
+      <label for="administrationBySelf" class="m-0 font-weight-semibold">Self
+        administration by the patient</label>
+    </span>
+  </div>
+</ng-template>

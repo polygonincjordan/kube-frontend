@@ -1,0 +1,62 @@
+<div class="progress-list mt-3">
+  <div class="d-flex" style="font-weight: bold;
+  font-size: 15px;background: #e4edf5;
+    padding: 10px;" *ngIf="ProgressNotesList">
+    <div style="flex: 0 0 80%;">Daily Progress</div>
+    <div style="flex: 0 0 13%;">Occupational Group</div>
+    <div>Action</div>
+  </div>
+  <div
+    class="d-flex align-items-center justify-content-between"
+    *ngFor="let item of ProgressNotesList"
+  >
+    <div class="progress-card mt-2" style="border: 1px solid #ced4da;">
+      <div class="card-header d-flex align-items-center">
+        <div class="date-name" style="flex: 0 0 80%;">
+          <p class="m-0">
+            <span style="font-weight: bold;color: black;">{{ item.CreationUserName }}</span> {{ getDate(item.ActionDate) | date : "d.MM.y" }}/{{ parsePayloadFormateTime(item.ActionTime) }} - 
+            <span style="font-weight: bold;color: black;">{{ item.CategoryText }}</span>
+            <!-- <div class="ml-2 category-name">
+              <span>{{ item.CategoryText }}</span>
+            </div> -->
+          </p>
+        </div>
+        <div class="occupational" [ngStyle]="getImageBorderLogic(item)" style="flex: 0 0 10%;">
+          <span>{{ item.ProfGroupName }}</span>
+        </div>
+        
+        <div class="action-img ml-4">
+          <img
+            width="20px"
+            class="mr-2 cursor-pointer"
+            src="assets/img/Information.svg"
+          />
+          <img (click)="copyProgressNotesBind(item)"
+            width="20px"
+            class="mr-3 cursor-pointer"
+            src="assets/img/ActionCopy.svg"
+          />
+          <img (click)="deleteProgressNote(item)"
+            width="14px"
+            class="cursor-pointer mr-2"
+            src="assets/img/Delete.svg"
+          />
+        </div>
+      </div>
+      <div class="progress-contain">
+        <p class="m-0" [innerHTML]="showParagraph(item.Text)" > </p>
+      </div>
+     
+    </div>
+   
+  </div>
+</div>
+
+<ng-template #informationModal>
+  <div class="modal-body p-3">
+    <div class="infoModel-title">
+      <h4>Progress Note Text :-</h4>
+      <div class="p-3" [innerText]="progressNoteTextInfoModal"></div>
+    </div>
+  </div>
+</ng-template>

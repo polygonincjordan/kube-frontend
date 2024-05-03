@@ -1,0 +1,30 @@
+<div class="p-3">
+  <div class="w-2 mb-2 hydration-bor p-2 d-flex justify-content-center align-content-center"><input type="checkbox" (change)="onCheckAll($event)" [(ngModel)]="selectAll"></div>
+ <form class="chemoform" [formGroup]="chemoformGroup">
+  <div formArrayName="chemoformArray">
+    <div *ngFor="let item of Arraychecmo.controls let i = index;" [formGroupName]="i" class="d-flex justify-content-center align-items-center mb-2" >
+      <ul class="w-100 hydration-bor m-0 p-1 d-flex justify-content-center align-content-center">
+        <li class="text-center w-2 m-0 d-flex justify-content-center align-items-center p-1">
+          <div class="hydration-bor p-2 d-flex justify-content-center align-content-center"><input type="checkbox" formControlName="isSelected" (change)="onisSelected()"></div>
+        </li>
+        <li class="w-80 m-0 p-1">
+          <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+            <span class="input-title z-indexlabel">order Text</span>
+            <input type="text" class="form-control" formControlName="OrderText">
+          </span>
+        </li>
+        <li class="w-20 m-0 p-1">
+          <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+            <span class="input-title z-indexlabel">Occupational Group</span>
+            <input type="text" class="form-control" formControlName="OccupGroup">
+          </span>
+        </li>
+      </ul>
+      <img src="assets/img/delete-icon.svg" height="20" class="iconsminds-cursor-click ml-3 c-pointer mr-3" (click)="deleterow(i)">
+    </div>
+  </div>
+ </form>
+  <div class="mt-2 c-pointer">
+    <img src="assets/img/plus.png" width="20px" (click)="addedRowChemo()">
+  </div>
+</div>

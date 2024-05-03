@@ -1,0 +1,206 @@
+<div class="e-order-nav">
+  <div class="container-fluid p-0">
+    <!-- <div class="row m-0">
+      <div class="col-md-10 pl-0">
+        <div class="e-order-navigation">
+          <ul *ngIf="eorderService.configurationoptionBackup">
+            <li *ngIf="eorderService.configurationoptionBackup.Clinicord">
+              <a
+                href="javascript:void(0)"
+                (click)="eorderService.onNavigationClick('Clinical')"
+                >Clinical Orders</a
+              >
+            </li>
+            <li *ngIf="eorderService.configurationoptionBackup.Medicat">
+              <a
+                href="javascript:void(0)"
+                (click)="eorderService.onNavigationClick('Medications')"
+                >Medications</a
+              >
+            </li>
+            <li *ngIf="eorderService.configurationoptionBackup.Quickord">
+              <a href="javascript:void(0)">Quick Orders</a>
+            </li>
+            <li *ngIf="eorderService.configurationoptionBackup.Ordset">
+              <a href="javascript:void(0)">Orders Sets</a>
+            </li>
+            <li *ngIf="eorderService.configurationoptionBackup.Doctfees">
+              <a
+                href="javascript:void(0)"
+                (click)="eorderService.onNavigationClick('Fees')"
+                >Fees and Services</a
+              >
+            </li>
+            <li *ngIf="eorderService.configurationoptionBackup.Surgery">
+              <a href="javascript:void(0)">Surgery Order</a>
+            </li>
+            <li *ngIf="eorderService.configurationoptionBackup.Daycaseord">
+              <a href="javascript:void(0)">Day-Case Order</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-2 pr-0">
+        <div
+          class="e-order-settings d-flex flex-wrap justify-content-end align-items-center h-100"
+        >
+          <div class="e-order-refresh" (click)="eorderService.loadeOrderData()">
+            <img _ngcontent-thf-c188="" src="assets/img/reload-icon.svg" alt="">
+          </div>
+         
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>
+<ng-template #configureoption>
+  <div class="e-order-configuration">
+    <div class="modal-body">
+      <div class="modal-inner-body" *ngIf="eorderService.configurationoption">
+        <div class="modal-header d-flex p-0 py-2 align-items-center">
+          <button type="button" class="btn btn-primary rounded-0">
+            Configuration Options
+          </button>
+          <img
+            src="assets/img/save.png"
+            (click)="eorderService.saveConfiguration()"
+            class="save-icon"
+            width="19"
+          />
+        </div>
+        <div class="checkbox-list">
+          <h2>e-Order List</h2>
+          <div class="checkbox-info d-flex flex-wrap">
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                name="eOrderList"
+                id="Myord"
+                (change)="changeOrderList($event, 'Myord')"
+                [(ngModel)]="eorderService.configurationoption.Myord"
+              />
+              <label for="Myord">My Orders</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                name="eOrderList"
+                id="Allords"
+                (change)="changeOrderList($event, 'Allords')"
+                [(ngModel)]="eorderService.configurationoption.Allords"
+              />
+              <label for="Allords">All Orders</label>
+            </div>
+          </div>
+        </div>
+        <div class="checkbox-list">
+          <h2>Organization Unit</h2>
+          <div class="checkbox-info d-flex flex-wrap">
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                name="Organization"
+                id="Myou"
+                (change)="changeOrganizationList($event, 'Myou')"
+                [(ngModel)]="eorderService.configurationoption.Myou"
+              />
+              <label for="Myou">My OU</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                name="Organization"
+                id="Allous"
+                (change)="changeOrganizationList($event, 'Allous')"
+                [(ngModel)]="eorderService.configurationoption.Allous"
+              />
+              <label for="Allous">All OUs</label>
+            </div>
+          </div>
+        </div>
+        <div class="checkbox-list">
+          <h2>Medication Templates</h2>
+          <div class="checkbox-info d-flex flex-wrap">
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Usrlvl"
+                [(ngModel)]="eorderService.configurationoption.Usrlvl"
+              />
+              <label for="Usrlvl">User Level</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Deptlvl"
+                [(ngModel)]="eorderService.configurationoption.Deptlvl"
+              />
+              <label for="Deptlvl">Global Level</label>
+            </div>
+          </div>
+        </div>
+        <div class="checkbox-list">
+          <h2>Functions</h2>
+          <div class="checkbox-info d-flex flex-wrap">
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Clinicord"
+                [(ngModel)]="eorderService.configurationoption.Clinicord"
+              />
+              <label for="Clinicord">Clinical Orders</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Quickord"
+                [(ngModel)]="eorderService.configurationoption.Quickord"
+              />
+              <label for="Quickord">Quick Orders</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Doctfees"
+                [(ngModel)]="eorderService.configurationoption.Doctfees"
+              />
+              <label for="Doctfees">Fees and Services</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Medicat"
+                [(ngModel)]="eorderService.configurationoption.Medicat"
+              />
+              <label for="Medicat">Medication</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Ordset"
+                [(ngModel)]="eorderService.configurationoption.Ordset"
+              />
+              <label for="Ordset">Order Sets</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Surgery"
+                [(ngModel)]="eorderService.configurationoption.Surgery"
+              />
+              <label for="Surgery">Surgery Order</label>
+            </div>
+            <div class="checkbox-inner d-flex align-items-center">
+              <input
+                type="checkbox"
+                id="Daycaseord"
+                [(ngModel)]="eorderService.configurationoption.Daycaseord"
+              />
+              <label for="Daycaseord">Day Case Order</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

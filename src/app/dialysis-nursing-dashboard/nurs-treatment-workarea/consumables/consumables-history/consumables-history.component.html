@@ -1,0 +1,87 @@
+<div class="order-templete-main mt-3">
+  <div class="progress-header">
+    <form [formGroup]="consumableHistoryForm">
+      <div class="fliter-box d-flex align-items-center position-relative w-45 pb-2">
+        <div class="header-occupational mr-2"> <!-- Added mr-3 for right margin -->
+          <ng-select [searchable]="true" formControlName="materialCode" placeholder="Material Code">
+            <ng-option *ngFor="let data of materialCodeList" [value]="data">{{ data }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="header-category"> <!-- No change -->
+          <ng-select [searchable]="true" formControlName="materialName" placeholder="Material">
+            <ng-option *ngFor="let category of materiNameList" [value]="category">{{ category }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="consumable-histry-table">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th colspan="1" scope="col" (click)="sortTable('Matnr')">Material Code
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Matnr', 'fa-sort-up': sortColumn === 'Matnr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Matnr' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="4" scope="col" (click)="sortTable('Maktx')">Material Description
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Maktx', 'fa-sort-up': sortColumn === 'Maktx' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Maktx' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Menge')">UoM
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Menge', 'fa-sort-up': sortColumn === 'Menge' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Menge' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Meins')">Quantity Issue
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Meins', 'fa-sort-up': sortColumn === 'Meins' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Meins' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Erdat')">Date & Time
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Erdat', 'fa-sort-up': sortColumn === 'Erdat' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Erdat' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Sloc')">Storage Loc.
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Sloc', 'fa-sort-up': sortColumn === 'Sloc' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Sloc' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Erusr')">User
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Erusr', 'fa-sort-up': sortColumn === 'Erusr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Erusr' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Batch')">Batch Number
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Batch', 'fa-sort-up': sortColumn === 'Batch' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Batch' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody style="background-color: #fbfcff;" *ngIf="consumableHistoryList.length > 0">
+        <tr *ngFor="let phyOrder of consumableHistoryList" style="font-weight: 600">
+          <td colspan="1">{{ phyOrder.Matnr }}</td>
+          <td colspan="4">{{ phyOrder.Maktx }}</td>
+          <td colspan="1">{{ phyOrder?.Menge }}</td>
+          <td colspan="1">{{ phyOrder.Meins }}</td>
+          <td colspan="1">{{ getDate(phyOrder.Erdat) | date : "d.MM.y" }}</td>
+          <td colspan="1">{{ phyOrder.Sloc }}</td>
+          <td colspan="1">{{ phyOrder.Erusr }}</td>
+          <td colspan="1">{{ phyOrder.Batch }}</td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="consumableHistoryList.length <= 0">
+        <tr>
+          <td colspan="11">
+            <div class="pagination-container text-center p-3">
+              No Record Found!
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

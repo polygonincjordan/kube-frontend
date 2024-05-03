@@ -1,0 +1,2572 @@
+<div class="physician-conatinar" [formGroup]="physicianForm">
+  <div class="header search-functionalitypl-0">
+    <div class="header-filter">
+      <label class="admission-date"> Date/Time: </label>
+      <div class="date-function mr-1 w-100">
+        <input type="text" placeholder="Date" #dp="bsDatepicker" bsDatepicker
+          [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" class="form-control"
+          (ngModelChange)="onDateChange($event)" formControlName="PhyAssdate" />
+      </div>
+      <input type="time" class="form-control p-1" placeholder="HH:mm:ss" min="08:00:00" max="17:00:00"
+      formControlName="PhyAsstime" />
+    </div>
+    <div class="w-15">
+    </div>
+  </div>
+  <div class="chief-complain mt-3">
+    <span class="text-area-label">Chief Complaint</span>
+    <textarea class="form-control" formControlName="ChiefComplaint"></textarea>
+  </div>
+  <div class="main-border mt-5">
+    <div>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(allergy) ? 'selected' : ''" aria-current="page" data-toggle="tab"
+            (click)="switchTabs('allergies')">Allergies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(diagnosis) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabs('diagnosis')">Diagnosis</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(vitals) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabs('vitals')">Vitals</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content" style="border: 1px solid black;
+      padding: 8px;
+      border-radius: 7px;">
+      <div *ngIf="allergy">
+        <div class="d-flex mb-2" style="justify-content: space-between;
+      padding-right: 22px">
+          <div></div>
+          <div>
+            <!-- <button class="create-diagnosis" (click)="openModalForAllergy()">Create & Import</button> -->
+            <button class="create-diagnosis" (click)="openModalForAllergy()">Create & Import</button>
+          </div>
+        </div>
+        <form style="max-height: 296px;
+      overflow: auto;">
+          <table class="table table-bordered past-table">
+            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <tr>
+                <th scope="col">Group </th>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody style="background-color: #fbfcff;">
+              <tr  class="past-med-input" *ngFor="let item of toAllergyArr;let i=index">
+          <td style="padding-left: 2px;
+          padding-right: 2px;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;
+      line-height: 39px;">{{item.Agroup || item.AllergenGrp}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;    line-height: 39px;">{{item.Description || item.Allergen}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 1%;text-align: center;position: relative;
+      top: 6px;" (click)="deleteFromTable(item,i)"><img src="assets/img/Delete.svg"/></td>
+        </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div *ngIf="diagnosis">
+        <div class="d-flex mb-2" style="justify-content: space-between;
+          padding-right: 22px">
+          <div style="display: flex;
+          align-items: center;
+          gap: 10px;">
+            <!-- <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NoDiagnoses" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toDiagnosisArr.length >0 ? true:null"/> -->
+            <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NaDiagnosis" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toDiagnosisArr.length >0 ? true:null"/>
+            <label class="admitting-physician">No Diagnosis Applicable</label>
+          </div>
+          <div>
+            <!-- <button class="create-diagnosis" (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button> -->
+            <button class="create-diagnosis" (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button>
+          </div>
+
+        </div>
+        <form style="max-height: 296px;
+          overflow: auto;">
+          <table class="table table-bordered past-table">
+            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <tr>
+
+                <th scope="col">Code</th>
+                <th scope="col">Description </th>
+                <th scope="col">Remarks</th>
+                <th scope="col">Administion Diag.</th>
+                <th scope="col">Surgery Diag.</th>
+                <th scope="col">Preop Diag.</th>
+                <th scope="col">Discharge Diag.</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody style="background-color: #fbfcff;">
+              <tr  class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+              <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+              <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+              <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+              <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}"></td>
+                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
+                <td style="text-align: center;" ><input type="checkbox" style="width:18px" [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
+                <td  style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}"></td>
+                <td  style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img src="assets/img/Delete.svg" style="position: relative;
+                  top: 6px;"/></td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div *ngIf="vitals">
+        <div class="d-flex mb-2" style="justify-content: space-between;
+          padding-right: 22px">
+          <div style="display: flex;
+          align-items: center;
+          gap: 10px;">
+            <!-- <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
+            <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NaVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/>
+            <label class="admitting-physician">No Vitals Signs Applicable</label>
+          </div>
+          <div>
+            <!-- <button class="create-diagnosis" (click)="openModalVital()" [disabled]="enableCreateVitals">Create & Import</button> -->
+            <button class="create-diagnosis" (click)="openModalVital()" [disabled]="enableCreateVitals">Create & Import</button>
+          </div>
+
+        </div>
+        <form style="max-height: 296px;
+          overflow: auto;">
+          <table class="table table-bordered past-table">
+            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <tr>
+
+                <th scope="col">Description</th>
+                <th scope="col">Measured Value </th>
+                <th scope="col">Normal Range</th>
+                <th scope="col">Date/Time</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody style="background-color: #fbfcff;">
+              <tr  class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+              <td style="    padding: 10px !important;
+              width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+              <td style="    padding: 10px !important;
+              width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+              <td style="    padding: 10px !important;
+              width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+              <td style="    padding: 10px !important;
+              width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+              <td style="    padding: 10px !important;
+              width: 3%;text-align: center;" (click)="deleteVitalsFromTable(item,i)"><img src="assets/img/Delete.svg"/></td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="main-border mt-5">
+    <div>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(med) ? 'selected' : ''" aria-current="page" data-toggle="tab"
+            (click)="switchTabsForMedical('med')" style="width: 170px;">Past Medical Condition</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(surg) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForMedical('surg')" style="width: 170px;">Past Surgical History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(family) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForMedical('family')" style="width: 170px;">Family History</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content" style="border: 1px solid black;
+      padding: 8px;
+      border-radius: 7px;">
+      <div *ngIf="med">
+        <div class="d-flex mb-2" style="justify-content: space-between;
+      padding-right: 22px">
+          <div style="display: flex;
+       align-items: center;
+       gap: 10px;">
+            <!-- <input type="checkbox" style="width: 36px;
+         height: 22px;" formControlName="NoDiagnoses" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toPastMedical.length >0 ? true:null"/> -->
+            <input type="checkbox" style="width: 36px;
+         height: 22px;" formControlName="NoMedicalHistory" (change)="handleCheckboxPastMed()" [attr.disabled]="toPastMedical.length >0 ? true:null"/>
+            <label class="admitting-physician">No medical history known</label>
+          </div>
+          <div>
+            <!-- <button class="create-diagnosis" (click)="openModalForAllergy()">Create & Import</button> -->
+            <button class="create-diagnosis" (click)="openModalForPastMedical()" [disabled]="enableCreatePMed">Create & Import</button>
+          </div>
+        </div>
+        <form style="max-height: 296px;
+      overflow: auto;">
+          <table class="table table-bordered past-table">
+            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <tr>
+                <th scope="col">Problem </th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Treatment</th>
+                <th scope="col">Comments</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody style="background-color: #fbfcff;">
+              <tr  class="past-med-input" *ngFor="let item of toPastMedical;let i=index">
+          <td style="padding-left: 2px;
+          padding-right: 2px;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;
+      line-height: 39px;">{{item.DiseaseName}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;    line-height: 39px;">{{item.Ddate | date: 'dd.MM.YYYY'}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;    line-height: 39px;">{{item.Ddate | date: 'dd.MM.YYYY'}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;    line-height: 39px;">{{item.TreatmentDetail}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 15%;pointer-events: none;text-align: left;
+      padding-left: 24px !important;    line-height: 39px;">{{item.Remarks}}</td>
+          <td style="padding-left: 0;
+          padding-right: 0;
+          width: 1%;text-align: center;position: relative;
+      top: 6px;" (click)="deleteFromPastMedicalTable(item,i)"><img src="assets/img/Delete.svg"/></td>
+        </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div *ngIf="surg">
+        <div class="d-flex mb-2" style="justify-content: space-between;
+          padding-right: 22px">
+          <div style="display: flex;
+          align-items: center;
+          gap: 10px;">
+            <!-- <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NoDiagnoses" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toDiagnosisArr.length >0 ? true:null"/> -->
+            <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NoSurgeryHistory" (change)="handleCheckboxPastSurg()" [attr.disabled]="toPastSurgical.length >0 ? true:null"/>
+            <label class="admitting-physician">No surgery history known</label>
+          </div>
+          <div>
+            <!-- <button class="create-diagnosis" (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button> -->
+            <button class="create-diagnosis" (click)="openModalForPastSurgical()" [disabled]="enableCreatePSurg">Create & Import</button>
+          </div>
+
+        </div>
+        <form style="max-height: 296px;
+          overflow: auto;">
+          <table class="table table-bordered past-table">
+            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <tr>
+
+                <th scope="col">Surgery Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Comments</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody style="background-color: #fbfcff;">
+              <tr  class="past-med-input" *ngFor="let item of toPastSurgical;let i=index">
+              <td style="width: 14%;    padding: 10px !important;">{{item.SurgeryName}}</td>
+              <td style="width: 32%;    padding: 10px !important;">{{getDate(item.Sdate) | date: 'dd.MM.YYYY'}}</td>
+              <td style="    width:23%;padding: 10px !important;">{{item.SurgeryRemarks}}</td>
+             <td  style="text-align: center;width:5%" (click)="deleteFromPastSurgTable(item,i)"><img src="assets/img/Delete.svg" style="position: relative;
+                  top: 6px;"/></td>
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+      <div *ngIf="family">
+        <div class="d-flex mb-2" style="justify-content: space-between;
+          padding-right: 22px">
+          <div style="display: flex;
+          align-items: center;
+          gap: 10px;">
+            <!-- <input type="checkbox" style="width: 36px;
+            height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
+            <input type="checkbox" style="width: 36px;
+            height: 22px;" [attr.disabled]="toFamilyHistory.length >0 ? true:null"/>
+            <label class="admitting-physician">No family history known</label>
+          </div>
+          <div>
+            <!-- <button class="create-diagnosis" (click)="openModalVital()" [disabled]="enableCreateVitals">Create & Import</button> -->
+            <button class="create-diagnosis" (click)="openModalForFamilyHistory()" [disabled]="enableCreateFamily">Create & Import</button>
+          </div>
+
+        </div>
+        <form style="max-height: 296px;
+          overflow: auto;">
+          <table class="table table-bordered past-table">
+            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <tr>
+
+                <th scope="col">Problem</th>
+                <th scope="col">Father </th>
+                <th scope="col">Mother</th>
+                <th scope="col">Brother</th>
+                <th scope="col">Sister</th>
+                <th scope="col">Child</th>
+                <th scope="col">Paternal</th>
+                <th scope="col">Maternal</th>
+                <th scope="col">Comments</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody style="background-color: #fbfcff;">
+              <tr  class="past-med-input" *ngFor="let item of toFamilyHistory;let i=index">
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;"> {{item.Problem}}</td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+            <input style="width: 10%" type="checkbox" [checked]="item.Father" id="father{{i}}">  
+            </td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+              <input style="width: 10%" type="checkbox" id="mother{{i}}" [checked]="item.Mother"></td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+              <input style="width: 10%" type="checkbox" [checked]="item.Brother" id="brother{{i}}"></td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;" >
+              <input style="width: 10%" type="checkbox" [checked]="item.Sister" id="sister{{i}}"></td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+              <input style="width: 10%" type="checkbox" [checked]="item.Son" id="son{{i}}"></td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+              <input style="width: 10%" type="checkbox" [checked]="item.Paternal" id="Paternal{{i}}"></td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+              <input style="width: 10%" type="checkbox" [checked]="item.Maternal" id="Maternal{{i}}"></td>
+                <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;">{{item.Remarks}}</td>
+                <td style="padding: 10px !important;
+              width: 15%;cursor: pointer;" ><img (click)="deleteFamilyHistoryFromTable(i)" src="assets/img/Delete.svg" /></td>
+
+            </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- FRIST  SECTION CODE START -->
+  <div class="main-border mt-5">
+    <div class="box-appretite">
+      <div class="container container-width">
+        <button class="personal-history">Personal History </button>
+
+        <div class="row">
+          <div class="col-4">
+            <ul>
+              <li><span class="head-appretite">Appetite </span>
+                <span class="select-boxes">
+                  <select class="form-select" aria-label="Default select example" formControlName="Appetite">
+                    <option selected></option>
+                    <option value="1">Normal</option>
+                    <option value="2">Increased</option>
+                    <option value="3">Decreased</option>
+                  </select>
+                </span>
+              </li>
+              <li><span class="head-appretite">Bowel Movements </span>
+                <span class="select-boxes">
+                  <select class="form-select" aria-label="Default select example" formControlName="BowelMovements">
+                    <option selected></option>
+                    <option value="1">Normal</option>
+                    <option value="2">Increased</option>
+                    <option value="3">Decreased</option>
+                  </select>
+                </span>
+              </li>
+              <li><span class="head-appretite">Micturition</span>
+                <span class="select-boxes">
+                  <select class="form-select" aria-label="Default select example" formControlName="Micturition">
+                    <option selected></option>
+                    <option value="1">Normal</option>
+                    <option value="2">Increased</option>
+                    <option value="3">Decreased</option>
+                  </select>
+                </span>
+              </li>
+              <li><span class="head-appretite">Smoking </span>
+                <span class="select-boxes">
+                  <select class="form-select" aria-label="Default select example" formControlName="Smoking">
+                    <option selected></option>
+                    <option value="1">Smoker</option>
+                    <option value="2">Ex-Smoker</option>
+                    <option value="3">Non-Smoker</option>
+                  </select>
+                </span>
+              </li>
+              <li><span class="head-appretite">Alcohol Intake </span>
+                <span class="select-boxes">
+                  <select class="form-select" aria-label="Default select example" formControlName="AlcoholIntake">
+                    <option selected></option>
+                    <option value="1">No</option>
+                    <option value="2">Yes</option>
+                  </select>
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-4">
+            <ul class="middle-box">
+              <li><span class="box-simple-input"><input type="text" placeholder="" formControlName="AppetiteT"> </span>
+              </li>
+              <li><span class="box-simple-input"><input type="text" placeholder="" formControlName="BowelMovementsT"> </span>
+              </li>
+              <li><span class="box-simple-input"><input type="text" placeholder="" formControlName="MicturitionT"> </span>
+              </li>
+              <li class="half-box-middle"><span class="head-appretite">Cigatt/Day </span>
+                <span class="box-simple-input">
+                  <input type="text" placeholder="" formControlName="CigattDay">
+                </span>
+              </li>
+              <li class="half-box-middle" style=" margin-right: 0px;"><span class="head-appretite">Duration(Year)
+                </span>
+                <span class="box-simple-input">
+                  <input type="text" placeholder="" formControlName="SDuration">
+                </span>
+              </li>
+              <li class="half-box-middle"><span class="head-appretite">Glass/Day </span>
+                <span class="box-simple-input">
+                  <input type="text" placeholder="" formControlName="GlassDay">
+                </span>
+              </li>
+              <li class="half-box-middle" style=" margin-right: 0px;"><span class="head-appretite">Glass/Week </span>
+                <span class="box-simple-input">
+                  <input type="text" placeholder="" formControlName="GlassWeek">
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-4 last-colum">
+            <div class="check-box">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckedDefault" formControlName="SmokingCounseling">
+              <label class="form-check-label" for="flexCheckedDefault">
+                Smoking Cessation Counseling
+              </label>
+            </div>
+            <ul>
+              <li class="half-box-middle" style=" margin-right: 0px;"><span class="head-appretite">Duration(Year)
+                </span>
+                <span class="box-simple-input">
+                  <input type="text" placeholder="" formControlName="ADuration">
+                </span>
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <ul class="bottom-last-comment-box">
+              <li class="d-flex"><span class="head-appretite">Comments</span>
+                <span class="box-simple-textarea personal-history-textarea">
+                  <textarea name="" formControlName="Comments"></textarea>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="main-border mt-5">
+    <div class="container container-width">
+      <div class="d-flex mb-2" style="justify-content: space-between">
+        <button class="personal-history">Medication and Patient Own </button>
+        <button class="create-diagnosis" (click)="openModal(medicationOrderCase)">Import</button>
+      </div>
+      <table class="table table-bordered past-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center;">
+          <tr>
+            <th>Order Type</th>
+            <th style="width: 270px;">Description</th>
+            <th>Home Medication</th>
+            <th>Patient's Own Meds</th>
+            <th>Dose</th>
+            <th>Validity</th>
+            <th>Route</th>
+            <th>Rate</th>
+            <!-- <th>The</th> -->
+            
+            <th>Ordering Physician</th>
+            <th>Cycle</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: hsl(225, 100%, 99%);">
+          <tr *ngFor="let item of medicationImportDrugArray;let i=index" style="text-align:center">
+            <td>{{item.OrderType}}</td>
+            <td style="width: 270px;">{{item.Description}}</td>
+            <td style="text-align: center;pointer-events: none;"><input type="checkbox" style="width:18px" [(ngModel)]="item.HomeMedication" [ngModelOptions]="{standalone: true}"></td>
+            <td style="text-align: center;pointer-events: none;"><input type="checkbox" style="width:18px" [(ngModel)]="item.PatientOwnMed" [ngModelOptions]="{standalone: true}"></td>
+            <td>{{item.Dose}}</td>
+            <td>{{item.Validity}}</td>
+            <td>{{item.Route}}</td>
+            <td>{{''}}</td>
+            <td>{{item.OrderingPhysician}}</td>
+            <td>{{item.Cycle}}</td>
+            <!-- <td></td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+    <div class="physical-examination">
+      <div class="main-border mt-5">
+        <button class="personal-history">Physical Examination </button>
+        <div class="row">
+          <div class="col-6">
+            <div class="New-border">
+              <div class="row">
+                <div class="col-6">
+                  <label class="mode-label">Description</label>
+                  <ul class="general-boxes">
+                    <li>General</li>
+                    <li>Head and neck </li>
+                    <li>Eyes</li>
+                    <li>ENT </li>
+                    <li>Respiratory</li>
+                    <li>Cardiovascular</li>
+                    <li>Haematology / Lymphatic / Immunologic </li>
+                  </ul>
+  
+                </div>
+                <div class="col-2" style="padding: 0px 5px;">
+                  <label class="mode-label">Mode</label>
+                  <ng-container [formGroup]="generalPhyExamForm">     
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('generalPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="headNeckPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('headNeckPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="eyesPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('eyesPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="entPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('entPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="respiratoryPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('respiratoryPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="cardioPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('cardioPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="haemaPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('haemaPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                </div>
+                <div class="col-4 input-boxes" style=" padding: 0px 15px 0px 5px;">
+                  <label class="mode-label">Comment </label>
+                  <ng-container [formGroup]="generalPhyExamForm">       
+                    <input type="text" formControlName="PhyComments" [title]="this.generalPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="headNeckPhyExamForm">   
+                    <input type="text" formControlName="PhyComments" [title]="this.headNeckPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="eyesPhyExamForm">   
+                    <input type="text" formControlName="PhyComments" [title]="this.eyesPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="entPhyExamForm">   
+                    <input type="text" formControlName="PhyComments" [title]="this.entPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="respiratoryPhyExamForm">   
+                    <input type="text" formControlName="PhyComments" [title]="this.respiratoryPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="cardioPhyExamForm">   
+                    <input type="text" formControlName="PhyComments" [title]="this.cardioPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="haemaPhyExamForm">   
+                    <input type="text" formControlName="PhyComments" [title]="this.haemaPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>         
+          <div class="col-6">
+            <div class="New-border">
+              <div class="row">
+                <div class="col-6">
+                  <label class="mode-label">Description</label>
+                  <ul class="general-boxes">
+                    <li>Gastrointestinal</li>
+                    <li>Musculoskeletal</li>
+                    <li>Skin</li>
+                    <li>Neurologic</li>
+                    <li>Genitourinary</li>
+                    <li>Breast</li>
+                  </ul>
+
+                </div>
+
+                <div class="col-2" style="padding: 0px 5px;">
+                  <label class="mode-label">Mode</label>
+                  <ng-container [formGroup]="gastroPhyExamForm">     
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode"  (change)="fillCommentBox('gastroPhyExamForm')">
+                      <option  value=""></option>
+                      <option  value="0">Normal </option>
+                      <option  value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="musculoPhyExamForm">    
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('musculoPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="skinPhyExamForm" >    
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('skinPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="neuroPhyExamForm" >    
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('neuroPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="genitPhyExamForm" >    
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('genitPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="breastPhyExamForm" >    
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('breastPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                </div>
+
+                <div class="col-4 input-boxes" style=" padding: 0px 15px 0px 5px;">
+                  <label class="mode-label">Comment </label>
+                  <ng-container [formGroup]="gastroPhyExamForm">     
+                    <input type="text" formControlName="PhyComments" [title]="this.gastroPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="musculoPhyExamForm">    
+                    <input type="text" formControlName="PhyComments" [title]="this.musculoPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="skinPhyExamForm">    
+                    <input type="text" formControlName="PhyComments" [title]="this.skinPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="neuroPhyExamForm">    
+                    <input type="text" formControlName="PhyComments" [title]="this.neuroPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="genitPhyExamForm">    
+                    <input type="text" formControlName="PhyComments" [title]="this.genitPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="breastPhyExamForm">    
+                    <input type="text" formControlName="PhyComments" [title]="this.breastPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="main-border mt-5 spiritual-cultural-main-box">
+    <div class="box-appretite">
+      <div class="container container-width">
+        <button class="personal-history">Spiritual & Cultural needs </button>
+
+        <div class="row">
+          <div class="col-3">
+            <ul>
+              <li><span class="head-appretite">Spiritual needs identified</span>
+              </li>
+              <li><span class="head-appretite">Cultural needs identified</span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-4">
+            <ul class="middle-box">
+              <li><span class="box-simple-input"> 
+                <select class="form-select" aria-label="Default select example" formControlName="Spiritual">
+                  <option selected></option>
+                  <option value="0">Yes</option>
+                  <option value="1">No</option>
+                 
+                </select>
+              </span>
+              </li>
+              <li><span class="box-simple-input">
+                <select class="form-select" aria-label="Default select example" formControlName="Cultural">
+                  <option selected></option>
+                  <option value="0">Yes</option>
+                  <option value="1">No</option>
+                 
+                </select> </span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-5"></div>
+
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <ul>
+              <li><span class="head-appretite">Comments</span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-9">
+            <ul class="middle-box">
+              <li><span class="box-simple-textarea"><textarea name="" formControlName="ScComments"></textarea> </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="main-border mt-5">
+    <div class="container  container-width">
+      <div class="chief-complain">
+        <span class="text-area-label">Impression and Plan of Care</span>
+        <textarea class="form-control" formControlName="ImComment"></textarea>
+      </div>
+      <div class="box-appretite mt-3">
+        <div class="d-flex" style="align-items: center; gap: 10px;">
+          <span class="head-appretite head-spritual">Length of Stay</span>
+          <span class="box-simple-input">
+            <input type="text" placeholder="" formControlName="LengthStay">
+          </span>
+          <span class="head-spritual">Days</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="main-border mt-5">
+    <div class="row">
+      <div class="col-12 top-head-review-systm d-flex">
+        <button class="personal-history">Review of Systems</button>
+        <div class="top-bar-check-box">
+          <input class="form-check-input" type="checkbox" value="" (change)="handleCheckboxCannotBeAccess(cannontBeAccessed)" #cannontBeAccessed formControlName="CannotAssessedReview">
+          <label class="form-check-label" for="flexCheckDefault">&nbsp; Cannot be Assessed
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="container-review-system">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(skin) ? 'selected' : ''" aria-current="page" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('skin')">Skin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(head) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('head')">Head</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(eyes) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('eyes')">Eyes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(ENT) ? 'selected' : ''" aria-current="page" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('ENT')">ENT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(neck) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('neck')">Neck</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(breast) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('breast')">Breast</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(respiratoryCardiac) ? 'selected' : ''" aria-current="page"
+            data-toggle="tab" (click)="switchTabsForReviewSystems('respiratoryCardiac')">Respiratory/Cardiac</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(gastrointestinal) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('gastrointestinal')">Gastrointestinal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(urinary) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('urinary')">Urinary</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(peripheralVascular) ? 'selected' : ''" aria-current="page"
+            data-toggle="tab" (click)="switchTabsForReviewSystems('peripheralVascular')">Peripheral Vascular</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(musculoskeletal) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('musculoskeletal')">Musculoskeletal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(neurologic) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('neurologic')">Neurologic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(hematologic) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('hematologic')">Hematologic</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(endocrine) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('endocrine')">Endocrine</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(psychiatric) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForReviewSystems('psychiatric')">Psychiatric</a>
+        </li>
+      </ul>
+    </div>
+    <!-- SCIN SCREEN CODE START -->
+    <div class="review-of-systems" *ngIf="skin">
+      <div class="container container-width tabs-content-scin tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="SNoReportedAbnorm" (click)="handleCheckboxSkinCannotBeAccess(skinRef)" #skinRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="SRashes">
+                  <label class="form-check-label" for="flexCheckDefault"> Rashes
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes right-box-half">
+                <span class="type-of-rashes-head">Type Of Rash </span>
+                <span class="type-of-rashes-head-select-boxes">
+                  <select class="form-select" aria-label="Default select example" formControlName="STypeRash">
+                    <option selected></option>
+                    <option value="0">Petechial</option>
+                    <option value="1">Maculopapular</option>
+                    <option value="2">Haemorrhagic</option>
+                    <option value="3">Other</option>
+                  </select>
+                </span>
+              </li>
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="SItching">
+                  <label class="form-check-label" for="flexCheckDefault"> Itching
+                  </label>
+                </div>
+              </li>
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="SChangeHairNails">
+                  <label class="form-check-label" for="flexCheckDefault"> Change in hair or nails
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="SComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SCIN SCREEN CODE CLOSED -->
+
+    <!-- HEAD SCREEN CODE START -->
+    <div class="review-of-systems" *ngIf="head">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="HNoReportedAbnorm" (click)="handleCheckboxHeadCannotBeAccess(headRef)" #headRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="HHeadInjury">
+                  <label class="form-check-label" for="flexCheckDefault"> Head Injury
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes" style=" width: 100%;">
+                <div class="top-bar-check-box">
+                  <label class="form-check-label" for="flexCheckDefault" style=" padding:0px 40px 0px 0px;"> Head
+                    Circumference (cm)
+                  </label>
+                  <input type="text" placeholder="" style=" width: 5%;" formControlName="HHeadCircumference">
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="HComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- HEAD SCREEN CODE CLOSED -->
+
+    <!-- EYES SCREEN CODE START -->
+    <div class="review-of-systems" *ngIf="eyes">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="ENoReportedAbnorm" (click)="handleCheckboxEyeCannotBeAccess(eyeRef)" #eyeRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EGlassesContacts">
+                  <label class="form-check-label" for="flexCheckDefault"> Glassses or contacts
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EChangeVision">
+                  <label class="form-check-label" for="flexCheckDefault"> Change in vision
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EEyePain">
+                  <label class="form-check-label" for="flexCheckDefault"> Eyes pain
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EDoubleVision">
+                  <label class="form-check-label" for="flexCheckDefault"> Double vision
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EFlashingLights">
+                  <label class="form-check-label" for="flexCheckDefault"> Flashing lights
+                  </label>
+                </div>
+              </li>
+
+              <li class="box-half-rashes right-box-eyes">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EGlaucomaCataracts">
+                  <label class="form-check-label" for="flexCheckDefault"> Glaucoma/Cataracts
+                  </label>
+                </div>
+              </li>
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="ELastEyeExam">
+                  <label class="form-check-label" for="flexCheckDefault"> Last eye exam
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="EComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- EYES SCREEN CODE CLOSED -->
+
+    <!-- ENT SCREEN CODE START -->
+    <div class="review-of-systems" *ngIf="ENT">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12  ent-tabs">
+            <ul class="tab-content-skin list-simple-new top-bar-check-box">
+              <li>
+                <div class="ent-content-head">Ears </div>
+                <div class="check-box-content-ent">
+                  <div class="top-bar-check-box-full">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EneNoReportedAbnorma" (click)="handleCheckboxEneCannotBeAccess(eneRef)" #eneRef>
+                    <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EneChangeHearing">
+                    <label class="form-check-label" for="flexCheckDefault"> Change in hearing
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EneTympanicMembrane">
+                    <label class="form-check-label" for="flexCheckDefault"> Tympanic Membrane
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EneEarDischarge">
+                    <label class="form-check-label" for="flexCheckDefault"> Ear discharge
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EneRinging">
+                    <label class="form-check-label" for="flexCheckDefault"> Ringing
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half last-box-ent-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EneDizziness">
+                    <label class="form-check-label" for="flexCheckDefault"> Dizziness
+                    </label>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="ent-content-head">Nose/Sinuses </div>
+                <div class="check-box-content-ent">
+                  <div class="top-bar-check-box-full">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnnNoReportedAbnorm" (click)="handleCheckboxEnnCannotBeAccess(ennRef)" #ennRef>
+                    <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnnNoseBleeds">
+                    <label class="form-check-label" for="flexCheckDefault"> Nose bleeds
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnnNasalStuffiness">
+                    <label class="form-check-label" for="flexCheckDefault"> Nasal Stuffiness
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnnNasalFlaring">
+                    <label class="form-check-label" for="flexCheckDefault"> Nasal Flaring
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half last-box-ent-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnnFrequentColds">
+                    <label class="form-check-label" for="flexCheckDefault"> Frequent colds
+                    </label>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="ent-content-head">Mouth/Throat </div>
+                <div class="check-box-content-ent">
+                  <div class="top-bar-check-box-full">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnmNoReportedAbnorm" (click)="handleCheckboxEnmCannotBeAccess(enmRef)" #enmRef>
+                    <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnmBleedingGums">
+                    <label class="form-check-label" for="flexCheckDefault"> Bleeding gums
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half last-box-ent-half">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="EnmSoreTongue">
+                    <label class="form-check-label" for="flexCheckDefault"> Sore tongue
+                    </label>
+                  </div>
+                  <div class="top-bar-check-box-half lip-color">
+                    <label class="form-check-label" for="flexCheckDefault"> lip Color
+                    </label>
+                    <input type="text" placeholder="" formControlName="EnmLipColor">
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="EnmComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENT SCREEN CODE CLOSED -->
+
+    <!-- NECK SCREEN CODE START -->
+    <div class="review-of-systems" *ngIf="neck">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NNoReportedAbnorm" (click)="handleCheckboxNeckCannotBeAccess(neckRef)" #neckRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NLumps">
+                  <label class="form-check-label" for="flexCheckDefault"> Lumps
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NSwollenGlands">
+                  <label class="form-check-label" for="flexCheckDefault"> Swollen Glands
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NGoiter">
+                  <label class="form-check-label" for="flexCheckDefault"> Goiter
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NStiffness">
+                  <label class="form-check-label" for="flexCheckDefault"> Stiffness
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="NComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- NECK SCREEN CODE CLOSED -->
+
+    <div class="review-of-systems" *ngIf="breast">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="BNoReportedAbnorm" (click)="handleCheckboxBreastCannotBeAccess(breastRef)" #breastRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="BLumps">
+                  <label class="form-check-label" for="flexCheckDefault"> Lumps
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="BPain">
+                  <label class="form-check-label" for="flexCheckDefault"> Pain
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="BNippleDischarge">
+                  <label class="form-check-label" for="flexCheckDefault"> Nipple Discharge
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="BSkinAbnormalities">
+                  <label class="form-check-label" for="flexCheckDefault"> Skin abnormalities
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="BComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="respiratoryCardiac">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RNoReportedAbnorm" (click)="handleCheckboxResCardiacCannotBeAccess(resCardiac)" #resCardiac>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RShortnessBreath">
+                  <label class="form-check-label" for="flexCheckDefault"> Shortness of breath
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RCough">
+                  <label class="form-check-label" for="flexCheckDefault"> Cough
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RWheezing">
+                  <label class="form-check-label" for="flexCheckDefault"> Wheezing
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RCoughingBlood">
+                  <label class="form-check-label" for="flexCheckDefault"> Coughing up blood
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RProductionPhlegm">
+                  <label class="form-check-label" for="flexCheckDefault"> Production of phlegm. color
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RChestPain">
+                  <label class="form-check-label" for="flexCheckDefault"> Chest pain
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RFever">
+                  <label class="form-check-label" for="flexCheckDefault"> Fever
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RNightSweats">
+                  <label class="form-check-label" for="flexCheckDefault"> Night sweats
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RBlueFingersToes">
+                  <label class="form-check-label" for="flexCheckDefault"> Blue fingers/toes
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RSwellingHandsFeet">
+                  <label class="form-check-label" for="flexCheckDefault"> Swelling in hands/feet
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RBronchitisEmphysema">
+                  <label class="form-check-label" for="flexCheckDefault"> Bronchitis/Emphysema
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RHeartMurmur">
+                  <label class="form-check-label" for="flexCheckDefault"> Heart murmur
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RHxHeartMedication">
+                  <label class="form-check-label" for="flexCheckDefault"> HX of heart medication
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="RSkippingHeartBeats">
+                  <label class="form-check-label" for="flexCheckDefault"> Skipping heart beats
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="RComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="gastrointestinal">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-gastro">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GNoReportedAbnorm" (click)="handleCheckboxGastroCannotBeAccess(gastroRef)" #gastroRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GChangeAppetiteWeight">
+                  <label class="form-check-label" for="flexCheckDefault"> Changes in appetite or weigth
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GProblemsSwallowing">
+                  <label class="form-check-label" for="flexCheckDefault"> Problems swallowing
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GNausea">
+                  <label class="form-check-label" for="flexCheckDefault"> Nausea
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GHeartburn">
+                  <label class="form-check-label" for="flexCheckDefault"> Heartburn
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GVomiting">
+                  <label class="form-check-label" for="flexCheckDefault"> Vomiting
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GVomitingBlood">
+                  <label class="form-check-label" for="flexCheckDefault"> Vomiting blood
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GConstipation">
+                  <label class="form-check-label" for="flexCheckDefault"> Constipation
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GDiarrhea">
+                  <label class="form-check-label" for="flexCheckDefault"> Diarrhea
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GChangeBowelHabits">
+                  <label class="form-check-label" for="flexCheckDefault"> Change in bowel habits
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GAbdominalPain">
+                  <label class="form-check-label" for="flexCheckDefault"> Abdominal pain
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GExcessiveBelching">
+                  <label class="form-check-label" for="flexCheckDefault"> Excessive belching
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GExcessiveFlatus">
+                  <label class="form-check-label" for="flexCheckDefault"> Excessive flatus
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GFoodIntolerance">
+                  <label class="form-check-label" for="flexCheckDefault"> Food intolerance
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GRectalBleedingHemo">
+                  <label class="form-check-label" for="flexCheckDefault"> Rectal bleeding/Hemorrhoids
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GYellowColourSkin">
+                  <label class="form-check-label" for="flexCheckDefault"> Yellow colour skin (jaundice/hepatitis)
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <!-- <input class="form-check-input" type="checkbox" value=""> -->
+                  <label class="form-check-label" for="flexCheckDefault"> ELIMINATION
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GToiletTrained">
+                  <label class="form-check-label" for="flexCheckDefault"> Toilet Trained
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <label class="form-check-label" for="flexCheckDefault">Freq.&nbsp;&nbsp;&nbsp;
+                  </label>
+                  <input class="form-check-input review-system-input-width" type="text" value="" formControlName="GTfreq">
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="GUsesDiaper">
+                  <label class="form-check-label" for="flexCheckDefault"> Uses Diaper
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <label class="form-check-label" for="flexCheckDefault">Freq.&nbsp;&nbsp;&nbsp;
+                  </label>
+                  <input class="form-check-input review-system-input-width" type="text" value="" formControlName="GUfreq">
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="GComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="urinary">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-gastro">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UNoReportedAbnorm" (click)="handleCheckboxUrinaryCannotBeAccess(urinaryRef)" #urinaryRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UDifficultyUrination">
+                  <label class="form-check-label" for="flexCheckDefault"> Difficulty in urination
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UPainBurningUrination">
+                  <label class="form-check-label" for="flexCheckDefault"> Pain or buring on urination
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UFrequentUrinationNight">
+                  <label class="form-check-label" for="flexCheckDefault"> Frequent urination at night
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UUrgentNeedUrinate">
+                  <label class="form-check-label" for="flexCheckDefault"> Urgent need to urinate
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UIncontinenceUrine">
+                  <label class="form-check-label" for="flexCheckDefault"> Incontinence of urine
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UDribbling">
+                  <label class="form-check-label" for="flexCheckDefault"> Dribbling
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UDecreasedUrineStream">
+                  <label class="form-check-label" for="flexCheckDefault"> Decreased urine stream
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UBloodUrine">
+                  <label class="form-check-label" for="flexCheckDefault"> Blood in urine
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="UUtiStonesProstate">
+                  <label class="form-check-label" for="flexCheckDefault"> UTI/Stones/Prostate infection
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="UComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="peripheralVascular">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-gastro">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PNoReportedAbnorm" (click)="handleCheckboxPeriCannotBeAccess(periRef)" #periRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PLegCramps">
+                  <label class="form-check-label" for="flexCheckDefault"> Leg cramps
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PVaricoseVeins">
+                  <label class="form-check-label" for="flexCheckDefault"> Varicose veins
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PClotsVeins">
+                  <label class="form-check-label" for="flexCheckDefault"> Clot in veins
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="PComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="musculoskeletal">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-musculos">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MNoReportedAbnorm" (click)="handleCheckboxMusculCannotBeAccess(musculRef)" #musculRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MPain">
+                  <label class="form-check-label" for="flexCheckDefault"> Pain
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MSwelling">
+                  <label class="form-check-label" for="flexCheckDefault"> Swelling
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MStiffness">
+                  <label class="form-check-label" for="flexCheckDefault"> Stiffness
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MDecreasedJointMotion">
+                  <label class="form-check-label" for="flexCheckDefault"> Decreased joint motion
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MBrokenBone">
+                  <label class="form-check-label" for="flexCheckDefault"> Broken bone
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MSeriousSprains">
+                  <label class="form-check-label" for="flexCheckDefault"> Serious sprains
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MArthritis">
+                  <label class="form-check-label" for="flexCheckDefault"> Arthritis
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="MGout">
+                  <label class="form-check-label" for="flexCheckDefault"> Gout
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="MComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="neurologic">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-neuro">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuNoReportedAbnorm" (click)="handleCheckboxNeuroCannotBeAccess(neuroRef)" #neuroRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuHeadaches">
+                  <label class="form-check-label" for="flexCheckDefault"> Headaches
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuSeizures">
+                  <label class="form-check-label" for="flexCheckDefault"> Seizures
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuParalysis">
+                  <label class="form-check-label" for="flexCheckDefault"> Paralysis
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuWeakness">
+                  <label class="form-check-label" for="flexCheckDefault"> Weakness
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuLossConsciousness">
+                  <label class="form-check-label" for="flexCheckDefault"> Loss of consciousness / Fainting
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuLossMuscleSize">
+                  <label class="form-check-label" for="flexCheckDefault"> Loss of muscle size
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuMuscleSpasm">
+                  <label class="form-check-label" for="flexCheckDefault"> Muscle spasm
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuTremor">
+                  <label class="form-check-label" for="flexCheckDefault"> Tremor
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuInvoluntaryMovement">
+                  <label class="form-check-label" for="flexCheckDefault"> Involuntray movement
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuIncoordination">
+                  <label class="form-check-label" for="flexCheckDefault"> Incoordination
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuNumbness">
+                  <label class="form-check-label" for="flexCheckDefault"> Numbness
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="NuFeelingPinsNeedles">
+                  <label class="form-check-label" for="flexCheckDefault"> Feeling on "pins and needles/tingles"
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="NuComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="hematologic">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-gastro">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="HeNoReportedAbnorm" (click)="handleCheckboxHemaCannotBeAccess(hemaRef)" #hemaRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="HeAnemia">
+                  <label class="form-check-label" for="flexCheckDefault"> Anemia
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="HeEasyBruisingBleeding">
+                  <label class="form-check-label" for="flexCheckDefault"> Easy bruising/bleeding
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="HeComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="endocrine">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-gastro">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdNoReportedAbnorm" (click)="handleCheckboxEndoCannotBeAccess(endoRef)" #endoRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdAbnormalGrowth">
+                  <label class="form-check-label" for="flexCheckDefault"> Abnormal growth
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdIncreasedAppetite">
+                  <label class="form-check-label" for="flexCheckDefault"> Increased appetite
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdIncreasedThirst">
+                  <label class="form-check-label" for="flexCheckDefault"> Increased thirst
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdIncreaseUrineProduction">
+                  <label class="form-check-label" for="flexCheckDefault"> Increased urine production
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdThyroidTrouble">
+                  <label class="form-check-label" for="flexCheckDefault"> Thyroid trouble
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdHeatColdIntolerance">
+                  <label class="form-check-label" for="flexCheckDefault"> Heat/Cold intolerance
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdExcessingSweating">
+                  <label class="form-check-label" for="flexCheckDefault"> Excessive sweating
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="EdDiabetes">
+                  <label class="form-check-label" for="flexCheckDefault"> Diabetes
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="EdComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review-of-systems" *ngIf="psychiatric">
+      <div class="container container-width tabs-content-scin">
+        <div class="row">
+          <div class="col-12">
+            <ul class="tab-content-skin list-simple-new eyes-tab list-width-psychia">
+              <li>
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsNoReportedAbnorm" (click)="handleCheckboxPsyCannotBeAccess(psyRef)" #psyRef>
+                  <label class="form-check-label" for="flexCheckDefault"> No reported abnormalities
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsTensionAnxiety">
+                  <label class="form-check-label" for="flexCheckDefault"> Tension/Anxiety
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsDepressionSuicide">
+                  <label class="form-check-label" for="flexCheckDefault"> Depression/Suicide ideation
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsMemoryProblems">
+                  <label class="form-check-label" for="flexCheckDefault"> Memory problems
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsPastTreatmentPsychiatri">
+                  <label class="form-check-label" for="flexCheckDefault"> Past treatment with Psychiatrist
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsSleepProblems">
+                  <label class="form-check-label" for="flexCheckDefault"> Sleep problems
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsUnusualProblems">
+                  <label class="form-check-label" for="flexCheckDefault"> Unusual problems
+                  </label>
+                </div>
+              </li>
+              <li class="box-half-rashes eyes-box-half eyes-box-half-width">
+                <div class="top-bar-check-box">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="PsChangeMood">
+                  <label class="form-check-label" for="flexCheckDefault" style="left: 19px;"> Change in mood / change in attitude towards family/friends
+                  </label>
+                </div>
+              </li>
+            </ul>
+            <ul class="bottom-last-comment-boxes">
+              <li>
+                <div class="row">
+                  <div class="col-1">
+                    <span class="head-comments">Comments</span>
+                  </div>
+                  <div class="col-11">
+                    <span class="box-simple-textarea">
+                      <textarea name="comment" formControlName="PsComments"></textarea>
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="main-border mt-5">
+    <div style="    margin: 7px;">
+      <span style="font-size: 16px;
+      font-weight: 600;">Medical Decision Making</span>
+    </div>
+    <div class="container-review-system">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(Problem) ? 'selected' : ''" aria-current="page" data-toggle="tab"
+            (click)="switchTabsForMedicalDecision('Problem')">Problem Points</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(Initial) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForMedicalDecision('Initial')">Initial Plan</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link c-pointer" [ngClass]="(Risk) ? 'selected' : ''" data-toggle="tab"
+            (click)="switchTabsForMedicalDecision('Risk')">Risk</a>
+        </li>
+       
+      </ul>
+    </div>
+      <div class="problems-point-tab" *ngIf="Problem">
+      <div class="container container-width tabs-content-scin tabs-content-scin">
+      <div class="row">
+      <div class="col-12 problems-point-tab-content">
+      <span class="all-points-applicable"> All points applicable should be selected </span>
+      
+      <ul class="problems-point-tab-content-select-box">
+      <li> 
+      <span class="content-box">Self limited or minor prob (max 2) </span>
+      <select class="content-select"  formControlName="PSelfLimited" aria-label="Default select example">
+        <option value="0">N/A</option>
+        <option value="1">No</option>
+        <option value="2">Yes</option>
+      </select>  
+      </li>
+      <li> 
+      <span class="content-box">Established stable problem  </span>
+      <select class="content-select" formControlName="PStableProblem" aria-label="Default select example">
+        <option value="0">N/A</option>
+        <option value="1">No</option>
+        <option value="2">Yes</option>
+      </select>  
+      </li>
+      <li> 
+      <span class="content-box">Established, not controlled </span>
+      <select class="content-select"  formControlName="PNotControlled" aria-label="Default select example">
+        <option value="0">N/A</option>
+        <option value="1">No</option>
+        <option value="2">Yes</option>
+      </select>  
+      </li>
+      <li> 
+      <span class="content-box">New problem, additional work-up </span>
+      <select class="content-select"  formControlName="PAdditionalWorkUp" aria-label="Default select example">
+        <option value="0">N/A</option>
+        <option value="1">No</option>
+        <option value="2">Yes</option>
+      </select>  
+      </li>
+      <li> 
+      <span class="content-box">New problem, no additional work-up </span>
+      <select class="content-select"  formControlName="PNoAdditionalWorkUp" aria-label="Default select example">
+        <option value="0">N/A</option>
+        <option value="1">No</option>
+        <option value="2">Yes</option>
+      </select>  
+      </li>
+      
+      </ul>
+      </div>
+       </div> 
+      </div>
+      </div>
+      
+      <div class="problems-point-tab" *ngIf="Initial">
+      <div class="container container-width tabs-content-scin tabs-content-scin">
+      <div class="row">
+      <div class="col-12 intial-plan-tabs">
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value="" formControlName="ILabTests" >
+        <label class="form-check-label" for="flexCheckDefault"> Review or order of lab tests
+        </label>
+      </div>
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value="" formControlName="IRadiologyTests" >
+        <label class="form-check-label" for="flexCheckDefault"> Review or order of radiology tests
+        </label>
+      </div>
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="IOtherTests">
+        <label class="form-check-label" for="flexCheckDefault"> Review or order of other tests
+        </label>
+      </div>
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value="" formControlName="IDiscussResults" >
+        <label class="form-check-label" for="flexCheckDefault"> Discuss Results with Perfoming Physician (MD)
+        </label>
+      </div>
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="IReviewImage">
+        <label class="form-check-label" for="flexCheckDefault"> Review of Image, tracing, or specimen
+        </label>
+      </div>
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value="" formControlName="IObtainOlderRecords" >
+        <label class="form-check-label" for="flexCheckDefault"> Obtain older records/history from other source
+        </label>
+      </div>
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value="" formControlName="IReviewSummOldRecrd" >
+        <label class="form-check-label" for="flexCheckDefault"> Review/summarize old records/obtained history
+        </label>
+      </div>
+       </div> 
+      </div>
+      </div>
+      </div>
+      
+      
+      <!-- RISK TAB CODE START -->
+      
+      <div class="risk-point-tab" *ngIf="Risk">
+      <div class="container container-width tabs-content-scin tabs-content-scin">
+      <div class="row">
+      <div class="col-12 risk-tab-content">
+      <h5 class="low-risk"> Low Risk </h5>
+      <ul class="list-risk">
+      <div class="highest-point-heading"> Highest point should be selected. </div>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="LorTwoImitedPrbm" >
+        <label class="form-check-label" for="flexCheckDefault"> Tow self-limited problem
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="LorOneStableChronic">
+        <label class="form-check-label" for="flexCheckDefault"> Acute uncomplicated illness (e.g., cystitis/rhinitis)
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="LorAcuteUncomplicated">
+        <label class="form-check-label" for="flexCheckDefault"> One stable chronic illness
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="LorOtcDrugs">
+        <label class="form-check-label" for="flexCheckDefault">OTC drugs
+        </label>
+      </div>
+      </li>
+      </ul>
+      
+      <h5 class="low-risk">Moderate Risk </h5>
+      <ul class="list-risk">
+      <div class="highest-point-heading"> Highest point should be selected. </div>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="MorMildExacerbation">
+        <label class="form-check-label" for="flexCheckDefault"> Mild Exacerbation of one chronic illness
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="MorElectiveMajorSurgery">
+        <label class="form-check-label" for="flexCheckDefault"> Elective major surgery w/o risk factors planned
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="MorTwoStableChronic">
+        <label class="form-check-label" for="flexCheckDefault"> Two stable chronic illnesses
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="MorMinorSurgery" >
+        <label class="form-check-label" for="flexCheckDefault">Minor surgery with risk factors planned
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="MorUndiagnosedNewPrbm">
+        <label class="form-check-label" for="flexCheckDefault">Undiagnosed new problem
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="MorClosedFx" >
+        <label class="form-check-label" for="flexCheckDefault">Closed fx or dislocation w/o manipulation
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="MorAcuteIllness" >
+        <label class="form-check-label" for="flexCheckDefault">Acute illness with systemic symptoms (e.g., pyelonephritis)
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="MorCardiacEpTest">
+        <label class="form-check-label" for="flexCheckDefault">Cardiac EP tests
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""   formControlName="MorPrescriptionDrug" >
+        <label class="form-check-label" for="flexCheckDefault">Prescription drug management
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="MorDeepBiopsy" >
+        <label class="form-check-label" for="flexCheckDefault">Deep Biopsy
+        </label>
+      </div>
+      </li>
+      </ul>
+      
+      <h5 class="low-risk">High Risk </h5>
+      <ul class="list-risk">
+      <div class="highest-point-heading"> Only one option can be selected. </div>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="HrSevereExacerbation">
+        <label class="form-check-label" for="flexCheckDefault"> Severe exacerbation of chronic illness 
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="HrParenteral" >
+        <label class="form-check-label" for="flexCheckDefault"> Parenteral  controlled substances
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="HrIllness" >
+        <label class="form-check-label" for="flexCheckDefault"> illness with threat to life or bodily function
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="HrDecision" >
+        <label class="form-check-label" for="flexCheckDefault"> Decision for DNR or to de-escalate care
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="HrAbrupt">
+        <label class="form-check-label" for="flexCheckDefault">Abrupt change in neurological status (e.g., TIA/weakness)
+        </label>
+      </div>
+      </li>
+      <li> 
+      <div class="intial-plan-top-bar-check-box">
+        <input class="form-check-input" type="checkbox" value=""  formControlName="HrDrugs" >
+        <label class="form-check-label" for="flexCheckDefault">Drugs requiring intensive monitoring for toxicity 
+        </label>
+      </div>
+      </li>
+      
+      </ul>
+      
+       </div> 
+      </div>
+      </div>
+      </div>
+      <!-- RISK TAB CODE CLOSED -->
+  </div>
+</div>
+
+<ng-template #medicationOrderCase>
+  <div>
+    <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+    <div class="allergy-header">
+      <div style="
+        font-size: 23px;
+        font-weight: bold">
+
+        <span>Import Current Medication Order for {{storageService.patientData.name}}</span>
+      </div>
+
+      
+      
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <div style="display: flex;
+    justify-content: end;
+    padding-right: 1rem;">
+    <button
+      (click)="medicationImport()"
+      style="border: 1px solid;
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 5px 20px;
+      border-radius: 4px;
+      font-weight: 700;margin-top: 4px;"
+      >
+      Import
+      </button>
+    </div>
+    <form style="max-height: 296px;
+    overflow: auto;">
+      <table class="table table-bordered allergy-table mt-3">
+        <thead style="background-color: #e4edf5;
+    color: black;text-align: center;position: sticky;
+    top: 0;">
+          <tr>
+            <th scope="col" style="    text-align: -webkit-center;">
+              <input type="checkbox" [checked]="selectedMedicationOrder.length === drugArray.length" class="form-control"
+               (change)="collectAllMedicationIData($event)" style="width:20px"/>
+              </th>
+            <th scope="col">Medication Order - Case</th>
+            <th scope="col">Dose</th>
+            <th scope="col">Frequency</th>
+            <th scope="col">Status</th>
+            <th scope="col">Order type</th>
+            <th scope="col">MO Valid</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff;">
+          <tr *ngFor="let item of drugArray let i = index">
+           <td style="text-align: -webkit-center;"> <span class="input-text-field d-inline-block align-top w-100">
+            <ng-container>
+              <input
+                type="checkbox"
+                class="form-control" [checked]="isChecked(item)"
+                (change)="collectMedicationIData($event,item)"
+                style="width:20px"
+              />
+            </ng-container>
+          </span></td>
+          <td>{{item.Descrlt}} {{item.Quan}} {{item.Quanunit}} {{item.Routedescr}} {{item.N1id}}</td>
+          <td>{{item.Quan}} {{item.Quanunit }}</td>
+          <td></td>
+          <td>{{item.MosidDesc}}</td>
+          <td>{{item.MotypId == '30' ? 'Planned Administration':'Discharge'}}</td>
+          <td></td>
+          </tr>
+        </tbody>  
+      </table>
+    </form>
+
+  </div>
+</ng-template>
+
+<app-physician-create-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-create-allergy>
+<app-physician-diagnosis #diagnosisNotesKardexId (importEvent)="importDiagnosisData($event)"></app-physician-diagnosis>
+<app-physician-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-physician-er-vitals>
+<app-physician-past-medical #pastMedicalKardexId (importEvent)="importPastMedical($event)"></app-physician-past-medical>
+<app-physician-past-surgical #pastSurgicalKardexId (importEvent)="importPastSurgical($event)"></app-physician-past-surgical>
+<app-physician-family-history #familyHistoryKardexId (importEvent)="importMedicalHistory($event)" ></app-physician-family-history>

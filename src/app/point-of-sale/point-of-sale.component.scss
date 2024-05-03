@@ -1,0 +1,360 @@
+.main-white-boxes {
+    margin: 9px 0px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 20px;
+}
+h2.top-head-h2 {
+    font-size: 18px;
+    color: #2f3f4c;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.btns-screens button.screen-reset.active-btn, .btns-screens button.screen-reset {
+    border: 1px solid #e7e7e7;
+    background: #0057ae;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 50px;
+    height: auto;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.btns-screens button.screen-reset {
+    border: 1px solid #e7e7e7;
+    background: #ffffff;
+    color: #000;
+
+}
+.btns-screens button.screen-reset.active-btn:hover, .btns-screens button.screen-reset:hover {
+    background: #0057ae;
+    border-color: #0057ae;
+    color: #fff;
+}
+.btns-screens button.screen-reset img {
+    width: 18px;
+    top: -2px;
+    position: relative;
+}
+
+h3.top-head-patient-date {
+    font-size: 14px;
+    color: #343d44;
+    font-weight: 700;
+}
+.border-box-under-white-box, .border-box-under-patient-date-half-left {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #e9e9e9;
+    width: 100%;
+}
+.border-box-under-patient-date-half-left {
+    width: 65%;
+    padding: 5px;
+    display: inline-block;
+}
+.intstitution-box span {
+    font-weight: 700;
+    font-size: 12px;
+    width: fit-content;
+    min-width: 110px;
+}
+.intstitution-box .case-label {
+    font-weight: 700;
+    font-size: 12px;
+    width: fit-content;
+}
+.intstitution-box-main {
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #e9e9e9;
+    margin: 6px 5px 6px;
+    width: 48.5%;
+    vertical-align: top;
+    display: inline-block;
+    background: #fafbff;
+}
+
+
+.intstitution-box input {
+    width: 100%;
+    background-color: #fafbff;
+    color: #000000;
+    outline: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 2px solid #dedfe1;
+    margin: 0px 5px 5px 0px;
+    height: 36px !important;
+    font-weight: bold;
+}
+.intstitution-box input::placeholder {
+    color: #a7a7a7;
+    font-size: 12px;
+    font-weight: 500;
+}
+.intstitution-box-main .intstitution-box {
+    display: flex;
+    align-items: center;
+}
+.intstitution-box-main .intstitution-box input.enter {
+    width: 40%;
+}
+.border-box-under-patient-date-half-right {
+    width: 34%;
+    display: inline-block;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 2px solid #e9e9e9;
+    margin-left: 10px;
+    vertical-align: top;
+}
+.border-box-under-white-box-d-flex {
+    display: flex;
+    height: 100%;
+}
+.border-box-under-patient-date-half-right .intstitution-box-main {
+    width: 100%;
+}
+.Photo {
+    color: #afa7a7;
+    outline: 0;
+    font-size: 12px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    border: 2px solid #dedfe1;
+    margin: 0px 5px 5px 0px;
+    height: 40px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+.Photo img {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    margin-left: 25px;
+}
+
+/*TABLE CSS STRAT*/
+.table-batch-number {
+    margin: 20px 0px;
+}
+.table-batch-number {
+    margin: 20px 0px;
+    font-size: 12px;
+    color: #4c5157;
+    font-weight: 500;
+}
+.table-batch-number input{
+    border: none;
+    background: #fafbff;
+    width: 100%;
+}
+td.Delete-btn {
+    text-align: center;
+}
+.table-batch-number thead tr th.action{
+    width: 4%;
+}
+.table-batch-number tbody tr td {
+    background-color: #fafbff !important;
+    border-color: #fff !important;
+    border: 2px solid #fff;
+}
+.table-batch-number tbody {
+    border: 3px solid #f7f7f7 !important;
+    border-top: inherit !important;
+}
+.table-batch-number thead tr th {
+    background-color: #e4ecf6;
+    font-size: 14px;
+    border: 2px solid #fff;
+    padding: 15px 10px 10px 15px;
+}
+.table-batch-number .table-bordered>:not(caption)>* {
+    border: 3px solid #fff;
+}
+/*TABLE CSS CLOSE*/
+/*PAYMENT DETAILS CSS START*/
+h3.top-head-abed-al-naseer {
+    font-size: 18px;
+    color: #0057b1;
+    text-transform: capitalize;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+h3.top-head-abed-al-naseer span {
+    display: block;
+    color: #202020;
+    font-size: 14px;
+    margin: 5px 0px;
+}
+.abed-al-naseer-top-bar {
+    display: flex;
+}
+.abed-al-naseer-top-bar label {
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: 10px;
+    width: fit-content;
+    min-width: 140px;
+}
+// .abed-al-naseer-top-bar .intstitution-box span {
+//     width: 100%;
+// align-items: center;
+//     display: flex;
+// }
+.abed-al-naseer-top-bar .intstitution-box select {
+    width: 100%;
+    background-color: #fafbff;
+    color: #000000;
+    outline: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 2px solid #dedfe1;
+    margin: 0px 0px 0px 0px;
+    height: inherit;
+    font-weight: 500;
+    height: 36px;
+}
+  .abed-al-naseer-top-bar .right-bar.intstitution-box-main {
+    width: 24%;
+}
+.abed-al-naseer-top-bar .abed-al-naseer {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+.abed-al-naseer-top-bar .abed-al-naseer .intstitution-boxes-bottom {
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 15px;
+}
+.abed-al-naseer-top-bar .abed-al-naseer .intstitution-boxes-bottom .intstitution-box-main {
+    width: 100%;
+    margin: 0px 0px 5px;
+}
+.abed-al-naseer-top-bar .abed-al-naseer .intstitution-boxes-bottom .intstitution-box-main input {
+    height: auto;
+}
+/*PAYMENT DETAILS CSS CLOSE*/
+.Box-post .btns-screens button.screen-reset {
+    background: #0057ae;
+    color: #fff;
+}
+.Box-post .btns-screens button.screen-reset img {
+    margin-right: 5px;
+}
+ul.list-simple-bottom-colum {
+    list-style: none;
+    padding: 0px;
+}
+.Box-post {
+    width: 23%;
+    display: inline-block;
+    background: #fbfcff;
+    vertical-align: top;
+    padding: 0px;
+    border-radius: 10px;
+    padding-bottom: 0px;
+    border: 1px solid #e4edf6;
+    margin: 0px 5px;
+}
+.Box-post h4 {
+    background: #e4edf6;
+    border-radius: 10px 10px 0px 0px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0px;
+}
+ul.list-simple-bottom-colum {
+    list-style: none;
+    padding: 0px;    margin-bottom: 0px;
+}
+ul.list-simple-bottom-colum li {
+    padding: 10px 5px;
+    border-bottom: 2px solid #e4edf6;
+    line-height: 19px;
+}
+ul.list-simple-bottom-colum li:last-child{border: inherit;}
+ul.list-simple-bottom-colum li label {
+    min-width: initial;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 600;
+}
+.right-bar .intstitution-box-main {
+    width: 100%;
+}
+.Box-post.payment-details {
+    width: 100%;
+}
+.Box-post.payment-details ul.list-simple-bottom-colum li {
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+}
+.Box-post.payment-details ul.list-simple-bottom-colum li input {
+    width: 100%;
+    background-color: #fafbff;
+    color: #000000;
+    outline: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 2px solid #dedfe1;
+    margin: 0px 5px 0px 0px;
+    font-weight: 500;
+    height: 36px;
+}
+.Box-post.payment-details ul.list-simple-bottom-colum li span {
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 10px;
+    width: fit-content;
+    min-width: 120px;
+}
+.Box-post.payment-details ul.list-simple-bottom-colum li .jod {
+    font-weight: 600;
+    font-size: 14px;
+}
+ul.list-simple-bottom-colum .round input[type="radio"] {
+    top: 3px;
+    position: relative;
+}
+.action-plus {
+    display: inline-block;
+    background-color: #0056b0;
+    color: #fff;
+    height: 100%;
+    width: 36px;
+    line-height: 51px;
+    text-align: center;
+    font-size: 30px;
+    float: right;
+  }
+  .table-batch-number thead tr th.cursor-pointer {
+    position: relative;
+}
+.table-batch-number thead tr th.cursor-pointer p {
+    margin-bottom: 0px;
+}
+.table-batch-number thead tr th.cursor-pointer {
+    position: relative;
+    overflow: hidden;
+    padding-right: 45px !important;
+}
+.table-batch-number thead tr th.cursor-pointer span.action-plus {
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0px 10px 0px 0px;
+}

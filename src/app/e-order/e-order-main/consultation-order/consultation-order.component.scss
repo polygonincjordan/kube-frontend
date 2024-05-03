@@ -1,0 +1,208 @@
+.consultation-order-main {
+  width: 100%;
+  border-radius: 5px;
+  height: calc(100vh - 180px);
+  overflow: auto;
+  width: 100%;
+  border: 1px solid #cacaca;
+  .surgery-order-header {
+    border-bottom: 1px solid #cacaca;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+
+    label {
+      font-weight: bolder;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    button {
+      padding: 6px 15px 6px 15px !important;
+      background: #0082c8 !important;
+      border: none !important;
+    }
+  }
+
+  .surgery-card {
+    border-bottom: 1px solid #cacaca;
+    padding: 15px 0 15px 0;
+  }
+
+  .anesthetist-checkbox {
+    display: flex;
+    align-items: center;
+    label {
+      font-weight: bold;
+      margin-left: 8px !important;
+    }
+  }
+
+  .ep-error-message {
+    border-color: red !important;
+    border: 1px solid red !important;
+  }
+}
+
+
+.surgery-order-main {
+  width: 100%;
+  border-radius: 5px;
+  padding: 6px !important;
+  height: calc(100vh - 200px);
+  overflow: auto;
+  border: 1px solid #cacaca;
+  .surgery-order-header {
+    border-bottom: 1px solid #cacaca;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+
+    label {
+        font-weight: bolder;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    button {
+      padding: 6px 15px 6px 15px !important;
+      background: #0082c8 !important;
+      border: none !important;
+    }
+  }
+
+  .surgery-card {
+    border-bottom: 1px solid #cacaca;
+    padding: 15px 0 15px 0;
+  }
+
+  .anesthetist-checkbox {
+    display: flex;
+    align-items: center;
+    label {
+      font-weight: bold;
+      margin-left: 8px !important;
+    }
+  }
+}
+.ep-error-message {
+  border-color: red !important;
+  border: 1px solid red !important;
+}
+.diagnosis-modal {
+  .header {
+    h4 {
+      font-weight: 700;
+    }
+  }
+  .modal-content-diagnosis {
+    .modal-diagnosis-list {
+      height: 70%;
+      overflow-y: auto;
+
+      .table {
+        tr td {
+          padding: 0.3rem;
+        }
+        tr td:nth-child(1) {
+          text-align: center;
+          vertical-align: middle;
+          width: 10px;
+      
+          input{
+            height: 20px; 
+            width: 15px;
+          }
+        }
+      
+        tr td:nth-child(2) {
+          padding-left: 15px;
+          // span {
+          //   // padding-left: 10px;
+          // }
+          p {
+            color: #000;
+            font-size: 13px !important;
+            font-weight: 700;
+          }
+        }
+      
+        tr td:nth-child(3) {
+          color: #000;
+          font-size: 13px !important;
+          font-weight: 700;
+        }
+      }
+
+      .import-diag {
+        // tr td:nth-child(2) {
+        //   // display: flex;
+        //   // align-items: center;
+        // } 
+
+        .diag-shorttext {
+          color: #000;
+          font-size: 13px !important;
+          font-weight: 700;
+        }
+      }
+    }    
+  }
+}
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 95%;
+  display: flex;
+  justify-content: end;
+
+  .add-diagnosis {
+    border: 1px solid;
+    background: #3b82f6;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  
+}
+.search-input {
+  img {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+  }
+  input {
+    height: 42px;
+    font: 600 14px/1.5 Nunito, sans-serif;
+    color: #848f96;
+    border-radius: 8px !important;
+    box-shadow: none;
+    padding: 10px 10px 10px 42px;
+  }
+}
+.modal-content-diagnosis{
+  height: 50vh !important;
+
+  .search-input {
+    img {
+      position: absolute;
+      top: 50%;
+      left: 35px;
+      transform: translateY(-50%);
+    }
+    input {
+      height: 42px;
+      font: 600 14px/1.5 Nunito, sans-serif;
+      color: #848f96;
+      border-radius: 8px !important;
+      box-shadow: none;
+      padding: 10px 10px 10px 42px;
+    }
+  }
+}

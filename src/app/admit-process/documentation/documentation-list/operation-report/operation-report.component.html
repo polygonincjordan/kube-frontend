@@ -1,0 +1,281 @@
+<form class="inpatient-form" [formGroup]="inPatientOrrptDataSet">
+  <div class="row col-12 mb-2">
+    <div class="col-md-6 row">
+      <div class="col-md-2 pl-0 p-0">
+        <label for="surgery-date" class="col-form-label">Surgery Date</label>
+      </div>
+      <div class="col-md-4 pl-0">
+        <input
+          #drp="bsDatepicker"
+          bsDatepicker
+          [bsConfig]="{
+            dateInputFormat: 'DD.MM.YYYY',
+            showWeekNumbers: false
+          }"
+          class="form-control height-normal"
+          formControlName="DateOfSurgery"
+        />
+      </div>
+      <div class="col-md-2 p-0">
+        <label for="surgery-time" class="col-form-label">Surgery Time</label>
+      </div>
+      <div class="col-md-4 pl-0">
+        <input
+          type="time"
+          class="form-control height-normal"
+          step="2"
+          formControlName="TimeOfSurgery"
+          id="surgery-time"
+        />
+      </div>
+    </div>
+    <div class="col-md-6 row">
+      <div class="col-md-2 pl-0 p-0">
+        <label for="report-date" class="col-form-label">Report Date</label>
+      </div>
+      <div class="col-md-4 pl-0">
+        <input
+          #drp="bsDatepicker"
+          bsDatepicker
+          [bsConfig]="{
+            dateInputFormat: 'DD.MM.YYYY',
+            showWeekNumbers: false
+          }"
+          class="form-control height-normal"
+          formControlName="DateOfReportEntry"
+        />
+      </div>
+      <div class="col-md-2 p-0">
+        <label for="report-time" class="col-form-label">Report Time</label>
+      </div>
+      <div class="col-md-4 pl-0">
+        <input
+          type="time"
+          class="form-control height-normal"
+          id="report-time"
+          step="2"
+          formControlName="TimeOfReportEntry"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label class="col-form-label">Anesthesia Type</label>
+    </div>
+    <div class="col-md-4 px-3 py-2 d-flex align-items-center checkbox-view">
+      <div class="col-md-3 py-1 px-0 d-flex align-items-center">
+        <input
+          type="radio"
+          class="form-radio m-0"
+          id="general"
+          formControlName="AnesthesiaType"
+          [checked]="
+            this.inPatientOrrptDataSet.get('AnesthesiaType').value === '1'
+          "
+          value="1"
+        />
+        <span class="checkbox d-inline-block mr-3"></span>
+        <label for="general" class="col-form-label p-0">General</label>
+      </div>
+      <div class="col-md-3 py-1 px-0 d-flex align-items-center">
+        <input
+          type="radio"
+          class="form-radio m-0"
+          id="local"
+          formControlName="AnesthesiaType"
+          [checked]="
+            this.inPatientOrrptDataSet.get('AnesthesiaType').value === '2'
+          "
+          value="2"
+        />
+        <span class="checkbox d-inline-block mr-2"></span>
+        <label for="local" class="col-form-label p-0">Local</label>
+      </div>
+      <div class="col-md-3 py-1 px-0 d-flex align-items-center">
+        <input
+          type="radio"
+          class="form-radio m-0"
+          id="regional"
+          formControlName="AnesthesiaType"
+          [checked]="
+            this.inPatientOrrptDataSet.get('AnesthesiaType').value === '3'
+          "
+          value="3"
+        />
+        <span class="checkbox d-inline-block mr-2"></span>
+        <label for="regional" class="col-form-label p-0">Regional</label>
+      </div>
+      <div class="col-md-3 py-1 px-0 d-flex align-items-center">
+        <input
+          type="radio"
+          class="form-radio m-0"
+          id="sedation"
+          formControlName="AnesthesiaType"
+          [checked]="
+            this.inPatientOrrptDataSet.get('AnesthesiaType').value === '4'
+          "
+          value="4"
+        />
+        <span class="checkbox d-inline-block mr-2"></span>
+        <label for="sedation" class="col-form-label p-0">Sedation</label>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="post-operative" class="col-form-label"
+        >Post-Operative Diagnosis</label
+      >
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="post-operative"
+        formControlName="PostOperativeDiagnosis"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="indication-for-surgery" class="col-form-label"
+        >Indication for Surgery</label
+      >
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="indication-for-surgery"
+        formControlName="IndicationForSurgery"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="findings" class="col-form-label">Findings</label>
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="findings"
+        formControlName="Findings"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="procedure-name" class="col-form-label">Procedure Name</label>
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="procedure-name"
+        formControlName="ProcedureName"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="description" class="col-form-label">Description</label>
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="description"
+        formControlName="Description"
+        rows="10"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="complication" class="col-form-label">Complications</label>
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="complication"
+        formControlName="Complications"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="specimen" class="col-form-label">Specimen</label>
+    </div>
+    <div class="col-md-9 p-0">
+      <textarea
+        type="text"
+        class="form-control"
+        id="specimen"
+        formControlName="Specimen"
+      ></textarea>
+    </div>
+  </div>
+  <div class="d-flex align-items-center mb-2">
+    <div class="col-md-3 pl-0">
+      <label for="orrpt-blood-loss" class="col-form-label"
+        >Blood Loss(ml)</label
+      >
+    </div>
+    <div class="col-md-3 p-0">
+      <input
+        type="text"
+        class="form-control height-normal"
+        formControlName="BloodLoss"
+        id="orrpt-blood-loss"
+      />
+    </div>
+    <div class="col-md-3 pr-0">
+      <label for="orrpt-blood-amount" class="col-form-label"
+        >Blood Transfused Amount (ml)</label
+      >
+    </div>
+    <div class="col-md-3 pr-0">
+      <input
+        type="text"
+        class="form-control height-normal"
+        formControlName="BloodTransfused"
+        id="orrpt-blood-amount"
+      />
+    </div>
+  </div>
+</form>
+
+
+<div class="border-between w-100 mt-3"></div>
+<div class="surgery-team-table">
+  <div class="openPopup-btn d-flex justify-content-between py-1
+    align-items-center">
+    <span class="in-patient-title">Surgery Team</span>
+    <img src="assets/img/texteditor.png" width="28"
+     (click)="onOpenSurgeryPopup()">
+  </div>
+  <div class="dignosis-data-table">
+    <table class="table table-bordered in-patient-table m-0">
+      <thead>
+        <tr>
+          <td scope="col" class="text-center" *ngFor="let element of
+          inPatientSurgeryHeaderData" [ngClass]="element.class">{{element.columnTitle}}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="surgeryTableData && surgeryTableData.length">
+          <tr *ngFor="let data of surgeryTableData">
+            <td *ngFor="let item of inPatientSurgeryHeaderData">{{data[item.fieldName]}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+<config-popup #inPatientPopup></config-popup>

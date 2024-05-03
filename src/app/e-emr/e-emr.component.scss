@@ -1,0 +1,14 @@
+::ng-deep .home-table {
+  th,
+  td {
+    border: 1px solid black;
+    min-width: 102px;
+    max-width: 267px !important;
+    // width: 100%;
+    overflow: hidden;
+    &:nth-child(2) {
+      max-width: 450px !important;
+      min-width: 180px;
+    }
+  }
+}

@@ -1,0 +1,228 @@
+<ng-template #drugEventMain>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-3" style="border-right: 2px solid;font-size: 15px;
+      font-weight: bold;">
+        <div [ngClass]="administered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('Administered')"><span>Administer</span>
+        </div>
+        <div [ngClass]="qadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('QAdministered')"><span>Q. Administer</span>
+        </div>
+        <div [ngClass]="notadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('NotAdministered')"><span>Not Administered</span>
+        </div>
+        <div [ngClass]="addsupply ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('AddSupply')"><span>Additional Supply</span>
+        </div>
+        <div [ngClass]="drugreturn ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('DrugReturn')"><span>Drug Return</span>
+        </div>
+      </div>
+      <div class="col-md-9" style="font-weight: bold;color:#69727b">
+        <div style="border-bottom: 2px solid;">
+        <div class="mb-1 row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Medication</label>
+          <div class="col-sm-6" style="margin-left: 0.5em;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+          <div class="col-sm-3" style="margin-left: 15px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Planned Dose</label>
+          <div class="col-sm-3 ml-2">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 13%;">Planned Time</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+      </div>
+      <!-- admin -->
+      <div class="mt-2" *ngIf="administered">
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Admin Dose</label>
+          <div class="col-sm-3 ml-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 12%;">Change Reason</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Admin Time</label>
+          <div class="col-sm-3 ml-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 12%;">Change Reason</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Check Cond.</label>
+          <div class="form-check" style="position: relative;
+          left: 19px;
+          bottom: 4px;margin-left: 11px;">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          </div>
+          <div class="ml-3" style="width:70%">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Comments</label>
+          <div class="" style="width: 73%;
+          margin-left: 3em;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Admin User</label>
+          <div class="col-sm-3 ml-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 17%;">Fill Source</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Witnessed by</label>
+          <div class="col-sm-3" style="    margin-left: 4px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+          </div>
+      </div>
+      <!--  -->
+      <!-- not admin -->
+      <div class="mt-2" *ngIf="notadministered">
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Reason</label>
+          <div class="" style="width: 73.5%;
+          margin-left: 4.7em;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Comments</label>
+          <div class="" style="width: 73.5%;
+          margin-left: 3em;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Admin User </label>
+          <div class="col-sm-3" style="    margin-left: 17px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+          </div>
+      </div>
+      <!--  -->
+      <!-- drug return -->
+      <div class="mt-2" *ngIf="drugreturn">
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Return Qty</label>
+          <div class="col-sm-3 ml-4">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 15.5%;">Return Unit</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Return Reason</label>
+          <div class="" style=" width: 72%;
+          margin-left: 17px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Request Status</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 16%;">Fill Source</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Material Code</label>
+          <div class="col-sm-3" style="margin-left: 7px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 19%;">Batch #</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">User Name</label>
+          <div class="col-sm-3" style="margin-left: 24px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+          </div>
+      </div>
+      <!--  -->
+      <!-- addition supply -->
+      <div class="mt-2" *ngIf="addsupply">
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Request Date</label>
+          <div class="col-sm-3 ml-2">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 13.2%;">Request Time</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Request Reason</label>
+          <div class="" style=" width: 72%;
+          margin-left: 8px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">Request Qty</label>
+          <div class="col-sm-3" style="margin-left: 14px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+
+          <label for="inputPassword" class=" col-form-label" style="margin-left: 14%;">Request Unit</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="inputPassword" class=" col-form-label ml-3">User Name</label>
+          <div class="col-sm-3" style="margin-left: 24px;">
+            <input type="text" class="form-control" id="inputPassword">
+          </div>
+          </div>
+          <div class="mb-1 row">
+            <label for="inputPassword" class=" col-form-label ml-3">Ward OU</label>
+            <div class="col-sm-4" style="margin-left: 32px;">
+              <input type="text" class="form-control" id="inputPassword">
+            </div>
+            </div>
+      </div>
+      <!--  -->
+      <div class="d-flex justify-content-end p-3">
+        <button  class="save-risk d-flex
+          align-items-center mr-2" (click)="modalRef.hide()">Save</button>
+        <button class="save-risk d-flex align-items-center" (click)="modalRef.hide()">Cancel</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

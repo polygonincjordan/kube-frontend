@@ -1,0 +1,599 @@
+<div class="e-order-wrapper" *ngIf="CpoeService.configurationoptionBackup">
+  <div class="configuration-notification" *ngIf="
+      !CpoeService.configurationoptionBackup.Clinicord &&
+      !CpoeService.configurationoptionBackup.Quickord &&
+      !CpoeService.configurationoptionBackup.Doctfees &&
+      !CpoeService.configurationoptionBackup.Medicat &&
+      !CpoeService.configurationoptionBackup.Ordset &&
+      !CpoeService.configurationoptionBackup.Surgery &&
+      !CpoeService.configurationoptionBackup.Daycaseord
+    ">
+    Please Select Configuration Functions
+  </div>
+  <div class="container-fluid p-0" *ngIf="
+      CpoeService.configurationoptionBackup.Clinicord ||
+      CpoeService.configurationoptionBackup.Quickord ||
+      CpoeService.configurationoptionBackup.Doctfees ||
+      CpoeService.configurationoptionBackup.Medicat ||
+      CpoeService.configurationoptionBackup.Ordset ||
+      CpoeService.configurationoptionBackup.Surgery ||
+      CpoeService.configurationoptionBackup.Daycaseord
+    ">
+    <div class="tab-navigation-part">
+      <div class="tab-navigate">
+        <div class="tab-nav">
+          <ul class="m-0 p-0 d-flex flex-wrap">
+            <li class="d-flex m-0 align-items-center"
+              (click)="this.eprescriptionService.eOrderTabNavigation('clinicalOrders')"
+              [ngClass]="this.eprescriptionService.clinicalOrders ? 'active'
+              : ''">
+              <img src="assets/img/grid-icon.svg">
+              <p class="d-inline-block m-0">Clinical Orders</p>
+            </li>
+            <li class="d-flex m-0 align-items-center"
+              (click)="this.eprescriptionService.eOrderTabNavigation('feesAndServices')"
+              [ngClass]="this.eprescriptionService.feesAndServices ? 'active' :
+              ''">
+              <img src="assets/img/administration-icon.svg">
+              <p class="d-inline-block m-0">Fees and Services</p>
+            </li>
+            <li class="d-flex m-0 align-items-center"
+              (click)="this.eprescriptionService.eOrderTabNavigation('consultationOrder')"
+              [ngClass]="this.eprescriptionService.consulationOrder ? 'active' :
+              ''">
+              <img src="assets/img/discharge-icon.svg">
+              <p class="d-inline-block m-0">Consultation Order</p>
+            </li>
+            <li class="d-flex m-0 align-items-center"
+              (click)="this.eprescriptionService.eOrderTabNavigation('admissionOrder')"
+              [ngClass]="this.eprescriptionService.admissionOrder ? 'active' : ''">
+              <img src="assets/img/grid-icon.svg">
+              <p class="d-inline-block m-0">Admission Order</p>
+            </li>
+            <li class="d-flex m-0 align-items-center"
+              (click)="this.eprescriptionService.eOrderTabNavigation('surgeryOrder')"
+              [ngClass]="this.eprescriptionService.surgeryOrder ? 'active' : ''">
+              <img src="assets/img/grid-icon.svg">
+              <p class="d-inline-block m-0">Surgery Order</p>
+            </li>
+          </ul>
+        </div>
+        <div class="row tab-panel" [ngClass]="this.eprescriptionService.consulationOrder ? '' : 'clinical-order'">
+          <ng-container *ngIf="this.eprescriptionService.clinicalOrders">
+            <div class="col-md-7">
+              <div class="e-order-sidewrap pb-0">
+                <div class="clincal-dash pb-0">
+                  <div class="clinic-order h-100" *ngIf="
+                      CpoeService.navigationTab === 'Clinical' &&
+                      CpoeService.configurationoptionBackup.Clinicord
+                    ">
+                    <div class="e-order-search">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="search-form d-flex">
+                            <div class="search-icon d-flex align-items-center">
+                              <img src="assets/img/emergancy-search.svg" />
+                            </div>
+                            <input placeholder="Search..." class="form-control radius-none border-left-0 rounded-0" autocomplete="off" role="combobox"
+                              aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
+                                CpoeService.searchlistData(searchString)
+                              " (input)="CpoeService.searchlistData(searchString)" [(ngModel)]="searchString" />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="e-order-refresh" (click)="CpoeService.loadeOrderData()" style="float: right;
+                          margin-top: 7px;">
+                            <img _ngcontent-thf-c188="" src="assets/img/reload-icon.svg" alt="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="e-order-searchlist-wrap">
+                      <div class="e-order-searchlist">
+                        <div class="row">
+                          <div class="col-md-4 searchlist-col">
+                            <div class="card-content">
+                              <div class="card-title mt-0 d-flex">
+                                <img _ngcontent-thf-c188="" src="assets/img/laboratory-emergency.svg" alt="">
+                                <span>Laboratory</span>
+                              </div>
+                              <app-e-order-searchlist [customData]="CpoeService.labOrdersSearchList" type="LAB"></app-e-order-searchlist>
+                            </div>
+                          </div>
+                          <div class="col-md-4 searchlist-col">
+                            <div class="card-content">
+                              <div class="card-title mt-0 d-flex">
+                                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M50.2684 41.7366C39.5057 41.7366 32
+                                    29.6403
+                                    32 18.7812C32 7.90028 39.6843 0 50.2684
+                                    0C60.8557
+                                    0 68.5367 7.89701 68.5367 18.7812C68.5333
+                                    29.6407
+                                    61.0336 41.7366 50.2684 41.7366ZM50.2684
+                                    4.58151C42.0839 4.58151 36.5839 10.2873
+                                    36.5839
+                                    18.7849C36.5839 28.2255 43.2339 37.1568
+                                    50.2684
+                                    37.1568C57.3052 37.1568 63.9587 28.229 63.9587
+                                    18.7849C63.9587 10.2882 58.4554 4.58151
+                                    50.2684
+                                    4.58151V4.58151Z" />
+                                  <path d="M22.5824 52.5785V51.9006C22.5824
+                                    45.7848
+                                    26.1294 42.6912 33.123 42.6912C33.7796
+                                    42.6912
+                                    34.3444 42.7226 34.7697 42.7567C36.5475
+                                    44.8066
+                                    41.7879 49.9349 49.61 49.9349C57.4321
+                                    49.9349
+                                    62.6692 44.8066 64.4502 42.7567C64.8755
+                                    42.7192
+                                    65.4378 42.6912 66.097 42.6912C73.0905
+                                    42.6912
+                                    76.6375 45.7848 76.6375
+                                    51.9006V52.5785H81.2188V51.9006C81.2188
+                                    43.2636
+                                    75.5623 38.1073 66.097 38.1073C64.2469
+                                    38.1073
+                                    62.9472 38.3199 62.8936 38.3327L61.9656
+                                    38.4858L61.4153 39.242C61.3651 39.3041
+                                    56.8715
+                                    45.3578 49.609 45.3578C42.4121 45.3578
+                                    37.8436
+                                    39.2982 37.8027 39.242L37.2498
+                                    38.4858L36.3252
+                                    38.3327C36.269 38.3199 34.9625 38.1073
+                                    33.1218
+                                    38.1073C23.6563 38.1073 18 43.2636 18
+                                    51.9006V52.5785H22.5824Z" />
+                                  <path d="M81.6503 55.0696H18.3627C15.953
+                                    55.0696
+                                    14 57.0285 14 59.4382V95.6373C14 98.047
+                                    15.953
+                                    100 18.3627 100H81.6503C84.0599 100
+                                    86.0129
+                                    98.047 86.0129 95.6373L86.0121
+                                    59.4403C86.0121
+                                    57.0281 84.0591 55.0692 81.6503
+                                    55.0692L81.6503 55.0696ZM68.6064
+                                    83.7128C64.0907 80.3818 58.15 78.5634
+                                    52.0692
+                                    78.2189V84.3909C57.3158 84.7192 62.4218
+                                    86.235
+                                    66.275 89.0784C68.2339 90.5253 66.3371
+                                    93.8315
+                                    64.3535 92.3754C60.9851 89.8908 56.591
+                                    88.5536
+                                    52.0692 88.2253V95.2434C52.0692 97.7025
+                                    48.2509 97.7025 48.2509
+                                    95.2434V88.2065C43.6263 88.4881 39.107
+                                    89.8346
+                                    35.6604 92.3754C33.676 93.835 31.7792
+                                    90.5253
+                                    33.739 89.0784C37.6705 86.1788 42.9015
+                                    84.6596
+                                    48.2543 84.3721V78.2071C42.0671 78.5006
+                                    36.0014 80.326 31.4075 83.713C29.423
+                                    85.1786
+                                    27.5228 81.8629 29.4792 80.416C34.5572
+                                    76.6691
+                                    41.3417 74.6719 48.2536
+                                    74.3784V68.3222C43.1815 68.5664 38.2132
+                                    69.7189 34.2885 71.8879C32.1356 73.0847
+                                    30.2073 69.7819 32.3602 68.5909C36.882
+                                    66.0877
+                                    42.5163 64.7753 48.2535
+                                    64.5251V59.8817C48.2535 57.4226 52.0718
+                                    57.4226 52.0718 59.8817V64.5251C57.8091
+                                    64.7751 63.4434 66.0876 67.9618
+                                    68.5909C70.1147 69.7818 68.1898 73.0847
+                                    66.0369 71.8879C62.1124 69.7223 57.1465
+                                    68.5663 52.0718 68.3222V74.3877C58.8809
+                                    74.722
+                                    65.5341 76.7251 70.5374 80.4125C72.4913
+                                    81.8628 70.591 85.1785 68.6066
+                                    83.7128H68.6064Z" />
+                                </svg>
+                                <span>Radiology</span>
+                              </div>
+                              <app-e-order-searchlist [customData]="CpoeService.radOrdersSearchList" type="RAD"></app-e-order-searchlist>
+                            </div>
+                          </div>
+                          <div class="col-md-4 searchlist-col">
+                            <div class="card-content">
+                              <div class="card-title mt-0 d-flex">
+                                <img _ngcontent-thf-c188="" src="assets/img/procedures-emergency.svg" alt="">
+                                <span>Procedures and Packages</span>
+                              </div>
+                              <app-e-order-searchlist [customData]="CpoeService.procedureSearchList" type="PROC"></app-e-order-searchlist>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="medications h-100" *ngIf=" CpoeService.navigationTab === 'Medications' && CpoeService.configurationoptionBackup.Medicat">
+                    <div class="e-order-search">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="search-form d-flex">
+                            <div class="search-icon d-flex align-items-center">
+                              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_101_2)">
+                                  <path d="M3.375 7.3125C3.375 8.92617 3.89883 10.4168
+                                    4.78125 11.6262L0.330465 16.0805C-0.108988 16.5199
+                                    -0.108988 17.2336 0.330465 17.673C0.769918 18.1125
+                                    1.48359 18.1125 1.92304 17.673L6.37383
+                                    13.2187C7.5832 14.1047 9.07383 14.625 10.6875
+                                    14.625C14.727 14.625 18 11.352 18 7.3125C18 3.27305
+                                    14.727 0 10.6875 0C6.64804 0 3.375 3.27305 3.375
+                                    7.3125ZM10.6875 12.375C7.89258 12.375 5.625 10.1074
+                                    5.625 7.3125C5.625 4.51758 7.89258 2.25 10.6875
+                                    2.25C13.4824 2.25 15.75 4.51758 15.75 7.3125C15.75
+                                    10.1074 13.4824 12.375 10.6875 12.375Z" fill="white" />
+                                </g>
+                                <defs>
+                                  <clipPath id="clip0_101_2">
+                                    <rect width="18" height="18" fill="white" transform="matrix(-1 0 0 1 18 0)" />
+                                  </clipPath>
+                                </defs>
+                              </svg>
+                            </div>
+                            <input placeholder="Search..." class="form-control radius-none border-left-0 rounded-0" autocomplete="off" role="combobox"
+                              aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
+                                CpoeService.searchMedData(searchMedString)" (input)="CpoeService.searchMedData(searchMedString)" [(ngModel)]="searchMedString" />
+                          </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                      </div>
+                    </div>
+                    <div class="e-order-searchlist-wrap">
+                      <app-e-order-medication [customData]="CpoeService.medicationSearchList"></app-e-order-medication>
+                    </div>
+                  </div>
+                  <div class="fees-and-services" *ngIf=" CpoeService.navigationTab === 'Fees' && CpoeService.configurationoptionBackup.Doctfees">
+                    <div class="e-order-search">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="search-form d-flex">
+                            <div class="search-icon d-flex align-items-center">
+                              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_101_2)">
+                                  <path d="M3.375 7.3125C3.375 8.92617 3.89883 10.4168
+                                    4.78125 11.6262L0.330465 16.0805C-0.108988 16.5199
+                                    -0.108988 17.2336 0.330465 17.673C0.769918 18.1125
+                                    1.48359 18.1125 1.92304 17.673L6.37383
+                                    13.2187C7.5832 14.1047 9.07383 14.625 10.6875
+                                    14.625C14.727 14.625 18 11.352 18 7.3125C18 3.27305
+                                    14.727 0 10.6875 0C6.64804 0 3.375 3.27305 3.375
+                                    7.3125ZM10.6875 12.375C7.89258 12.375 5.625 10.1074
+                                    5.625 7.3125C5.625 4.51758 7.89258 2.25 10.6875
+                                    2.25C13.4824 2.25 15.75 4.51758 15.75 7.3125C15.75
+                                    10.1074 13.4824 12.375 10.6875 12.375Z" fill="white" />
+                                </g>
+                                <defs>
+                                  <clipPath id="clip0_101_2">
+                                    <rect width="18" height="18" fill="white" transform="matrix(-1 0 0 1 18 0)" />
+                                  </clipPath>
+                                </defs>
+                              </svg>
+                            </div>
+                            <input placeholder="Search..." class="form-control radius-none border-left-0 rounded-0" autocomplete="off" role="combobox"
+                              aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
+                                CpoeService.searchFeeData(searchFeestring)
+                              " (input)="CpoeService.searchFeeData(searchFeestring)" [(ngModel)]="searchFeestring" />
+                          </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                      </div>
+                    </div>
+                    <div class="e-order-fees-wrap">
+                      <app-e-order-fees-service [customData]="CpoeService.feeServiceSearchData"></app-e-order-fees-service>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="e-order-sidewrap e-order-sidewrap-data">
+                <div class="e-order-wrapper-main h-auto active-order-panel" *ngIf="CpoeService.navigationTab !== 'Fees'">
+                  <div class="Clinical-Main h-100">
+                    <div class="e-order-history" *ngIf="CpoeService.switchVal.name === 'history' && CpoeService.navigationTab !== 'Fees'">
+                      <div class="e-order-history-search">
+                        <div class="search-form d-flex">
+                          <div class="search-icon d-flex align-items-center">
+                            <svg width="18" height="18" viewBox="0 0 18
+                              18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g clip-path="url(#clip0_101_2)">
+                                <path d="M3.375 7.3125C3.375 8.92617
+                                  3.89883 10.4168 4.78125 11.6262L0.330465
+                                  16.0805C-0.108988 16.5199 -0.108988
+                                  17.2336 0.330465 17.673C0.769918 18.1125
+                                  1.48359 18.1125 1.92304 17.673L6.37383
+                                  13.2187C7.5832 14.1047 9.07383 14.625
+                                  10.6875 14.625C14.727 14.625 18 11.352
+                                  18 7.3125C18 3.27305 14.727 0 10.6875
+                                  0C6.64804 0 3.375 3.27305 3.375
+                                  7.3125ZM10.6875 12.375C7.89258 12.375
+                                  5.625 10.1074 5.625 7.3125C5.625 4.51758
+                                  7.89258 2.25 10.6875 2.25C13.4824 2.25
+                                  15.75 4.51758 15.75 7.3125C15.75 10.1074
+                                  13.4824 12.375 10.6875 12.375Z" fill="white" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_101_2">
+                                  <rect width="18" height="18" fill="white" transform="matrix(-1 0
+                                    0 1 18 0)" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+                          <input type="text" placeholder="Search..." class="form-control radius-none border-left-0 rounded-0"
+                            [(ngModel)]="CpoeService.historysearchString" />
+                        </div>
+                      </div>
+                      <app-e-order-history [orderHistory]="CpoeService.historyOrders" class="e-order-history-contentt"></app-e-order-history>
+                    </div>
+                    <div class="e-order-list" *ngIf="CpoeService.switchVal.name === 'eorders' || CpoeService.switchVal.name === 'history-data'">
+                      <app-create-e-order [customData]="CpoeService.eOrders"></app-create-e-order>
+                    </div>
+                  </div>
+                </div>
+                <div class="e-order-fees-panel" *ngIf="CpoeService.navigationTab === 'Fees'">
+                  <div class="create-fees-order">
+                    <div class="e-order-list">
+                      <app-create-fee-order [customData]="CpoeService.feeServiceData"></app-create-fee-order>
+                    </div>
+                    <div class="e-order-history-btn" *ngIf="CpoeService.navigationTab === 'Fees'">
+                      <div class="btn-group-end text-right">
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCreateFeeOrder()">
+                          Create Fees-Order
+                        </button>
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCancelOrder()">
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fee-order-history">
+                    <div class="e-order-history">
+                      <app-fee-order-history [orderHistory]="CpoeService.feeOrderHistory"></app-fee-order-history>
+                    </div>
+                    <div class="e-order-history-btn" *ngIf="CpoeService.navigationTab === 'Fees'">
+                      <div class="btn-group-end text-right">
+                        <!-- <button type="button" class="btn btn-secondary rounded-sm ml-2">Print</button> -->
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                            CpoeService.onCopyFeeItem(CpoeService.feeOrderHistory)
+                          ">
+                          Copy
+                        </button>
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onEditFeeItem(CpoeService.feeOrderHistory)">
+                          Edit
+                        </button>
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onDeleteFeeItem(CpoeService.feeOrderHistory)">
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="e-order-history-btn" *ngIf="CpoeService.switchVal.name === 'history' && CpoeService.navigationTab !== 'Fees'">
+                  <div class="btn-group-end text-right">
+                    <button
+                      type="button"
+                      class="btn btn-secondary rounded-sm ml-2"
+                      (click)="CpoeService.onPrintItem(CpoeService.historyOrders)"
+                    >
+                      Print
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary rounded-sm ml-2"
+                      (click)="CpoeService.onCopyItem(CpoeService.historyOrders)"
+                    >
+                      Copy
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary rounded-sm ml-2"
+                      (click)="CpoeService.onEditItem(CpoeService.historyOrders)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary rounded-sm ml-2"
+                      (click)="
+                        CpoeService.onDeleteItem(CpoeService.historyOrders)
+                      "
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                <div class="e-order-history-btn" *ngIf="
+                    CpoeService.switchVal.name === 'eorders' &&
+                    CpoeService.navigationTab !== 'Fees'
+                  ">
+                  <div class="btn-group-end text-right">
+                    <button type="button"
+                      *ngIf="CpoeService.eOrders && (CpoeService.eOrders[0].type === 'MED' || CpoeService.eOrders[0].type === 'TEMPLATE')"
+                      class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.openTemplatePopup(saveTemplate, CpoeService.eOrders)">Create Med
+                      Template</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCreateOrder()"> Create e-Order </button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCancelOrder()"> Cancel</button>
+                  </div>
+                </div>
+                <div class="e-order-history-btn" *ngIf="CpoeService.switchVal.name === 'history-data'">
+                  <div class="btn-group-end text-right">
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCreateOrder()">Save</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCancelOrder()">Cancel</button>
+                  </div>
+                </div>
+                <!-- <div class="e-order-history-btn">
+                  <div class="btn-group-end text-right">
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Create Med Template</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Create Q. Order</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Create e-Order</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Cancel</button>
+                  </div>
+                </div> -->
+                <!-- <div class="e-order-history-btn">
+                  <div class="btn-group-end text-right">
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Create e-Order</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Cancel</button>
+                  </div>
+                </div> -->
+                <!-- <div class="e-order-history-btn">
+                  <div class="btn-group-end text-right">
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Print</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Copy</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Edit</button>
+                    <button type="button" class="btn btn-secondary rounded-sm ml-2">Cancel</button>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </ng-container>
+           <ng-container *ngIf="this.eprescriptionService.consulationOrder">
+            <app-consultation-order class="w-100 p-3"></app-consultation-order>
+          </ng-container>
+          <ng-container *ngIf="this.eprescriptionService.admissionOrder">
+            <app-admission-e-order class="w-100 p-3"></app-admission-e-order>
+          </ng-container>
+          <ng-container *ngIf="this.eprescriptionService.feesAndServices">
+            <div class="row w-100">
+              <div class="col-md-7">
+                <div class="fees-and-services">
+                  <div class="e-order-search">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <div class="search-form d-flex">
+                          <div class="search-icon d-flex align-items-center">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g clip-path="url(#clip0_101_2)">
+                                <path d="M3.375 7.3125C3.375 8.92617 3.89883 10.4168
+                                  4.78125 11.6262L0.330465 16.0805C-0.108988 16.5199
+                                  -0.108988 17.2336 0.330465 17.673C0.769918 18.1125
+                                  1.48359 18.1125 1.92304 17.673L6.37383
+                                  13.2187C7.5832 14.1047 9.07383 14.625 10.6875
+                                  14.625C14.727 14.625 18 11.352 18 7.3125C18 3.27305
+                                  14.727 0 10.6875 0C6.64804 0 3.375 3.27305 3.375
+                                  7.3125ZM10.6875 12.375C7.89258 12.375 5.625 10.1074
+                                  5.625 7.3125C5.625 4.51758 7.89258 2.25 10.6875
+                                  2.25C13.4824 2.25 15.75 4.51758 15.75 7.3125C15.75
+                                  10.1074 13.4824 12.375 10.6875 12.375Z" fill="white" />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_101_2">
+                                  <rect width="18" height="18" fill="white" transform="matrix(-1 0 0 1 18 0)" />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </div>
+                          <input placeholder="Search..." class="form-control radius-none border-left-0 rounded-0" autocomplete="off" role="combobox"
+                            aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
+                              CpoeService.searchFeeData(searchFeestring)
+                            " (input)="CpoeService.searchFeeData(searchFeestring)" [(ngModel)]="searchFeestring" />
+                        </div>
+                      </div>
+                      <div class="col-md-4"></div>
+                    </div>
+                  </div>
+                  <div class="e-order-fees-wrap">
+                    <app-e-order-fees-service [customData]="CpoeService.feeServiceSearchData"></app-e-order-fees-service>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="e-order-fees-panel" *ngIf="this.eprescriptionService.feesAndServices">
+                  <div class="create-fees-order">
+                    <div class="e-order-list">
+                      <app-create-fee-order [customData]="CpoeService.feeServiceData"></app-create-fee-order>
+                    </div>
+                    <div class="e-order-history-btn" *ngIf="this.eprescriptionService.feesAndServices">
+                      <div class="btn-group-end text-right">
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCreateFeeOrder()">
+                          Create Fees-Order
+                        </button>
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="CpoeService.onCancelOrder()">
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fee-order-history">
+                    <div class="e-order-history">
+                      <app-fee-order-history [orderHistory]="CpoeService.feeOrderHistory"></app-fee-order-history>
+                    </div>
+                    <div class="e-order-history-btn" *ngIf="this.eprescriptionService.feesAndServices">
+                      <div class="btn-group-end text-right">
+                        <!-- <button type="button" class="btn btn-secondary rounded-sm ml-2">Print</button> -->
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                            CpoeService.onCopyFeeItem(CpoeService.feeOrderHistory)
+                          ">
+                          Copy
+                        </button>
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                            CpoeService.onEditFeeItem(CpoeService.feeOrderHistory)
+                          ">
+                          Edit
+                        </button>
+                        <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                            CpoeService.onDeleteFeeItem(
+                              CpoeService.feeOrderHistory
+                            )
+                          ">
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="this.eprescriptionService.surgeryOrder">
+            <app-surgery-e-order></app-surgery-e-order>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+   
+    </div>
+  </div>
+</div>
+<ng-template #saveTemplate>
+  <div class="e-order-template part-of-Templates">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="border-0 text-center">
+            <h3>Save as Template</h3>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <p class="m-0 mr-2">Description:</p>
+              <input type="text" class="form-control" placeholder="Enter template description" [(ngModel)]="CpoeService.templatedescription" />
+            </div>
+            <p class="m-0 mt-1 text-danger">{{CpoeService.errorMsg}}</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="buttons">
+      <button type="text" class="btn btn-primary rounded-0 add-btn" (click)="CpoeService.onCreateTemplate()">Save</button>
+      <button type="text" class="btn btn-primary rounded-0 close-btn" (click)="CpoeService.onCloseTemplate()">Close</button>
+    </div>
+  </div>
+</ng-template>
+
+<organization-unit #organizationUnit></organization-unit>

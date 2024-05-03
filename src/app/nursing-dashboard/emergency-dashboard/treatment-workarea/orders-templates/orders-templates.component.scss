@@ -1,0 +1,124 @@
+.table-row {
+  border-bottom: 1px solid #ced4da;
+}
+.table-bordered-right {
+  border-right: 1px solid #dee2e6;
+  .order-template-title {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .store-tamplate {
+    height: 130px;
+    overflow-y: auto;
+    padding-right: 8px;
+    .tamplate-main {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 2px;
+      align-items: center;
+      margin-bottom: 5px;
+      .eye-icon {
+    border: 1px solid #f3f3f3;
+    border-radius: 16px;
+    background: #f3f3f3;
+    height: 30px;
+      }
+    }
+  }
+}
+
+.modal-body {
+  .order-pop-template {
+    border: solid 3px #007bff;
+    box-shadow: 1px 0px 5px 1px #007bff;
+    padding: 25px;
+    border-radius: 20px;
+  }
+}
+.order-form {
+
+  .order-form-thead {
+    // background-color: #0082c8;
+    // color: white;
+    text-align: center;
+    margin: 2px;
+    height: 35px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+  }
+  .order-occupational {
+    width: 35% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.crete-tamplate {
+  height: 202px;
+  overflow-y: auto;
+  border-radius: 23px;
+  .order-form-table {
+    width: 100%;
+
+    .add-icon {
+      background-color: #0056b0;
+    color: white;
+    height: 43px;
+    width: 36px;
+    /* line-height: 51px; */
+    text-align: center;
+    font-size: 30px;
+    }
+  }
+}
+// }
+
+.btn-template {
+  display: flex;
+  justify-content: end;
+  margin-top: 15px;
+}
+
+.phyacian-list {
+  margin-top: 15px;
+  height: calc(100vh - 570px);
+  overflow-y: auto;
+  border-radius: 25px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+.order-template {
+  min-width: 60% !important;
+}
+
+.save-template-pop {
+  min-width: 30% !important;
+}
+
+// .store-tamplate::-webkit-scrollbar {
+//   display: none !important;
+// }
+.order-form-table{ 
+  input {
+    background: none !important;
+    border: none;
+  }
+  ::ng-deep.ng-select{
+    .ng-select-container{
+      background: none !important;
+      border: 0;
+    }
+.ng-clear-wrapper{
+      border: 1px solid;
+  border-radius: 20px;
+  background-color: #c6c8ca;
+  color: white;
+  text-align: center;
+    }
+  }
+}

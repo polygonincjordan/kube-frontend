@@ -1,0 +1,28 @@
+.search-input {
+  img {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+  }
+  input {
+    height: 42px;
+    font: 600 14px/1.5 Nunito, sans-serif;
+    color: #848f96;
+    border-radius: 8px !important;
+    box-shadow: none;
+    padding: 10px 10px 10px 42px;
+  }
+}
+
+.header-content {
+  input.largerCheckbox {
+    width: 17px;
+    height: 15px;
+  }
+  label {
+    color: #000;
+    font-weight: 700;
+    font-size: 13px;
+  }
+}

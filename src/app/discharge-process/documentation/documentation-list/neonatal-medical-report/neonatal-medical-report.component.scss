@@ -1,0 +1,114 @@
+html, body {
+    background: inherit !important;
+} 
+.box-subjective ul, .box-date-time ul, .box-ga-weeks ul { margin: 0px; padding: 0; list-style: none;}
+.box-subjective ul li span {
+    vertical-align: top;
+    align-items: top;
+    font-size: 16px;
+    font-weight: bold;
+    width: fit-content;
+    padding-bottom: 2px;
+}
+.box-subjective ul li p {width: 18%;display: inline-block;vertical-align: top; text-align: left;}
+.box-subjective ul li textarea { width: 81%;border: 1px solid #bfbfbf; min-height: 100px;}
+.box-subjective ul li { margin-bottom: 50px;}
+.box-subjective ul li:last-child {margin-bottom: 20px;}
+.box-date-time ul li span {
+    font-size: 16px;
+    font-weight: bold;
+    padding-right: 25px;
+}
+.box-date-time ul li{
+    display: flex;
+    align-items: center;
+}
+.box-date-time ul li input {
+    margin: 0px 0px 0px -6px;
+    border: 1px solid #bfbfbf;
+    height: 40px;
+    width: 47%;
+    padding: 5px 10px;
+    border-radius: 7px;
+}
+.box-subjective {
+    margin: 20px 0px 0px;
+}
+.box-date-time ul li span {
+    font-size: 16px;
+    font-weight: bold;
+    padding-right: 25px;
+    display: inline-block;
+}
+.box-date-time ul {
+    margin-bottom: 25px;
+}
+.box-ga-weeks ul li {
+    font-size: 16px;
+    font-weight: bold;
+}
+.box-ga-weeks ul li input {
+    width: 60%;
+    margin: 0px 0px 0px -5px;
+    border: 1px solid #bfbfbf;
+    height: 35px;
+    border-radius: 7px;
+}
+.box-ga-weeks ul li.half-boxes input {
+    width: 45%;
+    margin: 0px 0px 0px -5px;
+    border: 1px solid #bfbfbf;
+    height: 35px;
+    border-radius: 7px;
+}
+.box-ga-weeks ul li.half-boxes {
+    width: 25%;
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+.box-ga-weeks ul li.full-width-boxes input {
+    width: 11%;
+}
+.box-ga-weeks ul li.full-width-boxes span {
+    width: 25%;
+    display: inline-block;
+    
+    padding-right: 0px;
+    height: 30px;
+}
+.box-ga-weeks ul li.full-width-boxes {
+    margin-bottom: 5px;
+}
+.box-ga-weeks ul li select {
+    margin: 0px 0px 0px -5px;
+    border: 1px solid #bfbfbf;
+    height: 37px;
+    width: 11%;
+    display: inline-block;
+    border-radius: 7px;
+}
+.box-ga-weeks ul li.full-width-boxes.check-box-bottom input.form-check-input {
+    width: 20px;
+}
+
+.box-ga-weeks ul li.full-width-boxes.check-box-bottom .form-check input.form-check-input {
+    width: 25px;
+    margin: 0px;
+}
+.box-ga-weeks ul li.full-width-boxes.check-box-bottom .form-check label.form-check-label {
+    padding-left: 30px;
+    width: 25%;
+}
+.box-ga-weeks ul li.half-boxes span {
+   
+    padding-right: 0px;
+    height: 29px;
+    display: inline-block;
+    width: 60px;
+}
+.neonatal{
+    .container{
+        margin: 0px;
+    }
+}

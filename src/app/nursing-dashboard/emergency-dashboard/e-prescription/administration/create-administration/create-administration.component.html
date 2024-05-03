@@ -1,0 +1,557 @@
+<form action="" [formGroup]="administrationForm">
+  <div class="overflow-y h-100 px-2 mt-4">
+    <table class="table administration-table mb-0">
+      <thead>
+        <tr class="main_row">
+          <td class="p-0">
+            <table class="w-100">
+              <tr>
+                <th class="border-0 text-center text-white w-40">Medication Name
+                  & Details</th>
+                <td class="border-0 text-center w-35">
+                  <table class="w-100">
+                    <tr>
+                      <th class="border-0 text-center text-white p-0">Validation
+                        Details</th>
+                    </tr>
+                  </table>
+                </td>
+                <th class="border-0 text-center text-white w-15">Additional
+                  Options</th>
+                <th class="border-0 text-center text-white w-10">Actions</th>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </thead>
+      <tbody formArrayName="AdministrationData">
+        <tr class="borderbottom" *ngFor="let item of drugArray.controls; let i=
+          index" [formGroupName]="i">
+          <td class="p-0">
+            <table class="w-100">
+              <tr>
+                <td class="align-middle borderright w-40 p-1">
+                  <table class="w-100">
+                    <tr>
+                      <td class="align-middle border-0 p-1" colspan="4">
+                        <span class="d-flex fontsize align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Medication Name</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100
+                            font-weight-bolder ">
+                            <administration-search-select-medicine
+                              [group]="item"
+                              [isSubmitted]="isFormSubmitted" [index]="i"
+                              [medicineDefaultData]="addministrationService.medicationDrugList"
+                              (onSelected)="onSelectMedicine($event)">
+                            </administration-search-select-medicine>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-20 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Formula</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input type="text" class="form-control"
+                              formControlName="Formatdescr"
+                              [ngClass]="item.touched &&
+                              item.get('Phformid').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''" />
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-20 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Route</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <ng-select [searchable]="true"
+                              formControlName="Aprouteid"
+                              [ngClass]="item.touched &&
+                              item.get('Aprouteid').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''" class="font-weight-bold">
+                              <ng-option
+                                *ngFor=" let routeDropdownItem of
+                                addministrationService.routeDropdownList"
+                                [value]="routeDropdownItem.Aprouid">
+                                {{ routeDropdownItem.Descr }}
+                              </ng-option>
+                            </ng-select>
+                            <!-- <input type="text" class="form-control"
+                              formControlName="Routedescr"
+                              [ngClass]="item.touched &&
+                              item.get('Aprouteid').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"> -->
+                          </span>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="align-middle border-0 w-30 p-1" colspan="2"
+                        *ngIf="item.value.IsFrequencyDeftim">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Dosage</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input type="text" class="form-control"
+                              formControlName="Dosdef" [ngClass]="item.touched
+                              &&
+                              item.get('Dosdef').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              [readonly]="item.value.Complex"/>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-12 p-1"
+                        *ngIf="!item.value.IsFrequencyDeftim">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Dosage</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input type="textbox" class="form-control"
+                              formControlName="Quan" [ngClass]="item.touched &&
+                              item.get('Quan').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              [readonly]="item.value.Complex" appDigitDecimaNumber/>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-18 p-1"
+                        *ngIf="!item.value.IsFrequencyDeftim">
+                        <span class="d-flex align-items-center p-0 fontsize
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Dosage Unit</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100
+                            font-weight-bolder">
+                            <ng-select [searchable]="true"
+                              formControlName="Quanunit"
+                              [ngClass]="item.touched &&
+                              item.get('Quanunit').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              [readonly]="item.value.Complex"
+                              [disabled]="item.value.Complex"
+                              (change)="onChangeDosageUnit(item.get('AgentidResult').value,
+                              $event, i)">
+                              <ng-option
+                                *ngFor=" let medicationDosageUnit of
+                                item.get('AgentidResult').value"
+                                [value]="medicationDosageUnit.Meinh">
+                                {{ medicationDosageUnit.OptionField }}
+                              </ng-option>
+                            </ng-select>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 p-1" colspan="2">
+                        <span class="d-flex align-items-center p-0 fontsize
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Frequency</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100
+                            font-weight-bolder">
+                            <ng-select [searchable]="true"
+                              formControlName="N1znr"
+                              [ngClass]="item.touched &&
+                              item.get('N1znr').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              (change)="onChangeFrequencySet(item.get('N1znr').value,
+                              i)"
+                              (click)="onOpenFrequencySet(i)"
+                              [readonly]="item.value.Complex">
+                              <ng-option *ngFor=" let medicationFrequency of
+                                addministrationService.frequencyList"
+                                [value]="medicationFrequency.CycleKey">
+                                {{ medicationFrequency.OptionField
+                                }}
+                              </ng-option>
+                            </ng-select>
+                            <span class="hover-effect d-flex align-items-center
+                              justify-content-center"
+                              *ngIf="item.value.Complex">Complex</span>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-12 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Duration</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input
+                              type="textbox"
+                              min="0"
+                              class="form-control"
+                              formControlName="Pdur"
+                              [ngClass]="item.touched &&
+                              item.get('Pdur').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              (input)="validFromTobaseonDuration(i, item.value)"
+                              [readonly]="item.value.Complex" appDigitDecimaNumber/>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-18 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Duration Unit</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100
+                            font-weight-bold">
+                            <ng-select [searchable]="true"
+                              formControlName="Pduru"
+                              [ngClass]="item.touched &&
+                              item.get('Pduru').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              (change)="validFromTobaseonDuration(i,
+                              item.value)" [readonly]="item.value.Complex">
+                              <ng-option
+                                *ngFor=" let medicationDurationUnit of
+                                addministrationService.durationUnitList"
+                                [value]="medicationDurationUnit.Unit">
+                                {{ medicationDurationUnit.Text }}
+                              </ng-option>
+                            </ng-select>
+                          </span>
+                        </span>
+                      </td>
+
+                    </tr>
+                  </table>
+                </td>
+                <td class="align-middle borderright w-35 p-1 checkbox-panel">
+                  <table class="border-0 w-100 ">
+                    <tr>
+                      <td class="align-middle border-0 w-40 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Validate From</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input type="text" class="form-control"
+                              formControlName="StartD"
+                              [ngClass]="item.touched &&
+                              item.get('StartD').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              [bsConfig]="{withTimepicker:
+                              true,showWeekNumbers:false,
+                              dateInputFormat:
+                              'DD.MM.YYYY HH:mm:ss'}"
+                              bsDatepicker
+                              [isDisabled]="item.value.Complex"
+                              [readOnly]="item.value.Complex"/>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-35 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Validate To</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100">
+                            <input type="text" class="form-control" type="text"
+                              class="form-control" formControlName="EndD"
+                              [ngClass]="item.touched &&
+                              item.get('EndD').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"
+                              [bsConfig]="{withTimepicker:
+                              true,showWeekNumbers:false,
+                              dateInputFormat:
+                              'DD.MM.YYYY HH:mm:ss'}"
+                              bsDatepicker
+                              [isDisabled]="item.value.Complex"
+                              [readonly]="item.value.Complex"/>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="align-middle border-0 w-25 p-1">
+                        <span class="d-flex align-items-center p-0
+                          position-relative pt-2">
+                          <span class="input-title z-indexlabel">Priority</span>
+                          <span
+                            class="input-text-field d-inline-block align-top
+                            w-100
+                            font-weight-bolder">
+                            <ng-select [searchable]="true"
+                              formControlName="Priority"
+                              [ngClass]="item.touched &&
+                              item.get('Priority').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''">
+                              <ng-option
+                                *ngFor=" let priorityOptions of
+                                priorityArray"
+                                [value]="priorityOptions.Value">
+                                {{ priorityOptions.Desc }}
+                              </ng-option>
+                            </ng-select>
+                          </span>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+
+                      <td class="align-middle border-0 p-1" colspan="3">
+                        <div class="d-flex align-items-center
+                          position-relative">
+                          <div class="position-relative d-flex
+                            align-items-center pt-2">
+                            <input type="checkbox" class="checkbox-panel"
+                              formControlName="Prn">
+                            <span class="mr-2 admin d-inline-block"></span>
+                            <label class="m-0 pr-1 color">PRN</label>
+                          </div>
+                          <span class="d-flex align-items-center p-0 w-100
+                            position-relative pt-2">
+                            <span class="input-title z-indexlabel">PRN Condition</span>
+                            <span class="input-text-field d-inline-block
+                              align-top
+                              w-100">
+                              <input type="text" class="form-control"
+                                formControlName="Prncond"
+                                [readonly]="item.get('Prn').value ? false :
+                                true"/>
+                            </span>
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="align-middle borderright w-15 p-1">
+                  <table class="border-0 w-100">
+                    <tr>
+                      <td class="border-0" colspan="2">
+                        <div class="d-flex align-items-center
+                          position-relative">
+                          <input type="checkbox" class="mr-1 checkbox-panel"
+                            formControlName="AddDose"
+                            (change)="item.value.AddDose? item.patchValue({
+                            Priority: '020' }):item.patchValue({ Priority: '010'
+                            })">
+                          <span class="mr-2 admin"></span>
+                          <label class="m-0"> Additional Dose Now</label>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class=" border-0">
+                        <div class="d-flex align-items-center
+                          position-relative">
+                          <input type="checkbox" class="mr-1 checkbox-panel"
+                            formControlName="Complex"
+                            (change)="openMoDetailPanel(i,
+                            item.value, item.valid)">
+                          <span class="mr-2 admin"></span>
+                          <label class="m-0">Complex</label>
+                        </div>
+                      </td>
+                      <td class=" border-0">
+                        <div class="d-flex align-items-center
+                          position-relative" [popover]="hourPopover"
+                          [popoverContext]="{index: i}">
+                          <input type="checkbox" class="mr-1 checkbox-panel">
+                          <span class="mr-2 admin"></span>
+                          <label class="m-0">POM</label>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="align-middle borderright w-10 p-1">
+                  <table class="border-0 w-100">
+                    <tr>
+                      <td class="border-0 p-1 ">
+                        <div class="c-pointer d-inline-block patient-dropdown"
+                          (click)="openMoDetailPanel(i, item.value,
+                          item.valid)"
+                          [ngClass]="item.value.IsmoDetails? 'open-mo-detail':
+                          ''" [ngClass]=" isFormSubmitted ?
+                          'ep-error-message': ''">
+                          <img src="assets/img/selected-icon.png"
+                            class="mr-2 detals-w">
+                          <label class="m-0 font-weight-bolder c-pointer
+                            details">Mo Details</label>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border-0 d-flex align-items-center px-1">
+                        <div class="mr-5 c-pointer">
+                          <img src="assets/img/Additional-Info.jpg" height="20"
+                            (click)="onOpenInfoPopup(item, i)">
+                        </div>
+                        <div>
+                          <img src="assets/img/delete-icon.svg" height="16"
+                            (click)="deleteRowData(i)"
+                            class="iconsminds-cursor-click">
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr class="collapsable-div">
+                <div #collapse="ngbCollapse"
+                  [(ngbCollapse)]="!item.value.IsFrequencyDeftim"
+                  class="frequency-collapse">
+                  <div class="d-flex m-3">
+                    <div>
+                      <ng-container *ngIf="item.value.IsFrequencyDeftim">
+                        <frequency-deftim
+                          [defaultfrequencydeftim]="item.value"
+                          (frequencyDeftim)="FrequencySetcycle($event,i,
+                          item.get('AgentidResult').value)"></frequency-deftim>
+                      </ng-container>
+                    </div>
+                    <div>
+                      <div class="d-flex w-62 m-2">
+                        <div>
+                          <img src="assets/img/close.svg"
+                            (click)="closeCycle(i)"
+                            height="20"
+                            class="iconsminds-cursor-click mr-3 ml-2 c-pointer">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </tr>
+              <tr>
+                <td colspan="4" class="p-0 border-0">
+                  <div #collapse="ngbCollapse"
+                    [(ngbCollapse)]="!item.value.IsmoDetails"
+                    class="collapsable-div">
+                    <div class="d-flex textbaseline">
+                      <form action="" class="ma-border w-100 mr-2">
+                        <ul class="d-flex ma-borderbottom">
+                          <li class="px-4 py-2 m-0 font-weight-bold c-pointer"
+                            (click)="onClickTabChange(i, 'MedicationDetails')"
+                            [ngClass]="tabmodetail === 'MedicationDetails' ?
+                            'active':''">Medication
+                            Details</li>
+                          <li class="px-4 py-2 m-0 font-weight-bold c-pointer"
+                            (click)="onClickTabChange(i, 'ComplexOrder')"
+                            [ngClass]="tabmodetail === 'ComplexOrder' ?
+                            'active':''"
+                            *ngIf="item.value.Complex">Complex Order</li>
+                          <li class="px-4 py-2 m-0 font-weight-bold c-pointer"
+                            (click)="onClickTabChange(i, 'Events')"
+                            [ngClass]="tabmodetail === 'Events' ?
+                            'active':''" *ngIf="item.value.TOEVENTDATA &&
+                            item.value.TOEVENTDATA.length">Events</li>
+                        </ul>
+                        <div class="ma-tab-content">
+                          <ng-container *ngIf="tabmodetail ===
+                            'MedicationDetails'">
+                            <medication-details
+                              [medicationdetailsdate]="{item: item.value,
+                              userData:
+                              this.addministrationService.medicationAdministrative}"
+                              (medication)="this.addministrationService.medicationAdministrative=
+                              $event"></medication-details>
+                          </ng-container>
+                          <ng-container *ngIf="tabmodetail === 'ComplexOrder' &&
+                            item.value.Complex">
+                            <complex-order
+                              (complexData)="updatedComplexData($event, i)"
+                              [DoseComplexData]="item.value"></complex-order>
+                          </ng-container>
+                          <ng-container *ngIf="tabmodetail === 'Events' &&
+                            item.value.TOEVENTDATA &&
+                            item.value.TOEVENTDATA.length">
+                            <events-order
+                              [eventPanelData]="item.value.TOEVENTDATA"></events-order>
+                          </ng-container>
+                        </div>
+                      </form>
+                      <img src="assets/img/close.svg" height="20"
+                        (click)="closeModetail(i)"
+                        class="iconsminds-cursor-click mr-3 ml-2 c-pointer">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+
+    <div class="e-order-history-btn border-0 tab-search-panel d-flex
+      align-items-center justify-content-between">
+      <div class=" d-flex align-items-center justify-content-start border-0
+        c-pointer" (click)="addRowData()">
+        <img src="assets/img/add.png" height="25"
+          class="c-pointer">
+        <p class="font-weight-bolder ml-1 mb-0 p-0">Add new Medication</p>
+      </div>
+      <div class=" p-0">
+        <button type="button" class="btn btn-secondary rounded-sm ml-2"
+          (click)="onSubmitData()">Create Order </button>
+        <button type="button" class="btn btn-secondary rounded-sm ml-2">Create
+          Template </button>
+        <button type="button" class="btn btn-secondary rounded-sm ml-2"
+          (click)="cancelFormData()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<addition-info-popup #additionalPopup
+  (onUpdateData)="onUpdatedAdditionalInfo($event)"></addition-info-popup>
+<ng-template #hourPopover let-index="index">
+  <div class="abc">
+    <span class="position-relative d-flex align-items-center w-100 mb-3">
+      <input type="radio" name="pom-condition{{index}}" class="mr-1
+        checkbox-panel"
+        id="administrationByNurse"
+        value="1" (change)="onChangePom(index, $event)"
+        [checked]="drugArray.value[index].Pom === '1'">
+      <span class="mr-2 admin d-inline-block"></span>
+      <label for="" class="m-0 font-weight-semibold">Administration by the nurse</label>
+    </span>
+    <span class="position-relative d-flex align-items-center w-100">
+      <input type="radio" class="mr-1 checkbox-panel"
+        id="administrationBySelf" name="pom-condition{{index}}"
+        value="2" (change)="onChangePom(index, $event)"
+        [checked]="drugArray.value[index].Pom === '2'">
+      <span class="mr-2 admin d-inline-block"></span>
+      <label for="administrationBySelf" class="m-0 font-weight-semibold">Self
+        administration by the patient</label>
+    </span>
+  </div>
+</ng-template>

@@ -1,0 +1,80 @@
+<div
+  class="e-order-content"
+  id="app-container"
+  [className]="sidebarService.sidebarObject.containerClassnames"
+>
+  <main class="mt-0 mb-0 e-order-main">
+    <app-topnav></app-topnav>
+    <div class="d-flex">
+      <div class="admit-process-contant" [ngClass]="{ 'expanded': isExpanded,'w-100':isExpanded }">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav">
+              <ul class="m-0 p-0 d-flex flex-wrap">
+                <li class="d-flex m-0 align-items-center" (click)="tabChange('PhysicianOrders')" [ngClass]="this._admissionservice.PhysicianOrders ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Physician Orders</p>
+                </li>
+                <li class="d-flex m-0 align-items-center" (click)="tabChange('ProgressNotes')" [ngClass]="this._admissionservice.ProgressNotes ? 'active' : ''">
+                  <img src="./assets/img/administration-icon.svg" />
+                  <p class="d-inline-block m-0">Progress Notes</p>
+                </li>
+                <li (click)="tabChange('Diagnosis')" class="d-flex m-0 align-items-center" [ngClass]="this._admissionservice.Diagnosis ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Diagnosis</p>
+                </li>
+                <li class="d-flex m-0 align-items-center" (click)="tabChange('Documentation')" [ngClass]="this._admissionservice.Documentation ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Documentation</p>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-panel">
+              <ng-container *ngIf="this._admissionservice.PhysicianOrders">
+                <app-physician-orders [occupationalGroupData]="occupationalGroupData" (onSetDateFilterEvent)="phyOrderFilterList($event)" (onSearchChangEvent)="onSearchChange($event)"></app-physician-orders>
+              </ng-container>
+
+              <ng-container *ngIf="this._admissionservice.ProgressNotes">
+                <app-physician-orders (onSetDateFilterEventForProgressNotes)="progressNotesFilterList($event)"
+                  (onSetDateFilterEvent)="progressNotesFilterList($event)" [occupationalGroupData]="occupationalGroupData"
+                  (onSearchChangEvent)="onSearchChange($event)" (onSearchChangEventForProgressNotes)="onSearchChange($event)"></app-physician-orders>
+              </ng-container>
+              <ng-container *ngIf="this._admissionservice.Diagnosis">
+                <app-diagnosis (enCounterPatient)="checkPatientCounter($event)" (onSearchChangEventForDiagnosis)="onSearchChange($event)"></app-diagnosis>
+              </ng-container>
+              <ng-container *ngIf="this._admissionservice.Documentation">
+                <app-documentation (onSearchDocument)="onSearchChange($event)" (formEvent)="formEvent($event)" (isDocumentTypeFilter)="documentTypeFilter($event)" (onDateFilter)="onDateFilter($event)"></app-documentation>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content-part">
+          <div class="order-templete-main mt-3" *ngIf="this._admissionservice.PhysicianOrders">
+            <app-orders-templates (reloadPhyOrderList)="reloadPhyOrderListEvent($event)" [searchString]="searchString" [physicianOrderList]="physicianOrderList"></app-orders-templates>
+          </div>
+          <div class="order-templete-main mt-3" *ngIf="this._admissionservice.ProgressNotes" >
+            <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList" [occupationalGroupData]="occupationalGroupData"></app-progress-notes>
+          </div>
+          <div class="order-templete-main mt-3" *ngIf="this._admissionservice.Diagnosis">
+            <app-diagnosis-list [searchString]="searchString" [checkCounterPatient]="checkCounterPatient"></app-diagnosis-list>
+          </div>
+          <div class="order-templete-main mt-3" *ngIf="this._admissionservice.Documentation" >
+            <app-documentation-list [searchString]="searchString" [filterDateValue]="filterDateValue" [isDocumentTypeFilter]="isDocumentTypeFilter" [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded"></app-documentation-list>
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="isExpanded ? 'toggle' : 'toggle-left'" (click)="handleSidebarToggle()">
+        <img *ngIf="!isExpanded" width="30" src="assets/img/greater_then_icon.png" />
+        <img *ngIf="isExpanded" width="30" src="assets/img/less_then_icon.png" />
+      </div>
+      <div class="amdit-bad-view"  *ngIf="!isExpanded" [ngClass]="{'overFlow-hidden': isExpanded}">
+        <div class="bed-view-main">
+          <div class="bed-view-table">
+            <app-bed-view-items-patnr [navTabBoxActiveValue]="navTabBoxActiveValue" [item]="item" (openModulAdmissionProcess)="redirectToAdmissionProcess($event)" *ngFor="let item of inHospitalistList"></app-bed-view-items-patnr>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <app-sidebar></app-sidebar>
+</div>

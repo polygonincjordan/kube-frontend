@@ -1,0 +1,24 @@
+<ng-container *ngIf="group" [formGroup]="group">
+  <ng-select class="d-grid" formControlName="Result_Drug_Name"
+    [title]="group.get('Result_Drug_Name').value !== null ?
+    group.get('Result_Drug_Name').value : ''" [typeahead]="searchTerm"
+    (clear)="broadcastEvent($event)"
+    (change)="broadcastEvent($event)"
+    (keyup)="someMethod($event, searchTypeOnKeyEnter)"[markFirst]="false"
+    [ngClass]="group.touched &&
+    group.get('Result_Drug_Name').errors && isSubmitted ?
+    'ep-error-message': ''">
+    <ng-option
+      *ngFor=" let medicationDrug of medicationDrugList"
+      [value]="medicationDrug.Drugid">
+      {{ medicationDrug.Drugname }} - <span style="color: green" *ngIf="
+        medicationDrug.Stocktext !== 'N/A' && medicationDrug.Stocktext !==
+        '0.000' ">{{ medicationDrug.Stocktext }}</span><span
+        style="color: red"
+        *ngIf="
+        medicationDrug.Stocktext === 'N/A' || medicationDrug.Stocktext ===
+        '0.000'
+        ">{{ medicationDrug.Stocktext }}</span>
+    </ng-option>
+  </ng-select>
+</ng-container>

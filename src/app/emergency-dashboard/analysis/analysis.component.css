@@ -1,0 +1,36 @@
+.road-map-red::before {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 10px;
+  Height:10px;
+  background:red;
+  z-index: 999;
+  }
+  .road-map-red::after {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 65%;
+  Height:10px;
+  background:red;
+  left: 30px;
+  }
+  .road-map-green::before {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 10px;
+  Height:10px;
+  background:#3cd87a;
+  z-index: 999;
+  }
+  .road-map-green::after {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 65%;
+  Height:10px;
+  background:#3cd87a;
+  left: 30px;
+  }

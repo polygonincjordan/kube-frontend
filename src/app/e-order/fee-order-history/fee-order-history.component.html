@@ -1,0 +1,104 @@
+<div class="e-order-history-content">
+  <div class="e-order-history-panel">
+    <div class="e-order-title">
+      <h4>Fees History</h4>
+    </div>
+    <div class="e-order-info">
+      <accordion [closeOthers]="true" [isAnimated]="true">
+        <accordion-group
+          *ngFor="let order of orderHistory"
+          [panelClass]="'border'"
+        >
+          <div accordion-heading>{{ order.UsrNm }} - {{ order.date }}</div>
+          <div class="history-table table-responsive">
+            <table class="table">
+              <tbody>
+                <ng-container
+                  *ngIf="
+                    order.TOORDLISTSET.results &&
+                    order.TOORDLISTSET.results.length
+                  "
+                >
+                  <tr *ngFor="let item of order.TOORDLISTSET.results">
+                    <td class="align-middle border-0 w-30">
+                      <span class="d-flex align-items-center p-0">
+                        <span
+                          class="checkbox-input mr-2 d-inline-block align-top"
+                        >
+                          <input
+                            type="checkbox"
+                            (change)="
+                              eorderService.onFeeOrderCheck($event, item)
+                            "
+                            [(ngModel)]="item.isSelected"
+                          />
+                        </span>
+                        <span
+                          class="input-text-field d-inline-block align-top w-100"
+                        >
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.text"
+                            disabled="true"
+                          />
+                        </span>
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100">
+                        <input
+                          type="date"
+                          class="form-control"
+                          [(ngModel)]="item.date"
+                          disabled="true"
+                        />
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100">
+                        <div class="d-flex">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="item.newprice"
+                            [disabled]="
+                              item.pricewithUnit !== 'Manual Fees JOD'
+                                ? true
+                                : false
+                            "
+                          />
+                          <div class="unite-text">
+                            <label class="m-0">{{ item.Unit }}</label>
+                            <!-- <input type="text" class="form-control" [(ngModel)]="element.Unit" [disabled]="true"/> -->
+                          </div>
+                        </div>
+                        <!-- <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.pricewithUnit"
+                          disabled="true"
+                        /> -->
+                      </span>
+                    </td>
+                    <td class="align-middle border-0">
+                      <span class="d-inline-block align-top w-100">
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="item.note"
+                          disabled="true"
+                        />
+                      </span>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+</div>
+<!-- <h6 style="margin-left:1.2em !important;" class="muted-text">eOrder ID: {{lt.orderId}}</h6> -->

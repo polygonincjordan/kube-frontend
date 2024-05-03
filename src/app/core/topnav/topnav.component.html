@@ -1,0 +1,156 @@
+<header class="app-header">
+  <nav class="navbar h-auto bg-transparent">
+    <a
+      (click)="
+        mobileMenuButtonClick($event, sidebar.containerClassnames); (false)
+      "
+      href="javascript:;"
+      class="menu-button d-md-none d-block"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        style="width: 24px"
+      >
+        <rect x="2" y="6" width="20" height="2"></rect>
+        <rect x="2" y="11" width="20" height="2"></rect>
+        <rect x="2" y="16" width="20" height="2"></rect>
+      </svg>
+    </a>
+    <div class="header-avtar d-flex justify-content-center align-items-center">
+      <a
+        (click)="
+          menuButtonClick(
+            $event,
+            sidebar.menuClickCount,
+            sidebar.containerClassnames
+          );
+          (false)
+        "
+        href="javascript:;"
+        class="menu-button d-none d-md-block"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          style="width: 24px"
+        >
+          <rect x="2" y="6" width="20" height="2"></rect>
+          <rect x="2" y="11" width="20" height="2"></rect>
+          <rect x="2" y="16" width="20" height="2"></rect>
+        </svg>
+      </a>
+      <img
+        [src]="patient?.photo?.changingThisBreaksApplicationSecurity"
+        width="64"
+        height="64"
+        alt=""
+      />
+    </div>
+    <div class="user-data d-flex flex-wrap align-items-center">
+      <div class="user-detail col-md-4">
+        <h3 class="text-white m-0 c-pointer" title="{{patient?.name +'  '+ patient?.id}} MRN {{ patient?.id }} " (click)="openPatientInfo(additionalPatientInfo)">
+          {{ patient?.name }}
+          <ng-container *ngIf="patient?.id"
+            >&nbsp;&nbsp;MRN {{ patient?.id }}</ng-container
+          >
+        </h3>
+        <span class="text-white w-100 d-inline-block align-top"
+          >{{ patient?.gender }}
+        </span>
+        <span class="text-white w-100 d-inline-block align-top">{{
+          patient?.financeCat
+        }}</span>
+      </div>
+      <div class="user-detail col-md-4">
+        <span class="text-white w-100 d-inline-block align-top" title="{{getHeaderPatientDetail(patient)}}"><b>
+            {{ patient?.isInPatient ? "In-Patient" : "Out-Patient" }} -
+            {{ getHeaderPatientDetail(patient) }}
+          </b></span>
+        <span class="text-white w-100 d-inline-block align-top">
+          <ng-container *ngIf="patient?.isInPatient"
+            >Admitted - {{ patient?.periodStart | date : "dd.MM.yyyy" }}
+            {{
+              patient?.lenghtOfStay
+                ? "- LOS " + patient?.lenghtOfStay + " Days"
+                : ""
+            }}
+          </ng-container>
+          <ng-container *ngIf="!patient?.isInPatient"
+            >Visit Date -
+            {{ patient?.periodStart | date : "dd.MM.yyyy" }}</ng-container
+          >
+        </span>
+        <span class="text-white w-100 d-inline-block align-top"
+          >Attending Physician: {{ patient?.careManager }}</span
+        >
+      </div>
+      <div class="user-detail col-md-4">
+        <span class="text-white w-100 d-inline-block align-top"
+        title="Allergies - {{ patient?.allergyInfo }}"
+        >Allergies - {{ patient?.allergyInfo }}</span
+        >
+        <span class="text-white w-100 d-inline-block align-top"
+        title="Dx - {{patient?.primDiaTxt}}"
+          >Dx - {{ patient?.primDiaTxt }}</span
+        >
+        <span class="text-white w-100 d-inline-block align-top">{{
+          patient?.bloodGrpTxt
+        }}</span>
+      </div>
+    </div>
+    <div class="header-tooltip d-flex justify-content-center ">
+      <div class="header-tooltip-wrapper d-flex justify-content-between">
+          <div *ngIf="patient?.flagsIcons?.riskFactorInd?.active" [tooltip]="patient?.flagsIcons?.riskFactorInd?.text" placement="bottom">
+            <img src="assets/img/warning-icon.svg" width="24" height="24">
+          </div>
+          <div *ngIf="patient?.flagsIcons?.isolationInd?.active" [tooltip]="patient?.flagsIcons?.isolationInd?.text" placement="bottom">
+            <img src="assets/img/bed.svg" width="20" height="20">
+          </div>
+          <div *ngIf="patient?.flagsIcons?.patCatInd?.active" [tooltip]="patient?.flagsIcons?.patCatInd?.text" placement="bottom">
+            <img src="assets/img/manage-account.svg" width="20" height="20">
+          </div>
+        </div>
+      </div>
+  </nav>
+</header>
+<ng-template #additionalPatientInfo>
+  <div style="
+  border: 1px solid #3b82f6;
+  padding: 8px;
+  background: #3b82f6;
+  text-align: center;
+"><span style="
+  color: white;
+  font-size: 22px;
+">Patient Information</span></div>
+  <div class="modal-body patient-info">
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-5 col-form-label">Name:</label>
+    <div class="col-sm-7">
+      <span>{{patient?.name}}</span>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-5 col-form-label">Mobile No.:</label>
+    <div class="col-sm-7">
+      <span>{{patient?.phone || 'N/A'}}</span>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-5 col-form-label">Marital Status:</label>
+    <div class="col-sm-7">
+      <span>{{patient?.maritalStatus || 'N/A'}}</span>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-5 col-form-label">Address:</label>
+    <div class="col-sm-7">
+      <span>{{patient?.address || 'N/A'}}</span>
+    </div>
+  </div>
+  <div class="button-group p-3" style="text-align: -webkit-center;">
+    <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+  </div>
+</div>
+</ng-template>

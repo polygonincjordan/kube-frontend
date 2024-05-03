@@ -1,0 +1,41 @@
+<ng-container *ngIf="group" [formGroup]="group" >
+  <ng-select class="d-grid-am form-select-lg" formControlName="Result_Drug_Name"
+    (keyup)="someMethod($event, searchTypeOnKeyEnter)"
+    [markFirst]="false"
+    [title]="group.get('Result_Drug_Name').value !== null ?
+    group.get('Result_Drug_Name').value : ''"
+    [typeahead]="searchTerm"
+    (clear)="broadcastEvent($event)"
+    (change)="broadcastEvent($event)"
+    [appendTo]="'body'"
+    [ngClass]="group.touched &&
+    group.get('Result_Drug_Name').errors && isSubmitted ?
+    'ep-error-message': ''">
+    <ng-option
+      *ngFor=" let medicationDrug of medicationDrugList"
+      [value]="medicationDrug" title="{{medicationDrug.Drugname}}">
+      <span title="{{ medicationDrug.Drugname }}-{{!HeaderConfigurationData ?' Phin'+ '(' +medicationDrug.Phin+ ')':''}}{{HeaderConfigurationData ?' Pher'+ '(' +medicationDrug.Pher+ ')' + ' - '+' Phin'+ '(' +medicationDrug.Phin + ')':''}}">
+        {{ medicationDrug.Drugname }}-{{!HeaderConfigurationData ?' Phin'+ '(' +medicationDrug.Phin+ ')':''}}{{HeaderConfigurationData ?' Pher'+ '(' +medicationDrug.Pher+ ')' + ' - '+' Phin'+ '(' +medicationDrug.Phin + ')':''}}
+      </span>
+    </ng-option>
+  </ng-select>
+  <!-- <select class="d-grid-am form-select form-select-lg" formControlName="Result_Drug_Name"
+  (keyup)="someMethod($event, searchTypeOnKeyEnter)"
+  (markFirst)="false"
+  [title]="group.get('Result_Drug_Name').value !== null ?
+  group.get('Result_Drug_Name').value : ''"
+  (typeahead)="searchTerm"
+  (change)="broadcastEvent($event)"
+  [ngClass]="group.touched &&
+  group.get('Result_Drug_Name').errors && isSubmitted ?
+  'ep-error-message': ''">
+  <option value="0" selected></option>
+  <option
+    *ngFor=" let medicationDrug of medicationDrugList"
+    [value]="medicationDrug" title="{{medicationDrug.Drugname}}">
+    <span title="{{ medicationDrug.Drugname }}-{{!HeaderConfigurationData ?' Phin'+ '(' +medicationDrug.Phin+ ')':''}}{{HeaderConfigurationData ?' Pher'+ '(' +medicationDrug.Pher+ ')' + ' - '+' Phin'+ '(' +medicationDrug.Phin + ')':''}}">
+      {{ medicationDrug.Drugname }}-{{!HeaderConfigurationData ?' Phin'+ '(' +medicationDrug.Phin+ ')':''}}{{HeaderConfigurationData ?' Pher'+ '(' +medicationDrug.Pher+ ')' + ' - '+' Phin'+ '(' +medicationDrug.Phin + ')':''}}
+    </span>
+  </option>
+</select> -->
+</ng-container>

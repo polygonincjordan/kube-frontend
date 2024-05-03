@@ -1,0 +1,115 @@
+<div class="progress-list mt-3">
+  <div class="d-flex" style="font-weight: bold;
+  font-size: 15px;background: #e4edf5;
+    padding: 10px;" *ngIf="ProgressNotesList">
+    <div style="flex: 0 0 80%;">Daily Progress</div>
+    <div style="flex: 0 0 13%;">Occupational Group</div>
+    <div>Action</div>
+  </div>
+  <div
+    class="d-flex align-items-center justify-content-between"
+    *ngFor="let item of ProgressNotesList"
+  >
+    <div class="progress-card mt-2" style="border: 1px solid #ced4da;">
+      <div class="card-header d-flex align-items-center">
+        <div class="date-name" style="flex: 0 0 80%;">
+          <p class="m-0">
+            <span style="font-weight: bold;color: black;">{{ item.CreationUserName }}</span> {{ getDate(item.ActionDate) | date : "d.MM.y" }}/{{ parsePayloadFormateTime(item.ActionTime) }} - 
+            <span style="font-weight: bold;color: black;">{{ item.CategoryText }}</span>
+            <!-- <div class="ml-2 category-name">
+              <span>{{ item.CategoryText }}</span>
+            </div> -->
+          </p>
+        </div>
+        <div class="occupational" [ngStyle]="getImageBorderLogic(item)" style="flex: 0 0 10%;">
+          <span>{{ item.ProfGroupName }}</span>
+        </div>
+        
+        <div class="action-img ml-4">
+          <img
+            width="20px"
+            class="mr-2 cursor-pointer"
+            src="assets/img/Information.svg"
+            title="Info"
+            (click)="openModalForProgressTextInfo(informationModal, item)"
+          />
+          <img (click)="copyProgressNotesBind(item)"
+            width="20px"
+            class="mr-3 cursor-pointer"
+            src="assets/img/ActionCopy.svg"
+            title="Copy"
+          />
+          <img
+            width="14px"
+            class="cursor-pointer mr-2"
+            src="assets/img/Delete.svg"
+            title="Delete"
+            (click)="deleteProgressNotePopup(deleteProgressNoteModal,item)"
+          />
+        </div>
+      </div>
+      <div class="progress-contain">
+        <p class="m-0" [innerHTML]="showParagraph(item.Text)" > </p>
+      </div>
+     
+    </div>
+   
+  </div>
+</div>
+
+<ng-template #informationModal>
+  <div class="modal-body p-0" style="padding: 0px !important;">
+    <div class="infoModel-title">
+      <h4 class="m-0 pl-3" style="border: none;">Progress Entry Details</h4>
+    </div>
+    <div class="infoModel-contant p-3">
+      <div class="row mt-2">
+          <div class="col-md-6 d-flex justify-content-between align-items-center">
+            <label class="progressInfo-labal">Visit ID</label>
+            <input [value]="progressNoteTextInfoModal.CaseId" disabled class="form-control" style="width: 70%;" />
+          </div>
+          <div class="col-md-6 d-flex justify-content-between align-items-center">
+            <label class="progressInfo-labal">Entry OU</label>
+            <input [value]="progressNoteTextInfoModal.DocumentOuName" disabled class="form-control" style="width: 70%;" />
+          </div>
+          <div class="col-md-6 d-flex justify-content-between align-items-center mt-2">
+            <label class="progressInfo-labal">Created By</label>
+            <input [value]="progressNoteTextInfoModal.CreationUser" disabled class="form-control" style="width: 70%;" />
+          </div>
+          <div class="col-md-6 d-flex justify-content-between align-items-center">
+            <label class="progressInfo-labal">Created On</label>
+            <input [value]="getDate(progressNoteTextInfoModal.CreationDate) | date : 'dd.MM.yyyy' +'/'+ parsePayloadFormateTime(progressNoteTextInfoModal.CreationTime)" disabled class="form-control" style="width: 70%;" />
+          </div>
+      </div>
+    </div>
+    <div class="p-2 text-center">
+      <button type="button" class="progressnote-btn mr-3" (click)="modalRef.hide()">OK</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #deleteProgressNoteModal>
+  <div class="modal-body p-0" style="padding: 0px !important;">
+    <form [formGroup]="deleteProgressNoteForm">
+      <div class="infoModel-title">
+        <h4 class="m-0 pl-3">Delete Progress Entry</h4>
+      </div>
+      <div class="infoModel-contant p-3">
+        <label>Are you sure you want to delete the progress entry</label>
+        <select class="form-control" formControlName="reason">
+          <option value="" default>Select Reason</option>
+          <option *ngFor="let reason of cancalReasonList" [value]="reason.Stoid" >{{reason.N1stotx}}</option>
+        </select>
+        <div *ngIf="isFormSubmitted && deleteProgressNoteForm.controls.reason.errors  &&  deleteProgressNoteForm.controls.reason.errors.required ">
+          <p class="error-message">Select a reason for deletion</p>
+        </div>
+      </div>
+      <div class="p-2 d-flex justify-content-between align-items-center" >
+        <label>Note: Deleting entry will remove it permanently</label>
+        <div>
+          <button type="button" class="remove-progressnote-btn ml-2" (click)="deleteProgressNoteAPI()">Delete</button>
+          <button type="button" class="remove-progressnote-btn ml-2" (click)="modalRefForDelete.hide()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

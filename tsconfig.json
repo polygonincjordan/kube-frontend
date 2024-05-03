@@ -1,0 +1,31 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "sourceMap": false,
+    "declaration": false,
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "target": "es2020",
+    "module": "es2020",
+    "lib": ["es2018", "dom"],
+    "moduleResolution": "node",
+    "outDir": "./dist/out-tsc",
+    "paths": {
+      "@urls": ["./src/app/app.urls.ts"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@dynamics/*": ["./src/app/dynamics/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@pipes/*": ["./src/app/dynamics/pipes/*"],
+      "@utilities/*": ["./src/app/dynamics/utilities/*"],
+    }
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "enableI18nLegacyMessageIdFormat": false,
+  }
+}

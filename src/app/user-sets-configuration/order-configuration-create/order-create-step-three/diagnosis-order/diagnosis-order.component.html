@@ -1,0 +1,99 @@
+<Form class="diagnosis-form diagnosis-list mt-1" [formGroup]="diagnosisForm">
+  <ng-container formArrayName="diagnosisFormList" *ngFor=" let item of diagnosisForm.get('diagnosisFormList')['controls']; let i = index" >
+    <div *ngIf="!item.value.CancelInd" class="diagnosis-list borderbottom pr-2 pl-2 pt-2 pb-2 mt-1 cursor-pointer" (click)="selecteDiagnosis(i)"  [ngClass]="selectedOrderIndex == i ? 'select-order-tab' : ''">
+      <div [formGroupName]="i">
+        <div class="d-flex justify-content-between" (click)="$event.stopPropagation()">
+          <div class="d-flex align-items-center position-relative w-15 mr-1">
+            <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+              <span class="input-title z-indexlabel">Code </span>
+              <span class="input-text-field d-inline-block align-top w-100 font-weight-bolder">
+                <ng-container>
+                  <ng-select formControlName="DiagKey1" class="d-grid" [typeahead]="searchCodeTypeHead" (change)="onSelectMedicine($event, i)" appendTo="body" [ngClass]="fieldTouchDiagnosis[i] && 
+                  item.get('DiagKey1').errors ? 'ep-error-message': ''" [title]="item.get('DiagKey1').value !== null ? item.get('DiagKey1').value : ''" (focus)="onFieldFocus(i)">
+                    <ng-option *ngFor="let search of diagnosisSearchList" [value]="search">
+                      {{ search.Dkey }} - {{ search.Dtext1}}
+                    </ng-option>
+                  </ng-select>
+                </ng-container>
+              </span>
+            </span>
+          </div>
+          <div class="d-flex align-items-center position-relative w-30 mr-1">
+            <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+              <span class="input-title z-indexlabel">Diagnosis Description</span>
+              <span class="input-text-field d-inline-block align-top w-100">
+                <input formControlName="Dtext1" type="text" class="form-control" [readonly]="true" [title]="item.get('Dtext1').value !== null ? item.get('Dtext1').value : ''"/>
+              </span>
+            </span>
+          </div>
+          <div class="d-flex align-items-center position-relative w-40 mr-1">
+            <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+              <span class="input-title z-indexlabel">Free Text Diagnosis</span>
+              <span class="input-text-field d-inline-block align-top w-100">
+                <input formControlName="DiagText" type="text" class="form-control" (focus)="onFieldFocus(i)" (input)="diagnosisTextValid($event.target, i)" [ngClass]="fieldTouchDiagnosis[i] &&
+                item.get('DiagText').errors ? 'ep-error-message': ''" [title]="item.get('DiagText').value !== null ? item.get('DiagText').value : ''"/>
+              </span>
+            </span>
+          </div>
+          <div class="w-15 ml-2 mt-2">
+            <div class="d-flex align-items-center h-100">
+              <input class="mr-1 largerCheckbox" type="checkbox" formControlName="Autoselect" />
+              <label class="m-0">Selected by Default.</label>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex"  (click)="$event.stopPropagation()">
+          <div class="d-flex align-items-center position-relative w-45 mr-1">
+            <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
+              <span class="input-title z-indexlabel">Comments</span>
+              <span class="input-text-field d-inline-block align-top w-100">
+                <input formControlName="ShortText" type="text" class="form-control" [title]="item.get('ShortText').value !== null ? item.get('ShortText').value : ''"/>
+              </span>
+            </span>
+          </div>
+
+          <div class="diagnosis-checkbox d-flex align-items-center position-relative justify-content-between w-40">
+            <div class="d-flex align-items-center">
+              <input class="mr-1 largerCheckbox" formControlName="AdmissionDia" type="checkbox" />
+              <label class="m-0">Admission Diag.</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input class="mr-1 largerCheckbox" formControlName="SurgeryDia" type="checkbox" />
+              <label class="m-0">Surgery Diag.</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input class="mr-1 largerCheckbox" type="checkbox" formControlName="PreopDiagInd" />
+              <label class="m-0">Preop Diag.</label>
+            </div>
+          </div>
+            <div class="d-flex align-items-center w-10 ml-2">
+              <ng-select class="diagnosis-treatment" style="font-weight: bold;" placeholder="Treatment" (change)="selectTreatMent($event, i)" formControlName="TreatmentDia" [title]="item.get('TreatmentDia').value !== null ? treatmentTitle(item.get('TreatmentDia').value) : ''" appendTo="body">
+                <ng-option *ngFor="let treatement of treatmentValue" [value]="treatement.value" [title]="treatmentTitle(treatement.value)">{{ treatement.label }}</ng-option>
+              </ng-select>
+            </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</Form>
+
+    
+<ng-template #deleteDIagnosisModal id="deleteModal">
+  <div class="modal-body p-0">
+    <div class="update-template-title">
+      <h4 class="m-0 pl-3">Delete diagnosis</h4>
+    </div>
+    <div class="p-3">
+      <div class="update-template-contant">
+        <p>
+          Are you sure you want to delete this diagnosis?</p>
+      </div>
+      <div class="text-right mt-3">
+        <button type="button" class="update-Exsiting mr-3" (click)="removeDiagnosisAPi()">
+          Continue
+        </button>
+        <button type="button" class="update-Exsiting" (click)="modalRefForDiagnosis.hide()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

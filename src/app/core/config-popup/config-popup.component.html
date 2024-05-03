@@ -1,0 +1,40 @@
+<ng-template #inPatientPopup>
+  <div class="medication-popup" *ngIf="configurationData &&
+    configurationData.length">
+    <div class="medication-header d-flex w-100">
+      <div class="medicate-select line-height-0 p-1 m-2 bg-white">
+        <input type="checkbox" width="25" height="25"
+          (change)="onCheckallMedicationData($event)"
+          class="isbigcheckbox">
+      </div>
+      <div class="medicate-data d-flex w-100">
+        <div class="medication-title d-flex justify-content-center
+          align-items-center" *ngFor="let item of config" [ngClass]="item.class">
+          <h4 class="m-0">{{item.columnTitle}}</h4>
+        </div>
+      </div>
+      <div class="medicate-icon d-flex align-items-center px-2"
+        (click)="setSelectedMedication()">
+        <img src="assets/img/texteditor.png" width="40" class="p-1
+          bg-white">
+      </div>
+    </div>
+    <div class="medication-body">
+      <div class="medication-inner-body d-flex w-100 align-items-center pl-2
+        mt-2" *ngFor="let data of configurationData; let i =index">
+        <div class="medicate-select line-height-0 p-1">
+          <input type="checkbox" width="25" height="25"
+            [(ngModel)]="data.isSelected" class="isbigcheckbox">
+        </div>
+        <div class="medication-data d-flex w-100 pl-3">
+          <div class="medication-field pr-2" *ngFor="let item of config; let i =index" [ngClass]="item.class">
+            <input type="text" class="form-control m-0"
+              [value]="data[item.fieldName]" [readonly]="item.disabled">
+          </div>
+        </div>
+        <div class="medicate-icon" style="width: 56px;">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

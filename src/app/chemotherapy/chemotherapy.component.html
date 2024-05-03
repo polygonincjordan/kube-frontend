@@ -1,0 +1,490 @@
+<div class="position-sticky bg-white" style="top: 0; z-index: 999;">
+  <div class="pt-3 pl-3 pr-3 m-2 z-indexlabel ">
+    <form [formGroup]="chemoDiagnosis">
+      <div formArrayName="chemoData" class="row">
+        <div *ngFor="let item of chemoarrer.controls let i = index;" [formGroupName]="i" class="col-8 p-3 chemoborder">
+          <div>
+            <table class="w-100">
+              <tr class="w-100">
+                <td class="align-middle border-0 w-30 pt-2 pb-2 position-relative" colspan="2">
+                  <span class="input-title color-chemo z-indexlabel top-position">Diagnosis</span>
+                  <span class="d-flex align-items-center p-0">
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <div class="input-group pl-1"
+                        [ngClass]="item.touched && item.get('Description').errors && isFormSubmitted ? 'ep-error-message': ''">
+                        <span class="border-0 d-flex align-items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                            fill="#7D8D9B">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                          </svg>
+                        </span>
+                        <ng-select class="border-0 form-control p-0 height-data fonrProtocols font-weight-bold"
+                          style="width: 30px !important;" placeholder="ICD Or Description" [typeahead]="searchTerm"
+                          [markFirst]="false" (keyup)="chemotherapyService.Diagnosisdetails(searchTypeOnKeyEnter)"
+                          formControlName="Description" (change)="getProtocolsWithDiagnosis($event)">
+                          <ng-container *ngFor="let Diagnosis of chemotherapyService.DiagnosisList">
+                            <ng-option [value]="Diagnosis">
+                              {{ Diagnosis.Dtext1 }}
+                            </ng-option>
+                          </ng-container>
+                        </ng-select>
+                      </div>
+                    </span>
+                    <div class="Import-pdf ml-2 d-flex p-1 justify-content-center align-items-center">
+                      <img (click)="openModalForSaveDiagnosis(saveDiagnosisModal)" src="assets/img/Import.svg"
+                        class="cursor-pointer Import-img" style="width: 22px;">
+                    </div>
+                  </span>
+                </td>
+                <td class="w-8"></td>
+                <td class="align-middle border-0 w-10 pt-2 pb-2 position-relative">
+                  <span class="input-title color-chemo z-indexlabel top-position ">Height</span>
+                  <span class="d-flex align-items-center p-0">
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <div class="input-group pl-1">
+                        <p class="border-0 form-control d-flex align-items-center height-data p-0 fontweight">
+                          {{item.value.Height}}&nbsp;{{item.value.HUnit}}</p>
+                        <span class="border-0 d-flex align-items-center mr-2">
+                          <img src="assets/img/measuring-tape.svg" alt="">
+                        </span>
+                      </div>
+                    </span>
+                  </span>
+                </td>
+                <td class="align-middle border-0 w-10 pt-2 pb-2 position-relative">
+                  <span class="input-title color-chemo z-indexlabel top-position">Weight</span>
+                  <span class="d-flex align-items-center p-0">
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <div class="input-group pl-1">
+                        <p class="border-0 form-control d-flex align-items-center height-data p-0 fontweight">
+                          {{item.value.Weight}}&nbsp;{{item.value.WUnit}}</p>
+                        <span class="border-0 d-flex align-items-center mr-2">
+                          <img src="assets/img/weight.svg" alt="">
+                        </span>
+                      </div>
+                    </span>
+                  </span>
+                </td>
+                <td class="align-middle border-0 w-20 pt-2 pb-2 position-relative">
+                  <span class="input-title color-chemo z-indexlabel top-position">Body Surface Area (BSA)</span>
+                  <span class="d-flex align-items-center p-0">
+                    <span class="input-text-field d-inline-block align-top w-100">
+                      <div class="input-group pl-1">
+                        <input type="number" class="border-0 form-control p-0 height-data fontweight"
+                          formControlName="Bsa">
+                        <span class="border-0 d-flex align-items-center msup mr-1 fonrlabel">
+                          m<sup>2</sup>
+                        </span>
+                      </div>
+                    </span>
+                  </span>
+                </td>
+              </tr>
+              <div class="fonrlabel mb-1" *ngIf="ProtocolsArray.controls && ProtocolsArray.controls.length > 0">Proposed
+                Protocols</div>
+              <ng-container *ngIf="ProtocolsArray.controls.length == 0">
+                <tr class="w-100">
+                  <td class="align-middle border-0 w-10 pt-1 pb-1 position-relative" colspan="2">
+                    <span class="input-title color-chemo z-indexlabel fonrProtocols top-2">Monitoring Parameters</span>
+                    <span>
+                      <input type="text" class="form-control fontweight" formControlName="monitParam">
+                    </span>
+                  </td>
+                  <td></td>
+                  <td class="align-middle border-0 w-10 pt-1 pb-1 position-relative" colspan="3">
+                    <span class="input-title color-chemo z-indexlabel fonrProtocols top-2">Notes</span>
+                    <span>
+                      <input type="text" class="form-control font-weight-bold " formControlName="Notes">
+                    </span>
+                  </td>
+                </tr>
+              </ng-container>
+              <ng-container *ngIf="ProtocolsArray.controls.length != 0">
+                <tr class="w-100">
+                  <td colspan="2" rowspan="2" [formGroup]="Protocolsform">
+                    <div formArrayName="ProtocolsProposed">
+                      <div class="looped-element d-flex">
+                        <ng-container *ngFor="let data of ProtocolsArray.controls let i = index;" [formGroupName]="i">
+                          <div *ngIf="data.value.ProtoDesc || data.value.ProtoId"
+                            class="align-middle border-0 w-50 pt-2 pb-2 d-flex w-50 position-relative">
+                            <span class="input-title color-chemo z-indexlabel fontsize">Protocols {{i + 1}}</span>
+                            <div class="input-group pl-1">
+                              <span class="border-0 d-flex ml-1 align-items-center cursor-pointer" (click)="isSelectedData(data,i,item)">
+                                <input type="radio" height="30" name="isSelected" [formControl]="isSelectProposedProtocol"
+                                  [style.pointer-events]="item.get('Description').value === '' ? 'none' : 'auto'"
+                                  [value]="i">
+                              </span>
+                              <input type="text" class="border-0 form-control fontProtocol height-data font-weight-bold"
+                                [title]="data.value.ProtoDesc" formControlName="ProtoDesc">
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td class="align-middle border-0 w-10 pt-1 pb-1 position-relative" colspan="3">
+                    <span class="input-title color-chemo z-indexlabel fonrProtocols top-2">Monitoring Parameters</span>
+                    <span>
+                      <input type="text" class="form-control fontweight" formControlName="monitParam">
+                    </span>
+                  </td>
+                </tr>
+                <tr class="w-100">
+                  <td></td>
+                  <td class="align-middle border-0 w-10 pt-1 pb-1 position-relative" colspan="3">
+                    <span class="input-title color-chemo z-indexlabel fonrProtocols top-2">Notes</span>
+                    <span>
+                      <input type="text" class="form-control fontweight" formControlName="Notes">
+                    </span>
+                  </td>
+                </tr>
+              </ng-container>
+              <tr class="w-100">
+                <td class="align-middle border-0 w-30 pt-2 pb-2 position-relative" colspan="2">
+                  <span class="input-title color-chemo fonrProtocols z-indexlabel top-position">Chemotherap/Biologic
+                    Protocol</span>
+                  <span class="w-100">
+                    <div class="input-group pl-1">
+                      <span class="border-0 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                          fill="#7D8D9B">
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                        </svg>
+                      </span>
+                      <ng-select class="border-0 form-control p-0 font-weight-bold height-data fonrProtocols"
+                        [clearSearchOnAdd]="true" [searchFn]="serachinput" [typeahead]="searchTerm" [markFirst]="true" (change)="selecttaData(i)"
+                        (input)="ProtoHeadersearcheddata(searchTypeOnKeyEnter)" placeholder="Search template here"
+                        formControlName="Protocol">
+                        <ng-option *ngFor="let Protocol of ProtocolList" [value]="Protocol.ProtoDesc">
+                          {{ Protocol.ProtoDesc }}
+                        </ng-option>
+                      </ng-select>
+
+                      <!-- <input type="text" placeholder="Search" class="form-control" (click)="selecttaData(i)"
+                        (input)="ProtoHeadersearcheddata($event)" placeholder="Search template here"
+                        formControlName="Protocol">
+                      <ul *ngFor="let Protocol of ProtocolList">
+                        <li> {{ Protocol.ProtoDesc }}</li>
+                      </ul> -->
+
+                      <!-- <input type="text" placeholder="Search" class="form-control" (click)="selecttaData(i)"
+                        (input)="ProtoHeadersearcheddata($event)" placeholder="Search template here"
+                        formControlName="Protocol">
+                      <option *ngFor="let Protocol of ProtocolList" [value]="Protocol.ProtoDesc">{{ Protocol.ProtoDesc
+                        }}</option> -->
+
+                      <!-- <div class="w-100">
+                        <input type="text" placeholder="Search" class="form-control" (click)="selecttaData(i)"
+                          (input)="ProtoHeadersearcheddata($event.target.value)" placeholder="Search template here"
+                          formControlName="Protocol" #protocolInput>
+                        <ng-select class="form-select" #protocolSelect>
+                          <ng-option *ngFor="let Protocol of ProtocolList" [value]="Protocol.ProtoDesc">{{ Protocol.ProtoDesc }}</ng-option>
+                        </ng-select>
+                      </div> -->
+
+                    </div>
+                  </span>
+                </td>
+                <td></td>
+                <td class="align-middle border-0 w-10 pt-2 pb-2" colspan="3">
+                  <div class="d-flex">
+                    <label class="input-title m-0 color-chemo w-40 d-flex align-items-center fonrlabel mb-1">Previous
+                      Cycle</label>
+                    <ng-select [typeahead]="searchTerm" [openOnEnter]="true" [markFirst]="false"
+                      placeholder="Write A Cycle" class="input-group border-0 font-weight-bold "
+                      formControlName="PreviousCycle" (change)="onPreviousCycleSelected($event)">
+                      <ng-option *ngFor=" let Previous of ChemoHistory" [value]="Previous">
+                        {{ Previous.ProtoDesc === ''? '': Previous.ProtoDesc+' - '}}{{Previous.CycleId === '' ? '':
+                        'Cycle '+ removeLeadingZeros(Previous.CycleId) +' - '}}{{OrderDateFormate(Previous.OrderDate)}}
+                      </ng-option>
+                    </ng-select>
+                    <div *ngIf="ChemoHistorylength == undefined"
+                      class="Import-pdf ml-2 d-flex p-1 justify-content-center align-items-center"
+                      [title]="ChemoHistorylength" (click)="historydiagnosispopover()">
+                      <img src="assets/img/clipboard-clock-outline.svg" class="cursor-pointer Import-img"
+                        style="width: 22px;">
+                    </div>
+                    <div *ngIf="ChemoHistorylength >= 0"
+                      class="Import-pdf ml-2 d-flex p-1 justify-content-center align-items-center bg-color"
+                      title="History" (click)="historydiagnosispopover()">
+                      <img src="assets/img/clipboard-white.svg" class="cursor-pointer" style="width: 22px;">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <div class="d-flex w-100 gap-data">
+                    <div class="align-middle border-0 w-30 pt-2 pb-2 position-relative">
+                      <span class="input-title color-chemo">Start Date</span>
+                      <span class="w-100">
+                        <input type="text" class="border-0 input-group form-control fontweight height-data fontinput"
+                          formControlName="StartDate" [bsConfig]="{withTimepicker: false,showWeekNumbers:false,
+                    dateInputFormat:
+                    'DD/MM/YYYY', selectFromOtherMonth: true }" bsDatepicker>
+                      </span>
+                    </div>
+                    <div class="align-middle border-0 w-30 pt-2 pb-2 position-relative">
+                      <span class="input-title color-chemo">Start Time</span>
+                      <span class="w-100">
+                        <input type="text" class="border-0 fontweight input-group form-control height-data fontinput"
+                          formControlName="StartTime" [bsConfig]="{
+                    withTimepicker: true,
+                    showWeekNumbers:false,
+                    dateInputFormat:'HH:mm:ss'}" [isDisabled]="true" bsDatepicker>
+                      </span>
+                    </div>
+                    <div class="align-middle border-0 w-30 pt-2 pb-2 position-relative">
+                      <span class="input-title color-chemo z-indexlabel">Cycle Number</span>
+                      <span class="w-100">
+                        <ng-select [searchFn]="serachInput" [openOnEnter]="true" [markFirst]="false"
+                          class="input-group border-0 font-weight-bold" formControlName="CycleId" (change)="valuechange($event)"
+                          [ngClass]="item.touched && item.get('CycleId').errors ? 'ep-error-message': ''">
+                          <ng-option *ngFor="let cycle of tocycle" [value]="cycle.CycleId">
+                            {{cycle.CycleDesc}}
+                          </ng-option>
+                        </ng-select>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td></td>
+                <!-- <td colspan="3"> -->
+                <!-- <div class="d-flex justify-content-center align-items-center">
+                  <p class="m-0">Dose Reduction</p>
+                  <div class="d-flex"><input type="checkbox">NO</div>
+                  <div class="d-flex"><input type="checkbox">Yes</div>
+                  <input type="text">
+                  <p class="m-0">% Reduction</p>
+                </div>
+                </td> -->
+                <!-- <form [formGroup]="chemotherapyService.chemotherapyForm">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <p class="m-0">Dose Reduction</p>
+                    <div class="d-flex">
+                      <input type="radio" formControlName="doseReductionOption" value="no">NO
+                    </div>
+                    <div class="d-flex">
+                      <input type="radio" formControlName="doseReductionOption" value="yes">Yes
+                    </div>
+                    <input type="text" formControlName="percentage">
+                    <p class="m-0">% Reduction</p>
+                  </div>
+                </form> -->
+                <td class="align-middle border-0 w-10 pt-1 pb-1 position-relative" colspan="3">
+                  <span class="input-title color-chemo z-indexlabel fonrProtocols">Comments</span>
+                  <span>
+                    <input type="text" class="form-control fontweight" formControlName="Comments">
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="col-4 pr-0">
+          <div class="chemoborder p-3">
+            <div class="d-flex justify-content-between align-content-center mb-3">
+              <div class="fonrlabel d-flex align-items-center">Recent Lab Results</div>
+              <div>
+                <button type="button" class="btn chem-button btn-secondary px-3 d-flex align-items-center ml-2">
+                  <div class="camera-icon float-left mr-2">
+                    <img src="assets/img/photo-camera.svg" alt="">
+                  </div>
+                  <label class="cursor-pointer colorwhite mb-0" (click)="openAttachDocument(getdocument,'A0010')">
+                    Upload
+                  </label>
+                </button>
+              </div>
+            </div>
+            <form [formGroup]="labdetailsform">
+              <table class="w-100">
+                <tr>
+                  <td class="fonrlabel mb-1">WBC</td>
+                  <td class="align-middle border-0 w-30 pt-2 pr-3 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Wbc"
+                      placeholder="Enter Here">
+                  </td>
+                  <td class="fonrlabel mb-1">Serum Creatinine</td>
+                  <td class="align-middle border-0 w-30 pt-2 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Serum"
+                      placeholder="Enter Here">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fonrlabel mb-1">Hemoglobin</td>
+                  <td class="align-middle border-0 w-30 pt-2 pr-3 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Hemoglobin"
+                      placeholder="Enter Here">
+                  </td>
+                  <td class="fonrlabel mb-1 text-center">ALT</td>
+                  <td class="align-middle border-0 w-30 pt-2 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Alt"
+                      placeholder="Enter Here">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fonrlabel mb-1">Platelets</td>
+                  <td class="align-middle border-0 w-30 pt-2 pr-3 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Platelets"
+                      placeholder="Enter Here">
+                  </td>
+                  <td class="fonrlabel mb-1 text-center">AST</td>
+                  <td class="align-middle border-0 w-30 pt-2 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Ast"
+                      placeholder="Enter Here">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fonrlabel mb-1">Total Bilirubin</td>
+                  <td class="align-middle border-0 w-30 pt-2 pr-3 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="BilirubinTotal"
+                      placeholder="Enter Here">
+                  </td>
+                  <td class="fonrlabel mb-1 text-center">ANC</td>
+                  <td class="align-middle border-0 w-30 pt-2 pb-1">
+                    <input type="text" class="input-group border-0 form-control" formControlName="Anc"
+                      [value]="labdetailsform.controls.AncUnit" placeholder="Enter Here">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fonrlabel mb-1">Direct Bilirubin</td>
+                  <td class="align-middle border-0 w-30 pt-2 pb-1" colspan="3">
+                    <input type="text" class="input-group border-0 form-control" formControlName="BilirubinDirect"
+                      placeholder="Enter Here">
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #document>
+    <div *ngIf="pdfSrc" class="w-100 h-100 m-auto">
+      <iframe [src]="this.pdfSrc" width="100%" height="800"></iframe>
+    </div>
+  </ng-template>
+
+  <ng-template #documentUrlpdf>
+    <div *ngIf="this.documentUrl">
+      <iframe width="100%" height="700" [src]="this.documentUrl" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </ng-template>
+
+  <ng-template #saveDiagnosisModal>
+    <div class="modal-body diagnosis-modal p-3">
+      <div class="header">
+        <h4>Import Diagnosis</h4>
+      </div>
+      <div class="modal-content-diagnosis">
+        <div class="search-input col-md-12">
+          <img src="assets/img/pres-search-icon.svg" alt="" />
+          <input type="text" placeholder="Search" class="form-control w-100" id="searchFilter"
+            (input)="onSearchChange($event)" />
+        </div>
+        <div class="modal-diagnosis-list mt-3">
+          <table class="table import-diag">
+            <tbody>
+              <tr *ngFor="let diagnosis of diagnosisImportList | filterchemo: seachImportDiagnosis">
+                <td><input type="checkbox" (click)="selectDiagnosisData(diagnosis)" /></td>
+                <td>
+                  <p class="m-0" *ngIf="diagnosis.DiagShorttext">{{ diagnosis.DiagShorttext }} <br></p><span
+                    [ngClass]="!diagnosis.DiagShorttext? 'diag-shorttext':'pl-2'" *ngIf="diagnosis.DiagText">{{
+                    diagnosis.DiagText }}</span>
+                </td>
+                <td *ngIf="diagnosis.DiagShorttext">{{ diagnosis.DiagKey1 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="footer">
+        <!-- <button (click)="importAndFavrDataImport()" class="add-diagnosis mr-3">Add</button> -->
+        <button type="button" class="button button-sub w-20" (click)="modalRefForSaveDiagnosis.hide()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #getdocument>
+    <div class="modal-diagnosis-list">
+      <table class="w-100">
+        <thead class="z-index-1 sticky-top">
+          <tr class="bg-color color-white">
+            <th class="pl-3 pt-2 pr-2 pb-2">FileName</th>
+            <th class="p-2" *ngIf="this.docTypeData === 'A0010' ? false : true">Chemotherapy Order</th>
+            <th class="p-2" *ngIf="this.docTypeData === 'A0105' ? false : true">Laboratory Report</th>
+            <th class="p-2">pdf</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of this.chemotherapyService.AttachDocument">
+            <td class="pl-3 pt-1 pr-1 pb-1">{{item.FileName}}</td>
+            <td class="p-1">{{item.Orgdo}}</td>
+            <td class="p-1" (click)="opendocumentPdf(document,item)"><img src="assets/img/PhysicianOrders.svg"
+                height="24" alt="Attach Document" class="mr-3 c-pointer"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-end p-3">
+      <button type="button"
+        class="btn btn-secondary rounded-sm ml-2 w-15 border-0 PhysicianOrders button-sub float-right font-weight-bold pl-2 color-white">
+        <div class="camera-icon float-left ml-2"><img src="assets/img/photo-camera.svg" alt=""></div>
+        <label for="docpicker" class="cursor-pointer colorwhite mb-0">
+          Upload
+        </label>
+        <input type="file" id="docpicker" (change)="onFileSelected($event,documentUrlpdf)"
+          accept="image/png, image/gif, image/jpeg, application/pdf" style="display: none;" class="opacity-0" />
+      </button>
+    </div>
+  </ng-template>
+
+  <div class="p-3 m-2 chemoborder indexchemo d-flex justify-content-between align-items-center">
+    <form [formGroup]="chemotherapyService.chemotherapyForm" class="w-100">
+      <div class="d-flex justify-content-center align-items-center w-100">
+        <p class="input-title m-0 w-50 color-chemo d-flex align-items-start fonrlabel mr-3 mb-1">Dose Reduction</p>
+        <div class="d-flex align-items-start position-relative">
+          <input type="radio" class="mr-1 checkbox-panel" formControlName="doseReductionOption" value="no" (change)="nodoseReduction($event)">
+          <span class="mx-2 admin admin-gray"></span>
+          <label for="reductionNo" class="m-0 mr-3 input-title" >No</label>
+        </div>
+        <div class="d-flex align-items-start position-relative">
+          <input type="radio" class="mr-1 checkbox-panel" formControlName="doseReductionOption" value="yes">
+          <span class="mx-2 admin admin-gray"></span>
+          <label for="reductionYes" class="m-0 mr-3 input-title">Yes</label>
+        </div>
+        <input type="numbar" class="border-0 w-40 fontweight input-group form-control height-data fontinput"
+        [ngClass]="this.chemotherapyService.chemotherapyForm.get('doseReductionOption').value === 'yes' && (this.chemotherapyService.chemotherapyForm.get('percentage').value === '' ||
+          this.chemotherapyService.chemotherapyForm.get('percentage').value === '0') ? 'ep-error-message': ''"
+          formControlName="percentage">
+        <p class="input-title m-0 w-100 color-chemo d-flex align-items-start fonrlabel ml-2 mb-1">% Reduction</p>
+      </div>
+    </form>
+    <div class="form-btn text-right gap-data d-flex justify-content-end w-100">
+      <button type="button" (click)="openAttachDocument(getdocument,'A0105')"
+        class="btn btn-secondary rounded-sm ml-2 border-0 PhysicianOrders w-20 float-right font-weight-bold pl-2">
+        <img src="assets/img/PhysicianOrders.svg" height="24" class="mr-3" alt="Attach Document">Attach
+        Document</button>
+      <button type="button" class="button button-sub w-20" (click)="CreateEventData()"><img
+          src="assets/img/checkmark-circle.svg" alt class="float-left mr-1 w-20" height="20">Create</button>
+      <button type="button" class="button button-sub w-20" (click)="CancelOrder()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="p-3 m-2 chemoborder indexchemo"><chemo-panel [startdata]="startdata" [isExpanded]="isExpanded"
+    (Createpanel)="Createpanel($event)" (dichargeCreate)="Createpanel($event)"></chemo-panel></div>
+
+<!-- <div class="p-3 m-2 chemoborder indexchemo"><chemo-panel [startdata]="startdata" [isExpanded]="isExpanded"
+      (hydrationCreate)="hydrationCreate($event)" (chemoevent)="CreateSubmitOrder($event)"
+      (prechemohy)="prechemohy($event)" (chemopeutic)="chemopeutic($event)"
+      (dichargeCreate)="dichargeChemo($event)"></chemo-panel></div> -->
+<clinic-web-cam #webCam></clinic-web-cam>
+<history-diagnosis #historydiagnosis></history-diagnosis>

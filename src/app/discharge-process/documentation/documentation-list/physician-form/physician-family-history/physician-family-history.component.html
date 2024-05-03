@@ -1,0 +1,128 @@
+<ng-template #familyHistoryKardexModal>
+    <div class="modal-body" style="padding: 0 !important;">
+      <div class="allergy-header">
+        <div style="
+          font-size: 23px;
+          font-weight: bold">
+          <span>Family History</span>
+          </div>
+          <div style="display: flex;
+        justify-content: end;align-items: center;flex:1">
+        <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{storageService.patientData.name}}</span></li><li  class="allergy-header-item">MRN: {{storageService.patnr}}</li>
+          <li  class="allergy-header-item">Admission date: {{storageService.patientData.periodStart | date : "dd.MM.y"}}</li>
+        <li  class="close-icon allergy-header-item" style="border: none;
+          padding: 0;
+          margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float:right" (click)="modalRef.hide()"></li></ul>
+        </div>
+          </div>
+      <div class="" style="margin: 13px;">
+        <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+        <div class="row">
+        <div class="col-md-10" style="text-align: center;
+        font-size: 23px;
+        font-weight: bold;">
+        <span style="position: relative;
+        left: 10%;"> Family History</span>
+        </div>
+        <div class="col-md-2" style="display: flex;
+        justify-content: end;align-items: center;">
+        <div>
+          <button class="c-pointer save-risk" >Save</button>
+        </div>
+        <div class="ml-2">
+          <img src="assets/img/add.png" class="c-pointer" style="width: 23px;" >
+        </div>
+        <div class="ml-2">
+          <img src="assets/img/delete-icon.svg" class="c-pointer" style="width: 20px;" >
+        </div>
+        </div>
+        </div>
+        
+        <div class="row" style="font-weight: bold;color: #7b8087;">
+          <div class="col-md-12">
+           <div  style="border: solid 2px
+           #0082c8;border-radius: 6px;
+              padding: 5px 10px;">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+              >
+              <label class="form-check-label" for="inlineCheckbox1">No Previous Surgeries</label>
+            </div>
+          </div>
+          </div>
+          </div>
+      </div>
+      <div class="modal-body" style="padding: 0 11px 0px;">
+        <form  style="max-height: 296px;
+        overflow: auto;">
+      <table class="table table-borderless risk-table" style="    border: 1px solid #7b8087;
+      border-bottom: 20px solid #7b8087;
+      border-radius: 10px;">
+        <thead style="background-color: #0082c8;
+        color: white;text-align: center;">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Surgery Name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container >
+            <ng-container
+            >
+          <tr  class="past-med-input">
+            <td style="padding-top: 23px;padding-right: 3px;width: 1%;"><input type="checkbox" class="form-check" ></td>
+            <td style="padding-left: 2px;
+            padding-right: 2px;
+            width: 11%;"><input type="text" class="form-control" ></td>
+            <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;"><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Father
+              </label>
+            </div></td>
+            <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;"><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Mother
+              </label>
+            </div></td>
+            <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;"><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Brother
+              </label>
+            </div></td>
+            <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;"><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Sister
+              </label>
+            </div></td>
+            <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;"><div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Child
+              </label>
+            </div></td>
+            <td style="padding-left: 2px;
+            padding-right: 2px;
+            width: 20%;"><input type="text" class="form-control"></td>
+           
+          </tr>
+         </ng-container>
+         </ng-container>
+        
+         
+        </tbody>
+      </table>
+      </form>
+    
+      </div>
+    </div>
+  </ng-template>

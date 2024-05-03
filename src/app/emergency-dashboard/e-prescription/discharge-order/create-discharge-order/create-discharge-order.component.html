@@ -1,0 +1,319 @@
+<div class="bg-color padding discharge-order" style="background-color: white;padding: 0;">
+  <div class="bg-order">
+    <ng-container *ngIf="isFormReady">
+      <form [formGroup]="MedicationForm" class="mb-3">
+        <table class="w-100 er-discharge-table">
+          <thead>
+            <tr class="bg-color">
+              <td class="w-92 pl-3">
+                <table class="w-100">
+                  <tr>
+                    <th class="text-center w-25 mx-100px">Drug Name</th>
+                    <th class="text-center w-10 p-0">Formula</th>
+                    <th class="text-center col-1 p-0">Route</th>
+                    <th class="text-center w-15 p-0">Dosage</th>
+                    <th class="text-center w-15">Frequency</th>
+                    <th class="text-center w-3 p-0">PRN</th>
+                    <th class="text-center w-15 p-0">Duration</th>
+                    <!-- <th class="text-center col-1 p-0">Qty</th> -->
+                  </tr>
+                </table>
+              </td>
+              <td class="w-8">
+                <p class="cm-action"
+              >Action</p>
+            <span class="action-plus"
+            (click)="addRowData()">+</span></td>
+              <!-- <td class="w-8 pr-3">
+                <button type="button" (click)="addRowData()" class="button">Add
+                  Item</button>
+              </td> -->
+            </tr>
+          </thead>
+        </table>
+        <div [ngClass]="drugArray.controls.length> 5 ? 'table-row-body' : ''">
+          <table class="w-100 er-discharge-table" style="background-color: #fbfcff;">
+            <tbody formArrayName="MedicationData" class="mb-3" *ngFor="let item of drugArray.controls; let i=
+            index">
+              <tr [formGroupName]="i">
+                <td class="w-92 pl-3">
+                  <table class="w-100 row-main-table er-prescription">
+                    <tr>
+                      <td>
+                        <table class="w-100 row-table">
+                          <tr>
+                            <td class="border-td w-25 mx-100px" id="drug-name-id" style="max-width: 1px;">
+                              <input type="text" formControlName="Result_Drug_Name" class="form-control" (keyup.enter)="openDrugsList(allDrugsModal,i)" (click)="openDrugsList(allDrugsModal,i)">
+                              <!-- <ctrl-search-select-medicine [group]="item"
+                                [isSubmitted]="isFormSubmitted" [index]="i"
+                                [medicineDefaultData]="medicationDrugList"
+                                (onSelected)="onSelectMedicine($event)">
+                              </ctrl-search-select-medicine> -->
+                            </td>
+                            <td class="border-td w-10 p-0" style="max-width: 1px;">
+                              <input type="text"
+                                class="form-control"
+                                formControlName="Formatdescr"
+                                [ngClass]="item.touched &&
+                                item.get('Formatdescr').errors &&
+                                isFormSubmitted ? 'ep-error-message': ''" readonly>
+                            </td>
+                            <td class="border-td col-1 p-0">
+                              <ng-select [openOnEnter]="true" [markFirst]="false" [appendTo]="'body'" formControlName="Routedescr" [ngClass]="item.touched &&
+                              item.get('Routedescr').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''"  [searchFn]="serachInput" >
+                              <ng-option *ngFor=" let routeDropdownItem of
+                                addministrationService.routeDropdownList" [value]="routeDropdownItem">
+                                {{ routeDropdownItem.Descr }}
+                              </ng-option>
+                            </ng-select>
+                            </td>
+                            <td class="w-15 p-0">
+                              <table class="w-100">
+                                <tr>
+                                  <!-- <td class="border-td w-40">
+                                    <input type="textbox" min="0"
+                                      class="form-control"
+                                      formControlName="Quan"
+                                      [ngClass]="item.touched &&
+                                      item.get('Quan').errors &&
+                                      isFormSubmitted ?
+                                      'ep-error-message': ''" appDigitDecimaNumber  [ngModel]="item.get('Quan').value | removeTrailingZeros">
+                                  </td> -->
+                                  <td class="border-td w-40" *ngIf="!item.value.IsFrequencyDeftim">
+                                      <input
+                                          type="textbox"
+                                          min="0"
+                                          class="form-control"
+                                          formControlName="Quan"
+                                          [ngClass]="item.touched &&
+                                            item.get('Quan').errors &&
+                                            isFormSubmitted ?
+                                            'ep-error-message': ''"
+                                          appDigitDecimaNumber
+                                          [ngModel]="item.get('Quan').value | removeTrailingZeros">
+                                  </td>
+                                  <td class="border-td w-40" *ngIf="item.value.IsFrequencyDeftim">
+                                    <input type="text" class="form-control" formControlName="Dosdef" [ngClass]="item.touched &&
+                                    item.get('Dosdef').errors &&
+                                    isFormSubmitted ?
+                                    'ep-error-message': ''">
+                                  </td>
+                                  <td class="border-td">
+                                    <div *ngIf="item.get('IsPatientMedication').value">
+                                      <input type="text"
+                                        class="form-control"
+                                        formControlName="Quantunittxt"
+                                        [ngClass]="item.touched &&
+                                        item.get('Quantunittxt').errors &&
+                                        isFormSubmitted ?
+                                        'ep-error-message': ''" readonly>
+                                    </div>
+                                    <div *ngIf="!item.get('IsPatientMedication').value">
+                                      <ng-select [appendTo]="'body'" [searchable]="true"
+                                        formControlName="Quanunit"
+                                        [ngClass]="item.touched &&
+                                        item.get('Quanunit').errors &&
+                                        isFormSubmitted ?
+                                        'ep-error-message': ''" >
+                                        <ng-option
+                                          *ngFor=" let medicationDosageUnit of
+                                          item.get('AgentidResult').value"
+                                          [value]="medicationDosageUnit.Meinh">
+                                          {{ medicationDosageUnit.Mseht }}
+                                        </ng-option>
+                                      </ng-select>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+
+                            <td class="border-td w-15" style="max-width: 1px;">
+                              <!-- <ng-select [appendTo]="'body'" [searchable]="true"
+                                formControlName="N1ztxt"
+                                [ngClass]="item.touched &&
+                                item.get('N1ztxt').errors && isFormSubmitted
+                                ?
+                                'ep-error-message': ''"
+                                (change)="onChangeDropdownlist('Frequency',
+                                $event, i)">
+                                <ng-option *ngFor=" let medicationFrequency of
+                                  frequencyList"
+                                  [value]="medicationFrequency.Text">
+                                  {{ medicationFrequency.Text }}
+                                </ng-option>
+                              </ng-select> -->
+                              <ng-select [appendTo]="'body'" [searchable]="true" formControlName="N1ztxt" [ngClass]="item.touched &&
+                              item.get('N1ztxt').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''" (change)="onChangeFrequencySet(item.get('N1ztxt').value,
+                              i, 'change')" (click)="onOpenFrequencySet(i)" [readonly]="item.value.Complex">
+                                <ng-option *ngFor=" let medicationFrequency of
+                                addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
+                                  {{ medicationFrequency.Text}}
+                                </ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="border-td w-3 text-center"><input type="checkbox" class="align-middle prn-input" formControlName="Prn" [title]="item.get('Prncond').value"
+                              [ngClass]="item.touched &&
+                              item.get('Prn').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''" (change)="onOpenPrnDesc(item, i, $event)"></td>
+                            <td class="w-15 p-0">
+                              <table class="w-100">
+                                <tr>
+                                  <td class="border-td w-40" ><input
+                                      type="textbox"
+                                      min="0"
+                                      class="form-control "
+                                      formControlName="Pdur"
+                                      [ngClass]="item.touched &&
+                                      item.get('Pdur').errors &&
+                                      isFormSubmitted ?
+                                      'ep-error-message': ''" appDigitDecimaNumber [ngModel]="item.get('Pdur').value | removeTrailingZeros"></td>
+                                  <td class="border-td" >
+                                    <!-- <input type="text"
+                                    class="form-control "
+                                    formControlName="DurationUnit"
+                                    [ngClass]="item.touched &&
+                                    item.get('DurationUnit').errors &&
+                                    isFormSubmitted ?
+                                    'ep-error-message': ''"> -->
+                                    <ng-select [appendTo]="'body'" [searchable]="true"
+                                      formControlName="Pduru"
+                                      [ngClass]="item.touched &&
+                                      item.get('Pduru').errors &&
+                                      isFormSubmitted ?
+                                      'ep-error-message': ''" >
+                                      <ng-option
+                                        *ngFor=" let medicationDurationUnit of
+                                        durationUnitList"
+                                        [value]="medicationDurationUnit.Unit">
+                                        {{ medicationDurationUnit.Text }}
+                                      </ng-option>
+                                    </ng-select>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <!-- <td class="col-1 p-0">
+                              <input type="text"
+                                class="form-control"></td> -->
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="w-8">
+                  <table class="w-100">
+                    <tr>
+                      <td class="pt-3 px-2 text-center">
+                        <img src="assets/img/ActionInfo.svg"
+                          height="25" (click)="onOpenInfoPopup(item, i)" [title]="item.get('Descr').value">
+                      </td>
+                      <td class="pt-3 px-2 pr-3">
+                        <img src="assets/img/ActionBin.svg"
+                          height="25" (click)="deleteRowData(i)">
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <div #collapse="ngbCollapse" [(ngbCollapse)]="!item.value.IsFrequencyDeftim" class="frequency-collapse">
+                  <div class="d-flex m-3">
+                    <div>
+                      <ng-container *ngIf="item.value.IsFrequencyDeftim">
+                        <frequency-deftim [defaultfrequencydeftim]="item.value" (frequencyDeftim)="FrequencySetcycle($event,i)"></frequency-deftim>
+                      </ng-container>
+                    </div>
+                    <div>
+                      <div class="d-flex w-62 m-2">
+                        <div class="c-pointer">
+                          <img src="assets/img/close.svg" (click)="closeCycle(i)" height="20" class="iconsminds-cursor-click mr-3 ml-2 c-pointer">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <!-- <span class="form-btn text-right" style="position: absolute;
+      right: 296px;
+    top: 73px;">
+        <button type="button" (click)="onSubmitData()" class="er-btn-create">Create</button>
+      </span> -->
+    </ng-container>
+  </div>
+</div>
+<template-description #templateDescription></template-description>
+<addition-info-popup #additionalPopup (onUpdateData)="onUpdatedAdditionalInfo($event)"></addition-info-popup>
+<prn-condition-popup #prnPopup (onUpdateData)="onUpdatedPrnCondition($event)"></prn-condition-popup>
+<ng-template #allDrugsModal>
+  <div class="modal-body " style="padding: 0 !important; width: 800px !important;">
+    <div class="infoModel-title" style="background:#0056b0">
+      <h4 class="m-0 pl-3">Drugs List</h4>
+    </div>
+    <div></div>
+    <div style=" max-height: 30em;
+    overflow: auto;padding: 11px;">
+    <!-- <ng-select  type="text" placeholder="Search" id="searchFilter" class="w-100" style="height: 38px; font: 600 14px/1.5 Nunito,sans-serif; color: #848f96; border-radius: 8px!important; box-shadow: none; padding: 10px 10px 10px 42px;" [(ngModel)]="searchTypeOnKeyEnter" (input)="someMethod($event,searchTypeOnKeyEnter)">
+      <ng-option>
+        <table class="table w-100 table-bordered">
+          <thead style="
+          position: sticky;
+          top: -10px;
+          z-index: 9;background: #e4edf5;">
+            <tr>
+              <th class="w-60">Drug Name</th>
+              <th class="w-13">Phot</th>
+              <th class="w-13">Phin</th>
+              <th class="w-13">Pher</th>
+            </tr>
+          </thead>
+          <tbody style="background: #fbfcff;">
+            <tr *ngFor="let item of medicationDrugList;let i = index;" (click)="broadcastEvent(item,i)" class="c-pointer">
+              <td class="p-0 " title="{{item.Drugname}}">{{item.Drugname}}</td>
+              <td class="p-0 " title="{{item.Phot}}" >{{item.Phot}}</td>
+              <td class="p-0 " title="{{item.Phin}}"> {{item.Phin}}</td>
+              <td class="p-0 " title="{{item.Pher}}"> {{item.Pher}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-option>
+    </ng-select> -->
+
+
+    <div class="popupdata search-functionality col-md-12 pl-0 mb-2 "><img  src="assets/img/pres-search-icon.svg" alt="" style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%);">
+      <input type="text" placeholder="Search" name="search" class="form-control w-100" style="height: 38px; font: 600 14px/1.5 Nunito,sans-serif; color: #848f96; border-radius: 8px!important; box-shadow: none; padding: 10px 10px 10px 42px;" [(ngModel)]="searchTypeOnKeyEnter" (input)="someMethod($event,searchTypeOnKeyEnter)">
+    </div>
+      <table class="table w-100 table-bordered" >
+        <thead style="
+          position: sticky;
+          top: -10px;
+          z-index: 9;background: #e4edf5;">
+          <tr>
+            <th class="w-60">Drug Name</th>
+            <th class="w-13">Phot</th>
+            <th class="w-13">Phin</th>
+            <th class="w-13">Pher</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff;">
+          <tr *ngFor="let item of medicationDrugList;let i = index;"  (click)="broadcastEvent(item,i)" class="c-pointer" >
+            <td class="p-0"><input type="text" title="{{item.Drugname}}" class="form-control border-0 value-Drugname" value="{{item.Drugname}}"></td>
+            <td class="p-0"> <input type="text" title="{{item.Phot}}" class="form-control border-0 value-Drugname" value="{{item.Phot}}"></td>
+            <td class="p-0"> <input type="text" title="{{item.Phin}}" class="form-control border-0 value-Drugname" value="{{item.Phin}}"></td>
+            <td class="p-0"> <input type="text" title="{{item.Pher}}" class="form-control border-0 value-Drugname" value="{{item.Pher}}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>

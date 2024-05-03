@@ -1,0 +1,52 @@
+<accordion [isAnimated]="true" [closeOthers]="false">
+  <accordion-group class="accordion-group" [isOpen]="isExpanded.PreMedications" heading="PreMedications" (click)="chemotherapyService.DischargeEvent('PreMedications')" #PreMedications>
+    <div accordion-heading style="width:100%;">
+      <i class="pull-right float-xs-right glyphicon"
+         [ngClass]="{'fa fa-caret-down': PreMedications?.isOpen, 'fa fa-caret-up': !PreMedications?.isOpen}"></i>
+    </div>
+    <ng-container *ngIf="eprescriptionService.Administration">
+      <premedications
+        [templateData]="eprescriptionService.templatePopupSaveData" [startdata]="startdata" (chemotherapyData)="premedications($event)"></premedications>
+    </ng-container>
+  </accordion-group>
+  <accordion-group class="accordion-group" [isOpen]="isExpanded.PreChemo" heading="Pre-Chemo Hydration" (click)="chemotherapyService.DischargeEvent('PreChemo')" #PreChemo>
+    <div accordion-heading style="width:100%;">
+      <i class="pull-right float-xs-right glyphicon"
+         [ngClass]="{'fa fa-caret-down': PreChemo?.isOpen, 'fa fa-caret-up': !PreChemo?.isOpen}"></i>
+    </div>
+    <ng-container *ngIf="eprescriptionService.Administration">
+      <pre-chemohydration (chemotherapyData)="prechemohydration($event)"></pre-chemohydration>
+    </ng-container>
+  </accordion-group>
+  <accordion-group class="accordion-group" [isOpen]="isExpanded.Chemotherapeutic" heading="Chemotherapeutic/Biologic Agents" (click)="chemotherapyService.DischargeEvent('Chemotherapeutic')" #Chemotherapeutic >
+    <div accordion-heading style="width:100%;">
+      <i class="pull-right float-xs-right glyphicon"
+         [ngClass]="{'fa fa-caret-down': Chemotherapeutic?.isOpen, 'fa fa-caret-up': !Chemotherapeutic?.isOpen}"></i>
+    </div>
+    <ng-container *ngIf="eprescriptionService.Administration">
+      <chemotherapeutic-biologic
+        [templateData]="eprescriptionService.templatePopupSaveData" [startdata]="startdata" [Chemotherapeutic]="Chemotherapeutic" (chemotherapypeutic)="chemotherapypeutic($event)">
+      </chemotherapeutic-biologic>
+    </ng-container>
+  </accordion-group>
+  <accordion-group class="accordion-group" [isOpen]="isExpanded.PostChemo" heading="Post Chemo Hydration" (click)="chemotherapyService.DischargeEvent('PostChemo')" #PostChemo>
+    <div accordion-heading style="width:100%;">
+      <i class="pull-right float-xs-right glyphicon"
+         [ngClass]="{'fa fa-caret-down': PostChemo?.isOpen, 'fa fa-caret-up': !PostChemo?.isOpen}"></i>
+    </div>
+    <ng-container *ngIf="eprescriptionService.Administration">
+      <chemo-hydration (chemohydrationform)="chemohydrationData($event)"></chemo-hydration>
+    </ng-container>
+  </accordion-group>
+  <accordion-group class="accordion-group" [isOpen]="isExpanded.Discharge" heading="Discharge Medications" (click)="chemotherapyService.DischargeEvent('Discharge')" #Discharge>
+    <div accordion-heading style="width:100%;">
+      <i class="pull-right float-xs-right glyphicon"
+         [ngClass]="{'fa fa-caret-down': Discharge?.isOpen, 'fa fa-caret-up': !Discharge?.isOpen}"></i>
+    </div>
+    <ng-container *ngIf="eprescriptionService.Administration">
+      <chemo-discharge
+            [medicationData]="eprescriptionService.medicationPopupSaveData"
+            [templateData]="eprescriptionService.templatePopupSaveData" (dichargeChemo)="dichargeChemo($event)" [startdata]="startdata"></chemo-discharge>
+    </ng-container>
+  </accordion-group>
+</accordion>

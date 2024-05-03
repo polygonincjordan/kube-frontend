@@ -1,0 +1,211 @@
+<table class="table table-bordered table-hover">
+  <thead
+    style="
+      background: #0082c8 !important;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 9;
+    "
+  >
+    <tr>
+      <th colspan="1" scope="col">Created On</th>
+      <th colspan="1" scope="col">Status</th>
+      <th colspan="2" scope="col">Occupational Group</th>
+      <th colspan="2" scope="col">Employee</th>
+      <th colspan="4" scope="col">Physician Order</th>
+      <th colspan="1" scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let phyOrder of physicianOrderList" style="font-weight: bold">
+      <td colspan="1">{{ getDate(phyOrder.CreationDate) | date : "dd.MM.yyyy" }}</td>
+      <td colspan="1">{{ phyOrder.StatusText }}</td>
+      <td colspan="2">{{ phyOrder?.ProfessionalGroupText }}</td>
+      <td colspan="2">{{ phyOrder.EmployeeRespName }}</td>
+      <td colspan="4" [title]="phyOrder.ZphysOrder" ><p class="show-two-line m-0">{{ phyOrder.ZphysOrder }}</p></td>
+      <td colspan="1" style="text-align: center; overflow: visible !important">
+        <div>
+          <div class="dropdown">
+            <i
+              class="fa fa-ellipsis-v dropdown-toggle"
+              aria-hidden="true"
+              style="cursor: pointer"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            ></i>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a *ngIf="phyOrder.StatusText != 'Executed'"
+                class="dropdown-item c-pointer"
+                (click)="
+                  openModalForPhyOrder(phyordertemplate, phyOrder, 'execute')
+                "
+                >Execute</a
+              >
+              <!-- <a class="dropdown-item c-pointer" (click)="openModalForPhyOrder(phyordertemplate,item,'release')">Release</a> -->
+              <a
+                class="dropdown-item c-pointer"
+                (click)="
+                  openModalForPhyOrder(phyordertemplate, phyOrder, 'delete')
+                "
+                >Delete</a
+              >
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<ng-template #phyordertemplate>
+  <div *ngIf="phyOrderAction == 'execute'">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: white">
+        Executing a Physician Order
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="row" style="display: block; padding: 0 0 0 12px">
+        <p style="margin: 0; font-weight: bold; color: #82949e">
+          Are you sure you want to execute the Physician Order:
+        </p>
+        <p style="color: navy; font-weight: bold; word-break: break-word">
+          {{ phyOrderData.OrderShortText }}
+        </p>
+        <p>
+          <span style="font-weight: bold; color: #82949e">Created by</span>
+          <span style="color: navy; font-weight: bold; margin-left: 4px">{{
+            phyOrderData.CreationUser
+          }}</span>
+          on
+          <span style="color: navy; font-weight: bold">{{
+            getDate(phyOrderData.CreationDate) | date : "dd.MM.yyyy"
+          }}</span>
+        </p>
+      </div>
+      <div class="modal-footer" style="padding: 5px 0 0 0">
+        <div>
+          <span
+            style="
+              position: relative;
+              left: -15px;
+              top: 1px;
+              font-weight: bold;
+              color: #82949e;
+            "
+            >Note: Executing order will remove it from list</span
+          >
+          <span>
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="physicianOrderSet(phyOrderData, 'execute')"
+            >
+              Execute
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="modalRef.hide()"
+            >
+              Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="phyOrderAction == 'delete'">
+    <div
+      class="modal-header"
+      style="
+        display: flex;
+        padding: 17px;
+        background-color: #0082c8;
+        color: white;
+        border-radius: 16px 16px 0 0;
+      "
+    >
+      <h4 class="modal-title" style="color: white">
+        Deleting a Physician Order
+      </h4>
+      <!-- <i class="fa fa-times" aria-hidden="true" style="font-size: 22px"  (click)="modalRef.hide()"></i> -->
+    </div>
+    <div class="modal-body">
+      <div class="row" style="display: block; padding: 0 0 0 12px">
+        <p style="margin: 0; font-weight: bold; color: #82949e">
+          Are you sure you want to delete the Physician Order:
+        </p>
+        <p style="color: navy; font-weight: bold; word-break: break-word">
+          {{ phyOrderData.OrderShortText }}
+        </p>
+
+        <p>
+          <span style="font-weight: bold; color: #82949e">Created by</span>
+          <span style="color: navy; font-weight: bold; margin-left: 4px">{{
+            phyOrderData.CreationUser
+          }}</span>
+          on
+          <span style="color: navy; font-weight: bold">{{
+            getDate(phyOrderData.CreationDate) | date : "dd.MM.yyyy"
+          }}</span>
+        </p>
+      </div>
+      <div>
+        <!-- <label><strong>Reason for deletion</strong></label> -->
+        <select
+          [(ngModel)]="cancelReasonValue"
+          class="form-select"
+          aria-label="Default select example"
+        >
+          <option selected value="">Reason for deletion</option>
+          <option
+            [value]="item.Stoid"
+            *ngFor="let item of cancelReasonListData"
+          >
+            {{ item.N1stotx }}
+          </option>
+        </select>
+        <p style="color: red" *ngIf="cancelReasonValue == ''">{{ errmsg }}</p>
+      </div>
+      <div class="modal-footer" style="padding: 5px 0 0 0">
+        <div style="display: flex">
+          <span
+            style="
+              position: relative;
+              left: -3px;
+              top: 7px;
+              font-weight: bold;
+              color: #82949e;
+            "
+            >Note: Deleting order will remove it Permanently</span
+          >
+          <span style="display: flex">
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="physicianOrderSet(phyOrderData, 'delete')"
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="modalRef.hide()"
+            >
+              Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

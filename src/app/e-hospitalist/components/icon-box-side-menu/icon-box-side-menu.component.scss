@@ -1,0 +1,21 @@
+.notif-icon {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  position: relative;
+}
+.img-style {
+  width: 72%;
+}
+.red-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: firebrick;
+  border-radius: 360px;
+  top: -5px;
+  right: -5px;
+}

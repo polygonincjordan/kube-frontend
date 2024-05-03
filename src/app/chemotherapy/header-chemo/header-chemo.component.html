@@ -1,0 +1,32 @@
+
+<div class="d-flex chemo-bg">
+  <!-- {{ patient | json}} -->
+  <div class="col-4 pr-3 pb-3 pt-3 pl-5">
+    <div class="p-1 font-chemo" [title]="patient.name">
+      Patient Demo:-{{ patient.name}}
+    </div>
+    <div class="p-1 font-chemo" [title]="patient.id">
+      MRN:{{patient.id}}
+    </div>
+  </div>
+  <div class="col-4 p-3">
+    <div class="p-1 font-chemo patient-data" [title]="patient.allergyInfo">
+      {{ patient.allergyInfo}}
+    </div>
+    <div class="p-1 font-chemo patient-data" [title]="patient.primDiaTxt">
+      Diagnosis: {{patient.primDiaTxt}}
+    </div>
+  </div>
+  <div class="col-3 p-3">
+    <div class="p-1 font-chemo" [title]="patient?.location?.room">
+      Room:{{patient?.location?.room}}
+    </div>
+    <div class="pati-financ mt-2" [title]="patient.financeCat">{{patient.financeCat}}</div>
+  </div>
+  <div class="col-1 p-0">
+    <div>
+      <img src="assets/img/er-treatment.png" style="width: 189px; height: 78px; float: right;" />
+    </div>
+  </div>
+</div>
+

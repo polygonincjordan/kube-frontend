@@ -1,0 +1,172 @@
+<ng-template #scalesGlosgowModal>
+  <div>
+    <div class="allergy-header">
+      <div class="allergy-header-title">
+        <span>Glasgow coma scale</span>
+      </div>
+      <div class="allergy-header-details">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon">
+            <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer"
+              (click)="closeGlosgowModel()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="main-glosgow">
+    <div class="radio-section">
+      <div class="row m-0">
+        <div class="col-md-4">
+          <h4>Eyes Opening Response (E)</h4>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="eyeOpeningRes" id="eyeClosed"
+              (change)="selectEyeOpeningRadio($event, 'C')" value="C" [(ngModel)]="eyeOpeningScore"
+              [disabled]="dockeyValue" />
+            <label for="eyeClosed">Eyes Closed</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="eyeOpeningRes" id="none" value="1"
+              (change)="selectEyeOpeningRadio($event, '1')" [(ngModel)]="eyeOpeningScore" [disabled]="dockeyValue" />
+            <label for="none">None</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="eyeOpeningRes" id="toPain" value="2"
+              (change)="selectEyeOpeningRadio($event, '2')" [(ngModel)]="eyeOpeningScore" [disabled]="dockeyValue" />
+            <label for="toPain">To pain</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="eyeOpeningRes" id="verbalStimuli" value="3"
+              (change)="selectEyeOpeningRadio($event, '3')" [(ngModel)]="eyeOpeningScore" [disabled]="dockeyValue" />
+            <label for="verbalStimuli">To verbal stimuli</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="eyeOpeningRes" id="spontaneous" value="4"
+              (change)="selectEyeOpeningRadio($event, '4')" [(ngModel)]="eyeOpeningScore" [disabled]="dockeyValue" />
+            <label for="spontaneous">Spontaneous</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4>Moter Response (M)</h4>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="moterResponse" id="none" value="1"
+              (change)="selectMoterRadio($event, '1')" [(ngModel)]="moterScore" [disabled]="dockeyValue" />
+            <label for="none">None</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="moterResponse" id="ExtensorToPain" value="2"
+              (change)="selectMoterRadio($event, '2')" [(ngModel)]="moterScore" [disabled]="dockeyValue" />
+            <label for="ExtensorToPain">Extensor to pain</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="moterResponse" id="FloxerToPain" value="3"
+              (change)="selectMoterRadio($event, '3')" [(ngModel)]="moterScore" [disabled]="dockeyValue" />
+            <label for="FloxerToPain">Floxer to pain</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="moterResponse" id="Withdrawstopain" value="4"
+              (change)="selectMoterRadio($event, '4')" [(ngModel)]="moterScore" [disabled]="dockeyValue" />
+            <label for="Withdrawstopain">Withdraws to pain</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="moterResponse" id="Localizepain" value="5"
+              (change)="selectMoterRadio($event, '5')" [(ngModel)]="moterScore" [disabled]="dockeyValue" />
+            <label for="Localizepain">Localize pain</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="moterResponse" id="Followcommands" value="6"
+              (change)="selectMoterRadio($event, '6')" [(ngModel)]="moterScore" [disabled]="dockeyValue" />
+            <label for="Followcommands">Follow commands</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4>Verbal Response (V)</h4>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="verbalResponse" id="VT" value="T"
+              (change)="selectVerbalRadio($event, 'T')" [(ngModel)]="verbalScore" [disabled]="dockeyValue" />
+            <label for="VT">VT</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="verbalResponse" id="none" value="1"
+              (change)="selectVerbalRadio($event, '1')" [(ngModel)]="verbalScore" [disabled]="dockeyValue" />
+            <label for="none">None</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="verbalResponse" id="Incomprehensiblesound" value="2"
+              (change)="selectVerbalRadio($event, '2')" [(ngModel)]="verbalScore" [disabled]="dockeyValue" />
+            <label for="Incomprehensiblesound">Incomprehensible sound</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="verbalResponse" id="Inppropriatewords" value="3"
+              (change)="selectVerbalRadio($event, '3')" [(ngModel)]="verbalScore" [disabled]="dockeyValue" />
+            <label for="Inppropriatewords">Inppropriate words</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="verbalResponse" id="confused" value="4"
+              (change)="selectVerbalRadio($event, '4')" [(ngModel)]="verbalScore" [disabled]="dockeyValue" />
+            <label for="confused">Confused</label>
+          </div>
+          <div class="d-flex align-items-center p-1">
+            <input type="radio" class="mr-3 radio-input" name="verbalResponse" id="oriented" value="5"
+              (change)="selectVerbalRadio($event, '5')" [(ngModel)]="verbalScore" [disabled]="dockeyValue" />
+            <label for="oriented">Oriented</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scale-result">
+      <h4 class="mb-4">Scale Result</h4>
+      <div class="row m-0">
+        <div class="col-md-3">
+          <div class="mb-2 row m-0 align-items-center">
+            <div class="col-md-6 p-0">
+              <label>Eye Score (E)</label>
+            </div>
+            <div class="col-md-6">
+              <input placeholder="C" class="form-control" [value]="eyeOpeningScore" disabled />
+            </div>
+          </div>
+          <div class="mb-2 row m-0 align-items-center">
+            <div class="col-md-6 p-0">
+              <label>Total Score</label>
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" [value]="totalProjectScore" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="mb-2 row m-0 align-items-center justify-content-end">
+            <div class="col-md-5 p-0">
+              <label>Moter Score (M)</label>
+            </div>
+            <div class="col-md-5 pr-0">
+              <input placeholder="C" class="form-control" [value]="moterScore" disabled />
+            </div>
+          </div>
+          <div class="mb-2 d-flex justify-content-between">
+            <input [value]="totalScoreDescription" class="form-control" disabled />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="mb-2 row m-0 align-items-center justify-content-end">
+            <div class="col-md-5 p-0">
+              <label>Verbal Score (V)</label>
+            </div>
+            <div class="col-md-5">
+              <input placeholder="T" class="form-control" [value]="verbalScore" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comment-input d-flex mt-4 align-items-center">
+        <label>Comments</label>
+        <textarea class="form-control" [(ngModel)]="comments" [disabled]="dockeyValue"></textarea>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4" style="text-align: end">
+      <button class="triage-model-btn" (click)="closeGlosgowModel()">Cancel</button>
+      <button class="triage-model-btn" (click)="createGlosgowData()">Save</button>
+    </div>
+  </div>
+</ng-template>

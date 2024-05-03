@@ -1,0 +1,197 @@
+<div class="container" style="max-width: 98%;">
+  <div class="main-white-boxes" style="display: flex;
+  justify-content: space-between;
+  align-items: baseline;padding: 8px 11px;">
+  <h2 class="top-head-h2">Abdali Medical Center (Point-of-sale)  </h2>
+  <div class="btns-screens">
+  <button class="screen-reset active-btn"><img src="assets/img/Screen-Reset.svg"> Screen Reset </button>
+  <button class="screen-reset"><img src="assets/img/ISH-Billing.svg"> ISH Billing </button>
+  </div>
+  </div>
+  
+  <div class="main-white-boxes">
+  <div class="border-box-under-white-box">
+  <h3 class="top-head-patient-date">Patient Date  </h3>
+  <div class="border-box-under-white-box-d-flex">
+    <form [formGroup]="patientDataForm">
+  <div class="border-box-under-patient-date-half-left">
+    <div class="intstitution-box-main"> <div class="intstitution-box"> <span>Institutaion</span> 
+      <input type="text" class="enter" formControlName="Einri" style="flex: 0 0 22%;"> 
+      <div style="display: flex;align-items: baseline;">
+      <div style="flex: 0 0 50%;" class="case-label">Case Number</div> 
+      <input type="text" placeholder="Enter" formControlName="Falnr" (keyup.enter)="getPatientInfoByCase()" style="background-color: white;">
+    </div>
+    </div>
+      </div>
+    <div class="intstitution-box-main"> <div class="intstitution-box"> <span> Att.Physician</span> <input type="text" class="enter" formControlName="Pernr"> <input type="text" formControlName="Dname">
+    </div>
+      </div>
+       <!-- <div class="intstitution-box-main"><div class="intstitution-box"> <span> Case Number </span> <input type="text" placeholder="Enter Case Number" >
+     </div>
+      </div> -->
+   <div class="intstitution-box-main"> <div class="intstitution-box"> <span>Patient No.</span> <input type="text" class="enter" formControlName="Patnr"> <input type="text" placeholder="" formControlName="Pname">
+      </div>
+      </div>
+      <div class="intstitution-box-main"><div class="intstitution-box"> <span>Ins. Provider</span> <input type="text" class="enter" formControlName="Insur"> <input type="text" placeholder="" formControlName="Kname">
+      </div>
+      </div>
+  </div>
+  <div class="border-box-under-patient-date-half-right">
+    <div class="intstitution-box-main"> <div class="intstitution-box"> <span>Storage Location</span>
+       <!-- <div class="Photo" >Photo <img src="assets/img/Photo-Edit.svg"  style="background-color: white;"> </div>  -->
+       <input type="text" class="enter" style="background-color: white;" placeholder="Enter" formControlName="Lgort" (keyup.enter)="showStorageDesc()">
+       <img src="assets/img/Photo-Edit.svg" style="    position: relative;
+       right: 28px;" (click)="openCommonModal(commonColModal)">
+    <input type="text" formControlName="Lgobe">
+    </div>
+      </div>
+       <div class="intstitution-box-main"><div class="intstitution-box"> <span> Customer Name </span> <input type="text" placeholder="Enter" style="background-color: white;">
+     </div>
+      </div>
+  </div>
+</form>
+  </div>
+  </div>
+  
+  <div class="table-batch-number">
+    <form [formGroup]="materialForm" style="max-height: 250px;
+    overflow: auto;">
+    <table class="table table-bordered">
+     
+        <thead style="position: sticky;
+        z-index: 999 !important;
+        top: 0;">
+          <tr>
+            <th style="border-radius: 20px 0px 0px 0px;">Batch Number </th>
+            <th>Barcode</th>
+            <th>Material Code</th>
+            <th>Material Description</th>
+            <th>Stock</th>
+            <th>Net Price(JOD)</th>
+            <th>Quantity</th>
+            <th class="action">UoM</th>
+            <th>Total Price</th>
+            <th class="action" style="border-radius: 0px 20px 0px 0px;" class="cursor-pointer"><p>Action</p><span  class="action-plus" (click)="addnewItem()">+</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container formArrayName="MaterialFormitems">
+            <ng-container  *ngFor="let item of materialForm.get('MaterialFormitems')['controls']; let i = index;"
+            >
+          <tr [formGroupName]="i">
+            <td><input type="text" formControlName="Charg" (keyup.enter)="getMaterialDetailsSet(MaterialFormitems.value[i],'Charg',i)"></td>
+            <td>--</td>
+            <td><input type="text" formControlName="Matnr" (keyup.enter)="getMaterialDetailsSet(MaterialFormitems.value[i],'Matnr',i)"></td>
+            <td><input type="text" formControlName="Maktx"></td>
+            <td><input type="text" formControlName="Labst"></td>
+            <td><input type="text" formControlName="Netpr"></td>
+            <td><input type="text" formControlName="Menge" (keyup.enter)="calculateTotalPrice(MaterialFormitems.value[i],i)"></td>
+            <td><input type="text" formControlName="Meins"></td>
+            <td><input type="text" formControlName="Brtwr"></td>
+            <td class="Delete-btn"> <img src="assets/img/Delete1.svg" (click)="confirmationForDeleteMaterial(i)"></td>
+          </tr>
+      </ng-container>
+      </ng-container>
+        </tbody>
+       
+    </table>
+  </form>
+  </div>
+  
+  <div class="border-box-under-white-box">
+  <div class="abed-al-naseer-top-bar">
+  <div class="abed-al-naseer">
+  <h3 class="top-head-abed-al-naseer">Abed Al Naseer Ismail <span> 08/ 02/2023</span></h3>
+  <div class="intstitution-boxes-bottom">
+  <div class="intstitution-box-main">
+  <div class="intstitution-box"> <span> Discount (1%) </span> <input type="text" placeholder="--" >
+  </div>
+  </div>
+  <div class="intstitution-box-main">
+  <div class="intstitution-box"> <span> Discount Remark </span> <input type="text" placeholder="--" >
+  </div>
+  </div>
+  </div>
+  <div class="Box-post">
+  <h4>Post </h4>
+  <ul class="list-simple-bottom-colum btns-screens">
+    <li>
+  <button class="screen-reset"><img src="assets/img/Check.svg">Check </button></li>
+    <li>
+  <button class="screen-reset"><img src="assets/img/Post.svg"> Post </button>
+  </li>
+  </ul>
+  </div>
+  <div class="Box-post">
+  <h4>Payment Type</h4>
+  <ul class="list-simple-bottom-colum">
+    <li> <div class="round">
+  <input type="radio" checked="checked" name="radio"> <span class="radiobtn"></span> Case
+  </div></li>
+    <li><div class="round">
+  <input type="radio" checked="checked" name="radio"> <span class="radiobtn"></span> Credit Card 
+  </div></li>
+    <li><div class="round">
+  <input type="radio" checked="checked" name="radio"> <span class="radiobtn"></span>Debit Card 
+  </div></li>
+  
+  </ul>
+  </div>
+  </div>
+  <div class="right-bar">
+    <div class=" intstitution-box-main">
+  <div class="intstitution-box" style="gap: 7px;"> <span style="margin-right: 10px;">   <label for="cars">Payment Currency </label></span>
+    <select name="cars" id="cars">
+      <option value="volvo">JOD</option>
+      <option value="saab">Saab</option>
+      <option value="opel">Opel</option>
+      <option value="audi">Audi</option>
+    </select>
+  </div>
+  </div>
+  <div class="Box-post payment-details">
+  <h4>Payment Type</h4>
+  <ul class="list-simple-bottom-colum">
+    <li><span> Gross Amount</span><input type="text" placeholder="--" > <div class="jod">JOD </div> </li>
+    <li><span> Net Amount</span><input type="text" placeholder="--" > <div class="jod">JOD </div> </li>
+      <li><span> Paid Amount</span><input type="text" placeholder="--" > <div class="jod">JOD </div> </li>
+        <li><span> Amount</span><input type="text" placeholder="--" > <div class="jod">JOD </div> </li>
+          <li><span> Change Amount</span><input type="text" placeholder="--" > <div class="jod">JOD </div> </li>
+            <li><span> Discount Amount</span><input type="text" placeholder="--" > <div class="jod">JOD </div> </li>
+  
+  </ul>
+  </div>
+  </div>
+  </div> 
+  </div>
+  </div>
+  <ng-template #commonColModal>
+    <div class="modal-body" style="padding: 0 !important;">
+      <div class="infoModel-title" style="background:#0056b0">
+        <h4 class="m-0 pl-3">Storage Locations</h4>
+      </div>
+      <div  class="search-functionality col-md-10 pl-0 mt-2"><img  src="assets/img/pres-search-icon.svg" alt="" style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%);"><input  type="text" placeholder="Search" id="searchFilter" class="form-control w-100" style="height: 38px; font: 600 14px/1.5 Nunito,sans-serif; color: #848f96; border-radius: 8px!important; box-shadow: none; padding: 10px 10px 10px 42px;margin-left: 8px;" [(ngModel)]="searchString" (input)="someMethod(searchString)">
+      </div>
+      <div style="    max-height: 30em;
+      overflow: auto;padding: 11px;">
+        <table class="table table-bordered">
+            <thead style="
+            position: sticky;
+            top: -10px;
+            z-index: 9;background: #e4edf5;">
+          <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody style="    background: #fbfcff;">
+              <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (dblclick)="selectValueFromList(item)">
+            <td>{{item.Lgort}}</td>
+            <td>{{item.Lgobe}}</td>
+          </tr>
+        </tbody>
+      
+        </table>
+      </div>
+    </div>
+  </ng-template>

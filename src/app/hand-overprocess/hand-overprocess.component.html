@@ -1,0 +1,166 @@
+<div class="p-3 floors-color d-flex justify-content-between align-items-center">
+  <div class="floors-head font-weight-bold ml-4">
+    Abdali Hospital-The Kube
+  </div>
+  <div class="adjust-icons d-flex justify-content-between align-items-center">
+    <div class="m-1 d-flex justify-content-center align-items-center"><i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div class="m-1 d-flex justify-content-center align-items-center"><i class="fa fa-user-circle-o"
+        aria-hidden="true"></i></div>
+  </div>
+</div>
+<div>
+  <div class="pb-0 pt-4 pl-4 pr-4">
+    <div class="hand-color border-rad">
+      <div class="d-flex p-2 m-0 w-100">
+        <div class="p-2 h-100 w-15">
+          <div class="p-3 hand-border h-100">
+            <div class="d-flex align-items-center mb-2">
+              <div class="hand-icon d-flex justify-content-center align-items-center">
+                <img src="assets/img/myclinic.png" alt="" height="25">
+              </div>
+              <div class="ml-3 w-100">
+                <p class="font-weight-bold m-0 handwhite-spae w-90" title="JR.S 189214th Floor - Zoon VlP">JR.S 189214th
+                  Floor - Zoon VlP</p>
+                <p class="m-0 font-color w-50">JR.S 189214</p>
+              </div>
+            </div>
+            <div class="mb-1 w-100">
+              <p class="m-0 font-color">Patient Name</p>
+              <p class="font-weight-bold m-0 h-10 handwhite-spae">Alaffouri,Reham Mahammad Musatafa</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1 w-100">
+              <div class="w-50">
+                <p class="m-0 font-color mb-1 handwhite-spae">Admission Date</p>
+                <p class="font-weight-bold m-0 handwhite-spae">23-02-2022</p>
+              </div>
+              <div class="w-50">
+                <p class="m-0 font-color mb-1">MRN#</p>
+                <p class="font-weight-bold m-0 handwhite-spae ">098776556566</p>
+              </div>
+            </div>
+            <div class="d-flex mt-1">
+              <p class="m-0 font-color handwhite-spae">Attending Physician: </p>
+              <p class="font-weight-bold m-0 handwhite-spae">Dr Ahmad Hijawi</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <button type="button"
+                class="border-0 px-2 py-2 mr-2 w-50 border-rad check-color font-weight-bold">Checked</button>
+              <button type="button" class="border-0 px-2 py-2 w-50 h-auto border-rad more-color handwhite-spae font-weight-bold">More
+                Details</button>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 h-100 w-25">
+          <div class="p-3 hand-border h-100 hadbg-color">
+            <div class="d-flex align-items-center pb-2 handborder-bottom">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3">
+                <h4 class="font-weight-bolder mb-0">23</h4>
+                <p class="font-weight-bold m-0">Lab</p>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <p class="m-0 font-color handwhite-spae">Creatinine, Sernm Level - Mg/Dl: </p>
+              <span class="hand-creat font-weight-bold px-4 py-1 border-rad">01.39</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <p class="m-0 font-color handwhite-spae">WBC - x10>3/ul</p>
+              <span class="hand-creat font-weight-bold px-4 py-1 border-rad">05.39</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <p class="m-0 font-color handwhite-spae">RBC - x10>6/ul</p>
+              <span class="hand-creat font-weight-bold px-4 py-1 border-rad">01.39</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <p class="m-0 font-color handwhite-spae">Creatinine, Sernm Level - Mg/Dl: </p>
+              <span class="hand-creat font-weight-bold px-4 py-1 border-rad">01.39</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 h-100 w-30">
+          <div class="d-flex justify-content-between align-items-center gap-data w-100">
+            <div class="hand-border hadbg-color d-flex align-items-center p-3 w-33 c-pointer"
+              (click)="askQuestion(popover)" [outsideClick]="true" [popover]="handService" placement="bottom"
+              [popoverContext]="{popover: popover }" #popover="bs-popover">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3 popover-w">
+                <h4 class="font-weight-bolder mb-0">23</h4>
+                <p class="font-weight-bold m-0 font-color ">Radiology</p>
+              </div>
+            </div>
+            <div class="hand-border hadbg-color d-flex align-items-center p-3 w-33 c-pointer"
+              (click)="askQuestion(popover)" [outsideClick]="true" [popover]="handMedication" placement="bottom"
+              [popoverContext]="{popovers: popovers}" #popovers="bs-popover">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3">
+                <h4 class="font-weight-bolder mb-0">52</h4>
+                <p class="font-weight-bold m-0 font-color ">Medication</p>
+              </div>
+            </div>
+            <div class="hand-border hadbg-color d-flex align-items-center p-3 w-33 c-pointer">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3">
+                <h4 class="font-weight-bolder mb-0">23</h4>
+                <p class="font-weight-bold m-0 font-color ">Consultation</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 position-relative textarea-data w-100">
+            <label for="textarea" class="m-0 font-weight-bold position-absolute hand-perso">Personal Note</label>
+            <textarea name="textarea" id="textarea" cols="50" rows="6" class="form-control "></textarea>
+          </div>
+        </div>
+        <div class="p-2 h-100 w-30">
+          <div class="d-flex justify-content-between align-items-center gap-data">
+            <div class="hand-border hadbg-color d-flex align-items-center p-3 w-100 c-pointer">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3">
+                <h4 class="font-weight-bolder mb-0">23</h4>
+                <p class="font-weight-bold m-0 font-color ">Vitals</p>
+              </div>
+            </div>
+            <div class="hand-border hadbg-color d-flex align-items-center p-3 w-100 c-pointer">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3">
+                <h4 class="font-weight-bolder mb-0">23</h4>
+                <p class="font-weight-bold m-0 font-color">Documents</p>
+              </div>
+            </div>
+            <div class="hand-border hadbg-color d-flex align-items-center p-3 w-100 c-pointer">
+              <div class="hand-icon d-flex justify-content-center align-items-center border-rad">
+                <img src="assets/img/icon_lab.png" alt="" height="18">
+              </div>
+              <div class="ml-3">
+                <h4 class="font-weight-bolder mb-0">23</h4>
+                <p class="font-weight-bold m-0 font-color">More</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 position-relative textarea-data">
+            <label for="textarea" class="m-0 font-weight-bold position-absolute hand-perso">Personal Note</label>
+            <textarea name="textarea" id="textarea" cols="50" rows="6" class="form-control "></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #handService let-popover="popover">
+  <hand-services (onClose)="closePopover(popover)"></hand-services>
+</ng-template>
+<ng-template #handMedication let-popover="popovers">
+  <hand-medication (onClose)="closePopover(popovers)"></hand-medication>
+</ng-template>

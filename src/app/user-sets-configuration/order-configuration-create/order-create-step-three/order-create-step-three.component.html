@@ -1,0 +1,44 @@
+
+<div class="order-set-details">
+      <div class="order-details-header">
+          <div class="order-step d-flex align-items-center">
+            <p class="m-0">Step<br /><span>03</span></p>
+            <h4 class="sub-title-header m-0 ml-3">Order Set Details</h4>
+          </div>
+          <div class="arrow-steps clearfix">
+            <div [ngClass]="activeClinicalOrders ? 'step':'step current'" (click)="activateTabs('ClinicalOrders')" ><span>Clinical Orders</span></div>
+            <div [ngClass]="activeMedications ? 'step':'step current'" (click)="activateTabs('Medications')" ><span>Medication Orders</span></div>
+            <div [ngClass]="activePhysicianOrders ? 'step':'step current'" (click)="activateTabs('PhysicianOrders')" ><span>Physician Orders</span></div>
+            <div [ngClass]="activeSurgeryOrder ? 'step':'step current'" (click)="activateTabs('SurgeryOrder')" ><span>Surgery Orders</span></div>
+            <div [ngClass]="activeAdmissionOrder ? 'step':'step current'" (click)="activateTabs('AdmissionOrder')" ><span>Admission Orders</span></div>
+            <div [ngClass]="activeDiagnosis ? 'step':'step current'" (click)="activateTabs('Diagnosis')" ><span>Diagnosis</span></div>
+          </div>
+          <div class="w-10">
+            <ng-container *ngIf="subTitleDetails?.Stid">
+            <img class="ml-2 width-20 cursor-pointer" src="assets/img/delete_icon_gray.png" (click)="removeOrderDetails()"/>
+            <img class="ml-2 width-20 cursor-pointer" (click)="addFormsRow()" src="assets/img/add.png" />
+            <button class="ml-2 create-diagnosis" [disabled]="!subTitleDetails" (click)="saveStepThreeData()">Save</button>
+          </ng-container>
+          </div>
+        </div>
+        <ng-container *ngIf="subTitleDetails?.Stid">
+          <div class="medication-order-main" *ngIf="activeMedications">
+            <app-medication-orders (realoadData)="realoadData($event)" [fieldTouchAdministration]="fieldTouchAdministration" [fieldTouchDispensing]="fieldTouchDispensing" [isFormSubmittedAdmi]="isFormSubmittedAdmi" [isFormSubmittedDispe]="isFormSubmittedDispe" [selectedSubTitleData]="selectedSubTitleData" [medicationForm]="medicationForm" [medicationListForm]="medicationListForm" [dispensingListForm]="dispensingListForm" [dispensingForm]="dispensingForm"></app-medication-orders>
+          </div>
+          <div class="diangoisi-order-main mt-4 px-2" *ngIf="activeDiagnosis">
+            <app-diagnosis-order (realoadData)="realoadData($event)" [fieldTouchDiagnosis]="fieldTouchDiagnosis" [selectedSubTitleData]="selectedSubTitleData" [diagnosisForm]="diagnosisForm" [diagnosisFormList]="diagnosisFormList"></app-diagnosis-order>
+          </div>
+          <div class="physician-odrer-set" *ngIf="activePhysicianOrders">
+            <app-physician-order-set [fieldTouchPhy]="fieldTouchPhy" [physicianOrderForm]="physicianOrderForm" [physicianOrderList]="physicianOrderList" [selectedSubTitleData]="selectedSubTitleData" [occupationGroupList]="occupationGroupList" (realoadData)="realoadData($event)"></app-physician-order-set>
+          </div>
+          <div *ngIf="activeClinicalOrders">
+            <app-clinical-orders [clinicalForm]="clinicalForm" [fieldTouchLab]="fieldTouchLab" [fieldTouchRad]="fieldTouchRad" [fieldTouchProce]="fieldTouchProce" [isFormSubmittedLab]="isFormSubmittedLab" [isFormSubmittedRad]="isFormSubmittedRad" [isFormSubmittedProc]="isFormSubmittedProc" [radiologyFormArray]="radiologyFormArray" [proceduresFormArray]="proceduresFormArray" [laboratoyFormArray]="laboratoyFormArray" [selectedSubTitleData]="selectedSubTitleData" (realoadData)="realoadData($event)"></app-clinical-orders>
+          </div>
+          <div *ngIf="activeSurgeryOrder">
+            <app-surgery-orders [surgeryForm]="surgeryForm" [fieldTouchSurgery]="fieldTouchSurgery" [isFormSubmittedSurgery]="isFormSubmittedSurgery" [surgeryListForm]="surgeryListForm" [assignUsersList]="assignUsersList" [selectedSubTitleData]="selectedSubTitleData" (realoadData)="realoadData($event)"></app-surgery-orders>
+          </div>
+          <div *ngIf="activeAdmissionOrder">
+            <app-admission-orders [admissionOrderForm]="admissionOrderForm" [admissionOrderFormArray]="admissionOrderFormArray" (realoadData)="realoadData($event)" [selectedSubTitleData]="selectedSubTitleData" [assignUsersList]="assignUsersList"></app-admission-orders>
+          </div>
+        </ng-container>
+  </div>

@@ -1,0 +1,108 @@
+.checkin-header {
+  background-color: #0056b0;
+  color: white;
+  width: 97%;
+  height: 53px;
+  margin: 10px auto 0px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px 15px 0px 0px;
+}
+
+.er-header {
+  background-color: #0082c8;
+  color: white;
+  width: 99%;
+  height: 53px;
+  margin: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.checkin-edash-main {
+  width: 97%;
+  margin: 0px auto;
+  background: #fff;
+  border-radius: 0px 0px 15px 15px;
+  display: flex;
+}
+
+.treatment-edash-main {
+  // padding: 10px;
+  // width: 97%;
+  // margin: 0px auto;
+  // background: #fff;
+  // border-radius: 0px 0px 15px 15px;
+  // display: flex;
+  // justify-content: center;
+
+  padding: 60px 0px;
+  width: 97%;
+  margin: 0px auto;
+  background: #fff;
+  border-radius: 0px 0px 15px 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.LabResults{
+  margin-bottom: 6px;
+    background-color: #0056b0;
+    padding: 9px;
+    border-radius: 15px;
+    width: 48px;
+    text-align: center;
+    margin-left: 3px;
+    height: 50px;
+}
+.active{
+  margin-bottom: 6px;
+    background-color: white !important;
+    border: 3px solid #0056b0 !important;
+    padding: 7px;
+    border-radius: 15px;
+    width: 48px;
+    text-align: center;
+    margin-left: 3px;
+}
+.treatment-header {
+  background-color: #0056b0;
+  color: white;
+  width: 97%;
+  height: 78px;
+  margin: 10px auto 0px;
+  align-items: center;
+  border-radius: 15px 15px 0px 0px;
+  display: flex;
+  margin-top: 0px;
+}
+
+.treatment-old-header {
+  background-color: #0082c8;
+  color: white;
+  width: 99%;
+  height: 53px;
+  margin: 6px;
+  display: flex;
+  align-items: center;
+}
+.icone-LabResults{
+filter: invert(1);
+}
+.er-notif-icon {
+  border: none !important;
+  box-shadow: none !important;
+}
+.LabResults .invert-1{
+  filter: invert(1);
+
+}
+
+.font-bsDaterangepicker{
+  font-size: 12px !important;
+}
+bs-daterangepicker-container{
+  &:has(> .daterangepickerlab) {
+    left: -175px!important;
+  }
+}

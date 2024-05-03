@@ -1,0 +1,284 @@
+<form [formGroup]="obsVteAnteptm">
+  <div class="row">
+    <div class="date-time col-md-12">
+      <strong class="m-0">Date/Time</strong>
+      <div class="col-md-2 pl-0 ml-3">
+        <input
+          #drp="bsDatepicker"
+          formControlName="Datee"
+          bsDatepicker
+          [bsConfig]="{
+            dateInputFormat: 'DD.MM.YYYY',
+            showWeekNumbers: false
+          }"
+          class="form-control height-normal"
+        />
+      </div>
+      <div class="col-md-2 pl-0">
+        <input
+          type="time"
+          formControlName="Timee"
+          class="form-control height-normal"
+          id="surgery-time"
+        />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="checkbox-diplay checkbox-header">
+        <h6 class="m-0">Antenatal Score</h6>
+      </div>
+      <div class="risk-check-manu row m-0">
+        <div class="col-md-6 p-0">
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="PreviousVte"
+              (change)="totalValue(4, 'PreviousVte')"
+            /><label
+              >(4) Previous VTE (except single event related to major
+              surgery)</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Ohss"
+              (change)="totalValue(4, 'Ohss')"
+            /><label>(4) OHSS.</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="PreVteSurgery"
+              (change)="totalValue(3, 'PreVteSurgery')"
+            /><label>(3) Previous VTE provoked by major surgery</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="SurgicalProcedure"
+              (change)="totalValue(3, 'SurgicalProcedure')"
+            /><label
+              >(3) Any surgical procedure in pregnancy or puerperium</label
+            >
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="MedicalMorbidity"
+              (change)="totalValue(3, 'MedicalMorbidity')"
+            /><label>(3) Medical Morbidity</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Hyperemesis"
+              (change)="totalValue(3, 'Hyperemesis')"
+            /><label>(3) Hyperemesis</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="FamilyHistory"
+              (change)="totalValue(1, 'FamilyHistory')"
+            /><label>(1) Famiy History of VTE relative</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="LrThrombophilia"
+              (change)="totalValue(1, 'LrThrombophilia')"
+            /><label>(1) Known low-risk thrombophiia</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Age35"
+              (change)="totalValue(1, 'Age35')"
+            /><label>(1) Age(> 35 years)</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Bmi30"
+              (change)="totalValue(1, 'Bmi30')"
+            /><label>(1) Obesty:BMI > 30</label>
+          </div>
+        </div>
+        <div class="col-md-6 p-0">
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Bmi40"
+              (change)="totalValue(2, 'Bmi40')"
+            /><label>(2) Obesty:BMI > 40</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Parity3"
+              (change)="totalValue(1, 'Parity3')"
+            /><label>(1) Party >= 3</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Smoker"
+              (change)="totalValue(1, 'Smoker')"
+            /><label>(1) Smoker</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="GrossVaricose"
+              (change)="totalValue(1, 'GrossVaricose')"
+            /><label>(1) Gross Varicose Veins</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="PreEclampsia"
+              (change)="totalValue(1, 'PreEclampsia')"
+            /><label>(1) Pre-eclampsia in current pregnancy</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="ArtIvf"
+              (change)="totalValue(1, 'ArtIvf')"
+            /><label>(1) ART/IVF (antenatal only)</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="MultiplePregnancy"
+              (change)="totalValue(1, 'MultiplePregnancy')"
+            /><label>(1) Multiple Pregnancy</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="Immobility"
+              (change)="totalValue(1, 'Immobility')"
+            /><label>(1) Immobility, dehydration</label>
+          </div>
+          <div class="checkbox-diplay">
+            <input
+              type="checkbox"
+              formControlName="SystemicInfection"
+              (change)="totalValue(1, 'SystemicInfection')"
+            /><label>(1) Current systemic infection</label>
+          </div>
+          <div class="checkbox-diplay">
+            <label class="white-space mr-3 m-0">Total score</label>
+            <input class="form-control w-25 h-30" formControlName="Total" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-3">
+      <h6 class="m-0">Plan for this patient</h6>
+    </div>
+    <div class="row col-md-12">
+      <div class="col-md-3">
+        <strong>LMWH</strong>
+        <input class="form-control" formControlName="Lmwh" />
+      </div>
+      <div class="col-md-3">
+        <strong>Dose</strong>
+        <input class="form-control" formControlName="Dose" />
+      </div>
+      <div class="col-md-3">
+        <strong>Start on</strong>
+        <input
+          #drp="bsDatepicker"
+          formControlName="StartOn"
+          bsDatepicker
+          [bsConfig]="{
+            dateInputFormat: 'DD.MM.YYYY',
+            showWeekNumbers: false,
+            containerClass: 'starton-datepicker'
+          }"
+          class="form-control height-normal"
+        />
+      </div>
+    </div>
+    <div
+      class="risk-check-manu d-flex color-f3f3f3 row ml-3 mr-3 m-0 w-100 mt-3"
+    >
+      <div class="col-md-12 mt-2 row">
+        <ul>
+          <li>
+            <strong
+              >- Medical co-morbidity: e.g.cancer, heart faiure, active SLE,
+              inflammatory polyarthopathy or inflammatory bowel disease,
+              nephritic syndrome, type IDM vith nephropathy, sickle cel
+              disease</strong
+            >
+          </li>
+          <li>
+            <strong
+              >- Family History: of unprovoked or estrogen-related VTE in first
+              degree relative</strong
+            >
+          </li>
+          <li>
+            <strong
+              >- Gross varicose veins: symptomatic, above knee or associated
+              with phelibitis/oedema/skin changes</strong
+            >
+          </li>
+          <li>
+            <strong
+              >- High-risk thromboplilia: antithrombin deficiency, protein C or
+              S deficiency, compound or homozygous for low-risk
+              thromboplilia</strong
+            >
+          </li>
+          <li><strong>- Hyperemesis; LMWH given till resolved</strong></li>
+          <li>
+            <strong>- OHSS; LMWH given only in the first trimester</strong>
+          </li>
+        </ul>
+        <div class="col-md-6 p-0 d-flex flex-column">
+          <strong>Weight</strong>
+          <strong>< 50</strong>
+          <strong>50-90 kg</strong>
+          <strong>91-130 kg</strong>
+          <strong>131-170 kg</strong>
+          <strong>> 170 kg</strong>
+          <strong>High prophylatic dose for women weighing 50 - 90 kg</strong>
+          <strong>The suggested prophylatic dose of LMWH by the MRCOG</strong>
+        </div>
+        <div class="col-md-2 p-0 d-flex flex-column">
+          <strong>Enoxaparin</strong>
+          <strong>20 mg daily</strong>
+          <strong>40 mg daily</strong>
+          <strong>60 mg daily*</strong>
+          <strong>80 mg daily*</strong>
+          <strong>0.6 mg/kg/day*</strong>
+          <strong>40 mg 12 hourly</strong>
+        </div>
+        <div class="col-md-2 p-0 d-flex flex-column">
+          <strong>Dalteparin</strong>
+          <strong>2500 units daily</strong>
+          <strong>5500 units daily</strong>
+          <strong>7500 units daily</strong>
+          <strong>10000 units daily</strong>
+          <strong>75 u/kg/day</strong>
+          <strong>5000 unit 12 hourly</strong>
+        </div>
+        <div class="col-md-2 p-0 d-flex flex-column">
+          <strong>Tinzaparin</strong>
+          <strong>3500 units daily</strong>
+          <strong>4500 units daily</strong>
+          <strong>7000 units daily*</strong>
+          <strong>9000 units daily*</strong>
+          <strong>75 u/kg/day*</strong>
+          <strong>4500 units 12 hourly</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

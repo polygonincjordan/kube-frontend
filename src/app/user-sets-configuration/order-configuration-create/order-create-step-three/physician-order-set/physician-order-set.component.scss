@@ -1,0 +1,63 @@
+.borderbottom {
+    border-bottom: 2px solid rgb(212, 203, 203) !important;
+}
+
+
+.update-template-title{
+    color: #ffff;
+    background: #007bff;
+    padding: 8px;
+  }
+  .update-template-contant {
+    border-bottom: 1px solid #cccacc;
+  }
+  .update-Exsiting {
+    border: 1px solid;
+    background: #3b82f6;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-weight: 700;
+  }
+
+  .select-order-tab {
+    border: 2px solid #007bff !important;
+    border-color: #007bff !important;
+    border-radius: 10px;
+  }
+
+  .ep-error-message {
+    border-color: red !important;
+    border: 1px solid red !important;
+  }
+  .physician-list {
+    padding: 10px 20px 10px 20px;
+    margin-top: 5px;
+    border: 2px solid #cacaca;
+    border-radius: 12px;
+  }
+  .order-set-details {
+    height: calc(100vh - 285px);
+    background: white;
+    border-radius: 10px;
+    margin-top: 12px;
+    margin-left: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    padding: 15px;
+  //   overflow: auto;
+  
+    .order-details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .physician-main {
+    height: calc(100vh - 370px);
+    overflow: auto;
+  }
+
+  .selected-data {
+    border-color: #007bff !important;
+  }

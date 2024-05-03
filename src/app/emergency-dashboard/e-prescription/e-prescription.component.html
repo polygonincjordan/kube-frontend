@@ -1,0 +1,134 @@
+<div class="e-order-content" id="app-container"
+  [className]="sidebarService.sidebarObject.containerClassnames">
+  <main class="mt-0 mb-0 e-order-main">
+    <div class="prescription-main-panel d-flex">
+      <div class="container-fluid">
+      <!-- <span style="    position: absolute;
+      right: 52px;
+      top: 26px;">
+        <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
+        z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="!showPatients">
+        <img src="assets/img/showpatient.png" style="height: 30px;position: sticky;
+        z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="showPatients">
+      </span> -->
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap">
+              <li class="d-flex m-0 align-items-center"
+                (click)="this.eprescriptionService.tabPanelNavigation('OrderDetails')"
+                [ngClass]="this.eprescriptionService.OrderDetails ? 'active'
+                : ''">
+                <img src="assets/img/grid-icon.svg">
+                <p class="d-inline-block m-0">Medication Profile</p>
+              </li>
+              <li class="d-flex m-0 align-items-center"
+                (click)="this.eprescriptionService.tabPanelNavigation('Administration')"
+                [ngClass]="this.eprescriptionService.Administration ? 'active' :
+                ''">
+                <img src="assets/img/administration-icon.svg">
+                <p class="d-inline-block m-0">Administration</p>
+              </li>
+              <li class="d-flex m-0 align-items-center"
+                (click)="this.eprescriptionService.tabPanelNavigation('DischargeOrder')"
+                [ngClass]="this.eprescriptionService.DischargeOrder ? 'active' :
+                ''">
+                <img src="assets/img/discharge-icon.svg">
+                <p class="d-inline-block m-0">Discharge Order</p>
+              </li>
+
+              <!-- hidepatient and showpatient icon -->
+              <!-- <div style="display: flex;
+              flex: 1;
+              justify-content: flex-end;">
+                <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
+                z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="!showPatients">
+                <img src="assets/img/showpatient.png" style="height: 30px;position: sticky;
+                z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="showPatients">
+              </div> -->
+
+
+              <li class="d-flex m-0 align-items-center"
+                (click)="this.eprescriptionService.tabPanelNavigation('eEmar')"
+                [ngClass]="this.eprescriptionService.eEmar ? 'active' : ''">
+                <img src="assets/img/grid-icon.svg">
+                <p class="d-inline-block m-0">e-MAR</p>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-panel">
+            <ng-container *ngIf="this.eprescriptionService.eEmar">
+              <app-e-mar></app-e-mar>
+            </ng-container>
+            <ng-container *ngIf="this.eprescriptionService.DischargeOrder">
+              <discharge-order (createEvent)="createEventFn()" (onTemplateEvent)="onTemplatedata()"></discharge-order>
+            </ng-container>
+            <ng-container *ngIf="this.eprescriptionService.Administration">
+              <administration></administration>
+            </ng-container>
+            <ng-container *ngIf="this.eprescriptionService.OrderDetails">
+              <app-prior-admission></app-prior-admission>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content-part bg-white">
+        <ng-container *ngIf="eprescriptionService.Administration">
+          <create-administration
+            [templateData]="eprescriptionService.templatePopupSaveData"></create-administration>
+        </ng-container>
+        <ng-container
+          *ngIf="eprescriptionService.prescriptionList.medicationData.length &&
+          eprescriptionService.prescriptionList.eventData &&
+          this.eprescriptionService.eEmar">
+          <e-mar-order-history
+            [medicationData]="eprescriptionService.prescriptionList"
+            [filterData]="eprescriptionService.checkedFilterData"></e-mar-order-history>
+        </ng-container>
+        <ng-container *ngIf="this.eprescriptionService.DischargeOrder">
+          <create-discharge-order #createDischarge
+            [medicationData]="eprescriptionService.medicationPopupSaveData"
+            [templateData]="eprescriptionService.templatePopupSaveData"></create-discharge-order>
+        </ng-container>
+        <ng-container *ngIf="this.eprescriptionService.OrderDetails">
+          <medications-profile
+            [filterData]="eprescriptionService.MedicationdFilterData"></medications-profile>
+        </ng-container>
+      </div>
+    </div>
+      <div style="background-color: #e3e3ea;width: 35%;height: 100vh; overflow: auto;" *ngIf="showPatients">
+        <div style="background-color: #0082c8;color: white;    text-align: center;
+        height: 43px;
+        font-size: 18px;
+        line-height: 38px;">Assigned Patients</div>
+           <div class="container-fluid">
+             <div class="">
+               <div class="">
+                 <div class="edash-listView" *ngFor="let item of treatmentPatientData" (click)="refreshPatientData(item)">
+                 <div style="display: flex;cursor: pointer;" >
+                 <div class="col-md-8">
+                   <span><strong>{{item.PatientName
+                  }}</strong></span><br>
+                   <div><strong><span >MRN-{{item.Patnr}}</span>
+                   <span [ngStyle]="{'background-color': item.TriageColor}" style="border: 1px solid;
+                     width: 30px;
+                     display: inline-block;
+                     text-align: center;
+                     color: white;margin-left: 30px;" *ngIf="item.Triage != ''">{{item.Triage}}</span>
+                     </strong>
+                     </div>
+                 </div>
+                 <div class="col-md-4" style="text-align: end;">
+                   <span><strong>({{item.Gender}},{{item.Age}})</strong></span><br>
+                   <span><strong>{{item.RoomidText}}</strong></span>
+                 </div>
+               </div>
+                   </div>
+               </div>
+             </div>
+           </div>
+       </div>
+    </div>
+  </main>
+  <app-sidebar></app-sidebar>
+</div>

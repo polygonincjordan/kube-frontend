@@ -1,0 +1,329 @@
+<div class="main-order p-3">
+  <div class="nav-bar">
+    <div class="d-flex justify-content-between align-items-center">
+      <label class="cursor-pointer" routerLink="/orders-dashboard">Home</label>
+      <h5 class="m-0">Orders Sets Configuration</h5>
+      <label class="cursor-pointer" (click)="redirectToCreateOrder()"> Create New</label>
+    </div>
+  </div>
+  <div class="d-flex mt-3">
+    <div class="main-sidebar" [ngClass]="{ expanded: isExpanded }">
+      <div class="sidebar-title" [ngClass]="{ 'hide-border': isExpanded }">
+        <div *ngIf="!isExpanded" class="order-step d-flex align-items-center">
+          <p class="m-0">Step<br /><span>02</span></p>
+          <h4 class="m-0 h-25 ml-3">Sub-Titles</h4>
+        </div>
+        <div *ngIf="!isExpanded" class="d-flex align-items-center">
+          <img class="ml-2 width-20 cursor-pointer" src="assets/img/delete_icon_gray.png" (click)="removeSubTitle(deleteSubTitleModal)"/>
+          <img class="ml-2 width-20 cursor-pointer" src="assets/img/add.png" (click)="getOrderFavData && addSubTitleInForm()" />
+          <button class="ml-2 create-diagnosis" [ngClass]="getOrderFavData ? '':'disable-btn'" [disabled]="!getOrderFavData" (click)="saveSubTitleData()">Save</button>
+        </div>
+        <div class="toggle" [ngClass]="isExpanded ? '' : 'toggle-left'" (click)="handleSidebarToggle()">
+          <img *ngIf="isExpanded" width="30" src="assets/img/greater_then_icon.png" />
+          <img *ngIf="!isExpanded" width="40" src="assets/img/less_then_icon.png" />
+        </div>
+      </div>
+      <div class="sidebar-contant" [ngClass]="{ 'overFlow-hidden': isExpanded }">
+        <form [formGroup]="subTitleForm">
+          <ng-container *ngFor="let subTitle of subTitleForm.get('subTitleFormList')['controls']; let i = index">
+            <div *ngIf="subTitle.value.Delete != 'X'" class="sub-titles-details d-flex cursor-pointer" (click)="selectedSubTitle(i, subTitle.value)" [ngClass]="selectedSubTitleIndex == i ? 'select-specialty-tab' : ''" formArrayName="subTitleFormList" >
+              <ng-container [formGroupName]="i">
+                <div *ngIf="!isExpanded" class="col-md-1 p-0 mr-3">
+                  <img width="22" src="assets/img/save_icon_card_order.png" />
+                </div>
+                <div (click)="$event.stopPropagation()" *ngIf="!isExpanded" class="col-md-10 p-0">
+                  <input formControlName="Name" class="title-input" [title]="subTitle.get('Name').value"/>
+                  <div class="d-flex justify-content-between align-items-center mt-2">
+                    <label class="m-0">Seq</label>
+                    <input formControlName="Seqno" numbersOnly [title]="subTitle.get('Seqno').value"/>
+                    <label class="m-0">Pre-Checked</label>
+                    <input formControlName="Autoselect" type="checkbox" />
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </form>
+      </div>
+    </div>
+    <div class="w-100">
+      <div class="order-set-header">
+        <div class="header">
+          <div class="d-flex align-items-center order-step">
+            <p class="m-0">Step<br /><span>01</span></p>
+            <h4 class="m-0 ml-3 h-25">Order set header</h4>
+          </div>
+          <div class="d-flex align-items-center">
+            <i class="fa fa-refresh refresh-icon cursor-pointer" (click)="refreshOrderData()" ></i>
+            <button class="ml-2 create-diagnosis" (click)="saveConfData(conformationModal)">
+              Save
+            </button>
+          </div>
+        </div>
+        <Form [formGroup]="orderConfigurationForm">
+          <div class="d-flex align-items-center mt-2">
+            <div class="pr-3 w-35">
+              <div class="form-group row mt-1 m-0">
+                <label class="col-sm-4 col-form-label h-25 p-0">Order Set Name</label>
+                <div class="col-sm-8 p-0">
+                  <input type="text" formControlName="Name" [title]="orderConfigurationForm.get('Name').value" class="form-control h-25"/>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-4 col-form-label h-25 p-0">Speciality</label>
+                <div class="col-sm-5 p-0">
+                  <ng-select class="h-25" placeholder="All Specialties" formControlName="DeptOu" [title]="titleDetails(orderConfigurationForm.get('DeptOu').value, 'speciality')">
+                    <ng-option *ngFor="let item of specialtyDeptList" [value]="item.Deptou">
+                      {{ item.DeptouDesc }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-4 col-form-label h-25 p-0">Patient Gender</label>
+                <div class="col-sm-5 p-0">
+                  <ng-select class="h-25" placeholder="Patient Gender" formControlName="Gender" [title]="titleDetails(orderConfigurationForm.get('Gender').value, 'gender')">
+                    <ng-option *ngFor="let patient of patientGenderList" [value]="patient.value">
+                      {{ patient.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="pr-3 w-20">
+              <div class="form-group row mt-1 m-0">
+                <label class="col-sm-5 col-form-label p-0">Patient Case</label>
+                <div class="col-sm-7 p-0">
+                  <ng-select placeholder="Patient Case" formControlName="PatientType" [title]="titleDetails(orderConfigurationForm.get('PatientType').value, 'patientCase')">
+                    <ng-option *ngFor="let patient of patientCaseList" [value]="patient.value">
+                      {{ patient.label }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-5 col-form-label p-0">Patient Age</label>
+                <div class="col-sm-7 p-0">
+                  <ng-select placeholder="Patient Age" (change)="setPatientAgeValue($event)" formControlName="Description" title="{{orderConfigurationForm.get('AgeFrom').value}} to {{orderConfigurationForm.get('AgeTo').value}}">
+                    <ng-option *ngFor="let patient of patientAgeList" [value]="patient">
+                      <span  title="{{patient.AgeFrom}} to {{patient.AgeTo}}">{{ patient.Description }}</span>
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-5 col-form-label p-0">Valid Days</label>
+                <div class="col-sm-7 p-0">
+                  <input class="form-control h-25" formControlName="ValidDays" numbersOnly [title]="orderConfigurationForm.get('ValidDays').value"/>
+                </div>
+              </div>
+            </div>
+            <div class="pl-3 w-30">
+              <div class="form-group row mt-1 m-0">
+                <label class="col-sm-3 col-form-label pl-1 p-0">Set Status</label>
+                <div class="col-sm-9 d-flex align-items-center">
+                  <div class="d-flex align-items-center pr-2" *ngFor="let item of setStatus">
+                    <input type="checkbox" disabled
+                      [ngModel]="orderConfigurationForm.get('StatusApr')?.value === item.value"
+                      (ngModelChange)="setStatusValue(item.value)"
+                      [ngModelOptions]="{ standalone: true }"
+                      [title]="orderConfigurationForm.get('StatusApr').value"
+                    />
+                    <label class="m-0 ml-2 p-0">{{ item.label }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-3 col-form-label p-0 cursor-pointer" (click)="openAssignModal(assignUser)"><span class="add-label">+ Add</span></label>
+                <div class="col-sm-9">
+                  {{ assignedUsersList.length ? "Assigned" : "Assign" }} Users
+                  <a class="cursor-pointer" style="color: blue;" *ngIf="assignedUsersList.length" (mouseenter)="isHiddenAssignModal = !isHiddenAssignModal" (mouseleave)="isHiddenAssignModal = !isHiddenAssignModal">[view]</a>
+                </div>
+                <ng-container *ngIf="isHiddenAssignModal">
+                  <div class="bg-white shadow-sm p-3">
+                    <table class="table import-diag">
+                      <tbody>
+                        <tr *ngFor="let assign of assignedUsersList">
+                          <td>{{ assign.NamString }}</td>
+                          <td>{{ assign.Gpart }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-3 col-form-label p-0 cursor-pointer" (click)="openDiagnosisModal(diagnosisModal)"><span class="add-label">+ Add</span></label>
+                <div class="col-sm-9">
+                  {{ assignedDiagnosisList.length ? "Assigned" : "Assign" }} Diagnosis
+                  <a class="cursor-pointer" style="color: blue;" *ngIf="assignedDiagnosisList.length" (mouseenter)="isHiddenDiagnosisModal = !isHiddenDiagnosisModal" (mouseleave)="isHiddenDiagnosisModal = !isHiddenDiagnosisModal">[view]</a>
+                </div>
+                <ng-container *ngIf="isHiddenDiagnosisModal">
+                  <div class="bg-white shadow-sm p-3">
+                    <table class="table import-diag">
+                      <tbody>
+                        <tr *ngFor="let assign of assignedDiagnosisList">
+                          <td>{{ assign.Dtext1 ? assign.Dtext1 : assign.Dtext }}</td>
+                          <td>{{ assign.Dkey }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div class="w-25">
+              <div class="form-group row mt-1 m-0">
+                <label class="col-sm-3 col-form-label p-0">Set Level</label>
+                <div class="col-sm-9 d-flex align-items-center">
+                  <!-- <div class="d-flex align-items-center pr-3" *ngFor="let item of setLevelList">
+                    <input type="checkbox" [ngModel]="orderConfigurationForm.get('AccessLevel')?.value === item.value"
+                    (ngModelChange)="setLevelValue(item.value)"
+                    [ngModelOptions]="{ standalone: true }"/>
+                    <label class="m-0 ml-2 p-0">{{ item.label }}</label>
+                  </div> -->
+                  <div class="form-check mr-3">
+                    <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault1" value="1" formControlName="AccessLevel" />
+                    <label class="form-check-label" for="flexRadioDefault1" >General</label>
+                  </div>
+                  <div class="form-check">
+                    <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault2" value="2" formControlName="AccessLevel" />
+                    <label class="form-check-label" for="flexRadioDefault2">User</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-3 col-form-label p-0">Education</label>
+                <div class="col-sm-9">
+                  <div class="form-group m-0">
+                    <div class="dropzone-wrapper">
+                      <div class="dropzone-desc">
+                        <i class="glyphicon glyphicon-download-alt"></i>
+                        <p>Drop file for upload.</p>
+                      </div>
+                      <input type="file" name="img_logo" class="dropzone" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row mt-2 m-0">
+                <label class="col-sm-3 col-form-label p-0">Activate Set</label>
+                <div class="col-sm-9">
+                  <label class="switch">
+                    <input type="checkbox" [ngModel]="orderConfigurationForm.get('Status')?.value === '1'"
+                    (ngModelChange)="orderConfigurationForm.get('Status')?.value === '1' ? orderConfigurationForm.get('Status').setValue('2') : orderConfigurationForm.get('Status').setValue('1') "
+                    [ngModelOptions]="{ standalone: true }"/>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Form>
+      </div>
+      <div>
+        <app-order-create-step-three [selectedSubTitleData]="selectedSubTitleData" (realoadSubTitle)="bindMedicationData($event)" [assignUsersList]="assignUsersList"></app-order-create-step-three>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #assignUser>
+  <div class="modal-body p-3">
+    <div class="header">
+      <h4>Assign Users</h4>
+    </div>
+    <div class="modal-content-diagnosis">
+      <div class="search-input col-md-12">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input type="text" placeholder="Search" class="form-control w-100" id="searchFilter" (input)="onSearchChange($event)"/>
+      </div>
+      <div class="modal-diagnosis-list mt-3">
+        <table class="table import-diag">
+          <tbody>
+            <tr *ngFor="let assign of assignUsersList | filter: seachAssignUsersData">
+              <td><input type="checkbox" [(ngModel)]="assign.isSelected" /></td>
+              <td>{{ assign.NamString }}</td>
+              <td>{{ assign.Gpart }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="assign-add-btn mr-3" (click)="addAssignUser()">Assign</button>
+      <button class="assign-add-btn add-diagnosis" (click)="modalRefForAssignUsers.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #diagnosisModal>
+  <div class="modal-body p-3">
+    <div class="header">
+      <h4>Assign Diagnosis</h4>
+    </div>
+    <div class="modal-content-diagnosis">
+      <ng-select class="d-grid" [typeahead]="searchCodeTypeHead" (change)="onSelectMedicine($event)">
+        <ng-option *ngFor="let search of diagnosisSearchList" [value]="search">
+          {{ search.Dkey }} - {{ search.Dtext1}}
+        </ng-option>
+      </ng-select>
+      <div class="modal-diagnosis-list mt-3">
+        <table class="table import-diag">
+          <tbody>
+            <tr *ngFor="let assign of assignDiagnosisList">
+              <td><input type="checkbox" [(ngModel)]="assign.isSelected" /></td>
+              <td>{{ assign.Dtext1 ? assign.Dtext1 : assign.Dtext }}</td>
+              <td>{{ assign.Dkey }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="assign-add-btn mr-3" (click)="selectedDiagnosisAssign()">Assign</button>
+      <button class="assign-add-btn add-diagnosis" (click)="modalRefForDiagnosis.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #conformationModal>
+  <div class="modal-body p-0">
+    <div class="update-template-title">
+      <h4 class="m-0 pl-3">Save order sets configuration detail</h4>
+    </div>
+    <div class="p-3">
+      <div class="update-template-contant">
+        <p>
+          {{ paramsId ? 'Are you sure you want to Update this Order set?' : 'Are you sure you want to Create this Order set?.'}}
+        </p>
+      </div>
+      <div class="text-right mt-3">
+        <button type="button" class="update-Exsiting mr-3" (click)="saveConformationDetail()">
+          Continue
+        </button>
+        <button type="button" class="update-Exsiting" (click)="modalRefForConformation.hide()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deleteSubTitleModal>
+  <div class="modal-body p-0">
+    <div class="update-template-title">
+      <h4 class="m-0 pl-3">Delete subtitle</h4>
+    </div>
+    <div class="p-3">
+      <div class="update-template-contant">
+        <p>Are you sure you want to delete this subtitle?</p>
+      </div>
+      <div class="text-right mt-3">
+        <button type="button" class="update-Exsiting mr-3" (click)="removeConfSubTitle()">
+          Continue
+        </button>
+        <button type="button" class="update-Exsiting" (click)="modalRefForDiagnosis.hide()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

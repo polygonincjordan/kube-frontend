@@ -1,0 +1,278 @@
+<div class="analysis-main" style="background: #f3f4f6;padding: 15px 10px;">
+<div class="container">
+<div class="row">
+<div class="col-4 left-right-comun-space">
+<div class="analysis-parent-white-box top-bar-icons-flex">
+
+<div class="top-bar-icons">
+<ul>
+<li><img src="assets/img/Patient_Analysis.svg"  title="Patient" class="icon-patient"> {{analysisDetails?.Patient}} <span class="break-down">Patient </span></li>
+</ul>
+</div>
+<div class="top-bar-icons">
+<ul>
+<li><img src="assets/img/Average Time.svg"  title="Clock" class="icon-patient">{{analysisDetails?.PatientAvgTm}} <span class="break-down">Average Time </span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-8 left-right-comun-space">
+<div class="analysis-parent-white-box top-bar-icons-flex">
+
+<div class="top-bar-icons carousel-pink">
+<ul>
+<li><img src="assets/img/Insurance.svg"  title="insurance" class="icon-patient"> {{analysisDetails?.Insurance}} <div class="time-clock"> <img src="assets/img/time-clock.png">{{analysisDetails?.InsuranceAvgTm}} </div> <span class="break-down">Insurance</span></li>
+</ul>
+</div>
+<div class="top-bar-icons early-dawn">
+<ul>
+<li><img src="assets/img/Self Pay.svg" title="Self pay" class="icon-patient">{{analysisDetails?.SelfPay}} <div class="time-clock"> <img src="assets/img/time-clock.png">{{analysisDetails?.SelfPayAvgTm}} </div> <span class="break-down">Self pay </span></li>
+</ul>
+</div>
+
+<div class="top-bar-icons mint-chiffon">
+<ul>
+<li><img src="assets/img/Local.svg" title="Local" class="icon-patient">00 <div class="time-clock"> <img src="assets/img/time-clock.png">00:00 </div> <span class="break-down">Local </span></li>
+</ul>
+</div>
+
+<div class="top-bar-icons pale-purple">
+<ul>
+<li><img src="assets/img/International.svg" title="International" class="icon-patient">00  <div class="time-clock"> <img src="assets/img/time-clock.png">00:00 </div> <span class="break-down">International </span></li>
+</ul>
+</div>
+</div>
+</div>    
+</div>
+
+<div class="hourly-patients">
+<div class="row">
+<div class="col-4 left-right-comun-space">
+<div class="analysis-parent-white-box">
+<h3 class="equal-head">Hourly Patients </h3>
+ <div id="columnChart" style="height:220px; width: 100%;">
+<app-bar-chart
+  *ngIf="analysisDetails"
+  [shadow]="false"
+  [options]="chartService.barChartOptions"
+  [data]="barChartData"></app-bar-chart>
+</div>
+</div>
+</div>
+
+<div class="col-8 left-right-comun-space" style="flex: auto;">
+<div class="analysis-parent-white-box">
+<div class="box-registration" *ngIf="showZoneStatsArr">
+<div class="top-head-main all-comun-boxs">
+<div class="col-one"><h3 class="equal-head">Zone Statistics</h3>   </div>
+<div class="col-two">
+<div class="list-table-simple">  
+<img src="assets/img/icon-red.png"> Red
+</div>
+<div class="list-table-simple">  
+<img src="assets/img/icon-yellow.png"> Yellow
+</div>
+<div class="list-table-simple">  
+<img src="assets/img/icon-green.png"> Green
+</div>
+<div class="list-table-simple">  
+  <img src="assets/img/icon-green.png"> Blue
+  </div>
+  <div class="list-table-simple">  
+<img src="assets/img/icon-green.png"> White
+</div>
+</div>
+</div>
+
+
+<div class="bg-light all-comun-boxs">
+<div class="col-one">Registration </div>
+<div class="col-two">
+  <div class="list-table-simple">  
+    <span class="eror-message time-box">{{showZoneStatsArr[0]?.Registration || ''}} </span>
+    </div>
+    <div class="list-table-simple">  
+      <span class="eror-message time-box">{{showZoneStatsArr[1]?.Registration || ''}} </span>
+      </div>
+      <div class="list-table-simple">  
+        <span class="eror-message time-box">{{showZoneStatsArr[2]?.Registration || ''}} </span>
+        </div>
+        <div class="list-table-simple">  
+          <span class="eror-message time-box">{{showZoneStatsArr[3]?.Registration || ''}} </span>
+          </div>
+          <div class="list-table-simple">  
+            <span class="eror-message time-box">{{showZoneStatsArr[4]?.Registration || ''}} </span>
+            </div>
+</div>
+</div>
+<div class="all-comun-boxs">
+<div class="col-one">Triage </div>
+<div class="col-two">
+  <div class="list-table-simple">  
+    <span class="eror-message time-box">{{showZoneStatsArr[0]?.Triage || ''}} </span>
+    </div>
+    <div class="list-table-simple">  
+      <span class="eror-message time-box">{{showZoneStatsArr[1]?.Triage || ''}} </span>
+      </div>
+      <div class="list-table-simple">  
+        <span class="eror-message time-box">{{showZoneStatsArr[2]?.Triage || ''}} </span>
+        </div>
+        <div class="list-table-simple">  
+          <span class="eror-message time-box">{{showZoneStatsArr[3]?.Triage || ''}} </span>
+          </div>
+          <div class="list-table-simple">  
+            <span class="eror-message time-box">{{showZoneStatsArr[4]?.Triage || ''}} </span>
+            </div>
+</div>
+</div>
+<div class="bg-light all-comun-boxs">
+<div class="col-one">Treatment </div>
+<div class="col-two">
+  <div class="list-table-simple">  
+    <span class="eror-message time-box">{{showZoneStatsArr[0]?.Treatement || ''}} </span>
+    </div>
+    <div class="list-table-simple">  
+      <span class="eror-message time-box">{{showZoneStatsArr[1]?.Treatement || ''}} </span>
+      </div>
+      <div class="list-table-simple">  
+        <span class="eror-message time-box">{{showZoneStatsArr[2]?.Treatement || ''}} </span>
+        </div>
+        <div class="list-table-simple">  
+          <span class="eror-message time-box">{{showZoneStatsArr[3]?.Treatement || ''}} </span>
+          </div>
+          <div class="list-table-simple">  
+            <span class="eror-message time-box">{{showZoneStatsArr[4]?.Treatement || ''}} </span>
+            </div>
+</div>
+</div>
+<div class="all-comun-boxs">
+<div class="col-one">Discharge </div>
+<div class="col-two">
+  <div class="list-table-simple">  
+    <span class="eror-message time-box">{{showZoneStatsArr[0]?.Discharge || ''}} </span>
+    </div>
+    <div class="list-table-simple">  
+      <span class="eror-message time-box">{{showZoneStatsArr[1]?.Discharge || ''}} </span>
+      </div>
+      <div class="list-table-simple">  
+        <span class="eror-message time-box">{{showZoneStatsArr[2]?.Discharge || ''}} </span>
+        </div>
+        <div class="list-table-simple">  
+          <span class="eror-message time-box">{{showZoneStatsArr[3]?.Discharge || ''}} </span>
+          </div>
+          <div class="list-table-simple">  
+            <span class="eror-message time-box">{{showZoneStatsArr[4]?.Discharge || ''}} </span>
+            </div>
+</div>
+</div>
+<div class="bg-light all-comun-boxs">
+<div class="col-one">Billing </div>
+<div class="col-two">
+  <div class="list-table-simple">  
+    <span class="eror-message time-box">{{showZoneStatsArr[0]?.Billing || ''}} </span>
+    </div>
+    <div class="list-table-simple">  
+      <span class="eror-message time-box">{{showZoneStatsArr[1]?.Billing || ''}} </span>
+      </div>
+      <div class="list-table-simple">  
+        <span class="eror-message time-box">{{showZoneStatsArr[2]?.Billing || ''}} </span>
+        </div>
+        <div class="list-table-simple">  
+          <span class="eror-message time-box">{{showZoneStatsArr[3]?.Billing || ''}} </span>
+          </div>
+          <div class="list-table-simple">  
+            <span class="eror-message time-box">{{showZoneStatsArr[4]?.Billing || ''}} </span>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</div> 
+
+ <!-- <div class="col-4 left-right-comun-space" style="max-width: 17.8%;">
+<div class="analysis-parent-white-box triage-time">
+<h3 class="equal-head" style=" width: fit-content;float: left;">Triage Time  </h3>
+<div class="time-clock" style=" text-align: right;    font-size: 16px;font-weight: 600;"> 01:45 </div>
+<div class="top-bar-icons pending">
+<ul>
+<li><img src="assets/img/Pending.svg" title="Pending" class="icon-patient">45  <span class="break-down">Pending </span></li>
+</ul>
+</div>
+
+<div class="top-bar-icons done">
+<ul>
+<li><img src="assets/img/Done.svg" title="Done" class="icon-patient">45  <span class="break-down">Done </span></li>
+</ul>
+</div>
+
+</div>
+</div> -->
+
+</div>
+
+<div class="row">
+<div class="col-12 left-right-comun-space">
+<div class="analysis-parent-white-box emergency-room">
+<h3 class="equal-head">Emergency Room </h3>
+<table class="table table-patient">
+  <thead>
+    <tr>
+      <th scope="col">Patient</th>
+      <th scope="col">Registration</th>
+      <th scope="col">Triage</th>
+      <th scope="col">Called</th>
+     <th scope="col">Treatment </th>
+     <th scope="col">Billing</th>
+     <th scope="col">Discharge</th>
+     <th scope="col">Doctor</th>
+     <th scope="col">Elapsed Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of toRoadMap">
+      <th class="patientid"><img>{{item?.Pname}} <span class="user-id">{{item?.Patnr}}</span></th>
+      <td [ngClass]="[item.RegToTriage <= 20 ? 'road-map-red': 'road-map-green']" style="position: relative;    left: 42px;" [title]="item.RegToTriageInHr"></td>
+      <td [ngClass]="[item.TriageToCalled <= 20 ? 'road-map-red': 'road-map-green']" style="position: relative;    left: 17px;" [title]="item.TriageToCalledInHr"></td>
+      <td [ngClass]="[item.CalledToTreat <= 20 ? 'road-map-red': 'road-map-green']" style="position: relative;    left: 20px;" [title]="item.CalledToTreatInHr"></td>
+      <td [ngClass]="[item.TreatToBill <= 20 ? 'road-map-red': 'road-map-green']" style="position: relative;    left: 32px;" [title]="item.TreatToBillInHr"></td>
+      <td [ngClass]="[item.BillToDischarge <= 20 ? 'road-map-red': 'road-map-green']" style="position: relative;    left: 21px;" [title]="item.BillToDischargeInHr"></td>
+      <td style="position: relative;">
+        <img src="assets/img/red-walk.png" style="width: 62px;
+        border: none;
+        position: relative;
+        top: 4px;" *ngIf="item.BillToDischarge <= 20">
+        <img src="assets/img/green-walk.png" style="width: 68px;
+        border: none;
+        position: relative;
+        top: 4px;" *ngIf="item.BillToDischarge > 20">
+      </td>
+      <td>{{item?.Dname}}</td>
+      <td [ngClass]="[item.ElapsedTimeInMins <= 120 ? 'right-time': 'extra-time']"><span>{{item?.Elapased}} </span></td>
+    </tr>
+    <!-- <tr>
+      <th class="patientid"><img src="assets/img/icon-selfpay.png"> Tom hanks <span class="user-id"> 1234556678987</span></th>
+      <td colspan="6" class="discharge-patient"><img src="assets/img/red-line-two.png" ></td>
+      <td>Andrew thomos</td>
+      <td class="extra-time"><span>07:24 </span></td>
+    </tr>
+        <tr>
+      <th class="patientid"><img src="assets/img/icon-selfpay.png"> Tom hanks <span class="user-id"> 1234556678987</span></th>
+      <td colspan="6" class="discharge-patient-green"><img src="assets/img/red-line-three.png"></td>      <td>Andrew thomos</td>
+<td class="right-time"><span>07:24 </span></td>    </tr>
+        <tr>
+      <th class="patientid"><img src="assets/img/icon-selfpay.png"> Tom hanks <span class="user-id"> 1234556678987</span></th>
+      <td colspan="6" class="discharge-patient-green"><img src="assets/img/red-line-four.png"></td>      <td>Andrew thomos</td>
+      <td class="right-time"><span>07:24 </span></td>
+    </tr>     -->
+</tbody>
+</table>
+
+
+
+</div>
+</div>
+</div>    
+
+</div>
+</div>
+

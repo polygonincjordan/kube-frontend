@@ -1,0 +1,185 @@
+<div class="bg-color padding discharge-order" style="background-color: white;padding: 0;">
+  <div class="bg-order">
+    <ng-container *ngIf="isFormReady">
+      <form [formGroup]="MedicationForm" class="discharge-create mb-3">
+        <table class="w-100 er-discharge-table">
+          <thead>
+            <tr class="bg-color">
+              <td class="w-92">
+                <table class="w-100">
+                  <tr>
+                    <th class="text-center w-28">Drug Name</th>
+                    <th class="text-center w-10 p-0">Formula</th>
+                    <th class="text-center w-9 p-0">Route</th>
+                    <th class="text-center w-15 pl-0 pr-4">Dosage/Unit</th>
+                    <th class="text-center w-15">Frequency</th>
+                    <th class="text-center w-3 p-0">PRN</th>
+                    <th class="text-center w-15  pl-0 pr-4">Duration</th>
+                  </tr>
+                </table>
+              </td>
+              <td class="w-8">
+                <p class="cm-action m-0">Action</p>
+                <span class="action-plus" (click)="addRowData()">+</span>
+              </td>
+            </tr>
+          </thead>
+        </table>
+        <div [ngClass]="drugArray.controls.length> 4 ? 'chemo-hight' : ''">
+          <table class="w-100 er-discharge-table" style="background-color: #fbfcff;">
+            <tbody formArrayName="MedicationData" class="mb-3" *ngFor="let item of drugArray.controls; let i=
+            index">
+              <tr [formGroupName]="i">
+                <td class="w-92">
+                  <table class="w-100 row-main-table er-prescription">
+                    <tr>
+                      <td>
+                        <table class="w-100 row-table">
+                          <tr>
+                            <td class="border-td w-28">
+                              <ctrl-search-select-medicine [group]="item" [isSubmitted]="isFormSubmitted" [index]="i"
+                                [medicineDefaultData]="medicationDrugList" (onSelected)="onSelectMedicine($event)">
+                              </ctrl-search-select-medicine>
+                            </td>
+                            <td class="border-td w-10">
+                              <input type="text" class="form-control" formControlName="Formatdescr" [ngClass]="item.touched &&
+                                item.get('Formatdescr').errors &&
+                                isFormSubmitted ? 'ep-error-message': ''" >
+                            </td>
+                            <td class="border-td w-8">
+                              <input type="text" class="form-control" formControlName="Routedescr" [ngClass]="item.touched &&
+                                item.get('Routedescr').errors &&
+                                isFormSubmitted ?
+                                'ep-error-message': ''" >
+                            </td>
+                            <td class="w-15 p-0">
+                              <table class="w-100">
+                                <tr>
+                                  <td class="border-td w-40" *ngIf="!item.value.IsFrequencyDeftim">
+                                    <input type="textbox" min="0" class="form-control" formControlName="Quan" [ngClass]="item.touched &&
+                                            item.get('Quan').errors &&
+                                            isFormSubmitted ?
+                                            'ep-error-message': ''" appDigitDecimaNumber
+                                      [ngModel]="item.get('Quan').value | removeTrailingZeros">
+                                  </td>
+                                  <td class="border-td w-40" *ngIf="item.value.IsFrequencyDeftim">
+                                    <input type="text" class="form-control" formControlName="Dosdef" [ngClass]="item.touched &&
+                                    item.get('Dosdef').errors &&
+                                    isFormSubmitted ?
+                                    'ep-error-message': ''">
+                                  </td>
+                                  <td class="border-td">
+                                    <div *ngIf="item.get('IsPatientMedication').value">
+                                      <input type="text" class="form-control" formControlName="Quantunittxt" [ngClass]="item.touched &&
+                                        item.get('Quantunittxt').errors &&
+                                        isFormSubmitted ?
+                                        'ep-error-message': ''" readonly>
+                                    </div>
+                                    <div *ngIf="!item.get('IsPatientMedication').value">
+                                      <ng-select [appendTo]="'body'" [searchable]="true" formControlName="Quanunit"
+                                        [ngClass]="item.touched &&
+                                        item.get('Quanunit').errors &&
+                                        isFormSubmitted ?
+                                        'ep-error-message': ''" (change)="onChangeDosageUnit(item.get('AgentidResult').value,
+                                        $event, i)">
+                                        <ng-option *ngFor=" let medicationDosageUnit of
+                                        item.get('AgentidResult').value" [value]="medicationDosageUnit.Meinh">
+                                          {{ medicationDosageUnit.Mseht }}
+                                        </ng-option>
+                                      </ng-select>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td class="border-td w-15">
+                              <ng-select [appendTo]="'body'" [searchable]="true" formControlName="N1ztxt" [ngClass]="item.touched &&
+                              item.get('N1ztxt').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''" (change)="onChangeFrequencySet(item.get('N1ztxt').value,
+                              i, 'change')" (click)="onOpenFrequencySet(i)" [readonly]="item.value.Complex">
+                                <ng-option *ngFor=" let medicationFrequency of
+                                frequencyList" [value]="medicationFrequency.CycleKey">
+                                  {{ medicationFrequency.Text}}
+                                </ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="border-td w-3 text-center"><input type="checkbox" class="align-middle prn-input"
+                                [title]="item.get('Prncond').value" formControlName="Prn" [ngClass]="item.touched &&
+                                item.get('Prn').errors &&
+                                isFormSubmitted ?
+                                'ep-error-message': ''" (change)="onOpenPrnDesc(item, i, $event)"></td>
+                            <td class="w-15 p-0">
+                              <table class="w-100">
+                                <tr>
+                                  <td class="border-td w-40"><input type="number" min="0" class="form-control "
+                                      formControlName="Pdur" [ngClass]="item.touched &&
+                                      item.get('Pdur').errors &&
+                                      isFormSubmitted ?
+                                      'ep-error-message': ''" [ngModel]="item.get('Pdur').value | removeTrailingZeros">
+                                  </td>
+                                  <td class="border-td">
+                                    <ng-select [appendTo]="'body'" [searchable]="true" formControlName="Pduru"
+                                      [ngClass]="item.touched &&
+                                      item.get('Pduru').errors &&
+                                      isFormSubmitted ?
+                                      'ep-error-message': ''">
+                                      <ng-option *ngFor=" let medicationDurationUnit of
+                                        durationUnitList" [value]="medicationDurationUnit.Unit">
+                                        {{ medicationDurationUnit.Text }}
+                                      </ng-option>
+                                    </ng-select>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="w-8">
+                  <table class="w-100">
+                    <tr>
+                      <td class="pt-1 px-2">
+                        <img src="assets/img/ActionInfo.svg" height="25" (click)="onOpenInfoPopup(item, i)"
+                          [title]="item.get('Descr').value">
+                      </td>
+                      <td class="pt-1 px-2 pr-3">
+                        <img src="assets/img/ActionBin.svg" height="25" (click)="deleteRowData(i)">
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <div #collapse="ngbCollapse" [(ngbCollapse)]="!item.value.IsFrequencyDeftim" class="frequency-collapse">
+                  <div class="d-flex m-3">
+                    <div>
+                      <ng-container *ngIf="item.value.IsFrequencyDeftim">
+                        <frequency-deftim [defaultfrequencydeftim]="item.value"
+                          (frequencyDeftim)="FrequencySetcycle($event,i)"></frequency-deftim>
+                      </ng-container>
+                    </div>
+                    <div>
+                      <div class="d-flex w-62 m-2">
+                        <div class="c-pointer">
+                          <img src="assets/img/close.svg" (click)="closeCycle(i)" height="20"
+                            class="iconsminds-cursor-click mr-3 ml-2 c-pointer">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>
+<template-description #templateDescription></template-description>
+<addition-info-popup #additionalPopup (onUpdateData)="onUpdatedAdditionalInfo($event)"></addition-info-popup>
+<prn-condition-popup #prnPopup (onUpdateData)="onUpdatedPrnCondition($event)"></prn-condition-popup>

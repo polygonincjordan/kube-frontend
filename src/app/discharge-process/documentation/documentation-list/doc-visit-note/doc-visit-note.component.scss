@@ -1,0 +1,637 @@
+// soap modal===========
+.main_soap {
+    display: block;
+    margin-bottom: 30px;
+    background-color: #fff;
+
+    .head {
+        background-color: #3b82f6;
+        border: 1px solid black;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .details {
+        padding: 10px;
+        border: 1px solid;
+        margin-bottom: 10px;
+
+        .label_box {
+            background-color: #3b82f6;
+            color: #fff;
+            padding: 5px;
+            min-width: 110px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        input {
+            margin-left: 10px;
+            width: 18%;
+            border: 1px solid lightgray;
+        }
+
+        input[type="date"] {
+            width: 25px;
+            border: none;
+            margin-left: 0;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-text {
+            -webkit-appearance: none;
+            display: none;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-month-field {
+            -webkit-appearance: none;
+            display: none;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-day-field {
+            -webkit-appearance: none;
+            display: none;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-year-field {
+            -webkit-appearance: none;
+            display: none;
+        }
+
+        textarea {
+            border: 1px solid lightgray;
+            margin-left: 10px;
+            width: 100%;
+        }
+    }
+
+    .bottom {
+        padding: 5px;
+        border: 1px solid;
+        text-align: center;
+
+        button {
+            border: 1px solid;
+            background: #3b82f6;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 0 2px;
+            font-weight: bold;
+        }
+    }
+}
+
+.f-size-field {
+    font-size: 0.85rem;
+}
+
+//visit_doc_modal==========
+.visit_doc_modal {
+    display: block;
+
+    // display: block;
+    img.mw-15 {
+        max-width: 14px;
+    }
+
+    input[type="search"] {
+        width: 48% !important;
+        padding: 4px 10px;
+        background-image: url("../../../../../assets/img/search-icon.svg");
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        background-position: 96%;
+    }
+
+    a {
+        width: 25px;
+        height: 25px;
+        display: inline-block;
+        border-radius: 4px;
+        border: 1px solid lightgray;
+        text-align: center;
+        margin-left: 8px;
+    }
+
+    .details {
+        padding-right: 30px;
+    }
+
+    .inner_ckeckbox {
+        border: 1px solid blue;
+        padding: 5px 10px;
+        margin-left: 10px;
+        margin-top: 10px;
+        max-height: 130px;
+        overflow: auto;
+
+        input {
+            margin-left: 0;
+            width: auto;
+        }
+
+        input[type="checkbox"] {
+            margin: 0 10px;
+        }
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    label {
+        margin-bottom: 0;
+        margin-left: 10px;
+
+        img {
+            max-width: 20px;
+            margin-right: 10px;
+        }
+    }
+
+    .opacity-0 {
+        opacity: 0;
+    }
+
+    .w-45 {
+        width: 45% !important;
+    }
+
+    .attchment_btns {
+        input {
+            width: 100%;
+            margin-right: 10px;
+        }
+
+        button {
+            border: 1px solid;
+            background: #3b82f6;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 0 2px;
+            font-weight: bold;
+        }
+    }
+
+    .file-curser {
+        cursor: pointer;
+    }
+}
+
+quill-editor {
+    margin-left: 10px;
+}
+
+/* clears the ‘X’ from Internet Explorer */
+input[type="search"]::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+input[type="search"]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+}
+
+.patient_docs_modal {
+    width: 100%;
+    background-color: #fff;
+
+    .inner_box {
+        border-radius: 20px;
+
+        .main_bg {
+            border-radius: 20px;
+            padding: 15px 18px;
+
+            .right_icons {
+                .mw-15 {
+                    max-width: 26px;
+                }
+
+                .simple-icon-settings:before {
+                    font-size: 22px;
+                }
+            }
+
+            .detail_row {
+                overflow: auto;
+
+                p {
+                    min-width: 300px;
+                }
+            }
+
+            .input_fields {
+                border: 1px solid blue;
+                padding: 8px;
+                margin-top: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                input[type="search"] {
+                    width: 45%;
+                    padding: 4px 10px;
+                    background-image: url("../../../../../assets/img/search-icon.svg");
+                    background-size: 12px 12px;
+                    background-repeat: no-repeat;
+                    background-position: 96%;
+                }
+
+                input {
+                    padding: 4px 10px;
+                }
+
+                input[type="search"]::-webkit-search-decoration,
+                input[type="search"]::-webkit-search-cancel-button,
+                input[type="search"]::-webkit-search-results-button,
+                input[type="search"]::-webkit-search-results-decoration {
+                    -webkit-appearance: none;
+                }
+
+                .right_fields {
+                    border-left: 1px solid lightgray;
+                    padding-left: 15px;
+                    display: flex;
+                    align-items: center;
+
+                    label {
+                        margin-bottom: 0;
+                        font-weight: bold;
+                        margin-left: 8px;
+                        padding-right: 15px;
+                        border-right: 1px solid lightgray;
+                        margin-right: 10px;
+                    }
+
+                    span {
+                        width: 25px;
+                        height: 25px;
+                        line-height: 25px;
+                        border: 1px solid lightgray;
+                        text-align: center;
+                        margin-right: 6px;
+                        display: inline-block;
+
+                        img {
+                            max-width: 14px;
+                        }
+
+                        img.date {
+                            max-width: 20px;
+                        }
+                    }
+
+                    .form-control {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal .modal-body {
+    padding: 0.75rem !important;
+}
+
+.options_modal {
+    background-color: #fff;
+    border-radius: 1rem;
+
+    .inner_box {
+        border-radius: 20px;
+
+        .main_bg {
+            padding: 10px 14px;
+            border-radius: 20px;
+
+            .border-bottom {
+                border-bottom: 1px solid lightgray;
+
+                title {
+                    display: inline-block;
+                    background-color: rgb(59, 130, 246);
+                    font-weight: 700;
+                    color: #fff;
+                    padding: 5px 10px;
+                }
+            }
+
+            h6 {
+                font-size: 14px;
+                font-weight: bold;
+                padding-top: 8px;
+
+                span {
+                    color: red;
+                }
+            }
+
+            .checkbox {
+                display: flex;
+                align-items: center;
+                margin-right: 15%;
+
+                label {
+                    margin-bottom: 0;
+                    margin-left: 8px;
+                }
+
+                select {
+                    margin-left: 10px;
+                    width: 35%;
+                }
+
+                input[type="text"] {
+                    width: 20%;
+                    margin-left: 10px;
+                }
+            }
+
+            .note {
+                color: rgb(255, 56, 56);
+                font-weight: 600;
+                font-style: italic;
+                margin-top: 20px;
+                margin-bottom: 15px;
+
+                label {
+                    margin-bottom: 0;
+                    margin-left: 10px;
+                    font-size: 14px;
+                    color: black;
+                    font-style: normal;
+                }
+            }
+        }
+    }
+
+    .save-icon {
+        cursor: pointer;
+        width: 19px;
+        float: right;
+        margin-right: 10px;
+    }
+}
+
+.search-modal-input-fields {
+    width: 45%;
+    padding: 4px 10px;
+    background-image: url("../../../../../assets/img/search-icon.svg");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
+    background-position: 96%;
+
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+        -webkit-appearance: none;
+    }
+}
+
+.modal-footer {
+    border: none;
+    padding: 1rem;
+}
+
+.search-modal-main-box-style {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0.5rem;
+}
+
+.button-add-search {
+    background-color: rgb(59, 130, 246);
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+::ng-deep .soap-form-select.ng-select {
+    font-size: 0.8rem;
+    width: 48%;
+    display: inline-block;
+    margin: 0 0 0 10px;
+
+    .ng-select-container {
+        border: 1px solid lightgray;
+        background: url("../../../../../assets/img/search-icon.svg");
+        background-repeat: no-repeat;
+        background-size: 12px 12px;
+        background-position: 96% center;
+        height: 30px !important;
+        min-height: auto;
+        padding: 4px 10px;
+    }
+
+    input {
+        padding: 0 !important;
+    }
+
+    .ng-arrow-wrapper,
+    .ng-clear-wrapper {
+        display: none;
+    }
+}
+
+
+.diagnosis-content {
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+
+        h4 {
+            border-bottom: 1px solid #000;
+            font-weight: 700;
+        }
+
+        .create-diagnosis {
+            border: 1px solid;
+            background: #3b82f6;
+            color: #fff;
+            padding: 5px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+    }
+
+    .diagnosis-list {
+        border-bottom: 2px solid #000;
+        padding-bottom: 14px;
+        padding-top: 10px;
+
+        .diagnosis-checkbox {
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 5px;
+            margin-top: 8px;
+
+            label {
+                font-size: 12px;
+                font-weight: bold;
+                color: #000;
+            }
+        }
+
+        .header-date {
+            margin-top: 7px;
+        }
+
+        .header-time {
+            margin-top: 7px;
+        }
+
+        .z-indexlabel {
+            z-index: 999;
+        }
+    }
+}
+
+.diagnosis-form {
+    overflow-x: auto;
+    height: calc(100vh - 342px);
+    padding: 0 15px;
+}
+
+.multiselect-adjust .dropdown-list {
+    width: auto !important;
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+    width: 95%;
+    display: flex;
+    justify-content: end;
+
+    .add-diagnosis {
+        border: 1px solid;
+        background: #3b82f6;
+        color: #fff;
+        padding: 5px 20px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+
+}
+
+.search-input {
+    img {
+        position: absolute;
+        top: 50%;
+        left: 30px;
+        transform: translateY(-50%);
+    }
+
+    input {
+        height: 42px;
+        font: 600 14px/1.5 Nunito, sans-serif;
+        color: #848f96;
+        border-radius: 8px !important;
+        box-shadow: none;
+        padding: 10px 10px 10px 42px;
+    }
+}
+
+.modal-content {
+    border-radius: 0;
+}
+
+::ng-deep .modal-diagnosis {
+    max-width: 500px !important;
+
+    .modal-content {
+        background: #fff !important;
+
+        .footer {
+            // position: relative;
+        }
+    }
+}
+
+.diagnosis-modal {
+    .modal-content-diagnosis {
+        .modal-diagnosis-list {
+            height: 60vh;
+            overflow-y: auto;
+
+            .table {
+                tr td {
+                    padding: 0.3rem;
+                }
+
+                tr td:nth-child(1) {
+                    text-align: center;
+                    vertical-align: middle;
+                    width: 10px;
+
+                    input {
+                        height: 20px;
+                        width: 15px;
+                    }
+                }
+
+                tr td:nth-child(2) {
+                    padding-left: 15px;
+
+                    span {
+                        padding-left: 10px;
+                    }
+
+                    p {
+                        color: #000;
+                        font-size: 13px !important;
+                        font-weight: 700;
+                    }
+                }
+
+                tr td:nth-child(3) {
+                    color: #000;
+                    font-size: 13px !important;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
+
+//---------
+.modal-body {
+    .header {
+        .active {
+            border-bottom: 2px solid #3552b3;
+        }
+    }
+}
+
+.modal-body {
+    .header {
+        .mainTitel {
+            font-weight: 700;
+        }
+    }
+}
+
+.diagnosis-modal {
+    height: 80vh;
+    overflow: auto;
+}

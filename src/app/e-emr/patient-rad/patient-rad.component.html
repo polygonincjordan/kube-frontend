@@ -1,0 +1,216 @@
+<div class="container-fluid">
+  <div style="display: flex">
+    <div class="card" style="margin-top: 15px; width: 100%">
+      <div class="card-body" style="padding: 0 16px 16px 16px">
+        <div class="table-header">
+          <span style="margin-left: 11px">My Patient's Rad Reports</span>
+          <div class="table-icon">
+            <span style="margin-right: 15px"
+              ><i class="fa fa-pie-chart" title="Chart List" aria-hidden="true" (click)="showPieChart()"></i
+            ></span>
+            <span style="margin-right: 15px"
+              ><i class="fa fa-refresh" title="Refresh List" aria-hidden="true" (click)="initialfilterData()"></i
+            ></span>
+            <span style="margin-right: 15px"
+              ><i
+                class="fa fa-filter" title="Filter List"
+                aria-hidden="true"
+                (click)="showFilterFn($event)"
+              ></i
+            ></span>
+            <div
+              class="card"
+              style="
+                width: 15rem;
+                position: absolute;
+                z-index: 999;
+                right: 0px;
+                color: black;
+                font-size: 12px;
+              "
+              *ngIf="showfilter"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="card-body" style="padding: 35px">
+                <div class="">
+                  <p style="margin: 0">My Patient's Rad Results filter</p>
+                  <p style="margin: auto; margin-top: 5px">Date From</p>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    #dp="bsDatepicker"
+                    bsDatepicker
+                    [(bsValue)]="dateFrom"
+                    [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                  />
+                  <p style="margin: auto; margin-top: 5px">Date To</p>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    #dp="bsDatepicker"
+                    bsDatepicker
+                    [(bsValue)]="dateTo"
+                    [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                  />
+                  <p style="margin: auto; margin-top: 5px">Patient's MRN</p>
+                  <!-- <input class="form-control" type="text" placeholder="" /> -->
+                  <input type="text" class="form-control" [(ngModel)]="patientMrn"/>
+                  <p style="margin: auto; margin-top: 5px">Result Status</p>
+                  <!-- <input class="form-control" type="text" placeholder="" /> -->
+                  <ng-multiselect-dropdown
+                    class="multiselect-adjust"
+                    [placeholder]="'Status'"
+                    [settings]="dropdownSettingsForStatus"
+                    [data]="dropdownListForStatus"
+                    [(ngModel)]="modalForselectedItemsForStatus"
+                    (onSelect)="onItemSelectForStatus($event)"
+                    (onDeSelect)="onDeselectForStatus($event)"
+                  >
+                  </ng-multiselect-dropdown>
+                  <button
+                    class="btn btn-primary"
+                    style="margin-left: 48px;background-color: #0082c8; border: #0082c8"
+                    (click)="filterData()"
+                  >
+                    Filter
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"
+              ><i class="fa fa-search" aria-hidden="true"></i
+            ></span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search..."
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            [(ngModel)]="searchString"
+          />
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-6 col-sm-12" style="overflow: auto; max-height: 61vh">
+            <!-- {{dataTable.finalArray}} -->
+            <table class="table table-bordered">
+              <thead style="background: #0082c8 !important; color: white;position: sticky;
+              top: 0;z-index: 99;">
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">MRN</th>
+                  <th scope="col">Patient</th>
+                  <th scope="col">Case Type</th>
+                  <th scope="col">Order Description</th>
+                  <th scope="col">Result Status</th>
+                  <th scope="col">Report</th>
+                  <th scope="col">Mark as checked</th>
+                  <th scope="col">Crtitical Indicator</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dataOnTable | filter : searchString">
+                  <td>{{ item.DATUM | date : "dd.MM.yyyy"}}</td>
+                  <td>{{item.STUNDE}}:{{item.MINUTEN}}</td>
+                  <td>{{ item.PATNR }}</td>
+                  <td>{{ item.PATIENT }}</td>
+                  <td>{{ item.FATYPTXT }}</td>
+                  <td>{{ item.ANMERKUNG }}</td>
+                  <td>{{item.ZZRESULT_STATUS_TEXT}}</td>
+                  <td style="text-align: center;">
+                    <div class="dropdown">
+                      <i class="fa fa-paperclip" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-hidden="true" style="font-size: 17px; cursor: pointer;" *ngIf="item.ZZRESULT_STATUS_TEXT !== 'Not done'"></i>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <a
+                          class="dropdown-item c-pointer"
+                          (click)="getPdf(item)"
+                          >Open PDF Report</a
+                        >
+                        <a
+                          class="dropdown-item c-pointer"
+                          (click)="openModuleRad(item)"
+                          >Open Image</a
+                        >
+
+                      </div>
+                    </div>
+                    </td>
+                  <td style="text-align: center;"><div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                     *ngIf="item.ZZRESULT_STATUS_TEXT !== 'Not done'" (change)="confirmationMarkAsChecked(item);$event.preventDefault()" [(ngModel)]="checkedFlag">
+                  </div></td>
+                  <td style="text-align: center;"><i class="fa fa-circle" aria-hidden="true" style="color: red;font-size: 23px;" *ngIf="item.ZZRADCRITICALIND !== ''"></i></td>
+                </tr>
+              </tbody>
+            </table>
+            <div
+            *ngIf="
+              dataOnTable.length == 0
+            "
+            style="text-align: center"
+          >
+            No results
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- chart -->
+    &nbsp;&nbsp;&nbsp;
+    <div class="card" style="margin-top: 16px; width: 30%" *ngIf="showPie">
+      <div class="card-body" style="padding: 0 16px 16px 16px">
+        <div class="table-header" style="text-align: center">
+          <span style="margin-left: 11px">My Patient's Rad Chart</span>
+        </div>
+        <div class="mt-4">
+          <app-pie-chart
+            *ngIf="dataOnTable.length > 0"
+            [shadow]="false"
+            [options]="chartDataConfig.pieChartOptions"
+            [data]="pieChartData"
+          ></app-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #radpdfmodal>
+  <div class="modal-body">
+    <div class="row">
+          <iframe [src]="pdfUrl" width="1000" height="500">
+     </iframe>
+    </div>
+    <div class="mt-2" style="text-align: center;">
+      <button class="btn btn-primary" (click)="closePdfModal()" style="background-color: #0082c8; border: #0082c8">Close</button>
+    </div>
+
+  </div>
+</ng-template>
+<ng-template #imageModal>
+  <div class="modal-body">
+    <div class="row">
+          <iframe [src]="imageUrl" width="1000" height="500">
+     </iframe>
+    </div>
+    <div class="mt-2" style="text-align: center;">
+      <button class="btn btn-primary" (click)="closeImageModal()" style="background-color: #0082c8; border: #0082c8">Close</button>
+    </div>
+
+  </div>
+</ng-template>

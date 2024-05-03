@@ -1,0 +1,10 @@
+<ng-template #templatecontent>
+  <div class="onSelected-data">
+    <div *ngFor="let item of configurationdata; let i=
+      index" class="d-flex justify-content-between p-2 m-1 border-bottom
+      font-weight-bolder  c-pointer" (click)="onSelectedOrganization(item)">
+      <div>{{item.TrtoeDescr}}</div>
+      <div>{{item.Trtoe}}</div>
+    </div>
+  </div>
+</ng-template>

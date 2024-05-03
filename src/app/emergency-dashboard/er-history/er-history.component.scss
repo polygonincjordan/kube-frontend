@@ -1,0 +1,106 @@
+.save-risk {
+  border: 1px solid;
+  background: #3b82f6;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: flex;
+  font-weight: 700;
+  height: 40px;
+  width: 80px;
+  align-items: center;
+  justify-content: center;
+}
+.table.checkin-table tr{
+    background-color: #fbfcff;
+}
+.allergy-header{
+  background: #0056b0;
+    position: relative;
+    padding: 15px 15px 10px;
+    border-radius: 15px 15px 0 0;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+.allergy-header-ul{
+  width: 100%;
+  padding: 0px 0px 0px 10px;
+  text-align: right;
+  margin: 0px;
+  line-height: 0px;
+} 
+.allergy-header-item {
+   padding: 17px;
+   font-weight: 500;
+   list-style: none;
+   display: inline-block;
+   font-size: 14px;
+   border: 1px solid #d3d1d1;
+   border-radius: 6px;
+   width: -moz-fit-content;
+   width: fit-content;
+   margin: 0 5px;
+   text-align: center;
+}
+.create-form-inputs{
+  margin-bottom: 6px;
+}
+.create-form-inputs input::placeholder {
+font-size: 12px;
+font-style: italic;
+}
+.allergy-table input{
+  width: 100%;
+  border: none;
+  background: #fbfcff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.allergy-table ::ng-deep.ng-select{
+      .ng-select-container{
+        background: none !important;
+        border: 0;
+      }
+  .ng-clear-wrapper{
+        border: 1px solid;
+    border-radius: 20px;
+    background-color: #c6c8ca;
+    color: white;
+    text-align: center;
+    display: none;
+      }
+    }
+    .allergy-table tr td{
+      padding: 0 !important;
+     } 
+.risk-table tr td{
+ padding: 0 !important;
+}  
+.risk-table input{
+  width: 100%;
+  border: none;
+  background: #fbfcff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.risk-table ::ng-deep.ng-select{
+      .ng-select-container{
+        background: none !important;
+        border: 0;
+      }
+  .ng-clear-wrapper{
+        border: 1px solid;
+    border-radius: 20px;
+    background-color: #c6c8ca;
+    color: white;
+    text-align: center;
+    display: none;
+      }
+    }
+
+.risk-table tr td{
+ padding: 0 !important;
+}     

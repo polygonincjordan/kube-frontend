@@ -1,0 +1,71 @@
+.icon-nav-cont-style {
+  display: flex;
+  align-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  background-color: white;
+  position: relative;
+  padding: 0px 15px;
+}
+.notif-card {
+  max-width: 100%;
+  margin-left: 0px;
+}
+.multiselect-adjust .dropdown-list li {
+  line-height: 8px;
+}
+.multiselect-adjust .dropdown-list {
+  width: 100%;
+  bottom: 100%;
+}
+.dropdown-multiselect__caret {
+  display:  none !important;
+}
+.config-box{
+  .config{
+    border: initial !important;
+  }
+}
+
+.active-tab {
+  font-weight: 700;
+  background: #388cca !important;
+  color: #388cca !important;
+}
+.multiselect-adjust {
+  font-size: 10px;
+  width: 20%;
+}
+
+
+.notif-icon {
+  height: 50px;
+  width: 50px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.img-style {
+  width: 41px;
+}
+.red-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: firebrick;
+  border-radius: 360px;
+  top: -5px;
+  right: -5px;
+}
+
+.notif-value {
+  background: red m !important;
+    color: white !important;
+    display: inline-block !important;
+    font-size: 7px !important;
+    width: 15px !important;
+    height: 14px !important;
+    position: absolute !important;
+    left: 40px !important;
+    top: -4px !important;
+    padding: 1px !important;
+}

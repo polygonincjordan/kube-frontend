@@ -1,0 +1,279 @@
+<div class="table-responsive medication-list" *ngIf="customData && customData.length">
+  <div class="e-order-fees part-of-madication" *ngIf="customData[0].TODURG.results.length">
+    <div class="card-title mt-0 d-flex mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 243.000000 200.000000" preserveAspectRatio="xMidYMid meet">
+        <g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)" stroke="none">
+          <path
+            d="M1214 1730 c-12 -5 -24 -13 -27 -17 -3 -5 47 -62 112 -127 l119 -118 17 45 c32 84 0 173 -76 212 -31 16 -111 19 -145 5z m129 -21 c59 -31 96 -101 83 -155 -10 -37 -26 -28 -26 14 0 51 -31 97 -74 113 -20 7 -36 19 -36 26 0 16 24 17 53 2z" />
+          <path
+            d="M1694 1706 c-42 -18 -75 -66 -107 -151 -14 -38 -37 -98 -50 -132 l-25 -61 145 -57 c117 -46 147 -55 154 -44 5 8 31 75 60 149 40 107 50 143 46 174 -14 103 -126 164 -223 122z m145 -82 c29 -37 26 -73 -16 -180 -27 -71 -41 -94 -55 -94 -25 0 -23 24 8 101 41 103 44 114 28 144 -29 56 -3 77 35 29z" />
+          <path d="M1135 1656 c-12 -17 -18 -46 -18 -81 0 -103 78 -173 181 -163 27 3 58 11 70 20 20 14 18 18 -97 132 l-119 119 -17 -27z" />
+          <path
+            d="M1480 1277 c-112 -284 -117 -309 -78 -378 24 -42 85 -79 131 -79 38 0 88 23 115 52 18 20 103 216 126 293 5 17 -5 24 -72 49 -42 16 -108 42 -145 57 l-68 27 -9 -21z" />
+          <path
+            d="M362 877 c-21 -23 -22 -30 -22 -279 0 -319 -8 -301 140 -306 114 -4 156 7 171 45 5 13 9 134 9 267 0 312 9 296 -159 296 -110 0 -119 -1 -139 -23z" />
+          <path
+            d="M753 853 l-23 -4 0 -248 0 -247 108 -36 c73 -25 148 -42 234 -53 70 -9 141 -20 158 -25 26 -7 47 -1 148 49 94 47 124 57 154 53 23 -2 81 9 161 32 68 19 170 41 227 48 57 7 105 18 106 23 2 6 -14 30 -36 55 l-38 45 -84 -2 c-46 -1 -132 -12 -192 -25 l-109 -22 -158 18 c-188 20 -254 35 -254 56 0 10 8 14 25 12 114 -11 340 -22 367 -17 35 6 53 29 53 67 0 51 -17 58 -206 93 -141 26 -205 43 -299 81 -112 45 -127 48 -220 50 -55 1 -110 0 -122 -3z m815 -195 c30 -25 5 -68 -40 -68 -26 0 -28 3 -28 38 0 21 3 42 7 45 8 8 42 -1 61 -15z" />
+        </g>
+      </svg>
+      <span>Medication</span>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Drugs</th>
+          <th>Formula</th>
+          <th>Route</th>
+          <th>Stock</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="
+            customData[0].TODURG.results && customData[0].TODURG.results.length
+          ">
+          <tr *ngFor="let element of customData[0].TODURG.results; let i = index">
+            <td class="align-middle">
+              <p class="m-0 d-flex align-items-center">
+                <input type="checkbox" id="{{ element.type }}data{{ i + 1 }}" (change)="eOrderServ.onAddOrderCheckbox($event, element,element.type)"
+                  [(ngModel)]="element.isSelected" />
+                <label for="{{ element.type }}data{{ i + 1 }}" class="m-0">{{
+                  element.text
+                  }}</label>
+              </p>
+            </td>
+            <td class="align-middle">
+              <span class="d-inline-block align-top w-100">{{
+                element.formulaDesc
+                }}</span>
+            </td>
+            <td class="align-middle">
+              <span class="d-inline-block align-top w-100">{{
+                element.routeDesc
+                }}</span>
+            </td>
+            <td class="align-middle">
+              <span class="d-inline-block aligns-top w-100 stock-rates" style="color: green" *ngIf="
+                  element.drugStock !== 'N/A' && element.drugStock !== '0.000'
+                ">{{ element.drugStock }}</span><span class="d-inline-block align-top w-100 stock-rates" style="color: red" *ngIf="
+                  element.drugStock === 'N/A' || element.drugStock === '0.000'
+                ">{{ element.drugStock }}</span>
+            </td>
+            <td class="align-middle">
+              <div (click)="markFavourite(element)">
+                <div *ngIf="element.icon === 'star'">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_107_2)">
+                      <path
+                        d="M17.9842 6.95227C17.9462 6.83563 17.8454 6.75057 17.7239 6.73285L11.8954 5.88581L9.28885 0.604406C9.23472 0.494215 9.1226 0.424622 9.00017 0.424622C8.87773 0.424622 8.76529 0.494215 8.71148 0.604406L6.10461 5.88613L0.276126 6.73318C0.154659 6.7509 0.0541344 6.83563 0.0157934 6.95259C-0.0219033 7.0689 0.0093495 7.19713 0.0973084 7.28252L4.31515 11.3937L3.31925 17.199C3.29863 17.3198 3.34824 17.4419 3.44716 17.5141C3.54672 17.5869 3.67849 17.5963 3.78643 17.5386L9.00017 14.798L14.2133 17.5386C14.2603 17.5634 14.3122 17.5756 14.3634 17.5756C14.4301 17.5756 14.4965 17.555 14.5529 17.5141C14.6521 17.4419 14.7017 17.3198 14.6808 17.199L13.6852 11.394L17.903 7.28252C17.9907 7.19649 18.0222 7.06858 17.9842 6.95227Z"
+                        fill="#17668C"></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_107_2">
+                        <rect width="18" height="18" fill="white"></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div *ngIf="element.icon !== 'star'">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_702_26)">
+                      <path
+                        d="M18 7.266L11.529 6.708L9 0.75L6.471 6.717L0 7.266L4.914 11.523L3.438 17.85L9 14.493L14.562 17.85L13.095 11.523L18 7.266ZM9 12.81L5.616 14.853L6.516 11.001L3.528 8.409L7.47 8.067L9 4.44L10.539 8.076L14.481 8.418L11.493 11.01L12.393 14.862L9 12.81Z"
+                        fill="#17668C" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_702_26">
+                        <rect width="18" height="18" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="e-order-fees part-of-Templates" *ngIf="customData[0].TOTEMPLATE.results.length">
+    <div class="card-title mt-0 d-flex mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 243.000000 200.000000" preserveAspectRatio="xMidYMid meet">
+        <g transform="translate(0.000000,200.000000) scale(0.100000,-0.100000)" stroke="none">
+          <path
+            d="M1214 1730 c-12 -5 -24 -13 -27 -17 -3 -5 47 -62 112 -127 l119 -118 17 45 c32 84 0 173 -76 212 -31 16 -111 19 -145 5z m129 -21 c59 -31 96 -101 83 -155 -10 -37 -26 -28 -26 14 0 51 -31 97 -74 113 -20 7 -36 19 -36 26 0 16 24 17 53 2z" />
+          <path
+            d="M1694 1706 c-42 -18 -75 -66 -107 -151 -14 -38 -37 -98 -50 -132 l-25 -61 145 -57 c117 -46 147 -55 154 -44 5 8 31 75 60 149 40 107 50 143 46 174 -14 103 -126 164 -223 122z m145 -82 c29 -37 26 -73 -16 -180 -27 -71 -41 -94 -55 -94 -25 0 -23 24 8 101 41 103 44 114 28 144 -29 56 -3 77 35 29z" />
+          <path d="M1135 1656 c-12 -17 -18 -46 -18 -81 0 -103 78 -173 181 -163 27 3 58 11 70 20 20 14 18 18 -97 132 l-119 119 -17 -27z" />
+          <path
+            d="M1480 1277 c-112 -284 -117 -309 -78 -378 24 -42 85 -79 131 -79 38 0 88 23 115 52 18 20 103 216 126 293 5 17 -5 24 -72 49 -42 16 -108 42 -145 57 l-68 27 -9 -21z" />
+          <path
+            d="M362 877 c-21 -23 -22 -30 -22 -279 0 -319 -8 -301 140 -306 114 -4 156 7 171 45 5 13 9 134 9 267 0 312 9 296 -159 296 -110 0 -119 -1 -139 -23z" />
+          <path
+            d="M753 853 l-23 -4 0 -248 0 -247 108 -36 c73 -25 148 -42 234 -53 70 -9 141 -20 158 -25 26 -7 47 -1 148 49 94 47 124 57 154 53 23 -2 81 9 161 32 68 19 170 41 227 48 57 7 105 18 106 23 2 6 -14 30 -36 55 l-38 45 -84 -2 c-46 -1 -132 -12 -192 -25 l-109 -22 -158 18 c-188 20 -254 35 -254 56 0 10 8 14 25 12 114 -11 340 -22 367 -17 35 6 53 29 53 67 0 51 -17 58 -206 93 -141 26 -205 43 -299 81 -112 45 -127 48 -220 50 -55 1 -110 0 -122 -3z m815 -195 c30 -25 5 -68 -40 -68 -26 0 -28 3 -28 38 0 21 3 42 7 45 8 8 42 -1 61 -15z" />
+        </g>
+      </svg>
+      <span>Templates</span>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Template Name</th>
+          <th class="w-20">Level</th>
+          <th class="w-10">Details</th>
+          <th class="w-5">Del.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="
+            customData[0].TOTEMPLATE.results &&
+            customData[0].TOTEMPLATE.results.length
+          ">
+          <tr *ngFor="
+              let element of customData[0].TOTEMPLATE.results;
+              let i = index
+            ">
+            <td class="align-middle">
+              <p class="m-0 d-flex align-items-center">
+                <input type="checkbox" id="{{ element.type }}data{{ i + 1 }}" (change)="
+                    eOrderServ.onAddTemplateCheckbox($event, element);
+                    eOrderServ.OpenTemplateModel(templatecontent, element)
+                  " [(ngModel)]="element.isSelected" />
+                <label for="{{ element.type }}data{{ i + 1 }}" class="m-0">{{
+                  element.text
+                  }}</label>
+              </p>
+            </td>
+            <td class="align-middle w-20">
+              <span class="d-inline-block align-top w-100">
+                <select id="template-level" class="form-control input-type-select" [disabled]="
+                    element.templateProcesslevel !== '' ? true : false
+                  " (change)="eOrderServ.onTemplateLevelUpdate(element)" [(ngModel)]="element.templateProcesslevel">
+                  <option value="" selected *ngIf="element.templateProcesslevel !== 'G'">
+                    User Level
+                  </option>
+                  <option [value]="'G'" *ngIf="element.templateProcesslevel !== 'G'">
+                    Global Level
+                  </option>
+                  <option [value]="'G'" selected *ngIf="element.templateProcesslevel !== ''">
+                    Global Level
+                  </option>
+                </select>
+              </span>
+            </td>
+            <td class="align-middle">
+              <button type="button" (click)="eOrderServ.OpenTemplateModel(templatecontent, element)">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M11.25 9C11.25 10.2405 10.2405 11.25 9 11.25C7.7595 11.25 6.75 10.2405 6.75 9C6.75 7.7595 7.7595 6.75 9 6.75C10.2405 6.75 11.25 7.7595 11.25 9ZM18 8.66325C18 8.66325 14.811 15 9.01125 15C3.62625 15 0 8.66325 0 8.66325C0 8.66325 3.3345 3 9.01125 3C14.7818 3 18 8.66325 18 8.66325ZM12.75 9C12.75 6.93225 11.0677 5.25 9 5.25C6.93225 5.25 5.25 6.93225 5.25 9C5.25 11.0677 6.93225 12.75 9 12.75C11.0677 12.75 12.75 11.0677 12.75 9Z"
+                    fill="#17668C" />
+                </svg>
+              </button>
+            </td>
+            <td class="align-middle">
+              <div (click)="eOrderServ.onDeleteTemplateList(element)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="18">
+                  <path
+                    d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                </svg>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #templatecontent>
+  <div class="e-order-template part-of-Templates">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" (change)="eOrderServ.onSelectallMed($event)" [(ngModel)]="eOrderServ.tempalteData[0].isSelected" />
+            Drugs
+          </th>
+          <!-- <th class="border-0 text-center">Drugs</th> -->
+          <th class="border-0 text-center">Formula</th>
+          <th class="border-0 text-center">Dosage/Unit</th>
+          <th class="border-0 text-center">Route of administration</th>
+          <th class="border-0 text-center">Frequency</th>
+          <th class="border-0 text-center">Duration</th>
+          <th class="border-0 text-center">Comment</th>
+          <th class="border-0 text-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of eOrderServ.tempalteData; let i = index">
+          <td class="align-middle border-0">
+            <p class="m-0 d-flex align-items-center">
+              <input type="checkbox" id="{{ element.dataType }}data{{ i + 1 }}" (change)="eOrderServ.onAddMedCheckbox($event, element)"
+                [(ngModel)]="element.isSelected" />
+              <label for="{{ element.dataType }}data{{ i + 1 }}" class="m-0">{{
+                element.text
+                }}</label>
+            </p>
+          </td>
+          <td class="align-middle border-0">
+            <span class="d-flex align-items-center p-0">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <p class="m-0 text-center">{{ element.formulaDesc }}</p>
+              </span>
+            </span>
+          </td>
+          <td class="align-middle border-0">
+            <span class="d-flex align-items-center p-0">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <p class="m-0 text-center">
+                  {{ element.dosageCount }} {{ element.dosageCountDesc }}
+                </p>
+              </span>
+            </span>
+          </td>
+          <td class="align-middle border-0">
+            <span class="d-flex align-items-center p-0">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <p class="m-0 text-center">{{ element.routeDesc }}</p>
+              </span>
+            </span>
+          </td>
+          <td class="align-middle border-0">
+            <span class="d-flex align-items-center p-0">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <p class="m-0 text-center">{{ element.frequencyDesc }}</p>
+              </span>
+            </span>
+          </td>
+          <td class="align-middle border-0">
+            <span class="d-flex align-items-center p-0">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <p class="m-0 text-center">
+                  {{ element.durationCount }} {{ element.DURUNITTXT }}
+                </p>
+              </span>
+            </span>
+          </td>
+          <td class="align-middle border-0">
+            <span class="d-flex align-items-center p-0">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <p class="m-0 text-center">
+                  {{ element.comment}}
+                </p>
+              </span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="buttons">
+      <button type="text" class="btn btn-primary rounded-0 add-btn" (click)="eOrderServ.addTempalteOrder($event)">
+        Add
+      </button>
+      <button type="text" class="btn btn-primary rounded-0 close-btn" (click)="eOrderServ.CloseTemplateModel($event)">
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>

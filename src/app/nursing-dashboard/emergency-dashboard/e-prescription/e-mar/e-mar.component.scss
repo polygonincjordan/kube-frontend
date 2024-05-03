@@ -1,0 +1,8 @@
+.font-bsDaterangepicker{
+  font-size: 12px !important;
+}
+bs-daterangepicker-container{
+  &:has(> .daterangepicker) {
+    left: 147px!important;
+  }
+}
