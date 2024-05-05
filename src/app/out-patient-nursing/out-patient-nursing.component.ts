@@ -180,9 +180,9 @@ export class OutPatientNursingComponent implements OnInit {
           /**
            * TODO : Nikhil - Comment this code to stop dual call of API - may in future will need to enable if need...
            */
-          // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-          // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-          // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+          this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+          this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+          this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
         }
       }
     );
