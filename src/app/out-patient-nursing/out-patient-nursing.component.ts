@@ -309,7 +309,7 @@ export class OutPatientNursingComponent implements OnInit {
       if (resp.body && resp.body.d && resp.body.d) {
         this.clinicConfigDetail = resp.body.d.results[0];
         this.selectedPhysicianConf = resp.body?.d.results[0].AttendPhy ? [this.assignUsersList.find(res => res.Gpart === resp.body?.d.results[0].AttendPhy)] : [];
-        this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
+        this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode && this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode) ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
       }
     });
   }
@@ -405,6 +405,7 @@ export class OutPatientNursingComponent implements OnInit {
   }
 
   createConfig() {
+    debugger;
     const physicianArray = this.selectedPhysicianConf.map(item => item.Gpart);
     const specialityArray = this.selectedSpecialityConf.map(item => item.Orgid);
     let Payload = {
