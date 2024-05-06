@@ -197,6 +197,7 @@ export class OutPatientNursingComponent implements OnInit {
       Physician: [''],
       ItemStatus: [''],
     });
+
     this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
       if (data != null) {
         if (data.type == FilterType.OpCheckIn$ && data.isAllow == true && data.value) {
@@ -880,9 +881,9 @@ export class OutPatientNursingComponent implements OnInit {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() - 1))), new Date(date2.setDate((date2.getDate() - 1)))]);
-      this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
-      this.CheckInComponent?.getErList(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
+      // this.CheckInComponent?.getErList(this.formgroupData.DateRange);
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -891,9 +892,9 @@ export class OutPatientNursingComponent implements OnInit {
       date1 = new Date(date1.setDate(date1.getDate() - diffDays));
       date2 = new Date(date2.setDate(date2.getDate() - diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
-      this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
     }
 
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()-1));
@@ -902,20 +903,20 @@ export class OutPatientNursingComponent implements OnInit {
 
   onTodayEventData() {
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-    this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-    this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-    this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
   }
 
   upcomingDate() {
-    this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
+    // this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     if (+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]) {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() + 1))), new Date(date2.setDate((date2.getDate() + 1)))]);
-      this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
-      this.CheckInComponent?.getErList(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
+      // this.CheckInComponent?.getErList(this.formgroupData.DateRange);
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -924,9 +925,9 @@ export class OutPatientNursingComponent implements OnInit {
       date1 = new Date(date1.setDate(date1.getDate() + diffDays));
       date2 = new Date(date2.setDate(date2.getDate() + diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
-      this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()+1));
     // this.ErHistoryComponent.getErList(this.currentDate);

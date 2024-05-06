@@ -385,12 +385,15 @@ export class ErHistoryComponent implements OnInit {
   }
 
   getSpecialityCodes(storedUser): string[] {
-    return storedUser.map(item => item.SpecialityCode);
+    return storedUser
+      .filter(item => item.SpecialityCode && item.SpecialityCode.trim() !== '') // Filter out items with blank or null SpecialityCode
+      .map(item => item.SpecialityCode.trim()); // Map to an array of trimmed SpecialityCodes
   }
-  getAttendPhy(storedUser): string[] {
-    return storedUser.map(item => item.AttendPhy);
+  getAttendPhy(storedUser: any[]): string[] {
+    return storedUser
+      .filter(item => item.AttendPhy && item.AttendPhy.trim() !== '') // Filter out items with blank or null SpecialityCode
+      .map(item => item.AttendPhy.trim()) // Extract AttendPhy values
   }
-
   getErHistoryList(date?: any) {
     this.currentDatePassed = date;
     this.storageService.setLastPassedData(date);

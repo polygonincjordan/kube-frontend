@@ -285,6 +285,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
             Vfdat: materialDetail.Vfdat,
             Lgort: materialDetail.Lgort,
             Charg: materialDetail.Charg,
+            Menge: '1'
           });
         } else {
           // this.showNotificationMessage = true;
