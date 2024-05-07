@@ -1,0 +1,381 @@
+<div class="glosgow">
+    <div class="glosgow-box">
+      <form action="" [formGroup]="formDetailGroup">
+<div class="row ml-0 mr-0 selection-section ">
+    <div class="container-fluid">
+        <div class="row mb-4 pl-1">
+            <span class="input-heading">Situation:&nbsp;&nbsp;</span> <span class="input-value">Condition at the time of Admission</span>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="row justify-content-between mb-2 select">
+                    <label class="input-lable">Seen By</label>
+                    <ng-select  class="doc" formControlName="seenBy" [disabled]="true" [readonly]="true">
+                      <ng-option *ngFor="let item of seenBy" [value]="item.value" >{{ item.name }}</ng-option>
+                    </ng-select>
+                </div>
+                <div class="row justify-content-between">
+                    <label class="input-lable">Present Condition</label>
+                    <ng-select formControlName="presentCondition">
+                      <ng-option *ngFor="let item of presentCondition" [value]="item.value">{{ item.name }}</ng-option>
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row justify-content-between mb-2">
+                    <label class="input-lable">Surgery</label>
+                    <ng-select  formControlName="surgery">
+                      <ng-option *ngFor="let item of surgery" [value]="item.value">{{ item.name }}</ng-option>
+                    </ng-select>
+                </div>
+                <div class="row justify-content-between">
+                    <label class="input-lable">Presence of Family</label>
+                    <ng-select formControlName="presenceOfFamily">
+                      <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex" style="gap: 52px;margin-top: 1%;">
+                <div class="row flex-column" style="gap: 15px;">
+                    <div class="scale-box-checkbox">
+                        <input type="checkbox" id="insurance"  formControlName="insurance"/>
+                        <label class="admitting-physician" for="insurance">Insurance</label>
+                      </div>
+                    <div class="scale-box-checkbox">
+                        <input type="checkbox"  id="contsente" formControlName="contsente"/>
+                        <label class="admitting-physician" for="contsente">Contsente</label>
+                      </div>
+
+                </div>
+                <div class="row flex-column" style="gap: 15px;">
+                    <div class="scale-box-checkbox">
+                        <input type="checkbox"  id="cash" formControlName="cash"/>
+                        <label class="admitting-physician" for="cash">Cash</label>
+                      </div>
+                    <div class="scale-box-checkbox">
+                        <input type="checkbox" id="triageScore"  formControlName="triageScore"/>
+                        <label class="admitting-physician" for="triageScore">Triage Score</label>
+                      </div>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="input-lable">Condition</label>
+                <input type="text" class="form-control" formControlName="condition" />
+            </div>
+        </div>
+      </div>
+
+
+ 
+  </div>
+  <div class="row ml-0 mr-0 selection-section mt-4">
+
+      <div class="container-fluid mt-4 pl-0">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav">
+              <ul class="m-0 p-0 d-flex flex-wrap mb-2" style="border-bottom: 1px solid #d6d6d6;">
+                <li class="d-flex m-0 align-items-center" (click)="switchTabs('Background')"
+                  [ngClass]="background ? 'active' : ''">
+                  <!-- <img src="./assets/img/grid-icon.svg" /> -->
+                  <p class="d-inline-block m-0 input-lable" [ngClass]="background ? 'tab-color-active' : 'tab-color'">Background</p>
+                </li>
+                <li (click)="switchTabs('Assessment')" class="d-flex m-0 align-items-center"
+                  [ngClass]="assessment ? 'active' : ''">
+                  <!-- <img src="./assets/img/grid-icon.svg" /> -->
+                  <p class="d-inline-block m-0 input-lable" [ngClass]="assessment ? 'tab-color-active' : 'tab-color'">Assessment</p>
+                </li>
+                <li (click)="switchTabs('Recommendations')" class="d-flex m-0 align-items-center"
+                  [ngClass]="recommendations ? 'active' : ''">
+                  <!-- <img src="./assets/img/grid-icon.svg" /> -->
+                  <p class="d-inline-block m-0 input-lable" [ngClass]="recommendations ? 'tab-color-active' : 'tab-color'">Recommendations</p>
+                </li>
+              </ul>
+            </div>
+           
+          </div>
+          <div class="tab-content">
+            <div *ngIf="background">
+            <div class="row p-3"  >
+                <div class="col-md-6 d-flex flex-column" style="gap: 10px;padding-right: 3%;">
+                    <div class="row justify-content-between">
+                        <label class="input-lable">Past Medical/ Surgical History Documented?</label>
+                        <ng-select class="w-50" formControlName="pastMedicalSurgicalHisDoc">
+                          <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+                        </ng-select>
+                    </div>
+                     <div class="row justify-content-between">
+                        <label class="input-lable">Allergies Documented?</label>
+                        <ng-select class="w-50" formControlName="allergyDoc">
+                          <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+
+                        </ng-select>
+                    </div> 
+                    <div class="row justify-content-between">
+                        <label class="input-lable">Verbal Orders</label>
+                        <ng-select class="w-50" formControlName="VerbelOrder">
+                          <ng-option *ngFor="let item of verbleOrderList" [value]="item.value">{{ item.name }}</ng-option>
+                        </ng-select>
+                    </div>
+                    
+                    <div class="row">
+                        <label class="input-lable">Verbal Orders</label>
+                        <input type="text" class="form-control" [readOnly]="formDetailGroup.get('VerbelOrder').value !== '0'"  formControlName="VerbelOrdertext" />
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex flex-column" style="gap: 10px;">
+                    <div class="row justify-content-between">
+                        <label class="input-lable">Present Medical/ Surgical History Documented?</label>
+                        <ng-select class="w-50" formControlName="presentMedicalSurgeryhisDoc">
+                          <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+                        </ng-select>
+                    </div> <div class="row justify-content-between">
+                        <label class="input-lable">Past Orders</label>
+                        <ng-select class="w-50" formControlName="pastOrder">
+                          <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+
+                        </ng-select>
+                    </div> <div class="row justify-content-between">
+                        <label class="input-lable">Present Medications</label>
+                        <ng-select class="w-50" formControlName="presentMedication">
+                          <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+              
+            </div>
+           
+            <div *ngIf="assessment">
+             <div class="row mb-5">
+              <div class="row w-100" style="gap: 3%;align-items: center;">
+                <div class="d-flex"  >
+                  <input class="cursor-pointer" type="radio" value="loc" id="Loc" [value]="formDetailGroup.value.loc"  formControlName="assessmentOptions" />
+                  <label class="ml-2" for="Loc">Loc</label>
+                </div>
+                <div class="d-flex" >
+                  <input class="cursor-pointer" type="radio"  id="Oriented" value="oriented" formControlName="assessmentOptions"/>
+                  <label class="ml-2" for="Oriented">Oriented</label>
+                </div>
+                 <div class="d-flex  radios-btn" >
+                  <input class="cursor-pointer" type="radio"  id="Confused" value="confused" formControlName="assessmentOptions"/>
+                  <label class="ml-2" for="Confused">Confused</label>
+                </div>
+                <div class="d-flex  radios-btn" >
+                  <input class="cursor-pointer" type="radio"  id="Sedated" value="sedated" formControlName="assessmentOptions"/>
+                  <label class="ml-2" for="Sedated">Sedated</label>
+                </div>
+                <div class="d-flex  drop-btn w-50" style="align-items: center;gap: 3%;">
+                  <label class="cursor-pointer">Vital Signs</label>
+                  <ng-select class="" formControlName="vitalSigns">
+                    <ng-option *ngFor="let item of presenceOfFamily" [value]="item.value">{{ item.name }}</ng-option>
+
+                  </ng-select>
+              </div> 
+              </div>
+             </div>
+             <div class="row mb-4">
+              <div class="d-flex col-md-4 pr-4" style="gap: 10%;align-items: center;">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" formControlName="fallRiskScoreCheck"/>
+                  <!-- <label class="admitting-physician" for="cash">Cash</label> -->
+                </div>
+                <div class="row w-100" style="margin-top: -6%;">
+                  <label class="">Fall Risk Score</label>
+                  <input type="text" class="form-control" formControlName="fallRiskScore"/>
+              </div>
+              </div>
+              <div class="d-flex col-md-4  pr-4" style="gap: 10%;align-items: center;">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" formControlName="painScaleScoreCheck"/>
+                  <!-- <label class="admitting-physician" for="cash">Cash</label> -->
+                </div>
+                <div class="row w-100" style="margin-top: -6%;">
+                  <label class="">Pain Scale Score</label>
+                  <input type="text" class="form-control" formControlName="painScaleScore" />
+              </div>
+              </div>
+              <div class="d-flex col-md-4  pr-4" style="gap: 10%;align-items: center;">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" formControlName="anyDefectsCheck"/>
+                  <!-- <label class="admitting-physician" for="cash">Cash</label> -->
+                </div>
+                <div class="row w-100" style="margin-top: -6%;">
+                  <label class="">Any Defects</label>
+                  <input type="text" class="form-control" formControlName="anyDefects" />
+              </div>
+              </div>
+             </div>
+             <div class="row mb-4">
+              <div class="d-flex col-md-4  pr-4" style="gap: 10%;align-items: center;">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" formControlName="skinIntegrityCheck"/>
+                  <!-- <label class="admitting-physician" for="cash">Cash</label> -->
+                </div>
+                <div class="row w-100" style="margin-top: -6%;">
+                  <label class="">Skin Integrity</label>
+                  <input type="text" class="form-control" formControlName="skinIntegrity"/>
+              </div>
+              </div>
+              <div class="d-flex col-md-4  pr-4" style="gap: 10%;align-items: center;">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" formControlName="habitsCheck"/>
+                  <!-- <label class="admitting-physician" for="cash">Cash</label> -->
+                </div>
+                <div class="row w-100" style="margin-top: -6%;">
+                  <label class="">Habits</label>
+                  <input type="text" class="form-control"  formControlName="habits"/>
+              </div>
+              </div>
+              <div class="d-flex col-md-4  pr-4" >
+                <!-- <div class="scale-box-checkbox">
+                  <input type="checkbox"/>
+                </div>
+                <div class="row" style="margin-top: -6%;">
+                  <label class="">Any Defects</label>
+                  <input type="text" class="form-control" />
+              </div>
+              </div> -->
+             </div>
+            
+            </div>
+
+            <div class="row flex-wrap">
+              <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="ReviewOfSystems"  formControlName="reviewOfSystems"/>
+                  <label class="admitting-physician" for="ReviewOfSystems">Review Of Systems</label>
+                </div> <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="lab" formControlName="lab"/>
+                  <label class="admitting-physician" for="lab">Lab</label>
+                </div> 
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="Radiology" formControlName="radiology"/>
+                  <label class="admitting-physician" for="Radiology">Radiology</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="Miscellaneous" formControlName="miscellaneous"/>
+                  <label class="admitting-physician" for="Miscellaneous">Miscellaneous (ECG, CTG, etc.)</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="Drains" formControlName="drains"/>
+                  <label class="admitting-physician" for="Drains">Drains</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="TubeFeeding" formControlName="tubeFeeding"/>
+                  <label class="admitting-physician" for="TubeFeeding">Tube Feeding</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="Catheter" formControlName="catheter"/>
+                  <label class="admitting-physician" for="Catheter">Catheter</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="Splint" formControlName="splint"/>
+                  <label class="admitting-physician" for="Splint">Splint</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="NeedsHelpWithDressing" formControlName="needsHelpWithDressing"/>
+                  <label class="admitting-physician" for="NeedsHelpWithDressing">Needs Help With Dressing</label>
+                </div>
+                <div class="scale-box-checkbox ">
+                  <input type="checkbox"  id="Casts" formControlName="casts"/>
+                  <label class="admitting-physician" for="Casts">Casts</label>
+                </div>
+                
+             </div>
+             </div>
+            
+            <div *ngIf="recommendations">
+           <div class="row flex-wrap">
+            <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="specialNeeds" formControlName="specialNeeds" />
+                <label class="admitting-physician" for="specialNeeds">Special Needs</label>
+              </div> <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="medications" formControlName="medications"/>
+                <label class="admitting-physician" for="medications">Medications</label>
+              </div> 
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="ivFluids" formControlName="ivFluids"/>
+                <label class="admitting-physician" for="ivFluids">IV Fluids</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="plannedProcedures" formControlName="plannedProcedures"/>
+                <label class="admitting-physician" for="plannedProcedures">Planned Procedures</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="Lab" formControlName="rLab"/>
+                <label class="admitting-physician" for="Lab">Lab</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="dischargePlan" formControlName="dischargePlan"/>
+                <label class="admitting-physician" for="dischargePlan">Discharge Plan</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="miscellaneous" formControlName="rMiscellaneous"/>
+                <label class="admitting-physician" for="miscellaneous">Miscellaneous</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="radiology" formControlName="rRadiology"/>
+                <label class="admitting-physician" for="radiology">Radiology</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="dischargesSummary" formControlName="dischargesSummary"/>
+                <label class="admitting-physician" for="dischargesSummary">Discharges Summary</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="Immunizations" formControlName="Immunizations" />
+                <label class="admitting-physician" for="Immunizations">Immunizations</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="appointmentsReferrals" formControlName="appointmentsReferrals" />
+                <label class="admitting-physician" for="appointmentsReferrals">Appointments/ Referrals</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="transfer" formControlName="transfer"/>
+                <label class="admitting-physician" for="transfer">Transfer</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="Education" formControlName="education" />
+                <label class="admitting-physician" for="Education">Education</label>
+              </div>
+              <div class="scale-box-checkbox m-2">
+                <input type="checkbox"  id="approvalFollowUp"  formControlName="approvalFollowUp" />
+                <label class="admitting-physician" for="approvalFollowUp">Approval Follow-up</label>
+              </div>
+           </div>
+           <div class="row mt-3">
+            <div class="col-md-10">
+                <div class="row w-100">
+                    <div class="w-50 d-flex justify-content-between" style="gap: 20px;">
+                        <label class="input-lable" style="white-space: nowrap;">Handed Over By</label>
+                        <input type="text" class="form-control"  formControlName="handedOverBy"/>
+                    </div>
+                    <div class="w-50  d-flex justify-content-between" style="gap: 20px;">
+                        <label class="input-lable" style="white-space: nowrap;">Handed Over To</label>
+                        <input type="text" class="form-control" formControlName="handedOverTo" />
+                    </div>
+                </div>
+                <div>
+                    <div class="row pl-2 pr-4">
+                        <label class="input-lable">Comments</label>
+                        <input type="text" class="form-control" formControlName="comments"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="d-flex flex-column mt-2">
+                    <button class="rec-btn mb-2">Reviewed By</button>
+                    <button class="rec-btn">Edit</button>
+                </div>
+            </div>
+           </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</form>
+  </div>
+  </div>

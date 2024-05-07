@@ -107,6 +107,7 @@ import { SocialHabitComponent } from './nurs-treatment-workarea/patient-document
 import { GlosGowCommaScalePopupComponent } from './nurs-treatment-workarea/patient-documentation/emergency-nursing-document/glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
 import { NumericRatingScalePopupComponent } from './nurs-treatment-workarea/patient-documentation/emergency-nursing-document/numeric-rating-scale/numeric-rating-scale-popup.component';
 import { FacePainScalePopupComponent } from './nurs-treatment-workarea/patient-documentation/emergency-nursing-document/face-pain-scale/face-pain-scale-popup.component';
+import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/nurse-endorsement/nurse-endorsement.component';
 
 const route: Routes = [
   {
@@ -192,6 +193,7 @@ const route: Routes = [
     GlosGowCommaScalePopupComponent,
     NumericRatingScalePopupComponent,
     FacePainScalePopupComponent,
+    NurseEndorsementComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
