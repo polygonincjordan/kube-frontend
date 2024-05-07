@@ -15,73 +15,83 @@ export class ErBedComponent implements OnInit {
   selectedPatientdata: any;
   patientDetails: any;
   selectedErPat: any;
-  constructor(private modalService: BsModalService,private emergencyService:EmergencyService) { }
+  constructor(private modalService: BsModalService, private emergencyService: EmergencyService) { }
 
   ngOnInit() {
   }
-  openModalForErBed(data){
+  openModalForErBed(data) {
     this.selectedPatientdata = data;
     const config: ModalOptions = { class: 'modal-dialog modal-dialog-centered modal-xl er-bed' };
     this.modalRef = this.modalService.show(this.erBedModal, config);
     this.modalRef.onHide.subscribe((reason: string | any) => {
-      if(reason === 'backdrop-click') {
-      
+      if (reason === 'backdrop-click') {
+
       }
     });
     this.getErBedList();
   }
   getErBedList() {
-    
+
     this.emergencyService.getErBedList().subscribe(
       (_success: any) => {
-      this.patientDetails = _success.d.results;
-      this.patientDetails.forEach(element => {
-        element['isSelected'] = false;
-      });
+        this.patientDetails = _success.d.results;
+        this.patientDetails.forEach(element => {
+          element['isSelected'] = false;
+        });
       },
-      (_error: any) => {}
+      (_error: any) => { }
     );
   }
 
-  selectBedForPatient(i,item){
-    this.patientDetails.forEach((element,index) => {
-       if (i === index) {
-         element['isSelected'] = true;
-       }else{
+  selectBedForPatient(i, item) {
+    this.patientDetails.forEach((element, index) => {
+      if (i === index) {
+        element['isSelected'] = true;
+      } else {
         element['isSelected'] = false;
-       }
+      }
     });
     this.selectedErPat = item;
   }
 
-  SaveBedForPatient(){
-    if (this.selectedErPat.Patnr !== '') {
-      return false;
-    }else{
-      const json ={
-        "Einri": this.selectedPatientdata.Einri,
-        "Patnr": this.selectedPatientdata.Patnr,
-        "Falnr": this.selectedPatientdata.Falnr,
-        "Lfdnr": this.selectedPatientdata.Lfdbw,
-        "Zimmr": this.selectedErPat.Zimmr
-      }
-      this.emergencyService.SaveBedForPatient(json).subscribe(
-        (_success: any) => {
-         this.closeErBed();
-         Swal.fire({
-          text: "Room is assigned successfully",
-          icon: 'success',
-          confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
-        })
-        this.reloadCheckin.emit(true);
-        },
-        (_error: any) => {}
-      );
+  SaveBedForPatient() {
+    // if (this.selectedErPat.Patnr !== '') {
+    //   return false;
+    // }else{
+    const json = {
+      "Einri": this.selectedPatientdata.Einri,
+      "Patnr": this.selectedPatientdata.Patnr,
+      "Falnr": this.selectedPatientdata.Falnr,
+      "Lfdnr": this.selectedPatientdata.Lfdbw,
+      "Zimmr": this.selectedErPat.Zimmr
     }
+    this.emergencyService.SaveBedForPatient(json)
+      .subscribe({
+        next: (_success: any) => {
+          // Handle successful data retrieval
+          this.closeErBed();
+          Swal.fire({
+            text: "Room is assigned successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.reloadCheckin.emit(true);
+        },
+        error: (err: any) => {
+          // Handle errors if the request fails
+          console.error('Error Data:', err);
+        },
+        complete: () => {
+          // Handle completion (optional), invoked when the observable completes
+          console.log('Complete');
+        }
+      });
+
+    // }
   }
-  closeErBed(){
+  closeErBed() {
     this.modalRef.hide();
-    this.selectedErPat='';
+    this.selectedErPat = '';
   }
 }

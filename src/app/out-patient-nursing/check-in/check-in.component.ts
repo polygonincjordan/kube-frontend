@@ -663,7 +663,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
           },
           complete: () => {
             // Handle completion (optional), invoked when the observable completes
-            console.info('API Finish..');
+            // console.info('API Finish..');
           }
         });
       }
@@ -678,7 +678,6 @@ export class CheckInComponent implements OnInit, OnDestroy {
   }
 
   getSelectedDates(dates) {
-    console.log('Test12121212');
     this.getErList(dates).then((formValue: any) => {
       if (formValue) {
         formValue.forEach((ele: any) => {

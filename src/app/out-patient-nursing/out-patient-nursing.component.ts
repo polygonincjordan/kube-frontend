@@ -1,10 +1,9 @@
-import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { CheckInComponent } from './check-in/check-in.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Patient } from '@services/e-kardex/interfaces/patient';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Subscription, catchError, of, tap } from 'rxjs';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { StorageService } from '@services/storage.service';
@@ -130,7 +129,7 @@ export class OutPatientNursingComponent implements OnInit {
     private titleService: Title,
     private modalService: BsModalService,
     private dataShareService: DataShareService,
-    private outpatientNursingService: OutpatientNursingService
+    private outpatientNursingService: OutpatientNursingService,
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -214,6 +213,24 @@ export class OutPatientNursingComponent implements OnInit {
             this.allDoctorList = data.value.filterDoctorList.map(status => ({ Doctor: status }));
           }
         }
+        if (data.type == FilterType.OpErHistory$ && data.isAllow == true && data.value) {
+          if (data.value?.filterFinCategtoryList) {
+            this.allFinCategoryList = [];
+            this.allFinCategoryList = data.value.filterFinCategtoryList.map(status => ({ Category: status }));
+            console.log(this.allFinCategoryList);
+          }
+          if (data.value?.filterStatusList) {
+            this.allStatus = [];
+            this.allStatus = data.value.filterStatusList.map(status => ({ Status: status }));
+            console.log(this.allStatus);
+          }
+          if (data.value?.filterDoctorList) {
+            this.assignUsersList = [];
+            this.assignUsersList = data.value.filterDoctorList.map(status => ({ Doctor: status }));
+            console.log(this.assignUsersList);
+          }
+        }
+
       }
     });
   }
@@ -307,9 +324,15 @@ export class OutPatientNursingComponent implements OnInit {
   clinicConfigGet() {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d) {
-        this.clinicConfigDetail = resp.body.d.results[0];
-        this.selectedPhysicianConf = resp.body?.d.results[0].AttendPhy ? [this.assignUsersList.find(res => res.Gpart === resp.body?.d.results[0].AttendPhy)] : [];
-        this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode && this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode) ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
+        this.clinicConfigDetail = resp.body.d.results;
+        // this.selectedPhysicianConf = resp.body?.d.results[0].AttendPhy ? [this.assignUsersList.find(res => res.Gpart === resp.body?.d.results[0].AttendPhy)] : [];
+        // this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode && this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode) ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
+
+        const assignUsersMap = new Map(this.assignUsersList.map(user => [user.Gpart, user]));
+        this.selectedPhysicianConf = this.clinicConfigDetail.filter(element => assignUsersMap.has(element.AttendPhy)).map(element => assignUsersMap.get(element.AttendPhy));
+        const specialityMap = new Map(this.specialityList.map(specialty => [specialty.Orgid, specialty]));
+        this.selectedSpecialityConf = this.clinicConfigDetail.filter(element => specialityMap.has(element.SpecialityCode)).map(element => specialityMap.get(element.SpecialityCode));
+
       }
     });
   }
@@ -405,7 +428,6 @@ export class OutPatientNursingComponent implements OnInit {
   }
 
   createConfig() {
-    debugger;
     const physicianArray = this.selectedPhysicianConf.map(item => item.Gpart);
     const specialityArray = this.selectedSpecialityConf.map(item => item.Orgid);
     let Payload = {
