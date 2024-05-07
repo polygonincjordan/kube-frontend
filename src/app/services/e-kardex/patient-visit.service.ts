@@ -9,6 +9,7 @@ import {
   PatientVisitDataResult
 } from './interfaces/patient-visit-data';
 import { DatePipe, formatDate } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -63,8 +64,26 @@ export class PatientVisitService {
         tap((data) => {
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(() => error);
+          if(error.status == 0){
+            return throwError(()=> Swal.fire({
+              text: "Something went wrong; please try again later. ",
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+          )}
+          return throwError(() => 
+            Swal.fire({
+              text: error.message,
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+        );
         })
       );
 
@@ -105,8 +124,26 @@ export class PatientVisitService {
         tap((data) => {
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(() => error);
+          if(error.status == 0){
+            return throwError(()=> Swal.fire({
+              text: "Something went wrong; please try again later. ",
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+          )}
+          return throwError(() => 
+            Swal.fire({
+              text: error.statusText,
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+        );
         })
       );
 
@@ -120,7 +157,28 @@ export class PatientVisitService {
       .pipe(
         tap((data) => {
         }),
-        catchError((error: HttpErrorResponse) => throwError(() => error))
+        catchError((error: HttpErrorResponse) => {
+          if(error.status == 0){
+            return throwError(()=> Swal.fire({
+              text: "Something went wrong; please try again later. ",
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+          )}
+          return throwError(() => 
+            Swal.fire({
+              text: error.statusText,
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+        );
+        })
       );
 
     await lastValueFrom(createPatientConfig$);
@@ -160,7 +218,29 @@ export class PatientVisitService {
         .pipe(
           tap((data) => {
           }),
-          catchError((error: HttpErrorResponse) => throwError(() => error))
+          catchError((error: HttpErrorResponse) => {
+
+            if(error.status == 0){
+              return throwError(()=> Swal.fire({
+                text: "Something went wrong; please try again later. ",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                customClass: 'myalertpopup'
+              })
+            )}
+            return throwError(() => 
+              Swal.fire({
+                text: error.statusText,
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                customClass: 'myalertpopup'
+              })
+          );
+          })
         );
   
       await lastValueFrom(createPatientConfig$);
@@ -173,8 +253,27 @@ export class PatientVisitService {
           tap((data) => {
           }),
           catchError((error: HttpErrorResponse) => {
-            console.error(error);
-            return throwError(() => error);
+
+            if(error.status == 0){
+              return throwError(()=> Swal.fire({
+                text: "Something went wrong; please try again later. ",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                customClass: 'myalertpopup'
+              })
+            )}
+            return throwError(() => 
+              Swal.fire({
+                text: error.statusText,
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                customClass: 'myalertpopup'
+              })
+          );
           })
         );
   
@@ -294,8 +393,26 @@ export class PatientVisitService {
         tap((data) => {
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(() => error);
+          if(error.status == 0){
+            return throwError(()=> Swal.fire({
+              text: "Something went wrong; please try again later. ",
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+          )}
+          return throwError(() => 
+            Swal.fire({
+              text: error.statusText,
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+        );
         })
       );
 
@@ -354,15 +471,32 @@ export class PatientVisitService {
       payload.VisitDate = `\/Date(${date.getTime()})\/`;
     }
     const url = `${environment.eKardexApiUrl}/patientVisit/saveVisitNotePatientVisitDataSet`;
-
     const savePatientConfig$ = this.http
       .post(url, payload, { withCredentials: true })
       .pipe(
         tap((data) => {
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error(error);
-          return throwError(() => error);
+          if(error.status == 0){
+            return throwError(()=> Swal.fire({
+              text: "Something went wrong; please try again later. ",
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+          )}
+          return throwError(() => 
+            Swal.fire({
+              text: error.statusText,
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+        );
         })
       );
 
@@ -376,7 +510,28 @@ export class PatientVisitService {
       .pipe(
         tap((data) => {
         }),
-        catchError((error: HttpErrorResponse) => throwError(() => error))
+        catchError((error: HttpErrorResponse) => {
+          if(error.status == 0){
+            return throwError(()=> Swal.fire({
+              text: "Something went wrong; please try again later. ",
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+          )}
+          return throwError(() => 
+            Swal.fire({
+              text: error.statusText,
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              customClass: 'myalertpopup'
+            })
+        );
+        })
       );
 
     await lastValueFrom(createPatientConfig$);

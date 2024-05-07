@@ -35,6 +35,7 @@ export enum WordType {
   EditNRS = 'EditNumericRatingScale',
   EditBS = 'EditBradenScale',
   EditEA = 'EditEducationAssessment',
+  EditNE = 'EditNurseEndorsment',
   EditEND = 'EditEmergencyNursingDocument',
   CopyEA = 'CopyEducationAssessment',
   CopyNED = 'CopyEmergencyNursingDocument',
