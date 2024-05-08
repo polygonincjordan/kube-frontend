@@ -601,14 +601,14 @@ export class CheckInComponent implements OnInit {
   }
   getErList(date?: any) {
     const json = {
-      // fromDate: `${new DatePipe('en-US').transform(
-      //   new Date().setDate(new Date().getDate() - 20),
-      //   'yyyy-MM-dd'
-      // )}T00:00:00`,
-      // toDate: `${new DatePipe('en-US').transform(
-      //   new Date(),
-      //   'yyyy-MM-dd'
-      // )}T00:00:00`,
+      fromDate: `${new DatePipe('en-US').transform(
+        new Date().setDate(new Date().getDate() - 20),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+      toDate: `${new DatePipe('en-US').transform(
+        new Date(),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
       History: false,
     };
     this.emergencyService.getErCheckList(json).subscribe(
