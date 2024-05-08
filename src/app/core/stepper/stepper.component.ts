@@ -35,10 +35,13 @@ export class StepperComponent implements OnDestroy {
   constructor(private storageService: StorageService,private patientService: PatientService, private route: ActivatedRoute, private router: Router, private patientservices: PatientService, private dataService: DataService, private datePipe: DatePipe,
     private domSanitizer: DomSanitizer,
     private uiHelper: HelperService) {
-    this.route.queryParams.subscribe((resp) => {
-      if (this.isRefreshed && localStorage && !localStorage.patientList) {
+    this.route.queryParams.subscribe((resp) => {      
+      if (this.isRefreshed ) {
         localStorage.patientList = JSON.stringify(resp);
       }
+      // if (this.isRefreshed && localStorage && !localStorage.patientList) {
+      //   localStorage.patientList = JSON.stringify(resp);
+      // }
     });
 
   }

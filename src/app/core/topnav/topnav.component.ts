@@ -122,7 +122,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     //this.popupService.formPopup = this.formPopup;
   }
-  getDataPatient(encounterId) {
+  getDataPatient(encounterId) {    
     //const appTitle = this.titleService.getTitle();
     this.patientService
       .getDataPatient(encounterId)
