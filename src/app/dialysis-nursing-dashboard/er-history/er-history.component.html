@@ -21,9 +21,12 @@
 
             <th scope="col" style="padding-left: 0px;text-align: center">Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
-            <th scope="col" style="padding-left: 0px;">Financial Category<i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i></th>
-            <th scope="col" style="width: 14%;">Attending Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
-            <th scope="col">Service Description</th>
+            <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i></th>
+            <th scope="col" style="width: 14%;">Assigned Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
+            <!-- <th scope="col">Assigned Nurse</th> -->
+            <th scope="col" style="padding-left: 0px">
+              Service Description
+            </th>
             <!-- <th scope="col" style="padding-left: 0px;">Diagnosis</th> -->
             <!-- <th scope="col" style="padding-left: 0px;">Waiting Time <i class="fa fa-sort" aria-hidden="true" (click)="sortWaitTime()"></i></th> -->
             <th scope="col" style="text-align: center;">Actions</th>
@@ -32,71 +35,62 @@
         </thead>
         &nbsp;
         <tbody>
-          <tr *ngFor="let item of ERlistData;let i = index;" class="border-top-none" [ngStyle]="{'background-color':erListIndex == i ? 'antiquewhite' : '' }" (click)="selectFromErList(i)">
-            <!-- <td scope="row" style="width: 0px;"><input type="checkbox" style="position: relative;
-              top: 3px;"></td> -->
-            <td class="border-top-none" scope="row" style="width: 16%;cursor: pointer;" (click)="redirectToTreatByName(item)">{{item.Patient}}</td>
-            <td class="border-top-none" style="width: 5%;padding-left: 0px;">{{item.Patnr}}</td>
-            <!-- <td style="width: 6%;padding-left: 0px;">F-40Y</td> -->
-            <td class="border-top-none" style="width: 1%;padding-left: 0px;">{{getDate(item.Datum)| date : "dd.MM.y"}}</td>
-            <td class="border-top-none" scope="row" style="width: 5%;padding-left: 0px;text-align: center;">{{getTime(item.ZeitIntern)}}</td>
-            <td class="border-top-none"  style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;" [title]="item.RiskInformation" (click)="openModalForRisk(riskModal,item)"></td>
-            <td style="padding-left: 0px;text-align: center; "><img src="assets/img/Allergy.svg" style="width: 23px;" [title]="item.Allergies" (click)="openModalForAllergy(allergyModal,item)"></td>
-            <td style="padding-left: 0px;width:4%;text-align: center;">
-              <span [style.background-color]="item?.TriageColor" class="triage-circle" title="Triage">{{item?.TriagePriorityCode}}</span>
-              <img src="assets/img/er-triage.png" style="width: 30px;" *ngIf="!item?.TriagePriorityCode" title="No Triage">
-              </td>
-            <td class="border-top-none" scope="row" style="padding-left: 0px;text-align: center;"><img src="assets/img/er-vital.png" style="width: 23px;" (click)="openModalVital(item)" title="Vitals"></td>
-
-            <td class="border-top-none" style="width: 7%;">
-              {{item.BehraumKb}}
-            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
-              font-weight: bold;" class="checkinrow-input" [value]="item.BehraumKb"> -->
-              </td>
-            <td class="border-top-none" style="width: 10%;padding-left: 0px;text-align: center;">
-              <span [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start' : '',  item.StatusTxt == 'Called' ? 'status-called' : '',item.StatusTxt == 'Checked Out' ? 'status-checkedout' :'']">
-              {{item.StatusTxt}}
-            </span>
-            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
-              font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.StatusTxt" disabled> -->
-              </td>
-            <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">
-              {{item.ZzfinCat}}
-            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
-              font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.ZzfinCat" disabled> -->
-              </td>
-
-               <td class="border-top-none" style="width: 14%;">
-            {{item.Behpersname}}
-            <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
-              font-weight: bold;background-color: #939da178;" class="checkinrow-input" [value]="item.Behpersname" disabled> -->
-              </td>
-              <td  class="border-top-none">{{item.ZznurseName}}</td>
-              <td class="border-top-none"  scope="row" style="max-width: 107px;
-              padding-left: 0px;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;cursor: pointer;" [title]="item.Diagnosis" (click)="showDiagnosis(item)">{{item.Diagnosis}}</td>
-          <td scope="row" style="width: 10%; padding-left: 0px" [title]="item.assignedTime" class="border-top-none">
-            <div [ngClass]="item.assignedTime ? 'waiting-time-td':''" title="Waiting Time">
-              {{ item.assignedTime }}
-            </div>
-          </td>
-                <td  style="width: 1%;" class="border-top-none">
-                  <div style="margin-left: 3px;
-                    margin-right: 3px;display: flex;">
-                    <!-- <img src="assets/img/assigntodoc.png" style="width: 40px;cursor: pointer;position: relative;
-                   bottom: 5px;" title="Assign to Doctor" (click)="openAssignDoc(assignDocModal,item)"> -->
+          <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.PatnrName" class="border-top-none" (click)="redirectToTreatByName(item)">
+              {{ item.PatnrName }}
+            </td>
+            <td style="width: 5%; padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
+            <td style="width: 1%; padding-left: 0px" class="border-top-none" [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
+              {{ getDate(item.Bwidt) | date : "dd.MM.y" }}
+            </td>
+            <td scope="row" class="border-top-none" style="width: 5%; padding-left: 0px; text-align: center" [title]="getTime(item.Bwizt)">
+              {{ getTime(item.Bwizt) }}
+            </td>
+            <td style="width: 3%" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+              <span>
+                <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;" (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
+              </span>
+            </td>
+            <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"  [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  " >
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies" style="width: 23px" (click)="openModalForAllergy(allergyModal,item)" />
+            </td>
+            <td scope="row" style="padding-left: 0px; text-align: center">
+              <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals"/>
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.RoomidName" class="pl-2 w-6">
+              {{ item.RoomidName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.StatusName"class="pl-2 w-6">
+              {{ item.StatusName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.KostrName"class="pl-2 w-10">
+              {{ item.KostrName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.PernrName"class="pl-2 w-10">
+              {{ item.PernrName }}
+            </td>
+            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.Leitx" class="pl-2 w-12">
+              {{ item.Leitx }}
+            </td>
+            <td style="width: 1%" [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">
+              <div style="display: flex; justify-content: end; line-height: 14px;align-items:end">
+                <div style="margin-left: 3px; margin-right: 3px">
+                  <img src="assets/img/nur-emr-user.svg" style="width: 32px; cursor: pointer" title="Assign to Me"/>
+                </div>
+                <div>
                   <img src="assets/img/information.jfif" style="width: 31px;
                   height: 26px;;cursor: pointer;position: relative;
                   bottom: 5px;" title="Visit Comments" (click)="openVisitComments(visitCommentsModal,item)" *ngIf="item.VisitComments != ''">
-                  <img src="assets/img/information_grey.png" style="width: 25px;
-                  height: 24px;;cursor: pointer;position: relative;
-                  bottom: 3px;left:4px" title="No visit comment" *ngIf="item.VisitComments == ''">
+                  <img src="assets/img/information_grey.png" style="width: 23px;
+                  height: 22px;
+                  cursor: pointer;
+                  position: relative;
+                  bottom: 2px;
+                  margin-left: 7px;" title="No visit comment" *ngIf="item.VisitComments == ''">
                   </div>
-                </td>
+              </div>
+            </td>
           </tr>
-
         </tbody>
       </table>
       <div

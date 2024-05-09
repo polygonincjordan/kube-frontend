@@ -89,7 +89,6 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
-    private ePrescriptionService:EPrescriptionService,
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -601,12 +600,12 @@ export class CheckInComponent implements OnInit {
   }
 
   getErList(date?: any) {
-    this.ePrescriptionService.loadData(`e-prescription/dialysisTAget?Bwidtge=${this.parseDate(date[0])}&Bwidtle=${this.parseDate(date[1])}`, false, false, false, false).subscribe((_success:any)=>{
+    this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
       this.ERlistData = [];
-      if (_success.body.d.results.length > 0) {
+      if (_success.d.results.length > 0) {
         this.sendErPatientCount.emit(this.ERlistData.length);
-        _success.body.d.results.forEach((element) => {
-          if (element.StatusTxt != 'Checked Out') {
+        _success.d.results.forEach((element) => {
+          if (element.StatusName != 'Checked Out') {
             this.ERlistData.push(element);
             this.sendErPatientCount.emit(this.ERlistData.length);
           }
@@ -630,7 +629,7 @@ export class CheckInComponent implements OnInit {
 
   parseDate(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}T${formatDate(date, "HH:mm:ss")}`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T${"00:00:00"}`;
     }
     return null;
   }

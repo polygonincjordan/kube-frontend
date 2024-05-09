@@ -559,7 +559,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
 
   refreshCheckIn() {
     if (this.selectedModule === 'checkin') {
-      this.CheckInComponent.getErList(new Date());
+      this.CheckInComponent.getErList([new Date(), new Date()]);
     }else if (this.selectedModule === 'bed') {
       this.BedComponent.getErList(this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     } else if (this.selectedModule === 'erhistory') {
@@ -572,8 +572,9 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable();
     } else if (this.selectedModule === 'PhysicianOrder') {
       this.PhysicianOrdersListComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
-    }
-    else if (this.selectedModule === 'analysis') {
+    }else if(this.selectedModule === 'noReleaseDoc'){
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments();
+    }else if (this.selectedModule === 'analysis') {
       // this.PhysicianOrdersListComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])
       this.updatedDate = [new Date(), new Date()]
@@ -629,6 +630,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this.defaultSelectedDateRange.push(new Date())
     this.getCurrentDate();
     if (module == 'checkin') {
+      this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = ""
       this.currentDate = new Date();
       this.checkin = true;
@@ -645,6 +647,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.noReleaseDoc = false;
       this.bed = false;
     }else if (module == 'bed') {
+      this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = ""
       this.currentDate = new Date();
       this.checkin = false;
@@ -675,7 +678,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.noReleaseDoc = false;
       this.bed = false;
     } else if (module == 'erhistory') {
-      this.headerLabel = 'Emergency History List'
+      this.headerLabel = 'Dialysis History'
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.treatmentarea = false;
       this.checkin = false;

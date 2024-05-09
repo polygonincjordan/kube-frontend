@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { ConsumableList, MaterialDetails, MaterialDetailsResult, MaterialStockDetails } from '@services/consumables/interfaces/consumables.interface';
@@ -107,6 +107,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       Falnr: new FormControl(this.paramsValue.falnr),
       Anfoe: new FormControl("EMEMDAMC"),
       Anpoe: new FormControl("EMEEUAMC"),
+      Lgort: new FormControl("DI02"),
       PatMatCosmpNmm7HdToItmNav: new FormGroup({
         // results: new FormArray([])
         results: this.formBuilder.array([]),
@@ -172,7 +173,8 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       PrioReq: new FormControl(""),
       Gernr: new FormControl(""),
       isSelected: new FormControl(false),
-    })
+      NonBillable:new FormControl(true)
+    });
   }
 
   public isAllchecked(event: any): void {
@@ -270,7 +272,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     const enteredValue = event;
     let parms = {
       enteredValue: event,
-      location: this.selectedStorageLocation,
+      location: 'DI02',
     }
     this.consumableService.getMaterialStockDetails(`${JSON.stringify(parms)}`).subscribe({
       next: (resp: MaterialStockDetails) => {
@@ -333,15 +335,15 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       delete element.Arktx;
       delete element.isSelected;
       delete element.Stock;
-      delete element.Lgort
+      delete element.Lgort;
     });
     let newpayload = payload.filter(item => item.Matnr !== '');
     this.consumableHistoryForm.patchValue({
-      Lgort: this.selectedStorageLocation,
+      Lgort: 'DI02',
     })
     delete this.consumableHistoryForm.value.isAllSelected;
     this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
-    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
+    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload,)
     if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
       Swal.fire({
         text: "Please filed all the required values",
