@@ -115,9 +115,9 @@
                 </div>
                 <div class="col-md-3">{{latestEmergencyNursingDocList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="getPatientProfileData(latestEmergencyNursingDocList[0])"
-                    *ngIf="latestEmergencyNursingDocList[0]?.StatusTxt == 'Released'" />
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;" title="View PDF"
+                    *ngIf="latestEmergencyNursingDocList[0]?.StatusTxt == 'Released'"
+                    (click)="getScaleDetails(latestEmergencyNursingDocList[0], RedirectionType.TRASM$)"></i>
                 </div>
               </div>
               <!-- Glasgow Coma Scale -->
@@ -131,8 +131,8 @@
                 </div>
                 <div class="col-md-3">{{latestGlasgowComaScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="getPatientProfileData(latestGlasgowComaScaleList[0])"
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestGlasgowComaScaleList[0],RedirectionType.COMMA$)"
                     *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
                 </div>
               </div>
@@ -147,8 +147,8 @@
                 </div>
                 <div class="col-md-3">{{latestFacePainScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="getPatientProfileData(latestFacePainScaleList[0])"
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestFacePainScaleList[0],RedirectionType.FAC$)"
                     *ngIf="latestFacePainScaleList[0]?.StatusTxt == 'Released'" />
                 </div>
               </div>
@@ -164,8 +164,8 @@
                 </div>
                 <div class="col-md-3">{{latestNumericratingscaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="getPatientProfileData(latestNumericratingscaleList[0])"
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestNumericratingscaleList[0],RedirectionType.NMRTSC$)"
                     *ngIf="latestNumericratingscaleList[0]?.StatusTxt == 'Released'" />
                 </div>
               </div>
@@ -180,8 +180,8 @@
                 </div>
                 <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="getPatientProfileData(latestBridentScaleList[0])"
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
                 </div>
               </div>
@@ -197,7 +197,7 @@
                 </div>
                 <div class="col-md-3">{{educationAssList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
                 </div>
@@ -214,22 +214,21 @@
               <!-- Nurse Endorsement -->
 
               <div
-              [ngClass]="nurseEndorsement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;"
-              (click)="selectAssessment('nurseEndorsement',nurseEndorsementList[0])">
-              <div class="col-md-4">Nurse Endorsement {{nurseEndorsementList[0]?.Zversion ?
-                dockVer(nurseEndorsementList[0]?.Zversion) : ''}} :</div>
-              <div class="col-md-2 status-color">{{nurseEndorsementList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2" title="{{getTime(nurseEndorsementList[0]?.DocTime)}}">
-                {{getDate(nurseEndorsementList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-              </div>
-              <div class="col-md-3">{{nurseEndorsementList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-                <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
+                [ngClass]="nurseEndorsement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('nurseEndorsement',nurseEndorsementList[0])">
+                <div class="col-md-4">Nurse Endorsement {{nurseEndorsementList[0]?.Zversion ?
+                  dockVer(nurseEndorsementList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{nurseEndorsementList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(nurseEndorsementList[0]?.DocTime)}}">
+                  {{getDate(nurseEndorsementList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{nurseEndorsementList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
                   (click)="getPatientProfileData(nurseEndorsementList[0])"
                   *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                </div>
               </div>
-            </div>
 
 
 
@@ -281,7 +280,7 @@
       <!-- [docDetails]="educationAssList" -->
       <app-patient-education-details *ngIf="openEducationAssessment"
         (reloadTableList)="reloadDoc($event)"></app-patient-education-details>
-        <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
+      <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
       <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
       <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
       <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
@@ -294,9 +293,9 @@
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
           [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
         </ngx-extended-pdf-viewer>
-        <div class="row" *ngIf="pdfUrlType == 'pdf'">
+        <!-- <div class="row" *ngIf="pdfUrlType == 'pdf'">
           <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
-        </div>
+        </div> -->
         <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
           <img [src]="releaseDocumentImage" style="height: 70vh;" />
         </div>
