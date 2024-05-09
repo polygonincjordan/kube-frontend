@@ -50,6 +50,7 @@ export enum FilterType {
   PatientWithNoConsumable$ = 'PatientWithNoConsumable',
   PatientWithNoDocuments$ = 'PatientWithNoDocuments',
   OpCheckIn$ = 'OPCheckIn',
+  OpErHistory$ = 'OpErHistory',
   ConsumableStorageLocation$ = 'ConsumableStorageLocation',
   FeeServiceSet$ = 'FeeServiceSet',
   FeeServiceList$ = 'FeeServiceList',

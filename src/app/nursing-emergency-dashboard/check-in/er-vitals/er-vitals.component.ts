@@ -125,6 +125,40 @@ export class ErVitalsComponent implements OnInit {
         "Addinfo": ""
       },
       {
+        "Einri": "",
+        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
+        "ValidVers": "0000",
+        "Bcpid": "C0050568120581EE8B8E4B9B228DEECC5",
+        "Extid": "HEIGHT",
+        "Name": "Height",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "cm",
+        "NormalRange": "00.000 - 00.000",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
+        "ValidVers": "0000",
+        "Bcpid": "C0050568120581EE8B8E4B5DCAA436CC5",
+        "Extid": "WEIGHT",
+        "Name": "Weight",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "kg",
+        "NormalRange": "00.000 - 00.000",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
 
         "Einri": "",
         "Valid": "E10989D8963E1EEE81C5B8A334F09E72",
@@ -248,10 +282,10 @@ export class ErVitalsComponent implements OnInit {
         "ObsidVers": "0000",
         "Addinfo": ""
       }
+     
     ];
   }
   openModalForErVital(checkinitem) {
-    console.log(checkinitem);
     this.erListSelectedData = checkinitem;
     const config: ModalOptions = { class: 'modal-dialog-centered er-vital-modal' };
     this.modalRef = this.modalService.show(this.erVitalsModal, config);
@@ -295,7 +329,7 @@ export class ErVitalsComponent implements OnInit {
       einri: this.erListSelectedData.Einri,
     }
     this.emergencyService.getAllVitalList(json).subscribe(
-      (_success: any) => {
+      (_success: any) => {        
         this.vitalAllListResp = _success.d.results;
 
       },
@@ -432,7 +466,7 @@ export class ErVitalsComponent implements OnInit {
     this.edit = false;
     this.resetAllMaintainValues();
   }
-  addItemForVital(element?): void {
+  addItemForVital(element?): void {    
     this.maintainVitalFormitems = this.maintainvitalform.get('maintainVitalFormitems') as FormArray;
     this.maintainVitalFormitems.push(this.showVitalDetailsOnList(element));
   }
@@ -594,8 +628,6 @@ export class ErVitalsComponent implements OnInit {
     this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));
-    console.log(this.maintainVitalBarForm);
-
     this.vitalDefaultListResp.forEach(element => {
       this.addItemForVital(element);
     });
@@ -607,7 +639,7 @@ export class ErVitalsComponent implements OnInit {
     };
     this.modalRefForAllVitals = this.modalService.show(template, config);
   }
-  selectVitalFromAllList(item) {
+  selectVitalFromAllList(item) {    
     this.modalRefForAllVitals.hide();
     this.maintainvitalform.controls['maintainVitalFormitems']['controls'][this.selectedIndex]['controls'].Extid.setValue(item.Extid);
     this.maintainvitalform.controls['maintainVitalFormitems']['controls'][this.selectedIndex]['controls'].Name.setValue(item.Name);
@@ -639,8 +671,6 @@ export class ErVitalsComponent implements OnInit {
     el.scrollLeft -= 155;
   }
   scrollHandler(event) {
-    console.log(event);
-
     this.stickyHead = true;
   }
   confirmationForChange(template: TemplateRef<any>) {

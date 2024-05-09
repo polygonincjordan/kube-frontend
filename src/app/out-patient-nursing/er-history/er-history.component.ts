@@ -12,6 +12,8 @@ import { DatePipe } from '@angular/common';
 import { OutpatientNursingService } from '@services/outpatient-nursing.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { formatDate } from 'ngx-bootstrap/chronos';
+import { DataShareService } from '@services/data-share.service';
+import { FilterType } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-er-history',
@@ -88,8 +90,18 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
-  constructor(private emergencyService: EmergencyService, private modalService: BsModalService, private ePrescriptionService: EPrescriptionService,
-    public outpatientNursingService: OutpatientNursingService, private formBuilder: FormBuilder, private storageService: StorageService, private orderDashboardService: OrdersDashboardService) {
+  public financialCategory: Array<any> = [];
+  public statusList: Array<any> = [];
+  public doctorList: Array<any> = [];
+  constructor(
+    private emergencyService: EmergencyService,
+    private modalService: BsModalService,
+    private ePrescriptionService: EPrescriptionService,
+    public outpatientNursingService: OutpatientNursingService,
+    private formBuilder: FormBuilder,
+    private storageService: StorageService,
+    private orderDashboardService: OrdersDashboardService,
+    private dataShareService: DataShareService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
     });
@@ -133,9 +145,49 @@ export class ErHistoryComponent implements OnInit {
   ngOnInit() {
     // this.getErList([new Date(), new Date()]);
     if (this.storageService.lastPassedDate != undefined) {
-      this.getErHistoryList(this.storageService.lastPassedDate);
+      this.getSelectedDates(this.storageService.lastPassedDate);
+      // this.getErHistoryList(this.storageService.lastPassedDate).then((formValue: any) => {
+      //   if (formValue) {
+      //     formValue.forEach((ele: any) => {
+      //       this.financialCategory.push(ele?.ZzfinCat);
+      //       this.statusList.push(ele?.StatusTxt);
+      //       this.doctorList.push(ele?.Behpersname);
+      //     });
+      //     this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
+      //     this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
+      //     this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
+      //     const value = {
+      //       filterFinCategtoryList: this.financialCategory,
+      //       filterStatusList: this.statusList,
+      //       filterDoctorList: this.doctorList,
+      //     };
+      //     this.dataShareService.sendFilterType(FilterType.OpErHistory$, true, value);
+      //   }
+      // }).catch((error: any) => {
+      //   console.error('Error scale:', error);
+      // });
     } else {
-      this.getErHistoryList([new Date(), new Date()]);
+      this.getSelectedDates([new Date(), new Date()]);
+      // this.getErHistoryList([new Date(), new Date()]).then((formValue: any) => {
+      //   if (formValue) {
+      //     formValue.forEach((ele: any) => {
+      //       this.financialCategory.push(ele?.ZzfinCat);
+      //       this.statusList.push(ele?.StatusTxt);
+      //       this.doctorList.push(ele?.Behpersname);
+      //     });
+      //     this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
+      //     this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
+      //     this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
+      //     const value = {
+      //       filterFinCategtoryList: this.financialCategory,
+      //       filterStatusList: this.statusList,
+      //       filterDoctorList: this.doctorList,
+      //     };
+      //     this.dataShareService.sendFilterType(FilterType.OpErHistory$, true, value);
+      //   }
+      // }).catch((error: any) => {
+      //   console.error('Error scale:', error);
+      // });
     }
     this.dataForTriage();
   }
@@ -339,7 +391,26 @@ export class ErHistoryComponent implements OnInit {
   }
 
   getSelectedDates(dates) {
-    this.getErHistoryList(dates);
+    this.getErHistoryList(dates).then((formValue: any) => {
+      if (formValue) {
+        formValue.forEach((ele: any) => {
+          this.financialCategory.push(ele?.ZzfinCat);
+          this.statusList.push(ele?.StatusTxt);
+          this.doctorList.push(ele?.Behpersname);
+        });
+        this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
+        this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
+        this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
+        const value = {
+          filterFinCategtoryList: this.financialCategory,
+          filterStatusList: this.statusList,
+          filterDoctorList: this.doctorList,
+        };
+        this.dataShareService.sendFilterType(FilterType.OpErHistory$, true, value);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+    });
   }
   getDate(value) {
     if (value) {
@@ -395,64 +466,66 @@ export class ErHistoryComponent implements OnInit {
       .map(item => item.AttendPhy.trim()) // Extract AttendPhy values
   }
   getErHistoryList(date?: any) {
-    this.currentDatePassed = date;
-    this.storageService.setLastPassedData(date);
-    // const json = {
-    //   fromDate:`${new DatePipe('en-US').transform(
-    //     date[0],
-    //     'yyyy-MM-dd'
-    //   )}T00:00:00`,
-    //   toDate:`${new DatePipe('en-US').transform(
-    //     date[1],
-    //     'yyyy-MM-dd'
-    //   )}T00:00:00`,
-    //   History:true
-    // }
-    const storedUser = JSON.parse(localStorage.getItem('UserConfiguration')).results;
-    let link = ``;
-    if (storedUser.length > 1) {
-      link = `e-prescription/CheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)}&AttendPhy=${this.getAttendPhy(storedUser)}`
-    } else {
-      link = `e-prescription/CheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)[0]}&AttendPhy=${this.getAttendPhy(storedUser)[0]}`
-    }
-    if (date != undefined) {
-      this.ePrescriptionService.loadData(link, false, false, false, false).subscribe({
-        next: (_success: any) => {
-          // Handle successful data retrieval
-          this.ERlistData = _success.body.d.results;
-          this.ERlistData = [];
-          if (_success.body.d.results.length == 0) {
-            this.sendErPatientCount.emit(this.ERlistData.length);
-          }
-          _success.body.d.results.forEach(element => {
-            if (element.StatusTxt == 'Checked Out') {
-              this.ERlistData.push(element);
+    return new Promise((resolve, reject) => {
+      this.currentDatePassed = date;
+      this.storageService.setLastPassedData(date);
+      // const json = {
+      //   fromDate:`${new DatePipe('en-US').transform(
+      //     date[0],
+      //     'yyyy-MM-dd'
+      //   )}T00:00:00`,
+      //   toDate:`${new DatePipe('en-US').transform(
+      //     date[1],
+      //     'yyyy-MM-dd'
+      //   )}T00:00:00`,
+      //   History:true
+      // }
+      const storedUser = JSON.parse(localStorage.getItem('UserConfiguration')).results;
+      let link = ``;
+      if (storedUser.length > 1) {
+        link = `e-prescription/CheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)}&AttendPhy=${this.getAttendPhy(storedUser)}`
+      } else {
+        link = `e-prescription/CheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)[0]}&AttendPhy=${this.getAttendPhy(storedUser)[0]}`
+      }
+      if (date != undefined) {
+        this.ePrescriptionService.loadData(link, false, false, false, false).subscribe({
+          next: (_success: any) => {
+            // Handle successful data retrieval
+            this.ERlistData = _success.body.d.results;
+            this.ERlistData = [];
+            if (_success.body.d.results.length == 0) {
               this.sendErPatientCount.emit(this.ERlistData.length);
-              //this.triagePriorityList(element);
             }
-          });
-          this.ERlistData.forEach((element, index) => {
-            if (element.TriageDate != null && element.TriageDate != '') {
-              this.getAssignedTime(this.getTime(element.CheckedOutT), this.getDate(element.CheckedOutD), this.getTime(element.TriageTime), this.getDate(element.TriageDate), index);
-            }
-            else {
-              this.ERlistData[index]['assignedTime'] = '';
-            }
-          });
-          this.ERlistDataClone = this.ERlistData;
-          this.lastIndex = this.ERlistData.length - 1;
-        },
-        error: (err: any) => {
-          // Handle errors if the request fails
-          console.error('Error fetching CheckedOut Data:', err);
-        },
-        complete: () => {
-          // Handle completion (optional), invoked when the observable completes
-          // console.info('API Operation of CheckedOut is Finish..');
-
-        }
-      });
-    }
+            _success.body.d.results.forEach(element => {
+              if (element.StatusTxt == 'Checked Out') {
+                this.ERlistData.push(element);
+                this.sendErPatientCount.emit(this.ERlistData.length);
+                //this.triagePriorityList(element);
+              }
+            });
+            this.ERlistData.forEach((element, index) => {
+              if (element.TriageDate != null && element.TriageDate != '') {
+                this.getAssignedTime(this.getTime(element.CheckedOutT), this.getDate(element.CheckedOutD), this.getTime(element.TriageTime), this.getDate(element.TriageDate), index);
+              }
+              else {
+                this.ERlistData[index]['assignedTime'] = '';
+              }
+            });
+            this.ERlistDataClone = this.ERlistData;
+            this.lastIndex = this.ERlistData.length - 1;
+            resolve(this.ERlistData);
+          },
+          error: (err: any) => {
+            // Handle errors if the request fails
+            console.error('Error fetching CheckedOut Data:', err);
+          },
+          complete: () => {
+            // Handle completion (optional), invoked when the observable completes
+            // console.info('API Finish..');
+          }
+        });
+      }
+    });
   }
 
   parseDate(date: any) {
@@ -597,7 +670,8 @@ export class ErHistoryComponent implements OnInit {
     }
     this.emergencyService.saveTriage(this.selectedTriageFromCheckin).subscribe(
       (_success: any) => {
-        this.getErHistoryList(this.currentDatePassed);
+        this.getSelectedDates(this.currentDatePassed)
+        // this.getErHistoryList(this.currentDatePassed);
         this.dataForTriage();
         this.closeTriageModal();
       },
@@ -1674,6 +1748,7 @@ export class ErHistoryComponent implements OnInit {
     // //    return el;
     // //  }
     // })
+    debugger;
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
@@ -1689,6 +1764,17 @@ export class ErHistoryComponent implements OnInit {
           }));
         });
         filterValue = this.triageValueArr.flat();
+      }
+
+      if (event.Status && event.Status?.length) {
+        event.Status.forEach(statusValue => {
+          this.statusValueArr.push(filterValue.filter((element: any) => {
+            if (element.StatusTxt === statusValue) {
+              return element;
+            }
+          }));
+        });
+        filterValue = this.statusValueArr.flat();
       }
 
       if (event.Physician && event.Physician?.length) {
@@ -1759,7 +1845,8 @@ export class ErHistoryComponent implements OnInit {
     }
     this.emergencyService.actionPhysicianSet(json).subscribe(
       (_success: any) => {
-        this.getErHistoryList(this.currentDatePassed);
+        this.getSelectedDates(this.currentDatePassed)
+        // this.getErHistoryList(this.currentDatePassed);
         this.closeAssignDoc();
       },
       (_error: any) => { }
