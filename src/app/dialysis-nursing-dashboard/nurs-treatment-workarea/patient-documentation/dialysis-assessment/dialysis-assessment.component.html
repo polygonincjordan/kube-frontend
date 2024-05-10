@@ -1,0 +1,21 @@
+<div class="tabs w-100">
+  <input type="radio" id="tab1" name="tab" checked>
+  <label for="tab1" class="m-0" (click)="tabPanelNavigation('haemodialysis')" > Haemodialysis Access</label>
+  <input type="radio" id="tab2" name="tab">
+  <label for="tab2" class="m-0" (click)="tabPanelNavigation('preDialysis')">Pre-Dialysis Assessment</label>
+  <input type="radio" id="tab3" name="tab">
+  <label for="tab3" class="m-0">Haemodialysis Line Infection Surveillance</label>
+  <input type="radio" id="tab4" name="tab">
+  <label for="tab4" class="m-0"> Haemodialysis Monitoring </label>
+  <input type="radio" id="tab4" name="tab">
+  <label for="tab4" class="m-0"> Post Dialysis Evaluation </label>
+  <input type="radio" id="tab4" name="tab">
+  <label for="tab4" class="m-0"> Peritoneal D... </label>
+</div>
+<ng-container *ngIf="this.PreDialysis">
+  <pre-dialysis-assessment></pre-dialysis-assessment>
+</ng-container>
+
+<ng-container *ngIf="this.Haemodialysis">
+  <haemodialysis-access></haemodialysis-access>
+</ng-container>

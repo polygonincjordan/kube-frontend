@@ -573,7 +573,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     } else if (this.selectedModule === 'PhysicianOrder') {
       this.PhysicianOrdersListComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }else if(this.selectedModule === 'noReleaseDoc'){
-      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments();
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments([new Date(), new Date()]);
     }else if (this.selectedModule === 'analysis') {
       // this.PhysicianOrdersListComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])
@@ -1008,6 +1008,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
       this.CheckInComponent?.getErList(this.formgroupData.DateRange);
       this.BedComponent?.getErList(this.formgroupData.DateRange);
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.formgroupData.DateRange);
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -1022,6 +1023,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
       this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
       this.BedComponent?.getSelectedDates(this.formgroupData.DateRange);
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.formgroupData.DateRange);
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()-1));
     //this.ErHistoryComponent.getErList(this.currentDate);
@@ -1041,6 +1043,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this.updatedDate = event
     this.BedComponent?.getErList(event);
     this.CheckInComponent?.getErList(event);
+    this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(event);
   }
 
 
@@ -1056,6 +1059,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.CheckInComponent?.getErList(this.formgroupData.DateRange);
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange);
       this.BedComponent?.getErList(this.formgroupData.DateRange);
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.formgroupData.DateRange);
 
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
@@ -1071,6 +1075,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange);
       this.BedComponent?.getSelectedDates(this.formgroupData.DateRange);
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.formgroupData.DateRange);
 
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()+1));

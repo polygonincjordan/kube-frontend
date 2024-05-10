@@ -25,6 +25,7 @@ import { ActionType, RedirectionType, WordType } from '@services/interfaces/comm
 import { SharedService } from '@services/shared.service';
 import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
+import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-assessment.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -40,6 +41,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(FacePainScaleComponent) FacePainScaleComp: FacePainScaleComponent;
   @ViewChild(NumericRatingScaleComponent) NumericRatingScaleComp: NumericRatingScaleComponent;
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
+  @ViewChild(DialysisAssessmentComponent) DialysisAssessment: DialysisAssessmentComponent;
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
@@ -57,6 +59,7 @@ export class PatientDocumentationComponent implements OnInit {
   emergencynursingdoc = false;
   facepainscale = false;
   bradenscale = false;
+  assessment = false;
   numericratingscale = false;
   fallrisk = false;
   functional = false;
@@ -82,6 +85,7 @@ export class PatientDocumentationComponent implements OnInit {
   openFacePainScale = false;
   openNumericRatingScale = false;
   openBradenScale = false;
+  openAssessment = false;
   openEmergencyNursingDoc = false;
   actionType = '';
   selectedDocName: string;
@@ -379,6 +383,7 @@ export class PatientDocumentationComponent implements OnInit {
       'numericratingscale': { numericratingscale: true, selectedDocName: 'Numeric rating scale(more than 8 years)' },
       'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
       'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
+      'assessment': { assessment: true, selectedDocName: 'Dialysis Assessment' }
     };
 
     // Reset all flags to false initially
@@ -392,6 +397,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.numericratingscale = false;
     this.bradenscale = false;
     this.emergencynursingdoc = false;
+    this.assessment = false;
 
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -695,6 +701,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openBradenScale) {
       this.BradenScaleComp.ngOnDestroy();
     }
+    if (this.openAssessment) {
+      this.DialysisAssessment.ngOnDestroy();
+    }
     if (this.openEducationAssessment) {
       this.educationAssessmentComp.ngOnDestroy();
     }
@@ -720,7 +729,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.educationAssessment = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
-
+    this.assessment=false;
     this.openPhyAssess = false;
     this.openMedReport = false;
     this.openGlasgowComaScale = false;
@@ -967,6 +976,12 @@ export class PatientDocumentationComponent implements OnInit {
       } else if (action == 'release') {
       } else if (action == 'copy') {
       } else if (action == 'createandrelease') {
+      }
+    }
+    // Dialysis Assessment
+    else if (this.assessment) {
+      if (action == 'create') {
+        this.openAssessment = true;
       }
     }
   }
