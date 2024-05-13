@@ -35,7 +35,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('socialAddHabit') socialAddHabit: SocialHabitComponent;
 
   public triageForm: FormGroup;
-  public AssessmentType = AssessmentType;
+  public AssessmentType: any;
+
   public modeArrivalList: commonKeyValuePair[] = [
     { value: '0', label: 'Stretcher' },
     { value: '1', label: 'Ambulatory' },
@@ -95,10 +96,10 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   ];
 
   public needSupervisionList: commonKeyValuePariExt4[] = [
-    { value: '01', label: 'Feeding', controlname: 'FunFeeding' },
-    { value: '02', label: 'Hygiene', controlname: 'FunHygiene' },
-    { value: '03', label: 'Toileting', controlname: 'FunToileting' },
-    { value: '04', label: 'Amulation', controlname: 'FunAmulation' },
+    { value: '01', label: 'Feeding', controlname: 'FunSelfNeedsFeeding' },
+    { value: '02', label: 'Hygiene', controlname: 'FunSelfNeedsHygiene' },
+    { value: '03', label: 'Toileting', controlname: 'FunSelfNeedsToileting' },
+    { value: '04', label: 'Amulation', controlname: 'FunSelfNeedsAmulation' },
   ];
 
   public problemIdentifiedList: commonKeyValuePair[] = [
@@ -109,7 +110,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     { value: '4', label: 'Musculoskeletal pain' },
   ];
 
-  public usedEquipments: commonKeyValuePair[] = [
+  public usedEquipmentsList: commonKeyValuePair[] = [
     { value: '0', label: 'Walker' },
     { value: '1', label: 'Wheelchair' },
     { value: '2', label: 'Transer Device' },
@@ -128,29 +129,29 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     { value: '1', label: 'No' },
   ];
 
-  public nutritionalRisk: commonKeyValuePariExt4[] = [
-    { id: '1', value: '3', label: '(3) Pregnancy', controlname: 'nrPregnancy' },
-    { id: '6', value: '3', label: '(3) Underweight', controlname: 'nrUnderweight' },
-    { id: '11', value: '3', label: '(3) Malnutrition', controlname: 'nrMalnutrition' },
-    { id: '15', value: '3', label: '(3) Renal disease hepatitis', controlname: 'nrRenaldiseasehepatitis' },
+  public nutritionalRiskList: commonKeyValuePariExt4[] = [
+    { id: '1', value: '3', label: '(3) Pregnancy', controlname: 'NutPregnancy' },
+    { id: '6', value: '3', label: '(3) Underweight', controlname: 'NutUnderweight' },
+    { id: '11', value: '3', label: '(3) Malnutrition', controlname: 'NutMalnutrition' },
+    { id: '15', value: '3', label: '(3) Renal disease hepatitis', controlname: 'NutHepatitis' },
 
-    { id: '2', value: '2', label: '(2) HTN', controlname: 'nrHtn' },
-    { id: '7', value: '2', label: '(2) COPD', controlname: 'nrCopd' },
-    { id: '12', value: '2', label: '(2) CHF', controlname: 'nrChf' },
-    { id: '16', value: '2', label: '(2) CAD', controlname: 'nrCad' },
+    { id: '2', value: '2', label: '(2) HTN', controlname: 'NutHtn' },
+    { id: '7', value: '2', label: '(2) COPD', controlname: 'NutCopd' },
+    { id: '12', value: '2', label: '(2) CHF', controlname: 'NutChf' },
+    { id: '16', value: '2', label: '(2) CAD', controlname: 'NutCad' },
 
-    { id: '3', value: '2', label: '(2) Eating disorder', controlname: 'nrEatingdisorder' },
-    { id: '8', value: '1', label: '(1) Food allergies', controlname: 'nrFoodallergies' },
-    { id: '13', value: '1', label: '(1) Chewing Problem', controlname: 'nrChewingProblem' },
-    { id: '17', value: '1', label: '(1) Chronic Constipation', controlname: 'nrChronicConstipation' },
+    { id: '3', value: '2', label: '(2) Eating disorder', controlname: 'NutEatingDisorder' },
+    { id: '8', value: '1', label: '(1) Food allergies', controlname: 'NutFoodAllergies' },
+    { id: '13', value: '1', label: '(1) Chewing Problem', controlname: 'NutChewingProblems' },
+    { id: '17', value: '1', label: '(1) Chronic Constipation', controlname: 'NutChronicConstipation' },
 
-    { id: '4', value: '1', label: '(1) Vomitting > 48 h ', controlname: 'nrVomitting' },
-    { id: '9', value: '1', label: '(1) Diarrhea < 48 h ', controlname: 'nrDiarrhea' },
-    { id: '14', value: '3', label: '(3) Diabetes', controlname: 'nrDiabetes' },
-    { id: '17', value: '3', label: '(3) HIV / AIDS', controlname: 'nrHiv' },
+    { id: '4', value: '1', label: '(1) Vomitting > 48 h ', controlname: 'NutVomitting' },
+    { id: '9', value: '1', label: '(1) Diarrhea < 48 h ', controlname: 'NutDiarrhea' },
+    { id: '14', value: '3', label: '(3) Diabetes', controlname: 'NutDiabetes' },
+    { id: '17', value: '3', label: '(3) HIV / AIDS', controlname: 'NutHiv' },
 
-    { id: '5', value: '2', label: '(2) G I disorder', controlname: 'nrGidisorder' },
-    { id: '10', value: '1', label: '(1) Low albumin', controlname: 'nrLowalbumin' },
+    { id: '5', value: '2', label: '(2) G I disorder', controlname: 'NutGiDisorder' },
+    { id: '10', value: '1', label: '(1) Low albumin', controlname: 'NutLowAlbumin' },
   ];
 
   public appetiteList: commonKeyValuePair[] = [
@@ -414,6 +415,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   private Zversion: string;
   private ZMode: string = "I";
   private documentMode: string = "New";
+  // private documentStatus: string = "";
 
   constructor(
     public storageService: StorageService,
@@ -424,6 +426,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private dataShareService: DataShareService,
   ) {
+    this.AssessmentType = AssessmentType;
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       if (this.paramsObject.lfdnr) {
@@ -439,30 +442,38 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
 
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
       if (data != null) {
+        this.initForm();
         if (data.type == ActionType.Add$ && data.isAllow == true && data.value == '') {
           this.documentMode = ActionType.Add$;
           let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
           this.selectedTableDetails = checkindata;
-          this.patchForm();
-        }
-        if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
+          this.documentStatus = '1';
+          setTimeout(() => {
+            this.patchValuetoFormDate();
+          }, 1500);
+        } else if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
           this.documentMode = ActionType.Update$;
           if (data.value.type == WordType.EditEND && data.value.docKey != '') {
             this.dockeyValue = data.value.docKey ? data.value.docKey : null;
             if (this.dockeyValue) {
+              this.selectedTableDetails = data.value.latest;
               this.Zversion = data.value.latest.Zversion;
               this.ZMode = 'U';
+              this.documentStatus = '1';
               this.statusDraftDocDetails(this.dockeyValue);
               this.getSocialHistoryHabitList();
             }
           }
         } else if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
           this.documentMode = ActionType.Copy$;
-          if (data.value.type == WordType.CopyBS && data.value.docKey != '') {
+          if (data.value.type == WordType.CopyEND && data.value.docKey != '') {
             this.dockeyValue = data.value.docKey ? data.value.docKey : null;
             if (this.dockeyValue) {
+              this.Zversion = data.value.latest.Zversion;
+              this.ZMode = 'I';
+              this.documentStatus = '5';
+              this.statusDraftDocDetails(this.dockeyValue);
               this.getSocialHistoryHabitList();
-              // this.getBradenScaleDetails(data.value.docKey);
             }
           }
         } else {
@@ -486,130 +497,131 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // this.initForm();
     this.changeReviewofSystem('Skin');
+    // this.formControlHandeler();
+  }
 
-    this.triageForm.get('noProblemIdentifySelfCaring').valueChanges.subscribe((value) => {
-      const selectControl1 = this.triageForm.get('FunFeeding');
-      const selectControl2 = this.triageForm.get('FunHygiene');
-      const selectControl3 = this.triageForm.get('FunToileting');
-      const selectControl4 = this.triageForm.get('FunAmulation');
+  private formControlHandeler() {
+    this.triageForm.get('FunSelfNoProblem').valueChanges.subscribe((value) => {
+      const selectControl1 = this.triageForm.get('FunSelfNeedsFeeding');
+      const selectControl2 = this.triageForm.get('FunSelfNeedsHygiene');
+      const selectControl3 = this.triageForm.get('FunSelfNeedsToileting');
+      const selectControl4 = this.triageForm.get('FunSelfNeedsAmulation');
       if (value) {
-        selectControl1.patchValue(false); // Enable ng-select when checkbox is checked
-        selectControl2.patchValue(false); // Enable ng-select when checkbox is checked
-        selectControl3.patchValue(false); // Enable ng-select when checkbox is checked
-        selectControl4.patchValue(false); // Enable ng-select when checkbox is checked
+        selectControl1.patchValue(false);
+        selectControl2.patchValue(false);
+        selectControl3.patchValue(false);
+        selectControl4.patchValue(false);
       }
     });
 
-    this.triageForm.get('noProblemIdentifyMuscu').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('problemIdenfifyMuscuOption');
+    this.triageForm.get('FunMusNoProblem').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('FunMusProblems');
       if (value) {
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.patchValue('');
       }
     });
 
-    this.triageForm.get('noEquipment').valueChanges.subscribe((value) => {
-      const selectControl1 = this.triageForm.get('usedEquipmentsOption');
-      const selectControl2 = this.triageForm.get('usedEquipmentsOtherOpt');
+    this.triageForm.get('FunAssEquipmentNone').valueChanges.subscribe((value) => {
+      const selectControl1 = this.triageForm.get('FunAssEquipmentUseOfTyp');
+      const selectControl2 = this.triageForm.get('FunAssEquipmentUseOfTxt');
       if (value) {
-        selectControl1.patchValue(''); // Enable ng-select when checkbox is checked
-        selectControl2.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl1.patchValue('');
+        selectControl2.patchValue('');
       }
     });
 
-    this.triageForm.get('needSuperVisionTotalDependent').valueChanges.subscribe((value) => {
-      const selectControl1 = this.triageForm.get('FunFeeding');
-      const selectControl2 = this.triageForm.get('FunHygiene');
-      const selectControl3 = this.triageForm.get('FunToileting');
-      const selectControl4 = this.triageForm.get('FunAmulation');
+    this.triageForm.get('FunSelfNeedsSuper').valueChanges.subscribe((value) => {
+      const selectControl1 = this.triageForm.get('FunSelfNeedsFeeding');
+      const selectControl2 = this.triageForm.get('FunSelfNeedsHygiene');
+      const selectControl3 = this.triageForm.get('FunSelfNeedsToileting');
+      const selectControl4 = this.triageForm.get('FunSelfNeedsAmulation');
       if (value) {
-        selectControl1.enable(); // Enable ng-select when checkbox is checked
-        selectControl2.enable(); // Enable ng-select when checkbox is checked
-        selectControl3.enable(); // Enable ng-select when checkbox is checked
-        selectControl4.enable(); // Enable ng-select when checkbox is checked
+        selectControl1.enable();
+        selectControl2.enable();
+        selectControl3.enable();
+        selectControl4.enable();
       } else {
-        selectControl1.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl2.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl3.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl4.disable(); // Disable ng-select when checkbox is unchecked
+        selectControl1.disable();
+        selectControl2.disable();
+        selectControl3.disable();
+        selectControl4.disable();
       }
     });
 
-
-    this.triageForm.get('problemIdenfifyMuscu').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('problemIdenfifyMuscuOption');
+    this.triageForm.get('FunMusProblemIdentified').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('FunMusProblems');
       if (value) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
+        selectControl.enable();
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
+        selectControl.disable();
       }
     });
 
-    this.triageForm.get('usedEquipments').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('usedEquipmentsOption');
+    this.triageForm.get('FunAssEquipmentUseOf').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('FunAssEquipmentUseOfTyp');
       if (value) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
+        selectControl.enable();
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
+        selectControl.disable();
       }
     });
 
-    this.triageForm.get('AppetiteValue').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('AppetiteOtherValue');
+    this.triageForm.get('NutAppetite').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('NutAppetiteTxt');
       if (value == 4) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.enable();
+        selectControl.patchValue('');
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.disable();
+        selectControl.patchValue('');
       }
     });
 
-    this.triageForm.get('generalApperenceValue').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('generalApperenceOtherValue');
+    this.triageForm.get('NutAppearance').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('NutAppearanceTxt');
       if (value == 4) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.enable();
+        selectControl.patchValue('');
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.disable();
+        selectControl.patchValue('');
       }
     });
 
-    this.triageForm.get('nutritionalSupportValue').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('nutritionalSupportOtherValue');
+    this.triageForm.get('NutSupport').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('NutAppearanceTxt');
       if (value == 4) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.enable();
+        selectControl.patchValue('');
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.disable();
+        selectControl.patchValue('');
       }
     });
 
-    this.triageForm.get('dietValue').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('dietOtherValue');
+    this.triageForm.get('NutDiet').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('NutDietTxt');
       if (value == 3) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.enable();
+        selectControl.patchValue('');
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.disable();
+        selectControl.patchValue('');
       }
     });
 
-    this.triageForm.get('feedingDefficultiesValue').valueChanges.subscribe((value) => {
-      const selectControl = this.triageForm.get('feedingDefficultiesOtherValue');
+    this.triageForm.get('NutFeeding').valueChanges.subscribe((value) => {
+      const selectControl = this.triageForm.get('NutFeedingTxt');
       if (value == 5) {
-        selectControl.enable(); // Enable ng-select when checkbox is checked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.enable();
+        selectControl.patchValue('');
       } else {
-        selectControl.disable(); // Disable ng-select when checkbox is unchecked
-        selectControl.patchValue(''); // Enable ng-select when checkbox is checked
+        selectControl.disable();
+        selectControl.patchValue('');
       }
     });
 
     this.triageForm.get('CannotAssessedReview').valueChanges.subscribe((value) => {
-      console.log('Test');
       const textListIndCheckControlsToDisable = ['STypeRash', 'HHeadCircumference', 'EnmLipColor', 'GToiletTrained', 'GTfreq', 'GUsesDiaper', 'GUfreq'];
 
       const checkboxControlsToDisable = [
@@ -705,9 +717,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     this.handleControlChanges('PsNoReportedAbnorm', this.psychiatricIssueList, []);
   }
 
-  // Define a function to handle the subscription and action logic
-  private handleControlChanges(controlName: string, issueList: any[], relatedControlName?: string[]): void {
-    console.log('Test');
+
+  public handleControlChanges(controlName: string, issueList: any[], relatedControlName?: string[]): void {
     if (this.triageForm.contains(controlName)) {
       this.triageForm.get(controlName).valueChanges.subscribe((value) => {
         if (value) {
@@ -752,48 +763,91 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
 
   }
 
-
-
-
   public initForm(triageValue?: any) {
     this.triageForm = this.formBuilder.group({
-      Dockey: new FormControl(), // Initialize with empty string
-      Dtid: new FormControl(),// Initialize with default value 'ZMED_TRASM'
-      Einri: new FormControl(), // Initialize with storageService.einri or empty
-      Patnr: new FormControl(), // Initialize with storageService.patnr or empty
-      Falnr: new FormControl(), // Initialize with storageService.falnr or empty
-      Lfdnr: new FormControl(), // Initialize with storageService.lfdnr or empty
-      Orgdo: new FormControl(), // Initialize with default value 'EMEMDAMC'
-      ArrivalMode: new FormControl(),// Initialize with empty string
-      ArrivalModeTxt: new FormControl(), // Initialize with empty string
-      Accompanied: new FormControl(), // Initialize with empty string
-      AccompaniedTxt: new FormControl(), // Initialize with empty string
-      Language: new FormControl(), // Initialize with default value 'English'
-      TriagePriority: new FormControl(),// Initialize with selectedTableDetails.TriagePriorityCode or undefined
-      ArrivalTime: new FormControl(),// Initialize with parsed time or undefined
-      ChiefComplaint: [''], // Initialize with empty string
-      PsyNoProblem: [false], // Initialize with false
-      PsyAnxious: [false], // Initialize with false
-      PsyUncooperative: [false], // Initialize with false
-      PsyDepressed: [false], // Initialize with false
-      PsyAngry: new FormControl(), // Initialize with false
-      PsyAgitated: new FormControl(), // Initialize with false
-      PsyCombative: new FormControl(), // Initialize with false
-      PsyOther: new FormControl(), // Initialize with false
-      PsyComments: new FormControl(), // Initialize with empty string
-      AttendPhy: [this.storageService.getGpart()], // Initialize with storageService.getGpart() or undefined
-      noProblemIdentifySelfCaring: new FormControl(),
-      noProblemIdentifyMuscu: new FormControl(),
-      needSuperVisionTotalDependent: new FormControl(),
-      needSuperVisionTotalDependentOption: new FormControl(),
-      problemIdenfifyMuscu: new FormControl(),
-      problemIdenfifyMuscuOption: new FormControl(),
-      noEquipment: new FormControl(),
-      usedEquipments: new FormControl(),
-      usedEquipmentsOption: new FormControl(),
-      usedEquipmentsOtherOpt: new FormControl(),
-      drNotificationOption: new FormControl(),
-      notifiedOption: new FormControl(),
+      Dockey: new FormControl(),
+      Dtid: new FormControl(),
+      Einri: new FormControl(),
+      Patnr: new FormControl(),
+      Falnr: new FormControl(),
+      Lfdnr: new FormControl(),
+      Orgdo: new FormControl(),
+      ArrivalMode: new FormControl(),
+      ArrivalModeTxt: new FormControl(),
+      Accompanied: new FormControl(),
+      AccompaniedTxt: new FormControl(),
+      Language: new FormControl(),
+      TriagePriority: new FormControl(),
+      ArrivalTime: new FormControl(),
+      ChiefComplaint: [''],
+      PsyNoProblem: [false],
+      PsyAnxious: [false],
+      PsyUncooperative: [false],
+      PsyDepressed: [false],
+      PsyAngry: new FormControl(),
+      PsyAgitated: new FormControl(),
+      PsyCombative: new FormControl(),
+      PsyOther: new FormControl(),
+      PsyComments: new FormControl(),
+      AttendPhy: [this.storageService.getGpart()],
+
+      FunSelfNoProblem: new FormControl(),
+      FunSelfNeedsSuper: new FormControl(),
+      FunSelfNeedsFeeding: new FormControl(),
+      FunSelfNeedsHygiene: new FormControl(),
+      FunSelfNeedsToileting: new FormControl(),
+      FunSelfNeedsAmulation: new FormControl(),
+
+
+      FunMusNoProblem: new FormControl(),
+      FunMusProblemIdentified: new FormControl(),
+      FunMusProblems: new FormControl(),
+
+      FunAssEquipmentNone: new FormControl(),
+      FunAssEquipmentUseOf: new FormControl(),
+      FunAssEquipmentUseOfTyp: new FormControl(),
+      FunAssEquipmentUseOfTxt: new FormControl(),
+
+      FunDrNotification: new FormControl(),
+      FunNotified: new FormControl(),
+
+      NutDiabetes: new FormControl(),
+      NutPregnancy: new FormControl(),
+      NutHepatitis: new FormControl(),
+      NutMalnutrition: new FormControl(),
+      NutUnderweight: new FormControl(),
+      NutHiv: new FormControl(),
+      NutHtn: new FormControl(),
+      NutCopd: new FormControl(),
+      NutChf: new FormControl(),
+      NutCad: new FormControl(),
+      NutGiDisorder: new FormControl(),
+      NutEatingDisorder: new FormControl(),
+      NutFoodAllergies: new FormControl(),
+      NutChewingProblems: new FormControl(),
+      NutChronicConstipation: new FormControl(),
+      NutLowAlbumin: new FormControl(),
+      NutVomitting: new FormControl(),
+      NutDiarrhea: new FormControl(),
+      NutRiskScore: new FormControl(),
+      NutRiskLevel: new FormControl(),
+      NutAppetite: new FormControl(),
+      NutAppetiteTxt: new FormControl(),
+      NutAppearance: new FormControl(),
+      NutAppearanceTxt: new FormControl(),
+      NutLast1Month: new FormControl(),
+      NutSupport: new FormControl(),
+      NutSupportTxt: new FormControl(),
+      NutLast3Month: new FormControl(),
+      NutDiet: new FormControl(),
+      NutDietTxt: new FormControl(),
+      NutBmi: new FormControl(),
+      NutFeeding: new FormControl(),
+      NutFeedingTxt: new FormControl(),
+      NutDrNotification: new FormControl(),
+      NutNotified: new FormControl(),
+      NutComments: new FormControl(),
+
       nutritionalRiskes: new FormControl(),
       nutritionalRiskScore: new FormControl(),
       nutritionalRiskValue: new FormControl(),
@@ -984,271 +1038,263 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
 
       DocStatus: ['1'], // Initialize with default value '1'
     });
-
   }
 
-  private patchForm(triageValue?: any) {
+  private patchValuetoFormDate(triageValue?: any) {
     if (this.documentMode == ActionType.Add$) {
       this.triageForm = this.formBuilder.group({
-        Dockey: [''], // Initialize with empty string
-        Dtid: ['ZMED_TRASM'], // Initialize with default value 'ZMED_TRASM'
-        Einri: [this.paramsObject.einri], // Initialize with storageService.einri or empty
-        Patnr: [this.paramsObject.patnr], // Initialize with storageService.patnr or empty
-        Falnr: [this.paramsObject.falnr], // Initialize with storageService.falnr or empty
-        Lfdnr: [this.paramsObject.lfdnr], // Initialize with storageService.lfdnr or empty
-        Orgdo: ['EMEMDAMC'], // Initialize with default value 'EMEMDAMC'
-        ArrivalMode: [''], // Initialize with empty string
-        ArrivalModeTxt: [''], // Initialize with empty string
-        Accompanied: [''], // Initialize with empty string
-        AccompaniedTxt: [''], // Initialize with empty string
-        Language: ['English'], // Initialize with default value 'English'
-        TriagePriority: [this.documentMode == ActionType.Add$ ? this.selectedTableDetails.TriagePriorityCode : ''], // Initialize with selectedTableDetails.TriagePriorityCode or undefined
-        ArrivalTime: [this.parseTime(this.selectedTableDetails?.ZeitIntern)], // Initialize with parsed time or undefined
-        ChiefComplaint: [''], // Initialize with empty string
-        PsyNoProblem: [false], // Initialize with false
-        PsyAnxious: [false], // Initialize with false
-        PsyUncooperative: [false], // Initialize with false
-        PsyDepressed: [false], // Initialize with false
-        PsyAngry: [false], // Initialize with false
-        PsyAgitated: [false], // Initialize with false
-        PsyCombative: [false], // Initialize with false
-        PsyOther: [false], // Initialize with false
-        PsyComments: [''], // Initialize with empty string
-        AttendPhy: [this.storageService.getGpart()], // Initialize with storageService.getGpart() or undefined
+        Dockey: [''],
+        Dtid: ['ZMED_TRASM'],
+        Einri: [this.paramsObject.einri],
+        Patnr: [this.paramsObject.patnr],
+        Falnr: [this.paramsObject.falnr],
+        Lfdnr: [this.paramsObject.lfdnr],
+        Orgdo: ['EMEMDAMC'],
+        ArrivalMode: [''],
+        ArrivalModeTxt: [''],
+        Accompanied: [''],
+        AccompaniedTxt: [''],
+        Language: ['English'],
+        TriagePriority: [''],
+        ArrivalTime: [this.parseTime(this.selectedTableDetails?.ZeitIntern)],
+        ChiefComplaint: [''],
+        PsyNoProblem: [false],
+        PsyAnxious: [false],
+        PsyUncooperative: [false],
+        PsyDepressed: [false],
+        PsyAngry: [false],
+        PsyAgitated: [false],
+        PsyCombative: [false],
+        PsyOther: [false],
+        PsyComments: [''],
+        AttendPhy: [this.storageService.getGpart()],
 
-        noProblemIdentifySelfCaring: [{ value: false, disabled: false }],
-        needSuperVisionTotalDependent: [{ value: false, disabled: false }],
+        FunSelfNoProblem: [{ value: false, disabled: false }],
+        FunSelfNeedsSuper: [{ value: false, disabled: false }],
         needSuperVisionTotalDependentOption: [{ value: '', disabled: true }],
-        FunFeeding: [{ value: '', disabled: true }],
-        FunHygiene: [{ value: '', disabled: true }],
-        FunToileting: [{ value: '', disabled: true }],
-        FunAmulation: [{ value: '', disabled: true }],
+        FunSelfNeedsFeeding: [{ value: false, disabled: true }],
+        FunSelfNeedsHygiene: [{ value: false, disabled: true }],
+        FunSelfNeedsToileting: [{ value: false, disabled: true }],
+        FunSelfNeedsAmulation: [{ value: false, disabled: true }],
 
-        noProblemIdentifyMuscu: [{ value: false, disabled: false }],
-        problemIdenfifyMuscu: [{ value: false, disabled: false }],
-        problemIdenfifyMuscuOption: [{ value: '', disabled: true }],
+        FunMusNoProblem: [{ value: false, disabled: false }],
+        FunMusProblemIdentified: [{ value: false, disabled: false }],
+        FunMusProblems: [{ value: '', disabled: true }],
 
-        noEquipment: [{ value: false, disabled: false }],
-        usedEquipments: [{ value: false, disabled: false }],
-        usedEquipmentsOption: [{ value: '', disabled: true }],
-        usedEquipmentsOtherOpt: [{ value: '', disabled: true }],
+        FunAssEquipmentNone: [{ value: false, disabled: false }],
+        FunAssEquipmentUseOf: [{ value: false, disabled: false }],
+        FunAssEquipmentUseOfTyp: [{ value: '', disabled: true }],
+        FunAssEquipmentUseOfTxt: [{ value: '', disabled: true }],
 
-        drNotificationOption: [{ value: '', disabled: false }],
-        notifiedOption: [{ value: '', disabled: false }],
+        FunDrNotification: [{ value: '', disabled: false }],
+        FunNotified: [{ value: '', disabled: false }],
 
-        // nutritionalRiskes: [{ value: '', disabled: false }],
-        nrPregnancy: [{ value: '', disabled: false }],
-        nrUnderweight: [{ value: '', disabled: false }],
-        nrMalnutrition: [{ value: '', disabled: false }],
-        nrRenaldiseasehepatitis: [{ value: '', disabled: false }],
-        nrHtn: [{ value: '', disabled: false }],
-        nrCopd: [{ value: '', disabled: false }],
-        nrChf: [{ value: '', disabled: false }],
-        nrCad: [{ value: '', disabled: false }],
-        nrEatingdisorder: [{ value: '', disabled: false }],
-        nrFoodallergies: [{ value: '', disabled: false }],
-        nrChewingProblem: [{ value: '', disabled: false }],
-        nrChronicConstipation: [{ value: '', disabled: false }],
-        nrVomitting: [{ value: '', disabled: false }],
-        nrDiarrhea: [{ value: '', disabled: false }],
-        nrDiabetes: [{ value: '', disabled: false }],
-        nrHiv: [{ value: '', disabled: false }],
-        nrGidisorder: [{ value: '', disabled: false }],
-        nrLowalbumin: [{ value: '', disabled: false }],
+        NutDiabetes: [{ value: false, disabled: false }],
+        NutPregnancy: [{ value: false, disabled: false }],
+        NutHepatitis: [{ value: false, disabled: false }],
+        NutMalnutrition: [{ value: false, disabled: false }],
+        NutUnderweight: [{ value: false, disabled: false }],
+        NutHiv: [{ value: false, disabled: false }],
+        NutHtn: [{ value: false, disabled: false }],
+        NutCopd: [{ value: false, disabled: false }],
+        NutChf: [{ value: false, disabled: false }],
+        NutCad: [{ value: false, disabled: false }],
+        NutGiDisorder: [{ value: false, disabled: false }],
+        NutEatingDisorder: [{ value: false, disabled: false }],
+        NutFoodAllergies: [{ value: false, disabled: false }],
+        NutChewingProblems: [{ value: false, disabled: false }],
+        NutChronicConstipation: [{ value: false, disabled: false }],
+        NutLowAlbumin: [{ value: false, disabled: false }],
+        NutVomitting: [{ value: false, disabled: false }],
+        NutDiarrhea: [{ value: false, disabled: false }],
 
+        NutRiskScore: [{ value: '0', disabled: true }],
+        NutRiskLevel: [{ value: 'No Risk', disabled: true }],
 
+        NutAppetite: [{ value: '', disabled: false }],
+        NutAppetiteTxt: [{ value: '', disabled: true }],
+        NutAppearance: [{ value: '', disabled: false }],
+        NutAppearanceTxt: [{ value: '', disabled: true }],
+        NutSupport: [{ value: '', disabled: false }],
+        NutSupportTxt: [{ value: '', disabled: true }],
+        NutDiet: [{ value: '', disabled: false }],
+        NutDietTxt: [{ value: '', disabled: true }],
+        NutFeeding: [{ value: '', disabled: false }],
+        NutFeedingTxt: [{ value: '', disabled: true }],
 
-        nutritionalRiskScore: [{ value: '0', disabled: true }],
-        nutritionalRiskValue: [{ value: 'No Risk', disabled: true }],
+        NutLast1Month: [{ value: '0.00', disabled: false }],
+        NutLast3Month: [{ value: '0.00', disabled: false }],
+        NutBmi: [{ value: '0.00', disabled: false }],
 
-        AppetiteValue: [{ value: '', disabled: false }],
-        AppetiteOtherValue: [{ value: '', disabled: true }],
-
-        generalApperenceValue: [{ value: '', disabled: false }],
-        generalApperenceOtherValue: [{ value: '', disabled: true }],
-        nutritionalSupportValue: [{ value: '', disabled: false }],
-        nutritionalSupportOtherValue: [{ value: '', disabled: true }],
-        dietValue: [{ value: '', disabled: false }],
-        dietOtherValue: [{ value: '', disabled: true }],
-        feedingDefficultiesValue: [{ value: '', disabled: false }],
-        feedingDefficultiesOtherValue: [{ value: '', disabled: true }],
-
-        drNotificationOptionNutri: [{ value: '', disabled: false }],
-        notifiedOptionNutri: [{ value: '', disabled: false }],
-
-        wightOneMonth: [{ value: '', disabled: false }],
-        wightThreeMonth: [{ value: '', disabled: false }],
-        bmi: [{ value: '', disabled: false }],
-
-        nutriComment: [{ value: '', disabled: false }],
+        NutDrNotification: [{ value: '', disabled: false }],
+        NutNotified: [{ value: '', disabled: false }],
+        NutComments: [{ value: '', disabled: false }],
 
 
-
-        CannotAssessedReview: [{ value: '', disabled: false }],
-        SNoReportedAbnorm: [{ value: '', disabled: false }],
-        SRashes: [{ value: '', disabled: false }],
-        SItching: [{ value: '', disabled: false }],
-        SChangeHairNails: [{ value: '', disabled: false }],
+        CannotAssessedReview: [{ value: false, disabled: false }],
+        SNoReportedAbnorm: [{ value: false, disabled: false }],
+        SRashes: [{ value: false, disabled: false }],
+        SItching: [{ value: false, disabled: false }],
+        SChangeHairNails: [{ value: false, disabled: false }],
         STypeRash: [{ value: '', disabled: false }],
         SComments: [{ value: '', disabled: false }],
 
-        HNoReportedAbnorm: [{ value: '', disabled: false }],
-        HHeadInjury: [{ value: '', disabled: false }],
-        HHeadCircumference: [{ value: '', disabled: false }],
+        HNoReportedAbnorm: [{ value: false, disabled: false }],
+        HHeadInjury: [{ value: false, disabled: false }],
+        HHeadCircumference: [{ value: '0.00', disabled: false }],
         HComments: [{ value: '', disabled: false }],
 
-        ENoReportedAbnorm: [{ value: '', disabled: false }],
-        EGlassesContacts: [{ value: '', disabled: false }],
-        EChangeVision: [{ value: '', disabled: false }],
-        EEyePain: [{ value: '', disabled: false }],
-        EDoubleVision: [{ value: '', disabled: false }],
-        EFlashingLights: [{ value: '', disabled: false }],
-        EGlaucomaCataracts: [{ value: '', disabled: false }],
-        ELastEyeExam: [{ value: '', disabled: false }],
+        ENoReportedAbnorm: [{ value: false, disabled: false }],
+        EGlassesContacts: [{ value: false, disabled: false }],
+        EChangeVision: [{ value: false, disabled: false }],
+        EEyePain: [{ value: false, disabled: false }],
+        EDoubleVision: [{ value: false, disabled: false }],
+        EFlashingLights: [{ value: false, disabled: false }],
+        EGlaucomaCataracts: [{ value: false, disabled: false }],
+        ELastEyeExam: [{ value: false, disabled: false }],
         EComments: [{ value: '', disabled: false }],
 
-        EneNoReportedAbnorma: [{ value: '', disabled: false }],
-        EneChangeHearing: [{ value: '', disabled: false }],
-        EneTympanicMembrane: [{ value: '', disabled: false }],
-        EneEarDischarge: [{ value: '', disabled: false }],
-        EneRinging: [{ value: '', disabled: false }],
-        EneDizziness: [{ value: '', disabled: false }],
+        EneNoReportedAbnorma: [{ value: false, disabled: false }],
+        EneChangeHearing: [{ value: false, disabled: false }],
+        EneTympanicMembrane: [{ value: false, disabled: false }],
+        EneEarDischarge: [{ value: false, disabled: false }],
+        EneRinging: [{ value: false, disabled: false }],
+        EneDizziness: [{ value: false, disabled: false }],
 
-        EnnNoReportedAbnorm: [{ value: '', disabled: false }],
-        EnnNoseBleeds: [{ value: '', disabled: false }],
-        EnnNasalStuffiness: [{ value: '', disabled: false }],
-        EnnNasalFlaring: [{ value: '', disabled: false }],
-        EnnFrequentColds: [{ value: '', disabled: false }],
+        EnnNoReportedAbnorm: [{ value: false, disabled: false }],
+        EnnNoseBleeds: [{ value: false, disabled: false }],
+        EnnNasalStuffiness: [{ value: false, disabled: false }],
+        EnnNasalFlaring: [{ value: false, disabled: false }],
+        EnnFrequentColds: [{ value: false, disabled: false }],
 
-        EnmNoReportedAbnorm: [{ value: '', disabled: false }],
-        EnmBleedingGums: [{ value: '', disabled: false }],
-        mtSoretongue: [{ value: '', disabled: false }],
-        EnmSoreTongue: [{ value: '', disabled: false }],
+        EnmNoReportedAbnorm: [{ value: false, disabled: false }],
+        EnmBleedingGums: [{ value: false, disabled: false }],
+        EnmSoreTongue: [{ value: false, disabled: false }],
         EnmLipColor: [{ value: '', disabled: false }],
         EnmComments: [{ value: '', disabled: false }],
 
-        NNoReportedAbnorm: [{ value: '', disabled: false }],
-        NLumps: [{ value: '', disabled: false }],
-        NSwollenGlands: [{ value: '', disabled: false }],
-        NGoiter: [{ value: '', disabled: false }],
-        NStiffness: [{ value: '', disabled: false }],
+        NNoReportedAbnorm: [{ value: false, disabled: false }],
+        NLumps: [{ value: false, disabled: false }],
+        NSwollenGlands: [{ value: false, disabled: false }],
+        NGoiter: [{ value: false, disabled: false }],
+        NStiffness: [{ value: false, disabled: false }],
         NComments: [{ value: '', disabled: false }],
 
-        BNoReportedAbnorm: [{ value: '', disabled: false }],
-        BLumps: [{ value: '', disabled: false }],
-        BPain: [{ value: '', disabled: false }],
-        BNippleDischarge: [{ value: '', disabled: false }],
-        BSkinAbnormalities: [{ value: '', disabled: false }],
+        BNoReportedAbnorm: [{ value: false, disabled: false }],
+        BLumps: [{ value: false, disabled: false }],
+        BPain: [{ value: false, disabled: false }],
+        BNippleDischarge: [{ value: false, disabled: false }],
+        BSkinAbnormalities: [{ value: false, disabled: false }],
         BComments: [{ value: '', disabled: false }],
 
-        RNoReportedAbnorm: [{ value: '', disabled: false }],
-        RShortnessBreath: [{ value: '', disabled: false }],
-        RCough: [{ value: '', disabled: false }],
-        RWheezing: [{ value: '', disabled: false }],
-        RCoughingBlood: [{ value: '', disabled: false }],
-        RProductionPhlegm: [{ value: '', disabled: false }],
-        RChestPain: [{ value: '', disabled: false }],
-        RFever: [{ value: '', disabled: false }],
-        RNightSweats: [{ value: '', disabled: false }],
-        RBlueFingersToes: [{ value: '', disabled: false }],
-        RSwellingHandsFeet: [{ value: '', disabled: false }],
-        RBronchitisEmphysema: [{ value: '', disabled: false }],
-        RHxHeartMedication: [{ value: '', disabled: false }],
-        RSkippingHeartBeats: [{ value: '', disabled: false }],
-        RHeartMurmur: [{ value: '', disabled: false }],
+        RNoReportedAbnorm: [{ value: false, disabled: false }],
+        RShortnessBreath: [{ value: false, disabled: false }],
+        RCough: [{ value: false, disabled: false }],
+        RWheezing: [{ value: false, disabled: false }],
+        RCoughingBlood: [{ value: false, disabled: false }],
+        RProductionPhlegm: [{ value: false, disabled: false }],
+        RChestPain: [{ value: false, disabled: false }],
+        RFever: [{ value: false, disabled: false }],
+        RNightSweats: [{ value: false, disabled: false }],
+        RBlueFingersToes: [{ value: false, disabled: false }],
+        RSwellingHandsFeet: [{ value: false, disabled: false }],
+        RBronchitisEmphysema: [{ value: false, disabled: false }],
+        RHxHeartMedication: [{ value: false, disabled: false }],
+        RSkippingHeartBeats: [{ value: false, disabled: false }],
+        RHeartMurmur: [{ value: false, disabled: false }],
         RComments: [{ value: '', disabled: false }],
 
-        GNoReportedAbnorm: [{ value: '', disabled: false }],
-        GChangeAppetiteWeight: [{ value: '', disabled: false }],
-        GProblemsSwallowing: [{ value: '', disabled: false }],
-        GNausea: [{ value: '', disabled: false }],
-        GHeartburn: [{ value: '', disabled: false }],
-        GVomiting: [{ value: '', disabled: false }],
-        GVomitingBlood: [{ value: '', disabled: false }],
-        GConstipation: [{ value: '', disabled: false }],
-        GDiarrhea: [{ value: '', disabled: false }],
-        GChangeBowelHabits: [{ value: '', disabled: false }],
-        GAbdominalPain: [{ value: '', disabled: false }],
-        GExcessiveBelching: [{ value: '', disabled: false }],
-        GExcessiveFlatus: [{ value: '', disabled: false }],
-        GFoodIntolerance: [{ value: '', disabled: false }],
-        GRectalBleedingHemo: [{ value: '', disabled: false }],
-        GYellowColourSkin: [{ value: '', disabled: false }],
-        GToiletTrained: [{ value: '', disabled: false }],
+        GNoReportedAbnorm: [{ value: false, disabled: false }],
+        GChangeAppetiteWeight: [{ value: false, disabled: false }],
+        GProblemsSwallowing: [{ value: false, disabled: false }],
+        GNausea: [{ value: false, disabled: false }],
+        GHeartburn: [{ value: false, disabled: false }],
+        GVomiting: [{ value: false, disabled: false }],
+        GVomitingBlood: [{ value: false, disabled: false }],
+        GConstipation: [{ value: false, disabled: false }],
+        GDiarrhea: [{ value: false, disabled: false }],
+        GChangeBowelHabits: [{ value: false, disabled: false }],
+        GAbdominalPain: [{ value: false, disabled: false }],
+        GExcessiveBelching: [{ value: false, disabled: false }],
+        GExcessiveFlatus: [{ value: false, disabled: false }],
+        GFoodIntolerance: [{ value: false, disabled: false }],
+        GRectalBleedingHemo: [{ value: false, disabled: false }],
+        GYellowColourSkin: [{ value: false, disabled: false }],
+        GToiletTrained: [{ value: false, disabled: false }],
         GTfreq: [{ value: '', disabled: false }],
-        GUsesDiaper: [{ value: '', disabled: false }],
+        GUsesDiaper: [{ value: false, disabled: false }],
         GUfreq: [{ value: '', disabled: false }],
         GComments: [{ value: '', disabled: false }],
 
-        UNoReportedAbnorm: [{ value: '', disabled: false }],
-        UDifficultyUrination: [{ value: '', disabled: false }],
-        UPainBurningUrination: [{ value: '', disabled: false }],
-        UFrequentUrinationNight: [{ value: '', disabled: false }],
-        UUrgentNeedUrinate: [{ value: '', disabled: false }],
-        UIncontinenceUrine: [{ value: '', disabled: false }],
-        UDribbling: [{ value: '', disabled: false }],
-        UDecreasedUrineStream: [{ value: '', disabled: false }],
-        UBloodUrine: [{ value: '', disabled: false }],
-        UUtiStonesProstate: [{ value: '', disabled: false }],
+        UNoReportedAbnorm: [{ value: false, disabled: false }],
+        UDifficultyUrination: [{ value: false, disabled: false }],
+        UPainBurningUrination: [{ value: false, disabled: false }],
+        UFrequentUrinationNight: [{ value: false, disabled: false }],
+        UUrgentNeedUrinate: [{ value: false, disabled: false }],
+        UIncontinenceUrine: [{ value: false, disabled: false }],
+        UDribbling: [{ value: false, disabled: false }],
+        UDecreasedUrineStream: [{ value: false, disabled: false }],
+        UBloodUrine: [{ value: false, disabled: false }],
+        UUtiStonesProstate: [{ value: false, disabled: false }],
         UComments: [{ value: '', disabled: false }],
 
-        PNoReportedAbnorm: [{ value: '', disabled: false }],
-        PLegCramps: [{ value: '', disabled: false }],
-        PVaricoseVeins: [{ value: '', disabled: false }],
-        PClotsVeins: [{ value: '', disabled: false }],
+        PNoReportedAbnorm: [{ value: false, disabled: false }],
+        PLegCramps: [{ value: false, disabled: false }],
+        PVaricoseVeins: [{ value: false, disabled: false }],
+        PClotsVeins: [{ value: false, disabled: false }],
         PComments: [{ value: '', disabled: false }],
 
-        MNoReportedAbnorm: [{ value: '', disabled: false }],
-        MPain: [{ value: '', disabled: false }],
-        MSwelling: [{ value: '', disabled: false }],
-        MStiffness: [{ value: '', disabled: false }],
-        MDecreasedJointMotion: [{ value: '', disabled: false }],
-        MBrokenBone: [{ value: '', disabled: false }],
-        MSeriousSprains: [{ value: '', disabled: false }],
-        MArthritis: [{ value: '', disabled: false }],
-        MGout: [{ value: '', disabled: false }],
+        MNoReportedAbnorm: [{ value: false, disabled: false }],
+        MPain: [{ value: false, disabled: false }],
+        MSwelling: [{ value: false, disabled: false }],
+        MStiffness: [{ value: false, disabled: false }],
+        MDecreasedJointMotion: [{ value: false, disabled: false }],
+        MBrokenBone: [{ value: false, disabled: false }],
+        MSeriousSprains: [{ value: false, disabled: false }],
+        MArthritis: [{ value: false, disabled: false }],
+        MGout: [{ value: false, disabled: false }],
         MComments: [{ value: '', disabled: false }],
 
-        NuNoReportedAbnorm: [{ value: '', disabled: false }],
-        NuHeadaches: [{ value: '', disabled: false }],
-        NuSeizures: [{ value: '', disabled: false }],
-        NuParalysis: [{ value: '', disabled: false }],
-        NuWeakness: [{ value: '', disabled: false }],
-        NuLossConsciousness: [{ value: '', disabled: false }],
-        NuLossMuscleSize: [{ value: '', disabled: false }],
-        NuMuscleSpasm: [{ value: '', disabled: false }],
-        NuTremor: [{ value: '', disabled: false }],
-        NuInvoluntaryMovement: [{ value: '', disabled: false }],
-        NuNumbness: [{ value: '', disabled: false }],
-        NuIncoordination: [{ value: '', disabled: false }],
-        NuFeelingPinsNeedles: [{ value: '', disabled: false }],
+        NuNoReportedAbnorm: [{ value: false, disabled: false }],
+        NuHeadaches: [{ value: false, disabled: false }],
+        NuSeizures: [{ value: false, disabled: false }],
+        NuParalysis: [{ value: false, disabled: false }],
+        NuWeakness: [{ value: false, disabled: false }],
+        NuLossConsciousness: [{ value: false, disabled: false }],
+        NuLossMuscleSize: [{ value: false, disabled: false }],
+        NuMuscleSpasm: [{ value: false, disabled: false }],
+        NuTremor: [{ value: false, disabled: false }],
+        NuInvoluntaryMovement: [{ value: false, disabled: false }],
+        NuNumbness: [{ value: false, disabled: false }],
+        NuIncoordination: [{ value: false, disabled: false }],
+        NuFeelingPinsNeedles: [{ value: false, disabled: false }],
         NuComments: [{ value: '', disabled: false }],
 
-        HeNoReportedAbnorm: [{ value: '', disabled: false }],
-        HeAnemia: [{ value: '', disabled: false }],
-        HeEasyBruisingBleeding: [{ value: '', disabled: false }],
+        HeNoReportedAbnorm: [{ value: false, disabled: false }],
+        HeAnemia: [{ value: false, disabled: false }],
+        HeEasyBruisingBleeding: [{ value: false, disabled: false }],
         HeComments: [{ value: '', disabled: false }],
 
 
-        EdNoReportedAbnorm: [{ value: '', disabled: false }],
-        EdAbnormalGrowth: [{ value: '', disabled: false }],
-        EdIncreasedAppetite: [{ value: '', disabled: false }],
-        EdIncreasedThirst: [{ value: '', disabled: false }],
-        EdIncreaseUrineProduction: [{ value: '', disabled: false }],
-        EdThyroidTrouble: [{ value: '', disabled: false }],
-        EdHeatColdIntolerance: [{ value: '', disabled: false }],
-        EdExcessingSweating: [{ value: '', disabled: false }],
-        EdDiabetes: [{ value: '', disabled: false }],
+        EdNoReportedAbnorm: [{ value: false, disabled: false }],
+        EdAbnormalGrowth: [{ value: false, disabled: false }],
+        EdIncreasedAppetite: [{ value: false, disabled: false }],
+        EdIncreasedThirst: [{ value: false, disabled: false }],
+        EdIncreaseUrineProduction: [{ value: false, disabled: false }],
+        EdThyroidTrouble: [{ value: false, disabled: false }],
+        EdHeatColdIntolerance: [{ value: false, disabled: false }],
+        EdExcessingSweating: [{ value: false, disabled: false }],
+        EdDiabetes: [{ value: false, disabled: false }],
         EdComments: [{ value: '', disabled: false }],
 
-        PsNoReportedAbnorm: [{ value: '', disabled: false }],
-        PsTensionAnxiety: [{ value: '', disabled: false }],
-        PsDepressionSuicide: [{ value: '', disabled: false }],
-        PsMemoryProblems: [{ value: '', disabled: false }],
-        PsPastTreatmentPsychiatri: [{ value: '', disabled: false }],
-        PsSleepProblems: [{ value: '', disabled: false }],
-        PsUnusualProblems: [{ value: '', disabled: false }],
-        PsChangeMood: [{ value: '', disabled: false }],
+        PsNoReportedAbnorm: [{ value: false, disabled: false }],
+        PsTensionAnxiety: [{ value: false, disabled: false }],
+        PsDepressionSuicide: [{ value: false, disabled: false }],
+        PsMemoryProblems: [{ value: false, disabled: false }],
+        PsPastTreatmentPsychiatri: [{ value: false, disabled: false }],
+        PsSleepProblems: [{ value: false, disabled: false }],
+        PsUnusualProblems: [{ value: false, disabled: false }],
+        PsChangeMood: [{ value: false, disabled: false }],
         PsComments: [{ value: '', disabled: false }],
 
         DocStatus: [{ value: '1', disabled: false }],
@@ -1280,18 +1326,235 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsyOther: triageValue?.PsyOther ? triageValue?.PsyOther : false,
         PsyComments: triageValue?.PsyComments ? triageValue?.PsyComments : '',
         AttendPhy: triageValue?.AttendPhy ? triageValue?.AttendPhy : this.storageService.getGpart(),
-        noProblemIdentifySelfCaring: [false],
-        noProblemIdentifyMuscu: [false],
-        needSuperVisionTotalDependent: [false],
-        problemIdenfifyMuscu: [false],
-        problemIdenfifyMuscuOption: ['Deformities'],
-        noEquipment: [false],
-        usedEquipments: [false],
-        usedEquipmentsOption: [''],
-        usedEquipmentsOtherOpt: [''],
-        drNotificationOption: [''],
-        notifiedOption: [''],
-        DocStatus: ['1'],
+
+        FunSelfNoProblem: triageValue?.FunSelfNoProblem ? triageValue?.FunSelfNoProblem : false,
+        FunSelfNeedsSuper: triageValue?.FunSelfNeedsSuper ? triageValue?.FunSelfNeedsSuper : false,
+        FunSelfNeedsFeeding: triageValue?.FunSelfNeedsFeeding ? triageValue?.FunSelfNeedsFeeding : false,
+        FunSelfNeedsHygiene: triageValue?.FunSelfNeedsHygiene ? triageValue?.FunSelfNeedsHygiene : false,
+        FunSelfNeedsToileting: triageValue?.FunSelfNeedsToileting ? triageValue?.FunSelfNeedsToileting : false,
+        FunSelfNeedsAmulation: triageValue?.FunSelfNeedsAmulation ? triageValue?.FunSelfNeedsAmulation : false,
+
+        FunMusNoProblem: triageValue?.FunMusNoProblem ? triageValue?.FunMusNoProblem : false,
+        FunMusProblemIdentified: triageValue?.FunMusProblemIdentified ? triageValue?.FunMusProblemIdentified : false,
+        FunMusProblems: triageValue?.FunMusProblems ? triageValue?.FunMusProblems : '',
+
+        FunAssEquipmentNone: triageValue?.FunAssEquipmentNone ? triageValue?.FunAssEquipmentNone : false,
+        FunAssEquipmentUseOf: triageValue?.FunAssEquipmentUseOf ? triageValue?.FunAssEquipmentUseOf : false,
+        FunAssEquipmentUseOfTyp: [{ value: triageValue?.FunAssEquipmentUseOfTyp ? triageValue?.FunAssEquipmentUseOfTyp : '', disabled: false }],
+        FunAssEquipmentUseOfTxt: [{ value: triageValue?.FunAssEquipmentUseOfTxt ? triageValue?.FunAssEquipmentUseOfTxt : '', disabled: triageValue?.FunAssEquipmentUseOfTyp == 5 ? false : true }],
+
+        FunDrNotification: triageValue?.FunDrNotification ? triageValue?.FunDrNotification : '',
+        FunNotified: triageValue?.FunNotified ? triageValue?.FunNotified : '',
+
+
+        NutDiabetes: triageValue?.NutDiabetes ? triageValue?.NutDiabetes : false,
+        NutPregnancy: triageValue?.NutPregnancy ? triageValue?.NutPregnancy : false,
+        NutHepatitis: triageValue?.NutHepatitis ? triageValue?.NutHepatitis : false,
+        NutMalnutrition: triageValue?.NutMalnutrition ? triageValue?.NutMalnutrition : false,
+        NutUnderweight: triageValue?.NutUnderweight ? triageValue?.NutUnderweight : false,
+        NutHiv: triageValue?.NutHiv ? triageValue?.NutHiv : false,
+        NutHtn: triageValue?.NutHtn ? triageValue?.NutHtn : false,
+        NutCopd: triageValue?.NutCopd ? triageValue?.NutCopd : false,
+        NutChf: triageValue?.NutChf ? triageValue?.NutChf : false,
+        NutCad: triageValue?.NutCad ? triageValue?.NutCad : false,
+        NutGiDisorder: triageValue?.NutGiDisorder ? triageValue?.NutGiDisorder : false,
+        NutEatingDisorder: triageValue?.NutEatingDisorder ? triageValue?.NutEatingDisorder : false,
+        NutFoodAllergies: triageValue?.NutFoodAllergies ? triageValue?.NutFoodAllergies : false,
+        NutChewingProblems: triageValue?.NutChewingProblems ? triageValue?.NutChewingProblems : false,
+        NutChronicConstipation: triageValue?.NutChronicConstipation ? triageValue?.NutChronicConstipation : false,
+        NutLowAlbumin: triageValue?.NutLowAlbumin ? triageValue?.NutLowAlbumin : false,
+        NutVomitting: triageValue?.NutVomitting ? triageValue?.NutVomitting : false,
+        NutDiarrhea: triageValue?.NutDiarrhea ? triageValue?.NutDiarrhea : false,
+
+        NutRiskScore: [{ value: triageValue?.NutRiskScore ? triageValue?.NutRiskScore : '0', disabled: true }],
+        NutRiskLevel: [{ value: triageValue?.NutRiskLevel ? triageValue?.NutRiskLevel : 'No Risk', disabled: true }],
+
+        NutAppetite: [{ value: triageValue?.NutAppetite ? triageValue?.NutAppetite : '', disabled: false }],
+        NutAppetiteTxt: [{ value: triageValue?.NutAppetiteTxt ? triageValue?.NutAppetiteTxt : '', disabled: triageValue?.NutAppetite == 4 ? false : true }],
+        NutAppearance: [{ value: triageValue?.NutAppearance ? triageValue?.NutAppearance : '', disabled: false }],
+        NutAppearanceTxt: [{ value: triageValue?.NutAppearanceTxt ? triageValue?.NutAppearanceTxt : '', disabled: triageValue?.NutAppearance == 4 ? false : true }],
+        NutSupport: [{ value: triageValue?.NutSupport ? triageValue?.NutSupport : '', disabled: false }],
+        NutSupportTxt: [{ value: triageValue?.NutSupportTxt ? triageValue?.NutSupportTxt : '', disabled: triageValue?.NutSupport == 4 ? false : true }],
+        NutDiet: [{ value: triageValue?.NutDiet ? triageValue?.NutDiet : '', disabled: false }],
+        NutDietTxt: [{ value: triageValue?.NutDietTxt ? triageValue?.NutDietTxt : '', disabled: triageValue?.NutDiet == 3 ? false : true }],
+        NutFeeding: [{ value: triageValue?.NutFeeding ? triageValue?.NutFeeding : '', disabled: false }],
+        NutFeedingTxt: [{ value: triageValue?.NutFeedingTxt ? triageValue?.NutFeedingTxt : '', disabled: triageValue?.NutDiet == 5 ? false : true }],
+
+        NutLast1Month: triageValue?.NutLast1Month ? triageValue?.NutLast1Month : '0.00',
+        NutLast3Month: triageValue?.NutLast3Month ? triageValue?.NutLast3Month : '0.00',
+        NutBmi: triageValue?.NutBmi ? triageValue?.NutBmi : '0.00',
+
+        NutDrNotification: triageValue?.NutDrNotification ? triageValue?.NutDrNotification : '',
+        NutNotified: triageValue?.NutNotified ? triageValue?.NutNotified : '',
+        NutComments: triageValue?.NutComments ? triageValue?.NutComments : '',
+
+        CannotAssessedReview: triageValue?.CannotAssessedReview ? triageValue?.CannotAssessedReview : false,
+
+        SNoReportedAbnorm: [{ value: triageValue?.SNoReportedAbnorm == true ? true : false, disabled: false }],
+        SRashes: [{ value: triageValue?.SNoReportedAbnorm == true ? false : triageValue?.SRashes, disabled: triageValue?.SNoReportedAbnorm == false ? false : true }],
+        SItching: [{ value: triageValue?.SNoReportedAbnorm == true ? false : triageValue?.SItching, disabled: triageValue?.SNoReportedAbnorm == false ? false : true }],
+        SChangeHairNails: [{ value: triageValue?.SNoReportedAbnorm == true ? false : triageValue?.SChangeHairNails, disabled: triageValue?.SNoReportedAbnorm == false ? false : true }],
+        STypeRash: [{ value: triageValue?.SNoReportedAbnorm == true ? '' : triageValue?.STypeRash, disabled: triageValue?.SNoReportedAbnorm == false ? false : true }],
+        SComments: triageValue?.SComments ? triageValue?.SComments : '',
+
+        HNoReportedAbnorm: [{ value: triageValue?.HNoReportedAbnorm == true ? true : false, disabled: false }],
+        HHeadInjury: [{ value: triageValue?.HNoReportedAbnorm == true ? false : triageValue?.HHeadInjury, disabled: triageValue?.HNoReportedAbnorm == false ? false : true }],
+        HHeadCircumference: [{ value: triageValue?.HNoReportedAbnorm == true ? '' : triageValue?.HHeadCircumference, disabled: triageValue?.HNoReportedAbnorm == false ? false : true }],
+        HComments: triageValue?.HComments ? triageValue?.HComments : '',
+
+        ENoReportedAbnorm: [{ value: triageValue?.ENoReportedAbnorm == true ? true : false, disabled: false }],
+        EGlassesContacts: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.EGlassesContacts, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        EChangeVision: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.EChangeVision, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        EEyePain: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.EEyePain, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        EDoubleVision: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.EDoubleVision, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        EFlashingLights: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.EFlashingLights, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        EGlaucomaCataracts: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.EGlaucomaCataracts, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        ELastEyeExam: [{ value: triageValue?.ENoReportedAbnorm == true ? false : triageValue?.ELastEyeExam, disabled: triageValue?.ENoReportedAbnorm == false ? false : true }],
+        EComments: triageValue?.EComments ? triageValue?.EComments : '',
+
+        EneNoReportedAbnorma: [{ value: triageValue?.EneNoReportedAbnorma == true ? true : false, disabled: false }],
+        EneChangeHearing: [{ value: triageValue?.EneNoReportedAbnorma == true ? false : triageValue?.EneNoReportedAbnorma, disabled: triageValue?.EneNoReportedAbnorma == false ? false : true }],
+        EneTympanicMembrane: [{ value: triageValue?.EneNoReportedAbnorma == true ? false : triageValue?.EneChangeHearing, disabled: triageValue?.EneNoReportedAbnorma == false ? false : true }],
+        EneEarDischarge: [{ value: triageValue?.EneNoReportedAbnorma == true ? false : triageValue?.EneEarDischarge, disabled: triageValue?.EneNoReportedAbnorma == false ? false : true }],
+        EneRinging: [{ value: triageValue?.EneNoReportedAbnorma == true ? false : triageValue?.EneRinging, disabled: triageValue?.EneNoReportedAbnorma == false ? false : true }],
+        EneDizziness: triageValue?.EneDizziness ? triageValue?.EneDizziness : false,
+
+        EnnNoReportedAbnorm: [{ value: triageValue?.EnnNoReportedAbnorm == true ? true : false, disabled: false }],
+        EnnNoseBleeds: [{ value: triageValue?.EnnNoReportedAbnorm == true ? false : triageValue?.EnnNoseBleeds, disabled: triageValue?.EnnNoReportedAbnorm == false ? false : true }],
+        EnnNasalStuffiness: [{ value: triageValue?.EnnNoReportedAbnorm == true ? false : triageValue?.EnnNasalStuffiness, disabled: triageValue?.EnnNoReportedAbnorm == false ? false : true }],
+        EnnNasalFlaring: [{ value: triageValue?.EnnNoReportedAbnorm == true ? false : triageValue?.EnnNasalFlaring, disabled: triageValue?.EnnNoReportedAbnorm == false ? false : true }],
+        EnnFrequentColds: [{ value: triageValue?.EnnNoReportedAbnorm == true ? false : triageValue?.EnnFrequentColds, disabled: triageValue?.EnnNoReportedAbnorm == false ? false : true }],
+
+        EnmNoReportedAbnorm: [{ value: triageValue?.EnmNoReportedAbnorm == true ? true : false, disabled: false }],
+        EnmBleedingGums: [{ value: triageValue?.EnmNoReportedAbnorm == true ? false : triageValue?.EnmBleedingGums, disabled: triageValue?.EnmNoReportedAbnorm == false ? false : true }],
+        EnmSoreTongue: [{ value: triageValue?.EnmNoReportedAbnorm == true ? false : triageValue?.EnmSoreTongue, disabled: triageValue?.EnmNoReportedAbnorm == false ? false : true }],
+        EnmLipColor: [{ value: triageValue?.EnmNoReportedAbnorm == true ? '' : triageValue?.EnmLipColor, disabled: triageValue?.EnmNoReportedAbnorm == false ? false : true }],
+        EnmComments: triageValue?.EnmComments ? triageValue?.EnmComments : '',
+
+        NNoReportedAbnorm: [{ value: triageValue?.NNoReportedAbnorm == true ? true : false, disabled: false }],
+        NLumps: [{ value: triageValue?.NNoReportedAbnorm == true ? false : triageValue?.NLumps, disabled: triageValue?.NNoReportedAbnorm == false ? false : true }],
+        NSwollenGlands: [{ value: triageValue?.NNoReportedAbnorm == true ? false : triageValue?.NSwollenGlands, disabled: triageValue?.NNoReportedAbnorm == false ? false : true }],
+        NGoiter: [{ value: triageValue?.NNoReportedAbnorm == true ? false : triageValue?.NGoiter, disabled: triageValue?.NNoReportedAbnorm == false ? false : true }],
+        NStiffness: [{ value: triageValue?.NNoReportedAbnorm == true ? false : triageValue?.NStiffness, disabled: triageValue?.NNoReportedAbnorm == false ? false : true }],
+        NComments: triageValue?.NComments ? triageValue?.NComments : '',
+
+        BNoReportedAbnorm: [{ value: triageValue?.BNoReportedAbnorm == true ? true : false, disabled: false }],
+        BLumps: [{ value: triageValue?.BNoReportedAbnorm == true ? false : triageValue?.BLumps, disabled: triageValue?.BNoReportedAbnorm == false ? false : true }],
+        BPain: [{ value: triageValue?.BNoReportedAbnorm == true ? false : triageValue?.BPain, disabled: triageValue?.BNoReportedAbnorm == false ? false : true }],
+        BNippleDischarge: [{ value: triageValue?.BNoReportedAbnorm == true ? false : triageValue?.BNippleDischarge, disabled: triageValue?.BNoReportedAbnorm == false ? false : true }],
+        BSkinAbnormalities: [{ value: triageValue?.BNoReportedAbnorm == true ? false : triageValue?.BSkinAbnormalities, disabled: triageValue?.BNoReportedAbnorm == false ? false : true }],
+        BComments: triageValue?.BComments ? triageValue?.BComments : '',
+
+        RNoReportedAbnorm: [{ value: triageValue?.RNoReportedAbnorm == true ? true : false, disabled: false }],
+        RShortnessBreath: [{ value: triageValue?.RShortnessBreath == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RCough: [{ value: triageValue?.RCough == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RWheezing: [{ value: triageValue?.RWheezing == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RCoughingBlood: [{ value: triageValue?.RCoughingBlood == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RProductionPhlegm: [{ value: triageValue?.RProductionPhlegm == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RChestPain: [{ value: triageValue?.RChestPain == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RFever: [{ value: triageValue?.RFever == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RNightSweats: [{ value: triageValue?.RNightSweats == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RBlueFingersToes: [{ value: triageValue?.RBlueFingersToes == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RSwellingHandsFeet: [{ value: triageValue?.RSwellingHandsFeet == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RBronchitisEmphysema: [{ value: triageValue?.RBronchitisEmphysema == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RHxHeartMedication: [{ value: triageValue?.RHxHeartMedication == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RSkippingHeartBeats: [{ value: triageValue?.RSkippingHeartBeats == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RHeartMurmur: [{ value: triageValue?.RHeartMurmur == true ? false : triageValue?.BLumps, disabled: triageValue?.RNoReportedAbnorm == false ? false : true }],
+        RComments: triageValue?.RComments ? triageValue?.RComments : '',
+
+        GNoReportedAbnorm: [{ value: triageValue?.GNoReportedAbnorm == true ? true : false, disabled: false }],
+        GChangeAppetiteWeight: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GChangeAppetiteWeight, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GProblemsSwallowing: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GProblemsSwallowing, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GNausea: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GNausea, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GHeartburn: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GHeartburn, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GVomiting: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GVomiting, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GVomitingBlood: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GVomitingBlood, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GConstipation: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GConstipation, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GDiarrhea: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GDiarrhea, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GChangeBowelHabits: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GChangeBowelHabits, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GAbdominalPain: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GAbdominalPain, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GExcessiveBelching: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GExcessiveBelching, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GExcessiveFlatus: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GExcessiveFlatus, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GFoodIntolerance: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GFoodIntolerance, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GRectalBleedingHemo: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GRectalBleedingHemo, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GYellowColourSkin: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GYellowColourSkin, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GToiletTrained: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GToiletTrained, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GTfreq: [{ value: triageValue?.GNoReportedAbnorm == true ? '' : triageValue?.GTfreq, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GUsesDiaper: [{ value: triageValue?.GNoReportedAbnorm == true ? false : triageValue?.GUsesDiaper, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GUfreq: [{ value: triageValue?.GNoReportedAbnorm == true ? '' : triageValue?.GUfreq, disabled: triageValue?.GNoReportedAbnorm == false ? false : true }],
+        GComments: triageValue?.GComments ? triageValue?.GComments : '',
+
+        UNoReportedAbnorm: [{ value: triageValue?.UNoReportedAbnorm == true ? true : false, disabled: false }],
+        UDifficultyUrination: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UDifficultyUrination, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UPainBurningUrination: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UPainBurningUrination, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UFrequentUrinationNight: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UFrequentUrinationNight, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UUrgentNeedUrinate: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UUrgentNeedUrinate, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UIncontinenceUrine: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UIncontinenceUrine, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UDribbling: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UDribbling, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UDecreasedUrineStream: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UDecreasedUrineStream, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UBloodUrine: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UBloodUrine, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UUtiStonesProstate: [{ value: triageValue?.UNoReportedAbnorm == true ? false : triageValue?.UUtiStonesProstate, disabled: triageValue?.UNoReportedAbnorm == false ? false : true }],
+        UComments: triageValue?.UComments ? triageValue?.UComments : '',
+
+        PNoReportedAbnorm: [{ value: triageValue?.PNoReportedAbnorm == true ? true : false, disabled: false }],
+        PLegCramps: [{ value: triageValue?.PNoReportedAbnorm == true ? false : triageValue?.PLegCramps, disabled: triageValue?.PNoReportedAbnorm == false ? false : true }],
+        PVaricoseVeins: [{ value: triageValue?.PNoReportedAbnorm == true ? false : triageValue?.PVaricoseVeins, disabled: triageValue?.PNoReportedAbnorm == false ? false : true }],
+        PClotsVeins: [{ value: triageValue?.PNoReportedAbnorm == true ? false : triageValue?.PClotsVeins, disabled: triageValue?.PNoReportedAbnorm == false ? false : true }],
+        PComments: triageValue?.PComments ? triageValue?.PComments : '',
+
+        MNoReportedAbnorm: [{ value: triageValue?.MNoReportedAbnorm == true ? true : false, disabled: false }],
+        MPain: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MPain, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MSwelling: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MSwelling, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MStiffness: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MStiffness, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MDecreasedJointMotion: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MDecreasedJointMotion, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MBrokenBone: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MBrokenBone, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MSeriousSprains: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MSeriousSprains, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MArthritis: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MArthritis, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MGout: [{ value: triageValue?.MNoReportedAbnorm == true ? false : triageValue?.MGout, disabled: triageValue?.MNoReportedAbnorm == false ? false : true }],
+        MComments: triageValue?.MComments ? triageValue?.MComments : '',
+
+        NuNoReportedAbnorm: [{ value: triageValue?.NuNoReportedAbnorm == true ? true : false, disabled: false }],
+        NuHeadaches: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuHeadaches, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuSeizures: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuSeizures, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuParalysis: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuParalysis, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuWeakness: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuWeakness, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuLossConsciousness: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuLossConsciousness, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuLossMuscleSize: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuLossMuscleSize, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuMuscleSpasm: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuMuscleSpasm, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuTremor: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuTremor, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuInvoluntaryMovement: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuInvoluntaryMovement, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuNumbness: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuNumbness, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuIncoordination: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuIncoordination, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuFeelingPinsNeedles: [{ value: triageValue?.NuNoReportedAbnorm == true ? false : triageValue?.NuFeelingPinsNeedles, disabled: triageValue?.NuNoReportedAbnorm == false ? false : true }],
+        NuComments: triageValue?.MGout ? triageValue?.NuFeelingPinsNeedles : '',
+
+        HeNoReportedAbnorm: [{ value: triageValue?.HeNoReportedAbnorm == true ? true : false, disabled: false }],
+        HeAnemia: [{ value: triageValue?.HeNoReportedAbnorm == true ? false : triageValue?.HeAnemia, disabled: triageValue?.HeNoReportedAbnorm == false ? false : true }],
+        HeEasyBruisingBleeding: [{ value: triageValue?.HeNoReportedAbnorm == true ? false : triageValue?.HeEasyBruisingBleeding, disabled: triageValue?.HeNoReportedAbnorm == false ? false : true }],
+        HeComments: triageValue?.HeComments ? triageValue?.HeComments : '',
+
+        EdNoReportedAbnorm: [{ value: triageValue?.EdNoReportedAbnorm == true ? true : false, disabled: false }],
+        EdAbnormalGrowth: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdAbnormalGrowth, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdIncreasedAppetite: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdIncreasedAppetite, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdIncreasedThirst: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdIncreasedThirst, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdIncreaseUrineProduction: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdIncreaseUrineProduction, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdThyroidTrouble: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdThyroidTrouble, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdHeatColdIntolerance: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdHeatColdIntolerance, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdExcessingSweating: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdExcessingSweating, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdDiabetes: [{ value: triageValue?.EdNoReportedAbnorm == true ? false : triageValue?.EdDiabetes, disabled: triageValue?.EdNoReportedAbnorm == false ? false : true }],
+        EdComments: triageValue?.EdComments ? triageValue?.EdComments : '',
+
+        PsNoReportedAbnorm: [{ value: triageValue?.PsNoReportedAbnorm == true ? true : false, disabled: false }],
+        PsTensionAnxiety: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsTensionAnxiety, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsDepressionSuicide: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsDepressionSuicide, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsMemoryProblems: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsMemoryProblems, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsPastTreatmentPsychiatri: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsPastTreatmentPsychiatri, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsSleepProblems: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsSleepProblems, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsUnusualProblems: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsUnusualProblems, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsChangeMood: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsChangeMood, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
+        PsComments: triageValue?.PsComments ? triageValue?.PsComments : '',
+
+        DocStatus: [{ value: this.documentStatus, disabled: false }],
       });
     }
   }
@@ -1302,15 +1565,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         // Handle successful data retrieval
         this.formDetails = res?.d?.results[0];
-      },
-      error: (error: any) => {
-        // Handle errors if the request fails
-        this.sharedService.waringSwallModel(`POST Error at braden scale : ${error?.error?.error?.message?.value}`);
-      },
-      complete: () => {
-        // Handle completion (optional), invoked when the observable completes
-        // resolve(true); // Resolve the promise with formValue
-        this.patchForm(this.formDetails);
+        this.patchValuetoFormDate(this.formDetails);
         this.toAllergyArr = this.formDetails.TOALLERGIES?.results;
         this.toVitalsArr = this.formDetails.TOVITALSIGNS.results;
         this.formDetails.TOSCALE.results.forEach((element) => {
@@ -1323,7 +1578,16 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
                 res.ScaleType = element.ScaleType
             }
           })
-        })
+        });
+      },
+      error: (error: any) => {
+        // Handle errors if the request fails
+        this.sharedService.waringSwallModel(`POST Error : ${error?.error?.error?.message?.value}`);
+      },
+      complete: () => {
+        // Handle completion (optional), invoked when the observable completes
+        // resolve(true); // Resolve the promise with formValue;
+        console.log('completed');
       }
     });
   }
@@ -1804,48 +2068,132 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   }
 
   public changeSelfCaring(event, type: string) {
-    if (type == AssessmentType.NoProblemIdentified$) {
-      this.triageForm.patchValue({
-        noProblemIdentifySelfCaring: true,
-        needSuperVisionTotalDependent: false,
-      });
+    const selfCaringNoProblemIdentifyControlList = ['FunSelfNeedsSuper', 'FunSelfNeedsFeeding', 'FunSelfNeedsHygiene', 'FunSelfNeedsToileting', 'FunSelfNeedsAmulation'];
+    const selfCaringNeedSupervisionControlList = ['FunSelfNoProblem'];
+    if (type == this.AssessmentType.NoProblemIdentified$ && event.target.checked) {
+      selfCaringNoProblemIdentifyControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
     } else {
-      this.triageForm.patchValue({
-        noProblemIdentifySelfCaring: false,
-        needSuperVisionTotalDependent: true,
+      selfCaringNoProblemIdentifyControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
+      });
+    }
+
+    if (type == this.AssessmentType.NeedSupervision$ && event.target.checked) {
+      selfCaringNeedSupervisionControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
+    } else {
+      selfCaringNeedSupervisionControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
       });
     }
   }
 
   public changeMusculoskeletal(event, type: string) {
-    if (type == AssessmentType.NoProblemIdentified$) {
-      this.triageForm.patchValue({
-        noProblemIdentifyMuscu: true,
-        problemIdenfifyMuscu: false,
-      });
+    const musculoskeletalNoProblemIdentifyControlList = ['FunMusProblemIdentified', 'FunMusProblems'];
+    const musculoskeletalProblemIdentifyControlList = ['FunMusNoProblem'];
+    if (type == this.AssessmentType.NoProblemIdentifiedM$ && event.target.checked) {
+      musculoskeletalNoProblemIdentifyControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
     } else {
-      this.triageForm.patchValue({
-        noProblemIdentifyMuscu: false,
-        problemIdenfifyMuscu: true,
+      musculoskeletalNoProblemIdentifyControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
+      });
+    }
+
+    if (type == this.AssessmentType.ProblemIdentifiedM$ && event.target.checked) {
+      musculoskeletalProblemIdentifyControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
+    } else {
+      musculoskeletalProblemIdentifyControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
       });
     }
   }
 
   public changeEquipmentAssignment(event, type: string) {
-    if (type == AssessmentType.NoEquipment$) {
-      this.triageForm.patchValue({
-        noEquipment: true,
-        usedEquipments: false,
-      });
+    const equipmentControlList = ['FunAssEquipmentUseOf', 'FunAssEquipmentUseOfTyp'];
+    const noEquipmentControlList = ['FunAssEquipmentNone'];
+    if (type == this.AssessmentType.NoEquipment$ && event.target.checked) {
+      equipmentControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
     } else {
-      this.triageForm.patchValue({
-        noEquipment: false,
-        usedEquipments: true,
+      equipmentControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
       });
     }
+
+    if (type == this.AssessmentType.UseOfEquipment$ && event.target.checked) {
+      noEquipmentControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
+    } else {
+      noEquipmentControlList.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
+      });
+    }
+    // if (type == AssessmentType.NoEquipment$) {
+    //   this.triageForm.patchValue({
+    //     FunAssEquipmentNone: true,
+    //     FunAssEquipmentUseOf: false,
+    //   });
+    // } else {
+    //   this.triageForm.patchValue({
+    //     FunAssEquipmentNone: false,
+    //     FunAssEquipmentUseOf: true,
+    //   });
+    // }
   }
+
   public changeUseEquipment(event) {
-    const selectControl = this.triageForm.get('usedEquipmentsOtherOpt');
+    const selectControl = this.triageForm.get('FunAssEquipmentUseOfTxt');
     if (event == 5) {
       selectControl.enable();
       selectControl.patchValue('');
@@ -1877,27 +2225,186 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       const numericValue = +obj.value;
       return acc + numericValue;
     }, 0);
-    this.triageForm.get('nutritionalRiskScore').patchValue(sumOfValues);
+    this.triageForm.get('NutRiskScore').patchValue(sumOfValues);
     this.scoreLabel(sumOfValues);
   }
 
   private scoreLabel(value: number) {
     if (value == 0) {
-      this.triageForm.get('nutritionalRiskValue').patchValue('No risk');
+      this.triageForm.get('NutRiskLevel').patchValue('No risk');
     } else if (value > 1 && value < 4) {
-      this.triageForm.get('nutritionalRiskValue').patchValue('Low risk');
+      this.triageForm.get('NutRiskLevel').patchValue('Low risk');
     } else if (value > 5 && value < 7) {
-      this.triageForm.get('nutritionalRiskValue').patchValue('Moderate risk');
+      this.triageForm.get('NutRiskLevel').patchValue('Moderate risk');
     } else if (value > 7) {
-      this.triageForm.get('nutritionalRiskValue').patchValue('High risk');
+      this.triageForm.get('NutRiskLevel').patchValue('High risk');
     }
 
+  }
+
+  public changeNutAppetite(event: any) {
+    if (event == 4) {
+      this.triageForm.get('NutAppetiteTxt').enable();
+    } else {
+      this.triageForm.get('NutAppetiteTxt').disable();
+    }
+  }
+
+  public changeAppearance(event: any) {
+    if (event == 4) {
+      this.triageForm.get('NutAppearanceTxt').enable();
+    } else {
+      this.triageForm.get('NutAppearanceTxt').disable();
+    }
+  }
+
+  public changeSupport(event: any) {
+    if (event == 4) {
+      this.triageForm.get('NutSupportTxt').enable();
+    } else {
+      this.triageForm.get('NutSupportTxt').disable();
+    }
+  }
+
+  public changeDiet(event: any) {
+    if (event == 3) {
+      this.triageForm.get('NutDietTxt').enable();
+    } else {
+      this.triageForm.get('NutDietTxt').disable();
+    }
+  }
+
+  public changeDefficulties(event: any) {
+    if (event == 6) {
+      this.triageForm.get('NutFeedingTxt').enable();
+    } else {
+      this.triageForm.get('NutFeedingTxt').disable();
+    }
+  }
+
+  public changeCannotbeAssessed(event) {
+    const textListIndCheckControlsToDisable = ['STypeRash', 'HHeadCircumference', 'EnmLipColor', 'GToiletTrained', 'GTfreq', 'GUsesDiaper', 'GUfreq'];
+
+    const checkboxControlsToDisable = [
+      'SNoReportedAbnorm', 'HNoReportedAbnorm',
+      'ENoReportedAbnorm', 'EneNoReportedAbnorma', 'EnnNoReportedAbnorm',
+      'EnmNoReportedAbnorm', 'NNoReportedAbnorm', 'BNoReportedAbnorm',
+      'RNoReportedAbnorm', 'GNoReportedAbnorm', 'UNoReportedAbnorm',
+      'PNoReportedAbnorm', 'MNoReportedAbnorm',
+      'NuNoReportedAbnorm', 'HeNoReportedAbnorm', 'EdNoReportedAbnorm',
+      'PsNoReportedAbnorm'
+    ];
+
+    const disableCheckboxLists = [
+      this.skinIssueList, this.headIssueList, this.eyesIssueList, this.earsIssueList,
+      this.noseSinusesIssueList, this.mouthIssueList, this.neckIssueList, this.breastIssueList,
+      this.cardiacIssueList, this.gasIssueList, this.urinaryIssueList, this.peripheralVascularIssueList,
+      this.musculoskeletalIssueList, this.neurologicIssueList, this.hematologicIssueList,
+      this.endocrineIssueList, this.psychiatricIssueList
+    ];
+    if (event.target.checked) {
+      checkboxControlsToDisable.forEach(controlName => {
+        const control = this.triageForm.get(controlName);
+        if (control) {
+          control.disable();
+          control.setValue(false);
+        }
+      });
+
+      disableCheckboxLists.forEach(list => {
+        list.forEach(item => {
+          const control = this.triageForm.get(item.controlname);
+          if (control) {
+            control.disable();
+            control.setValue(false);
+          }
+        });
+      });
+
+      textListIndCheckControlsToDisable.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.disable();
+          selectControl.setValue('');
+        }
+      })
+
+
+    } else {
+      checkboxControlsToDisable.forEach(controlName => {
+        const control = this.triageForm.get(controlName);
+        if (control) {
+          control.enable();
+        }
+      });
+
+      disableCheckboxLists.forEach(list => {
+        list.forEach(item => {
+          const control = this.triageForm.get(item.controlname);
+          if (control) {
+            control.enable();
+          }
+        });
+      });
+
+      textListIndCheckControlsToDisable.forEach((item) => {
+        const selectControl = this.triageForm.get(item);
+        if (selectControl) {
+          selectControl.enable();
+        }
+      });
+
+    }
   }
 
   public changeReviewofSystem(tabName: any) {
 
     this.activeReviewSystemTab = tabName; // Set active tab label
     // Perform any other actions when a tab is clicked
+  }
+
+  public handleControlChangesbyTab(event, controlName: string, issueList: any[], relatedControlName?: string[]): void {
+    console.log();
+    if (this.triageForm.contains(controlName)) {
+      if (event.target.checked) {
+        // Disable all checkbox controls related to the issue
+        issueList.forEach((item) => {
+          const control = this.triageForm.get(item.controlname);
+          if (control) {
+            control.disable();
+            control.setValue(false); // Reset checkbox value
+          }
+        });
+        if (relatedControlName.length > 0) {
+          relatedControlName.forEach((item) => {
+            const selectControl = this.triageForm.get(item);
+            if (selectControl) {
+              selectControl.disable();
+              selectControl.setValue('');
+            }
+          })
+        }
+      } else {
+        // Enable all checkbox controls related to the issue
+        issueList.forEach((item) => {
+          const control = this.triageForm.get(item.controlname);
+          if (control) {
+            control.enable();
+          }
+        });
+        if (relatedControlName.length > 0) {
+          relatedControlName.forEach((item) => {
+            const selectControl = this.triageForm.get(item);
+            if (selectControl) {
+              selectControl.enable();
+            }
+          })
+        }
+      }
+    } else {
+      console.error(`Control ${controlName} does not exist in triageForm.`);
+    }
+
   }
 
   public saveEmergencyNursingDocument() {
@@ -1951,6 +2458,56 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     });
   }
 
+  public directReleaseNReleaseEmergencyNursingDocument(DocStatus: any) {
+    return new Promise((resolve, reject) => {
+      let checkScalesList: any[] = this.scalesList.filter((res) => {
+        delete res.description;
+        delete res.value;
+        if (res.LastScore) return res;
+      });
+
+      let updatedList = this.socialHistoryList.map(item => {
+        const { Status, value, label, Quantity, DateFrom, Habitid, ...rest } = item;
+        if (item.Status) {
+          return { ...rest, Description: Status, ConsumptionQty: Quantity, Dockey: '', Year: null };
+        }
+      });
+      updatedList = updatedList.filter(item => item !== undefined);
+
+      let payload = {
+        ...this.triageForm.value,
+        TOALLERGIES: this.toAllergyArr,
+        TOVITALSIGNS: this.toVitalsArr,
+        TOSCALE: checkScalesList,
+        TOSOCIAL: updatedList
+      };
+
+      if (payload.ArrivalTime != '') {
+        let createtime = payload.ArrivalTime.split(':');
+        payload.ArrivalTime =
+          'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
+      }
+      payload.DocStatus = DocStatus;
+      // Subscribe using an object to define handlers
+      this.subscription = this.emergencyService.saveNurEmrTriage(payload).subscribe({
+        next: (data: any) => {
+          // Handle successful data retrieval
+          this.updateTriageStatus();
+          this.sharedService.successSwallModel('Triage form done successfully');
+          // this.modalRefForAllergy?.hide();
+        },
+        error: (error: any) => {
+          // Handle errors if the request fails
+          this.sharedService.waringSwallModel(`POST Error : ${error?.error?.error?.message?.value}`);
+        },
+        complete: () => {
+          // Handle completion (optional), invoked when the observable completes
+          resolve(true); // Resolve the promise with formValue
+        }
+      });
+    });
+  }
+
   public updateTriageStatus(): void {
     let payload = {
       Dockey: this.triageForm.value.Dockey,
@@ -1976,7 +2533,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       Zimmr: "",
       Mode: true,
     }
-    console.log(payload);
     this.subscription = this.emergencyService.saveTriage(payload).subscribe({
       next: (data: any) => {
         // Handle successful data retrieval
@@ -1987,4 +2543,5 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       },
     });
   }
+
 }

@@ -126,6 +126,8 @@ export class PatientDocumentationComponent implements OnInit {
   InOutPatientViewValue: { showBoth: boolean; showIn: boolean; showOut: boolean; };
   imgType: string;
   apiJson: any;
+  public RedirectionType: any;
+  public ActionType: any;
 
   constructor(
     private modalService: BsModalService,
@@ -142,6 +144,10 @@ export class PatientDocumentationComponent implements OnInit {
     private dataShareService: DataShareService,
     private sharedService: SharedService,
   ) {
+
+    this.RedirectionType = RedirectionType;
+    this.ActionType = ActionType;
+
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -192,10 +198,10 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
-  getNurseEndorsement(){
+  getNurseEndorsement() {
     this.emergencyService.getNurseEndorsementDetail(this.apiJson).subscribe({
       next: (_success: any) => {
-        this.nurseEndorsementList = _success.d.results        
+        this.nurseEndorsementList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -332,7 +338,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.selectAssessment('emergencynursingdoc', this.latestEmergencyNursingDocList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.TRASM$) {
-      this.getPatientProfileData(this.latestEmergencyNursingDocList[0]);
+      this.getScaleDetails(this.latestEmergencyNursingDocList[0], RedirectionType.TRASM$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
       this.selectAssessment('bradenscale', this.latestBridentScaleList[0])
       this.openDocument('create');
@@ -340,7 +346,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.selectAssessment('bradenscale', this.latestBridentScaleList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
-      this.getPatientProfileData(this.latestBridentScaleList[0]);
+      this.getScaleDetails(this.latestBridentScaleList[0], RedirectionType.BRADEN$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.COMMA$) {
       this.selectAssessment('glasgowcomascale', this.latestGlasgowComaScaleList[0])
       this.openDocument('create');
@@ -348,7 +354,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.selectAssessment('glasgowcomascale', this.latestGlasgowComaScaleList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.COMMA$) {
-      this.getPatientProfileData(this.latestGlasgowComaScaleList[0]);
+      this.getScaleDetails(this.latestGlasgowComaScaleList[0], RedirectionType.COMMA$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.FAC$) {
       this.selectAssessment('facepainscale', this.latestFacePainScaleList[0])
       this.openDocument('create');
@@ -356,7 +362,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.selectAssessment('facepainscale', this.latestFacePainScaleList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.FAC$) {
-      this.getPatientProfileData(this.latestFacePainScaleList[0]);
+      this.getScaleDetails(this.latestFacePainScaleList[0], RedirectionType.FAC$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
       this.selectAssessment('numericratingscale', this.latestNumericratingscaleList[0])
       this.openDocument('create');
@@ -364,7 +370,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.selectAssessment('numericratingscale', this.latestNumericratingscaleList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
-      this.getPatientProfileData(this.latestNumericratingscaleList[0]);
+      this.getScaleDetails(this.latestNumericratingscaleList[0], RedirectionType.NMRTSC$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
       this.selectAssessment('educationAssessment', this.educationAssList[0])
       this.openDocument('create');
@@ -386,7 +392,7 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
       this.openEducationAssPdf(this.educationAssList[0].Dockey);
     }
-    
+
   }
 
   openPastHistory(template: TemplateRef<any>) {
@@ -822,6 +828,7 @@ export class PatientDocumentationComponent implements OnInit {
         // this.createAndReleaseMed();
       }
     }
+    // nurse endorsement
     if (this.nurseEndorsement) {
       if (action == 'create') {
         this.openNurseEndorsement = true;
@@ -1036,7 +1043,6 @@ export class PatientDocumentationComponent implements OnInit {
       if (action == 'create') {
         this.openEmergencyNursingDoc = true;
         this.dataShareService.sendActionType(ActionType.Add$, true, '');
-        // this.EmergencyNursingDocumentComp.ngOnInit();
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openEmergencyNursingDoc = true;;
@@ -1048,9 +1054,35 @@ export class PatientDocumentationComponent implements OnInit {
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
       } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteEmergencyNursingDocument(this.selectedDocData.Dockey);
+        }
       } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.emergencyService.getTriageDataIfStatusDraftForDetails(this.selectedDocData.Dockey).subscribe((res: any) => {
+            let d: any = {
+              d: res?.d?.results[0],
+            };
+            d.d.DocStatus = '2';
+            console.log(d);
+            this.emergencyService.saveNurEmrTriage(d).subscribe((result) => {
+              this.refresh();
+            });
+          })
+        }
       } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openEmergencyNursingDoc = true;
+          let valueObj = {
+            type: WordType.CopyEND,
+            docKey: this.selectedDocData.Dockey,
+            latest: this.latestEmergencyNursingDocList[0],
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
       } else if (action == 'createandrelease') {
+        this.openNurseEndorsement = true;
+        this.EmergencyNursingDocumentComp.directReleaseNReleaseEmergencyNursingDocument('1');
       }
     }
   }
@@ -1186,7 +1218,7 @@ export class PatientDocumentationComponent implements OnInit {
   reloadDoc(event) {
     this.refresh();
   }
-  saveDoc() {    
+  saveDoc() {
     if (this.actionType == 'create') {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
@@ -1346,13 +1378,13 @@ export class PatientDocumentationComponent implements OnInit {
         this.createEducationAss(false);
       }
       if (this.openEmergencyNursingDoc) {
-        // this.EmergencyNursingDocumentComp.copyBradeScale().then((formValue: any) => {
-        //   if (formValue) {
-        //     this.refresh();
-        //   }
-        // }).catch((error: any) => {
-        //   console.error('Error copy numeric rating Scale:', error);
-        // });
+        this.EmergencyNursingDocumentComp.directReleaseNReleaseEmergencyNursingDocument("5").then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error copy emergency nursing document:', error);
+        });
       }
       if (this.openNurseEndorsement) {
         this.NurseEndorsmentComp.editNurseEndDoc('copy').then((formValue: any) => {
@@ -1365,6 +1397,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
   }
+
   releaseFromForm() {
     if (this.phyAssess) {
       // this.release();
@@ -1372,20 +1405,18 @@ export class PatientDocumentationComponent implements OnInit {
       this.releaseMed();
     } else if (this.educationAssessment) {
       this.createEducationAss(true);
-    
     } else if (this.nurseEndorsement) {
       this.NurseEndorsmentComp.saveNurseEnd('4');
+    } else if (this.openEmergencyNursingDoc) {
+      this.EmergencyNursingDocumentComp.directReleaseNReleaseEmergencyNursingDocument('4');
     }
-
   }
-
-
 
   getReleasedPdf(item) {
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {
       this.admissionService.getPatientProfilePDF(item.Dockey).subscribe((_success: any) => {
         if (item.AttMimeType == 'PDF') {
-          // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,' + _success.d.AttachmentData);
+          this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,' + _success.d.AttachmentData);
           const config: ModalOptions = {
             class: 'modal-dialog-centered modal-xl pdfmodal-size',
           };
@@ -1445,16 +1476,22 @@ export class PatientDocumentationComponent implements OnInit {
     return JSON.stringify(this.patientProfileDocumet);
   }
 
-  getPatientProfileData(item) {
-    if (item.AttMimeType == undefined) {
+  getScaleDetails(item, docType?) {
+    if (docType === RedirectionType.TRASM$) {
+      item.AttMimeType = 'PDF';
+    } else {
       item.AttMimeType = 'HTML';
     }
     this.getReleasedPdf(item);
-    // if (item.AttMimeType !== '' && item.Dtid == 'ZMED_SOAP') {
-    //   this.openSoapDetails(item);
-    // }else{
-    // }
   }
+
+  getPatientProfileData(item) {
+    // console.log(item);
+    // console.log(docType);
+    // console.log(item.AttMimeType);
+    this.getReleasedPdf(item);
+  }
+
   openSoapDetails(item) {
     this.userConfigurationService
       .getSoapPatientdata(
@@ -1692,7 +1729,43 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
-  async deleteNurseEndorsmentDoc() {    
+
+  async deleteEmergencyNursingDocument(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        // need to implement delete API
+        (await this.emergencyService.deleteNurEmrTriage(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+  async deleteNurseEndorsmentDoc() {
     Swal.fire({
       title: 'Confirm',
       text: 'Do you want to delete?',
@@ -1704,25 +1777,25 @@ export class PatientDocumentationComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         (await this.emergencyService.deleteNurseEndDoc(this.nurseEndorsementList[0].Dockey)).subscribe(
-            (_success: any) => {
-              Swal.fire({
-                text: "Document is deleted successfully",
-                icon: 'success',
-                confirmButtonText: 'Ok',
-                customClass: 'myalertpopup'
-              })
-              this.refresh();
-            },
-            (_error: any) => {
-              Swal.fire({
-                text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
-                icon: 'warning',
-                confirmButtonText: 'Ok',
-                customClass: 'myalertpopup'
-              })
-              this.refresh();
-            }
-          );
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
       }
     });
   }
@@ -1766,6 +1839,7 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+
 
   openEducationAssPdf(Dockey) {
     this.pdfUrl = '';

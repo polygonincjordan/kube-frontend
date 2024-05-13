@@ -1748,7 +1748,6 @@ export class ErHistoryComponent implements OnInit {
     // //    return el;
     // //  }
     // })
-    debugger;
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];

@@ -433,16 +433,16 @@
                   <div class="option-section row">
                     <div class="col-md-2">
                       <div class="scale-box-checkbox">
-                        <input type="checkbox" id="noProblemIdentify" formControlName="noProblemIdentifySelfCaring"
-                          (change)="changeSelfCaring($event, 'No Problem Identified')" />
+                        <input type="checkbox" id="noProblemIdentify" formControlName="FunSelfNoProblem"
+                          (change)="changeSelfCaring($event, AssessmentType.NoProblemIdentified$)" />
                         <label class="admitting-physician" for="noProblemIdentify">No Problem Identified</label>
                       </div>
                     </div>
 
                     <div class="col-md-10">
                       <div class="scale-box-checkbox">
-                        <input type="checkbox" id="neeSupervision" formControlName="needSuperVisionTotalDependent"
-                          (change)="changeSelfCaring($event, 'Needs supervision / Totally Dependent')" />
+                        <input type="checkbox" id="neeSupervision" formControlName="FunSelfNeedsSuper"
+                          (change)="changeSelfCaring($event, AssessmentType.NeedSupervision$)" />
                         <label class="admitting-physician" for="neeSupervision">Needs supervision / Totally
                           Dependent</label>
                       </div>
@@ -460,18 +460,18 @@
                   <div class="option-section row">
                     <div class="col-md-2">
                       <div class="scale-box-checkbox">
-                        <input type="checkbox" id="noProblemIdentifyMuscu" formControlName="noProblemIdentifyMuscu"
-                          (change)="changeMusculoskeletal($event, 'No Problem Identified')" />
-                        <label class="admitting-physician" for="noProblemIdentifyMuscu">No Problem Identified</label>
+                        <input type="checkbox" id="FunMusNoProblem" formControlName="FunMusNoProblem"
+                          (change)="changeMusculoskeletal($event, AssessmentType.NoProblemIdentifiedM$)" />
+                        <label class="admitting-physician" for="FunMusNoProblem">No Problem Identified</label>
                       </div>
                     </div>
 
                     <div class="col-md-10">
                       <div class="scale-box-checkbox">
-                        <input type="checkbox" id="problemidentified" formControlName="problemIdenfifyMuscu"
-                          (change)="changeMusculoskeletal($event, 'Problem Idenfify')" />
+                        <input type="checkbox" id="problemidentified" formControlName="FunMusProblemIdentified"
+                          (change)="changeMusculoskeletal($event, AssessmentType.ProblemIdentifiedM$)" />
                         <label class="scale-box-checkbox-label sm-0" for="problemidentified">Problem identified</label>
-                        <ng-select class="drop-down-list" formControlName="problemIdenfifyMuscuOption">
+                        <ng-select class="drop-down-list" formControlName="FunMusProblems">
                           <ng-option *ngFor="let item of problemIdentifiedList"
                             [value]="item.value">{{item.label}}</ng-option>
                         </ng-select>
@@ -484,26 +484,26 @@
                   <div class="option-section row">
                     <div class="col-md-2">
                       <div class="scale-box-checkbox">
-                        <input type="checkbox" id="noequipment" formControlName="noEquipment"
-                          (change)="changeEquipmentAssignment($event, 'No Equipment')" />
-                        <label class="admitting-physician" for="noequipment">None</label>
+                        <input type="checkbox" id="FunAssEquipmentNone" formControlName="FunAssEquipmentNone"
+                          (change)="changeEquipmentAssignment($event, AssessmentType.NoEquipment$)" />
+                        <label class="admitting-physician" for="FunAssEquipmentNone">None</label>
                       </div>
                     </div>
 
                     <div class="col-md-10">
                       <div class="use-of-box">
                         <div class="scale-box-checkbox">
-                          <input type="checkbox" id="useOf" formControlName="usedEquipments"
-                            (change)="changeEquipmentAssignment($event, 'Use Of Equipment')" />
+                          <input type="checkbox" id="useOf" formControlName="FunAssEquipmentUseOf"
+                            (change)="changeEquipmentAssignment($event, AssessmentType.UseOfEquipment$)" />
                           <label class="scale-box-checkbox-label sm-1" for="useOf">Use Of</label>
                         </div>
                         <div class="scale-box-checkbox">
-                          <ng-select class="drop-down-list" formControlName="usedEquipmentsOption"
+                          <ng-select class="drop-down-list" formControlName="FunAssEquipmentUseOfTyp"
                             (change)="changeUseEquipment($event)">
-                            <ng-option *ngFor="let item of usedEquipments"
+                            <ng-option *ngFor="let item of usedEquipmentsList"
                               [value]="item.value">{{item.label}}</ng-option>
                           </ng-select>
-                          <input type="text" class="form-control other-box" formControlName="usedEquipmentsOtherOpt"
+                          <input type="text" class="form-control other-box" formControlName="FunAssEquipmentUseOfTxt"
                             [disabled]="isUseOf" />
                         </div>
                       </div>
@@ -517,7 +517,7 @@
                       <div class="use-of-box">
                         <div class="scale-box-checkbox">
                           <label class="admitting-physician sm-2">Requires Dr. Notification</label>
-                          <ng-select class="drop-down-list" formControlName="drNotificationOption">
+                          <ng-select class="drop-down-list" formControlName="FunDrNotification">
                             <ng-option *ngFor="let item of doctorNotication"
                               [value]="item.value">{{item.label}}</ng-option>
                           </ng-select>
@@ -528,7 +528,7 @@
                       <div class="use-of-box">
                         <div class="scale-box-checkbox">
                           <label class="admitting-physician sm-3">Notified</label>
-                          <ng-select class="drop-down-list" formControlName="notifiedOption">
+                          <ng-select class="drop-down-list" formControlName="FunNotified">
                             <ng-option *ngFor="let item of notication" [value]="item.value">{{item.label}}</ng-option>
                           </ng-select>
                         </div>
@@ -549,7 +549,7 @@
                 <div class="option-box">
                   <label class="box-label-inner">Nutritional Risk</label>
                   <div class="option-section row mr-0 ml-5">
-                    <div class="col-md-3" *ngFor="let item of nutritionalRisk">
+                    <div class="col-md-3" *ngFor="let item of nutritionalRiskList">
                       <div class="use-of-box">
                         <div class="scale-box-checkbox">
                           <input type="checkbox" [id]="item.label" [formControlName]="item.controlname"
@@ -561,11 +561,11 @@
                     </div>
                   </div>
                   <div class="option-section row risk-section">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <div class="use-of-box">
                         <div class="scale-box-checkbox">
                           <label class="admitting-physician">Patient's Risk Score</label>
-                          <input type="text" class="form-control risk-score" formControlName="nutritionalRiskScore" />
+                          <input type="text" class="form-control risk-score" formControlName="NutRiskScore" />
                         </div>
                       </div>
                     </div>
@@ -573,10 +573,11 @@
                       <div class="use-of-box">
                         <div class="scale-box-checkbox">
                           <label class="admitting-physician">Risk level</label>
-                          <input type="text" class="form-control risk-level" formControlName="nutritionalRiskValue" />
+                          <input type="text" class="form-control risk-level" formControlName="NutRiskLevel" />
                         </div>
                       </div>
                     </div>
+                    <div class="col-md-5"></div>
                   </div>
                 </div>
                 <div class="row">
@@ -584,19 +585,19 @@
                     <div class="option-box">
                       <label class="box-label-inner">Nutritional Assessment Adult</label>
                       <div class="option-section row">
-
                         <div class="use-of-box col-md-12">
                           <div class="scale-box-list">
                             <label class="admitting-physician" for="useOf">Appetite</label>
                           </div>
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="AppetiteValue">
+                            <ng-select class="drop-down-list" formControlName="NutAppetite"
+                              (change)="changeNutAppetite($event)">
                               <ng-option *ngFor="let item of appetiteList"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="AppetiteOtherValue" />
+                            <input type="text" class="form-control" formControlName="NutAppetiteTxt" />
                           </div>
                         </div>
 
@@ -605,13 +606,14 @@
                             <label class="admitting-physician" for="useOf">General Appearance</label>
                           </div>
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="generalApperenceValue">
+                            <ng-select class="drop-down-list" formControlName="NutAppearance"
+                              (change)="changeAppearance($event)">
                               <ng-option *ngFor="let item of generalApperianceList"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="generalApperenceOtherValue" />
+                            <input type="text" class="form-control" formControlName="NutAppearanceTxt" />
                           </div>
                         </div>
 
@@ -620,13 +622,14 @@
                             <label class="admitting-physician" for="useOf">Nutritional Support</label>
                           </div>
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="nutritionalSupportValue">
+                            <ng-select class="drop-down-list" formControlName="NutSupport"
+                              (change)="changeSupport($event)">
                               <ng-option *ngFor="let item of nutritionalSupportList"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="nutritionalSupportOtherValue" />
+                            <input type="text" class="form-control" formControlName="NutSupportTxt" />
                           </div>
                         </div>
 
@@ -635,12 +638,12 @@
                             <label class="admitting-physician" for="useOf">Diet</label>
                           </div>
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="dietValue">
+                            <ng-select class="drop-down-list" formControlName="NutDiet" (change)="changeDiet($event)">
                               <ng-option *ngFor="let item of dietList" [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="dietOtherValue" />
+                            <input type="text" class="form-control" formControlName="NutDietTxt" />
                           </div>
                         </div>
 
@@ -649,13 +652,14 @@
                             <label class="admitting-physician" for="useOf">Feeding defficulties</label>
                           </div>
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="feedingDefficultiesValue">
+                            <ng-select class="drop-down-list" formControlName="NutFeeding"
+                              (change)="changeDefficulties($event)">
                               <ng-option *ngFor="let item of feedingDefficulties"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="feedingDefficultiesOtherValue" />
+                            <input type="text" class="form-control" formControlName="NutFeedingTxt" />
                           </div>
                         </div>
 
@@ -671,8 +675,14 @@
                             <label class="admitting-physician" for="useOf">Last 1 month</label>
                           </div>
                           <div class="scale-box-kg-list">
-                            <input type="text" class="form-control" formControlName="wightOneMonth" />
-                            <label>kg</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" formControlName="NutLast1Month" />
+                              <div class="input-group-append">
+                                <span class="input-group-text weight-right-label">
+                                  (kg/m2)
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="use-of-box col-md-12">
@@ -680,8 +690,14 @@
                             <label class="admitting-physician" for="useOf">Last 3 month</label>
                           </div>
                           <div class="scale-box-kg-list">
-                            <input type="text" class="form-control" formControlName="wightThreeMonth" />
-                            <label>kg</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" formControlName="NutLast3Month" />
+                              <div class="input-group-append">
+                                <span class="input-group-text weight-right-label">
+                                  kg/m2
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="use-of-box col-md-12">
@@ -689,16 +705,32 @@
                             <label class="admitting-physician" for="useOf">BMI</label>
                           </div>
                           <div class="scale-box-kg-list">
-                            <input type="text" class="form-control" formControlName="bmi" />
-                            <label>(kg/m2)</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" formControlName="NutBmi" />
+                              <div class="input-group-append">
+                                <span class="input-group-text weight-right-label">
+                                  (kg/m2)
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        <!-- <div class="use-of-box col-md-12">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                .com
+                              </span>
+                            </div>
+                          </div>
+                        </div> -->
                       </div>
                     </div>
 
                     <div class="nutritional-complain">
                       <span class="text-area-label">Comment</span>
-                      <textarea class="form-control" formControlName="nutriComment"></textarea>
+                      <textarea class="form-control" formControlName="NutComments"></textarea>
                     </div>
                   </div>
                 </div>
@@ -714,7 +746,7 @@
                         </div>
                         <div class="use-of-box col-md-4">
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="drNotificationOptionNutri">
+                            <ng-select class="drop-down-list" formControlName="NutDrNotification">
                               <ng-option *ngFor="let item of doctorNotication"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
@@ -728,7 +760,7 @@
                         </div>
                         <div class="use-of-box col-md-4 ">
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="notifiedOptionNutri">
+                            <ng-select class="drop-down-list" formControlName="NutNotified">
                               <ng-option *ngFor="let item of notication" [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
@@ -751,7 +783,8 @@
     <form [formGroup]="triageForm">
       <div class="container-fluid">
         <div class="main-box-checkbox">
-          <input type="checkbox" id="cannotbeAssessed" formControlName="CannotAssessedReview" />
+          <input type="checkbox" id="cannotbeAssessed" formControlName="CannotAssessedReview"
+            (change)="changeCannotbeAssessed($event)" />
           <label class="admitting-physician" for="cannotbeAssessed">Cannot be Assessed</label>
         </div>
         <div class="tab-navigation-part">
@@ -768,12 +801,13 @@
               </ul>
             </div>
             <div class="tab-content" style="border-radius: 7px;">
-
+              <!-- SKIN -->
               <div *ngIf="activeReviewSystemTab == 'Skin'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-4 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities" formControlName="SNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="SNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'SNoReportedAbnorm',skinIssueList,['STypeRash'])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -799,11 +833,13 @@
                   </div>
                 </div>
               </div>
+              <!-- HEAD -->
               <div *ngIf="activeReviewSystemTab == 'Head'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-6 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities" formControlName="HNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="HNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'HNoReportedAbnorm',headIssueList,['HHeadCircumference'])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -826,11 +862,13 @@
                   </div>
                 </div>
               </div>
+              <!-- EYES -->
               <div *ngIf="activeReviewSystemTab == 'Eyes'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities" formControlName="ENoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="ENoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'ENoReportedAbnorm',eyesIssueList,[''])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -850,6 +888,7 @@
                   </div>
                 </div>
               </div>
+              <!-- ENT -->
               <div *ngIf="activeReviewSystemTab == 'ENT'" class="tab-content-box">
                 <div class="row mr-3 ml-3">
                   <div class="col-md-3">
@@ -861,8 +900,8 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="tab-box-checkbox">
-                          <input type="checkbox" id="noReportedAbnormalitiesEars"
-                            formControlName="EneNoReportedAbnorma" />
+                          <input type="checkbox" id="noReportedAbnormalitiesEars" formControlName="EneNoReportedAbnorma"
+                            (change)="handleControlChangesbyTab($event, 'EneNoReportedAbnorma',earsIssueList,[''])" />
                           <label class="admitting-physician" for="noReportedAbnormalitiesEars">No reported
                             abnormalities</label>
                         </div>
@@ -888,8 +927,8 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="tab-box-checkbox">
-                          <input type="checkbox" id="noReportedAbnormalitiesNose"
-                            formControlName="EnnNoReportedAbnorm" />
+                          <input type="checkbox" id="noReportedAbnormalitiesNose" formControlName="EnnNoReportedAbnorm"
+                            (change)="handleControlChangesbyTab($event, 'EnnNoReportedAbnorm',noseSinusesIssueList,[''])" />
                           <label class="admitting-physician" for="noReportedAbnormalitiesNose">No reported
                             abnormalities</label>
                         </div>
@@ -915,8 +954,8 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="tab-box-checkbox">
-                          <input type="checkbox" id="noReportedAbnormalitiesMouth"
-                            formControlName="EnmNoReportedAbnorm" />
+                          <input type="checkbox" id="noReportedAbnormalitiesMouth" formControlName="EnmNoReportedAbnorm"
+                            (change)="handleControlChangesbyTab($event, 'EnmNoReportedAbnorm',mouthIssueList,['EnmLipColor'])" />
                           <label class="admitting-physician" for="noReportedAbnormalitiesMouth">No reported
                             abnormalities</label>
                         </div>
@@ -945,12 +984,13 @@
                   </div>
                 </div>
               </div>
+              <!-- NECK -->
               <div *ngIf="activeReviewSystemTab == 'Neck'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="NNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="NNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'NNoReportedAbnorm',neckIssueList,[''])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -970,12 +1010,13 @@
                   </div>
                 </div>
               </div>
+              <!-- BREAST -->
               <div *ngIf="activeReviewSystemTab == 'Breast'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="BNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="BNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'BNoReportedAbnorm',breastIssueList,[''])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -995,12 +1036,13 @@
                   </div>
                 </div>
               </div>
+              <!-- CARDIC -->
               <div *ngIf="activeReviewSystemTab == 'Respriration/Cardiac'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="RNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="RNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'RNoReportedAbnorm',cardiacIssueList,[''])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1021,12 +1063,13 @@
                   </div>
                 </div>
               </div>
+              <!-- Gas -->
               <div *ngIf="activeReviewSystemTab == 'Gastrointestinal'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities1"
-                        formControlName="GNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities1" formControlName="GNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'GNoReportedAbnorm',gasIssueList,['GToiletTrained', 'GTfreq', 'GUsesDiaper', 'GUfreq'])" />
                       <label class="admitting-physician" for="noReportedAbnormalities1">No reported
                         abnormalities</label>
                     </div>
@@ -1093,12 +1136,13 @@
                   </div>
                 </div>
               </div>
+              <!-- URINARY -->
               <div *ngIf="activeReviewSystemTab == 'Urinary'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="UNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="UNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'UNoReportedAbnorm',urinaryIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1119,12 +1163,13 @@
                   </div>
                 </div>
               </div>
+              <!-- PERIPHERAL VESCULAR -->
               <div *ngIf="activeReviewSystemTab == 'Peripheral Vescular'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="PNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="PNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'PNoReportedAbnorm',peripheralVascularIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1144,12 +1189,13 @@
                   </div>
                 </div>
               </div>
+              <!-- MUSCULOSKELETAL -->
               <div *ngIf="activeReviewSystemTab == 'Musculoskeletal'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="MNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="MNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'MNoReportedAbnorm',musculoskeletalIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1169,12 +1215,13 @@
                   </div>
                 </div>
               </div>
+              <!-- NEUROLOGIC -->
               <div *ngIf="activeReviewSystemTab == 'Neurologic'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="NuNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="NuNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'NuNoReportedAbnorm',neurologicIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1199,12 +1246,13 @@
                   </div>
                 </div>
               </div>
+              <!-- HEMATOLOGIC -->
               <div *ngIf="activeReviewSystemTab == 'Hematologic'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="HeNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="HeNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'HeNoReportedAbnorm',hematologicIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1225,12 +1273,13 @@
                   </div>
                 </div>
               </div>
+              <!-- ENDOCRINE -->
               <div *ngIf="activeReviewSystemTab == 'Endocrine'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="EdNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="EdNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'EdNoReportedAbnorm',endocrineIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>
@@ -1251,12 +1300,13 @@
                   </div>
                 </div>
               </div>
+              <!-- PSYCHIATRIC -->
               <div *ngIf="activeReviewSystemTab == 'Psychiatric'" class="tab-content-box">
                 <div class="row">
                   <div class="col-md-12 ml-4 mr-4">
                     <div class="tab-box-checkbox">
-                      <input type="checkbox" id="noReportedAbnormalities"
-                        formControlName="PsNoReportedAbnorm" />
+                      <input type="checkbox" id="noReportedAbnormalities" formControlName="PsNoReportedAbnorm"
+                        (change)="handleControlChangesbyTab($event, 'PsNoReportedAbnorm',psychiatricIssueList,[])" />
                       <label class="admitting-physician" for="noReportedAbnormalities">No reported
                         abnormalities</label>
                     </div>

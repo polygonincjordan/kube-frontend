@@ -874,8 +874,13 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
-  deleteNurseEndDoc(json): Observable<any> {    
+  deleteNurseEndDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteNurseEndDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  deleteNurEmrTriage(json): Observable<any> {
+    return this.http.delete(this.url + `deleteNurEmrTriage?Dockey=${json}`, {
       withCredentials: true,
     });
   }

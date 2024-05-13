@@ -21,7 +21,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   @Output() sendErNoDocumentCount = new EventEmitter<any>();
 
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
-  @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
+  // @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
 
   public noReleasedMissedDocumentsList: Array<NoReleasedMissedDocuments> = [];
   public filterNoReleaseMissDoc: Array<NoReleasedMissedDocuments> = [];
@@ -157,19 +157,14 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
       doctype: type,
       action: action
     };
-
-    // Store data in local storage for later retrieval if needed
-    this.storageService.setCheckinData(data);
-    localStorage.setItem('checkindata', JSON.stringify(data));
-    localStorage.setItem('tabName', 'Documentation');
-
-    // Determine and set the appropriate DocKey based on the type and condition
-
-
-    // Call the appropriate function based on the action
-    if (action !== ActionType.View$) {
+    if (action === ActionType.Add$ || action === ActionType.Update$) {
+      this.storageService.setCheckinData(data);
+      localStorage.setItem('checkindata', JSON.stringify(data));
+      localStorage.setItem('tabName', 'Documentation');
       this.redirectToTreatment(json);
-    } else {
+    }
+    // Call the appropriate function based on the action
+    if (action === ActionType.View$) {
       switch (type) {
         case RedirectionType.NMRTSC$:
           this.getReleasedPdf('HTML', data.NrsScaleDoknr);
@@ -199,39 +194,48 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   public getReleasedPdf(AttMimeType, Dockey) {
     if (AttMimeType == 'PDF' || AttMimeType == 'url' || AttMimeType == 'image/bmp' || AttMimeType == 'HTML') {
-      this.admissionService.getPatientProfilePDF(Dockey).subscribe((_success: any) => {
-        if (AttMimeType == 'PDF') {
-          // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,' + _success.d.AttachmentData);
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.modalRef = this.modalService.show(this.releasepdfmodal, config);
-          this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
-          this.pdfUrlType = 'pdf';
-        } else if (AttMimeType == 'url') {
-          window.open(_success.d.Url);
-        } else if (AttMimeType == 'image/bmp') {
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
-          this.modalRef = this.modalService.show(this.releasepdfmodal, config);
-          this.pdfUrlType = 'image';
-        } else if (AttMimeType == 'HTML') {
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.modalRef = this.modalService.show(this.releasepdfmodal, config);
-          this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
-          this.pdfUrlType = 'html';
-        }
-      }, (error: any) => {
-        // Implement error handling logic here (e.g., show error message)
-        // For example, notify user about the error or log it for further investigation
-        if (error.error.error.code == '/IWBEP/CM_MGW_RT/020') {
-          this.sharedService.errorSwallModel(`Error fetching patient profile : ${error.error.error.message.value}`)
-        }
-      });
+      this.admissionService.getPatientProfilePDF(Dockey)
+        .subscribe({
+          next: (_success: any) => {
+            // Handle successful data retrieval
+            if (AttMimeType == 'PDF') {
+              // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,' + _success.d.AttachmentData);
+              const config: ModalOptions = {
+                class: 'modal-dialog-centered modal-xl pdfmodal-size',
+              };
+              this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+              this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
+              this.pdfUrlType = 'pdf';
+            } else if (AttMimeType == 'url') {
+              window.open(_success.d.Url);
+            } else if (AttMimeType == 'image/bmp') {
+              const config: ModalOptions = {
+                class: 'modal-dialog-centered modal-xl pdfmodal-size',
+              };
+              this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
+              this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+              this.pdfUrlType = 'image';
+            } else if (AttMimeType == 'HTML') {
+              const config: ModalOptions = {
+                class: 'modal-dialog-centered modal-xl pdfmodal-size',
+              };
+              this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+              this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
+              this.pdfUrlType = 'html';
+            }
+          },
+          error: (error: any) => {
+            // Handle errors if the request fails
+            // For example, notify user about the error or log it for further investigation
+            if (error.error.error.code == '/IWBEP/CM_MGW_RT/020') {
+              this.sharedService.errorSwallModel(`Error fetching patient profile : ${error.error.error.message.value}`)
+            }
+          },
+          complete: () => {
+            // Handle completion (optional), invoked when the observable completes
+            // console.log('Complete');
+          }
+        });
     }
   }
 
