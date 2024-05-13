@@ -104,6 +104,9 @@ import { DialysisNursingDashboardComponent } from './dialysis-nursing-dashboard.
 import { CustomDecimalPipe } from './custom.decimal.pipe';
 import { EventfilterPipe } from './eventfilter.pipe';
 import { BedComponent } from './bed/bed.component';
+import { DialysisAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/dialysis-assessment.component';
+import { HaemodialysisAccessComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-access/haemodialysis-access.component';
+import { PreDialysisAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/pre-dialysis-assessment/pre-dialysis-assessment.component';
 
 
 const route: Routes = [
@@ -185,6 +188,9 @@ const route: Routes = [
     CustomSearchNursePipe,
     FilterPipeNursePipe,
     BedComponent,
+    DialysisAssessmentComponent,
+    HaemodialysisAccessComponent,
+    PreDialysisAssessmentComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

@@ -9,6 +9,8 @@ import { PatientSearchComponent } from './patient-search/patient-search.componen
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { ERDiagnosisComponent } from './diagnosis/diagnosis.component';
 import { DatePipe } from '@angular/common';
+import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
+import { formatDate } from 'ngx-bootstrap/chronos';
 
 @Component({
   selector: 'app-er-history',
@@ -16,6 +18,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./er-history.component.scss']
 })
 export class ErHistoryComponent implements OnInit {
+
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() redirectVisitData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
@@ -119,13 +122,13 @@ export class ErHistoryComponent implements OnInit {
         Rsfkb: [''],
         Rsfsn: [''],
         Repdt: [''],
-    }); 
+    });
     this.surgeonForm = this.formBuilder.group({
       Surgeon:[''],
       SurgeonName:[''],
     })
    }
-  
+
   ngOnInit() {
    console.log(this.storageService.lastPassedDate);
    if (this.storageService.lastPassedDate != undefined) {
@@ -150,7 +153,7 @@ export class ErHistoryComponent implements OnInit {
       .controls
       .forEach(control => {
         console.log(control);
-        
+
         control['controls']['Rsfna'].disable();
         control['controls']['Rsfkb'].disable();
         //control['Rsfkb'].disable();
@@ -233,7 +236,7 @@ export class ErHistoryComponent implements OnInit {
         isChecked:[true],
       }
       );
-      
+
     }
   }
   addItemForAllergy(element?): void {
@@ -288,7 +291,7 @@ export class ErHistoryComponent implements OnInit {
         isNew:[true]
       }
       );
-      
+
     }
   }
   public openModalForRisk(
@@ -394,18 +397,39 @@ export class ErHistoryComponent implements OnInit {
       )}T00:00:00`,
       History:true
     }
-    this.emergencyService.getErList(json).subscribe(
+    // this.ePrescriptionService.loadData(`e-prescription/dialysisTAget?Bwidtge=${this.parseDate(date[0])}&Bwidtle=${this.parseDate(date[1])}`, false, false, false, false).subscribe((_success:any)=>{
+    //   this.ERlistData = [];
+    //   if (_success.body.d.results.length == 0) {
+    //     this.sendErPatientCount.emit( this.ERlistData.length);
+    //   }
+    //    _success.body.d.results.forEach(element => {
+    //     if (element.StatusName == 'Checked Out') {
+    //       this.ERlistData.push(element);
+    //       this.sendErPatientCount.emit( this.ERlistData.length);
+    //     }
+    //    });
+    //    this.ERlistData.forEach((element,index) => {
+    //     if (element.TriageDate != null && element.TriageDate != '') {
+    //     this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
+    //     }
+    //     else{
+    //       this.ERlistData[index]['assignedTime'] = '';
+    //     }
+    //   });
+    //   this.ERlistDataClone = this.ERlistData;
+    //   this.lastIndex = this.ERlistData.length - 1;
+
+    // }, (_error: any) => { });
+    this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe(
       (_success: any) => {
-      // this.ERlistData = _success.d.results;
       this.ERlistData = [];
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
        _success.d.results.forEach(element => {
-        if (element.StatusTxt == 'Checked Out') {
+        if (element.StatusName == 'Checked Out') {
           this.ERlistData.push(element);
           this.sendErPatientCount.emit( this.ERlistData.length);
-          //this.triagePriorityList(element);
         }
        });
        this.ERlistData.forEach((element,index) => {
@@ -414,7 +438,7 @@ export class ErHistoryComponent implements OnInit {
         }
         else{
           this.ERlistData[index]['assignedTime'] = '';
-        } 
+        }
       });
       this.ERlistDataClone = this.ERlistData;
       this.lastIndex = this.ERlistData.length - 1;
@@ -423,6 +447,13 @@ export class ErHistoryComponent implements OnInit {
       (_error: any) => {}
     );
   }
+
+  parseDate(date: any) {
+    if (date !== null) {
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T${"00:00:00"}`;
+    }
+    return null;
+  }
   triagePriorityList(element) {
     const json ={
       patnr : element.Patnr,
@@ -430,9 +461,9 @@ export class ErHistoryComponent implements OnInit {
     }
     this.emergencyService.triagePriorityList(json).subscribe(
       (_success: any) => {
-        this.triageList = []; 
+        this.triageList = [];
        this.triageList = _success.d.results[0];
-       this.selectedTriageFromCheckin = this.triageList;   
+       this.selectedTriageFromCheckin = this.triageList;
       },
       (_error: any) => {}
     );
@@ -471,13 +502,13 @@ export class ErHistoryComponent implements OnInit {
       //     this.selectedTriageFromCheckin = element;
       //   }
       // });
-      
+
       this.modalRefForTriage.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.closeTriageModal();
         }
       });
-  
+
   }
   dataForTriage(){
     this.allTriageData = [{
@@ -521,7 +552,7 @@ export class ErHistoryComponent implements OnInit {
         this.allTriageData[i].isActive = false;
       }
     });
-    
+
   }
   saveTriage(){
     if (this.selectedTriageFromCheckin == undefined) {
@@ -550,9 +581,9 @@ export class ErHistoryComponent implements OnInit {
   Mode : true,
       }
     }else{
-    this.selectedTriageFromCheckin['Lfdnr'] = this.selectedERList.Lfdbw;  
+    this.selectedTriageFromCheckin['Lfdnr'] = this.selectedERList.Lfdbw;
     this.selectedTriageFromCheckin['TriageColor'] = this.selectedRowOfAllTriage['color'],
-    this.selectedTriageFromCheckin['TriagePriorityCode'] = this.selectedRowOfAllTriage['Triage'], 
+    this.selectedTriageFromCheckin['TriagePriorityCode'] = this.selectedRowOfAllTriage['Triage'],
     this.selectedTriageFromCheckin['TriagePriorityText'] = this.selectedRowOfAllTriage['Allergen'],
     this.selectedTriageFromCheckin['Mode'] = true;
     }
@@ -579,13 +610,13 @@ export class ErHistoryComponent implements OnInit {
       (_success: any) => {
         this.riskList = [];
        this.riskList = _success.d.results;
-     
+
         this.riskList.forEach(element => {
-          element["Repdt"] = new Date(element.Repdt); 
+          element["Repdt"] = new Date(element.Repdt);
           this.addItemForRisk(element);
         });
         console.log(this.riskList);
-        
+
       },
       (_error: any) => {}
     );
@@ -671,7 +702,7 @@ export class ErHistoryComponent implements OnInit {
        if (this.colName == 'Comments') {
         this.updateAllergyForm.controls.Adcomment.setValue(item.Adcomment);
         this.updateAllergyForm.controls.AdcommentLt.setValue(item.Adcomment);
-       } 
+       }
        if(this.colName == 'RiskCode'){
         this.updateRiskForm.controls.Rsfnr.setValue(item.Rsfnr);
         this.updateRiskForm.controls.Rsfna.setValue(item.Rsfna);
@@ -698,7 +729,7 @@ export class ErHistoryComponent implements OnInit {
        this.updateAllergyForm.controls.TypText.setValue(item.TypText);
        this.updateAllergyForm.controls.Typ.setValue(item.Typ);
        this.updateAllergyForm.controls.Adcomment.setValue(item.Adcomment);
-       this.updateAllergyForm.controls.AdcommentLt.setValue(item.Adcomment);    
+       this.updateAllergyForm.controls.AdcommentLt.setValue(item.Adcomment);
      }
      saveAllergyJsonFormat(){
       this.allergyJson = {};
@@ -974,7 +1005,7 @@ export class ErHistoryComponent implements OnInit {
         }
       }
   }
-  
+
   deleteAllergyJson(mode,item){
     this.allergyJson = {};
     this.allergyJson = {
@@ -1038,7 +1069,7 @@ export class ErHistoryComponent implements OnInit {
   }
   saveRiskJsonFormat(){
     this.riskJson=[];
-    let mode = ''; 
+    let mode = '';
     if (this.isRiskUpdate) {
       mode = 'U';
     }else{
@@ -1049,11 +1080,11 @@ export class ErHistoryComponent implements OnInit {
          finallfdnrValue = '000';
       }else{
         finallfdnrValue = this.selectedDataForUpdate.Lfdnr;
-      }  
+      }
     let reportedon = '';
       if (this.updateRiskForm.controls.Repdt.value !== '') {
         reportedon = this.updateRiskForm.controls.Repdt.value.getDate()+'.'+this.updateRiskForm.controls.Repdt.value.getMonth(this.updateRiskForm.controls.Repdt.value.setMonth(this.updateRiskForm.controls.Repdt.value.getMonth()+1))+'.'+this.updateRiskForm.controls.Repdt.value.getFullYear();
-      } 
+      }
     this.riskJson = [{
       Patnr: this.selectedERList.Patnr,
       Lfdnr: finallfdnrValue,
@@ -1101,7 +1132,7 @@ export class ErHistoryComponent implements OnInit {
         const json = {
           Patnr:this.selectedERList.Patnr,
           PatRiskHdrToItmNav:{
-            results:this.riskJson 
+            results:this.riskJson
           }
         }
         this.emergencyService.saveRiskList(json).subscribe(
@@ -1123,7 +1154,7 @@ export class ErHistoryComponent implements OnInit {
         const json = {
           Patnr:this.selectedERList.Patnr,
           PatRiskHdrToItmNav:{
-            results:this.riskJson 
+            results:this.riskJson
           }
         }
         this.emergencyService.saveRiskList(json).subscribe(
@@ -1145,7 +1176,7 @@ export class ErHistoryComponent implements OnInit {
     const json = {
       Patnr:this.selectedERList.Patnr,
           PatRiskHdrToItmNav:{
-            results:this.riskJson 
+            results:this.riskJson
           }
     }
     this.emergencyService.saveRiskList(json).subscribe(
@@ -1276,15 +1307,15 @@ export class ErHistoryComponent implements OnInit {
           this.noCollection = true;
           this.updateAllergyCheckboxes(this.noCollection,'nocollection');
         }
-        
-        
+
+
        }
-       
+
        this.allergyList.forEach(element => {
-        this.addItemForAllergy(element);  
+        this.addItemForAllergy(element);
     });
-    
-     
+
+
       },
       (_error: any) => {}
     );
@@ -1360,7 +1391,7 @@ export class ErHistoryComponent implements OnInit {
     }
   }
   updateAllergyCheckboxes(model,element){
-    
+
     if (element == 'noallergy') {
       this.noCollectionValue = '';
       if (model) {
@@ -1397,7 +1428,7 @@ export class ErHistoryComponent implements OnInit {
     }
     saveAllergyList() {
       if (this.allergyList.length == 0) {
-        let text = '';   
+        let text = '';
          if (this.updateAllergyForm.controls.Allergen.value !== '') {
            text = 'Allergen is saved Successfully';
         }else if(this.noAllergies){
@@ -1572,7 +1603,7 @@ export class ErHistoryComponent implements OnInit {
         }else{
           this.modalCommonDataArr = this.riskValues;
         }
-        
+
       }else{
        if (event == "") {
         if (this.colName == 'Allergen') {
@@ -1587,11 +1618,11 @@ export class ErHistoryComponent implements OnInit {
             }else{
               return item.Rsfna.toLowerCase().includes(event.toLowerCase());
             }
-            
+
         });
         }
       }
-     
+
     }
     openModalForPatientSearch(){
       this.patientSearchModal.openModalForPatient();
@@ -1621,7 +1652,7 @@ export class ErHistoryComponent implements OnInit {
       console.log('storageService',this.storageService.checkinPatientData);
     }
     filterListData(event){
-      // this.ERlistData = this.ERlistData.filter(el =>{      
+      // this.ERlistData = this.ERlistData.filter(el =>{
       //  if (event.Triage != '' && el.TriagePriorityCode.includes(event.Triage)) {
       //    return el;
       //  }
@@ -1636,14 +1667,14 @@ export class ErHistoryComponent implements OnInit {
       // //  }
       // })
       this.triageValueArr = [];
-      this.physicianValueArr = []; 
+      this.physicianValueArr = [];
       this.statusValueArr = [];
       if (event.Triage || event.Physician || event.Status || event.FCategory) {
         // if(event.Physician) event.Physician = event.Physician.trimStart();
         let filterValue = this.ERlistDataClone;
          if(event.Triage && event.Triage?.length) {
         event.Triage.forEach(triageValue => {
-          this.triageValueArr.push(filterValue.filter((element:any) =>{ 
+          this.triageValueArr.push(filterValue.filter((element:any) =>{
             if(element.TriagePriorityCode === triageValue){
           return element;
             }
@@ -1651,14 +1682,14 @@ export class ErHistoryComponent implements OnInit {
         });
         filterValue = this.triageValueArr.flat();
       }
-  
+
       if(event.Physician && event.Physician?.length) {
         event.Physician.forEach(physicianValue => {
         this.physicianValueArr.push(filterValue.filter((element:any) => {
           if(element.Behpersname === physicianValue.trimStart()){
             return element;
           }
-        
+
         }))
         });
         filterValue = this.physicianValueArr.flat();
@@ -1669,15 +1700,15 @@ export class ErHistoryComponent implements OnInit {
             if(element.ZzfinCat === 'Self Payer'){
               return element;
             }
-          }) 
+          })
         }else{
           filterValue = filterValue.filter((element:any) =>{
             if(element.ZzfinCat !== 'Self Payer'){
               return element;
             }
-          }) 
+          })
         }
-       
+
       }
         this.ERlistData = filterValue;
         this.sendErPatientCount.emit( this.ERlistData.length);

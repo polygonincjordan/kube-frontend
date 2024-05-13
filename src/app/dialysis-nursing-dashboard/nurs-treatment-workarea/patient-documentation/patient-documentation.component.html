@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openAssessment"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -93,18 +93,18 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
             <div class="d-flex doc-header">
               <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
                   style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Document</h2>
+              <h2 style="font-weight: bold;">Current Visit Documents</h2>
             </div>
             <div class="scrollable-div" [style.height.px]="getContentHeight()">
               <!-- Emergency Nursing Document -->
-              <div
+              <!-- <div
                 [ngClass]="emergencynursingdoc ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;"
                 (click)="selectAssessment('emergencynursingdoc',latestEmergencyNursingDocList[0])">
@@ -119,9 +119,9 @@
                     (click)="getPatientProfileData(latestEmergencyNursingDocList[0])"
                     *ngIf="latestEmergencyNursingDocList[0]?.StatusTxt == 'Released'" />
                 </div>
-              </div>
+              </div> -->
               <!-- Glasgow Coma Scale -->
-              <div
+              <!-- <div
                 [ngClass]="glasgowcomascale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('glasgowcomascale',latestGlasgowComaScaleList[0])">
                 <div class="col-md-4">Glasgow Coma Scale :</div>
@@ -135,9 +135,9 @@
                     (click)="getPatientProfileData(latestGlasgowComaScaleList[0])"
                     *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
                 </div>
-              </div>
+              </div> -->
               <!-- Face Pain Scale -->
-              <div
+              <!-- <div
                 [ngClass]="facepainscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('facepainscale',latestFacePainScaleList[0])">
                 <div class="col-md-4">Face Pain Scale :</div>
@@ -151,9 +151,9 @@
                     (click)="getPatientProfileData(latestFacePainScaleList[0])"
                     *ngIf="latestFacePainScaleList[0]?.StatusTxt == 'Released'" />
                 </div>
-              </div>
+              </div> -->
               <!-- Numeric rating scale(more than 8 yrs) -->
-              <div
+              <!-- <div
                 [ngClass]="numericratingscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;"
                 (click)="selectAssessment('numericratingscale',latestNumericratingscaleList[0])">
@@ -168,7 +168,7 @@
                     (click)="getPatientProfileData(latestNumericratingscaleList[0])"
                     *ngIf="latestNumericratingscaleList[0]?.StatusTxt == 'Released'" />
                 </div>
-              </div>
+              </div> -->
               <!--  Braden Scale -->
               <div
                 [ngClass]="bradenscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -186,7 +186,7 @@
                 </div>
               </div>
               <!-- Education Assessment -->
-              <div
+              <!-- <div
                 [ngClass]="educationAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('educationAssessment',educationAssList[0])">
                 <div class="col-md-4">Education Assessment {{educationAssList[0]?.Zversion ?
@@ -201,7 +201,7 @@
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
                 </div>
-              </div>
+              </div> -->
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -211,6 +211,16 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-4"></div>
               </div>
+
+              <!-- Dialysis Assessment -->
+              <div class="box-col d-flex mt-2 docs-event"
+              [ngClass]="assessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('assessment','')">
+              <div class="col-md-4">Dialysis Assessment</div>
+              <div class="col-md-2 status-color">N/A</div>
+              <div class="col-md-2"></div>
+              <div class="col-md-4"></div>
+            </div>
             </div>
           </div>
         </div>
@@ -263,6 +273,7 @@
       <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
       <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
       <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
+      <dialysis-assessment *ngIf="openAssessment"></dialysis-assessment>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
     </div>
 

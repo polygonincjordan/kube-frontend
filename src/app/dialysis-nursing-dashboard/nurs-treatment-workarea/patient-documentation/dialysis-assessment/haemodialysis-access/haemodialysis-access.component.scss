@@ -1,0 +1,24 @@
+.dialysis-assessment-main {
+  padding: 15px;
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  .dialysis-info {
+    border: 1px solid #cacaca;
+    border-radius: 13px;
+    padding: 24px;
+  }
+  input {
+    border: 1px solid #bfbfbf;
+    border-radius: 6px !important;
+    padding: 7px 0.15rem;
+  }
+}
+
+::ng-deep .dialysis-info {
+  ng-select {
+    .ng-select-container {
+      border: 1px solid #bfbfbf;
+      border-radius: 6px !important;
+    }
+  }
+}

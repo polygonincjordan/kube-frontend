@@ -251,6 +251,19 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  dialysisTAget(Bwidtge: any, Bwidtle: any) {
+    return this.http.get(this.url + `dialysisTAget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
+      withCredentials: true,
+    });
+  }
+
+  Dialysisget(Bwidtge: any, Bwidtle: any) {
+    return this.http.get(this.url + `Dialysisget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
+      withCredentials: true,
+    });
+  }
+
   getAllergyReactionValues() {
     return this.http.get(this.url + 'getAllergyReactionValues', {
       withCredentials: true,

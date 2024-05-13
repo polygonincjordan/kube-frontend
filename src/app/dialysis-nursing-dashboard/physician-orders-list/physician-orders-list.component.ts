@@ -594,7 +594,7 @@ export class PhysicianOrdersListComponent implements OnInit{
   navTabBoxActiveValue: string = '02';
  getErList(date:any,event?:any) {
   console.log(event);
-  
+
   let jsonObj = {
     // fromDate:`${new DatePipe('en-US').transform(
     //   date ?  date[0] : new Date().setDate(new Date().getDate()),
@@ -616,6 +616,7 @@ export class PhysicianOrdersListComponent implements OnInit{
       // Flag:event?.Flag?event.Flag : ''
   };
   let jsonObj1 = {
+     Deptcode:'2',
      fromDate:`${new DatePipe('en-US').transform(
       date ?  date[0] : new Date().setDate(new Date().getDate()),
       'yyyy-MM-dd'
@@ -632,14 +633,14 @@ export class PhysicianOrdersListComponent implements OnInit{
           this.dataToParent.emit(this.dataOnTableForPhyOrder);
         })
   }
-  
+
 
   getSelectedDates(dates){
     // this.getErList("", dates);
     this.oldDate = dates
    }
 
-  filterPhysicianOrders(event) { 
+  filterPhysicianOrders(event) {
     const { wardNo, patientStatus, Physician } = event;
     const filterFunction = (item) => {
       let passWardFilter = true;
@@ -659,26 +660,26 @@ export class PhysicianOrdersListComponent implements OnInit{
         passStatusFilter = item.Status === "Released";
       }
       return passWardFilter && passStatusFilter && passPhysicianFilter;
-      
+
     };
     const filteredList = this.dataOnTableForPhyOrder.filter(filterFunction);
     this.dataOnTableForPhyOrder = filteredList;
   }
-  
-  
+
+
 
   getPrintUrl(){
     this.emergencyService.getPrintLabel().subscribe((res:any)=>{
-      this.printUrl = res.d.results[0].Url 
+      this.printUrl = res.d.results[0].Url
    })
   }
 
   printLabel(){
     if(this.activelabLabelData.Vkgid){
-      this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res:any)=>{}) 
+      this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res:any)=>{})
       this.closeLabModal();
     }
-    
+
   }
   createPhysicianOrder() {
     if (this.items.controls[0].value.physicianOrder == '' && this.items.controls[1].value.physicianOrder == '' && this.items.controls[2].value.physicianOrder == '' && this.items.controls[3].value.physicianOrder == '') {
@@ -742,7 +743,7 @@ export class PhysicianOrdersListComponent implements OnInit{
     // if (action == 'delete') {
     //   const config: ModalOptions = { class: 'modal-dialog-centered execute-delete-modal'};
     //   this.modalRef = this.modalService.show(template,config);
-    // }  
+    // }
      this.phyOrderAction = action;
     this.phyOrderData = data;
     this.phyOrderAction = action;
@@ -892,7 +893,7 @@ export class PhysicianOrdersListComponent implements OnInit{
       });
     }
   }
- 
+
   sortPhysician() {
     if (!this.asc) {
       this.asc = true;

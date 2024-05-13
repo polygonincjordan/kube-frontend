@@ -66,7 +66,7 @@ export class HospitalistService {
     );
   }
 
-  getMedicationAdministration(einri:any,falnr:any){ 
+  getMedicationAdministration(einri:any,falnr:any){
     const urlWithParams = `${this.url}getLevelOrderHistory?einri=${einri}&falnr=${falnr}`;
     return this.http.get(urlWithParams, {
       withCredentials: true,
@@ -261,8 +261,8 @@ export class HospitalistService {
       withCredentials: true,
     });
   }
-  getMedicationAdministrationSet(fromDate, toDate){
-    const urlWithParams = `${this.url}MedicationAdministrationSet?fromDate=${fromDate}&toDate=${toDate}`;
+  getMedicationAdministrationSet(Deptcode?:any,fromDate?:any, toDate?:any){
+    const urlWithParams = `${this.url}MedicationAdministrationSet?Deptcode=${Deptcode}&fromDate=${fromDate}&toDate=${toDate}`;
     return this.http.get(urlWithParams, {
       withCredentials: true,
     })
