@@ -78,6 +78,13 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  DailysisSet(json) {
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true,
+    });
+  }
+
   getFavSet() {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',

@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openAssessment"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale "
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -79,6 +79,11 @@
               Cancel
             </button>
           </div>
+          <!-- <div class="header-btn">
+            <button type="button" class="action-doc" (click)="saveDoc()">
+              Save
+            </button>
+          </div> -->
           <div class="header-btn">
             <button type="button" class="action-doc" (click)="saveDoc()">
               Release
