@@ -128,7 +128,7 @@ float: right;" />
       ">
       <h5 class="card-title">Configuration Options</h5>
       <span style="position: relative; bottom: 4px">
-        <img src="assets/img/refresh.png" style="width: 29px" (click)="refreshConfig();"/>
+        <img src="assets/img/refresh.png" style="width: 29px" (click)="refreshConfig();" />
         <img src="assets/img/save.png" style="width: 19px" (click)="createConfig()" />
       </span>
     </div>
@@ -238,19 +238,26 @@ font-size: 12px;
             {{item.Allergen}}
           </ng-option>
         </ng-select> -->
-
         <p style="margin: auto; margin-top: 5px">Physician</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
-          <ng-option [value]="item.NamString" *ngFor="let item of assignUsersList">
-            {{item.NamString}}
+          <ng-option [value]="item.Doctor" *ngFor="let item of assignUsersList">
+            {{item.Doctor}}
+          </ng-option>
+        </ng-select>
+        <p style="margin: auto; margin-top: 5px">Status</p>
+        <ng-select class="" id="inputGroupSelect02" formControlName="Status" [multiple]="true">
+          <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+          <ng-option [value]="item.Status" *ngFor="let item of allStatus">
+            {{item.Status}}
           </ng-option>
         </ng-select>
         <p style="margin: auto; margin-top: 5px">Financial Category</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="FCategory">
-          <ng-option value="">Choose</ng-option>
-          <ng-option value="Self Payer">Self Payer</ng-option>
-          <ng-option value="Insurance">Insurance</ng-option>
+        <ng-select class="" id="inputGroupSelect03" formControlName="FCategory">
+          <!-- <ng-option value="">Choose Financial Category</ng-option> -->
+          <ng-option [value]="item.Category" *ngFor="let item of allFinCategoryList">
+            {{ item.Category }}
+          </ng-option>
         </ng-select>
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">

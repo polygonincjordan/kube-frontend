@@ -16,16 +16,16 @@
             <th scope="col" style="padding-left: 0px;text-align: center;min-width:50px">Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDate()"></i></th>
             <th scope="col">Risk</th>
             <th scope="col" style="padding-left: 0px;text-align: center">Allergy</th>
-            <th scope="col" style="padding-left: 0px;text-align: center;width:5%">Triage <i class="fa fa-sort" aria-hidden="true" (click)="sortTriage()"></i></th>
+            <!-- <th scope="col" style="padding-left: 0px;text-align: center;width:5%">Triage <i class="fa fa-sort" aria-hidden="true" (click)="sortTriage()"></i></th> -->
             <th scope="col" style="padding-left: 0px;text-align: center;">Vitals</th>
-           
+
             <th scope="col" style="padding-left: 0px;text-align: center">Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
-            <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i></th>
-            <th scope="col" style="width: 14%;">Assigned physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
-            <th scope="col">Assigned Nurse</th>
-            <th scope="col" style="padding-left: 0px;">Diagnosis</th>
-            <th scope="col" style="padding-left: 0px;">Waiting Time <i class="fa fa-sort" aria-hidden="true" (click)="sortWaitTime()"></i></th>
+            <th scope="col" style="padding-left: 0px;">Financial Category<i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i></th>
+            <th scope="col" style="width: 14%;">Attending Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
+            <th scope="col">Service Description</th>
+            <!-- <th scope="col" style="padding-left: 0px;">Diagnosis</th> -->
+            <!-- <th scope="col" style="padding-left: 0px;">Waiting Time <i class="fa fa-sort" aria-hidden="true" (click)="sortWaitTime()"></i></th> -->
             <th scope="col" style="text-align: center;">Actions</th>
 
           </tr>
@@ -47,7 +47,7 @@
               <img src="assets/img/er-triage.png" style="width: 30px;" *ngIf="!item?.TriagePriorityCode" title="No Triage">
               </td>
             <td class="border-top-none" scope="row" style="padding-left: 0px;text-align: center;"><img src="assets/img/er-vital.png" style="width: 23px;" (click)="openModalVital(item)" title="Vitals"></td>
-           
+
             <td class="border-top-none" style="width: 7%;">
               {{item.BehraumKb}}
             <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
@@ -65,7 +65,7 @@
             <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
               font-weight: bold;background-color: #939da178" class="checkinrow-input" [value]="item.ZzfinCat" disabled> -->
               </td>
-             
+
                <td class="border-top-none" style="width: 14%;">
             {{item.Behpersname}}
             <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
@@ -92,7 +92,7 @@
                   bottom: 5px;" title="Visit Comments" (click)="openVisitComments(visitCommentsModal,item)" *ngIf="item.VisitComments != ''">
                   <img src="assets/img/information_grey.png" style="width: 25px;
                   height: 24px;;cursor: pointer;position: relative;
-                  bottom: 3px;left:4px" title="No visit comment" *ngIf="item.VisitComments == ''"> 
+                  bottom: 3px;left:4px" title="No visit comment" *ngIf="item.VisitComments == ''">
                   </div>
                 </td>
           </tr>
@@ -166,7 +166,7 @@
                border-radius: 24px;" (click)="closeTriageModal()">Cancel</button>
     </div>
    </div>
-   
+
   </div>
 </ng-template>
 <!-- risk modal -->
@@ -325,7 +325,7 @@
       <td style="padding-left: 2px;
         padding-right: 2px;
         width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(riskList[i])" title="Edit"><img src="assets/img/Delete.svg" (click)="confirmationForRiskDelete('D',riskList[i])" style="margin-left: 11px;" title="Delete">
-        
+
       </td>
       </tr>
       </ng-container>
@@ -382,7 +382,7 @@
     <form [formGroup]="updateAllergyForm" (keydown.enter)="$event.preventDefault()">
     <div class="mt-3 mb-3" style="border: 1px solid #d9d9d9;
     border-radius: 8px;padding: 6px;">
-    
+
       <div class="row create-form-inputs">
        <div class="col-md-4">
        <input type="text" class="form-control" placeholder="Allergen" style="height: 33px;" (dblclick)="openCommonModal(commonColModal,'Allergen')" (keyup.enter)="openCommonModal(commonColModal,'Allergen')" formControlName="Allergen">
@@ -517,13 +517,13 @@
         <td style="padding-left: 2px;
         padding-right: 2px;
         width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromTable(allergyList[i])" title="Edit"><img src="assets/img/Delete.svg" (click)="confirmationForAllergyDelete(deleteAllergyModal,'D',allergyList[i])" style="margin-left: 11px;" title="Delete">
-        
+
       </td>
       </tr>
      </ng-container>
      </ng-container>
-    
-     
+
+
     </tbody>
   </table>
   </form>
@@ -578,10 +578,10 @@
       <tbody style="    background: #fbfcff;">
             <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
           <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText || item.TypText || item.Rsfna}}</td>
-         
+
         </tr>
       </tbody>
-    
+
       </table>
     </div>
   </div>
@@ -596,8 +596,8 @@
         <div style="    display: flex;
         gap: 10px;">
         <li class="icon-pdf"><img src="assets/img/file2.svg" class="img-size c-pointer" (click)="saveAssignedDoctor()" style="    padding: 3px 3px;
-          border-radius: 7px;background-color: white;"> </li> 
-        <li class="close-icon"><img src="assets/img/CloseTab.svg" class="img-size c-pointer" (click)="closeAssignDoc()" style="width: 75%;"> </li> 
+          border-radius: 7px;background-color: white;"> </li>
+        <li class="close-icon"><img src="assets/img/CloseTab.svg" class="img-size c-pointer" (click)="closeAssignDoc()" style="width: 75%;"> </li>
       </div>
       </div>
     <div class="col-md-12 pl-5 pr-5 pt-3">
@@ -615,10 +615,10 @@
         {{ service.NamString }}<span hidden>{{service.Gpart}}</span>
       </ng-option>
     </ng-select>
-    </div> 
+    </div>
     <div class="col-md-12 pl-5 pr-5 pt-2 pb-3">
     <input type="text" class="form-control" formControlName="SurgeonName" style="pointer-events: none;"/>
-     </div> 
+     </div>
     </form>
   </div>
 </ng-template>

@@ -1,10 +1,9 @@
-import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { CheckInComponent } from './check-in/check-in.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Patient } from '@services/e-kardex/interfaces/patient';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Subscription, catchError, of, tap } from 'rxjs';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { StorageService } from '@services/storage.service';
@@ -130,7 +129,7 @@ export class OutPatientNursingComponent implements OnInit {
     private titleService: Title,
     private modalService: BsModalService,
     private dataShareService: DataShareService,
-    private outpatientNursingService: OutpatientNursingService
+    private outpatientNursingService: OutpatientNursingService,
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -180,9 +179,9 @@ export class OutPatientNursingComponent implements OnInit {
           /**
            * TODO : Nikhil - Comment this code to stop dual call of API - may in future will need to enable if need...
            */
-          // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-          // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-          // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+          this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+          this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+          this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
         }
       }
     );
@@ -197,6 +196,7 @@ export class OutPatientNursingComponent implements OnInit {
       Physician: [''],
       ItemStatus: [''],
     });
+
     this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
       if (data != null) {
         if (data.type == FilterType.OpCheckIn$ && data.isAllow == true && data.value) {
@@ -213,6 +213,24 @@ export class OutPatientNursingComponent implements OnInit {
             this.allDoctorList = data.value.filterDoctorList.map(status => ({ Doctor: status }));
           }
         }
+        if (data.type == FilterType.OpErHistory$ && data.isAllow == true && data.value) {
+          if (data.value?.filterFinCategtoryList) {
+            this.allFinCategoryList = [];
+            this.allFinCategoryList = data.value.filterFinCategtoryList.map(status => ({ Category: status }));
+            console.log(this.allFinCategoryList);
+          }
+          if (data.value?.filterStatusList) {
+            this.allStatus = [];
+            this.allStatus = data.value.filterStatusList.map(status => ({ Status: status }));
+            console.log(this.allStatus);
+          }
+          if (data.value?.filterDoctorList) {
+            this.assignUsersList = [];
+            this.assignUsersList = data.value.filterDoctorList.map(status => ({ Doctor: status }));
+            console.log(this.assignUsersList);
+          }
+        }
+
       }
     });
   }
@@ -306,9 +324,15 @@ export class OutPatientNursingComponent implements OnInit {
   clinicConfigGet() {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d) {
-        this.clinicConfigDetail = resp.body.d.results[0];
-        this.selectedPhysicianConf = resp.body?.d.results[0].AttendPhy ? [this.assignUsersList.find(res => res.Gpart === resp.body?.d.results[0].AttendPhy)] : [];
-        this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
+        this.clinicConfigDetail = resp.body.d.results;
+        // this.selectedPhysicianConf = resp.body?.d.results[0].AttendPhy ? [this.assignUsersList.find(res => res.Gpart === resp.body?.d.results[0].AttendPhy)] : [];
+        // this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode && this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode) ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
+
+        const assignUsersMap = new Map(this.assignUsersList.map(user => [user.Gpart, user]));
+        this.selectedPhysicianConf = this.clinicConfigDetail.filter(element => assignUsersMap.has(element.AttendPhy)).map(element => assignUsersMap.get(element.AttendPhy));
+        const specialityMap = new Map(this.specialityList.map(specialty => [specialty.Orgid, specialty]));
+        this.selectedSpecialityConf = this.clinicConfigDetail.filter(element => specialityMap.has(element.SpecialityCode)).map(element => specialityMap.get(element.SpecialityCode));
+
       }
     });
   }
@@ -880,9 +904,9 @@ export class OutPatientNursingComponent implements OnInit {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() - 1))), new Date(date2.setDate((date2.getDate() - 1)))]);
-      this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
-      this.CheckInComponent?.getErList(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
+      // this.CheckInComponent?.getErList(this.formgroupData.DateRange);
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -891,9 +915,9 @@ export class OutPatientNursingComponent implements OnInit {
       date1 = new Date(date1.setDate(date1.getDate() - diffDays));
       date2 = new Date(date2.setDate(date2.getDate() - diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
-      this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
     }
 
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()-1));
@@ -902,20 +926,20 @@ export class OutPatientNursingComponent implements OnInit {
 
   onTodayEventData() {
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-    this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-    this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-    this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
   }
 
   upcomingDate() {
-    this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
+    // this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     if (+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]) {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() + 1))), new Date(date2.setDate((date2.getDate() + 1)))]);
-      this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
-      this.CheckInComponent?.getErList(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
+      // this.CheckInComponent?.getErList(this.formgroupData.DateRange);
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -924,9 +948,9 @@ export class OutPatientNursingComponent implements OnInit {
       date1 = new Date(date1.setDate(date1.getDate() + diffDays));
       date2 = new Date(date2.setDate(date2.getDate() + diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
-      this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
-      this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()+1));
     // this.ErHistoryComponent.getErList(this.currentDate);

@@ -859,6 +859,31 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  getNurseEndorsementDetail(json): Observable<any> {
+    return this.http.post(this.url + 'getNurseEndsorment', json, {
+      withCredentials: true,
+    });
+  }
+  createNurseEndorsementDetail(json): Observable<any> {
+    return this.http.post(this.url + 'postOfNurseEndsorment', json, {
+      withCredentials: true,
+    });
+  }
+  updateNurseEndDetail(json): Observable<any> {
+    return this.http.post(this.url + 'updateNurseEndDetail', json, {
+      withCredentials: true,
+    });
+  }
+  deleteNurseEndDoc(json): Observable<any> {    
+    return this.http.delete(this.url + `deleteNurseEndDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  getNurseEndDetail(json): Observable<any> {
+    return this.http.get(this.url + `getNurseEndsormentDetail?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
 
   copyGlosgowData(json) {
     return this.http.put(this.url + 'putGlasgowScaleSet', json, {

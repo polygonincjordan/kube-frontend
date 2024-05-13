@@ -104,9 +104,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // Method to handle location change event
   public onLocationChange(event: any) {
-    console.log(event);
     // Handle location change logic here if needed
-    this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, event.Lgort);
+    this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, event);
   }
 
   public consumablesFrom() {

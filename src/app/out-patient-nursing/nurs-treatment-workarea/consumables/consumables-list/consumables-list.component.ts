@@ -77,8 +77,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
 
     this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
       if (data != null && data.type === FilterType.ConsumableStorageLocation$ && data.isAllow === true) {
-        this.selectedStorageLocation = data.value;
-        // Implement logic to update component based on received value
+        this.selectedStorageLocation = data?.value?.Lgort;
       }
     });
   }
