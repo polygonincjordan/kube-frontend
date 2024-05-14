@@ -37,6 +37,7 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
@@ -951,6 +952,12 @@ export class EmergencyService {
 
   getStoragelocationList(data: any) {
     return this.http.get(`${environment.eKardexApiUrl}/getStoragelocationList?searchstring=${data}`, { withCredentials: true })
+  }
+
+  getLatestDocSet(json) {
+    return this.http.get(this.url + `LatestDocSet?einri=${json.Einri}&patnr=${json.Patnr}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`, {
+      withCredentials: true,
+    });
   }
 
 }

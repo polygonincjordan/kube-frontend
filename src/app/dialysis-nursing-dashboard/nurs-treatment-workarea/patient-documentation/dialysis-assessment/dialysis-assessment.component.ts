@@ -5,6 +5,7 @@ import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 import { HaemodialysisAccessComponent } from './haemodialysis-access/haemodialysis-access.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'dialysis-assessment',
@@ -15,10 +16,18 @@ export class DialysisAssessmentComponent implements OnInit {
   private subscription: Subscription;
   public Haemodialysis: boolean = true;
   public PreDialysis: boolean = false;
+  public HaemodialysisLineInfectionSurveillance: boolean = false;
+  public HaemodialysisMonitoring: boolean = false;
   public dockeyValue: any = null;
   private actionTypeSubscription$: Subscription;
   @ViewChild(HaemodialysisAccessComponent) HaemodialysisAccess: HaemodialysisAccessComponent;
-  constructor( private dataShareService: DataShareService,private sharedService: SharedService, private emergencyService: EmergencyService,) {
+  patnr: any;
+  einri: any;
+  falnr: any;
+  lfdnr: any;
+
+
+  constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute,) {
      this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
     if (data != null) {
       if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
@@ -41,6 +50,33 @@ export class DialysisAssessmentComponent implements OnInit {
   });}
 
   ngOnInit(): void {
+    this._route.queryParams.subscribe((params) => {
+      this.einri = params.einri;
+      this.patnr = params.patnr;
+      this.falnr = params.falnr;
+      this.lfdnr = params.lfdnr;
+    });
+    this.LatestDocSet();
+  }
+
+  LatestDocSet() {
+      const json = {
+        // Einri: this.einri,
+        // Patnr: this.patnr,
+        // Falnr: this.falnr,
+        // Lfdbw: this.lfdnr
+
+        Einri: '1000',
+        Patnr: '0000001101',
+        Falnr: '0000001402',
+        Lfdbw: '00001'
+      };
+      this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
+          console.log(data);
+        }, (error) => {
+          console.error(error);
+        });
+
   }
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -58,6 +94,10 @@ export class DialysisAssessmentComponent implements OnInit {
       this.Haemodialysis = true; this.PreDialysis = false;
     } else if (tabName && tabName === 'preDialysis') {
       this.Haemodialysis = false; this.PreDialysis = true;
+    } else if (tabName && tabName === 'haemodialysis-line-infection-surveillance'){
+      this.HaemodialysisLineInfectionSurveillance = true ; this. Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisMonitoring = false;
+    } else if (tabName && tabName === 'haemodialysis-monitoring'){
+      this.HaemodialysisMonitoring = true ; this. Haemodialysis = false; this.PreDialysis = false;this.HaemodialysisLineInfectionSurveillance = false;
     }
   }
 

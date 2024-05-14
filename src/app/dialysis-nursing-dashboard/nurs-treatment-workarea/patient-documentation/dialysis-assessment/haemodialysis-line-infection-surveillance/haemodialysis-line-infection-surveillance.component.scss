@@ -1,0 +1,89 @@
+.haemodialysis-main {
+  .haemodialysis-info {
+    .haemodialysis-dialysis-info {
+      border: 1px solid #cacaca;
+      border-radius: 13px;
+      padding: 25px;
+      .title-text {
+        position: absolute;
+        top: -15px;
+        color: #0056b0;
+        background-color: white;
+        padding: 0 15px;
+        z-index: 1;
+      }
+    }
+    .haemodialysis-content {
+      gap: 30px;
+      input {
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        padding: 3px 10px;
+      }
+      div {
+        width: fit-content;
+      }
+      .common-label {
+        min-width: 200px;
+        font-size: 16px;
+      }
+      .score-input {
+        input {
+          width: 250px;
+        }
+      }
+    }
+    .title-text {
+      color: #000000;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+  }
+  .custom-input {
+    gap: 10px;
+    label {
+      color: #000;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .unites-ml {
+      position: absolute;
+      right: 0;
+      z-index: 1;
+      min-width: fit-content;
+      width: fit-content;
+      color: #000;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .unites-labels {
+      position: absolute;
+      right: 30px;
+      z-index: 1;
+      min-width: fit-content;
+      width: fit-content;
+      color: #000;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    input {
+      border: 1px solid #bfbfbf;
+      border-radius: 6px !important;
+      padding: 7.2px 0.75rem;
+    }
+  }
+}
+
+::ng-deep .perdialysis-info {
+  ng-select {
+    .ng-select-container {
+      border: 1px solid #bfbfbf;
+      border-radius: 6px !important;
+    }
+  }
+}
