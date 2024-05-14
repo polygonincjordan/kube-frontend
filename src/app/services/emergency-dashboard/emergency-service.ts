@@ -897,8 +897,28 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteSurgicalPassPDoc(json): Observable<any> {    
+    return this.http.delete(this.url + `deleteSurgicalPassDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   getNurseEndDetail(json): Observable<any> {
     return this.http.get(this.url + `getNurseEndsormentDetail?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  getSurgicalPassPortDetail(json): Observable<any> {
+    return this.http.get(this.url + `getSurgicalPassPortDetail?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  getSurgicalPasportDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getSurgicalPassportDoc', json, {
+      withCredentials: true,
+    });
+  }
+  createSurgicalPassDetail(json): Observable<any> {
+    return this.http.post(this.url + 'postOfSurgicalPassp', json, {
       withCredentials: true,
     });
   }

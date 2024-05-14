@@ -26,6 +26,7 @@ import { SharedService } from '@services/shared.service';
 import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
 import { NurseEndorsementComponent } from './nurse-endorsement/nurse-endorsement.component';
+import { SurgicalPassportComponent } from './surgical-passport/surgical-passport.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -43,6 +44,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
   @ViewChild(NurseEndorsementComponent) NurseEndorsmentComp: NurseEndorsementComponent;
+  @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -54,6 +56,7 @@ export class PatientDocumentationComponent implements OnInit {
   nursAssess = false;
   attachments = false;
   nurseEndorsement = false;
+  surgicalPassport = false;
   educationAssessment = false;
   patienteducation = false;
   glasgowcomascale = false;
@@ -72,6 +75,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestFacePainScaleList = [];
   latestBridentScaleList = [];
   nurseEndorsementList = [];
+  surgicalPassportList = [];
   educationAssList = [];
   documentTypeFilter = []
   createDate: any;
@@ -99,6 +103,7 @@ export class PatientDocumentationComponent implements OnInit {
   openMedReport: boolean = false;
   openEducationAssessment: boolean = false;
   openNurseEndorsement: boolean = false;
+  openSurgicsalPassport: boolean = false;
   selectedDocData: any;
   medlatestDocList = [];
   medDocList = [];
@@ -178,6 +183,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
     this.getNurseEndorsement()
+    this.getSurgicalPass()
   }
 
   getLatestAssessment() {
@@ -202,6 +208,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getNurseEndorsementDetail(this.apiJson).subscribe({
       next: (_success: any) => {
         this.nurseEndorsementList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getSurgicalPass(){
+    this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
+      next: (_success: any) => {        
+        this.surgicalPassportList = _success.d.results        
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -382,11 +400,11 @@ export class PatientDocumentationComponent implements OnInit {
       this.openEducationAssPdf(this.educationAssList[0].Dockey);
     }
     else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.selectAssessment('nurseEndorsement', this.educationAssList[0])
+      this.selectAssessment('nurseEndorsement', this.nurseEndorsementList[0])
       this.openDocument('create');
     }
     else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.selectAssessment('nurseEndorsement', this.educationAssList[0])
+      this.selectAssessment('nurseEndorsement', this.nurseEndorsementList[0])
       this.openDocument('create');
     }
     else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
@@ -412,6 +430,7 @@ export class PatientDocumentationComponent implements OnInit {
       'medreport': { medReport: true, selectedDocName: 'Medical Report' },
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
+      'surgicalPassport': { surgicalPassport: true, selectedDocName: 'Surgical Passport' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
       'bradenscale': { bradenscale: true, selectedDocName: 'Braden Scale' },
@@ -426,6 +445,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.medReport = false;
     this.attachments = false;
     this.nurseEndorsement = false;
+    this.surgicalPassport = false;
     this.educationAssessment = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -754,6 +774,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getEducationAssessment();
     this.getPatientProfile();
     this.getNurseEndorsement()
+    this.getSurgicalPass()
     // this.fetchLatestDetails();
 
     this.phyAssess = false;
@@ -764,6 +785,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.bradenscale = false;
     this.educationAssessment = false;
     this.nurseEndorsement = false;
+    this.surgicalPassport = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
 
@@ -776,6 +798,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEducationAssessment = false;
     this.openEmergencyNursingDoc = false;
     this.openNurseEndorsement = false
+    this.openSurgicsalPassport = false
 
     this.searchString = '';
     this.dateRange = '';
@@ -829,6 +852,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
     // nurse endorsement
+
     if (this.nurseEndorsement) {
       if (action == 'create') {
         this.openNurseEndorsement = true;
@@ -866,6 +890,48 @@ export class PatientDocumentationComponent implements OnInit {
       } else if (action == 'createandrelease') {
         this.openNurseEndorsement = true;
         this.NurseEndorsmentComp.saveNurseEnd('1');
+        // this.educationAssessmentComp.ngOnInit();
+        // this.createAndReleaseMed();
+      }
+    }
+    // Surgical passport
+    if (this.surgicalPassport) {
+      if (action == 'create') {
+        this.openSurgicsalPassport = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openSurgicsalPassport = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteSurgicalPassDoc();
+        } else {
+          // this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseSurgicalPassp();
+        } else {
+          // this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'copy') {
+        // this.openNurseEndorsement = true;
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openSurgicsalPassport = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openSurgicsalPassport = true;
+        this.SurgicalPassComp.createSurgicalPassDoc();
         // this.educationAssessmentComp.ngOnInit();
         // this.createAndReleaseMed();
       }
@@ -1064,7 +1130,6 @@ export class PatientDocumentationComponent implements OnInit {
               d: res?.d?.results[0],
             };
             d.d.DocStatus = '2';
-            console.log(d);
             this.emergencyService.saveNurEmrTriage(d).subscribe((result) => {
               this.refresh();
             });
@@ -1277,6 +1342,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
+      if (this.openSurgicsalPassport) {
+        this.SurgicalPassComp.createSurgicalPassDoc().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
     }
     else if (this.actionType == 'edit') {
       if (this.openGlasgowComaScale) {
@@ -1329,6 +1403,15 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openNurseEndorsement) {
         this.NurseEndorsmentComp.editNurseEndDoc('edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
+      if (this.openSurgicsalPassport) {
+        this.SurgicalPassComp.createSurgicalPassDoc('edit').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -1395,6 +1478,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
+      if (this.openSurgicsalPassport) {
+        this.SurgicalPassComp.createSurgicalPassDoc('copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
     }
   }
 
@@ -1409,6 +1501,8 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseEndorsmentComp.saveNurseEnd('4');
     } else if (this.openEmergencyNursingDoc) {
       this.EmergencyNursingDocumentComp.directReleaseNReleaseEmergencyNursingDocument('4');
+    } else if (this.openSurgicsalPassport) {
+      this.SurgicalPassComp.createSurgicalPassDoc('editRelease');
     }
   }
 
@@ -1486,9 +1580,6 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   getPatientProfileData(item) {
-    // console.log(item);
-    // console.log(docType);
-    // console.log(item.AttMimeType);
     this.getReleasedPdf(item);
   }
 
@@ -1799,6 +1890,40 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  async deleteSurgicalPassDoc() {    
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteSurgicalPassPDoc(this.surgicalPassportList[0].Dockey)).subscribe(
+            (_success: any) => {
+              Swal.fire({
+                text: "Document is deleted successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            },
+            (_error: any) => {
+              Swal.fire({
+                text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            }
+          );
+      }
+    });
+  }
 
   async updateEducationAss(type) {
     (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
@@ -1833,6 +1958,19 @@ export class PatientDocumentationComponent implements OnInit {
       };
       d.d.DocStatus = '2';
       this.emergencyService.updateNurseEndDetail(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
+  releaseSurgicalPassp() {
+    this.emergencyService.getSurgicalPassPortDetail(this.surgicalPassportList[0].Dockey).subscribe((res: any) => {
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.createSurgicalPassDetail(d).subscribe(
         (result) => {
           this.refresh();
         }
