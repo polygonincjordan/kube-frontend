@@ -1,0 +1,144 @@
+  <!-- {{configurationData | json}} -->
+
+<div class="medicineData row m-0 p-3 w-100" *ngIf="configurationData && configurationData.length ">
+  <div class="d-flex justify-content-end w-100 align-items-center mb-3">
+    <a routerLink="/e-prescription"  [queryParams]="{
+        patnr: missedmedicationsdoses.parameters.Mrn,
+        falnr: missedmedicationsdoses.parameters.Falnr,
+        einri: missedmedicationsdoses.parameters.Einri,
+        lfdnr: lfdnr,
+        isEmr: true
+      }" title="e-prescription" target="_blank">
+      <img src="assets/img/drugs.jpg" class="c-pointer" height="30" />
+    </a>
+    <img src="assets/img/CloseTab.svg" class="c-pointer" height="30" (click)="Removedata()" />
+  </div>
+  <ng-container *ngFor="let element of configurationData; let i = index">
+    <!-- {{element.Schedule|json}} -->
+
+    <div class="row w-100" *ngIf="element.Schedule && element.Schedule.length > 0 && element.ScheduleLength">
+      <div class="p-0 col-4">
+        <div class="medicine" title="{{ element.Descrlt }}
+{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : RemoveDecimal(element.Quan) }}{{ element.Unit }} {{'- ' + element.Routedescr}} {{'- ' + element.N1ztxt}} {{ '- ' + element.Formatdescr }} {{ '- ' + element.Userst}}
+{{'Order date/time :'+ element.ViewOrderDate + '/ '}}{{element.TimeData.Hour.toString().padStart(2, '0')}}:{{element.TimeData.Minute.toString().padStart(2, '0')}}:{{ element.TimeData.Second.toString().padStart(2, '0')}}">
+          <h5 class="mb-1 m-0">
+            {{ element.Descrlt }}
+          </h5>
+          <div class="d-grid">
+            <b class="mb-1 medicinecolor">
+              {{element.N1ztxt === 'DEFTIM' ? element.Dosdef : RemoveDecimal(element.Quan) }}
+              {{ element.Unit }}
+              {{ "- " + element.Routedescr }}
+              {{"- " + element.N1ztxt}}
+              {{ "- " + element.Formatdescr }}
+              {{ "- " + element.Userst }}
+
+          </b>
+            <b class="mb-1 medicinecolor w-auto" >{{'Order date/time :'+ element.ViewOrderDate + '/ '}}{{element.TimeData.Hour.toString().padStart(2, '0')}}:{{
+              element.TimeData.Minute.toString().padStart(2, '0')
+              }}:{{ element.TimeData.Second.toString().padStart(2, '0')}}</b>
+          </div>
+        </div>
+      </div>
+      <div class="col-5">
+        <div class="medicineBox position-relative px-4">
+          <button *ngIf="
+              element.Schedule &&
+              element.Schedule.length &&
+              element.Schedule.length > SeeMoreDefaultListNumber && element.ScheduleLength > 4" [disabled]="element.currentStartingIndex <= 0 "
+            (click)=" element.currentStartingIndex =  element.currentStartingIndex > 0 ? element.currentStartingIndex - SeeMoreDefaultListNumber : 0
+            " class="border-0 btn btn-secondary rounded-0 boder-0 h-100 position-absolute top-0 left-0 button-left missed-bg-gray p-2">
+            <img src="assets/img/prev-arrow.svg" width="8" />
+          </button>
+          <div class="medicineResult text-center p-0"  [popover]="missedpopup" triggers="mouseenter:mouseleave" [outsideClick]="true" [popoverContext]="{
+              element: element,
+              schedule: item,
+              popover: popover}" placement="left" #popover="bs-popover" title="{{ item.Label }} - {{item.SubLabel}}" [ngClass]="item.Color" *ngFor=" let item of element.Schedule | NonAdminitration
+                  : element.currentStartingIndex
+                  : element.currentStartingIndex + SeeMoreDefaultListNumber ">
+            <p class="medicineTime m-0 mt-1">{{ item.Label }}</p>
+            <span class="medicineTime">{{ item.SubLabel }}</span>
+          </div>
+          <button
+            *ngIf=" element.Schedule && element.Schedule.length && element.Schedule.length > SeeMoreDefaultListNumber && element.ScheduleLength > 4"
+            [disabled]=" element.Schedule.length && element.ScheduleLength <= element.currentStartingIndex + SeeMoreDefaultListNumber"
+            (click)=" element.currentStartingIndex = element.currentStartingIndex <= element.Schedule.length + SeeMoreDefaultListNumber ? element.currentStartingIndex + SeeMoreDefaultListNumber : element.currentStartingIndex "
+            class="border-0 btn btn-secondary rounded-0 boder-0 h-100 position-absolute top-0 right-0 button-right missed-bg-gray p-2">
+            <img src="assets/img/next-arrow.svg" width="8" />
+          </button>
+        </div>
+      </div>
+      <div class="col-3 p-0">
+        <div class="medicineBox2">
+          <div class="medtadata justify-content-start">
+            <div *ngFor="let item of element.Schedule | Administration">
+              <div class="medicineResult text-center p-0" [popover]="missedpopup" triggers="mouseenter:mouseleave" [popoverContext]="{
+                element: element,
+                schedule: item,
+                popover: popover }" placement="left" [outsideClick]="true" #popover="bs-popover"
+                [ngClass]="item.Color" *ngIf="item.Color === 'eh-green-data'"  title="{{ item.Label }}-{{item.SubLabel}}">
+                  <p class="medicineTime m-0 mt-1">{{ item.Label }}</p>
+                  <span class="medicineTime">{{ item.SubLabel }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="medtadata justify-content-end">
+            <div *ngFor="let item of element.Schedule | Administration">
+              <div class="medicineResult text-center p-0" [popover]="missedpopup" triggers="mouseenter:mouseleave" [popoverContext]="{
+                element: element,
+                schedule: item,
+                popover: popover }" placement="left" [outsideClick]="true" #popover="bs-popover"
+                [ngClass]="item.Color" *ngIf="item.Color === 'eh-blue-data'"  title="{{ item.Label }}-{{item.SubLabel}}">
+                  <p class="medicineTime m-0 mt-1">{{ item.Label }}</p>
+                  <span class="medicineTime">{{ item.SubLabel }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #missedpopup let-element="element" let-schedule="schedule" class="w-100" let-popover="popover">
+  <div class="popupBox w-100">
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="missing-bgcolor m-1 w-100 p-3">
+        <p class="medicineHeading" title="{{ element.Descrlt }}">
+          {{ element.Descrlt }}
+        </p>
+        <p class="text-secondary" title="{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : RemoveDecimal(element.Quan) }}{{ element.Unit }} {{'- '+ element.N1ztxt}} {{ '- ' + element.Routedescr }} {{'- ' + element.Formatdescr}} {{ element.Userst }}">
+          {{element.N1ztxt === 'DEFTIM' ? element.Dosdef : RemoveDecimal(element.Quan) }}
+          {{ element.Unit }}
+          {{"- "+ element.N1ztxt}}
+          {{ "- " + element.Routedescr }}
+          {{ "- " + element.Formatdescr }}
+          {{ element.Userst }}
+        </p>
+        <div class="text-secondary">{{ element.ViewOrderDate }}</div>
+        <div class="missed-bordercolor w-100 d-grid">
+         <div class="d-flex">
+          <p class="medicineText2 m-0 p-0">Created&nbsp;On:</p>
+          <span style="font-size: 12px">{{this.datePipe.transform(this.parseDate(element.Movdf), 'dd.MM.yyyy') +' /'}}{{element.TimeData.Hour.toString().padStart(2, '0')}}:{{
+            element.TimeData.Minute.toString().padStart(2, '0')
+            }}:{{ element.TimeData.Second.toString().padStart(2, '0')}}</span>
+         </div>
+            <div class="d-flex">
+              <p class="medicineText2 m-0 p-0"> Created By:</p>
+             <span>{{ schedule.SubLabel }}</span>
+            </div>
+        </div>
+        <div class="medicineDate">
+          <span class="media-hi">Planned Time : {{ schedule.CreatedDate +'/'+ schedule.CreatedTime }}</span>
+          <span class="media-hi">Administered By : {{ schedule.Administered }}</span>
+          <!-- <span>Dose Time: {{ schedule.CreatedTime }}</span> -->
+        </div>
+        <div class="text-center">
+          <button class="medicineButton" type="button" (click)="popover.hide()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

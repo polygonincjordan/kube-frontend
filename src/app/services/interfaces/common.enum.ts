@@ -4,6 +4,7 @@ export enum UserType {
   ERHospitalist = 'ERHospitalist',
   FloorNurse = 'FloorNurse',
   ERNurse = 'ERNurse',
+  EPatient = 'EPatient',
   opnurse = 'OPNurse',
   Pharmacist = 'Pharmacist',
   SeniorPhysician = 'SeniorPhysician',

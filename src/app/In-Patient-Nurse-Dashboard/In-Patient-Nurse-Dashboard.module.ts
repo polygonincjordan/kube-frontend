@@ -39,7 +39,8 @@ import { PatientHistoryService } from '@services/e-kardex/patient-history.servic
 import { ProgressNotesKardexComponent } from './components/main-hospitalist-list-view/progress-notes-kardex/progress-notes-kardex.component';
 import { ProgressNoteListComponent } from './components/main-hospitalist-list-view/progress-notes-kardex/progress-notes/progress-note-list/progress-note-list.component';
 import { ProgressNotesComponent } from './components/main-hospitalist-list-view/progress-notes-kardex/progress-notes/progress-notes.component';
-
+import {NurErAllergyComponent} from './components/main-hospitalist-list-view/nur-er-allergy/nur-er-allergy.component';
+import { ErVitalsComponent } from './components/main-hospitalist-list-view/er-vitals/er-vitals.component';
 export const eHospitalistRoutes: Routes = [
   { path: '**', component: InPatientDashboardComponent },
 ];
@@ -79,7 +80,10 @@ export const eHospitalistRoutes: Routes = [
     NonAdminitrationPipe,
     AdministrationPipe,
     PhysicianOrderKardexComponent,
+    NurErAllergyComponent,
+    ErVitalsComponent,
     PhysicianOrdersComponent,
+    PhysicianOrderKardexComponent,
     PhysicianOrderListComponent,
     OrdersTemplatesComponent,
     ProgressNotesKardexComponent,
@@ -88,4 +92,4 @@ export const eHospitalistRoutes: Routes = [
     // HeaderComponent
   ],
 })
-export class EHospitalistModule { }
+export class InPatientNurseDashboardModule { }

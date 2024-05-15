@@ -100,6 +100,9 @@ export class LoginComponent implements AfterViewInit {
     else if ((getKubeRule == UserType.ERNurse)) {
       this.router.navigate(['/nursing-emergncy-dashboard'], {});
     }
+    else if ((getKubeRule == UserType.FloorNurse)) {
+      this.router.navigate(['/in-patient-nurse-dashboard'], {});
+    }
     else if ((getKubeRule == UserType.DIYNurse)) {
       this.router.navigate(['/dialysis-nursing-dashboard'], {});
     }

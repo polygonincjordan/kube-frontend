@@ -1,0 +1,163 @@
+.td-pointer{
+cursor: pointer;
+}
+
+.td-pointer:hover {
+    color: blue;
+  }
+
+  .e-hospi-home-table td {
+    border: 1px solid black;
+    min-width: 102px;
+    max-width: 267px!important;
+    overflow: hidden;
+
+   
+
+    .dropup, .dropright, .dropdown, .dropleft {
+      position: inherit;
+    }
+}
+
+.allergy {
+  white-space: nowrap;
+  min-width: 35px !important;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+}
+
+.main-hospital-home {
+  overflow: auto; 
+  max-height: 61vh; 
+  margin: 0px 6px; 
+  width: 100%
+}
+
+.set-width-3 {
+  width: 250px !important; 
+  max-width: 250px !important; 
+  min-width: 250px !important;
+}
+
+.table-row-width {
+  width: 170px !important;
+  max-width: 170px !important;
+  min-width: 170px !important;
+}
+
+.risk-history-main {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex: 1;
+}
+.close-icon {
+  border: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+.img-size {
+  width: 35px;
+  float: right;
+  cursor: pointer;
+}
+
+.update-risk-main {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+.risk-short-disc {
+  height: 33px;
+  background-color: #f3f9ff;
+  pointer-events: none;
+}
+
+.update-risk-save-btn {
+  border: 1px solid;
+  background: #0056b0;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 16px px;
+  font-weight: 700;
+  border-radius: 24px;
+}
+
+.risk-item-rsfnr {
+  padding-left: 0;
+  padding-right: 0;
+  width: 9%;
+  pointer-events: none;
+}
+
+.risk-item-rsfkb {
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 34%;
+  pointer-events: none;
+
+  input {
+    height: 37px;
+    font-size: 14px;
+  }
+}
+
+.risk-item-rsfna {
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 44%;
+  pointer-events: none;
+
+  input {
+    height: 37px;
+    font-size: 14px;
+  }
+}
+
+.risk-item-repdt {
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 15%;
+  pointer-events: none;
+
+  input {
+    height: 37px;
+    font-size: 13px;
+  }
+}
+
+.risk-item-image {
+  padding-left: 2px;
+  padding-right: 2px;
+  width: 15%;
+  text-align: center;
+}
+
+.search-image-comman {
+  img {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+  }
+
+  input {
+    height: 38px;
+    font: 600 14px/1.5 Nunito, sans-serif;
+    color: #848f96;
+    border-radius: 8px !important;
+    box-shadow: none;
+    padding: 10px 10px 10px 42px;
+    margin-left: 8px;
+  }
+}
+
+.ep-error-message{
+  border: 1px solid red !important;
+}
