@@ -959,5 +959,10 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  getDailysisSet(json){
+    return this.http.get(this.url + `DailysisSet?Dockey${json.Dockey}`, {
+      withCredentials:true
+    });
+  }
 
 }

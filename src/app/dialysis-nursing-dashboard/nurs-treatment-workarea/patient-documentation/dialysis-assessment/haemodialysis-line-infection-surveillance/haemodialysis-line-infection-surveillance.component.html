@@ -1,8 +1,9 @@
 <div class="haemodialysis-main bg-white mt-4">
+  <form [formGroup]="hemolineinfection">
   <div class="haemodialysis-info">
     <div class="container-fluid">
       <div class="haemodialysis-dialysis-info position-relative p-3">
-        <label for="" class="title-text m-0">1</label>
+        <label for="" class="title-text m-0" formControlName="HaemodialysisLine">Haemodialysis Line Site</label>
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
@@ -132,11 +133,11 @@
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center custom-input w-100">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="OtherTxt" (change)="toggleTextBox()">
               <label for="" class="text-nowrap m-0">Other</label>
             </div>
             <div class="custom-input mt-2">
-              <input type="text" class="w-75">
+              <input type="text" class="w-75" [disabled]="!isChecked">
             </div>
           </div>
         </div>
@@ -159,7 +160,7 @@
           </div>
           <div class="score-input d-flex flex-column">
             <label for="" class="mb-4">Score</label>
-            <input type="text" name="" id="">
+            <input type="text" name="" id="" formControlName="RednessScore">
           </div>
         </div>
         <div class="d-flex my-3">
@@ -175,7 +176,7 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="">
+            <input type="text" name="" id="" formControlName="SwellingScore">
           </div>
         </div>
         <div class="d-flex my-3">
@@ -191,7 +192,7 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="">
+            <input type="text" name="" id="" formControlName="ExuadeScore">
           </div>
         </div>
         <div class="d-flex my-3">
@@ -207,7 +208,7 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="">
+            <input type="text" name="" id="" formControlName="PusScore">
           </div>
         </div>
         <div class="d-flex my-3">
@@ -223,16 +224,17 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="">
+            <input type="text" name="" id="" formControlName="TotalScore">
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Total Score</label>
           <div class="score-input">
-            <input type="text" name="" id="">
+            <input type="text" name="" id="" formControlName="TotalScore">
           </div>
         </div>
       </div>
     </div>
   </div>
+</form>
 </div>

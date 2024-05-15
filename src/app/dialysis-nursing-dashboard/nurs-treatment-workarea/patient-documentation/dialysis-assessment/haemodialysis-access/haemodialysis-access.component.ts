@@ -34,21 +34,45 @@ constructor(private sharedService: SharedService, private emergencyService: Emer
       HaAOther:new FormControl(),
       FistulaLocation:new FormControl(),
       AvRightForearm:new FormControl(),
+      AvRightUpperarm:new FormControl(),
+      AvRightAnterior:new FormControl(),
+      AvRightThigh:new FormControl(),
+      AvRightLower:new FormControl(),
+      AvLeftForearm:new FormControl(),
+      AvLeftUpperarm:new FormControl(),
+      AvLeftAnterior:new FormControl(),
+      AvLeftThigh :new FormControl(),
+      AvLeftLower :new FormControl(),
+      DiSubclavianLeft : new FormControl(),
+      DiSubclavianRight : new FormControl(),
+      DiInternalLeft : new FormControl(),
+      DiInternalRight : new FormControl(),
+      DiFemoralLeft : new FormControl(),
+      DiFemoralRight :new FormControl(),
+      DiTransLumbar : new FormControl(),
+      DiOther : new FormControl(),
+      DiOtherTxt : new FormControl(),
+      FiBruising : new FormControl(),
+      FiClotted : new FormControl(),
+      FiAudible : new FormControl(),
+      FiPalpable :new FormControl(),
+      FiInflammed : new FormControl(),
+      FiPatent : new FormControl(),
+      FiNoAudible : new FormControl(),
+      FiNoPalpable : new FormControl(),
+      AvAudibleBruit : new FormControl(),
+      AvPalpableThrill :new FormControl(),
+      AvPatent : new FormControl(),
+      AvNoAudible : new FormControl(),
+      AvNoPalpable : new FormControl(),
+      AvPulsePresent : new FormControl(),
+      AvPulseAbsent :new FormControl(),
+      DressingChanged : new FormControl(),
+
     });
 
   }
 
-
-  public Haemodialysis: boolean = true;
-  public PreDialysis: boolean = false;
-
-  tabPanelNavigation(tabName: any) {
-    if (tabName && tabName === 'haemodialysis') {
-      this.Haemodialysis = true; this.PreDialysis = false;
-    } else if (tabName && tabName === 'preDialysis') {
-      this.Haemodialysis = false; this.PreDialysis = true;
-    }
-  }
   createAssessment(): Promise<any> {
     return new Promise((resolve, reject) => {
       let payload = {

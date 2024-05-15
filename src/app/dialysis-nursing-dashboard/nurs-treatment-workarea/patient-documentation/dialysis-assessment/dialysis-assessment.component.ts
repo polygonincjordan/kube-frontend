@@ -57,6 +57,7 @@ export class DialysisAssessmentComponent implements OnInit {
       this.lfdnr = params.lfdnr;
     });
     this.LatestDocSet();
+    this.DailysisSet();
   }
 
   LatestDocSet() {
@@ -78,6 +79,31 @@ export class DialysisAssessmentComponent implements OnInit {
         });
 
   }
+
+  DailysisSet(){
+    const json = {
+      Einri : "1000",
+      Patnr : "1402",
+      Falnr : "1101",
+      Lfdnr : "00001",
+      Dockey : "MED000000000000001000000079300000",
+      Zversion : "00",
+      AttendPhy : "9000000020",
+      PhyNm : "Matar, Zaid",
+      DocStatus : "2",
+      StatusTxt : "Released",
+      DocDate : "\/Date(1714608000000)\/",
+      DocTime : "PT10H11M11S"
+    };
+    this.emergencyService.getDailysisSet(json).subscribe((data: any) =>{
+      console.log(data);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+
+
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -91,13 +117,13 @@ export class DialysisAssessmentComponent implements OnInit {
 
   tabPanelNavigation(tabName: any){
     if (tabName && tabName === 'haemodialysis') {
-      this.Haemodialysis = true; this.PreDialysis = false;
+      this.Haemodialysis = true; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;
     } else if (tabName && tabName === 'preDialysis') {
-      this.Haemodialysis = false; this.PreDialysis = true;
+      this.Haemodialysis = false; this.PreDialysis = true; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;
     } else if (tabName && tabName === 'haemodialysis-line-infection-surveillance'){
-      this.HaemodialysisLineInfectionSurveillance = true ; this. Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisMonitoring = false;
+      this.HaemodialysisLineInfectionSurveillance = true ; this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisMonitoring = false;
     } else if (tabName && tabName === 'haemodialysis-monitoring'){
-      this.HaemodialysisMonitoring = true ; this. Haemodialysis = false; this.PreDialysis = false;this.HaemodialysisLineInfectionSurveillance = false;
+      this.HaemodialysisMonitoring = true ; this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false;
     }
   }
 
