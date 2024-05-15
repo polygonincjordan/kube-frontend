@@ -388,7 +388,7 @@ export class ChemotherapyComponent {
   }
 
   cyclenumberNxtProtoId(data) {
-    this.ePrescriptionService.loadData(`e-prescription/PreviousCycle?Patnr=${this.chemotherapyService.parameters.patnr}`, false, false, false, false).subscribe((resp: any) => {
+    this.ePrescriptionService.loadData(`e-prescription/PreviousCycle?Patnr=${this.chemotherapyService.parameters.patnr}&PrevProtoId=${data[0].ProtoId}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         this.previousCyclenumber = resp.body.d.results;
         // const cycleData = data.find((d => d.CycleId));

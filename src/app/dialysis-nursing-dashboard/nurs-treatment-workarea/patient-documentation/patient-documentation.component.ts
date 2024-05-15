@@ -34,6 +34,7 @@ import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-asse
 })
 export class PatientDocumentationComponent implements OnInit {
 
+  @ViewChild(DialysisAssessmentComponent) DialysisAssessment: DialysisAssessmentComponent;
   @ViewChild(ErPhysicianComponent) phyComp: ErPhysicianComponent;
   @ViewChild(PatientMedicalReportComponent) medComp: PatientMedicalReportComponent;
   @ViewChild(PatientEducationDetailsComponent) educationAssessmentComp: PatientEducationDetailsComponent;
@@ -41,7 +42,6 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(FacePainScaleComponent) FacePainScaleComp: FacePainScaleComponent;
   @ViewChild(NumericRatingScaleComponent) NumericRatingScaleComp: NumericRatingScaleComponent;
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
-  @ViewChild(DialysisAssessmentComponent) DialysisAssessment: DialysisAssessmentComponent;
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
@@ -1151,6 +1151,15 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+      if (this.openAssessment) {
+        this.DialysisAssessment.createAssessment().then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }

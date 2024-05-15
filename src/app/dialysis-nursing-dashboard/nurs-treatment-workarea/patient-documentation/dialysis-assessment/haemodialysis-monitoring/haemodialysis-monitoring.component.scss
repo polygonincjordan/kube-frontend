@@ -1,0 +1,76 @@
+.monitoring-main {
+  .monitoring-wrapper {
+    overflow: auto;
+    scrollbar-width: thin;
+    max-height: 328px;
+    table {
+      thead {
+        background-color: rgb(247 247 247);
+        tr {
+          th {
+            white-space: nowrap;
+            color: #333;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 10px 20px;
+            border: 1px solid #e5e5e5;
+            &:nth-child(8) {
+              background-color: rgb(232 239 246);
+            }
+          }
+        }
+      }
+      tbody {
+        tr {
+          td {
+            padding: 0;
+            margin: 0;
+            border: 1px solid #e5e5e5;
+            p {
+              white-space: nowrap;
+              color: #333;
+              font-size: 15px;
+              font-weight: 700;
+              padding: 10px 20px;
+              margin: 0;
+            }
+            &:nth-child(8) {
+              background-color: rgb(232 239 246);
+            }
+          }
+        }
+      }
+    }
+  }
+  .selectors {
+    .tag-line {
+      color: #666666;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .common-selector {
+      padding: 25px;
+      border: 1px solid #cccccc;
+      border-radius: 15px;
+      div {
+        .label-heading {
+          color: #03a9f4;
+          font-size: 15px;
+          position: absolute;
+          top: -8px;
+          padding: 0 15px;
+          background-color: #ffffff;
+        }
+        label {
+          margin: 0;
+        }
+        input {
+          width: 15px;
+          height: 15px;
+        }
+      }
+    }
+  }
+}

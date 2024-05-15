@@ -49,6 +49,7 @@ export class PriorToAdmissionComponent implements OnInit {
   }
 
   openModal(data) {
+    debugger
     this.addministrationService.isExpanded = false;
     this.addministrationService.isConditionTrue = true;
     if (data.ContHospital) {
@@ -64,6 +65,7 @@ export class PriorToAdmissionComponent implements OnInit {
     if(this.priortoad && this.priortoad.length === 0){
       this.addministrationService.isExpanded = true;
       this.addministrationService.isConditionTrue = false;
+      this.priortoad = [];
     }
   }
 
@@ -633,6 +635,7 @@ export class PriorToAdmissionComponent implements OnInit {
         }).then(() => {
           this.drugArray.clear();
           this.generateDefaultForm();
+          this.priortoad = [];
           this.addministrationService.isExpanded = true;
           this.addministrationService.isConditionTrue = false;
         })
@@ -694,7 +697,9 @@ export class PriorToAdmissionComponent implements OnInit {
             postObject['Storn'] = '',
             postObject['TOSTD'] = validData;
           this.subscription = this.ePrescriptionService.postData('EstdordSet', postObject).subscribe((res: any) => {
-
+            this.drugArray.clear();
+            this.priortoad = [];
+          this.generateDefaultForm();
           });
         }
       }

@@ -1,6 +1,6 @@
-.predialysis-assessment-main {
-  .perdialysis-info {
-    .pre-dialysis-info {
+.haemodialysis-main {
+  .haemodialysis-info {
+    .haemodialysis-dialysis-info {
       border: 1px solid #cacaca;
       border-radius: 13px;
       padding: 25px;
@@ -13,6 +13,25 @@
         z-index: 1;
       }
     }
+    .haemodialysis-content {
+      input {
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        padding: 3px 10px;
+      }
+      div {
+        width: fit-content;
+      }
+      .common-label {
+        min-width: 200px;
+        font-size: 16px;
+      }
+      .score-input {
+        input {
+          width: 300px;padding: 7.2px 0.75rem;
+        }
+      }
+    }
     .title-text {
       color: #000000;
       font-size: 18px;
@@ -23,11 +42,11 @@
   .custom-input {
     gap: 10px;
     label {
-      min-width: 220px;
       color: #000;
       font-size: 14px;
       font-weight: 600;
       line-height: 1.5;
+      margin: 0;
     }
     .unites-ml {
       position: absolute;

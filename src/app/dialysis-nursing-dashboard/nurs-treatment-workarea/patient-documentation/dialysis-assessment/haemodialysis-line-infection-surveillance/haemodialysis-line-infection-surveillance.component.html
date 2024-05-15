@@ -1,0 +1,240 @@
+<div class="haemodialysis-main bg-white mt-4">
+  <form [formGroup]="hemolineinfection">
+  <div class="haemodialysis-info">
+    <div class="container-fluid">
+      <div class="haemodialysis-dialysis-info position-relative p-3">
+        <label for="" class="title-text m-0" formControlName="HaemodialysisLine">Haemodialysis Line Site</label>
+        <div class="row align-items-center my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Cephalic Vein, Left</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Cephalic Vein, Right</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Besilic Vein, Left</label>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Besilic Vein, Right</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Brachial Vein, Left</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Brachial Vein, Right</label>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Median Cubital Vein, Left</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Median Cubital Vein, Right</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Median Antibrachial Vein, Left</label>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Median Antibrachial Vein, Right</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Subclavian, Left</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Subclavian, Right</label>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">External Jugular, Left</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">External Jugular, Right</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Internal Jugular, Left</label>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Internal Jugular, Right</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Femoral Left</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Femoral Right</label>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-start my-3">
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center w-100 custom-input">
+              <input type="radio" class="">
+              <label for="" class="text-nowrap m-0">Trans lumbar</label>
+            </div>
+          </div>
+          <div class="col-4 pr-5">
+            <div class="d-flex align-items-center custom-input w-100">
+              <input type="radio" class="" formControlName="OtherTxt" (change)="toggleTextBox()">
+              <label for="" class="text-nowrap m-0">Other</label>
+            </div>
+            <div class="custom-input mt-2">
+              <input type="text" class="w-75" [disabled]="!isChecked">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="haemodialysis-content position-relative p-3">
+        <div class="d-flex align-items-end my-3">
+          <div class="score-input d-flex flex-column">
+            <label for="" class="common-label mb-4">Parameter</label>
+            <label for="" class="common-label m-0">Redness</label>
+          </div>
+          <div class="custom-input d-flex mr-5">
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">Yes</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">No</label>
+            </div>
+          </div>
+          <div class="score-input d-flex flex-column">
+            <label for="" class="mb-4">Score</label>
+            <input type="text" name="" id="" formControlName="RednessScore">
+          </div>
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="common-label m-0">Swekking</label>
+          <div class="custom-input d-flex mr-5">
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">Yes</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">No</label>
+            </div>
+          </div>
+          <div class="score-input">
+            <input type="text" name="" id="" formControlName="SwellingScore">
+          </div>
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="common-label m-0">Exuade/Crust</label>
+          <div class="custom-input d-flex mr-5">
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">Yes</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">No</label>
+            </div>
+          </div>
+          <div class="score-input">
+            <input type="text" name="" id="" formControlName="ExuadeScore">
+          </div>
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="common-label m-0">Pus</label>
+          <div class="custom-input d-flex mr-5">
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">Yes</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">No</label>
+            </div>
+          </div>
+          <div class="score-input">
+            <input type="text" name="" id="" formControlName="PusScore">
+          </div>
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="common-label m-0">Total Score</label>
+          <div class="custom-input d-flex mr-5">
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">Yes</label>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="radio">
+              <label for="" class="mx-3">No</label>
+            </div>
+          </div>
+          <div class="score-input">
+            <input type="text" name="" id="" formControlName="TotalScore">
+          </div>
+        </div>
+        <div class="d-flex my-3">
+          <label for="" class="common-label m-0">Total Score</label>
+          <div class="score-input">
+            <input type="text" name="" id="" formControlName="TotalScore">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</div>

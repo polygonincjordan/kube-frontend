@@ -37,6 +37,7 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
@@ -78,6 +79,13 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  DailysisSet(json) {
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true,
+    });
+  }
+
   getFavSet() {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
@@ -964,6 +972,17 @@ export class EmergencyService {
 
   getStoragelocationList(data: any) {
     return this.http.get(`${environment.eKardexApiUrl}/getStoragelocationList?searchstring=${data}`, { withCredentials: true })
+  }
+
+  getLatestDocSet(json) {
+    return this.http.get(this.url + `LatestDocSet?einri=${json.Einri}&patnr=${json.Patnr}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`, {
+      withCredentials: true,
+    });
+  }
+  getDailysisSet(json){
+    return this.http.get(this.url + `DailysisSet?Dockey${json.Dockey}`, {
+      withCredentials:true
+    });
   }
 
 }
