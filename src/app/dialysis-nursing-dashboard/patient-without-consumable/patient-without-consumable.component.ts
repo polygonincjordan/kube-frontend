@@ -145,7 +145,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
     if ((event.Status && event.Status != '') && (event.FCategory && event.FCategory != '')) {
       // if (event.Status && event.Status.length) {
       //   console.log('event',event);
-        
+
       //   this.statusValueArr = event.Status.map((statusValue) => {
       //     console.log('statusValue',statusValue);
       //     return filterValue.filter((element: any) => {
@@ -154,7 +154,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
       //     });
       //   });
       // }
-    
+
 
       // if (event.FCategory && event.FCategory.length) {
       //   this.categoryValueArr = event.FCategory.map((categoryValue) => {
@@ -166,9 +166,9 @@ export class PatientWithoutConsumableComponent implements OnInit {
       // }
       const filteredData = filterValue.filter((item:any) => {
         const statusMatch = event.Status.includes(item.StatusText);
-    
+
         const fCategoryMatch = event.FCategory.includes(item.FinancecategoryName);
-    
+
         return statusMatch && fCategoryMatch;
     });
 
@@ -183,7 +183,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
     }
   }
 
-  
+
 
   private flattenArrays(arrays: any[][]): any[] {
     return arrays.reduce((acc, val) => acc.concat(val), []);

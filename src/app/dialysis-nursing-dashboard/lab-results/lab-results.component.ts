@@ -103,7 +103,7 @@ export class LabResultsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.getErList();  
+    this.getErList();
   }
   getAssignedTime(triagetime, triagedate, index) {
     let {
@@ -587,6 +587,7 @@ export class LabResultsComponent implements OnInit{
     const json = {
       ROOM1: event?.Rooms ? event.Rooms : '',
       Behperson:event?.Physician ? event.Physician : '',
+      Deptcode:'2',
       fromDate:`${new DatePipe('en-US').transform(
         date ?  date[0] : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
@@ -638,7 +639,7 @@ export class LabResultsComponent implements OnInit{
     this.oldDate = dates
    }
 
-  
+
 
   filterListDataLab(event) {
     this.getErList(event,this.oldDate)
@@ -646,7 +647,7 @@ export class LabResultsComponent implements OnInit{
 
   getPrintUrl(){
     this.emergencyService.getPrintLabel().subscribe((res:any)=>{
-      this.printUrl = res.d.results[0].Url 
+      this.printUrl = res.d.results[0].Url
    })
   }
 
@@ -660,12 +661,12 @@ export class LabResultsComponent implements OnInit{
         //   confirmButtonText: 'Ok',
         //   customClass: 'myalertpopup'
         // })
-      
+
       }
-    ); 
+    );
       this.closeLabModal();
     }
-    
+
   }
 
   sampleCollectedprint(){
@@ -683,10 +684,10 @@ export class LabResultsComponent implements OnInit{
             customClass: 'myalertpopup'
           })
         }
-        
+
       },
       (_error: any) => {}
-    ); 
+    );
       this.closeLabModal();
     }
   }
@@ -722,7 +723,7 @@ export class LabResultsComponent implements OnInit{
       });
     }
   }
- 
+
   sortPatient1() {
     if (!this.asc) {
       this.asc = true;

@@ -80,7 +80,6 @@ export const eHospitalistRoutes: Routes = [
     AdministrationPipe,
     PhysicianOrderKardexComponent,
     PhysicianOrdersComponent,
-    PhysicianOrderKardexComponent,
     PhysicianOrderListComponent,
     OrdersTemplatesComponent,
     ProgressNotesKardexComponent,

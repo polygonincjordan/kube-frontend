@@ -1,0 +1,44 @@
+<div class="card" style="margin: 8px">
+    <div class="card-body" style="padding: 20px 20px 20px 20px">
+      <div style="display: flex; justify-content: space-between">
+        <span>{{item.Bedid}}</span>
+        <span><strong style="font-size: 11px">{{item.Roomid}} {{item.Floor}}</strong></span>
+      </div>
+      <div style="text-align: center">
+        <img [src]="getImgSrc()" 
+        (click)="redirectToeKardex(item)" style="width: 97px; cursor: pointer;" />
+      </div>
+      <div style="position: relative; top: 9px; font-weight: bold">
+        <p class="card-text" style="margin: 0;">
+          {{item.Patname}}
+        </p>
+        <p class="card-text" style="margin: 0">Admission Date: {{ getDate(item.AdmissionDate) | date : "dd.MM.yyyy" }}</p>
+        <div style="display: flex; justify-content: space-between">
+        </div>
+
+        <p class="card-text" style="margin: 0">{{ item?.AttendingDoctorName }}</p>
+        <div style="display: flex; justify-content: space-between">
+          <span class="card-text" style="margin: 0">MRN# {{item.Mrn}}</span>
+          <span class="card-text" style="margin: 0; padding-left: 11px;padding-right: 11px;">{{item.FinancialCategory}}</span>
+          <div dropdown>
+            <i
+              dropdownToggle
+              class="fa fa-ellipsis-v"
+              aria-hidden="true"
+              style="float: right; cursor: pointer"
+            ></i>
+            <div
+              class="dropdown-menu dropdown-menu-right mt-3 action-menu"
+              *dropdownMenu
+              role="menu"
+            >
+              <a class="dropdown-item c-pointer" 
+              (click)="openModuleAdmissionProcess(item)">New Admission</a>
+              <a class="dropdown-item c-pointer" 
+              (click)="openModuleDischargeProcess(item)">Discharge Process</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

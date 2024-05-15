@@ -17,6 +17,7 @@ import { RootComponent } from './root.component';
 import { NursingEmergencyGuard } from '@services/interceptor/nursing-emergency.guard';
 import { OutPatientNursingGuard } from '@services/interceptor/out-patient-nursing.guard';
 import { DialysisNursingDashboardGuard } from '@services/interceptor/dialysis-nursing-dashboard.guard';
+import { PatientNurseDashboardGuard } from '@services/interceptor/patient-nurse-dashboard.guard';
 
 export const rootRoutes: Routes = [
   {
@@ -52,6 +53,13 @@ export const rootRoutes: Routes = [
     canActivate: [InPatientGuard],
     loadChildren: () =>
       import('../e-hospitalist/e-hospitalist.module').then((m) => m.EHospitalistModule),
+  },
+  {
+    path: 'in-patient-nurse-dashboard',
+    component: RootComponent,
+    canActivate: [PatientNurseDashboardGuard],
+    loadChildren: () =>
+      import('../In-Patient-Nurse-Dashboard/In-Patient-Nurse-Dashboard.module').then((m) => m.InPatientNurseDashboardModule),
   },
   {
     path: 'admit-process',

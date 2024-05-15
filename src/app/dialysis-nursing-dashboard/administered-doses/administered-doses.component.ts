@@ -137,7 +137,7 @@ value: any;
     this.getMedicationAdministrationlist();
     this.filterData();
     this.getReceviceCartList();
-   
+
   }
   redirectToeKardex(data) {
     this.openModuleKardex.emit(data);
@@ -149,6 +149,7 @@ value: any;
   }
 
   getMedicationAdministrationlist(date?){
+    const Deptcode = '2'
     const fromDate = `${new DatePipe('en-US').transform(
       date ?  date[0] : new Date().setDate(new Date().getDate()),
       'yyyy-MM-dd'
@@ -157,7 +158,7 @@ value: any;
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getMedicationAdministrationSet(fromDate,toDate).subscribe((res:any)=>{
+    this.hospitalistService.getMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
@@ -165,9 +166,9 @@ value: any;
   getReceviceCartList(){
     this.emergencyService.getReceviceCart().subscribe((res)=>{
       console.log(res);
-      
+
     },(error)=>{
-      
+
     })
   }
   handleEvent(value){
@@ -184,7 +185,6 @@ value: any;
 
     this.ePrescriptionService.loadData(`e-prescription/EmarEventSet?Einri=${item?.Einri}&Falnr=${item?.Falnr}`, false, false, false, false).subscribe(((resp: any) => {
       if (resp.status === 200) {
-               
          this.hospitalistService.getMedicationAdministration(item?.Einri, item?.Falnr)
             .subscribe((res: any) => {
               for (var i = 0; i < res.d.results.length; i++) {
@@ -196,21 +196,21 @@ value: any;
                     item.EventSet = [EventSet[0]];
                   }
                 }
-                
+
                 if(i === res.d.results.length-1){
                   this.rightside = true;
                   this.tablelistshow1 = true;
                   this.tablelistshow = false;
                 }
-                
+
                 console.log(item,"item");
                 this.tablelist.push(item);
               }
             }, (error: any) => {
               this.tablelist.push(item);
             });
-        
-        
+
+
       }
       // this.loadMedicationHistoryData(this.tablelist[0].Einri);
     }))

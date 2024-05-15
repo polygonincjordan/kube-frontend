@@ -112,7 +112,7 @@
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.NrsScaleStatus == 'IA'"
                 (click)="redirectToDocuments(item,RedirectionType.NMRTSC$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.NrsScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.View$)" title="View PDF" />
+                (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.View$)" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.GlasgowScaleStatus == '' "
@@ -120,7 +120,7 @@
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.GlasgowScaleStatus == 'IA'"
                 (click)="redirectToDocuments(item,RedirectionType.COMMA$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.GlasgowScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.View$)" title="View PDF" />
+                (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.View$)" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.BradenScaleStatus == '' "
@@ -128,7 +128,7 @@
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.BradenScaleStatus == 'IA'"
                 (click)="redirectToDocuments(item,RedirectionType.BRADEN$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.BradenScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.View$)" title="View PDF" />
+                (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.View$)" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.EducationAssessStatus == '' "
@@ -146,7 +146,7 @@
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.FacePainScaleStatus == 'IA'"
                 (click)="redirectToDocuments(item,RedirectionType.FAC$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.FacePainScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.View$)" title="View PDF" />
+                (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.View$)" />
             </td>
           </tr>
         </tbody>
@@ -165,9 +165,6 @@
     <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
       [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
     </ngx-extended-pdf-viewer>
-    <div class="row" *ngIf="pdfUrlType == 'pdf'">
-      <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
-    </div>
     <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
       <img [src]="releaseDocumentImage" style="height: 70vh;" />
     </div>
@@ -183,13 +180,13 @@
 </ng-template>
 
 
-<ng-template #selectIconPdf>
+<!-- <ng-template #selectIconPdf>
   <div class="modal-body">
     <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
       [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
     </ngx-extended-pdf-viewer>
     <div class="row">
-      <!-- <iframe [src]="pdfUrl" width="2000" height="600"> </iframe> -->
+      <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
     </div>
     <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
       <img [src]="releaseDocumentImage" style="height: 70vh;" />
@@ -205,7 +202,7 @@
       </button>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #documentUrlpdf>
   <div *ngIf="this.documentUrl">

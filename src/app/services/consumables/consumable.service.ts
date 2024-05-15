@@ -37,11 +37,14 @@ export class ConsumableService {
   }
 
   getNoConsumablesSet() {
-    return this.http.get(`${environment.eKardexApiUrl}/getNoConsumablesSet`, { withCredentials: true })
+    return this.http.get(`${environment.eKardexApiUrl}/getNoConsumablesSet?Deptcode=${'2'}`, { withCredentials: true })
   }
 
-  getMissedDocsSet() {
-    return this.http.get(`${environment.eKardexApiUrl}/getMissedDocsSet`, { withCredentials: true })
+  getMissedDocsSet(json?: any){
+    return this.http.get(`${environment.eKardexApiUrl}/getMissedDocsSet`, {
+      params: json,
+      withCredentials: true
+    });
   }
 
   getMissedDocsCount() {

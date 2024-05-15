@@ -104,6 +104,11 @@ import { DialysisNursingDashboardComponent } from './dialysis-nursing-dashboard.
 import { CustomDecimalPipe } from './custom.decimal.pipe';
 import { EventfilterPipe } from './eventfilter.pipe';
 import { BedComponent } from './bed/bed.component';
+import { DialysisAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/dialysis-assessment.component';
+import { HaemodialysisAccessComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-access/haemodialysis-access.component';
+import { PreDialysisAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/pre-dialysis-assessment/pre-dialysis-assessment.component';
+import { HaemodialysisLineInfectionSurveillanceComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-line-infection-surveillance/haemodialysis-line-infection-surveillance.component';
+import { HaemodialysisMonitoringComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-monitoring/haemodialysis-monitoring.component';
 
 
 const route: Routes = [
@@ -185,6 +190,11 @@ const route: Routes = [
     CustomSearchNursePipe,
     FilterPipeNursePipe,
     BedComponent,
+    DialysisAssessmentComponent,
+    HaemodialysisAccessComponent,
+    PreDialysisAssessmentComponent,
+    HaemodialysisLineInfectionSurveillanceComponent,
+    HaemodialysisMonitoringComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

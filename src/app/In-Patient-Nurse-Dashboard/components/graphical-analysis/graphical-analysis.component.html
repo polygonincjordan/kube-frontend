@@ -1,0 +1,63 @@
+<div class="card" style="
+    border: 3px solid #cccccc;
+    position: absolute;
+    z-index: 9999;
+    right: 0%;
+    left: 2%;
+    top: 82px;
+    color: black;
+    font-size: 12px;
+  ">
+  <div class="card-body" style="background-color: white; padding: 4px 21px 21px 21px">
+    <div style="
+        background-color: #186f8a;
+        height: 20px;
+        margin-left: -21px;
+        margin-right: -21px;
+      "></div>
+    <div class="d-flex flex-row">
+      <div class="d-flex flex-column" style="width: 16%">
+        <span style="display: flex; align-items: center">
+          <input mdbRadio type="radio" name="flexRadioDefault" (change)="getCountsByType('1')"
+            [checked]="selectedChartCountType=='1'" id="Floor" />
+          <label for="Myord" style="margin-bottom: 0px; margin-left: 4px">Floor</label>
+        </span>
+        <span style="display: flex; align-items: center"> <input mdbRadio type="radio" name="flexRadioDefault"
+            (change)="getCountsByType('2')" [checked]="selectedChartCountType=='2'" id="Physician" />
+          <label for="Myord" style="margin-bottom: 0px; margin-left: 4px">Physician</label>
+        </span>
+        <span style="display: flex; align-items: center"><input mdbRadio type="radio" name="flexRadioDefault"
+            (change)="getCountsByType('3')" [checked]="selectedChartCountType=='3'" id="Speciality" />
+          <label for="Myord" style="margin-bottom: 0px; margin-left: 4px">Speciality</label>
+        </span>
+      </div>
+
+      <app-icon-nav-tab style="width: 21%" title="Admitted" [subText]="countData.Admissions.toString()"
+        url="assets/img/admitted-icon.png"></app-icon-nav-tab>
+      <app-icon-nav-tab style="width: 21%" title="New Admissions" [subText]="countData.Newadmissions.toString()"
+        url="assets/img/new-admission.png"></app-icon-nav-tab>
+      <app-icon-nav-tab style="width: 21%" title="Planned Discharges" [subText]="countData.Planneddischarges.toString()"
+        url="assets/img/planned-icon.png"></app-icon-nav-tab>
+      <app-icon-nav-tab style="width: 21%" title="Discharges" [subText]="countData.Discharges.toString()"
+        url="assets/img/discharge-icon.png"></app-icon-nav-tab>
+    </div>
+
+    <div class="d-flex flex-row">
+      <div class="d-flex flex-column" style="width: 16%">
+        <span style="text-align: end; margin-right: 6px" *ngFor="let col of countData.CountChartLabel.results">{{
+          col.Name }}</span>
+      </div>
+      <div class="d-flex flex-column" *ngFor="let item of graphAnalysis; let i = index"
+        style="width: 21%; padding-left: 5px;">
+        <div *ngFor="let col of countData.CountChartLabel.results" class="d-flex">
+          <div [ngClass]="{'admission-graph': item === 'Admissions',
+                            'newadmission-graph': item === 'Newadmissions',
+                            'planneddischarges-graph': item === 'Planneddischarges',
+                            'discharges-graph': item === 'Discharges'}"
+            [ngStyle]="{'width': getWidthStyle(col.Name,item)+'%'}"></div>
+          <span>{{getCount(col.Name,item)}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

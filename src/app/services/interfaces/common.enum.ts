@@ -4,6 +4,7 @@ export enum UserType {
   ERHospitalist = 'ERHospitalist',
   FloorNurse = 'FloorNurse',
   ERNurse = 'ERNurse',
+  EPatient = 'EPatient',
   opnurse = 'OPNurse',
   Pharmacist = 'Pharmacist',
   SeniorPhysician = 'SeniorPhysician',
@@ -43,6 +44,7 @@ export enum WordType {
   CopyFPS = 'CopyFacePainScale',
   CopyNRS = 'CopyNumericRatingScale',
   CopyBS = 'CopyBradenScale',
+  CopyEND = 'CopyEmergencyNursingDocument',
 }
 
 
@@ -57,18 +59,19 @@ export enum FilterType {
 }
 
 export enum RedirectionType {
-  TRASM$ = 'TRASM',
-  NMRTSC$ = 'NMRTSC',
-  COMMA$ = 'COMA',
-  BRADEN$ = 'BRADEN',
-  EDUAS$ = 'EDUAS',
-  FAC$ = 'FAC'
+  TRASM$ = 'TRASM', // Emergency Nursing Document
+  NMRTSC$ = 'NMRTSC', //NRS Scale
+  COMMA$ = 'COMA', // Glasgow Coma Scale
+  BRADEN$ = 'BRADEN', // Braden Scale
+  EDUAS$ = 'EDUAS', // Education Assessment
+  FAC$ = 'FAC' // Face Paing Scale
 }
 
 export enum AssessmentType {
   NoProblemIdentified$ = 'No Problem Identified',
-  NeedSupervision = 'Needs supervision / Totally Dependent',
-  ProblemIdenfify$ = 'Problem Idenfify',
+  NeedSupervision$ = 'Needs supervision / Totally Dependent',
+  NoProblemIdentifiedM$ = 'No Problem Idenfify',
+  ProblemIdentifiedM$ = 'Problem Idenfify',
   NoEquipment$ = 'No Equipment',
   UseOfEquipment$ = 'Use Of Equipment'
 }

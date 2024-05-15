@@ -37,6 +37,7 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
@@ -78,6 +79,13 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  DailysisSet(json) {
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true,
+    });
+  }
+
   getFavSet() {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
@@ -251,6 +259,19 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  dialysisTAget(Bwidtge: any, Bwidtle: any) {
+    return this.http.get(this.url + `dialysisTAget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
+      withCredentials: true,
+    });
+  }
+
+  Dialysisget(Bwidtge: any, Bwidtle: any) {
+    return this.http.get(this.url + `Dialysisget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
+      withCredentials: true,
+    });
+  }
+
   getAllergyReactionValues() {
     return this.http.get(this.url + 'getAllergyReactionValues', {
       withCredentials: true,
@@ -874,13 +895,38 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
-  deleteNurseEndDoc(json): Observable<any> {    
+  deleteNurseEndDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteNurseEndDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  deleteNurEmrTriage(json): Observable<any> {
+    return this.http.delete(this.url + `deleteNurEmrTriage?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  deleteSurgicalPassPDoc(json): Observable<any> {    
+    return this.http.delete(this.url + `deleteSurgicalPassDoc?Dockey=${json}`, {
       withCredentials: true,
     });
   }
   getNurseEndDetail(json): Observable<any> {
     return this.http.get(this.url + `getNurseEndsormentDetail?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  getSurgicalPassPortDetail(json): Observable<any> {
+    return this.http.get(this.url + `getSurgicalPassPortDetail?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  getSurgicalPasportDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getSurgicalPassportDoc', json, {
+      withCredentials: true,
+    });
+  }
+  createSurgicalPassDetail(json): Observable<any> {
+    return this.http.post(this.url + 'postOfSurgicalPassp', json, {
       withCredentials: true,
     });
   }
@@ -926,6 +972,17 @@ export class EmergencyService {
 
   getStoragelocationList(data: any) {
     return this.http.get(`${environment.eKardexApiUrl}/getStoragelocationList?searchstring=${data}`, { withCredentials: true })
+  }
+
+  getLatestDocSet(json) {
+    return this.http.get(this.url + `LatestDocSet?einri=${json.Einri}&patnr=${json.Patnr}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`, {
+      withCredentials: true,
+    });
+  }
+  getDailysisSet(json){
+    return this.http.get(this.url + `DailysisSet?Dockey${json.Dockey}`, {
+      withCredentials:true
+    });
   }
 
 }
