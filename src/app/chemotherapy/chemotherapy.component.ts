@@ -102,7 +102,7 @@ export class ChemotherapyComponent {
       }
       if (resp.data && resp.data.TOCYCLE && resp.data.TOCYCLE.results && resp.data.TOCYCLE.results.length) {
         this.tocycle = resp.data.TOCYCLE.results.slice().reverse();
-        this.cyclenumberNxtProtoId(resp.data.TOCYCLE.results);
+        this.cyclenumberNxtProtoId(resp.data);
       }
       const filesdata = resp.data.TOCYCLE.results.find(d => d.CycleId == resp.CycleId).CycleId;
       this.chemoarrer.controls[0].patchValue({
@@ -388,7 +388,7 @@ export class ChemotherapyComponent {
   }
 
   cyclenumberNxtProtoId(data) {
-    this.ePrescriptionService.loadData(`e-prescription/PreviousCycle?Patnr=${this.chemotherapyService.parameters.patnr}&PrevProtoId=${data[0].ProtoId}`, false, false, false, false).subscribe((resp: any) => {
+    this.ePrescriptionService.loadData(`e-prescription/PreviousCycle?Patnr=${this.chemotherapyService.parameters.patnr}&PrevProtoId=${data.ProtoId}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         this.previousCyclenumber = resp.body.d.results;
         // const cycleData = data.find((d => d.CycleId));

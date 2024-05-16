@@ -1,240 +1,240 @@
 <div class="predialysis-assessment-main bg-white mt-4">
   <form [formGroup]="predialysis">
-  <div class="perdialysis-info">
-    <div class="container-fluid">
-      <div class="pre-dialysis-info position-relative p-3 mb-4">
-        <label for="" class="title-text m-0">1</label>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Treatment Date</label>
-              <input type="text" class="w-100" formControlName="TreatmentDate">
+    <div class="perdialysis-info">
+      <div class="container-fluid">
+        <div class="pre-dialysis-info position-relative p-3 mb-4">
+          <label for="" class="title-text m-0">1</label>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Treatment Date</label>
+                <input type="text" class="w-100" formControlName="TreatmentDate">
+              </div>
+            </div>
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Dialysis First Date</label>
+                <input type="text" class="w-100" formControlName="DialysisFDate">
+              </div>
+            </div>
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Blood Test Done</label>
+                <ng-select class="w-100" formControlName="BloodTest">
+                  <ng-option>Weekly</ng-option>
+                  <ng-option>Monthly</ng-option>
+                  <ng-option>Random</ng-option>
+                </ng-select>
+              </div>
             </div>
           </div>
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Dialysis First Date</label>
-              <input type="text" class="w-100" formControlName="DialysisFDate">
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Prescribed Time</label>
+                <input type="text" class="w-100" formControlName="PrescribedTime">
+                <label for="" class="unites-labels text-nowrap m-0">hr</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Dry Weight</label>
+                <input type="text" class="w-100" formControlName="DryWeight">
+                <label for="" class="unites-labels text-nowrap m-0">kg</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Mechine #</label>
+                <input type="text" class="w-100" formControlName="Machine">
+              </div>
             </div>
           </div>
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Blood Test Done</label>
-              <ng-select class="w-100" formControlName="BloodTest">
-                <ng-option>Weekly</ng-option>
-                <ng-option>Monthly</ng-option>
-                <ng-option>Random</ng-option>
-              </ng-select>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Blood Flow Rate</label>
+                <input type="text" class="w-100" formControlName="BloodFlow">
+                <label for="" class="unites-ml text-nowrap m-0" style="right: 5px;">ml/min</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Previous Post Weight</label>
+                <input type="text" class="w-100" formControlName="PostWeight">
+                <label for="" class="unites-labels text-nowrap m-0">kg</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Treatment #</label>
+                <input type="text" class="w-100" formControlName="Treatment">
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Type of Dialyzer</label>
+                <ng-select class="w-100" formControlName="TypeDialyzer">
+                  <ng-option>High Flux</ng-option>
+                  <ng-option>Low Flux</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">New Dry Weight</label>
+                <input type="text" class="w-100" formControlName="NewDryWeight">
+                <label for="" class="unites-labels text-nowrap m-0">kg</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Height</label>
+                <input type="text" class="w-100" formControlName="Height">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 27px;">cm</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Desired Weight Loss</label>
+                <input type="text" class="w-100" formControlName="WeightLoss">
+                <label for="" class="unites-labels text-nowrap m-0">kg</label>
+              </div>
             </div>
           </div>
         </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Prescribed Time</label>
-              <input type="text" class="w-100" formControlName="PrescribedTime">
-              <label for="" class="unites-labels text-nowrap m-0">hr</label>
+        <div class="pre-dialysis-info position-relative p-3 mb-4">
+          <label for="" class="title-text m-0">2</label>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Treatment Time</label>
+                <input type="text" class="w-100" formControlName="TreatmentTime">
+              </div>
             </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Dry Weight</label>
-              <input type="text" class="w-100" formControlName="DryWeight">
-              <label for="" class="unites-labels text-nowrap m-0">kg</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Mechine #</label>
-              <input type="text" class="w-100" formControlName="Machine">
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Dialysis First Time</label>
+                <input type="text" class="w-100">
+              </div>
             </div>
           </div>
         </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Blood Flow Rate</label>
-              <input type="text" class="w-100" formControlName="BloodFlow">
-              <label for="" class="unites-ml text-nowrap m-0" style="right: 5px;">ml/min</label>
+        <div class="pre-dialysis-info position-relative p-3 mb-4">
+          <label for="" class="title-text m-0">PRE DIALYSIS CHECKS</label>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Pre Weight</label>
+                <input type="text" class="w-100" formControlName="PreWeight">
+                <label for="" class="unites-labels text-nowrap m-0">kg</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Oxygen Saturation</label>
+                <input type="text" class="w-100" formControlName="OxygenSaturation">
+                <label for="" class="unites-labels text-nowrap m-0">%</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Oxygen Flow</label>
+                <input type="text" class="w-100" formControlName="OxygenFlow">
+                <label for="" class="unites-ml text-nowrap m-0" style="right: 10px;">L/min</label>
+              </div>
             </div>
           </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Previous Post Weight</label>
-              <input type="text" class="w-100" formControlName="PostWeight">
-              <label for="" class="unites-labels text-nowrap m-0">kg</label>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Oxygen Delivery</label>
+                <ng-select class="w-100" formControlName="OxygenDelivery">
+                  <ng-option>Nasal Cannula</ng-option>
+                  <ng-option>Oxygen Face Mask</ng-option>
+                  <ng-option>Face Mask with 02</ng-option>
+                  <ng-option>Venturi Mask</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Oral Temp</label>
+                <input type="text" class="w-100" formControlName="OralTemp">
+                <label for="" class="unites-labels text-nowrap m-0">*C</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Axillary Temp</label>
+                <input type="text" class="w-100" formControlName="AxillaryTemp">
+                <label for="" class="unites-labels text-nowrap m-0">*C</label>
+              </div>
             </div>
           </div>
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Treatment #</label>
-              <input type="text" class="w-100" formControlName="Treatment">
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Pulse Rate</label>
+                <input type="text" class="w-100" formControlName="PulseRate">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 17px;">bpm</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Respiratoty Rate</label>
+                <input type="text" class="w-100" formControlName="RespiratoryRate">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Systolic Blood Pressre Sitting</label>
+                <input type="text" class="w-100" formControlName="SystolicBloodSitting">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Type of Dialyzer</label>
-              <ng-select class="w-100" formControlName="TypeDialyzer">
-                <ng-option>High Flux</ng-option>
-                <ng-option>Low Flux</ng-option>
-              </ng-select>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Diastolic Blood Pressre Sitting</label>
+                <input type="text" class="w-100" formControlName="DiastolicBloodSitting">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Mean Arterial Pressure</label>
+                <input type="text" class="w-100" formControlName="ArterialPressure">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+              </div>
+            </div>
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Systolic Bllod Pressure Standing</label>
+                <input type="text" class="w-100" formControlName="SystolicBloodStanding">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+              </div>
             </div>
           </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">New Dry Weight</label>
-              <input type="text" class="w-100" formControlName="NewDryWeight">
-              <label for="" class="unites-labels text-nowrap m-0">kg</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Height</label>
-              <input type="text" class="w-100" formControlName="Height">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 27px;">cm</label>
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Desired Weight Loss</label>
-              <input type="text" class="w-100" formControlName="WeightLoss">
-              <label for="" class="unites-labels text-nowrap m-0">kg</label>
+          <div class="row align-items-center my-3">
+            <div class="col-4 pr-5 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Diastolic Bllod Pressure Standing</label>
+                <input type="text" class="w-100" formControlName="DiastolicBloodStanding">
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="pre-dialysis-info position-relative p-3 mb-4">
-        <label for="" class="title-text m-0">2</label>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Treatment Time</label>
-              <input type="text" class="w-100" formControlName="TreatmentTime">
-            </div>
-          </div>
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Dialysis First Time</label>
-              <input type="text" class="w-100">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pre-dialysis-info position-relative p-3 mb-4">
-        <label for="" class="title-text m-0">PRE DIALYSIS CHECKS</label>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Pre Weight</label>
-              <input type="text" class="w-100" formControlName="PreWeight">
-              <label for="" class="unites-labels text-nowrap m-0">kg</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Oxygen Satusration</label>
-              <input type="text" class="w-100" formControlName="OxygenSaturation">
-              <label for="" class="unites-labels text-nowrap m-0">%</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Oxygen Flow</label>
-              <input type="text" class="w-100" formControlName="OxygenFlow">
-              <label for="" class="unites-ml text-nowrap m-0" style="right: 10px;">L/min</label>
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Oxygen Delivery</label>
-              <ng-select class="w-100" formControlName="OxygenDelivery">
-                <ng-option>Nasal Cannula</ng-option>
-                <ng-option>Oxygen Face Mask</ng-option>
-                <ng-option>Face Mask with 02</ng-option>
-                <ng-option>Venturi Mask</ng-option>
-              </ng-select>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Oral Temp</label>
-              <input type="text" class="w-100" formControlName="OralTemp">
-              <label for="" class="unites-labels text-nowrap m-0">*C</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Axillary Temp</label>
-              <input type="text" class="w-100" formControlName="AxillaryTemp">
-              <label for="" class="unites-labels text-nowrap m-0">*C</label>
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Pulse Rate</label>
-              <input type="text" class="w-100" formControlName="PulseRate">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 17px;">bpm</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Respiratoty Rate</label>
-              <input type="text" class="w-100" formControlName="RespiratoryRate">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Systolic Blood Pressre Sitting</label>
-              <input type="text" class="w-100" formControlName="SystolicBloodSitting">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Diastolic Blood Pressre Sitting</label>
-              <input type="text" class="w-100" formControlName="DiastolicBloodSitting">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Mean Arterial Pressure</label>
-              <input type="text" class="w-100" formControlName="ArterialPressure">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
-            </div>
-          </div>
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Systolic Bllod Pressure Standing</label>
-              <input type="text" class="w-100" formControlName="SystolicBloodStanding">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center my-3">
-          <div class="col-4 pr-5 position-relative">
-            <div class="d-flex align-items-center w-100 custom-input">
-              <label for="" class="text-nowrap m-0">Diastolic Bllod Pressure Standing</label>
-              <input type="text" class="w-100" formControlName="DiastolicBloodStanding">
-              <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- <div class="container-fluid">
+      <!-- <div class="container-fluid">
       <div class="row">
         <div class="col-4 pr-5"><label for=""></label></div>
         <div class="col-4 pr-5"><label for=""></label></div>
@@ -468,6 +468,6 @@
         </div>
       </div>
     </div> -->
-  </div>
-</form>
+    </div>
+  </form>
 </div>

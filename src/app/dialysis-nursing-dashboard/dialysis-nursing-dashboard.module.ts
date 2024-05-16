@@ -109,6 +109,7 @@ import { HaemodialysisAccessComponent } from './nurs-treatment-workarea/patient-
 import { PreDialysisAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/pre-dialysis-assessment/pre-dialysis-assessment.component';
 import { HaemodialysisLineInfectionSurveillanceComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-line-infection-surveillance/haemodialysis-line-infection-surveillance.component';
 import { HaemodialysisMonitoringComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-monitoring/haemodialysis-monitoring.component';
+import { PostDialysisEvaluationComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/post-dialysis-evaluation/post-dialysis-evaluation.component';
 
 
 const route: Routes = [
@@ -195,6 +196,7 @@ const route: Routes = [
     PreDialysisAssessmentComponent,
     HaemodialysisLineInfectionSurveillanceComponent,
     HaemodialysisMonitoringComponent,
+    PostDialysisEvaluationComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
