@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class PostDialysisEvaluationComponent implements OnInit {
   private subscription: Subscription;
   postdialevalution: FormGroup<any>;
-  constructor() { }
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService) { }
 
   ngOnInit(): void {
 this.postdialevalution = new FormGroup({
@@ -36,4 +38,7 @@ this.postdialevalution = new FormGroup({
 });
   }
 
+  createAssessment() {
+    console.log(this.postdialevalution.value);
+  }
 }

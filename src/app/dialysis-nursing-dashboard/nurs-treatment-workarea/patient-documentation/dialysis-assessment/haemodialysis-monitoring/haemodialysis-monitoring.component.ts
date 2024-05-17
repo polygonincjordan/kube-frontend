@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,7 +12,8 @@ import { Subscription } from 'rxjs';
 export class HaemodialysisMonitoringComponent implements OnInit {
   private subscription: Subscription;
   haemomonitoring: FormGroup<any>;
-  constructor() { }
+  hemolineinfection: any;
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService) { }
 
   ngOnInit(): void {
     this.haemomonitoring = new FormGroup({
@@ -18,6 +21,10 @@ export class HaemodialysisMonitoringComponent implements OnInit {
       AcuteDone:new FormControl(),
       InternationalDone:new FormControl(),
     });
+  }
+
+  createAssessment() {
+    console.log(this.haemomonitoring.value);
   }
 
 }

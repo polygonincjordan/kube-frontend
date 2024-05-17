@@ -29,8 +29,12 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
     });
   }
 
-
   toggleTextBox() {
     this.isChecked = !this.isChecked;
   }
+
+  createAssessment() {
+    console.log(this.hemolineinfection.value);
+  }
+
 }

@@ -6,6 +6,10 @@ import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 import { HaemodialysisAccessComponent } from './haemodialysis-access/haemodialysis-access.component';
 import { ActivatedRoute } from '@angular/router';
+import { HaemodialysisMonitoringComponent } from './haemodialysis-monitoring/haemodialysis-monitoring.component';
+import { HaemodialysisLineInfectionSurveillanceComponent } from './haemodialysis-line-infection-surveillance/haemodialysis-line-infection-surveillance.component';
+import { PostDialysisEvaluationComponent } from './post-dialysis-evaluation/post-dialysis-evaluation.component';
+import { PreDialysisAssessmentComponent } from './pre-dialysis-assessment/pre-dialysis-assessment.component';
 
 @Component({
   selector: 'dialysis-assessment',
@@ -22,14 +26,22 @@ export class DialysisAssessmentComponent implements OnInit {
   public dockeyValue: any = null;
   private actionTypeSubscription$: Subscription;
   @ViewChild(HaemodialysisAccessComponent) HaemodialysisAccess: HaemodialysisAccessComponent;
+  @ViewChild(HaemodialysisMonitoringComponent) HaemodialysisMonitoringC: HaemodialysisMonitoringComponent;
+  @ViewChild(HaemodialysisLineInfectionSurveillanceComponent) HaemodialysisLineInfectionSurveillanceC: HaemodialysisMonitoringComponent;
+  @ViewChild(PostDialysisEvaluationComponent) PostDialysisEvaluationC: PostDialysisEvaluationComponent;
+  @ViewChild(PreDialysisAssessmentComponent) PreDialysisAssessmentC: PreDialysisAssessmentComponent;
+
+
+
   patnr: any;
   einri: any;
   falnr: any;
   lfdnr: any;
 
 
+
   constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute,) {
-     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
     if (data != null) {
       if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
         if (data.value.type == WordType.EditGGCS && data.value.docKey != '') {
@@ -114,9 +126,16 @@ export class DialysisAssessmentComponent implements OnInit {
     }
   }
 
-  createAssessment(): Promise<any> {
-    return new Promise((resolve, reject) => {
-    this.HaemodialysisAccess.createAssessment()
-    });
+  createAssessment():Promise<any>{
+    return new Promise<any>((resolve, reject) => {
+      resolve({
+        ...this.HaemodialysisAccess.haemodial.value,
+        ...this.HaemodialysisMonitoringC.haemomonitoring.value,
+        ...this.HaemodialysisLineInfectionSurveillanceC.hemolineinfection.value,
+        ...this.PostDialysisEvaluationC.postdialevalution.value,
+        ...this.PreDialysisAssessmentC.predialysis.value
+      })
+    })
+
   }
 }

@@ -1162,6 +1162,8 @@ export class PatientDocumentationComponent implements OnInit {
         this.DialysisAssessment.createAssessment().then((formValue: any) => {
           if (formValue) {
             this.refresh();
+            console.log(formValue);
+
           }
         }).catch((error: any) => {
           console.error('Error creating Glasgow coma scale:', error);

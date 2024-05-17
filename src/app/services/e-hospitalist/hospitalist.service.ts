@@ -262,7 +262,13 @@ export class HospitalistService {
     });
   }
   getMedicationAdministrationSet(Deptcode?:any,fromDate?:any, toDate?:any){
-    const urlWithParams = `${this.url}MedicationAdministrationSet?Deptcode=${Deptcode}&fromDate=${fromDate}&toDate=${toDate}`;
+    let urlWithParams = ''
+
+    if(Deptcode === null || Deptcode === ""){
+      urlWithParams = `${this.url}MedicationAdministrationSet?fromDate=${fromDate}&toDate=${toDate}`;
+    }else{
+      urlWithParams = `${this.url}MedicationAdministrationSet?Deptcode=${Deptcode}&fromDate=${fromDate}&toDate=${toDate}`;
+    }
     return this.http.get(urlWithParams, {
       withCredentials: true,
     })
