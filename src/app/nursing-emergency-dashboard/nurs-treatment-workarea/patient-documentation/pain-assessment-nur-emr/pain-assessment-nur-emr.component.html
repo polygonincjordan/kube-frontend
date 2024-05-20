@@ -1,0 +1,2170 @@
+<div class="container-fluid mt-1 pl-0">
+  <div class="tab-navigation-part">
+    <div class="tab-navigate">
+      <div class="tab-nav">
+        <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isFacePain ? 'active' : ''"
+            (click)="switchTabs('isFacePain')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isFacePain ? 'tab-color-active' : 'tab-color'"
+            >
+              Face Pain
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isNumericRating ? 'active' : ''"
+            (click)="switchTabs('isNumericRating')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isNumericRating ? 'tab-color-active' : 'tab-color'"
+            >
+              Numeric Rating Scale
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isFlacc ? 'active' : ''"
+            (click)="switchTabs('isFlacc')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isFlacc ? 'tab-color-active' : 'tab-color'"
+            >
+              FLACC
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isNips ? 'active' : ''"
+            (click)="switchTabs('isNips')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isNips ? 'tab-color-active' : 'tab-color'"
+            >
+              NIPS
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isComatosePatient ? 'active' : ''"
+            (click)="switchTabs('isComatosePatient')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isComatosePatient ? 'tab-color-active' : 'tab-color'"
+            >
+              Comatose Patients Adult and Pediatrics
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isSedation ? 'active' : ''"
+            (click)="switchTabs('isSedation')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isSedation ? 'tab-color-active' : 'tab-color'"
+            >
+              Sedation & Agitation
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isReAssessment ? 'active' : ''"
+            (click)="switchTabs('isReAssessment')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isReAssessment ? 'tab-color-active' : 'tab-color'"
+            >
+              Assessment & Re-Assessment of Plan
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isPainLocation ? 'active' : ''"
+            (click)="switchTabs('isPainLocation')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isPainLocation ? 'tab-color-active' : 'tab-color'"
+            >
+              Pain Location
+            </p>
+          </li>
+          <li
+            class="d-flex m-0 align-items-center"
+            [ngClass]="isFlowSheet ? 'active' : ''"
+            (click)="switchTabs('isFlowSheet')"
+          >
+            <p
+              class="d-inline-block m-0 input-lable"
+              [ngClass]="isFlowSheet ? 'tab-color-active' : 'tab-color'"
+            >
+              Assessment & Management Flow Sheet
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <form [formGroup]="painAssessmentForm">
+      <div class="tab-content">
+        <div *ngIf="isFacePain">
+          <div class="facepain">
+            <div class="facepain-box">
+              <div class="d-flex mb-2 na-title">
+                <input
+                  type="checkbox"
+                  style="width: 15px"
+                  formControlName="FpNa"
+                  (change)="uncheckFacePain()"
+                />
+                <label class="m-0 ml-2">N/A</label>
+              </div>
+              <div class="row ml-0 mr-0 selection-section">
+                <div class="col-md-2" *ngFor="let item of FacePainResponse">
+                  <div class="d-flex justify-content-center">
+                    <img
+                      class="cursor-pointer"
+                      [src]="item.image"
+                      [alt]="item.image"
+                      [id]="item.keyId"
+                      (click)="selectRadio(item.keyId, item.value, item.text)"
+                    />
+                  </div>
+                  <div
+                    class="d-flex justify-content-center"
+                    (click)="setFacePainValue(item.value, item.text)"
+                  >
+                    <input
+                      class="cursor-pointer"
+                      type="radio"
+                      [attr.disabled]="
+                        painAssessmentForm.get('FpNa').value ? true : null
+                      "
+                      [id]="item.keyId"
+                      [value]="item.value"
+                      formControlName="FpPainScale"
+                    />
+                    <label class="ml-2" [for]="item.keyId">{{
+                      item.text
+                    }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="splitter"></div>
+              <div class="scale-result">
+                <h4 class="mb-4">Scale Result</h4>
+                <div class="row m-0">
+                  <div class="col-md-3">
+                    <div class="mb-2 d-flex align-items-center">
+                      <label class="mr-5">Total Score</label>
+                      <input
+                        class="form-control w-50"
+                        formControlName="FpTotalScore"
+                        [disabled]="true"
+                        [readOnly]="true"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-2 d-flex justify-content-between">
+                      <input
+                        class="form-control"
+                        formControlName="FpTotalScoreTxt"
+                        [disabled]="true"
+                        [readOnly]="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isNumericRating">
+          <div class="numeric-rating-main">
+            <div class="d-flex na-title">
+              <input
+                type="checkbox"
+                style="width: 15px"
+                formControlName="NrsNa"
+                (change)="uncheckRatingValue()"
+              />
+              <label class="m-0 ml-2">N/A</label>
+            </div>
+            <div>
+              <div class="scales-info mt-3">
+                <h4>Numeric Rating Scale</h4>
+                <div class="scales-details">
+                  <div class="row align-items-center m-0">
+                    <div class="col-md-2">
+                      <label class="m-0">Pain Score</label>
+                    </div>
+                    <div class="col-md-6 row m-0 pr-0">
+                      <div class="col-md-4 p-0">
+                        <ng-select
+                          placeholder="Select Mode of Arrival"
+                          [readonly]="
+                            dockeyValue || painAssessmentForm.get('NrsNa').value
+                          "
+                          [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                          formControlName="NrsPainScore"
+                          (change)="selectPainScore()"
+                        >
+                          <ng-option
+                            *ngFor="let item of painScoreList"
+                            [value]="item"
+                            >{{ item }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="scales-info mt-3">
+                <h4>Scale Result</h4>
+                <div class="scales-details">
+                  <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2">
+                      <label class="m-0">Total score</label>
+                    </div>
+                    <div class="col-md-6 row m-0">
+                      <div class="col-md-4 p-0">
+                        <input
+                          class="form-control"
+                          [readOnly]="true"
+                          formControlName="NrsTotalScore"
+                        />
+                      </div>
+                      <div class="col-md-8 pr-0">
+                        <input
+                          class="form-control"
+                          [readOnly]="true"
+                          formControlName="NrsTotalScoreTxt"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isFlacc">
+          <div class="numeric-rating-main">
+            <div class="d-flex mb-3 na-title">
+              <input
+                type="checkbox"
+                style="width: 15px"
+                formControlName="FlNa"
+                (change)="uncheckFLACC()"
+              />
+              <label class="m-0 ml-2">N/A</label>
+            </div>
+            <div>
+              <label>From 2 month to 7 years old</label> <br />
+              <label>Score > 5: Requires pain management</label>
+
+              <div class="scales-info mt-3">
+                <div class="scales-details row m-0">
+                  <div class="col-md-4 row align-items-center m-0 mb-2">
+                    <div class="col-md-3">
+                      <label class="m-0"><Form></Form>Face</label>
+                    </div>
+                    <div class="col-md-9 row m-0 pr-0">
+                      <div class="col-md-10 p-0">
+                        <ng-select
+                          placeholder="Select face"
+                          formControlName="FlFace"
+                          [readonly]="painAssessmentForm.get('FlNa').value"
+                          (change)="totalOfFlacc()"
+                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                        >
+                          <ng-option
+                            *ngFor="let item of faceList"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 row align-items-center m-0 mb-2">
+                    <div class="col-md-3">
+                      <label class="m-0"><Form></Form>Leg</label>
+                    </div>
+                    <div class="col-md-9 row m-0 pr-0">
+                      <div class="col-md-10 p-0">
+                        <ng-select
+                          placeholder="Select leg"
+                          [readonly]="painAssessmentForm.get('FlNa').value"
+                          formControlName="FlLeg"
+                          (change)="totalOfFlacc()"
+                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                        >
+                          <ng-option
+                            *ngFor="let item of legList"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 row align-items-center m-0 mb-2">
+                    <div class="col-md-3">
+                      <label class="m-0"><Form></Form>Activity</label>
+                    </div>
+                    <div class="col-md-9 row m-0 pr-0">
+                      <div class="col-md-10 p-0">
+                        <ng-select
+                          placeholder="Select activity"
+                          [readonly]="painAssessmentForm.get('FlNa').value"
+                          (change)="totalOfFlacc()"
+                          formControlName="FlActivity"
+                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                        >
+                          <ng-option
+                            *ngFor="let item of activityList"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 row align-items-center m-0 mb-2">
+                    <div class="col-md-3">
+                      <label class="m-0"><Form></Form>Cry</label>
+                    </div>
+                    <div class="col-md-9 row m-0 pr-0">
+                      <div class="col-md-10 p-0">
+                        <ng-select
+                          placeholder="Select cty"
+                          (change)="totalOfFlacc()"
+                          [readonly]="painAssessmentForm.get('FlNa').value"
+                          formControlName="FlCry"
+                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                        >
+                          <ng-option
+                            *ngFor="let item of cryList"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 row align-items-center m-0 mb-2">
+                    <div class="col-md-3">
+                      <label class="m-0"><Form></Form>Consolability</label>
+                    </div>
+                    <div class="col-md-9 row m-0 pr-0">
+                      <div class="col-md-10 p-0">
+                        <ng-select
+                          placeholder="Select consolability"
+                          [readonly]="painAssessmentForm.get('FlNa').value"
+                          (change)="totalOfFlacc()"
+                          formControlName="FlConsolability"
+                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                        >
+                          <ng-option
+                            *ngFor="let item of consolabilityList"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="scales-info mt-3">
+                <h4>Scale Result</h4>
+                <div class="scales-details">
+                  <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2">
+                      <label class="m-0">Total score</label>
+                    </div>
+                    <div class="col-md-6 row m-0">
+                      <div class="col-md-4 p-0">
+                        <input
+                          class="form-control"
+                          [readOnly]="true"
+                          formControlName="FlScore"
+                        />
+                      </div>
+                      <div class="col-md-8 pr-0">
+                        <input
+                          class="form-control"
+                          [readOnly]="true"
+                          formControlName="FlScoreTxt"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isNips">
+          <h4 class="nips-title">NIPS Assessment</h4>
+          <div class="nips-radio-list">
+            <div class="row mb-2">
+              <div class="col-md-2">
+                <label>Facial Expression</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiFacial"
+                  id="facial1"
+                  value="A"
+                  formControlName="NiFacial"
+                />
+                <label class="m-0" for="facial1">Not answered</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiFacial"
+                  id="facial2"
+                  value="0"
+                  formControlName="NiFacial"
+                />
+                <label class="m-0" for="facial2">Relaxed</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiFacial"
+                  id="facial3"
+                  value="1"
+                  formControlName="NiFacial"
+                />
+                <label class="m-0" for="facial3">Constracted</label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-2">
+                <label>Cry</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiCry"
+                  id="cry1"
+                  value="A"
+                  formControlName="NiCry"
+                />
+                <label class="m-0" for="cry1">Not answered</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiCry"
+                  id="cry2"
+                  value="0"
+                  formControlName="NiCry"
+                />
+                <label class="m-0" for="cry2">Absent</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiCry"
+                  id="cry3"
+                  value="1"
+                  formControlName="NiCry"
+                />
+                <label class="m-0" for="cry3">Mumbling</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiCry"
+                  id="cry4"
+                  value="2"
+                  formControlName="NiCry"
+                />
+                <label class="m-0" for="cry4">Screaming</label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-2">
+                <label>Breathing patterns</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiBreathing"
+                  id="breathing1"
+                  value="A"
+                  formControlName="NiBreathing"
+                />
+                <label class="m-0" for="breathing1">Not answered</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiBreathing"
+                  id="breathing2"
+                  value="0"
+                  formControlName="NiBreathing"
+                />
+                <label class="m-0" for="breathing2">Regular</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiBreathing"
+                  id="breathing3"
+                  value="1"
+                  formControlName="NiBreathing"
+                />
+                <label class="m-0" for="breathing3">Different then basal</label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-2">
+                <label>Arms</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiArms"
+                  id="arms1"
+                  value="A"
+                  formControlName="NiArms"
+                />
+                <label class="m-0" for="arms1">Not answered</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiArms"
+                  id="arms2"
+                  value="0"
+                  formControlName="NiArms"
+                />
+                <label class="m-0" for="arms2">Relaxed</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiArms"
+                  id="arms3"
+                  value="1"
+                  formControlName="NiArms"
+                />
+                <label class="m-0" for="arms3">Flexed</label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-2">
+                <label>Legs</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiLegs"
+                  id="legs1"
+                  value="A"
+                  formControlName="NiLegs"
+                />
+                <label class="m-0" for="legs1">Not answered</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiLegs"
+                  id="legs2"
+                  value="0"
+                  formControlName="NiLegs"
+                />
+                <label class="m-0" for="legs2">Relaxed</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiLegs"
+                  id="legs3"
+                  value="1"
+                  formControlName="NiLegs"
+                />
+                <label class="m-0" for="legs3">Flexed/stretched</label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-2">
+                <label>State of arousal</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiArousal"
+                  id="state1"
+                  value="A"
+                  formControlName="NiArousal"
+                />
+                <label class="m-0" for="state1">Not answered</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiArousal"
+                  id="state2"
+                  value="0"
+                  formControlName="NiArousal"
+                />
+                <label class="m-0" for="state2">Sleeping/Calm</label>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <input
+                  type="radio"
+                  (change)="totalOfNips()"
+                  class="mr-3"
+                  name="NiArousal"
+                  id="state3"
+                  value="1"
+                  formControlName="NiArousal"
+                />
+                <label class="m-0" for="state3">Uncomfortable</label>
+              </div>
+            </div>
+          </div>
+          <div class="nips-scale-info mt-3">
+            <h4>Scale Result</h4>
+            <div class="scales-details">
+              <div class="row align-items-center m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0" for="">Total score</label>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 p-0">
+                    <input
+                      class="form-control"
+                      [readOnly]="true"
+                      formControlName="NiTotalScore"
+                    />
+                  </div>
+                  <div class="col-md-8 pr-0">
+                    <input
+                      class="form-control"
+                      [readOnly]="true"
+                      formControlName="NiTotalScoreTxt"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isComatosePatient">
+          <div class="comatose-patient-main">
+            <div class="d-flex mb-3 na-title">
+              <input
+                type="checkbox"
+                style="width: 15px"
+                formControlName="ComNoSigns"
+                (change)="uncheckComatose()"
+              />
+              <label class="m-0 ml-2">No signs of irritability or pain</label>
+            </div>
+            <div class="comatose-contant">
+              <div class="row">
+                <div class="col-md-6">
+                  <h4 class="nips-title">Sign of Irritability</h4>
+                </div>
+                <div class="col-md-6">
+                  <h4 class="nips-title">Sign of Pain</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-12 comatose-list">
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        formControlName="ComIrIntermittent"
+                        value="2"
+                        (change)="calculateScore()"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                      />
+                      <label class="m-0 ml-2"
+                        >Intermittent vocalizations, soft or brief cry but able
+                        to suck or feed</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComIrActivity"
+                      />
+                      <label class="m-0 ml-2"
+                        >Increased activity of extremities,restless, purposeless
+                        movements but lethargic</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComIrFrowning"
+                      />
+                      <label class="m-0 ml-2"
+                        >Frowning, furrowed brow, eyes open</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComIrMildly"
+                      />
+                      <label class="m-0 ml-2"
+                        >Mildly increased tone of extremities</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComIrArousability"
+                      />
+                      <label class="m-0 ml-2"
+                        >Increased arousability, more awake than usual</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComIrUnexplained"
+                      />
+                      <label class="m-0 ml-2"
+                        >Unexplained mild changes in respiratory pattern, HR &
+                        BP
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-12 comatose-list">
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaLoudCry"
+                      />
+                      <label class="m-0 ml-2"
+                        >Loud Cry, sustained attempts to cry</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaRefuses"
+                      />
+                      <label class="m-0 ml-2"
+                        >Refuses to feed, eat and/or pacifier does not relieve
+                        crying / irritability</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaThrashing"
+                      />
+                      <label class="m-0 ml-2"
+                        >Thrashing of limbs (in infants)</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaMarked"
+                      />
+                      <label class="m-0 ml-2"
+                        >Marked brow bulge, grimace, eyes closed tightly</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaActivity"
+                      />
+                      <label class="m-0 ml-2"
+                        >Decreased activity, fatigue, social withdrawal</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaTense"
+                      />
+                      <label class="m-0 ml-2"
+                        >Tense muscles, guarding, posturing</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaFleshed"
+                      />
+                      <label class="m-0 ml-2">Fleshed face, diaphoresis</label>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaSleep"
+                      />
+                      <label class="m-0 ml-2"
+                        >Change in sleep or awake pattern</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaWithdraw"
+                      />
+                      <label class="m-0 ml-2"
+                        >Attempts to withdraw limb from pain or tries to touch
+                        hurt area</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaDuskiness"
+                      />
+                      <label class="m-0 ml-2"
+                        >Unexplained duskiness / decreased oxygen
+                        saturations</label
+                      >
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      <input
+                        type="checkbox"
+                        (change)="calculateScore()"
+                        value="2"
+                        [attr.disabled]="
+                          painAssessmentForm.get('ComNoSigns').value
+                            ? true
+                            : null
+                        "
+                        formControlName="ComPaRrHr"
+                      />
+                      <label class="m-0 ml-2"
+                        >Unexplained changes in RR, HR & BP
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="nips-scale-info mt-3">
+                <div class="scales-details">
+                  <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2 text-center">
+                      <label class="m-0" for="">Total score</label>
+                    </div>
+                    <div class="col-md-3 row m-0">
+                        <input
+                          class="form-control"
+                          [readOnly]="true"
+                          formControlName="ComScore"
+                        />
+                    </div>
+                    <div class="col-md-6">
+                        <textarea
+                          class="form-control"
+                          formControlName="ComComment"
+                        ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isSedation">
+          <div class="numeric-rating-main">
+            <!-- <div class="d-flex mb-3 na-title">
+              <input
+                type="checkbox"
+                style="width: 15px"
+                formControlName="FlNa"
+                (change)="uncheckFLACC()"
+              />
+              <label class="m-0 ml-2">N/A</label>
+            </div> -->
+            <div>
+              <label>The target is 3-4</label> <br />
+              <label
+                >Score < 3: Need Intervention (reduction of
+                sedation/analgesia)</label
+              >
+              <br />
+              <label
+                >Score > 4: Need Intervention (increase of
+                sedation/analgesia)</label
+              >
+
+              <div class="scales-info mt-3">
+                <div class="scales-details row m-0">
+                  <div class="col-md-6 row align-items-center m-0 mb-2">
+                    <div class="col-md-4">
+                      <label class="m-0">Sedation Agitation</label>
+                    </div>
+                    <div class="col-md-8 row m-0 pr-0">
+                      <div class="col-md-6 p-0">
+                        <ng-select
+                          placeholder="Select face"
+                          formControlName="SedationAgitation"
+                          [readonly]="dockeyValue"
+                          (change)="calculateOfSedation()"
+                          [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                        >
+                          <ng-option
+                            *ngFor="let item of sedationList"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="scales-info mt-3">
+                <div class="scales-details">
+                  <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2 text-center">
+                      <label class="m-0">Score</label>
+                    </div>
+                    <div class="col-md-3 row m-0">
+                        <input
+                          class="form-control"
+                          [readOnly]="true"
+                          formControlName="SedationScore"
+                        />
+                      </div>
+                    <div class="col-md-6">
+                      <textarea
+                        class="form-control"
+                        formControlName="SedationComment"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isReAssessment">
+          <div class="assessment-main">
+            <div class="row">
+              <div class="col-md-2 row m-0 align-items-center pl-0">
+                <div class="col-md-3">
+                  <label class="m-0">Date</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    class="form-control"
+                    type="text"
+                    #dp="bsDatepicker"
+                    formControlName="PlDate"
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2 row m-0 align-items-center">
+                <div class="col-md-3">
+                  <label class="m-0">Time</label>
+                </div>
+                <div class="col-md-9">
+                  <input
+                    type="time"
+                    class="form-control"
+                    formControlName="PlTime"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3 row m-0 align-items-center pl-4 pr-4">
+                <div class="col-md-5">
+                  <label class="m-0">Pain Intensity</label>
+                </div>
+                <div class="col-md-7">
+                  <input
+                    class="form-control"
+                    formControlName="PlPainIntensity"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4 row m-0 align-items-center pl-4 pr-4">
+                <div class="col-md-5">
+                  <label class="m-0">Pain Scaling Method</label>
+                </div>
+                <div class="col-md-5">
+                  <input
+                    class="form-control"
+                    formControlName="PlPainScaling"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4 align-items-center">
+              <div class="col-md-1">
+                <label>Character</label>
+              </div>
+              <div
+                class="col-md-11 row m-0 p-0 character-checkbox"
+                style="gap: 10px"
+              >
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    formControlName="PlChSharp"
+                    (click)="characterCheck($event, 'Sharp')"
+                  />
+                  <label class="m-0 ml-2">Sharp</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Dull')"
+                    formControlName="PlChDull"
+                  />
+                  <label class="m-0 ml-2">Dull</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Stabbing')"
+                    formControlName="PlChStabbing"
+                  />
+                  <label class="m-0 ml-2">Stabbing</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Burns')"
+                    formControlName="PlChBurns"
+                  />
+                  <label class="m-0 ml-2">Burns</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Crushing')"
+                    formControlName="PlChCrushing"
+                  />
+                  <label class="m-0 ml-2">Crushing</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Deep')"
+                    formControlName="PlChDeep"
+                  />
+                  <label class="m-0 ml-2">Deep</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Sore')"
+                    formControlName="PlChSore"
+                  />
+                  <label class="m-0 ml-2">Sore</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Aching')"
+                    formControlName="PlChAching"
+                  />
+                  <label class="m-0 ml-2">Aching</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Colc')"
+                    formControlName="PlChColic"
+                  />
+                  <label class="m-0 ml-2">Colc</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    style="width: 15px !important; height: 15px !important"
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Throbbing')"
+                    formControlName="PlChThrobbing"
+                  />
+                  <label class="m-0 ml-2">Throbbing</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Numb')"
+                    formControlName="PlChNumb"
+                  />
+                  <label class="m-0 ml-2">Numb</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Shooting')"
+                    formControlName="PlChShooting"
+                  />
+                  <label class="m-0 ml-2">Shooting</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Pressing')"
+                    formControlName="PlChPressing"
+                  />
+                  <label class="m-0 ml-2">Pressing</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Tight')"
+                    formControlName="PlChTight"
+                  />
+                  <label class="m-0 ml-2">Tight</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Puling')"
+                    formControlName="PlChPulling"
+                  />
+                  <label class="m-0 ml-2">Puling</label>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <input
+                    style="width: 15px !important; height: 15px !important"
+                    type="checkbox"
+                    (click)="characterCheck($event, 'Squeezing')"
+                    formControlName="PlChSqueezing"
+                  />
+                  <label class="m-0 ml-2">Squeezing</label>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-3 row m-0 align-items-center pl-0">
+                <div class="col-md-4">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" formControlName="PlLocation" />
+                </div>
+              </div>
+              <div class="col-md-3 row m-0 align-items-center">
+                <div class="col-md-4">
+                  <label>Frequency</label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" formControlName="PlFrequency" />
+                </div>
+              </div>
+              <div class="col-md-3 row m-0 align-items-center">
+                <div class="col-md-4">
+                  <label>Duration</label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" formControlName="PlDuration" />
+                </div>
+              </div>
+              <div class="col-md-3 row m-0 align-items-center">
+                <div class="col-md-4">
+                  <label>Interventions</label>
+                </div>
+                <div class="col-md-7">
+                  <ng-select
+                    placeholder="Select face"
+                    formControlName="PlInterventions"
+                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                  >
+                    <ng-option
+                      *ngFor="let item of ReAssessmentInterventions"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-3 row m-0 pl-0 align-items-center">
+                <div class="col-md-4 pr-0">
+                  <label>Pain Radiation</label>
+                </div>
+                <div class="col-md-7">
+                  <ng-select
+                    placeholder="Select face"
+                    formControlName="PlRadiation"
+                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                  >
+                    <ng-option
+                      *ngFor="let item of ReAssessmentPainRadi"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 row align-items-center m-0">
+                <div class="col-md-2">
+                  <label>Where</label>
+                </div>
+                <div class="col-md-10">
+                  <input
+                    [readOnly]="
+                      painAssessmentForm.get('PlRadiation').value != '0'
+                    "
+                    class="form-control"
+                    formControlName="PlRadiationTxt"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-3 row m-0 pl-0 align-items-center">
+                <div class="col-md-4">
+                  <label>Pain Pattern</label>
+                </div>
+                <div class="col-md-7">
+                  <ng-select
+                    placeholder="Select face"
+                    formControlName="PlPattern"
+                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                  >
+                    <ng-option
+                      *ngFor="let item of ReAssessmentPainPattern"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-3 row m-0 align-items-center">
+                <div class="col-md-4">
+                  <label>Pain Onset</label>
+                </div>
+                <div class="col-md-7">
+                  <ng-select
+                    placeholder="Select face"
+                    formControlName="PlOnset"
+                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                  >
+                    <ng-option
+                      *ngFor="let item of ReAssessmentPainOnset"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-2">
+                <label>What causes your pain?</label>
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" formControlName="PlCauses" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2">
+                <label>What relieves your pain?</label>
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" formControlName="PlRelieves" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2">
+                <label>Medication</label>
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" formControlName="PlMedication" />
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 row m-0 p-0">
+                <div class="col-md-2">
+                  <label>Non-Medication</label>
+                </div>
+                <div class="col-md-10 row m-0 p-0">
+                  <div class="col-md-2 no-medication-checkbox">
+                    <input
+                      type="checkbox"
+                      (click)="nonMedicationCheck($event, 'Heat packs')"
+                      formControlName="PlHeatPacks"
+                    />
+                    <label class="ml-2">Heat packs</label>
+                  </div>
+                  <div class="col-md-2 no-medication-checkbox">
+                    <input
+                      type="checkbox"
+                      (click)="nonMedicationCheck($event, 'Cold packs')"
+                      formControlName="PlColdPacks"
+                    />
+                    <label class="ml-2">Cold packs</label>
+                  </div>
+                  <div
+                    class="col-md-2 no-medication-checkbox"
+                    style="min-width: 17% !important"
+                  >
+                    <input
+                      type="checkbox"
+                      (click)="
+                        nonMedicationCheck($event, 'Repositioning/Turning')
+                      "
+                      formControlName="PlRepositioning"
+                    />
+                    <label class="ml-2">Repositioning/Turning</label>
+                  </div>
+                  <div class="col-md-2 no-medication-checkbox">
+                    <input
+                      type="checkbox"
+                      (click)="nonMedicationCheck($event, 'Ambulation')"
+                      formControlName="PlAmbulation"
+                    />
+                    <label class="ml-2">Ambulation</label>
+                  </div>
+                  <div
+                    class="col-md-2 no-medication-checkbox"
+                    style="min-width: 16% !important"
+                  >
+                    <input
+                      type="checkbox"
+                      (click)="
+                        nonMedicationCheck($event, 'Relaxation exercises')
+                      "
+                      formControlName="PlRelaxation"
+                    />
+                    <label class="ml-2">Relaxation exercises</label>
+                  </div>
+                  <div
+                    class="col-md-2 no-medication-checkbox"
+                    style="min-width: 14% !important"
+                  >
+                    <input
+                      type="checkbox"
+                      (click)="nonMedicationCheck($event, 'Deep Breathing')"
+                      formControlName="PlDeep"
+                    />
+                    <label class="ml-2">Deep Breathing</label>
+                  </div>
+                  <div
+                    class="col-md-2 no-medication-checkbox"
+                    style="min-width: 20% !important"
+                  >
+                    <input
+                      type="checkbox"
+                      (click)="nonMedicationCheck($event, 'Rhythmic Breathing')"
+                      formControlName="PlRhythmic"
+                    />
+                    <label class="ml-2">Rhythmic Breathing</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 row m-0 p-0 mt-3">
+                <label class="col-md-2">Comments</label>
+                <div class="col-md-6">
+                  <textarea
+                    class="form-control w-100"
+                    formControlName="PlComment"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="col-md-12 row m-0 p-0 justify-content-end">
+                <button
+                  class="action-doc mr-2"
+                  (click)="reAssessmentSetTable()"
+                >
+                  Enter
+                </button>
+                <button class="action-doc" (click)="clearReAssessmentForm()">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-3 log-of-main">
+              <h4>Log of Assessments</h4>
+              <div class="log-of-table">
+                <table class="table table-bordered past-table">
+                  <thead style="background: #e4edf5 !important">
+                    <th style="min-width: 120px !important">Date</th>
+                    <th style="min-width: 120px !important">Time</th>
+                    <th style="min-width: 150px !important">Pain Intensity</th>
+                    <th style="min-width: 150px !important">
+                      Pain Scaling Method
+                    </th>
+                    <th style="min-width: 200px !important">Character</th>
+                    <th style="min-width: 120px !important">Location:</th>
+                    <th style="min-width: 120px !important">Freq.</th>
+                    <th style="min-width: 120px !important">Duration</th>
+                    <th style="min-width: 150px !important">Interventions</th>
+                    <th style="min-width: 150px !important">Pain Radiation</th>
+                    <th style="min-width: 200px !important">Where</th>
+                    <th style="min-width: 150px !important">Pain Pattern</th>
+                    <th style="min-width: 150px !important">Pain Onset</th>
+                    <th style="min-width: 200px !important">
+                      What causes your pain?
+                    </th>
+                    <th style="min-width: 200px !important">
+                      What relives your pain?
+                    </th>
+                    <th style="min-width: 200px !important">Medication</th>
+                    <th style="min-width: 200px !important">Non-Medication</th>
+                    <th style="min-width: 200px !important">Comments</th>
+                    <th style="min-width: 150px !important">
+                      Assessment done by
+                    </th>
+                  </thead>
+                  <tbody style="background-color: #fbfcff">
+                    <tr *ngFor="let item of reAssessmentTableList">
+                      <td [title]="item.PlDate | date : 'dd/MM/yyyy'">
+                        {{ item.PlDate | date : "dd/MM/yyyy" }}
+                      </td>
+                      <td [title]="item.PlTime">{{ item.PlTime }}</td>
+                      <td [title]="item.PlPainIntensity">
+                        {{ item.PlPainIntensity }}
+                      </td>
+                      <td [title]="item.PlPainScaling">
+                        {{ item.PlPainScaling }}
+                      </td>
+                      <td [title]="item.PlCharacter">{{ item.PlCharacter }}</td>
+                      <td [title]="item.PlLocation">{{ item.PlLocation }}</td>
+                      <td [title]="item.PlFrequency">{{ item.PlFrequency }}</td>
+                      <td [title]="item.PlDuration">{{ item.PlDuration }}</td>
+                      <td [title]="item.PlInterventions">
+                        {{ item.PlInterventions }}
+                      </td>
+                      <td [title]="item.PlRadiation">{{ item.PlRadiation }}</td>
+                      <td [title]="item.PlRadiationTxt">
+                        {{ item.PlRadiationTxt }}
+                      </td>
+                      <td [title]="item.PlPattern">{{ item.PlPattern }}</td>
+                      <td [title]="item.PlOnset">{{ item.PlOnset }}</td>
+                      <td [title]="item.PlCauses">{{ item.PlCauses }}</td>
+                      <td [title]="item.PlMedication">
+                        {{ item.PlMedication }}
+                      </td>
+                      <td [title]="item.PlRelieves">{{ item.PlRelieves }}</td>
+                      <td [title]="item.PlNonMedication">
+                        {{ item.PlNonMedication }}
+                      </td>
+                      <td [title]="item.PlComment">{{ item.PlComment }}</td>
+                      <td [title]="item.doneBy">{{ item.doneBy }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isFlowSheet">
+          <div class="contant-box m-0">
+            <div class="row">
+              <div class="col-md-2 row m-0 pl-0 align-items-center">
+                <div class="col-md-3">
+                  <label class="m-0">Date</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    class="form-control"
+                    type="text"
+                    #dp="bsDatepicker"
+                    formControlName="FloDate"
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2 row m-0 align-items-center">
+                <div class="col-md-3">
+                  <label class="m-0">Time</label>
+                </div>
+                <div class="col-md-9">
+                  <input
+                    type="time"
+                    class="form-control"
+                    formControlName="FloTime"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
+                <div class="col-md-12 row m-0">
+                  <div class="col-md-7">
+                    <label class="m-0">Pain Score(At Rest)</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input class="form-control" formControlName="FloPsRest" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
+                <div class="col-md-12 row m-0 mt-2">
+                  <div class="col-md-7">
+                    <label class="m-0">Pre-analgesia(At Rest)</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input class="form-control" formControlName="FloPreRest" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-2"></div>
+              <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
+                <div class="col-md-12 row m-0 mt-2">
+                  <div class="col-md-7">
+                    <label class="m-0">Pain Score(Witch Movement)</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      class="form-control"
+                      formControlName="FloPsMovement"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
+                <div class="col-md-12 row m-0 mt-2">
+                  <div class="col-md-7">
+                    <label class="m-0">Pre-analgesia(With Movement)</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      class="form-control"
+                      formControlName="FloPreMovement"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="contant-box">
+              <h4>IV</h4>
+              <div class="row">
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Continuous Infusion</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloIvInfusion"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-5">
+                    <label class="m-0">Bolus Given</label>
+                  </div>
+                  <div class="col-md-5 pl-0">
+                    <input class="form-control" formControlName="FloIvBolus" />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Total Amount Given</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input class="form-control" formControlName="FloIvAmount" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="contant-box">
+              <h4>Epidural</h4>
+              <div class="row">
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Infusion rate (ml/hr)</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloEpiInfusion"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-5">
+                    <label class="m-0">Level of Block</label>
+                  </div>
+                  <div class="col-md-5 pl-0">
+                    <input class="form-control" formControlName="FloEpiBlock" />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Total Amount Given</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloEpiAmount"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="contant-box">
+              <h4>PCA</h4>
+              <div class="row">
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Reservoir Volume</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaReservoir"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Dose Given</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaDoseGiven"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Demand Dose (mg)</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaDemandDose"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-5">
+                    <label class="m-0">Clinic Bolus</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaClinicalBolus"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Maximum Doses /h</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaMaximumDoses"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Time Interval (Min)</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaTimeInterval"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Dose Attempted</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaDoseAttempted"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-5">
+                    <label class="m-0">Rate of Infusion</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaInfusion"
+                    />
+                  </div>
+                  <div class="col-md-3 p-0">
+                    <ng-select formControlName="FloPcaInfusionUnit">
+                      <ng-option
+                        *ngFor="let item of flowSheetInfusion"
+                        [value]="item.value"
+                        >{{ item.label }}</ng-option
+                      >
+                    </ng-select>
+                  </div>
+                </div>
+
+                <div class="col-md-3 row align-items-center mb-2">
+                  <div class="col-md-6">
+                    <label class="m-0">Total Amount Given</label>
+                  </div>
+                  <div class="col-md-5">
+                    <input
+                      class="form-control"
+                      formControlName="FloPcaAmount"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="contant-box">
+              <h4>Other</h4>
+              <div class="row m-0 mb-4 mt-3">
+                <div class="col-md-1 other-sect-checkbox">
+                  <input
+                    type="checkbox"
+                    formControlName="FloOthIvStat"
+                    (change)="otherTextJoin($event, 'IV Stat')"
+                  />
+                  <label>IV Stat</label>
+                </div>
+                <div class="col-md-1 other-sect-checkbox">
+                  <input
+                    type="checkbox"
+                    formControlName="FloOthIvPrn"
+                    (change)="otherTextJoin($event, 'IV PRM')"
+                  />
+                  <label>IV PRM</label>
+                </div>
+                <div class="col-md-1 other-sect-checkbox">
+                  <input
+                    type="checkbox"
+                    formControlName="FloOthLocally"
+                    (change)="otherTextJoin($event, 'Locally')"
+                  />
+                  <label>Locally</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3 row align-items-center m-0">
+                  <div class="col-md-2">
+                    <label>Oral</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" formControlName="FloOral" />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center">
+                  <div class="col-md-4">
+                    <label>Transdermal</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input
+                      class="form-control"
+                      formControlName="FloTransdermal"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center m-0">
+                  <div class="col-md-5">
+                    <label>Sedation Level</label>
+                  </div>
+                  <div class="col-md-6">
+                    <ng-select
+                      placeholder="Select Sedation Level"
+                      formControlName="FloSedation"
+                    >
+                      <ng-option
+                        *ngFor="let item of flowSheetSedation"
+                        [value]="item.value"
+                        >{{ item.label }}</ng-option
+                      >
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-3 row align-items-center m-0">
+                  <div class="col-md-4">
+                    <label>Side Effects</label>
+                  </div>
+                  <div class="col-md-6">
+                    <ng-select
+                      placeholder="Select Side Effects"
+                      formControlName="FloSideEffects"
+                    >
+                      <ng-option
+                        *ngFor="let item of flowSheetSideEffects"
+                        [value]="item.value"
+                        >{{ item.label }}</ng-option
+                      >
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 row m-0 p-0 justify-content-end mt-4">
+                <button class="action-doc mr-2" (click)="flowSheetSetTable()">
+                  Enter
+                </button>
+                <button class="action-doc" (click)="clearReAssessmentForm()">
+                  Clear
+                </button>
+              </div>
+            </div>
+            <div class="log-of-table mt-3">
+              <table class="table table-bordered past-table">
+                <thead style="background: #e4edf5 !important">
+                  <th style="min-width: 120px !important">Date</th>
+                  <th style="min-width: 120px !important">Time</th>
+                  <th style="min-width: 120px !important">Pain Score</th>
+                  <th style="min-width: 120px !important">Pre-analgesia</th>
+                  <th style="min-width: 120px !important">
+                    Pain Score(With Movement)
+                  </th>
+                  <th style="min-width: 120px !important">
+                    Pre-analgesia(With Movement)
+                  </th>
+                  <th style="min-width: 120px !important">
+                    Continuous Infusion
+                  </th>
+                  <th style="min-width: 120px !important">Bolus Given</th>
+                  <th style="min-width: 120px !important">
+                    Total Amount Given
+                  </th>
+                  <th style="min-width: 120px !important">Reservoir Volume</th>
+                  <th style="min-width: 120px !important">Rate of Infusion</th>
+                  <th style="min-width: 120px !important">Demand Dose (mg)</th>
+                  <th style="min-width: 120px !important">
+                    Time Interval (Min)
+                  </th>
+                  <th style="min-width: 120px !important">Maximum Doses /h</th>
+                  <th style="min-width: 120px !important">Dose Given</th>
+                  <th style="min-width: 120px !important">Dose Attempted</th>
+                  <th style="min-width: 120px !important">Clinic Bolus</th>
+                  <th style="min-width: 120px !important">
+                    Total Amount Given
+                  </th>
+                  <th style="min-width: 120px !important">
+                    Infusion rate (ml/hr)
+                  </th>
+                  <th style="min-width: 120px !important">Level of Block</th>
+                  <th style="min-width: 120px !important">
+                    Total Amount Given
+                  </th>
+                  <th style="min-width: 120px !important">Other</th>
+                  <th style="min-width: 120px !important">Oral</th>
+                  <th style="min-width: 120px !important">Transdermal</th>
+                  <th style="min-width: 120px !important">Sedation Level</th>
+                  <th style="min-width: 120px !important">Side Effects</th>
+                  <th style="min-width: 120px !important">
+                    Assessment done by
+                  </th>
+                </thead>
+                <tbody style="background-color: #fbfcff">
+                  <tr
+                    style="background-color: #fbfcff"
+                    *ngFor="let item of flowSheetAssessmentList"
+                  >
+                    <td [title]="item.FloDate | date : 'dd/MM/yyyy'">
+                      {{ item.FloDate | date : "dd/MM/yyyy" }}
+                    </td>
+                    <td [title]="item.FloTime">{{ item.FloTime }}</td>
+                    <td [title]="item.FloPsRest">
+                      {{ item.FloPsRest }}
+                    </td>
+                    <td [title]="item.FloPreRest">
+                      {{ item.FloPreRest }}
+                    </td>
+                    <td [title]="item.FloPsMovement">
+                      {{ item.FloPsMovement }}
+                    </td>
+                    <td [title]="item.FloPreMovement">
+                      {{ item.FloPreMovement }}
+                    </td>
+                    <td [title]="item.FloIvInfusion">
+                      {{ item.FloIvInfusion }}
+                    </td>
+                    <td [title]="item.FloIvBolus">{{ item.FloIvBolus }}</td>
+                    <td [title]="item.FloIvAmount">
+                      {{ item.FloIvAmount }}
+                    </td>
+                    <td [title]="item.FloPcaReservoir">
+                      {{ item.FloPcaReservoir }}
+                    </td>
+                    <td [title]="item.FloPcaInfusion">
+                      {{ item.FloPcaInfusion }}
+                    </td>
+                    <td [title]="item.FloPcaDemandDose">
+                      {{ item.FloPcaDemandDose }}
+                    </td>
+                    <td [title]="item.FloPcaTimeInterval">
+                      {{ item.FloPcaTimeInterval }}
+                    </td>
+                    <td [title]="item.FloPcaMaximumDoses">
+                      {{ item.FloPcaMaximumDoses }}
+                    </td>
+                    <td [title]="item.FloPcaDoseGiven">
+                      {{ item.FloPcaDoseGiven }}
+                    </td>
+                    <td [title]="item.FloPcaDoseAttempted">
+                      {{ item.FloPcaDoseAttempted }}
+                    </td>
+                    <td [title]="item.FloPcaClinicalBolus">
+                      {{ item.FloPcaClinicalBolus }}
+                    </td>
+                    <td [title]="item.FloPcaAmount">{{ item.FloPcaAmount }}</td>
+                    <td [title]="item.FloEpiInfusion">
+                      {{ item.FloEpiInfusion }}
+                    </td>
+                    <td [title]="item.FloEpiBlock">{{ item.FloEpiBlock }}</td>
+                    <td [title]="item.FloEpiAmount">{{ item.FloEpiAmount }}</td>
+                    <td [title]="item.FloOther">{{ item.FloOther }}</td>
+                    <td [title]="item.FloOral">{{ item.FloOral }}</td>
+                    <td [title]="item.FloTransdermal">
+                      {{ item.FloTransdermal }}
+                    </td>
+                    <td style="padding: 0 !important">
+                      <ng-select
+                        class="side-effect-table"
+                        [readonly]="true"
+                        [(ngModel)]="item.FloSedation"
+                        [ngModelOptions]="{ standalone: true }"
+                      >
+                        <ng-option
+                          *ngFor="let item of flowSheetSedation"
+                          [value]="item.value"
+                          >{{ item.label }}</ng-option
+                        >
+                      </ng-select>
+                    </td>
+                    <td style="padding: 0 !important">
+                      <ng-select
+                        class="side-effect-table"
+                        [readonly]="true"
+                        [(ngModel)]="item.FloSideEffects"
+                        [ngModelOptions]="{ standalone: true }"
+                      >
+                        <ng-option
+                          *ngFor="let item of flowSheetSideEffects"
+                          [value]="item.value"
+                          >{{ item.label }}</ng-option
+                        >
+                      </ng-select>
+                    </td>
+                    <td [title]="item.FloAssessedBy">
+                      {{ item.FloAssessedBy }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- <div class="taskbar">
+  <button (click)="setTool('pencil')">
+    <img src="assets/pencil-icon.png" alt="Pencil" />
+  </button>
+  <button (click)="setTool('eraser')">
+    <img src="assets/eraser-icon.png" alt="Eraser" />
+  </button>
+  <button (click)="clearCanvas()">
+    <img src="assets/clear-icon.png" alt="Clear" />
+  </button>
+</div>
+<div class="canvas-container">
+  <img src="assets/img/pain-location.png" alt="Body Diagram" class="background-image" />
+  <canvas #canvas class="drawing-canvas"
+          (mousedown)="startDrawing($event)"
+          (mouseup)="endDrawing()"
+          (mousemove)="draw($event)"
+          (mouseleave)="endDrawing()"></canvas>
+</div> -->

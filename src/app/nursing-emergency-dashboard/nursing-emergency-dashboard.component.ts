@@ -233,19 +233,19 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.getWardList();
-    // this.countOfNavModules();
-    this.getLabExtraction();
-    this.receiveDataFromChild();
-    this.getMedicationcount();
-    this.countForPhysicianOrder();
-    // this.getNoConsumablesSetCount();
-    this.receiveDataFromPhysicianOrdersChild();
-    this.getMissedDocsCount();
-    this.getNoConsumablesCount();
+    // this.getWardList();
+    // // this.countOfNavModules();
+    // this.getLabExtraction();
+    // this.receiveDataFromChild();
+    // this.getMedicationcount();
+    // this.countForPhysicianOrder();
+    // // this.getNoConsumablesSetCount();
+    // this.receiveDataFromPhysicianOrdersChild();
+    // this.getMissedDocsCount();
+    // this.getNoConsumablesCount();
 
     //this.selectModule('checkin');
-    this.getAssignSurgeonList();
+    // this.getAssignSurgeonList();
     this.dropdownSettingsForLDRAttendPhy = {
       singleSelection: false,
       enableCheckAll: true,
@@ -288,7 +288,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     if (this.queryNav == 'Treatmentarea') {
       this.selectModule('treatmentarea');
       this.encounterId = this.einri + this.falnr + this.lfdnr;
-      this.getDataPatient();
+      // this.getDataPatient();
     } else {
       this.selectModule('checkin');
     }

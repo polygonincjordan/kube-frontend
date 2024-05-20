@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -93,14 +93,14 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
             <div class="d-flex doc-header">
               <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
                   style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Document</h2>
+              <h2 style="font-weight: bold;">Current Visit Documentss</h2>
             </div>
             <div class="scrollable-div" [style.height.px]="getContentHeight()">
               <!-- Emergency Nursing Document -->
@@ -248,6 +248,21 @@
             </div>
           </div>
 
+            <!-- Pain Assessment -->
+            <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+              (click)="selectAssessment('isPainAssessment',latestBridentScaleList[0])">
+            <div class="col-md-4"> Pain Assessment :</div>
+            <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+            <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+              {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+            </div>
+            <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+            <div class="col-md-1">
+              <img src="assets/img/document-html.png" width="15px" height="15px"
+                (click)="getPatientProfileData(latestBridentScaleList[0])"
+                *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+            </div>
+          </div>
 
 
             </div>
@@ -307,6 +322,7 @@
       <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
       <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
+      <app-pain-assessment-nur-emr *ngIf="openPainAssement"></app-pain-assessment-nur-emr>
     </div>
 
     <ng-template #releasepdfmodal>

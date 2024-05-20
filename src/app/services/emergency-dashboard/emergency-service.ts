@@ -985,4 +985,9 @@ export class EmergencyService {
     });
   }
 
+  createPainAssessmentDoc(json): Observable<any> {
+    return this.http.post(this.url + 'savePainAssessment', json, {
+      withCredentials: true,
+    });
+  }
 }

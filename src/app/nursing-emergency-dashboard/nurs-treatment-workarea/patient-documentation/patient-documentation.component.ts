@@ -27,6 +27,7 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
 import { NurseEndorsementComponent } from './nurse-endorsement/nurse-endorsement.component';
 import { SurgicalPassportComponent } from './surgical-passport/surgical-passport.component';
+import { PainAssessmentNurEmrComponent } from './pain-assessment-nur-emr/pain-assessment-nur-emr.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -45,6 +46,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
   @ViewChild(NurseEndorsementComponent) NurseEndorsmentComp: NurseEndorsementComponent;
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
+  @ViewChild(PainAssessmentNurEmrComponent) PainAssessmentComp: PainAssessmentNurEmrComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -63,6 +65,7 @@ export class PatientDocumentationComponent implements OnInit {
   emergencynursingdoc = false;
   facepainscale = false;
   bradenscale = false;
+  isPainAssessment = false;
   numericratingscale = false;
   fallrisk = false;
   functional = false;
@@ -133,6 +136,7 @@ export class PatientDocumentationComponent implements OnInit {
   apiJson: any;
   public RedirectionType: any;
   public ActionType: any;
+  openPainAssement: any = false;
 
   constructor(
     private modalService: BsModalService,
@@ -437,6 +441,7 @@ export class PatientDocumentationComponent implements OnInit {
       'numericratingscale': { numericratingscale: true, selectedDocName: 'Numeric rating scale(more than 8 years)' },
       'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
       'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
+      'isPainAssessment': { isPainAssessment: true, selectedDocName: 'Pain Assesment' },
     };
 
     // Reset all flags to false initially
@@ -452,7 +457,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.numericratingscale = false;
     this.bradenscale = false;
     this.emergencynursingdoc = false;
-
+    this.isPainAssessment = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
       const assessment = assessments[name];
@@ -788,6 +793,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.surgicalPassport = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
+    this.isPainAssessment = false;
+    this.openPainAssement = false;
 
     this.openPhyAssess = false;
     this.openMedReport = false;
@@ -1150,6 +1157,47 @@ export class PatientDocumentationComponent implements OnInit {
         this.EmergencyNursingDocumentComp.directReleaseNReleaseEmergencyNursingDocument('1');
       }
     }
+    else if (this.isPainAssessment) {
+        if (action == 'create') {
+          this.openPainAssement = true;
+        } else if (action == 'edit') {
+          if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+            this.openPainAssement = true;
+            let valueObj = {
+              type: WordType.EditBS,
+              docKey: this.selectedDocData.Dockey
+            }
+            this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+          } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+            this.sharedService.waringSwallModel(`The document is already released`)
+          } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+            this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+          }
+        } else if (action == 'delete') {
+          if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+            this.sharedService.waringSwallModel(`The document is already released`)
+          }
+        } else if (action == 'release') {
+          if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+            this.sharedService.waringSwallModel(`The document is already released`)
+          }
+        } else if (action == 'copy') {
+          if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+            this.openBradenScale = true;
+            let valueObj = {
+              type: WordType.CopyBS,
+              docKey: this.selectedDocData.Dockey
+            }
+            this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+          }
+        } else if (action == 'createandrelease') {
+          // this.openBradenScale = true;
+          //this.NumericRatingScaleComp.ngOnInit();
+          // this.createAndRelease();
+        }
+      
+    }
+    
   }
 
   public openModalForAttachment() {
@@ -1344,11 +1392,24 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openSurgicsalPassport) {
         this.SurgicalPassComp.createSurgicalPassDoc().then((formValue: any) => {
+
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+          
+      if (this.openPainAssement) {
+        this.PainAssessmentComp.savePainAssessmentDoc().then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
         });
       }
     }
