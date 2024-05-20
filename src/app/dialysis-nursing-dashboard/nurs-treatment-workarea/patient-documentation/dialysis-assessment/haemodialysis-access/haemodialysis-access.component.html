@@ -49,11 +49,11 @@
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <input type="checkbox" class="mr-3" formControlName="HaSOther">
-              <label for="" class="m-0">Other</label>
+              <input type="checkbox" class="mr-3" formControlName="HaSOther" (change)="checkChange($event)">
+              <label for="" class="m-0" >Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100">
+              <input type="text" class="w-100" formControlName="HaSOtherTxt" [disabled]="!this.patientDocService.isHaSOtherChecked">
             </div>
           </div>
         </div>
@@ -114,11 +114,11 @@
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <input type="checkbox" class="mr-3" formControlName="HaAOther">
+              <input type="checkbox" class="mr-3" formControlName="HaAOther" (change)="checkChange($event)">
               <label for="" class="m-0">Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100">
+              <input type="text" class="w-100" formControlName="HaAOtherTxt"  [disabled]="!this.patientDocService.isHaAOtherChecked">
             </div>
           </div>
         </div>
@@ -250,11 +250,11 @@
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <input type="checkbox" class="mr-3" formControlName="DiOther">
+              <input type="checkbox" class="mr-3" formControlName="DiOther" (change)="checkChange($event)">
               <label for="" class="m-0">Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="DiOtherTxt">
+              <input type="text" class="w-100" formControlName="DiOtherTxt" [disabled]="!this.patientDocService.isDiOtherChecked">
             </div>
           </div>
         </div>

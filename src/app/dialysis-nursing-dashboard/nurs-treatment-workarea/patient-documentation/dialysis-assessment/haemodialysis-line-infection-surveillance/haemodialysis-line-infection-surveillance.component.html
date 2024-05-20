@@ -150,76 +150,76 @@
           </div>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
-              <label for="" class="mx-3">Yes</label>
+              <input type="radio" formControlName="Redness" value="yes" name="Redness">
+              <label for="" class="mx-3" value="yes">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
-              <label for="" class="mx-3">No</label>
+              <input type="radio" formControlName="Redness" value="no" name="Redness">
+              <label for="" class="mx-3" value="no">No</label>
             </div>
           </div>
           <div class="score-input d-flex flex-column">
             <label for="" class="mb-4">Score</label>
-            <input type="text" name="" id="" formControlName="RednessScore">
+            <input type="text" name="" id="" formControlName="RednessScore" [disabled]="hemolineinfection.value.Redness == no">
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Swekking</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Swelling" value="yes" name="Swelling">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Swelling" value="no" name="Swelling">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="SwellingScore">
+            <input type="text" name="" id="" formControlName="SwellingScore" [disabled]="hemolineinfection.value.Swelling == no">
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Exuade/Crust</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Exuade" value="yes" name="Exuade">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Exuade" value="no" name="Exuade">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="ExuadeScore">
+            <input type="text" name="" id="" formControlName="ExuadeScore" [disabled]="hemolineinfection.value.Exuade == no">
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Pus</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Pus" value="yes" name="Pus">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Pus" value="no" name="Pus">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="PusScore">
+            <input type="text" name="PusScore" id="PusScore" formControlName="PusScore" [disabled]="hemolineinfection.value.Pus == no">
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Total Score</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="TotalScore" value="yes" name="TotalScore">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="TotalScore" value="no" name="TotalScore">
               <label for="" class="mx-3">No</label>
             </div>
           </div>

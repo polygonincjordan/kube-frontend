@@ -10,6 +10,7 @@ import { HaemodialysisMonitoringComponent } from './haemodialysis-monitoring/hae
 import { HaemodialysisLineInfectionSurveillanceComponent } from './haemodialysis-line-infection-surveillance/haemodialysis-line-infection-surveillance.component';
 import { PostDialysisEvaluationComponent } from './post-dialysis-evaluation/post-dialysis-evaluation.component';
 import { PreDialysisAssessmentComponent } from './pre-dialysis-assessment/pre-dialysis-assessment.component';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 
 @Component({
   selector: 'dialysis-assessment',
@@ -40,7 +41,7 @@ export class DialysisAssessmentComponent implements OnInit {
 
 
 
-  constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute,) {
+  constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute, private patientDocService : PatientDocumentationService) {
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
     if (data != null) {
       if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {

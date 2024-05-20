@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,22 +14,15 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
   isChecked: boolean = false;
   hemolineinfection: FormGroup<any>;
   private subscription: Subscription;
-  constructor() { }
+  no: any;
+
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
+  this.hemolineinfection = this.patientDocService.dialysisAssecementForm
+
+  }
 
   ngOnInit(): void {
-    this.hemolineinfection = new FormGroup({
-      HaemodialysisLine : new FormControl(),
-      OtherTxt : new FormControl(),
-      Redness : new FormControl(),
-      RednessScore : new FormControl(),
-      Swelling : new FormControl(),
-      SwellingScore : new FormControl(),
-      Exuade : new FormControl(),
-      ExuadeScore : new FormControl(),
-      Pus : new FormControl(),
-      PusScore : new FormControl(),
-      TotalScore : new FormControl(),
-    });
+
   }
 
   toggleTextBox() {

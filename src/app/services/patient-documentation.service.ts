@@ -1,0 +1,167 @@
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { HaemodialysisMonitoringComponent } from '../dialysis-nursing-dashboard/nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-monitoring/haemodialysis-monitoring.component';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PatientDocumentationService {
+  isHaSOtherChecked:boolean;
+  isHaAOtherChecked:boolean;
+  isDiOtherChecked:boolean;
+
+dialysisAssecementForm: FormGroup = new FormGroup({
+      Dockey : new FormControl(""),
+      Dtid : new FormControl("ZMED_DIALY"),
+      Einri : new FormControl("1000"),
+      Patnr :new FormControl("1101"),
+      Falnr : new FormControl("1402"),
+      Lfdnr : new FormControl("00001"),
+      Orgdo : new FormControl("F21IUAMC"),
+  // hemodialysis-access
+      HaSMonday:new FormControl(),
+      HaSTuesday:new FormControl(),
+      HaSWednesday:new FormControl(),
+      HaSThursday:new FormControl(),
+      HaSFriday:new FormControl(),
+      HaSSaturday:new FormControl(),
+      HaSSunday:new FormControl(),
+      HaSOther:new FormControl(),
+      HaSOtherTxt:new FormControl(),
+      BloodDraw:new FormControl(),
+      HaAFistula:new FormControl(),
+      HaAGraft:new FormControl(),
+      HaACatheter:new FormControl(),
+      HaATransLumbar:new FormControl(),
+      HaAPd:new FormControl(),
+      HaAOther:new FormControl(),
+      HaAOtherTxt:new FormControl(),
+      FistulaLocation:new FormControl(),
+      AvRightForearm:new FormControl(),
+      AvRightUpperarm:new FormControl(),
+      AvRightAnterior:new FormControl(),
+      AvRightThigh:new FormControl(),
+      AvRightLower:new FormControl(),
+      AvLeftForearm:new FormControl(),
+      AvLeftUpperarm:new FormControl(),
+      AvLeftAnterior:new FormControl(),
+      AvLeftThigh :new FormControl(),
+      AvLeftLower :new FormControl(),
+      DiSubclavianLeft : new FormControl(),
+      DiSubclavianRight : new FormControl(),
+      DiInternalLeft : new FormControl(),
+      DiInternalRight : new FormControl(),
+      DiFemoralLeft : new FormControl(),
+      DiFemoralRight :new FormControl(),
+      DiTransLumbar : new FormControl(),
+      DiOther : new FormControl(),
+      DiOtherTxt : new FormControl(),
+      FiBruising : new FormControl(),
+      FiClotted : new FormControl(),
+      FiAudible : new FormControl(),
+      FiPalpable :new FormControl(),
+      FiInflammed : new FormControl(),
+      FiPatent : new FormControl(),
+      FiNoAudible : new FormControl(),
+      FiNoPalpable : new FormControl(),
+      AvAudibleBruit : new FormControl(),
+      AvPalpableThrill :new FormControl(),
+      AvPatent : new FormControl(),
+      AvNoAudible : new FormControl(),
+      AvNoPalpable : new FormControl(),
+      AvPulsePresent : new FormControl(),
+      AvPulseAbsent :new FormControl(),
+      DressingChanged : new FormControl(),
+
+      // pre-dialysis assessment
+      TreatmentDate : new FormControl(),
+      TreatmentTime : new FormControl(),
+      DialysisFDate: new FormControl(),
+      DialysisFTime : new FormControl(),
+      BloodTest : new FormControl(),
+      PrescribedTime : new FormControl(),
+      DryWeight : new FormControl(),
+      Machine : new FormControl(),
+      BloodFlow :new FormControl(),
+      PostWeight : new FormControl(),
+      Treatment : new FormControl(),
+      TypeDialyzer : new FormControl(),
+      NewDryWeight : new FormControl(),
+      Height :new FormControl(),
+      WeightLoss : new FormControl(),
+      PreWeight: new FormControl(),
+      OxygenSaturation : new FormControl(),
+      OxygenFlow : new FormControl(),
+      OxygenDelivery : new FormControl(),
+      OralTemp : new FormControl(),
+      AxillaryTemp : new FormControl(),
+      PulseRate: new FormControl(),
+      RespiratoryRate: new FormControl(),
+      SystolicBloodSitting : new FormControl(),
+      DiastolicBloodSitting: new FormControl(),
+      ArterialPressure : new FormControl(),
+      SystolicBloodStanding : new FormControl(),
+      DiastolicBloodStanding : new FormControl(),
+
+      // Haemodialysis-line-monitoring
+      HaemodialysisLine : new FormControl(),
+      OtherTxt : new FormControl(),
+      Redness : new FormControl(),
+      RednessScore : new FormControl(),
+      Swelling : new FormControl(),
+      SwellingScore : new FormControl(),
+      Exuade : new FormControl(),
+      ExuadeScore : new FormControl(),
+      Pus : new FormControl(),
+      PusScore : new FormControl(),
+      TotalScore : new FormControl(),
+
+      // Haemodialysis-Monitoring
+      ChronicDone:new FormControl(),
+      AcuteDone:new FormControl(),
+      InternationalDone:new FormControl(),
+
+      // post-dialysis-monitoring
+      PTreatmentDate : new FormControl(),
+      PTreatmentTime : new FormControl(),
+      PPostWeight: new FormControl(),
+      PAxillaryTemp : new FormControl(),
+      POralTemp : new FormControl(),
+      PPulseRate : new FormControl(),
+      PRespiratoryRate : new FormControl(),
+      POxygenSaturation  :new FormControl(),
+      POxygenFlow : new FormControl(),
+      POxygenDelivery : new FormControl(),
+      PSystolicBloodSitting :new FormControl(),
+      PDiastolicBloodSitting : new FormControl(),
+      PArterialPressure : new FormControl(),
+      PSystolicBloodStanding : new FormControl(),
+      PDiastolicBloodStanding : new FormControl(),
+      PBvp : new FormControl(),
+      PKt : new FormControl(),
+      PDialyserClearance : new FormControl(),
+      PHypotension : new FormControl(),
+})
+
+  constructor() { }
+
+
+checkChange(name: string, checked: boolean){
+  if(name === "HaSOther"){
+    this.isHaSOtherChecked = checked;
+    if(!this.isHaSOtherChecked){
+      this.dialysisAssecementForm.get("HasOtherTxt").patchValue("")
+    }
+  }else if(name === "HaAOther"){
+    this.isHaAOtherChecked = checked;
+    if(!this.isHaAOtherChecked){
+      this.dialysisAssecementForm.get("HaAOtherTxt").patchValue("")
+    }
+  }else if(name === "DiOther"){
+    this.isDiOtherChecked = checked;
+    if(!this.isDiOtherChecked){
+      this.dialysisAssecementForm.get("DiOtherTxt").patchValue("")
+    }
+  }
+}
+}
