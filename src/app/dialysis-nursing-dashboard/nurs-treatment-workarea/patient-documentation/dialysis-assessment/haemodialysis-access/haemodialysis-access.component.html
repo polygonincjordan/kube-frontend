@@ -49,11 +49,11 @@
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <input type="checkbox" class="mr-3" formControlName="HaSOther" (change)="checkChange($event)">
+              <input type="checkbox" class="mr-3" name="HaSOther" formControlName="HaSOther" (change)="patientDocService.checkChange($event)">
               <label for="" class="m-0" >Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="HaSOtherTxt" [disabled]="!this.patientDocService.isHaSOtherChecked">
+              <input type="text" class="w-100" formControlName="HaSOtherTxt" [readonly]="!this.patientDocService.isHaSOtherChecked">
             </div>
           </div>
         </div>
@@ -62,16 +62,16 @@
         <h4 class="m-0">Blood draw Precaution</h4>
         <div class="col-3">
           <div class="d-flex align-items-center">
-            <ng-select class="w-100" formControlName="BloodDraw">
-              <ng-option>Yes</ng-option>
-              <ng-option>No</ng-option>
+            <ng-select class="w-100" formControlName="BloodDraw" (change)="onSelectionChange($event)">
+              <ng-option value="1">Yes</ng-option>
+              <ng-option value="0">No</ng-option>
             </ng-select>
           </div>
         </div>
         <div class="col-3">
           <div class="d-flex align-items-center">
             <label for="" class="mr-3 mb-0">Specify</label>
-            <input type="text" class="w-100">
+            <input type="text" class="w-100" formControlName="BloodDrawTxt" [readonly]="!isEnableSelection">
           </div>
         </div>
         <div class="col-3">
@@ -114,11 +114,11 @@
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <input type="checkbox" class="mr-3" formControlName="HaAOther" (change)="checkChange($event)">
+              <input type="checkbox" class="mr-3" name="HaAOther" formControlName="HaAOther" (change)="patientDocService.checkChange($event)">
               <label for="" class="m-0">Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="HaAOtherTxt"  [disabled]="!this.patientDocService.isHaAOtherChecked">
+              <input type="text" class="w-100" formControlName="HaAOtherTxt"  [readonly]="!this.patientDocService.isHaAOtherChecked">
             </div>
           </div>
         </div>
@@ -250,11 +250,11 @@
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <input type="checkbox" class="mr-3" formControlName="DiOther" (change)="checkChange($event)">
+              <input type="checkbox" class="mr-3" name="DiOther" formControlName="DiOther" (change)="patientDocService.checkChange($event)">
               <label for="" class="m-0">Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="DiOtherTxt" [disabled]="!this.patientDocService.isDiOtherChecked">
+              <input type="text" class="w-100" formControlName="DiOtherTxt" [readonly]="!this.patientDocService.isDiOtherChecked">
             </div>
           </div>
         </div>
@@ -299,7 +299,7 @@
         </div>
         <div class="col-3 my-2">
           <div class="d-flex align-items-center">
-            <input type="checkbox" class="mr-3" formControlName="DiOther">
+            <input type="checkbox" class="mr-3" formControlName="FiNoAudible">
             <label for="" class="m-0">No Audible bruit</label>
           </div>
         </div>
@@ -359,9 +359,9 @@
         <h4>Dressing Changed</h4>
         <div class="col-3 my-lg-2">
           <div class="d-flex align-items-center w-100">
-            <ng-select class="w-100">
-              <ng-option>Yes</ng-option>
-              <ng-option>No</ng-option>
+            <ng-select class="w-100" formControlName="DressingChanged">
+              <ng-option value="1">Yes</ng-option>
+              <ng-option value="0">No</ng-option>
             </ng-select>
           </div>
         </div>

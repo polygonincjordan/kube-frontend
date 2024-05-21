@@ -8,13 +8,17 @@
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Treatment Date</label>
-                <input type="text" class="w-100" formControlName="TreatmentDate">
+                <input type="text" class="w-100" formControlName="TreatmentDate" #dp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
               </div>
             </div>
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Dialysis First Date</label>
-                <input type="text" class="w-100" formControlName="DialysisFDate">
+                <input type="text" class="w-100" formControlName="DialysisFDate" #dp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
               </div>
             </div>
             <div class="col-4 pr-5">
@@ -32,14 +36,14 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Prescribed Time</label>
-                <input type="text" class="w-100" formControlName="PrescribedTime">
+                <input type="number" class="w-100" formControlName="PrescribedTime">
                 <label for="" class="unites-labels text-nowrap m-0">hr</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Dry Weight</label>
-                <input type="text" class="w-100" formControlName="DryWeight">
+                <input type="number" class="w-100" formControlName="DryWeight">
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
@@ -54,14 +58,14 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Blood Flow Rate</label>
-                <input type="text" class="w-100" formControlName="BloodFlow">
+                <input type="number" class="w-100" formControlName="BloodFlow">
                 <label for="" class="unites-ml text-nowrap m-0" style="right: 5px;">ml/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Previous Post Weight</label>
-                <input type="text" class="w-100" formControlName="PostWeight">
+                <input type="number" class="w-100" formControlName="PostWeight">
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
@@ -85,14 +89,14 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">New Dry Weight</label>
-                <input type="text" class="w-100" formControlName="NewDryWeight">
+                <input type="number" class="w-100" formControlName="NewDryWeight">
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Height</label>
-                <input type="text" class="w-100" formControlName="Height">
+                <input type="number" class="w-100" formControlName="Height">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 27px;">cm</label>
               </div>
             </div>
@@ -101,7 +105,7 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Desired Weight Loss</label>
-                <input type="text" class="w-100" formControlName="WeightLoss">
+                <input type="number" class="w-100" formControlName="WeightLoss">
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
@@ -130,21 +134,21 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Pre Weight</label>
-                <input type="text" class="w-100" formControlName="PreWeight">
+                <input type="number" class="w-100" formControlName="PreWeight">
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Oxygen Saturation</label>
-                <input type="text" class="w-100" formControlName="OxygenSaturation">
+                <input type="number" class="w-100" formControlName="OxygenSaturation">
                 <label for="" class="unites-labels text-nowrap m-0">%</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Oxygen Flow</label>
-                <input type="text" class="w-100" formControlName="OxygenFlow">
+                <input type="number" class="w-100" formControlName="OxygenFlow">
                 <label for="" class="unites-ml text-nowrap m-0" style="right: 10px;">L/min</label>
               </div>
             </div>
@@ -164,14 +168,14 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Oral Temp</label>
-                <input type="text" class="w-100" formControlName="OralTemp">
+                <input type="number" class="w-100" formControlName="OralTemp">
                 <label for="" class="unites-labels text-nowrap m-0">*C</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Axillary Temp</label>
-                <input type="text" class="w-100" formControlName="AxillaryTemp">
+                <input type="number" class="w-100" formControlName="AxillaryTemp">
                 <label for="" class="unites-labels text-nowrap m-0">*C</label>
               </div>
             </div>
@@ -180,21 +184,21 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Pulse Rate</label>
-                <input type="text" class="w-100" formControlName="PulseRate">
+                <input type="number" class="w-100" formControlName="PulseRate">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 17px;">bpm</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Respiratoty Rate</label>
-                <input type="text" class="w-100" formControlName="RespiratoryRate">
+                <input type="number" class="w-100" formControlName="RespiratoryRate">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Systolic Blood Pressre Sitting</label>
-                <input type="text" class="w-100" formControlName="SystolicBloodSitting">
+                <input type="number" class="w-100" formControlName="SystolicBloodSitting">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>
@@ -203,21 +207,21 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Diastolic Blood Pressre Sitting</label>
-                <input type="text" class="w-100" formControlName="DiastolicBloodSitting">
+                <input type="number" class="w-100" formControlName="DiastolicBloodSitting">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Mean Arterial Pressure</label>
-                <input type="text" class="w-100" formControlName="ArterialPressure">
+                <input type="number" class="w-100" formControlName="ArterialPressure">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Systolic Bllod Pressure Standing</label>
-                <input type="text" class="w-100" formControlName="SystolicBloodStanding">
+                <input type="number" class="w-100" formControlName="SystolicBloodStanding">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>
@@ -226,7 +230,7 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Diastolic Bllod Pressure Standing</label>
-                <input type="text" class="w-100" formControlName="DiastolicBloodStanding">
+                <input type="number" class="w-100" formControlName="DiastolicBloodStanding">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>

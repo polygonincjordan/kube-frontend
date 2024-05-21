@@ -13,18 +13,26 @@ import { Subscription } from 'rxjs';
 export class HaemodialysisAccessComponent implements OnInit {
 haemodial: FormGroup<any>;
 private subscription: Subscription;
+isEnableSelection: boolean = false;
 
 constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
   this.haemodial = this.patientDocService.dialysisAssecementForm
 }
 
   ngOnInit(): void {
+    this.patientDocService.isHaSOtherChecked = false;
+    this.patientDocService.isHaAOtherChecked = false;
+    this.patientDocService.isDiOtherChecked = false;
   }
 
-checkChange(event: Event){
-  const {name,checked} = event.target as HTMLInputElement;
-  this.patientDocService.checkChange(name,checked)
-}
+  onSelectionChange(event){
+    if(event === '1'){
+      this.isEnableSelection = true;
+    }else{
+      this.isEnableSelection = false;
+      this.haemodial.get("BloodDrawTxt").patchValue("")
+    }
+  }
 
   createAssessment() {
     console.log(this.haemodial.value);

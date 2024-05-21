@@ -14,7 +14,9 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   private subscription: Subscription;
   haemomonitoring: FormGroup<any>;
   hemolineinfection: any;
-  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) { }
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
+    this.haemomonitoring = this.patientDocService.dialysisAssecementForm
+   }
 
   ngOnInit(): void {
 

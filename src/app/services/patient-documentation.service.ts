@@ -9,6 +9,7 @@ export class PatientDocumentationService {
   isHaSOtherChecked:boolean;
   isHaAOtherChecked:boolean;
   isDiOtherChecked:boolean;
+  isOtherHaemodialysisLine: boolean;
 
 dialysisAssecementForm: FormGroup = new FormGroup({
       Dockey : new FormControl(""),
@@ -29,6 +30,7 @@ dialysisAssecementForm: FormGroup = new FormGroup({
       HaSOther:new FormControl(),
       HaSOtherTxt:new FormControl(),
       BloodDraw:new FormControl(),
+      BloodDrawTxt: new FormControl(),
       HaAFistula:new FormControl(),
       HaAGraft:new FormControl(),
       HaACatheter:new FormControl(),
@@ -115,6 +117,7 @@ dialysisAssecementForm: FormGroup = new FormGroup({
       Pus : new FormControl(),
       PusScore : new FormControl(),
       TotalScore : new FormControl(),
+      Plann: new FormControl(),
 
       // Haemodialysis-Monitoring
       ChronicDone:new FormControl(),
@@ -146,22 +149,79 @@ dialysisAssecementForm: FormGroup = new FormGroup({
   constructor() { }
 
 
-checkChange(name: string, checked: boolean){
+checkChange(event:Event){
+  const {name,checked} = event.target as HTMLInputElement;
+
+  debugger
   if(name === "HaSOther"){
     this.isHaSOtherChecked = checked;
-    if(!this.isHaSOtherChecked){
-      this.dialysisAssecementForm.get("HasOtherTxt").patchValue("")
+    if(!checked){
+      this.dialysisAssecementForm.get("HaSOtherTxt").patchValue("")
     }
   }else if(name === "HaAOther"){
     this.isHaAOtherChecked = checked;
-    if(!this.isHaAOtherChecked){
+    if(!checked){
       this.dialysisAssecementForm.get("HaAOtherTxt").patchValue("")
     }
   }else if(name === "DiOther"){
     this.isDiOtherChecked = checked;
-    if(!this.isDiOtherChecked){
+    if(!checked){
       this.dialysisAssecementForm.get("DiOtherTxt").patchValue("")
     }
   }
 }
+
+radioSelectionChange(event:Event){
+  // console.log(event);
+  const {name,value} = event.target as HTMLInputElement
+  console.log(name,value);
+
+  if(name === 'Redness'){
+    if(value === "yes"){
+      this.dialysisAssecementForm.get('RednessScore').patchValue(1)
+    }else{
+      this.dialysisAssecementForm.get('RednessScore').patchValue(0)
+    }
+  }else if(name === "Swelling"){
+    if(value === "yes"){
+      this.dialysisAssecementForm.get('SwellingScore').patchValue(1)
+    }else{
+      this.dialysisAssecementForm.get('SwellingScore').patchValue(0)
+    }
+  }else if(name === "Exuade"){
+    if(value === "yes"){
+      this.dialysisAssecementForm.get('ExuadeScore').patchValue(2)
+    }else{
+      this.dialysisAssecementForm.get('ExuadeScore').patchValue(0)
+    }
+  }else if(name === "Pus"){
+    if(value === "yes"){
+      this.dialysisAssecementForm.get('PusScore').patchValue(4)
+    }else{
+      this.dialysisAssecementForm.get('PusScore').patchValue(0)
+    }
+  }else if(name === "HaemodialysisLine"){
+    this.dialysisAssecementForm.get('OtherTxt').patchValue("")
+  }
+
+  this.setTotal()
+}
+
+setTotal(){
+  const total = Number(this.dialysisAssecementForm.get('RednessScore').value) + Number(this.dialysisAssecementForm.get('SwellingScore').value) + Number(this.dialysisAssecementForm.get('ExuadeScore').value) + Number(this.dialysisAssecementForm.get('PusScore').value);
+
+  let plann;
+
+  if(total === 0 || total === 1){
+    plann = 'Exit Site infection likely';
+  }else if(total === 2 || total === 3){
+    plann = 'Exit site may be inflamed & at risk of infection. Continue to observe. Consider a review of current exit care plan.';
+  }else if(total >= 4){
+    plann = 'Exit site infection likely – Swab Site and consider empiric antibiotic X 2 weeks. Review swab report in 48 hours & modify antibiotic therapy accordingly.';
+  }
+
+  this.dialysisAssecementForm.get('TotalScore').patchValue(total);
+  this.dialysisAssecementForm.get('Plann').patchValue(plann);
+}
+
 }

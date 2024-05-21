@@ -16,13 +16,12 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
   private subscription: Subscription;
   no: any;
 
-  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
   this.hemolineinfection = this.patientDocService.dialysisAssecementForm
 
   }
 
   ngOnInit(): void {
-
   }
 
   toggleTextBox() {
