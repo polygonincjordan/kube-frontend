@@ -1,0 +1,353 @@
+<div class="parent-box">
+    
+ 
+
+    <div class="glosgow">
+        <div class="glosgow-box">
+            <div class="row ml-0 mr-0 selection-section ">
+                <div class="container-fluid">
+    
+                    <div class="row">
+                        <h4>Scale information</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 d-flex align-items-center" style="gap: 5%;">
+                            <label class="input-lable">Scale Name</label>
+                            <input type="text" value="Pediatric Early Warning Score" disabled="true" readonly="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-7 d-flex align-items-center" style="gap: 5%;">
+                            <div style="width: 10%;"></div>
+                            <div class="d-flex " style="gap: 3%;">
+                                <div class="date-function w-100">
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                    <input #drp="bsDatepicker" bsDatepicker [(ngModel)]="currDate"  placeholder="dd.mm.yyyy" [bsConfig]="{
+                                  dateInputFormat: 'DD.MM.YYYY',
+                                  showWeekNumbers: false
+                                }" [disabled]="true" [readOnly]="true" class="form-control" />
+                                </div>
+    
+                                <input type="time" disabled="true" readonly="true" [(ngModel)]="currentTime" class="form-control" />
+                            </div>
+                        </div>
+    
+    
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-7 d-flex align-items-center" style="gap: 5%;">
+                            <div style="width: 10%;"></div>
+                            <div class="d-flex w-100 pl-2" style="gap:1.5%;">
+                                <input type="text" [(ngModel)]="attendPhy" disabled="true" readonly="true" class="form-control" style="width: 35%;" />
+    
+                                <input type="text" [(ngModel)]="userName" disabled="true" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+    
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form [formGroup]="pediatricFrom">
+    <div class="glosgow">
+        <div class="glosgow-box">
+            <div class="row ml-0 mr-0 selection-section ">
+                <div class="container-fluid">
+    
+                    <div class="row">
+                        <h4>Pediatric Early Warnnig score</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="container">
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-md-2 d-flex align-items-center">
+                                        <p class="warning-heading">Behaviour</p>
+                                    </div>
+                                    <div class="col-md-10 d-flex justify-content-between">
+                                        <div class="col-md-3">
+                                            <div class="header">(3)</div>
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" formControlName="bpain" (change)="handelCheck($event,'behaviour',3)" id="reducedPain">
+                                                    <label class="form-check-label" for="reducedPain">Reduced responsiveness
+                                                        to pain</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" (change)="handelCheck($event,'behaviour',3)" formControlName="bLethargic" id="lethargic">
+                                                    <label class="form-check-label" for="lethargic">Lethargic</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" (change)="handelCheck($event,'behaviour',3)" formControlName="bConfused" id="confused">
+                                                    <label class="form-check-label" for="confused">Confused</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="header">(2)</div>
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" (change)="handelCheck($event,'behaviour',2)" formControlName="bDifficultConsole" id="irritableDifficult">
+                                                    <label class="form-check-label" for="irritableDifficult">Irritable,
+                                                        difficult to console</label>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="header">(1)</div>
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="irritableConsolable" formControlName="bConsolable" (change)="handelCheck($event,'behaviour',1)">
+                                                    <label class="form-check-label" for="irritableConsolable">Irritable, but
+                                                        consolable</label>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="header">(0)</div>
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" (change)="handelCheck($event,'behaviour',0)" formControlName="bPlaying" id="playing">
+                                                    <label class="form-check-label" for="playing">Playing</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" (change)="handelCheck($event,'behaviour',0)"  formControlName="bAlert" id="alertBaseline">
+                                                    <label class="form-check-label" for="alertBaseline">Alert at
+                                                        baseline</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="sleepingAppropriately" formControlName="bSleeping" (change)="handelCheck($event,'behaviour',0)" >
+                                                    <label class="form-check-label" for="sleepingAppropriately">Sleeping
+                                                        appropriately</label>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-md-2 d-flex align-items-center">
+                                        <p class="warning-heading">Cardiovascular</p>
+                                    </div>
+                                    <div class="col-md-10 d-flex justify-content-between">
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="bradycardia" (change)="handelCheck($event,'cardio',3)" formControlName="cBradycardia">
+                                                    <label class="form-check-label" for="bradycardia">Bradycardia</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="greyorCyanotic" (change)="handelCheck($event,'cardio',3)" formControlName="cGreyMottled">
+                                                    <label class="form-check-label" for="greyorCyanotic">Grey or Cyanotic
+                                                        and Mottled</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="tachycardiaof30" (change)="handelCheck($event,'cardio',3)" formControlName="cTachycardia30">
+                                                    <label class="form-check-label" for="tachycardiaof30">Tachycardia of 30
+                                                        above normal rate</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="greyCyanotic" (change)="handelCheck($event,'cardio',2)" formControlName="cGreyCyanotic">
+                                                    <label class="form-check-label" for="greyCyanotic">Grey or
+                                                        Cyanotic</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="capillary4s" (change)="handelCheck($event,'cardio',2)" formControlName="cCapillary4">
+                                                    <label class="form-check-label" for="capillary4s">Capillary Refill 4
+                                                        seconds</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="paleDusky" (change)="handelCheck($event,'cardio',1)" formControlName="cPaleDusky">
+                                                    <label class="form-check-label" for="paleDusky">Pale or Dusky</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="capillary3s" (change)="handelCheck($event,'cardio',1)" formControlName="cCapillary3">
+                                                    <label class="form-check-label" for="capillary3s">Capillary Refill 3
+                                                        seconds</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="pink" formControlName="cPink" (change)="handelCheck($event,'cardio',0)">
+                                                    <label class="form-check-label" for="pink">Pink</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="capillary12s" formControlName="cCapillary1" (change)="handelCheck($event,'cardio',0)">
+                                                    <label class="form-check-label" for="capillary12s">Capillary Refill 1-2
+                                                        seconds</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-md-2 d-flex align-items-center">
+                                        <p class="warning-heading">Respiratory</p>
+                                    </div>
+                                    <div class="col-md-10 d-flex justify-content-between">
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="fiftyPlus" (change)="handelCheck($event,'respiratory',3)" formControlName="r50">
+                                                    <label class="form-check-label" for="fiftyPlus">50+%FiO2 or
+                                                        8+L/min</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="rrge5" (change)="handelCheck($event,'respiratory',3)" formControlName="rRrGe5">
+                                                    <label class="form-check-label" for="rrge5">RR GE 5 below normal
+                                                        parameters</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="severeR" (change)="handelCheck($event,'respiratory',3)" formControlName="rSevere">
+                                                    <label class="form-check-label" for="severeR">Severe Retractions</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="grunting" (change)="handelCheck($event,'respiratory',3)" formControlName="rGrunting">
+                                                    <label class="form-check-label" for="grunting">Grunting</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="audiableIE" (change)="handelCheck($event,'respiratory',3)" formControlName="rAudible">
+                                                    <label class="form-check-label" for="audiableIE">Audiable I/E wheeze
+                                                        without</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check"> 
+                                                    <input class="form-check-input" type="checkbox" id="fourtyPlus" (change)="handelCheck($event,'respiratory',2)" formControlName="r40">
+                                                    <label class="form-check-label" for="fourtyPlus">40+%FiO2 or 6+L/min
+                                                        or</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="rr20"  (change)="handelCheck($event,'respiratory',2)" formControlName="rRr20">
+                                                    <label class="form-check-label" for="rr20">RR>20 above normal
+                                                        parameters</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="modaRateRetra"  (change)="handelCheck($event,'respiratory',2)" formControlName="rModerate">
+                                                    <label class="form-check-label" for="modaRateRetra">Modarate
+                                                        Retractions</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="wheezeEntire"  (change)="handelCheck($event,'respiratory',2)" formControlName="rWheeze">
+                                                    <label class="form-check-label" for="wheezeEntire">Wheeze entire
+                                                        Expiratory phase or audiable w/o stethoscope</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="thiryPlus"  (change)="handelCheck($event,'respiratory',1)" formControlName="r30">
+                                                    <label class="form-check-label" for="thiryPlus">30+%Fio2 or 3+L/min
+                                                        or</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="rr10" (change)="handelCheck($event,'respiratory',1)" formControlName="rRr10">
+                                                    <label class="form-check-label" for="rr10">RR>10 above normal
+                                                        parameters</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="mildRetra" (change)="handelCheck($event,'respiratory',1)" formControlName="rMild">
+                                                    <label class="form-check-label" for="mildRetra">Mild Retractions</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="endExp" (change)="handelCheck($event,'respiratory',1)" formControlName="rEndExpiratory">
+                                                    <label class="form-check-label" for="endExp">End Expiratory wheeze or
+                                                        audible only with stethoscope</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="checkbox-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="rateNormal" (change)="handelCheck($event,'respiratory',0)" formControlName="rRateNormal">
+                                                    <label class="form-check-label" for="rateNormal">Rate normal</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="noRetractions"  (change)="handelCheck($event,'respiratory',0)" formControlName="rNoRetractions">
+                                                    <label class="form-check-label" for="noRetractions">No
+                                                        Retractions</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="cleareBreath" (change)="handelCheck($event,'respiratory',0)" formControlName="rClearBreath">
+                                                    <label class="form-check-label" for="cleareBreath">Clear breath sound -
+                                                        no wheeze</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 pl-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="score2For15" (change)="handelCheck($event,'15minscore',2)" formControlName="scoreEvery15">
+                                        <label class="form-check-label" for="score2For15">Score 2 for every 15 min
+                                            nebs(includes continuous nebs)</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 pl-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="score2Vomitting" (change)="handelCheck($event,'persistentScore',2)" formControlName="scorePersistent">
+                                        <label class="form-check-label" for="score2Vomitting">Score 2 for persistent post-op
+                                            vomitting</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="glosgow">
+        <div class="glosgow-box">
+            <div class="row ml-0 mr-0 selection-section ">
+                <div class="container-fluid">
+    
+                    <div class="row">
+                        <h4>Scale Result</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 d-flex align-items-center" style="gap: 5%;">
+                            <label class="input-lable">Total Score</label>
+                            <input type="text" formControlName="totalScore" readonly="true" class="form-control w-25" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-7 d-flex align-items-center" style="gap: 5%;">
+                            <label class="input-lable">Description</label>
+                            <input type="text" formControlName="desc" [disabled]="true" readonly="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-7 d-flex align-items-center" style="gap: 5%;">
+                            <label class="input-lable">Comment&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="form-control" formControlName="nrsComments" />
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</form> 
+</div>

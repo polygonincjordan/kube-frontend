@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPediatricEarlyWarningScale">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPediatricEarlyWarningScale"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -93,7 +93,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPediatricEarlyWarningScale">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -248,6 +248,24 @@
             </div>
           </div>
 
+          <!-- pediatric early warning scale -->
+          <div
+          [ngClass]="pediatricEarlyWarningScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+          style="font-weight: bold;"
+          (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
+          <div class="col-md-4">Pediatric Early Warning Scale {{pediatricEarlyWarningList[0]?.Zversion ?
+            dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
+          <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
+          <div class="col-md-2" title="{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}">
+            {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+          </div>
+          <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
+          <div class="col-md-1">
+            <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
+              (click)="getPatientProfileData(nurseEndorsementList[0])"
+              *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+          </div>
+        </div>
 
 
             </div>
@@ -301,6 +319,7 @@
 
         <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
         <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
+        <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
 
       <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
       <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
