@@ -48,6 +48,7 @@ export interface commonKeyValuePariExt1 {
   label?: string,
   TriagePriorityCode?: string,
   TriageColor?: string
+  isActive?: boolean
 }
 
 
