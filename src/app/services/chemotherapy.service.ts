@@ -164,7 +164,7 @@ export class ChemotherapyService {
     })
   }
 
- initForm() {
+initForm() {
   this.chemotherapyForm = new FormGroup({
     doseReductionOption: new FormControl(''),
     percentage: new FormControl(''),

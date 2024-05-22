@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray,  FormControl, FormGroup } from '@angular/forms';
 import { HaemodialysisMonitoringComponent } from '../dialysis-nursing-dashboard/nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-monitoring/haemodialysis-monitoring.component';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class PatientDocumentationService {
   isDiOtherChecked:boolean;
   isOtherHaemodialysisLine: boolean;
 
-dialysisAssecementForm: FormGroup = new FormGroup({
+  dialysisAssecementForm = new FormGroup({
       Dockey : new FormControl(""),
       Dtid : new FormControl("ZMED_DIALY"),
       Einri : new FormControl("1000"),
@@ -19,7 +19,7 @@ dialysisAssecementForm: FormGroup = new FormGroup({
       Falnr : new FormControl("1402"),
       Lfdnr : new FormControl("00001"),
       Orgdo : new FormControl("F21IUAMC"),
-  // hemodialysis-access
+      // hemodialysis-access
       HaSMonday:new FormControl(),
       HaSTuesday:new FormControl(),
       HaSWednesday:new FormControl(),
@@ -144,12 +144,19 @@ dialysisAssecementForm: FormGroup = new FormGroup({
       PKt : new FormControl(),
       PDialyserClearance : new FormControl(),
       PHypotension : new FormControl(),
+
+      // tomonitor line
+
+      TOMONITOR: new FormArray([])
 })
 
-  constructor() { }
+  constructor() {
+   }
 
 
-checkChange(event:Event){
+
+
+  checkChange(event:Event){
   const {name,checked} = event.target as HTMLInputElement;
 
   debugger
@@ -204,7 +211,9 @@ radioSelectionChange(event:Event){
     this.dialysisAssecementForm.get('OtherTxt').patchValue("")
   }
 
-  this.setTotal()
+  if(name !== "HaemodialysisLine"){
+    this.setTotal()
+  }
 }
 
 setTotal(){

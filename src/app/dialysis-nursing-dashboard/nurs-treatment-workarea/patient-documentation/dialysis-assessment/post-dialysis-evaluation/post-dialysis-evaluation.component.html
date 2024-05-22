@@ -80,10 +80,10 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label  class="text-nowrap m-0">Oxygen Delivery</label>
                 <ng-select class="w-50" formControlName="POxygenDelivery">
-                  <ng-option>Nasal Cannula</ng-option>
-                  <ng-option>Oxygen Face Mask</ng-option>
-                  <ng-option>Face Mask with 02</ng-option>
-                  <ng-option>Venturi Mask</ng-option>
+                  <ng-option value="Nasal Cannula">Nasal Cannula</ng-option>
+                  <ng-option value="Oxygen Face Mask">Oxygen Face Mask</ng-option>
+                  <ng-option value="Face Mask with 02">Face Mask with 02</ng-option>
+                  <ng-option value="Venturi Mask">Venturi Mask</ng-option>
                 </ng-select>
               </div>
             </div>
@@ -100,8 +100,8 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label  class="text-nowrap m-0">Systolic Blood Pressure Sitting</label>
                 <ng-select class="w-50" formControlName="PSystolicBloodSitting">
-                  <ng-option>High Flux</ng-option>
-                  <ng-option>Low Flux</ng-option>
+                  <ng-option value="High Flux">High Flux</ng-option>
+                  <ng-option value="Low Flux">Low Flux</ng-option>
                 </ng-select>
                 <label  class="unites-labels text-nowrap m-0" style="right: 15px;">mmHg</label>
               </div>
@@ -147,9 +147,9 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label  class="text-nowrap m-0">Dialyse Clearance</label>
                 <ng-select class="w-50" formControlName="PDialyserClearance">
-                  <ng-option>Good</ng-option>
-                  <ng-option>Poor</ng-option>
-                  <ng-option>Clotted</ng-option>
+                  <ng-option value="Good">Good</ng-option>
+                  <ng-option value="Poor">Poor</ng-option>
+                  <ng-option value="Clotted">Clotted</ng-option>
                 </ng-select>
               </div>
             </div>
@@ -159,8 +159,8 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label  class="text-nowrap m-0">Hypotenstion</label>
                 <ng-select class="w-50" formControlName="PHypotension">
-                  <ng-option>Yes</ng-option>
-                  <ng-option>No</ng-option>
+                  <ng-option value="1">Yes</ng-option>
+                  <ng-option value="0">No</ng-option>
                 </ng-select>
               </div>
             </div>
