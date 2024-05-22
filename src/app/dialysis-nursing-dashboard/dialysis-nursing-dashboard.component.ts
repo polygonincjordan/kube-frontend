@@ -342,7 +342,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
         if (_success) {
           // _success = JSON.parse(_success._body);
 
-          this.getWards = _success.d.results;
+          // this.getWards = _success.d.results;
         }
       },
       (_error: any) => { }

@@ -6,6 +6,11 @@ import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 import { HaemodialysisAccessComponent } from './haemodialysis-access/haemodialysis-access.component';
 import { ActivatedRoute } from '@angular/router';
+import { HaemodialysisMonitoringComponent } from './haemodialysis-monitoring/haemodialysis-monitoring.component';
+import { HaemodialysisLineInfectionSurveillanceComponent } from './haemodialysis-line-infection-surveillance/haemodialysis-line-infection-surveillance.component';
+import { PostDialysisEvaluationComponent } from './post-dialysis-evaluation/post-dialysis-evaluation.component';
+import { PreDialysisAssessmentComponent } from './pre-dialysis-assessment/pre-dialysis-assessment.component';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 
 @Component({
   selector: 'dialysis-assessment',
@@ -18,17 +23,26 @@ export class DialysisAssessmentComponent implements OnInit {
   public PreDialysis: boolean = false;
   public HaemodialysisLineInfectionSurveillance: boolean = false;
   public HaemodialysisMonitoring: boolean = false;
+  public PostDialysisEvaluation: boolean = false;
   public dockeyValue: any = null;
   private actionTypeSubscription$: Subscription;
   @ViewChild(HaemodialysisAccessComponent) HaemodialysisAccess: HaemodialysisAccessComponent;
+  @ViewChild(HaemodialysisMonitoringComponent) HaemodialysisMonitoringC: HaemodialysisMonitoringComponent;
+  @ViewChild(HaemodialysisLineInfectionSurveillanceComponent) HaemodialysisLineInfectionSurveillanceC: HaemodialysisMonitoringComponent;
+  @ViewChild(PostDialysisEvaluationComponent) PostDialysisEvaluationC: PostDialysisEvaluationComponent;
+  @ViewChild(PreDialysisAssessmentComponent) PreDialysisAssessmentC: PreDialysisAssessmentComponent;
+
+
+
   patnr: any;
   einri: any;
   falnr: any;
   lfdnr: any;
 
 
-  constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute,) {
-     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+
+  constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute, private patientDocService : PatientDocumentationService) {
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
     if (data != null) {
       if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
         if (data.value.type == WordType.EditGGCS && data.value.docKey != '') {
@@ -62,11 +76,6 @@ export class DialysisAssessmentComponent implements OnInit {
 
   LatestDocSet() {
       const json = {
-        // Einri: this.einri,
-        // Patnr: this.patnr,
-        // Falnr: this.falnr,
-        // Lfdbw: this.lfdnr
-
         Einri: '1000',
         Patnr: '0000001101',
         Falnr: '0000001402',
@@ -82,18 +91,7 @@ export class DialysisAssessmentComponent implements OnInit {
 
   DailysisSet(){
     const json = {
-      Einri : "1000",
-      Patnr : "1402",
-      Falnr : "1101",
-      Lfdnr : "00001",
-      Dockey : "MED000000000000001000000079300000",
-      Zversion : "00",
-      AttendPhy : "9000000020",
-      PhyNm : "Matar, Zaid",
-      DocStatus : "2",
-      StatusTxt : "Released",
-      DocDate : "\/Date(1714608000000)\/",
-      DocTime : "PT10H11M11S"
+      Dockey : "MED000000000000001000002976100000",
     };
     this.emergencyService.getDailysisSet(json).subscribe((data: any) =>{
       console.log(data);
@@ -117,19 +115,28 @@ export class DialysisAssessmentComponent implements OnInit {
 
   tabPanelNavigation(tabName: any){
     if (tabName && tabName === 'haemodialysis') {
-      this.Haemodialysis = true; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;
+      this.Haemodialysis = true; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;
     } else if (tabName && tabName === 'preDialysis') {
-      this.Haemodialysis = false; this.PreDialysis = true; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;
+      this.Haemodialysis = false; this.PreDialysis = true; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;
     } else if (tabName && tabName === 'haemodialysis-line-infection-surveillance'){
-      this.HaemodialysisLineInfectionSurveillance = true ; this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisMonitoring = false;
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = true ; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;
     } else if (tabName && tabName === 'haemodialysis-monitoring'){
-      this.HaemodialysisMonitoring = true ; this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false;
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false;this.HaemodialysisMonitoring = true ; this.PostDialysisEvaluation = false;
+    } else if (tabName && tabName === 'postdialysisevaluation'){
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;  this.PostDialysisEvaluation = true;
     }
   }
 
-  createAssessment(): Promise<any> {
-    return new Promise((resolve, reject) => {
-    this.HaemodialysisAccess.createAssessment()
-    });
+  createAssessment():Promise<any>{
+    return new Promise<any>((resolve, reject) => {
+      resolve({
+        ...this.HaemodialysisAccess.haemodial.value,
+        ...this.HaemodialysisMonitoringC.haemomonitoring.value,
+        ...this.HaemodialysisLineInfectionSurveillanceC.hemolineinfection.value,
+        ...this.PostDialysisEvaluationC.postdialevalution.value,
+        ...this.PreDialysisAssessmentC.predialysis.value
+      })
+    })
+
   }
 }

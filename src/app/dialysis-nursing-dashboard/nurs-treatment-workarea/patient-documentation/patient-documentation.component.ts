@@ -26,6 +26,7 @@ import { SharedService } from '@services/shared.service';
 import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
 import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-assessment.component';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -140,6 +141,7 @@ export class PatientDocumentationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private sharedService: SharedService,
+    private patientDocService: PatientDocumentationService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -1159,13 +1161,17 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openAssessment) {
-        this.DialysisAssessment.createAssessment().then((formValue: any) => {
-          if (formValue) {
-            this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error creating Glasgow coma scale:', error);
-        });
+        // this.DialysisAssessment.createAssessment().then((formValue: any) => {
+        //   if (formValue) {
+        //     this.refresh();
+        //     console.log(formValue);
+
+        //   }
+        // }).catch((error: any) => {
+        //   console.error('Error creating Glasgow coma scale:', error);
+        // });
+        console.log(this.patientDocService.dialysisAssecementForm.value);
+
       }
     }
     else if (this.actionType == 'edit') {
