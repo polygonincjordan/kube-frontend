@@ -104,6 +104,7 @@ export class ErTriageComponent implements OnInit {
   duplicates: any = [];
   encounterId: any;
   selectedTableDetails: any;
+  selectedTriageDetails: any;
   patientDetails: Patient;
   maritalStatus: any;
   socialHabitList: any[];
@@ -132,7 +133,7 @@ export class ErTriageComponent implements OnInit {
     // this.openModalForMain();
   }
 
-  public openModalForMain(data?: any, documentStatus?: any) {
+  public openModalForMain(data?: any, documentStatus?: any, triageDetails?: any) {
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl allergy-modal-size allergy-model-height',
       ignoreBackdropClick: true,
@@ -140,72 +141,15 @@ export class ErTriageComponent implements OnInit {
     this.toAllergyArr = [];
     this.toVitalsArr = [];
     this.scalesList = [
-      {
-        ScaleType: 'Glasgow Coma Scale',
-        LastScore: '',
-        description: '',
-        Datetimee: '',
-        value: '1',
-        Dockey: '',
-      },
-      {
-        ScaleType: 'Face pain scale',
-        LastScore: '',
-        description: '',
-        Datetimee: '',
-        value: '2',
-        Dockey: '',
-      },
-      {
-        ScaleType: 'Numeric rating scale(more than 8 years)',
-        LastScore: '',
-        description: '',
-        Datetimee: '',
-        value: '3',
-        Dockey: '',
-      },
+      { ScaleType: 'Glasgow Coma Scale', LastScore: '', description: '', Datetimee: '', value: '1', Dockey: '', },
+      { ScaleType: 'Face pain scale', LastScore: '', description: '', Datetimee: '', value: '2', Dockey: '', },
+      { ScaleType: 'Numeric rating scale(more than 8 years)', LastScore: '', description: '', Datetimee: '', value: '3', Dockey: '', },
     ];
     this.socialHistoryList = [
-      {
-        Habitid: '',
-        value: '0',
-        label: 'Alcohol',
-        Status: '',
-        Quantity: '',
-        Duration: '',
-        Year: '',
-        DateFrom: null,
-      },
-      {
-        value: '1',
-        label: 'Drugs',
-        Status: '',
-        Quantity: '',
-        Duration: '',
-        Year: '',
-        DateFrom: null,
-        Habitid: '',
-      },
-      {
-        value: '2',
-        label: 'Tobacco',
-        Status: '',
-        Quantity: '',
-        Duration: '',
-        Year: '',
-        DateFrom: null,
-        Habitid: '',
-      },
-      {
-        value: '3',
-        label: 'Other',
-        Status: '',
-        Quantity: '',
-        Duration: '',
-        Year: '',
-        DateFrom: null,
-        Habitid: '',
-      },
+      { Habitid: '', value: '0', label: 'Alcohol', Status: '', Quantity: '', Duration: '', Year: '', DateFrom: null, },
+      { value: '1', label: 'Drugs', Status: '', Quantity: '', Duration: '', Year: '', DateFrom: null, Habitid: '', },
+      { value: '2', label: 'Tobacco', Status: '', Quantity: '', Duration: '', Year: '', DateFrom: null, Habitid: '', },
+      { value: '3', label: 'Other', Status: '', Quantity: '', Duration: '', Year: '', DateFrom: null, Habitid: '', },
     ];
     this.modalRefForAllergy = this.modalService.show(this.allergyModal, config);
     this.selectedTableDetails = data;
@@ -219,11 +163,12 @@ export class ErTriageComponent implements OnInit {
     this.storageService.setFalnr(data.Falnr);
     this.storageService.setLfdnr(data.Lfdbw ? data.Lfdbw : data.Lfdnr);
     this.storageService.setPatnr(data.Patnr);
+    this.selectedTriageDetails = triageDetails;
     if (documentStatus) {
       this.Zversion = documentStatus.Zversion;
       this.ZMode = 'U';
       this.statusDraftDocDetails(documentStatus);
-    }
+    };
     this.getDataPatient();
     this.initForm();
     this.getSocialHistoryHabitList();
@@ -261,7 +206,7 @@ export class ErTriageComponent implements OnInit {
       Accompanied: triageValue?.Accompanied ? triageValue?.Accompanied : '',
       AccompaniedTxt: triageValue?.AccompaniedTxt ? triageValue?.AccompaniedTxt : '',
       Language: triageValue?.Language ? triageValue?.Language : 'English',
-      TriagePriority: triageValue?.TriagePriority ? triageValue?.TriagePriority : this.selectedTableDetails.TriagePriorityCode,
+      TriagePriority: this.selectedTriageDetails?.TriagePriorityCode || (triageValue?.TriagePriority ?? ''),
       ArrivalTime: triageValue?.ArrivalTime ? this.parseTime(triageValue?.ArrivalTime) : this.getTime(this.selectedTableDetails.ZeitIntern),
       ChiefComplaint: triageValue?.ChiefComplaint ? triageValue?.ChiefComplaint : '',
       PsyNoProblem: triageValue?.PsyNoProblem ? triageValue?.PsyNoProblem : false,
@@ -316,24 +261,22 @@ export class ErTriageComponent implements OnInit {
 
   // if traige list status is Draft then call this API
   statusDraftDocDetails(documentStatus) {
-    this.emergencyService
-      .getTriageDataIfStatusDraft(documentStatus)
-      .subscribe((res: any) => {
-        this.initForm(res?.d?.results[0]);
-        this.toAllergyArr = res?.d?.results[0].TOALLERGIES?.results;
-        this.toVitalsArr = res?.d?.results[0].TOVITALSIGNS.results;
-        res?.d?.results[0].TOSCALE.results.forEach((element) => {
-          this.scalesList.forEach((res: any) => {
-            if (element.ScaleType == res.ScaleType && element.LastScore) {
-              res.Datetimee = element.Datetimee,
-                res.Dockey = element.Dockey,
-                res.description = element.ScoreDesc,
-                res.LastScore = element.LastScore,
-                res.ScaleType = element.ScaleType
-            }
-          })
+    this.emergencyService.getTriageDataIfStatusDraft(documentStatus).subscribe((res: any) => {
+      this.initForm(res?.d?.results[0]);
+      this.toAllergyArr = res?.d?.results[0].TOALLERGIES?.results;
+      this.toVitalsArr = res?.d?.results[0].TOVITALSIGNS.results;
+      res?.d?.results[0].TOSCALE.results.forEach((element) => {
+        this.scalesList.forEach((res: any) => {
+          if (element.ScaleType == res.ScaleType && element.LastScore) {
+            res.Datetimee = element.Datetimee,
+              res.Dockey = element.Dockey,
+              res.description = element.ScoreDesc,
+              res.LastScore = element.LastScore,
+              res.ScaleType = element.ScaleType
+          }
         })
-      });
+      })
+    });
   }
 
   // social history habit list API for table
