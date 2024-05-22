@@ -890,6 +890,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  createPediatricWarninfScaletDetail(json): Observable<any> {
+    return this.http.post(this.url + 'postOfPrdiatricWarningScale', json, {
+      withCredentials: true,
+    });
+  }
   updateNurseEndDetail(json): Observable<any> {
     return this.http.post(this.url + 'updateNurseEndDetail', json, {
       withCredentials: true,
@@ -915,6 +920,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  getPediatricWarningScoreDetail(json): Observable<any> {
+    return this.http.get(this.url + `getPediatricEarlyWarningScore?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   getSurgicalPassPortDetail(json): Observable<any> {
     return this.http.get(this.url + `getSurgicalPassPortDetail?Dockey=${json}`, {
       withCredentials: true,
@@ -927,6 +937,17 @@ export class EmergencyService {
   }
   createSurgicalPassDetail(json): Observable<any> {
     return this.http.post(this.url + 'postOfSurgicalPassp', json, {
+      withCredentials: true,
+    });
+  }
+
+  copySurgicalPassP(json) {
+    return this.http.put(this.url + 'updateSurgicalPassPortDetail', json, {
+      withCredentials: true,
+    });
+  }
+  copyPediatricWarningScore(json) {
+    return this.http.put(this.url + 'copyPediatricWarningScore', json, {
       withCredentials: true,
     });
   }

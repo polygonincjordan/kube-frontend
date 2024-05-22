@@ -110,6 +110,7 @@ import { FacePainScalePopupComponent } from './nurs-treatment-workarea/patient-d
 import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/nurse-endorsement/nurse-endorsement.component';
 import { SurgicalPassportComponent } from './nurs-treatment-workarea/patient-documentation/surgical-passport/surgical-passport.component';
 import { DiagnosisTabComponent } from './nurs-treatment-workarea/patient-documentation/surgical-passport/diagnosis-tab/diagnosis-tab.component';
+import { PediatricEarlyWarningComponent } from './nurs-treatment-workarea/patient-documentation/pediatric-early-warning/pediatric-early-warning.component';
 
 const route: Routes = [
   {
@@ -198,6 +199,7 @@ const route: Routes = [
     NurseEndorsementComponent,
     SurgicalPassportComponent,
     DiagnosisTabComponent,
+    PediatricEarlyWarningComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
