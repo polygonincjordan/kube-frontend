@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -27,6 +27,8 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
 import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-assessment.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { DataService } from '@services/data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -141,7 +143,8 @@ export class PatientDocumentationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private sharedService: SharedService,
-    private patientDocService: PatientDocumentationService
+    private patientDocService: PatientDocumentationService,
+    private dataService: DataService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -172,6 +175,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
+
+    this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
+    this.patientDocService.dialysisAssecementForm.reset();
   }
 
   getLatestAssessment() {
@@ -1170,8 +1176,13 @@ export class PatientDocumentationComponent implements OnInit {
         // }).catch((error: any) => {
         //   console.error('Error creating Glasgow coma scale:', error);
         // });
-        console.log(this.patientDocService.dialysisAssecementForm.value);
+        this.patientDocService.dialysisAssecementForm.get('DocStatus').setValue('1');
 
+        this.dataService.post(`${environment.url}DailysisSet`, this.patientDocService.dialysisAssecementForm.value).then((resp)=>{
+          console.log(resp);
+        }).catch((err)=>{
+          console.log(err);
+        })
       }
     }
     else if (this.actionType == 'edit') {
