@@ -136,10 +136,10 @@ export class DialysisAssessmentComponent implements OnInit {
   createAssessment():Promise<any>{
     return new Promise<any>((resolve, reject) => {
       resolve({
-        ...this.HaemodialysisAccess.haemodial.value,
-        ...this.HaemodialysisMonitoringC.haemomonitoring.value,
+        ...this.HaemodialysisAccess.hemodialysis.value,
+        ...this.HaemodialysisMonitoringC.haemodialysisMonitoring.value,
         ...this.HaemodialysisLineInfectionSurveillanceC.hemolineinfection.value,
-        ...this.PostDialysisEvaluationC.postdialevalution.value,
+        ...this.PostDialysisEvaluationC.postDialysisMonitoring.value,
         ...this.PreDialysisAssessmentC.predialysis.value
       })
     })

@@ -1167,21 +1167,20 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openAssessment) {
-        // this.DialysisAssessment.createAssessment().then((formValue: any) => {
-        //   if (formValue) {
-        //     this.refresh();
-        //     console.log(formValue);
+        const toMonitor = this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value
+         const dAssessmentForm = this.patientDocService.dialysisAssecementForm
 
-        //   }
-        // }).catch((error: any) => {
-        //   console.error('Error creating Glasgow coma scale:', error);
-        // });
+        toMonitor.forEach(monitor => {
+            monitor.Timee = this.formatTime(monitor.Timee)
+        });
 
-        console.log(this.patientDocService.dialysisAssecementForm);
-        
-
-        const json = {
-          ...this.patientDocService.dialysisAssecementForm.value,
+        const payload = {
+          ...dAssessmentForm.controls['hemodialysis'].value,
+          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
+          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
+          ...dAssessmentForm.controls['peritonealForm'].value,
+          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
+          ...dAssessmentForm.controls['preDialysis'].value,
           Dockey: '',
           Dtid: 'ZMED_DIALY',
           Einri: '1000',
@@ -1191,18 +1190,17 @@ export class PatientDocumentationComponent implements OnInit {
           Orgdo: 'F21IUAMC',
           AttendPhy: '9000000020',
           DocStatus: '1',
-          TreatmentDate: this.formatDate(this.patientDocService.dialysisAssecementForm.get('TreatmentDate').value),
-          DialysisFDate: this.formatDate(this.patientDocService.dialysisAssecementForm.get('DialysisFDate').value),
-          PTreatmentDate: this.formatDate(this.patientDocService.dialysisAssecementForm.get('PTreatmentDate').value),
-          TreatmentTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('TreatmentTime').value),
-          DialysisFTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('DialysisFTime').value),
-          PTreatmentTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('PTreatmentTime').value),
-          PrescribedTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('PrescribedTime').value)
+          TreatmentDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value),
+          DialysisFDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value),
+          TreatmentTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value),
+          DialysisFTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value),
+          PTreatmentDate: this.formatDate(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentDate').value),
+          PTreatmentTime: this.formatTime(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentTime').value),
+          PrescribedTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value),
+          TOMONITOR: toMonitor,
         };
-
-        console.log(json);
         
-        this.emergencyService.postDailysisSet(json).subscribe((resp)=>{
+        this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
           console.log(resp);
         }, (error)=>{
           console.log(error);

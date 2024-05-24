@@ -1,5 +1,5 @@
 <div class="monitoring-main">
-  <form [formGroup]="haemomonitoring">
+  <form [formGroup]="haemodialysisArr">
     <div class="monitoring-wrapper">
       <table class="w-100 mt-4">
         <thead>
@@ -34,7 +34,8 @@
               </div>
             </td>
             <td>
-              <input type="time" step="1" class="border-0 px-3 py-2" name="Timee" placeholder="00:00:00" style="width: 140px;" formControlName="Timee">
+              <input type="text" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" class="border-0 px-3 py-2" name="Timee" style="width: 140px;" formControlName="Timee">
             </td>
             <td>
               <input type="text" class="border-0 px-3" style="width: 80px;" formControlName="Bfr">
@@ -84,7 +85,7 @@
         </tbody>
       </table>
     </div>
-    <div class="selectors mt-4" [formGroup]="haemomonitoring">
+    <div class="selectors mt-4" [formGroup]="haemodialysisMonitoring">
       <div class="container-fluid p-0">
         <label class="tag-line">Select Yes the type of Dialiysis done will add the charges</label>
         <div class="row mt-3">

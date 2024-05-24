@@ -12,11 +12,11 @@ import { Subscription } from 'rxjs';
 })
 export class PostDialysisEvaluationComponent implements OnInit {
   private subscription: Subscription;
-  postdialevalution: FormGroup<any>;
+  postDialysisMonitoring: FormGroup<any>;
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
-    this.postdialevalution = this.patientDocService.dialysisAssecementForm;
-    this.patientDocService.dialysisAssecementForm.get("PTreatmentDate").patchValue(new Date());
-    this.patientDocService.dialysisAssecementForm.get("PTreatmentTime").patchValue(new Date());
+    this.postDialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'];
+    this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].get("PTreatmentDate").patchValue(new Date());
+    this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].get("PTreatmentTime").patchValue(new Date());
    }
 
   ngOnInit(): void {
@@ -24,6 +24,6 @@ export class PostDialysisEvaluationComponent implements OnInit {
   }
 
   createAssessment() {
-    console.log(this.postdialevalution.value);
+    console.log(this.postDialysisMonitoring.value);
   }
 }

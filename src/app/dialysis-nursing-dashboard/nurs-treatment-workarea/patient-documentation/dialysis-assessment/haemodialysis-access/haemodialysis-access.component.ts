@@ -11,12 +11,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./haemodialysis-access.component.scss']
 })
 export class HaemodialysisAccessComponent implements OnInit {
-haemodial: FormGroup<any>;
+hemodialysis: FormGroup<any>;
 private subscription: Subscription;
 isEnableSelection: boolean = false;
 
-constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
-  this.haemodial = this.patientDocService.dialysisAssecementForm
+constructor(private sharedService: SharedService, private emergencyService: EmergencyService, public patientDocService: PatientDocumentationService) {
+  this.hemodialysis = this.patientDocService.dialysisAssecementForm.controls['hemodialysis'];
 }
 
   ngOnInit(): void {
@@ -30,12 +30,12 @@ constructor(private sharedService: SharedService, private emergencyService: Emer
       this.isEnableSelection = true;
     }else{
       this.isEnableSelection = false;
-      this.haemodial.get("BloodDrawTxt").patchValue("")
+      this.hemodialysis.get("BloodDrawTxt").patchValue("")
     }
   }
 
   createAssessment() {
-    console.log(this.haemodial.value);
+    console.log(this.hemodialysis.value);
   }
 
 }

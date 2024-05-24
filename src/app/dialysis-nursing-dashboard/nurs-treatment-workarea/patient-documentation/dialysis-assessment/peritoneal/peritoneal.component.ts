@@ -14,7 +14,7 @@ export class PeritonealComponent implements OnInit {
   peritonealForm: FormGroup<any>;
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
-    this.peritonealForm = this.patientDocService.dialysisAssecementForm
+    this.peritonealForm = this.patientDocService.dialysisAssecementForm.controls['peritonealForm']
   }
 
   ngOnInit(): void {

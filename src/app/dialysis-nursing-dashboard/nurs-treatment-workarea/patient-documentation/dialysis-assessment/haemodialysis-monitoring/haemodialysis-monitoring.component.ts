@@ -12,12 +12,14 @@ import swal from 'sweetalert2';
 })
 export class HaemodialysisMonitoringComponent implements OnInit {
   private subscription: Subscription;
-  haemomonitoring: FormGroup<any>;
+  haemodialysisMonitoring: FormGroup<any>;
+  haemodialysisArr : FormGroup;
   hemolineinfection: any;
   checkedIndexes: Array<number> = [];
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService, private fb:FormBuilder) {
-    this.haemomonitoring = this.patientDocService.dialysisAssecementForm
+    this.haemodialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'];
+    this.haemodialysisArr = this.patientDocService.dialysisAssecementForm;
   }
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   createForm(index?){
     return new FormGroup({
       Dockey : new FormControl(""),
-      Timee : new FormControl(""),
+      Timee : new FormControl(new Date()),
       Bfr : new FormControl(""),
       Ap : new FormControl(""),
       Vp : new FormControl(""),
@@ -89,8 +91,6 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   }
 
   deleteRow(i:number){
-    console.log("Original >>> ",this.checkedIndexes);
-
     if(this.checkedIndexes.includes(i)){
       this.ToMonitor.removeAt(i)
       const index = this.checkedIndexes.indexOf(i);
@@ -98,7 +98,6 @@ export class HaemodialysisMonitoringComponent implements OnInit {
       const lastPartFromIndex = this.checkedIndexes.filter((index)=>{
         return index !== i
       })
-      console.log("Last part from clicked index >>> ",lastPartFromIndex);
 
       const newArr = [];
 
@@ -110,20 +109,17 @@ export class HaemodialysisMonitoringComponent implements OnInit {
         }
       });
       
-      console.log("New Array >>> ", newArr);
-      
       
       this.checkedIndexes.splice(index, 1)
 
       this.checkedIndexes = newArr;
       
-      console.log("Updated arr >>> ",this.checkedIndexes);
       
     }
   }
 
   createAssessment() {
-    console.log(this.haemomonitoring.value);
+    console.log(this.haemodialysisMonitoring.value);
   }
 
 }

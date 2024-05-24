@@ -12,12 +12,12 @@ import { Subscription } from 'rxjs';
 })
 export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
   isChecked: boolean = false;
-  hemolineinfection: FormGroup<any>;
+  haemodialysisLineMonitoring: FormGroup<any>;
   private subscription: Subscription;
   no: any;
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
-  this.hemolineinfection = this.patientDocService.dialysisAssecementForm
+  this.haemodialysisLineMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisLineMonitoring']
 
   }
 
@@ -29,7 +29,7 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
   }
 
   createAssessment() {
-    console.log(this.hemolineinfection.value);
+    console.log(this.haemodialysisLineMonitoring.value);
   }
 
 }
