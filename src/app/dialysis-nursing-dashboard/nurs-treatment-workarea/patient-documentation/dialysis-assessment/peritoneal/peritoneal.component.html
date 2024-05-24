@@ -12,12 +12,12 @@
                   >Type Dwelling</label
                 >
                 <ng-select class="w-50" formControlName="TypeDwelling" (change)="onSelectionChange($event)"> 
-                  <ng-option value="Home">Home</ng-option>
-                  <ng-option value="Apartment">Apartment</ng-option>
-                  <ng-option value="Retierment Center"
+                  <ng-option value="0">Home</ng-option>
+                  <ng-option value="1">Apartment</ng-option>
+                  <ng-option value="2"
                     >Retierment Center</ng-option
                   >
-                  <ng-option value="Other">Other</ng-option>
+                  <ng-option value="3">Other</ng-option>
                 </ng-select>
               </div>
             </div>
@@ -129,8 +129,8 @@
                   >Community Enviroment</label
                 >
                 <ng-select class="w-50" formControlName="Community">
-                  <ng-option value="Urban">Urban</ng-option>
-                  <ng-option value="Rural">Rural</ng-option>
+                  <ng-option value="0">Urban</ng-option>
+                  <ng-option value="1">Rural</ng-option>
                 </ng-select>
               </div>
             </div>
@@ -401,8 +401,8 @@
                   >Tendency to flood</label
                 >
                 <ng-select class="w-50" formControlName="Tendency">
-                  <ng-option value="Yes">Yes</ng-option>
-                  <ng-option value="No">No</ng-option>
+                  <ng-option value="0">Yes</ng-option>
+                  <ng-option value="1">No</ng-option>
                 </ng-select>
               </div>
             </div>

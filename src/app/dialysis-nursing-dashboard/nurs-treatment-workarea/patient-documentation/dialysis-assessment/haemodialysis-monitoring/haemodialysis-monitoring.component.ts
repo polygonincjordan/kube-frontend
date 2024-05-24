@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { SharedService } from '@services/shared.service';
-import { Subscription } from 'rxjs';
+import { Subscription, last } from 'rxjs';
 import swal from 'sweetalert2';
 @Component({
   selector: 'haemodialysis-monitoring',
@@ -89,10 +89,36 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   }
 
   deleteRow(i:number){
+    console.log("Original >>> ",this.checkedIndexes);
+
     if(this.checkedIndexes.includes(i)){
       this.ToMonitor.removeAt(i)
       const index = this.checkedIndexes.indexOf(i);
+
+      const lastPartFromIndex = this.checkedIndexes.filter((index)=>{
+        return index !== i
+      })
+      console.log("Last part from clicked index >>> ",lastPartFromIndex);
+
+      const newArr = [];
+
+      lastPartFromIndex.forEach((index) => {
+        if(index > 1){
+          newArr.push(index-1)
+        }else{
+          newArr.push(index)
+        }
+      });
+      
+      console.log("New Array >>> ", newArr);
+      
+      
       this.checkedIndexes.splice(index, 1)
+
+      this.checkedIndexes = newArr;
+      
+      console.log("Updated arr >>> ",this.checkedIndexes);
+      
     }
   }
 

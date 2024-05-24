@@ -83,7 +83,7 @@ export class DialysisAssessmentComponent implements OnInit {
         Einri: '1000',
         Patnr: '0000001101',
         Falnr: '0000001402',
-        Lfdbw: '00001'
+        Lfdnr: '00001'
       };
       this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
           console.log(data);

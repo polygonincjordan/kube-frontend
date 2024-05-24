@@ -19,6 +19,7 @@ import {
 } from 'rxjs';
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
+import { truncate } from 'fs/promises';
 
 @Injectable()
 export class EmergencyService {
@@ -996,16 +997,22 @@ export class EmergencyService {
   }
 
   getLatestDocSet(json) {
-    return this.http.get(this.url + `LatestDocSet?einri=${json.Einri}&patnr=${json.Patnr}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`, {
+    return this.http.get(this.url + `LatestDocSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
       withCredentials: true,
     });
   }
+
   getDailysisSet(json){
     return this.http.get(this.url + `DailysisSet?Dockey${json.Dockey}`, {
       withCredentials:true
     });
   }
 
+  postDailysisSet(json){
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true
+    })
+  }
 
   createAssessment(data:any) {
     console.log(data);

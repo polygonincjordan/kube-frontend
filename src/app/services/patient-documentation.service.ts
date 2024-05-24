@@ -18,13 +18,6 @@ export class PatientDocumentationService {
   isGaOtherChecked: boolean;
 
   dialysisAssecementForm = new FormGroup({
-    Dockey: new FormControl(''),
-    Dtid: new FormControl('ZMED_DIALY'),
-    Einri: new FormControl('1000'),
-    Patnr: new FormControl('1101'),
-    Falnr: new FormControl('1402'),
-    Lfdnr: new FormControl('00001'),
-    Orgdo: new FormControl('F21IUAMC'),
     // hemodialysis-access
     HaSMonday: new FormControl(),
     HaSTuesday: new FormControl(),
@@ -217,12 +210,10 @@ export class PatientDocumentationService {
     ShowerHead: new FormControl(),
 
     // other fields
-
-    AttendPhy: new FormControl(),
-    DocStatus: new FormControl(),
   });
 
-  constructor() {}
+  constructor() {
+  }
 
   checkChange(event: Event) {
     const { name, checked } = event.target as HTMLInputElement;
@@ -281,28 +272,28 @@ export class PatientDocumentationService {
     console.log(name, value);
 
     if (name === 'Redness') {
-      if (value === 'yes') {
-        this.dialysisAssecementForm.get('RednessScore').patchValue(1);
+      if (value === '0') {
+        this.dialysisAssecementForm.get('RednessScore').patchValue('1');
       } else {
-        this.dialysisAssecementForm.get('RednessScore').patchValue(0);
+        this.dialysisAssecementForm.get('RednessScore').patchValue('0');
       }
     } else if (name === 'Swelling') {
-      if (value === 'yes') {
-        this.dialysisAssecementForm.get('SwellingScore').patchValue(1);
+      if (value === '0') {
+        this.dialysisAssecementForm.get('SwellingScore').patchValue('1');
       } else {
-        this.dialysisAssecementForm.get('SwellingScore').patchValue(0);
+        this.dialysisAssecementForm.get('SwellingScore').patchValue('0');
       }
     } else if (name === 'Exuade') {
-      if (value === 'yes') {
-        this.dialysisAssecementForm.get('ExuadeScore').patchValue(2);
+      if (value === '0') {
+        this.dialysisAssecementForm.get('ExuadeScore').patchValue('2');
       } else {
-        this.dialysisAssecementForm.get('ExuadeScore').patchValue(0);
+        this.dialysisAssecementForm.get('ExuadeScore').patchValue('0');
       }
     } else if (name === 'Pus') {
-      if (value === 'yes') {
-        this.dialysisAssecementForm.get('PusScore').patchValue(4);
+      if (value === '0') {
+        this.dialysisAssecementForm.get('PusScore').patchValue('4');
       } else {
-        this.dialysisAssecementForm.get('PusScore').patchValue(0);
+        this.dialysisAssecementForm.get('PusScore').patchValue('0');
       }
     } else if (name === 'HaemodialysisLine') {
       this.dialysisAssecementForm.get('OtherTxt').patchValue('');

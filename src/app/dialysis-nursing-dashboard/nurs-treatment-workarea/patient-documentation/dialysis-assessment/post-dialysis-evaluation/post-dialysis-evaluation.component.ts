@@ -14,8 +14,9 @@ export class PostDialysisEvaluationComponent implements OnInit {
   private subscription: Subscription;
   postdialevalution: FormGroup<any>;
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
-    this.postdialevalution = this.patientDocService.dialysisAssecementForm
-
+    this.postdialevalution = this.patientDocService.dialysisAssecementForm;
+    this.patientDocService.dialysisAssecementForm.get("PTreatmentDate").patchValue(new Date());
+    this.patientDocService.dialysisAssecementForm.get("PTreatmentTime").patchValue(new Date());
    }
 
   ngOnInit(): void {

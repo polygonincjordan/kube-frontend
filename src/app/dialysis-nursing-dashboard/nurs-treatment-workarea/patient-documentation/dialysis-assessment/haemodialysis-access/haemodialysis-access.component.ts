@@ -26,7 +26,7 @@ constructor(private sharedService: SharedService, private emergencyService: Emer
   }
 
   onSelectionChange(event){
-    if(event === '1'){
+    if(event === '0'){
       this.isEnableSelection = true;
     }else{
       this.isEnableSelection = false;

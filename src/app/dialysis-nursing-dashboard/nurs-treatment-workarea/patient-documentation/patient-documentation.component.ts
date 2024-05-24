@@ -1176,12 +1176,36 @@ export class PatientDocumentationComponent implements OnInit {
         // }).catch((error: any) => {
         //   console.error('Error creating Glasgow coma scale:', error);
         // });
-        this.patientDocService.dialysisAssecementForm.get('DocStatus').setValue('1');
 
-        this.dataService.post(`${environment.url}DailysisSet`, this.patientDocService.dialysisAssecementForm.value).then((resp)=>{
+        console.log(this.patientDocService.dialysisAssecementForm);
+        
+
+        const json = {
+          ...this.patientDocService.dialysisAssecementForm.value,
+          Dockey: '',
+          Dtid: 'ZMED_DIALY',
+          Einri: '1000',
+          Patnr: '1101',
+          Falnr: '1402',
+          Lfdnr: '00001',
+          Orgdo: 'F21IUAMC',
+          AttendPhy: '9000000020',
+          DocStatus: '1',
+          TreatmentDate: this.formatDate(this.patientDocService.dialysisAssecementForm.get('TreatmentDate').value),
+          DialysisFDate: this.formatDate(this.patientDocService.dialysisAssecementForm.get('DialysisFDate').value),
+          PTreatmentDate: this.formatDate(this.patientDocService.dialysisAssecementForm.get('PTreatmentDate').value),
+          TreatmentTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('TreatmentTime').value),
+          DialysisFTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('DialysisFTime').value),
+          PTreatmentTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('PTreatmentTime').value),
+          PrescribedTime: this.formatTime(this.patientDocService.dialysisAssecementForm.get('PrescribedTime').value)
+        };
+
+        console.log(json);
+        
+        this.emergencyService.postDailysisSet(json).subscribe((resp)=>{
           console.log(resp);
-        }).catch((err)=>{
-          console.log(err);
+        }, (error)=>{
+          console.log(error);
         })
       }
     }
@@ -1269,6 +1293,19 @@ export class PatientDocumentationComponent implements OnInit {
     }
 
   }
+
+  formatDate(dateTimeString){
+    const date = new Date(dateTimeString).toISOString()
+    const dateDataArr = date.split('T')
+    return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
+  }
+
+  formatTime(dateTimeString){
+    const date = new Date(dateTimeString).toISOString()
+    const dateDataArr = date.split('T')
+    return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
+  }
+
 
   getReleasedPdf(item) {
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {

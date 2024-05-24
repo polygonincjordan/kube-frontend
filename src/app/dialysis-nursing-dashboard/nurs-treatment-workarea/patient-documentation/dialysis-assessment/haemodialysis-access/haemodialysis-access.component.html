@@ -63,8 +63,8 @@
         <div class="col-3">
           <div class="d-flex align-items-center">
             <ng-select class="w-100" formControlName="BloodDraw" (change)="onSelectionChange($event)">
-              <ng-option value="1">Yes</ng-option>
-              <ng-option value="0">No</ng-option>
+              <ng-option value="0">Yes</ng-option>
+              <ng-option value="1">No</ng-option>
             </ng-select>
           </div>
         </div>
@@ -127,10 +127,10 @@
         <h4>Fistula Location</h4>
         <div class="col-3">
           <ng-select class="w-100" formControlName="FistulaLocation">
-            <ng-option value="Right Forearm">Right Forearm</ng-option>
-            <ng-option value="Right Upper arm">Right Upper arm</ng-option>
-            <ng-option value="Left Forearm">Left Forearm</ng-option>
-            <ng-option value="Left Upper arm">Left Upper arm</ng-option>
+            <ng-option value="0">Right Forearm</ng-option>
+            <ng-option value="1">Right Upper arm</ng-option>
+            <ng-option value="2">Left Forearm</ng-option>
+            <ng-option value="3">Left Upper arm</ng-option>
           </ng-select>
         </div>
         <div class="col">
@@ -360,8 +360,8 @@
         <div class="col-3 my-lg-2">
           <div class="d-flex align-items-center w-100">
             <ng-select class="w-100" formControlName="DressingChanged">
-              <ng-option value="1">Yes</ng-option>
-              <ng-option value="0">No</ng-option>
+              <ng-option value="0">Yes</ng-option>
+              <ng-option value="1">No</ng-option>
             </ng-select>
           </div>
         </div>

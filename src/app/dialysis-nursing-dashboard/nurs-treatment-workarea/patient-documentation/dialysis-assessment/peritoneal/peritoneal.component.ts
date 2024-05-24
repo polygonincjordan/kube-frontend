@@ -21,7 +21,7 @@ export class PeritonealComponent implements OnInit {
   }
 
   onSelectionChange(event){
-    if(event === 'Other'){
+    if(event === '3'){
       this.isEnableSelection = true;
     }else{
       this.isEnableSelection = false;
