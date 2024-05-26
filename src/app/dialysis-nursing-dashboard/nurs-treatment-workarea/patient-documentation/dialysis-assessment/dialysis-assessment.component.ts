@@ -11,6 +11,7 @@ import { HaemodialysisLineInfectionSurveillanceComponent } from './haemodialysis
 import { PostDialysisEvaluationComponent } from './post-dialysis-evaluation/post-dialysis-evaluation.component';
 import { PreDialysisAssessmentComponent } from './pre-dialysis-assessment/pre-dialysis-assessment.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { PeritonealComponent } from './peritoneal/peritoneal.component';
 
 @Component({
   selector: 'dialysis-assessment',
@@ -24,6 +25,8 @@ export class DialysisAssessmentComponent implements OnInit {
   public HaemodialysisLineInfectionSurveillance: boolean = false;
   public HaemodialysisMonitoring: boolean = false;
   public PostDialysisEvaluation: boolean = false;
+  public Peritoneal: boolean = false;
+
   public dockeyValue: any = null;
   private actionTypeSubscription$: Subscription;
   @ViewChild(HaemodialysisAccessComponent) HaemodialysisAccess: HaemodialysisAccessComponent;
@@ -31,6 +34,7 @@ export class DialysisAssessmentComponent implements OnInit {
   @ViewChild(HaemodialysisLineInfectionSurveillanceComponent) HaemodialysisLineInfectionSurveillanceC: HaemodialysisMonitoringComponent;
   @ViewChild(PostDialysisEvaluationComponent) PostDialysisEvaluationC: PostDialysisEvaluationComponent;
   @ViewChild(PreDialysisAssessmentComponent) PreDialysisAssessmentC: PreDialysisAssessmentComponent;
+  @ViewChild(PeritonealComponent) peritonealC: PeritonealComponent;
 
 
 
@@ -79,7 +83,7 @@ export class DialysisAssessmentComponent implements OnInit {
         Einri: '1000',
         Patnr: '0000001101',
         Falnr: '0000001402',
-        Lfdbw: '00001'
+        Lfdnr: '00001'
       };
       this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
           console.log(data);
@@ -115,25 +119,27 @@ export class DialysisAssessmentComponent implements OnInit {
 
   tabPanelNavigation(tabName: any){
     if (tabName && tabName === 'haemodialysis') {
-      this.Haemodialysis = true; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;
+      this.Haemodialysis = true; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;this.Peritoneal = false;
     } else if (tabName && tabName === 'preDialysis') {
-      this.Haemodialysis = false; this.PreDialysis = true; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;
+      this.Haemodialysis = false; this.PreDialysis = true; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;this.Peritoneal = false;
     } else if (tabName && tabName === 'haemodialysis-line-infection-surveillance'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = true ; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = true ; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;this.Peritoneal = false;
     } else if (tabName && tabName === 'haemodialysis-monitoring'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false;this.HaemodialysisMonitoring = true ; this.PostDialysisEvaluation = false;
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false;this.HaemodialysisMonitoring = true ; this.PostDialysisEvaluation = false;this.Peritoneal = false;
     } else if (tabName && tabName === 'postdialysisevaluation'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;  this.PostDialysisEvaluation = true;
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;  this.PostDialysisEvaluation = true;this.Peritoneal = false;
+    } else if (tabName && tabName === 'peritoneal'){
+      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;  this.PostDialysisEvaluation = false;this.Peritoneal = true;
     }
   }
 
   createAssessment():Promise<any>{
     return new Promise<any>((resolve, reject) => {
       resolve({
-        ...this.HaemodialysisAccess.haemodial.value,
-        ...this.HaemodialysisMonitoringC.haemomonitoring.value,
+        ...this.HaemodialysisAccess.hemodialysis.value,
+        ...this.HaemodialysisMonitoringC.haemodialysisMonitoring.value,
         ...this.HaemodialysisLineInfectionSurveillanceC.hemolineinfection.value,
-        ...this.PostDialysisEvaluationC.postdialevalution.value,
+        ...this.PostDialysisEvaluationC.postDialysisMonitoring.value,
         ...this.PreDialysisAssessmentC.predialysis.value
       })
     })

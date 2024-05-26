@@ -1,0 +1,551 @@
+<div class="peritoneal-main bg-white mt-4">
+  <form [formGroup]="peritonealForm">
+    <div class="peritoneal-info">
+      <div class="container-fluid p-0">
+        <label class="title-text m-0"></label>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Type Dwelling</label
+                >
+                <ng-select class="w-50" formControlName="TypeDwelling" (change)="onSelectionChange($event)"> 
+                  <ng-option value="0">Home</ng-option>
+                  <ng-option value="1">Apartment</ng-option>
+                  <ng-option value="2"
+                    >Retierment Center</ng-option
+                  >
+                  <ng-option value="3">Other</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <input
+                  type="text"
+                  class="w-50"
+                  formControlName="TypeDwellingTxt"
+                  [readonly]="!isEnableSelection"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Cooling/Heating</label
+                >
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="AcCentral" />
+                <label class="m-0 mx-2">A/C Cental</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="AcWindowUnit" />
+                <label class="m-0 mx-2">A/C Window Unit</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="FanCeiling" />
+                <label class="m-0 mx-2">Fan: Ceiling</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="FanStanding" />
+                <label class="m-0 mx-2">Fan: Standing</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="FanWindow" />
+                <label class="m-0 mx-2">Fan: Window</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HeatingElectric" />
+                <label class="m-0 mx-2">Heating: Electic</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HeatingGas" />
+                <label class="m-0 mx-2">Heating: Gas</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HeatingSolar" />
+                <label class="m-0 mx-2">Heating: Solar</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="ChOther" name="ChOther" (change)="this.patientDocService.checkChange($event)" />
+                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  name=""
+                  class="custom-input w-50 mx-3"
+                  formControlName="ChOtherTxt"
+                  [readonly]="!this.patientDocService.isChOtherChecked"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Community Enviroment</label
+                >
+                <ng-select class="w-50" formControlName="Community">
+                  <ng-option value="0">Urban</ng-option>
+                  <ng-option value="1">Rural</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  ># of Occupants</label
+                >
+                <input type="text" class="w-50" formControlName="Occupants" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Room shared w/other</label
+                >
+                <input type="text" class="w-50" formControlName="RoomShared" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowra heading-title m-0"
+                  >Km from home to hospital</label
+                >
+                <input
+                  type="text"
+                  class="w-50"
+                  formControlName="HomeHospital"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >PD Safety Checklist</label
+                >
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="PdSmoke" />
+                  <label class="m-0 mx-2">Smoke Alarm present</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="PdPhone" />
+                <label class="m-0 mx-2">Phone service</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="PdFire" />
+                <label class="m-0 mx-2">Fire extinguisher present</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="PdOther" name="PdOther" (change)="this.patientDocService.checkChange($event)"/>
+                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  name=""
+                  class="custom-input w-50 mx-3"
+                  formControlName="PdOtherTxt"
+                  [readonly]="!this.patientDocService.isPdOtherChecked"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0">Storage</label>
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="StIndoors" />
+                  <label class="m-0 mx-2">Indoors</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="StOutdoors" />
+                <label class="m-0 mx-2">Outdoors secured</label>
+              </div>
+            </div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="StEnclosedWFloor" />
+                <label class="m-0 mx-2">Enclosed w floor</label>
+              </div>
+            </div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="StEnclosedWoFloor" />
+                <label class="m-0 mx-2">Enclosed W/O floor</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-3 position-relative"></div>
+            <div class="col-3 position-relative"></div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="StAdequate" />
+                <label class="m-0 mx-2">Adequate space</label>
+              </div>
+            </div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="StInadequate" />
+                <label class="m-0 mx-2">Inadequate space</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-3 position-relative"></div>
+            <div class="col-3 position-relative"></div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="StAreaHeated" />
+                <label class="m-0 mx-2">Area heated/cool (31)</label>
+              </div>
+            </div>
+            <div class="col-3 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="StOther" name="StOther" (change)="this.patientDocService.checkChange($event)"/>
+                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  name=""
+                  class="custom-input w-50 mx-3"
+                  formControlName="StOtherTxt"
+                  [readonly]="!this.patientDocService.isStOtherChecked"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0">Home Check</label>
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="HoPlumbing" />
+                  <label class="m-0 mx-2">Plumbing/sniks working</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoEnclosed" />
+                <label class="m-0 mx-2">Enclosed w/o floor</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoAdequate" />
+                <label class="m-0 mx-2">Adequate lightning</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoCleanlinessAd" />
+                <label class="m-0 mx-2">Cleanliness adequate</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoCleanlinessNeed" />
+                <label class="m-0 mx-2">Cleanliness need</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoPetsInside" />
+                <label class="m-0 mx-2">Pets inside</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoPetsOutside" />
+                <label class="m-0 mx-2">Pets outside</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoAbsent" />
+                <label class="m-0 mx-2">Absent</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoDoor" />
+                <label class="m-0 mx-2">Door to room close/lock</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="HoWindows" />
+                <label class="m-0 mx-2">Windows screens</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="HoOther" name="HoOther" (change)="this.patientDocService.checkChange($event)"/>
+                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  class="custom-input w-50 mx-3"
+                  formControlName="HoOtherTxt"
+                  [readonly]="!this.patientDocService.isHoOtherChecked"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Tendency to flood</label
+                >
+                <ng-select class="w-50" formControlName="Tendency">
+                  <ng-option value="0">Yes</ng-option>
+                  <ng-option value="1">No</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  ># of Pets inside</label
+                >
+                <input type="text" class="w-50" formControlName="PetsInside" />
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0">Type of pet</label>
+                <input type="text" class="w-50" formControlName="TypePet" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Water System</label
+                >
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="WaCity" />
+                  <label class="m-0 mx-2">City</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="WaWell" />
+                <label class="m-0 mx-2">Well</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="WaSpring" />
+                <label class="m-0 mx-2">Spring</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="WaCistern" />
+                <label class="m-0 mx-2">Cisterm</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="WaOther" name="WaOther" (change)="this.patientDocService.checkChange($event)" />
+                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  formControlName="WaOtherTxt"
+                  class="custom-input w-50 mx-3"
+                  [readonly]="!this.patientDocService.isWaOtherChecked"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Gabage System</label
+                >
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="GaCity" />
+                  <label class="m-0 mx-2">City</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="GaSepticTank" />
+                <label class="m-0 mx-2">Septic tank</label>
+              </div>
+            </div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="GaGarbage" />
+                <label class="m-0 mx-2">Garbage service</label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="GaOther" name="GaOther" (change)="this.patientDocService.checkChange($event)" />
+                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  formControlName="GaOtherTxt"
+                  class="custom-input w-50 mx-3"
+                  [readonly]="!this.patientDocService.isGaOtherChecked"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="peritoneal-info position-relative p-3 my-3">
+          <label class="title-text m-0"></label>
+          <div class="row align-items-center my-3 mb-4 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  ># of bathrooms</label
+                >
+                <input type="text" class="w-50" formControlName="Bathrooms" />
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Condition of shower head</label
+                >
+                <input type="text" class="w-50" formControlName="ShowerHead" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

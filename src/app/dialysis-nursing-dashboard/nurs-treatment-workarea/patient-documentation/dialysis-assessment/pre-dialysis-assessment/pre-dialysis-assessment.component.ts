@@ -15,8 +15,17 @@ export class PreDialysisAssessmentComponent implements OnInit {
   private subscription: Subscription;
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
-    this.predialysis = this.patientDocService.dialysisAssecementForm
+    this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
+    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('TreatmentDate').patchValue(new Date());
+    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('DialysisFDate').patchValue(new Date());
+    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('TreatmentTime').patchValue(new Date());
+    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('DialysisFTime').patchValue(new Date());
 
+    const date = new Date();
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('PrescribedTime').patchValue(date);
   }
 
   ngOnInit(): void {

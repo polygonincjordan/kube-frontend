@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -27,6 +27,8 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
 import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-assessment.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { DataService } from '@services/data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -141,7 +143,8 @@ export class PatientDocumentationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private sharedService: SharedService,
-    private patientDocService: PatientDocumentationService
+    private patientDocService: PatientDocumentationService,
+    private dataService: DataService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -172,6 +175,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
+
+    this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
+    this.patientDocService.dialysisAssecementForm.reset();
   }
 
   getLatestAssessment() {
@@ -1161,17 +1167,44 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openAssessment) {
-        // this.DialysisAssessment.createAssessment().then((formValue: any) => {
-        //   if (formValue) {
-        //     this.refresh();
-        //     console.log(formValue);
+        const toMonitor = this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value
+         const dAssessmentForm = this.patientDocService.dialysisAssecementForm
 
-        //   }
-        // }).catch((error: any) => {
-        //   console.error('Error creating Glasgow coma scale:', error);
-        // });
-        console.log(this.patientDocService.dialysisAssecementForm.value);
+        toMonitor.forEach(monitor => {
+            monitor.Timee = this.formatTime(monitor.Timee)
+        });
 
+        const payload = {
+          ...dAssessmentForm.controls['hemodialysis'].value,
+          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
+          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
+          ...dAssessmentForm.controls['peritonealForm'].value,
+          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
+          ...dAssessmentForm.controls['preDialysis'].value,
+          Dockey: '',
+          Dtid: 'ZMED_DIALY',
+          Einri: '1000',
+          Patnr: '1101',
+          Falnr: '1402',
+          Lfdnr: '00001',
+          Orgdo: 'F21IUAMC',
+          AttendPhy: '9000000020',
+          DocStatus: '1',
+          TreatmentDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value),
+          DialysisFDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value),
+          TreatmentTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value),
+          DialysisFTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value),
+          PTreatmentDate: this.formatDate(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentDate').value),
+          PTreatmentTime: this.formatTime(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentTime').value),
+          PrescribedTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value),
+          TOMONITOR: toMonitor,
+        };
+        
+        this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
+          console.log(resp);
+        }, (error)=>{
+          console.log(error);
+        })
       }
     }
     else if (this.actionType == 'edit') {
@@ -1258,6 +1291,19 @@ export class PatientDocumentationComponent implements OnInit {
     }
 
   }
+
+  formatDate(dateTimeString){
+    const date = new Date(dateTimeString).toISOString()
+    const dateDataArr = date.split('T')
+    return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
+  }
+
+  formatTime(dateTimeString){
+    const date = new Date(dateTimeString).toISOString()
+    const dateDataArr = date.split('T')
+    return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
+  }
+
 
   getReleasedPdf(item) {
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {
