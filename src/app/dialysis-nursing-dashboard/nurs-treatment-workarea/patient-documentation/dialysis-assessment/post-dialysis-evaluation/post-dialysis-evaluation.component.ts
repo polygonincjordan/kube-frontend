@@ -15,15 +15,55 @@ export class PostDialysisEvaluationComponent implements OnInit {
   postDialysisMonitoring: FormGroup<any>;
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
     this.postDialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'];
-    this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].get("PTreatmentDate").patchValue(new Date());
-    this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].get("PTreatmentTime").patchValue(new Date());
+    this.initializeFormData()
+
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription =
+      this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
+        this.postDialysisMonitoring.patchValue({
+          ...resp,
+          PTreatmentDate: this.patientDocService.formatDate(resp.PTreatmentDate),
+        });
+      });
    }
 
   ngOnInit(): void {
 
   }
 
+  initializeFormData(){
+    this.postDialysisMonitoring.patchValue({
+      PTreatmentDate: new Date(),
+      PTreatmentTime: new Date(),
+      PPostWeight: '',
+      PAxillaryTemp: '',
+      POralTemp: '',
+      PPulseRate: '',
+      PRespiratoryRate: '',
+      POxygenSaturation: '',
+      POxygenFlow: '',
+      POxygenDelivery: null,
+      PSystolicBloodSitting: null,
+      PDiastolicBloodSitting: '',
+      PArterialPressure: '',
+      PSystolicBloodStanding: '',
+      PDiastolicBloodStanding: '',
+      PBvp: '',
+      PKt: '',
+      PDialyserClearance: null,
+      PHypotension: null,
+    })
+  }
+
+
   createAssessment() {
     console.log(this.postDialysisMonitoring.value);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

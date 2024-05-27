@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
@@ -36,7 +36,7 @@ export class DialysisAssessmentComponent implements OnInit {
   @ViewChild(PreDialysisAssessmentComponent) PreDialysisAssessmentC: PreDialysisAssessmentComponent;
   @ViewChild(PeritonealComponent) peritonealC: PeritonealComponent;
 
-
+  @Input('latestDocData') latestDocData;
 
   patnr: any;
   einri: any;
@@ -74,31 +74,32 @@ export class DialysisAssessmentComponent implements OnInit {
       this.falnr = params.falnr;
       this.lfdnr = params.lfdnr;
     });
-    this.LatestDocSet();
+    // this.LatestDocSet();
     this.DailysisSet();
   }
 
-  LatestDocSet() {
-      const json = {
-        Einri: '1000',
-        Patnr: '0000001101',
-        Falnr: '0000001402',
-        Lfdnr: '00001'
-      };
-      this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
-          console.log(data);
-        }, (error) => {
-          console.error(error);
-        });
-
-  }
+  // LatestDocSet() {
+  //     const json = {
+  //       Einri: '1000',
+  //       Patnr: '0000001101',
+  //       Falnr: '0000001402',
+  //       Lfdnr: '00001'
+  //     };
+  //     this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
+  //         console.log(data);
+  //       }, (error) => {
+  //         console.error(error);
+  //       });
+  // }
 
   DailysisSet(){
     const json = {
-      Dockey : "MED000000000000001000002976100000",
+      Dockey : this.latestDocData?.Dockey,
     };
     this.emergencyService.getDailysisSet(json).subscribe((data: any) =>{
-      console.log(data);
+      if(data.d.results[0]){
+        this.patientDocService.formDataBehaviorSubject.next(data.d.results[0]);
+      }
     }, (error) => {
       console.error(error);
     });
