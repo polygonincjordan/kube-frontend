@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { HaemodialysisMonitoringComponent } from '../dialysis-nursing-dashboard/nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-monitoring/haemodialysis-monitoring.component';
+import { BehaviorSubject } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +18,7 @@ export class PatientDocumentationService {
   isHoOtherChecked: boolean;
   isWaOtherChecked: boolean;
   isGaOtherChecked: boolean;
+  formDataBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject({});
 
   dialysisAssecementForm = new FormGroup({
     // hemodialysis-access
@@ -218,9 +221,36 @@ export class PatientDocumentationService {
       Bathrooms: new FormControl(''),
       ShowerHead: new FormControl(''),
     }),
+
+    otherDetails: new FormGroup({
+      Dockey: new FormControl(''),
+      Dtid: new FormControl('ZMED_DIALY'),
+      Einri:new FormControl('1000'),
+      Patnr:new FormControl('1101'),
+      Falnr:new FormControl('1402'),
+      Lfdnr:new FormControl('00001'),
+      Orgdo:new FormControl('F21IUAMC'),
+      AttendPhy:new FormControl('9000000020'),
+      DocStatus:new FormControl('1'),
+    })
   });
 
   constructor() {
+  }
+
+  formatDate(date: string) {
+    if (typeof (date) === 'string') {
+      if (date !== null) {
+        const generatedDate = new DatePipe('en-US').transform(
+          date.replace('/Date(', '').replace(')/', ''), 'yyyy-MM-dd'
+        );
+        return new Date(generatedDate);
+      } else {
+        return null
+      }
+    } else {
+      return date
+    }
   }
 
   checkChange(event: Event) {
