@@ -129,6 +129,8 @@ export class PatientDocumentationComponent implements OnInit {
   imgType: string;
   apiJson: any;
 
+  latestDocData: any;
+
   constructor(
     private modalService: BsModalService,
     private emergencyService: EmergencyService,
@@ -175,10 +177,29 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
+    this.LatestDocSet()
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
+
   }
+
+  LatestDocSet() {
+    const json = {
+      Einri: '1000',
+      Patnr: '0000001101',
+      Falnr: '0000001402',
+      Lfdnr: '00001'
+    };
+    this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
+        if(data){
+          this.latestDocData = data.d.results[0];
+        }
+      }, (error) => {
+        console.error(error);
+      });
+
+}
 
   getLatestAssessment() {
     this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
@@ -990,6 +1011,10 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.assessment) {
       if (action == 'create') {
         this.openAssessment = true;
+      }else if(action == 'edit'){
+        console.log("edit button clicked for assessment!");
+        console.log(this.selectedDocData);
+        this.openAssessment = true;
       }
     }
   }
@@ -1174,13 +1199,7 @@ export class PatientDocumentationComponent implements OnInit {
             monitor.Timee = this.formatTime(monitor.Timee)
         });
 
-        const payload = {
-          ...dAssessmentForm.controls['hemodialysis'].value,
-          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
-          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
-          ...dAssessmentForm.controls['peritonealForm'].value,
-          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
-          ...dAssessmentForm.controls['preDialysis'].value,
+        const otherData = {
           Dockey: '',
           Dtid: 'ZMED_DIALY',
           Einri: '1000',
@@ -1190,6 +1209,18 @@ export class PatientDocumentationComponent implements OnInit {
           Orgdo: 'F21IUAMC',
           AttendPhy: '9000000020',
           DocStatus: '1',
+        }
+
+        dAssessmentForm.patchValue({otherDetails: otherData})
+
+        const payload = {
+          ...dAssessmentForm.controls['hemodialysis'].value,
+          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
+          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
+          ...dAssessmentForm.controls['peritonealForm'].value,
+          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
+          ...dAssessmentForm.controls['preDialysis'].value,
+          ...dAssessmentForm.controls['otherDetails'].value,
           TreatmentDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value),
           DialysisFDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value),
           TreatmentTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value),

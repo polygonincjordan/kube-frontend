@@ -220,9 +220,9 @@
               <!-- Dialysis Assessment -->
               <div class="box-col d-flex mt-2 docs-event"
               [ngClass]="assessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('assessment','')">
+              style="font-weight: bold;" (click)="selectAssessment('assessment',latestDocData)">
               <div class="col-md-4">Dialysis Assessment</div>
-              <div class="col-md-2 status-color">N/A</div>
+              <div class="col-md-2 status-color">{{ latestDocData?.StatusTxt ? latestDocData.StatusTxt : "N/A" }}</div>
               <div class="col-md-2"></div>
               <div class="col-md-4"></div>
             </div>
@@ -278,7 +278,7 @@
       <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
       <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
       <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
-      <dialysis-assessment *ngIf="openAssessment"></dialysis-assessment>
+      <dialysis-assessment *ngIf="openAssessment" [latestDocData]='selectedDocData'></dialysis-assessment>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
     </div>
 
