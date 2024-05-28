@@ -581,88 +581,90 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-7">
+                  <div class="col-12 col-md-7">
                     <div class="option-box">
                       <label class="box-label-inner">Nutritional Assessment Adult</label>
-                      <div class="option-section row">
-                        <div class="use-of-box col-md-12">
-                          <div class="scale-box-list">
-                            <label class="admitting-physician" for="useOf">Appetite</label>
-                          </div>
-                          <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="NutAppetite"
-                              (change)="changeNutAppetite($event)">
-                              <ng-option *ngFor="let item of appetiteList"
-                                [value]="item.value">{{item.label}}</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="NutAppetiteTxt" />
-                          </div>
-                        </div>
-
-                        <div class="use-of-box col-md-12">
-                          <div class="scale-box-list">
-                            <label class="admitting-physician" for="useOf">General Appearance</label>
-                          </div>
-                          <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="NutAppearance"
-                              (change)="changeAppearance($event)">
-                              <ng-option *ngFor="let item of generalApperianceList"
-                                [value]="item.value">{{item.label}}</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="NutAppearanceTxt" />
+                      <div class="option-sections row">
+                        <div class="use-of-box col-12 mb-3">
+                          <div class="row">
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <label class="admitting-physician" for="useOf">Appetite</label>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <ng-select class="drop-down-lists" formControlName="NutAppetite" (change)="changeNutAppetite($event)">
+                                <ng-option *ngFor="let item of appetiteList" [value]="item.value">{{item.label}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4">
+                              <input type="text" class="form-control" formControlName="NutAppetiteTxt" />
+                            </div>
                           </div>
                         </div>
-
-                        <div class="use-of-box col-md-12">
-                          <div class="scale-box-list">
-                            <label class="admitting-physician" for="useOf">Nutritional Support</label>
-                          </div>
-                          <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="NutSupport"
-                              (change)="changeSupport($event)">
-                              <ng-option *ngFor="let item of nutritionalSupportList"
-                                [value]="item.value">{{item.label}}</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="NutSupportTxt" />
-                          </div>
-                        </div>
-
-                        <div class="use-of-box col-md-12">
-                          <div class="scale-box-list">
-                            <label class="admitting-physician" for="useOf">Diet</label>
-                          </div>
-                          <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="NutDiet" (change)="changeDiet($event)">
-                              <ng-option *ngFor="let item of dietList" [value]="item.value">{{item.label}}</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="NutDietTxt" />
+              
+                        <div class="use-of-box col-12 mb-3">
+                          <div class="row">
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <label class="admitting-physician" for="useOf">General Appearance</label>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <ng-select class="drop-down-lists" formControlName="NutAppearance" (change)="changeAppearance($event)">
+                                <ng-option *ngFor="let item of generalApperianceList" [value]="item.value">{{item.label}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4">
+                              <input type="text" class="form-control" formControlName="NutAppearanceTxt" />
+                            </div>
                           </div>
                         </div>
-
-                        <div class="use-of-box col-md-12">
-                          <div class="scale-box-list">
-                            <label class="admitting-physician" for="useOf">Feeding defficulties</label>
-                          </div>
-                          <div class="scale-box-list">
-                            <ng-select class="drop-down-list" formControlName="NutFeeding"
-                              (change)="changeDefficulties($event)">
-                              <ng-option *ngFor="let item of feedingDefficulties"
-                                [value]="item.value">{{item.label}}</ng-option>
-                            </ng-select>
-                          </div>
-                          <div class="scale-box-list">
-                            <input type="text" class="form-control" formControlName="NutFeedingTxt" />
+              
+                        <div class="use-of-box col-12 mb-3">
+                          <div class="row">
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <label class="admitting-physician" for="useOf">Nutritional Support</label>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <ng-select class="drop-down-lists" formControlName="NutSupport" (change)="changeSupport($event)">
+                                <ng-option *ngFor="let item of nutritionalSupportList" [value]="item.value">{{item.label}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4">
+                              <input type="text" class="form-control" formControlName="NutSupportTxt" />
+                            </div>
                           </div>
                         </div>
-
+              
+                        <div class="use-of-box col-12 mb-3">
+                          <div class="row">
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <label class="admitting-physician" for="useOf">Diet</label>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <ng-select class="drop-down-lists" formControlName="NutDiet" (change)="changeDiet($event)">
+                                <ng-option *ngFor="let item of dietList" [value]="item.value">{{item.label}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4">
+                              <input type="text" class="form-control" formControlName="NutDietTxt" />
+                            </div>
+                          </div>
+                        </div>
+              
+                        <div class="use-of-box col-12 mb-3">
+                          <div class="row">
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <label class="admitting-physician" for="useOf">Feeding defficulties</label>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4 mb-sm-0">
+                              <ng-select class="drop-down-lists" formControlName="NutFeeding" (change)="changeDefficulties($event)">
+                                <ng-option *ngFor="let item of feedingDefficulties" [value]="item.value">{{item.label}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="scale-box-lists col-12 col-sm-4">
+                              <input type="text" class="form-control" formControlName="NutFeedingTxt" />
+                            </div>
+                          </div>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>

@@ -430,7 +430,7 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     let d = {
       d: this.educationForm.value,
     };
-    if (this.docDetails.length) {
+    if (this.docDetails?.length) {
       if (this.docDetails[0].StatusTxt == 'Released') {
         this.educationForm.value.DocStatus = '3';
       }
@@ -481,7 +481,7 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     let d = {
       d: this.educationForm.value,
     };
-    if (this.docDetails.length) {
+    if (this.docDetails?.length) {
       if (this.docDetails[0].StatusTxt == 'Released') {
         this.educationForm.value.DocStatus = '3';
       }
