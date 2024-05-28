@@ -867,7 +867,6 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
       } else if (action == 'copy') {
-        this.openEducationAssessment = true;
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openEducationAssessment = true;;
           let valueObj = {
@@ -877,10 +876,10 @@ export class PatientDocumentationComponent implements OnInit {
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
-        // this.openEducationAssessment = true;
-        // this.educationAssessmentComp.saveAndReleaseEducation(false);
-        // this.educationAssessmentComp.ngOnInit();
-        // this.createAndReleaseMed();
+        this.openEducationAssessment = true;
+        this.educationAssessmentComp.saveAndReleaseEducation(false);
+        this.educationAssessmentComp.ngOnInit();
+        this.createAndReleaseMed();
       }
     }
     // nurse endorsement

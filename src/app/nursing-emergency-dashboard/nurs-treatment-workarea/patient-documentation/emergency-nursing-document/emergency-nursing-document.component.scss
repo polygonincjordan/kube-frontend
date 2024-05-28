@@ -412,7 +412,7 @@
 
               input[type="text"] {
                 flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                width: 150px; // Set a specific width for the input field
+                // width: 150px; // Set a specific width for the input field
               }
 
               .scale-box-list {
@@ -427,7 +427,7 @@
 
                 input[type="text"] {
                   flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                  width: 350px !important;
+                  // width: 350px !important;
                 }
 
                 .drop-down-list {
@@ -467,6 +467,21 @@
                 margin-bottom: 25px;
                 outline: none;
               }
+              .new-class{
+                gap:10px
+              }
+            }
+          }
+
+          .option-sections{
+            width: 100%;
+            padding-left: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .scale-box-lists{
+              padding: 5px 10px;
             }
           }
         }
