@@ -15,19 +15,26 @@ export class PostDialysisEvaluationComponent implements OnInit {
   postDialysisMonitoring: FormGroup<any>;
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
     this.postDialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'];
-    this.initializeFormData()
 
     if(this.subscription){
       this.subscription.unsubscribe();
     }
 
-    this.subscription =
+    if(this.patientDocService.isPatchValueForPostDialysis){
+      this.initializeFormData();
+
+      this.subscription =
       this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
-        this.postDialysisMonitoring.patchValue({
-          ...resp,
-          PTreatmentDate: this.patientDocService.formatDate(resp.PTreatmentDate),
-        });
+        if(Object.keys(resp).length > 0){
+          this.postDialysisMonitoring.patchValue({
+            ...resp,
+            PTreatmentDate: this.patientDocService.formatDate(resp.PTreatmentDate),
+          });
+          
+        }
       });
+      this.patientDocService.isPatchValueForPostDialysis = false;
+    }
    }
 
   ngOnInit(): void {
@@ -64,6 +71,8 @@ export class PostDialysisEvaluationComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }

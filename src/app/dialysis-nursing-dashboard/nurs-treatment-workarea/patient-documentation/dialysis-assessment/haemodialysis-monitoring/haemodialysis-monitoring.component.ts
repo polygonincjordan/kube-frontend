@@ -21,36 +21,43 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService, private fb:FormBuilder) {
     this.haemodialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'];
     this.haemodialysisArr = this.patientDocService.dialysisAssecementForm;
-    this.initializeFormData()
     if(this.subscription){
       this.subscription.unsubscribe();
     }
+    
+    if (this.patientDocService.isPatchValueForHaemodialysisMonitoring) {
+      this.initializeFormData()
 
-    this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
-      this.isGenerateDefaultForm = false;
-      this.haemodialysisMonitoring.patchValue(resp)
+      this.subscription =
+        this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
+          if (Object.keys(resp).length > 0) {
+            this.isGenerateDefaultForm = false;
+            this.haemodialysisMonitoring.patchValue(resp);
 
-      const TOMONITOR = resp?.TOMONITOR.results;
+            const TOMONITOR = resp?.TOMONITOR.results;
 
-      console.log(TOMONITOR);
-      
-      TOMONITOR.forEach((item)=>{
-        const timee = item.Timee;
-        const hours = timee.substring(2,4)
-        const minutes = timee.substring(5,7)
-        const seconds = timee.substring(8,10)
+            console.log(TOMONITOR);
 
-        const date = new Date();
-        date.setHours(hours);
-        date.setMinutes(minutes);
-        date.setSeconds(seconds);
-        
-        if(this.ToMonitor.controls.length !== TOMONITOR.length){
-          this.ToMonitor.push(this.createForm({...item, Timee: date}))
-        }
-      })
-      
-    })
+            TOMONITOR.forEach((item) => {
+              const timee = item.Timee;
+              const hours = timee.substring(2, 4);
+              const minutes = timee.substring(5, 7);
+              const seconds = timee.substring(8, 10);
+
+              const date = new Date();
+              date.setHours(hours);
+              date.setMinutes(minutes);
+              date.setSeconds(seconds);
+
+              if (this.ToMonitor.controls.length !== TOMONITOR.length) {
+                this.ToMonitor.push(this.createForm({ ...item, Timee: date }));
+              }
+            });
+
+          }
+        });
+        this.patientDocService.isPatchValueForHaemodialysisMonitoring =false;
+    }
   }
 
   ngOnInit(): void {
@@ -73,7 +80,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   generateDefaultForm(){
     for(let i=0;i < 6;i++){
-      this.ToMonitor.push(this.createForm(i));
+      this.ToMonitor.push(this.createForm());
     }
   }
 
@@ -83,7 +90,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   createForm(item?){
     return new FormGroup({
-      Dockey : new FormControl(item ? item.Dockey : ''),
+      Dockey : new FormControl(''),
       Timee : new FormControl(item ? item.Timee : new Date()),
       Bfr : new FormControl(item ? item.Bfr : ''),
       Ap : new FormControl(item ? item.Ap : ''),
@@ -103,20 +110,21 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   }
 
   addRow(){
-    const unTouchedForms = this.ToMonitor.controls.filter(d =>  !d.touched)
+    const inValidForm = this.ToMonitor.controls.filter(d =>  !d.valid)
+    console.log(inValidForm);
     
-    // if(unTouchedForms && unTouchedForms.length <= 6 && unTouchedForms.length !== 0){
-    //   swal.fire({
-    //     text: 'Enter data before adding new row',
-    //     confirmButtonColor: '#0890c5',
-    //     cancelButtonColor: '#84898c',
-    //     confirmButtonText: 'OK',
-    //     customClass: 'myalertpopup',
-    //     icon: 'error'
-    //   });
-    // }else{
+    if(inValidForm && inValidForm.length !== 0){
+      swal.fire({
+        text: 'Enter data before adding new row',
+        confirmButtonColor: '#0890c5',
+        cancelButtonColor: '#84898c',
+        confirmButtonText: 'OK',
+        customClass: 'myalertpopup',
+        icon: 'error'
+      });
+    }else{
       return this.ToMonitor.push(this.createForm())
-    // }
+    }
   }
 
   tableCheckChange(event:Event, i: number){
@@ -165,7 +173,9 @@ export class HaemodialysisMonitoringComponent implements OnInit {
   }
   
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 
 }

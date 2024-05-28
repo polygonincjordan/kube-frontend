@@ -1009,18 +1009,21 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Dialysis Assessment
     else if (this.assessment) {
-      if (action == 'create' && this.selectedDocData.StatusTxt == 'N/A') {
+      if (action == 'create' && this.selectedDocData?.StatusTxt != 'Draft') {
         this.openAssessment = true;
-      }else if(action == 'edit' && this.selectedDocData.StatusTxt == 'Draft') {
-        console.log("edit button clicked for assessment!");
-        console.log(this.selectedDocData);
+      }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft') {
         this.openAssessment = true;
-      }else if (action == 'release' && this.selectedDocData.StatusTxt == 'Draft') {
-        this.openAssessment = true;
-      }else if (action == 'copy' && this.selectedDocData.StatusTxt == 'Draft') {
+      }else if (action == 'release' && this.selectedDocData?.StatusTxt == 'Draft') {
+        console.log("release clicked from outside");
+        console.log(this.latestDocData);
+      }else if (action == 'copy' && this.selectedDocData?.StatusTxt == 'Draft') {
         this.openAssessment = false;
-      }else if (action == 'delete' && this.selectedDocData.StatusTxt == 'Draft'){
-        this.openAssessment = true;
+      }else if (action == 'delete' && this.selectedDocData?.StatusTxt == 'Draft'){
+        this.emergencyService.deleteDialysisDoc(this.latestDocData.Dockey).subscribe((resp)=>{
+          console.log(resp);
+        }, (err)=>{
+          console.log(err);
+        })
       }
     }
   }
@@ -1239,6 +1242,7 @@ export class PatientDocumentationComponent implements OnInit {
 
         this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
           console.log(resp);
+          this.emergencyService.tabPanelNavigation('Documentation');
         }, (error)=>{
           console.log(error);
         })
@@ -1274,6 +1278,76 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openEducationAssessment) {
         this.updateEducationAss(false);
+      }
+      if (this.openAssessment) {
+        const toMonitor =
+        this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
+        const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
+      
+
+        toMonitor.forEach((monitor) => {
+          monitor.Timee = this.formatTime(monitor.Timee);
+        });
+
+        const otherData = {
+          Dockey: this.latestDocData?.Dockey,
+          Dtid: 'ZMED_DIALY',
+          Einri: this.latestDocData?.Einri,
+          Patnr: this.latestDocData?.Patnr,
+          Falnr: this.latestDocData?.Falnr,
+          Lfdnr: this.latestDocData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          AttendPhy: this.latestDocData?.AttendPhy,
+          DocStatus: this.latestDocData?.DocStatus,
+        };
+
+        dAssessmentForm.patchValue({ otherDetails: otherData });
+
+        const payload = {
+          ...dAssessmentForm.controls['hemodialysis'].value,
+          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
+          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
+          ...dAssessmentForm.controls['peritonealForm'].value,
+          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
+          ...dAssessmentForm.controls['preDialysis'].value,
+          ...dAssessmentForm.controls['otherDetails'].value,
+          TreatmentDate: this.formatDate(
+            dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value
+          ),
+          DialysisFDate: this.formatDate(
+            dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
+          ),
+          TreatmentTime: this.formatTime(
+            dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
+          ),
+          DialysisFTime: this.formatTime(
+            dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
+          ),
+          PTreatmentDate: this.formatDate(
+            dAssessmentForm.controls['postDialysisMonitoring'].get(
+              'PTreatmentDate'
+            ).value
+          ),
+          PTreatmentTime: this.formatTime(
+            dAssessmentForm.controls['postDialysisMonitoring'].get(
+              'PTreatmentTime'
+            ).value
+          ),
+          PrescribedTime: this.formatTime(
+            dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
+          ),
+          TOMONITOR: toMonitor,
+        };
+
+        this.emergencyService.postDailysisSet(payload).subscribe(
+          (resp) => {
+            console.log(resp);
+            this.refresh();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       }
     }
     else if (this.actionType == 'copy') {
@@ -1336,9 +1410,13 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   formatTime(dateTimeString){
-    const date = new Date(dateTimeString).toISOString()
-    const dateDataArr = date.split('T')
-    return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
+    if(!dateTimeString.toString().includes('PT')){ 
+      const date = new Date(dateTimeString).toISOString()
+      const dateDataArr = date.split('T')
+      return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
+    }else{
+      return dateTimeString;
+    }
   }
 
 

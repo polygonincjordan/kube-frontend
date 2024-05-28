@@ -18,15 +18,21 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
   this.haemodialysisLineMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisLineMonitoring']
-  this.initializeFormData()
-
+  
   if(this.subscription){
-  this.subscription.unsubscribe(); 
+    this.subscription.unsubscribe(); 
   }
-
-  this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
-    this.haemodialysisLineMonitoring.patchValue(resp)
-  })
+  
+  if(this.patientDocService.isPatchValueForHaemodialysisLineMonitoring){
+    this.initializeFormData()
+    
+    this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
+      if(Object.keys(resp).length){
+        this.haemodialysisLineMonitoring.patchValue(resp);
+      }
+    })
+    this.patientDocService.isPatchValueForHaemodialysisLineMonitoring = false;
+  }
   }
 
   initializeFormData(){
@@ -58,7 +64,9 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe()
+    if(this.subscription){
+      this.subscription.unsubscribe()
+    }
   }
 
 }
