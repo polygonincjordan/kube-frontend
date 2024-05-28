@@ -130,6 +130,7 @@ export class PatientDocumentationComponent implements OnInit {
   apiJson: any;
 
   latestDocData: any;
+  DocStatus: any;
 
   constructor(
     private modalService: BsModalService,
@@ -198,7 +199,6 @@ export class PatientDocumentationComponent implements OnInit {
       }, (error) => {
         console.error(error);
       });
-
 }
 
   getLatestAssessment() {
@@ -1009,11 +1009,17 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Dialysis Assessment
     else if (this.assessment) {
-      if (action == 'create') {
+      if (action == 'create' && this.selectedDocData.StatusTxt == 'N/A') {
         this.openAssessment = true;
-      }else if(action == 'edit'){
+      }else if(action == 'edit' && this.selectedDocData.StatusTxt == 'Draft') {
         console.log("edit button clicked for assessment!");
         console.log(this.selectedDocData);
+        this.openAssessment = true;
+      }else if (action == 'release' && this.selectedDocData.StatusTxt == 'Draft') {
+        this.openAssessment = true;
+      }else if (action == 'copy' && this.selectedDocData.StatusTxt == 'Draft') {
+        this.openAssessment = false;
+      }else if (action == 'delete' && this.selectedDocData.StatusTxt == 'Draft'){
         this.openAssessment = true;
       }
     }
@@ -1230,7 +1236,7 @@ export class PatientDocumentationComponent implements OnInit {
           PrescribedTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value),
           TOMONITOR: toMonitor,
         };
-        
+
         this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
           console.log(resp);
         }, (error)=>{
