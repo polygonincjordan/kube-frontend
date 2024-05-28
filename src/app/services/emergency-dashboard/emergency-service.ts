@@ -16,6 +16,7 @@ import {
   throwError,
   tap,
   lastValueFrom,
+  Subject,
 } from 'rxjs';
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
@@ -38,6 +39,7 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+  public currentTab: Subject<string> = new Subject<string>();
 
   constructor(
     private http: HttpClient,

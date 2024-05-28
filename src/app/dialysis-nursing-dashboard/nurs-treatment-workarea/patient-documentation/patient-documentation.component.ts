@@ -1019,11 +1019,34 @@ export class PatientDocumentationComponent implements OnInit {
       }else if (action == 'copy' && this.selectedDocData?.StatusTxt == 'Draft') {
         this.openAssessment = false;
       }else if (action == 'delete' && this.selectedDocData?.StatusTxt == 'Draft'){
-        this.emergencyService.deleteDialysisDoc(this.latestDocData.Dockey).subscribe((resp)=>{
-          console.log(resp);
-        }, (err)=>{
-          console.log(err);
-        })
+        Swal.fire({
+          title: 'Confirm',
+          text: 'Do you want to delete?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          customClass: 'myalertpopup'
+        }).then(async (result) => {
+          if (result.value) {
+    
+            (this.emergencyService.deleteDialysisDoc(this.latestDocData.Dockey).subscribe((resp)=>{
+              console.log(resp);
+              Swal.fire({
+                text: "Document is deleted successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.openAssessment = false;
+              this.ngOnInit();
+              this.emergencyService.currentTab.next('Documentation');
+            }, (err)=>{
+              console.log(err);
+            })
+            );
+          }
+        });
       }
     }
   }
@@ -1242,7 +1265,15 @@ export class PatientDocumentationComponent implements OnInit {
 
         this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
           console.log(resp);
-          this.emergencyService.tabPanelNavigation('Documentation');
+            Swal.fire({
+              text: "Document is created successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.openAssessment = false;
+            this.ngOnInit();
+            this.emergencyService.currentTab.next('Documentation');
         }, (error)=>{
           console.log(error);
         })
@@ -1342,7 +1373,14 @@ export class PatientDocumentationComponent implements OnInit {
         this.emergencyService.postDailysisSet(payload).subscribe(
           (resp) => {
             console.log(resp);
-            this.refresh();
+            Swal.fire({
+              text: "Document is updated successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.openAssessment = false;
+            this.emergencyService.currentTab.next('Documentation');
           },
           (error) => {
             console.log(error);
