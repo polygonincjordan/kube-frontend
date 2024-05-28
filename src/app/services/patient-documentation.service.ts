@@ -20,6 +20,13 @@ export class PatientDocumentationService {
   isGaOtherChecked: boolean;
   formDataBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject({});
 
+  isPatchValueForHemodialysis: boolean = true;
+  isPatchValueForHaemodialysisLineMonitoring: boolean = true;
+  isPatchValueForHaemodialysisMonitoring: boolean = true;
+  isPatchValueForPeritonial: boolean = true;
+  isPatchValueForPostDialysis: boolean = true;
+  isPatchValueForPreDialysis: boolean = true;
+
   dialysisAssecementForm = new FormGroup({
     // hemodialysis-access
     hemodialysis: new FormGroup({
@@ -274,32 +281,32 @@ export class PatientDocumentationService {
     }else if(name === 'ChOther'){
       this.isChOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('ChOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('ChOtherTxt').patchValue('');
       }
     }else if(name === 'PdOther'){
       this.isPdOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('PdOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('PdOtherTxt').patchValue('');
       }
     }else if(name === 'StOther'){
       this.isStOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('StOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('StOtherTxt').patchValue('');
       }
     }else if(name === 'HoOther'){
       this.isHoOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('HoOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('HoOtherTxt').patchValue('');
       }
     }else if(name === 'WaOther'){
       this.isWaOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('WaOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('WaOtherTxt').patchValue('');
       }
     }else if(name === 'GaOther'){
       this.isGaOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('GaOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('GaOtherTxt').patchValue('');
       }
     }
   }

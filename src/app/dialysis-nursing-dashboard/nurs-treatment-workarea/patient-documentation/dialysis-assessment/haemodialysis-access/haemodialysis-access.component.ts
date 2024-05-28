@@ -17,16 +17,21 @@ isEnableSelection: boolean = false;
 
 constructor(private sharedService: SharedService, private emergencyService: EmergencyService, public patientDocService: PatientDocumentationService) {
   this.hemodialysis = this.patientDocService.dialysisAssecementForm.controls['hemodialysis'];
-  this.initializeFormData();
 
   if(this.subscription){
     this.subscription.unsubscribe();
   }
 
-  this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
-    // console.log("resp data >>> ",resp);
-    this.hemodialysis.patchValue(resp)
-  })
+  if(this.patientDocService.isPatchValueForHemodialysis){
+    this.initializeFormData();
+
+    this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
+      if(Object.keys(resp).length){
+        this.hemodialysis.patchValue(resp);
+      }
+    })
+    this.patientDocService.isPatchValueForHemodialysis = false;
+  }
 }
 
   initializeFormData(){
@@ -108,7 +113,9 @@ constructor(private sharedService: SharedService, private emergencyService: Emer
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe()
+    if(this.subscription){
+      this.subscription.unsubscribe()
+    }
   }
 
 }

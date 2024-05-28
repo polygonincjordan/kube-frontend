@@ -16,20 +16,27 @@ export class PreDialysisAssessmentComponent implements OnInit {
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
     this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
-    this.initializeFormData()
 
     if(this.subscription){
       this.subscription.unsubscribe();
     }
 
-    this.subscription =
+    if(this.patientDocService.isPatchValueForPreDialysis){
+      this.initializeFormData();
+
+      this.subscription =
       this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
-        this.predialysis.patchValue({
-          ...resp,
-          TreatmentDate: this.patientDocService.formatDate(resp.TreatmentDate),
-          DialysisFDate: this.patientDocService.formatDate(resp.DialysisFDate),
-        });
+        if(Object.keys(resp).length > 0){
+          this.predialysis.patchValue({
+            ...resp,
+            TreatmentDate: this.patientDocService.formatDate(resp.TreatmentDate),
+            DialysisFDate: this.patientDocService.formatDate(resp.DialysisFDate),
+          });
+        }
       });
+
+      this.patientDocService.isPatchValueForPreDialysis = false;
+    }
   }
 
   ngOnInit(): void {
@@ -78,7 +85,9 @@ export class PreDialysisAssessmentComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 
 }

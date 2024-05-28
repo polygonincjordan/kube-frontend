@@ -1014,6 +1014,12 @@ export class EmergencyService {
     })
   }
 
+  deleteDialysisDoc(Dockey){
+    return this.http.delete(this.url + `DailysisSet?Dockey=${Dockey}`, {
+      withCredentials: true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 

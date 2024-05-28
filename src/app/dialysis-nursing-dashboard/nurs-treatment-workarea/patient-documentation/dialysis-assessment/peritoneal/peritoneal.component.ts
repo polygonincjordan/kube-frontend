@@ -17,15 +17,21 @@ export class PeritonealComponent implements OnInit {
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
     this.peritonealForm = this.patientDocService.dialysisAssecementForm.controls['peritonealForm']
-    this.initializeFormData()
 
     if(this.subscription){
       this.subscription.unsubscribe();
     }
 
-    this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
-      this.peritonealForm.patchValue(resp)
-    })
+    if(this.patientDocService.isPatchValueForPeritonial){
+      this.initializeFormData();
+      
+      this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
+        if(Object.keys(resp).length > 0){
+          this.peritonealForm.patchValue(resp);
+        }
+      })
+      this.patientDocService.isPatchValueForPeritonial = false;
+    }
   }
 
   ngOnInit(): void {
@@ -49,45 +55,45 @@ export class PeritonealComponent implements OnInit {
       Occupants: '',
       RoomShared: '',
       HomeHospital: '',
-      PdSmoke: '',
-      PdPhone: '',
-      PdFire: '',
-      PdOther: '',
+      PdSmoke: false,
+      PdPhone: false,
+      PdFire: false,
+      PdOther: false,
       PdOtherTxt: '',
-      StIndoors: '',
-      StOutdoors: '',
-      StEnclosedWFloor: '',
-      StEnclosedWoFloor: '',
-      StAdequate: '',
-      StInadequate: '',
-      StAreaHeated: '',
-      StOther: '',
+      StIndoors: false,
+      StOutdoors: false,
+      StEnclosedWFloor: false,
+      StEnclosedWoFloor: false,
+      StAdequate: false,
+      StInadequate: false,
+      StAreaHeated: false,
+      StOther: false,
       StOtherTxt: '',
-      HoPlumbing: '',
-      HoEnclosed: '',
-      HoAdequate: '',
-      HoCleanlinessAd: '',
-      HoCleanlinessNeed: '',
-      HoPetsInside: '',
-      HoPetsOutside: '',
-      HoAbsent: '',
-      HoDoor: '',
-      HoWindows: '',
-      HoOther: '',
+      HoPlumbing: false,
+      HoEnclosed: false,
+      HoAdequate: false,
+      HoCleanlinessAd: false,
+      HoCleanlinessNeed: false,
+      HoPetsInside: false,
+      HoPetsOutside: false,
+      HoAbsent: false,
+      HoDoor: false,
+      HoWindows: false,
+      HoOther: false,
       HoOtherTxt: '',
       Tendency: null,
       PetsInside: '',
       TypePet: '',
-      WaCity: '',
-      WaWell: '',
-      WaSpring: '',
-      WaCistern: '',
-      WaOther: '',
+      WaCity: false,
+      WaWell: false,
+      WaSpring: false,
+      WaCistern: false,
+      WaOther: false,
       WaOtherTxt: '',
-      GaCity: '',
-      GaSepticTank: '',
-      GaGarbage: '',
-      GaOther: '',
+      GaCity: false,
+      GaSepticTank: false,
+      GaGarbage: false,
+      GaOther: false,
       GaOtherTxt: '',
       Bathrooms: '',
       ShowerHead: '',
@@ -105,6 +111,8 @@ export class PeritonealComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }
