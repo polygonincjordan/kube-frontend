@@ -132,6 +132,9 @@ export class PatientDocumentationComponent implements OnInit {
   latestDocData: any;
   DocStatus: any;
 
+  latestDocData: any;
+  DocStatus: any;
+
   constructor(
     private modalService: BsModalService,
     private emergencyService: EmergencyService,
@@ -1029,7 +1032,7 @@ export class PatientDocumentationComponent implements OnInit {
           customClass: 'myalertpopup'
         }).then(async (result) => {
           if (result.value) {
-    
+
             (this.emergencyService.deleteDialysisDoc(this.latestDocData.Dockey).subscribe((resp)=>{
               console.log(resp);
               Swal.fire({
@@ -1039,6 +1042,7 @@ export class PatientDocumentationComponent implements OnInit {
                 customClass: 'myalertpopup'
               })
               this.openAssessment = false;
+              this.latestDocData = null;
               this.ngOnInit();
               this.emergencyService.currentTab.next('Documentation');
             }, (err)=>{
@@ -1314,7 +1318,7 @@ export class PatientDocumentationComponent implements OnInit {
         const toMonitor =
         this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
         const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
-      
+
 
         toMonitor.forEach((monitor) => {
           monitor.Timee = this.formatTime(monitor.Timee);
@@ -1448,7 +1452,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   formatTime(dateTimeString){
-    if(!dateTimeString.toString().includes('PT')){ 
+    if(!dateTimeString.toString().includes('PT')){
       const date = new Date(dateTimeString).toISOString()
       const dateDataArr = date.split('T')
       return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
