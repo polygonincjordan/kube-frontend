@@ -56,7 +56,8 @@
             </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'create'">
-            <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
+            <!-- <button type="button" class="action-doc" (click)="openDocument('createandrelease')"> -->
+            <button type="button" class="action-doc" (click)="releaseFromForm()">
               Release
             </button>
           </div>
@@ -224,7 +225,9 @@
               <div class="col-md-4">Dialysis Assessment</div>
               <div class="col-md-2 status-color">{{ latestDocData?.StatusTxt ? latestDocData.StatusTxt : "N/A" }}</div>
               <div class="col-md-2"></div>
-              <div class="col-md-4"></div>
+              <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                (click)="openDiaAssessReleasePdf(latestDocData.Dockey)"
+                *ngIf="latestDocData?.StatusTxt == 'Released'"></i></div>
             </div>
             </div>
           </div>
@@ -287,9 +290,9 @@
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
           [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
         </ngx-extended-pdf-viewer>
-        <div class="row" *ngIf="pdfUrlType == 'pdf'">
-          <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
-        </div>
+        <!-- <div class="row" *ngIf="pdfUrlType == 'pdf'">
+          <iframe [src]="pdfUrl" width="2000"> </iframe>
+        </div> -->
         <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
           <img [src]="releaseDocumentImage" style="height: 70vh;" />
         </div>

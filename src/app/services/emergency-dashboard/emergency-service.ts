@@ -1022,6 +1022,18 @@ export class EmergencyService {
     })
   }
 
+  releaseDialysisDoc(json){
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true
+    })
+  }
+
+  getDiaAssessReleasedPdf(Dockey){
+    return this.http.get(this.url + `Dialysisget?Dockey=${Dockey}`,{
+      withCredentials: true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 

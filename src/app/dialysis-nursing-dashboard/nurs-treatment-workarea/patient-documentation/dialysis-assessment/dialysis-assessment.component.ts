@@ -100,10 +100,10 @@ export class DialysisAssessmentComponent implements OnInit {
 
   LatestDocSet() {
     const json = {
-      Einri: '1000',
-      Patnr: '0000001101',
-      Falnr: '0000001402',
-      Lfdnr: '00001',
+      Einri: this.einri,
+      Patnr: this.patnr,
+      Falnr: this.falnr,
+      Lfdnr: this.lfdnr,
     };
     this.emergencyService.getLatestDocSet(json).subscribe(
       (data: any) => {
