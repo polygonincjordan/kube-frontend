@@ -1029,7 +1029,7 @@ export class EmergencyService {
   }
 
   getDiaAssessReleasedPdf(Dockey){
-    return this.http.get(this.url + `Dialysisget?Dockey=${Dockey}`,{
+    return this.http.get(this.url + `DialysisgetPDF?Dockey=${Dockey}`,{
       withCredentials: true
     })
   }
