@@ -132,9 +132,6 @@ export class PatientDocumentationComponent implements OnInit {
   latestDocData: any;
   DocStatus: any;
 
-  latestDocData: any;
-  DocStatus: any;
-
   constructor(
     private modalService: BsModalService,
     private emergencyService: EmergencyService,
