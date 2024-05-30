@@ -251,7 +251,6 @@
             <!-- Pain Assessment -->
             <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
               (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
-              dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
             <div class="col-md-2 status-color">{{painAssessmentLaestDoc[0]?.StatusTxt || 'N/A'}}</div>
             <div class="col-md-2" title="{{getTime(painAssessmentLaestDoc[0]?.DocTime)}}">
               {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -269,7 +268,6 @@
           (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
           <div class="col-md-4">Pediatric Early Warning Scale {{pediatricEarlyWarningList[0]?.Zversion ?
             dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
-          <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
           <div class="col-md-2" title="{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}">
             {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
           </div>

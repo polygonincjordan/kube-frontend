@@ -1530,6 +1530,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
+      if (this.openPediatricEarlyWarningScale) {
+        this.PediatricWarningScaleComp.savePediatricEarlyWarningScale().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
     }
     else if (this.actionType == 'edit') {
       if (this.openGlasgowComaScale) {
