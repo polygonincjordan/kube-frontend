@@ -100,7 +100,7 @@
             <div class="d-flex doc-header">
               <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
                   style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Documentss</h2>
+              <h2 style="font-weight: bold;">Current Visit Documents</h2>
             </div>
             <div class="scrollable-div" [style.height.px]="getContentHeight()">
               <!-- Emergency Nursing Document -->
@@ -250,17 +250,18 @@
 
             <!-- Pain Assessment -->
             <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
-              (click)="selectAssessment('isPainAssessment',latestBridentScaleList[0])">
-            <div class="col-md-4"> Pain Assessment :</div>
-            <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
-            <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
-              {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
+            <div class="col-md-4"> Pain Assessment {{painAssessmentLaestDoc[0]?.Zversion ?
+              dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
+            <div class="col-md-2 status-color">{{painAssessmentLaestDoc[0]?.StatusTxt || 'N/A'}}</div>
+            <div class="col-md-2" title="{{getTime(painAssessmentLaestDoc[0]?.DocTime)}}">
+              {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
             </div>
-            <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+            <div class="col-md-3">{{painAssessmentLaestDoc[0]?.PhyNm || '-'}}</div>
             <div class="col-md-1">
-              <img src="assets/img/document-html.png" width="15px" height="15px"
-                (click)="getPatientProfileData(latestBridentScaleList[0])"
-                *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="openPainAssessmentPdf(painAssessmentLaestDoc[0].Dockey)"
+                *ngIf="painAssessmentLaestDoc[0]?.StatusTxt == 'Released'"></i>
             </div>
           </div>
 

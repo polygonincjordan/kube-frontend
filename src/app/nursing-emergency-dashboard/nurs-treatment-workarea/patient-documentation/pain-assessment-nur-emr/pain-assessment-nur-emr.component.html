@@ -212,11 +212,9 @@
                     <div class="col-md-6 row m-0 pr-0">
                       <div class="col-md-4 p-0">
                         <ng-select
+                          [appendTo]="'body'"
                           placeholder="Select Mode of Arrival"
-                          [readonly]="
-                            dockeyValue || painAssessmentForm.get('NrsNa').value
-                          "
-                          [ngClass]="dockeyValue ? 'background-disabled' : ''"
+                          [readonly]="painAssessmentForm.get('NrsNa').value"
                           formControlName="NrsPainScore"
                           (change)="selectPainScore()"
                         >
@@ -285,16 +283,21 @@
                     <div class="col-md-9 row m-0 pr-0">
                       <div class="col-md-10 p-0">
                         <ng-select
+                          [appendTo]="'body'"
                           placeholder="Select face"
                           formControlName="FlFace"
                           [readonly]="painAssessmentForm.get('FlNa').value"
                           (change)="totalOfFlacc()"
-                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                          [ngClass]="
+                            painAssessmentForm.get('FlNa').value
+                              ? 'background-disabled'
+                              : ''
+                          "
                         >
                           <ng-option
                             *ngFor="let item of faceList"
                             [value]="item.value"
-                            >{{ item.label }}</ng-option
+                            ><span [title]="item.label">{{ item.label }}</span></ng-option
                           >
                         </ng-select>
                       </div>
@@ -307,16 +310,21 @@
                     <div class="col-md-9 row m-0 pr-0">
                       <div class="col-md-10 p-0">
                         <ng-select
+                          [appendTo]="'body'"
                           placeholder="Select leg"
                           [readonly]="painAssessmentForm.get('FlNa').value"
                           formControlName="FlLeg"
                           (change)="totalOfFlacc()"
-                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                          [ngClass]="
+                            painAssessmentForm.get('FlNa').value
+                              ? 'background-disabled'
+                              : ''
+                          "
                         >
                           <ng-option
                             *ngFor="let item of legList"
                             [value]="item.value"
-                            >{{ item.label }}</ng-option
+                            ><span [title]="item.label">{{ item.label }}</span></ng-option
                           >
                         </ng-select>
                       </div>
@@ -329,16 +337,21 @@
                     <div class="col-md-9 row m-0 pr-0">
                       <div class="col-md-10 p-0">
                         <ng-select
+                          [appendTo]="'body'"
                           placeholder="Select activity"
                           [readonly]="painAssessmentForm.get('FlNa').value"
                           (change)="totalOfFlacc()"
                           formControlName="FlActivity"
-                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                          [ngClass]="
+                            painAssessmentForm.get('FlNa').value
+                              ? 'background-disabled'
+                              : ''
+                          "
                         >
                           <ng-option
                             *ngFor="let item of activityList"
                             [value]="item.value"
-                            >{{ item.label }}</ng-option
+                            ><span [title]="item.label">{{ item.label }}</span></ng-option
                           >
                         </ng-select>
                       </div>
@@ -351,16 +364,21 @@
                     <div class="col-md-9 row m-0 pr-0">
                       <div class="col-md-10 p-0">
                         <ng-select
+                          [appendTo]="'body'"
                           placeholder="Select cty"
                           (change)="totalOfFlacc()"
                           [readonly]="painAssessmentForm.get('FlNa').value"
                           formControlName="FlCry"
-                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                          [ngClass]="
+                            painAssessmentForm.get('FlNa').value
+                              ? 'background-disabled'
+                              : ''
+                          "
                         >
                           <ng-option
                             *ngFor="let item of cryList"
                             [value]="item.value"
-                            >{{ item.label }}</ng-option
+                            ><span [title]="item.label">{{ item.label }}</span></ng-option
                           >
                         </ng-select>
                       </div>
@@ -373,16 +391,21 @@
                     <div class="col-md-9 row m-0 pr-0">
                       <div class="col-md-10 p-0">
                         <ng-select
+                          [appendTo]="'body'"
                           placeholder="Select consolability"
                           [readonly]="painAssessmentForm.get('FlNa').value"
                           (change)="totalOfFlacc()"
                           formControlName="FlConsolability"
-                          [ngClass]="painAssessmentForm.get('FlNa').value ? 'background-disabled' : ''"
+                          [ngClass]="
+                            painAssessmentForm.get('FlNa').value
+                              ? 'background-disabled'
+                              : ''
+                          "
                         >
                           <ng-option
                             *ngFor="let item of consolabilityList"
                             [value]="item.value"
-                            >{{ item.label }}</ng-option
+                            ><span [title]="item.label">{{ item.label }}</span></ng-option
                           >
                         </ng-select>
                       </div>
@@ -1024,17 +1047,17 @@
                       <label class="m-0" for="">Total score</label>
                     </div>
                     <div class="col-md-3 row m-0">
-                        <input
-                          class="form-control"
-                          [readOnly]="true"
-                          formControlName="ComScore"
-                        />
+                      <input
+                        class="form-control"
+                        [readOnly]="true"
+                        formControlName="ComScore"
+                      />
                     </div>
                     <div class="col-md-6">
-                        <textarea
-                          class="form-control"
-                          formControlName="ComComment"
-                        ></textarea>
+                      <textarea
+                        class="form-control"
+                        formControlName="ComComment"
+                      ></textarea>
                     </div>
                   </div>
                 </div>
@@ -1075,11 +1098,10 @@
                     <div class="col-md-8 row m-0 pr-0">
                       <div class="col-md-6 p-0">
                         <ng-select
-                          placeholder="Select face"
+                          [appendTo]="'body'"
+                          placeholder="Select Sedation Agitation"
                           formControlName="SedationAgitation"
-                          [readonly]="dockeyValue"
                           (change)="calculateOfSedation()"
-                          [ngClass]="dockeyValue ? 'background-disabled' : ''"
                         >
                           <ng-option
                             *ngFor="let item of sedationList"
@@ -1099,12 +1121,12 @@
                       <label class="m-0">Score</label>
                     </div>
                     <div class="col-md-3 row m-0">
-                        <input
-                          class="form-control"
-                          [readOnly]="true"
-                          formControlName="SedationScore"
-                        />
-                      </div>
+                      <input
+                        class="form-control"
+                        [readOnly]="true"
+                        formControlName="SedationScore"
+                      />
+                    </div>
                     <div class="col-md-6">
                       <textarea
                         class="form-control"
@@ -1347,9 +1369,9 @@
                 </div>
                 <div class="col-md-7">
                   <ng-select
-                    placeholder="Select face"
+                    [appendTo]="'body'"
+                    placeholder="Select Interventions"
                     formControlName="PlInterventions"
-                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
                   >
                     <ng-option
                       *ngFor="let item of ReAssessmentInterventions"
@@ -1367,9 +1389,9 @@
                 </div>
                 <div class="col-md-7">
                   <ng-select
-                    placeholder="Select face"
+                    [appendTo]="'body'"
+                    placeholder="Select Pain Radiation"
                     formControlName="PlRadiation"
-                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
                   >
                     <ng-option
                       *ngFor="let item of ReAssessmentPainRadi"
@@ -1401,9 +1423,9 @@
                 </div>
                 <div class="col-md-7">
                   <ng-select
-                    placeholder="Select face"
+                    [appendTo]="'body'"
+                    placeholder="Select Pain Pattern"
                     formControlName="PlPattern"
-                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
                   >
                     <ng-option
                       *ngFor="let item of ReAssessmentPainPattern"
@@ -1419,9 +1441,9 @@
                 </div>
                 <div class="col-md-7">
                   <ng-select
-                    placeholder="Select face"
+                    [appendTo]="'body'"
+                    placeholder="Select Pain Onset"
                     formControlName="PlOnset"
-                    [ngClass]="dockeyValue ? 'background-disabled' : ''"
                   >
                     <ng-option
                       *ngFor="let item of ReAssessmentPainOnset"
@@ -1591,9 +1613,10 @@
                     <th style="min-width: 150px !important">
                       Assessment done by
                     </th>
+                    <th>Action</th>
                   </thead>
                   <tbody style="background-color: #fbfcff">
-                    <tr *ngFor="let item of reAssessmentTableList">
+                    <tr *ngFor="let item of reAssessmentTableList; let i = index">
                       <td [title]="item.PlDate | date : 'dd/MM/yyyy'">
                         {{ item.PlDate | date : "dd/MM/yyyy" }}
                       </td>
@@ -1608,15 +1631,69 @@
                       <td [title]="item.PlLocation">{{ item.PlLocation }}</td>
                       <td [title]="item.PlFrequency">{{ item.PlFrequency }}</td>
                       <td [title]="item.PlDuration">{{ item.PlDuration }}</td>
-                      <td [title]="item.PlInterventions">
-                        {{ item.PlInterventions }}
+                      <td style="padding: 0 !important">
+                        <ng-select
+                          [appendTo]="'body'"
+                          class="side-effect-table"
+                          [readonly]="true"
+                          [(ngModel)]="item.PlInterventions"
+                          [ngModelOptions]="{ standalone: true }"
+                        >
+                          <ng-option
+                            *ngFor="let item of ReAssessmentInterventions"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
                       </td>
-                      <td [title]="item.PlRadiation">{{ item.PlRadiation }}</td>
+                      <td style="padding: 0 !important">
+                        <ng-select
+                          [appendTo]="'body'"
+                          class="side-effect-table"
+                          [readonly]="true"
+                          [(ngModel)]="item.PlRadiation"
+                          [ngModelOptions]="{ standalone: true }"
+                        >
+                          <ng-option
+                            *ngFor="let item of ReAssessmentPainRadi"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </td>
                       <td [title]="item.PlRadiationTxt">
                         {{ item.PlRadiationTxt }}
                       </td>
-                      <td [title]="item.PlPattern">{{ item.PlPattern }}</td>
-                      <td [title]="item.PlOnset">{{ item.PlOnset }}</td>
+                      <td style="padding: 0 !important">
+                        <ng-select
+                          [appendTo]="'body'"
+                          class="side-effect-table"
+                          [readonly]="true"
+                          [(ngModel)]="item.PlPattern"
+                          [ngModelOptions]="{ standalone: true }"
+                        >
+                          <ng-option
+                            *ngFor="let item of ReAssessmentPainPattern"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </td>
+                      <td style="padding: 0 !important">
+                        <ng-select
+                          [appendTo]="'body'"
+                          class="side-effect-table"
+                          [readonly]="true"
+                          [(ngModel)]="item.PlOnset"
+                          [ngModelOptions]="{ standalone: true }"
+                        >
+                          <ng-option
+                            *ngFor="let item of ReAssessmentPainOnset"
+                            [value]="item.value"
+                            >{{ item.label }}</ng-option
+                          >
+                        </ng-select>
+                      </td>
                       <td [title]="item.PlCauses">{{ item.PlCauses }}</td>
                       <td [title]="item.PlMedication">
                         {{ item.PlMedication }}
@@ -1626,13 +1703,48 @@
                         {{ item.PlNonMedication }}
                       </td>
                       <td [title]="item.PlComment">{{ item.PlComment }}</td>
-                      <td [title]="item.doneBy">{{ item.doneBy }}</td>
+                      <td [title]="item.PlAssessedBy">
+                        {{ item.PlAssessedBy }}
+                      </td>
+                      <td (click)="deletePIData(i)"><img src="assets/img/Delete.svg" /></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+        </div>
+
+        <div *ngIf="isPainLocation" class="h-100">
+          <div class="h-100">
+            <div class="w-100 d-flex justify-content-end">
+              <button
+                class="btn btn primary action-doc mr-3"
+                (click)="openImageEditor()"
+              >
+                Upload
+              </button>
+              <button
+                class="btn btn primary action-doc"
+                (click)="removePainImg()"
+              >
+                Remove
+              </button>
+            </div>
+            <div
+              *ngIf="painAssessmentForm.get('Resimage').value"
+              class="pain-location-image"
+            >
+              <img [src]="painAssessmentForm.get('Resimage').value" />
+            </div>
+          </div>
+          <app-image-edittor
+            #imageEditorPainLocation
+            [hiddenTools]="hiddenTools"
+            [toolbarPosition]="toolbarPosition"
+            [defaultImage]="defaultImage"
+            (editImage)="getEditImage($event)"
+          ></app-image-edittor>
         </div>
 
         <div *ngIf="isFlowSheet">
@@ -1880,7 +1992,10 @@
                     />
                   </div>
                   <div class="col-md-3 p-0">
-                    <ng-select formControlName="FloPcaInfusionUnit">
+                    <ng-select
+                      [appendTo]="'body'"
+                      formControlName="FloPcaInfusionUnit"
+                    >
                       <ng-option
                         *ngFor="let item of flowSheetInfusion"
                         [value]="item.value"
@@ -1955,15 +2070,16 @@
                   <div class="col-md-5">
                     <label>Sedation Level</label>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-7 p-0">
                     <ng-select
+                      [appendTo]="'body'"
                       placeholder="Select Sedation Level"
                       formControlName="FloSedation"
                     >
                       <ng-option
                         *ngFor="let item of flowSheetSedation"
                         [value]="item.value"
-                        >{{ item.label }}</ng-option
+                        ><span [title]="item.label">{{ item.label }}</span></ng-option
                       >
                     </ng-select>
                   </div>
@@ -1974,6 +2090,7 @@
                   </div>
                   <div class="col-md-6">
                     <ng-select
+                      [appendTo]="'body'"
                       placeholder="Select Side Effects"
                       formControlName="FloSideEffects"
                     >
@@ -2043,11 +2160,12 @@
                   <th style="min-width: 120px !important">
                     Assessment done by
                   </th>
+                  <th>Action</th>
                 </thead>
                 <tbody style="background-color: #fbfcff">
                   <tr
                     style="background-color: #fbfcff"
-                    *ngFor="let item of flowSheetAssessmentList"
+                    *ngFor="let item of flowSheetAssessmentList; let i = index"
                   >
                     <td [title]="item.FloDate | date : 'dd/MM/yyyy'">
                       {{ item.FloDate | date : "dd/MM/yyyy" }}
@@ -2109,6 +2227,7 @@
                     </td>
                     <td style="padding: 0 !important">
                       <ng-select
+                        [appendTo]="'body'"
                         class="side-effect-table"
                         [readonly]="true"
                         [(ngModel)]="item.FloSedation"
@@ -2123,6 +2242,7 @@
                     </td>
                     <td style="padding: 0 !important">
                       <ng-select
+                        [appendTo]="'body'"
                         class="side-effect-table"
                         [readonly]="true"
                         [(ngModel)]="item.FloSideEffects"
@@ -2138,6 +2258,7 @@
                     <td [title]="item.FloAssessedBy">
                       {{ item.FloAssessedBy }}
                     </td>
+                    <td (click)="deleteFlowSheetData(i)"><img src="assets/img/Delete.svg" /></td>
                   </tr>
                 </tbody>
               </table>

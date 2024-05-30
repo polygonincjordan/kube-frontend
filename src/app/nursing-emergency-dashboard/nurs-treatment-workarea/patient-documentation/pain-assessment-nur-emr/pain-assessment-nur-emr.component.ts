@@ -1,5 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DataShareService } from '@services/data-share.service';
 import { FacePaingScaleType } from '@services/e-kardex/interfaces/documents.interface';
@@ -8,16 +15,41 @@ import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
+import Painterro from 'painterro';
+import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
+import { PainLocationComponent } from './pain-location/pain-location.component';
+import {
+  FacePainResponse,
+  NonMedicationCheckBox,
+  ReAssessmentInterventions,
+  ReAssessmentPainOnset,
+  ReAssessmentPainPattern,
+  ReAssessmentPainRadi,
+  activityList,
+  consolabilityList,
+  cryList,
+  faceList,
+  flowSheetInfusion,
+  flowSheetSedation,
+  flowSheetSideEffects,
+  hiddenTools,
+  legList,
+  painScoreList,
+  sedationList,
+} from './pain-assissment-dropdown-list/dropdown-value';
 
 @Component({
   selector: 'app-pain-assessment-nur-emr',
   templateUrl: './pain-assessment-nur-emr.component.html',
   styleUrls: ['./pain-assessment-nur-emr.component.scss'],
 })
-export class PainAssessmentNurEmrComponent implements OnInit {
+export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
+  @ViewChild('imageEditorPainLocation')
+  imageEditorPainLocation: PainLocationComponent;
+
   painAssessmentForm: FormGroup;
   private subscription: Subscription;
-
+  dateRange: Date[];
   isFacePain: boolean = true;
   isNumericRating: boolean = false;
   isFlacc: boolean = false;
@@ -29,548 +61,300 @@ export class PainAssessmentNurEmrComponent implements OnInit {
   isFlowSheet: boolean = false;
   paniScoreValue = null;
 
-  valueDrop = '0';
+  public FacePainResponse: FacePaingScaleType[] = FacePainResponse;
+  public faceList = faceList;
+  public legList = legList;
+  public cryList = cryList;
+  public consolabilityList = consolabilityList;
+  public painScoreList = painScoreList;
+  public NonMedicationCheckBox = NonMedicationCheckBox;
+  public sedationList = sedationList;
+  public ReAssessmentInterventions = ReAssessmentInterventions;
+  public ReAssessmentPainRadi = ReAssessmentPainRadi;
+  public ReAssessmentPainPattern = ReAssessmentPainPattern;
+  public ReAssessmentPainOnset = ReAssessmentPainOnset;
+  public flowSheetInfusion = flowSheetInfusion;
+  public flowSheetSedation = flowSheetSedation;
+  public flowSheetSideEffects = flowSheetSideEffects;
+  public hiddenTools: any = hiddenTools;
+  public activityList = activityList;
 
-  public FacePainResponse: FacePaingScaleType[] = [
-    {
-      id: 1,
-      keyId: 'Nohurt',
-      text: 'No hurt',
-      value: '0',
-      image: 'assets/img/1-happy-face.png',
-      isDisable: false,
-    },
-    {
-      id: 2,
-      keyId: 'Hurtslittlebit',
-      text: 'Hurts little bit',
-      value: '2',
-      image: 'assets/img/2-face-pain.png',
-      isDisable: false,
-    },
-    {
-      id: 2,
-      keyId: 'Hurtslittlemore',
-      text: 'Hurts little more',
-      value: '4',
-      image: 'assets/img/3-face-pain.png',
-      isDisable: false,
-    },
-    {
-      id: 2,
-      keyId: 'Hurtsevenmore',
-      text: 'Hurts even more',
-      value: '6',
-      image: 'assets/img/4-face-pain.png',
-      isDisable: false,
-    },
-    {
-      id: 2,
-      keyId: 'Hurtswholealot',
-      text: 'Hurts whole alot',
-      value: '8',
-      image: 'assets/img/5-face-pain.png',
-      isDisable: false,
-    },
-    {
-      id: 2,
-      keyId: 'Hurtsworst',
-      text: 'Hurts worst',
-      value: '10',
-      image: 'assets/img/6-face-pain.png',
-      isDisable: false,
-    },
-  ];
-
-  faceList = [
-    {
-      label: 'No particular expression / smile',
-      value: '0',
-    },
-    {
-      label: 'Occasional grimace / frown, withdrawn, disinterested',
-      value: '1',
-    },
-    {
-      label: 'Frequent to constant frown, qulvering chin, clenched jaw',
-      value: '2',
-    },
-  ];
-
-  legList = [
-    {
-      label: 'Normal position / relaxed',
-      value: '0',
-    },
-    {
-      label: 'Uneasy, restless, tense',
-      value: '1',
-    },
-    {
-      label: 'Kicking or legs drwan up',
-      value: '2',
-    },
-  ];
-
-  activityList = [
-    {
-      label: 'Lying quietly, normal position, moves easily',
-      value: '0',
-    },
-    {
-      label: 'Squirning, shifting back & forth, tense',
-      value: '1',
-    },
-    {
-      label: 'Arched, rigid or jerking',
-      value: '2',
-    },
-  ];
-
-  cryList = [
-    {
-      label: 'No cry (awake, asleep)',
-      value: '0',
-    },
-    {
-      label: 'Moans or whimprs, occasinal complaint',
-      value: '1',
-    },
-    {
-      label: 'Crying steadly, screams or sobs, frequent complaints',
-      value: '2',
-    },
-  ];
-  consolabilityList = [
-    {
-      label: 'Content, relaxed',
-      value: '0',
-    },
-    {
-      label: 'Rassured by occasional touching, hugging, distractile',
-      value: '1',
-    },
-    {
-      label: 'Difficult to console or comfort',
-      value: '2',
-    },
-  ];
-
-  public painScoreList = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-  ];
-
-  public NonMedicationCheckBox = [
-    {
-      label: 'Heat packs',
-    },
-    {
-      label: 'Cold packs',
-    },
-    {
-      label: 'Repositioning/Turning',
-    },
-    {
-      label: 'Ambulation',
-    },
-    {
-      label: 'Relaxation exercises',
-    },
-    {
-      label: 'Deep Breathing',
-    },
-    {
-      label: 'Rhythmic Breathing',
-    },
-  ];
-
-  public sedationList = [
-    {
-      label: 'Unarousable',
-      value: '1',
-    },
-    {
-      label: 'Very sedated',
-      value: '2',
-    },
-    {
-      label: 'Sedated',
-      value: '3',
-    },
-    {
-      label: 'Calm & Cooperative',
-      value: '4',
-    },
-    {
-      label: 'Agitated',
-      value: '5',
-    },
-    {
-      label: 'Very agitated',
-      value: '6',
-    },
-    {
-      label: 'Dangerous Agitation',
-      value: '7',
-    },
-  ];
-
-  public ReAssessmentInterventions = [
-    {
-      label: 'Continue Current Treatment',
-      value: '0',
-    },
-  ];
-
-  public ReAssessmentPainRadi = [
-    {
-      label: 'Yes',
-      value: '0',
-    },
-    {
-      label: 'No',
-      value: '1',
-    },
-  ];
-
-  public ReAssessmentPainPattern = [
-    {
-      label: 'Constant',
-      value: '0',
-    },
-    {
-      label: 'Intermittent',
-      value: '1',
-    },
-  ];
-
-  public ReAssessmentPainOnset = [
-    {
-      label: 'Acute',
-      value: '0',
-    },
-    {
-      label: 'Chronic',
-      value: '1',
-    },
-  ];
-
-  public flowSheetInfusion = [
-    {
-      label: 'ml/hr',
-      value: '0',
-    },
-    {
-      label: 'mg/hr',
-      value: '1',
-    },
-  ];
-
-  public flowSheetSedation = [
-    {
-      label: 'Alert',
-      value: '0',
-    },
-    {
-      label: 'Mild, occasionally drowsy, easy to arouse',
-      value: '1',
-    },
-    {
-      label: 'Moderate, frequently drowsy, easy to arouse',
-      value: '1',
-    },
-    {
-      label: 'Severe, somnolent, difficult to arouse',
-      value: '2',
-    },
-    {
-      label: 'Normal sleep',
-      value: '3',
-    },
-  ];
-
-  public flowSheetSideEffects = [
-    {
-      label: 'Constipation',
-      value: '0',
-    },
-    {
-      label: 'Vomitting',
-      value: '1',
-    },
-    {
-      label: 'Nausea',
-      value: '2',
-    },
-    {
-      label: 'Dyspnea',
-      value: '3',
-    },
-    {
-      label: 'Itching',
-      value: '4',
-    },
-  ];
+  public toolbarPosition: any = 'top';
+  public defaultImage: any = 'assets/img/pain-location-area.png';
 
   public dockeyValue: any = null;
   public totalScore: any = '0';
   public facePainDescription: string = 'No hurt';
-  public facePainScaleData: any;
-  public comment: string;
   reAssessmentTableList: any = [];
   characterConcate: any = [];
   NoMedicationConcate: any = [];
   userProfile: any;
   flowSheetAssessmentList: any = [];
   otherConcate: any = [];
+  bsConfig: any;
+  private actionTypeSubscription$: Subscription;
+  docKey: any;
+  documentType: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private storageService: StorageService,
     private datePipe: DatePipe,
     private emergencyService: EmergencyService,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private dataShareService: DataShareService
+  ) {
+    this.bsConfig = Object.assign(
+      {},
+      { containerClass: 'theme-blue', dateInputFormat: 'YYYY-MM-DD' }
+    );
+  }
 
   ngOnInit(): void {
     this.initForm();
     this.userProfile = this.storageService.getUserProfile();
-
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          console.log(data, "data.type");
+          this.documentType = data.type;
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            if (data.value.type == WordType.EditBS && data.value.docKey != '') {
+    
+              this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+              if (this.dockeyValue) {
+                this.getPainAssessment(data.value.docKey);
+              }
+            }
+            this.docKey = data.value.docKey;
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getPainAssessment(data.value.docKey);
+          }
+        } else if (data.type == ActionType.Copy$ && data.value) {
+          this.docKey = data.value.docKey;
+          this.getPainAssessment(data.value.docKey);
+        } else {
+          // for after code
+        }
+      }
+    );
+    this.getPABackImage();
   }
 
-  
+  getPABackImage() {
+    this.emergencyService.getPABackGroundImage(this.storageService.einri).subscribe((elemnet: any) =>{
+      this.defaultImage = `data:image/png;base64,${elemnet?.d?.Image64}`;
+    })
+  }
+
+  getPainAssessment(dockey?: any) {
+    this.subscription = this.emergencyService
+      .getPainAssesmentDetails(dockey).subscribe({
+        next: (data: any) => {
+          this.painAssessmentForm.patchValue(data.d.results[0]);
+          this.painAssessmentForm.patchValue({
+            FloDate: this.getDate(data?.d?.results[0]?.FloDate),
+            FloTime: this.getTime(data?.d?.results[0]?.FloTime),
+            PlDate: this.getDate(data?.d?.results[0]?.PlDate),
+            PlTime: this.getTime(data?.d?.results[0]?.PlTime),
+          });
+          if(data?.d?.results[0].TOPAINLOGS?.results.length) {
+            data?.d?.results[0].TOPAINLOGS?.results.forEach((element) =>{
+              element.PlDate = this.getDate(element?.PlDate),
+              element.PlTime = this.getTime(element?.PlTime)
+            })
+          }
+          if(data?.d?.results[0].TOFLOWSHEET?.results?.length) {
+            data?.d?.results[0].TOFLOWSHEET?.results.forEach((element) =>{
+              element.FloDate = this.getDate(element?.FloDate),
+              element.FloTime = this.getTime(element?.FloTime)
+            })
+          }
+          this.reAssessmentTableList = data?.d?.results[0].TOPAINLOGS?.results || [];
+          this.flowSheetAssessmentList = data?.d?.results[0].TOFLOWSHEET?.results || [];
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+  getDate(value) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
+    }
+  }
+  getTime(value) {
+    if (value) {
+      var str = value;
+      var str = str.replace(/[PT]/g, '');
+      var str = str.replace(/[H]/g, ':');
+      var str = str.replace(/[M]/g, ':');
+      var str = str.replace(/[S]/g, '');
+      return str;
+    }
+  }
 
   initForm() {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
-
     this.painAssessmentForm = this.formBuilder.group({
       Dockey: '',
-      Dtid: 'ZMED_PAIN',
-      Einri: this.storageService.einri,
-      Patnr: this.storageService.patnr,
-      Falnr: this.storageService.falnr,
-      Lfdnr: this.storageService.lfdnr,
-      Orgdo: 'F21IUAMC',
-      FpNa: false,
-      FpPainScale: '',
-      FpTotalScore: '',
-      FpTotalScoreTxt: '',
-      NrsNa: false,
-      NrsPainScore: '',
-      NrsTotalScore: '',
-      NrsTotalScoreTxt: '',
-      FlNa: false,
-      FlFace: '',
-      FlLeg: '',
-      FlActivity: '',
-      FlCry: '',
-      FlConsolability: '',
-      FlScore: '',
-      FlScoreTxt: '',
-      NiFacial: '',
-      NiCry: '',
-      NiBreathing: '',
-      NiArms: '',
-      NiLegs: '',
-      NiArousal: '',
-      NiTotalScore: '',
-      NiTotalScoreTxt: '',
-      ComNoSigns: false,
-      ComIrIntermittent: false,
-      ComIrActivity: false,
-      ComIrFrowning: false,
-      ComIrMildly: false,
-      ComIrArousability: false,
-      ComIrUnexplained: false,
-      ComPaLoudCry: false,
-      ComPaRefuses: false,
-      ComPaThrashing: false,
-      ComPaMarked: false,
-      ComPaActivity: false,
-      ComPaTense: false,
-      ComPaFleshed: false,
-      ComPaSleep: false,
-      ComPaWithdraw: false,
-      ComPaDuskiness: false,
-      ComPaRrHr: false,
-      ComScore: '',
-      ComComment: '',
-      SedationAgitation: '',
-      SedationScore: '',
-      SedationComment: '',
-      PlDate: new Date(),
-      PlTime: currentTime,
-      PlPainIntensity: '',
-      PlPainScaling: '',
-      PlChSharp: false,
-      PlChDull: false,
-      PlChStabbing: false,
-      PlChBurns: false,
-      PlChCrushing: false,
-      PlChDeep: false,
-      PlChSore: false,
-      PlChAching: false,
-      PlChColic: false,
-      PlChThrobbing: false,
-      PlChNumb: false,
-      PlChShooting: false,
-      PlChPressing: false,
-      PlChTight: false,
-      PlChPulling: false,
-      PlChSqueezing: false,
-      PlLocation: '',
-      PlFrequency: '',
-      PlDuration: '',
-      PlInterventions: '',
-      PlRadiation: '',
-      PlRadiationTxt: '',
-      PlPattern: '',
-      PlOnset: '',
-      PlCauses: '',
-      PlRelieves: '',
-      PlMedication: '',
-      PlHeatPacks: false,
-      PlColdPacks: false,
-      PlRepositioning: false,
-      PlAmbulation: false,
-      PlRelaxation: false,
-      PlDeep: false,
-      PlRhythmic: false,
-      PlComment: '',
-      FloDate: new Date(),
-      FloTime: currentTime,
-      FloPsRest: '',
-      FloPsMovement: '',
-      FloPreRest: '',
-      FloPreMovement: '',
-      FloIvInfusion: '',
-      FloIvBolus: '',
-      FloIvAmount: '',
-      FloPcaReservoir: '',
-      FloPcaInfusion: '',
-      FloPcaInfusionUnit: '',
-      FloPcaDemandDose: '',
-      FloPcaTimeInterval: '',
-      FloPcaMaximumDoses: '',
-      FloPcaDoseGiven: '',
-      FloPcaDoseAttempted: '',
-      FloPcaClinicalBolus: '',
-      FloPcaAmount: '',
-      FloEpiInfusion: '',
-      FloEpiBlock: '',
-      FloEpiAmount: '',
-      FloOthIvStat: false,
-      FloOthIvPrn: false,
-      FloOthLocally: false,
-      FloOral: '',
-      FloTransdermal: '',
-      FloSedation: '',
-      FloSideEffects: '',
-      AttendPhy: this.storageService.getGpart(),
-      DocStatus: '1',
+      Dtid: new FormControl('ZMED_PAIN'),
+      Einri: new FormControl(this.storageService.einri),
+      Patnr: new FormControl(this.storageService.patnr),
+      Falnr: new FormControl(this.storageService.falnr),
+      Lfdnr: new FormControl(this.storageService.lfdnr),
+      Orgdo: new FormControl('F21IUAMC'),
+      FpNa: new FormControl(false),
+      FpPainScale: new FormControl(''),
+      FpTotalScore: new FormControl(''),
+      FpTotalScoreTxt: new FormControl(''),
+      NrsNa: new FormControl(false),
+      NrsPainScore: new FormControl(''),
+      NrsTotalScore: new FormControl(''),
+      NrsTotalScoreTxt: new FormControl(''),
+      FlNa: new FormControl(false),
+      FlFace: new FormControl(''),
+      FlLeg: new FormControl(''),
+      FlActivity: new FormControl(''),
+      FlCry: new FormControl(''),
+      FlConsolability: new FormControl(''),
+      FlScore: new FormControl(''),
+      FlScoreTxt: new FormControl(''),
+      NiFacial: new FormControl(''),
+      NiCry: new FormControl(''),
+      NiBreathing: new FormControl(''),
+      NiArms: new FormControl(''),
+      NiLegs: new FormControl(''),
+      NiArousal: new FormControl(''),
+      NiTotalScore: new FormControl(''),
+      NiTotalScoreTxt: new FormControl(''),
+      ComNoSigns: new FormControl(false),
+      ComIrIntermittent: new FormControl(false),
+      ComIrActivity: new FormControl(false),
+      ComIrFrowning: new FormControl(false),
+      ComIrMildly: new FormControl(false),
+      ComIrArousability: new FormControl(false),
+      ComIrUnexplained: new FormControl(false),
+      ComPaLoudCry: new FormControl(false),
+      ComPaRefuses: new FormControl(false),
+      ComPaThrashing: new FormControl(false),
+      ComPaMarked: new FormControl(false),
+      ComPaActivity: new FormControl(false),
+      ComPaTense: new FormControl(false),
+      ComPaFleshed: new FormControl(false),
+      ComPaSleep: new FormControl(false),
+      ComPaWithdraw: new FormControl(false),
+      ComPaDuskiness: new FormControl(false),
+      ComPaRrHr: new FormControl(false),
+      ComScore: new FormControl(''),
+      ComComment: new FormControl(''),
+      SedationAgitation: new FormControl(''),
+      SedationScore: new FormControl(''),
+      SedationComment: new FormControl(''),
+      PlDate: new FormControl(new Date()),
+      PlTime: new FormControl(currentTime),
+      PlPainIntensity: new FormControl(''),
+      PlPainScaling: new FormControl(''),
+      PlChSharp: new FormControl(false),
+      PlChDull: new FormControl(false),
+      PlChStabbing: new FormControl(false),
+      PlChBurns: new FormControl(false),
+      PlChCrushing: new FormControl(false),
+      PlChDeep: new FormControl(false),
+      PlChSore: new FormControl(false),
+      PlChAching: new FormControl(false),
+      PlChColic: new FormControl(false),
+      PlChThrobbing: new FormControl(false),
+      PlChNumb: new FormControl(false),
+      PlChShooting: new FormControl(false),
+      PlChPressing: new FormControl(false),
+      PlChTight: new FormControl(false),
+      PlChPulling: new FormControl(false),
+      PlChSqueezing: new FormControl(false),
+      PlLocation: new FormControl(''),
+      PlFrequency: new FormControl(''),
+      PlDuration: new FormControl(''),
+      PlInterventions: new FormControl(''),
+      PlRadiation: new FormControl(''),
+      PlRadiationTxt: new FormControl(''),
+      PlPattern: new FormControl(''),
+      PlOnset: new FormControl(''),
+      PlCauses: new FormControl(''),
+      PlRelieves: new FormControl(''),
+      PlMedication: new FormControl(''),
+      PlHeatPacks: new FormControl(false),
+      PlColdPacks: new FormControl(false),
+      PlRepositioning: new FormControl(false),
+      PlAmbulation: new FormControl(false),
+      PlRelaxation: new FormControl(false),
+      PlDeep: new FormControl(false),
+      PlRhythmic: new FormControl(false),
+      PlComment: new FormControl(''),
+      FloDate: new FormControl(new Date()),
+      FloTime: new FormControl(currentTime),
+      FloPsRest: new FormControl(''),
+      FloPsMovement: new FormControl(''),
+      FloPreRest: new FormControl(''),
+      FloPreMovement: new FormControl(''),
+      FloIvInfusion: new FormControl(''),
+      FloIvBolus: new FormControl(''),
+      FloIvAmount: new FormControl(''),
+      FloPcaReservoir: new FormControl(''),
+      FloPcaInfusion: new FormControl(''),
+      FloPcaInfusionUnit: new FormControl(''),
+      FloPcaDemandDose: new FormControl(''),
+      FloPcaTimeInterval: new FormControl(''),
+      FloPcaMaximumDoses: new FormControl(''),
+      FloPcaDoseGiven: new FormControl(''),
+      FloPcaDoseAttempted: new FormControl(''),
+      FloPcaClinicalBolus: new FormControl(''),
+      FloPcaAmount: new FormControl(''),
+      FloEpiInfusion: new FormControl(''),
+      FloEpiBlock: new FormControl(''),
+      FloEpiAmount: new FormControl(''),
+      FloOthIvStat: new FormControl(false),
+      FloOthIvPrn: new FormControl(false),
+      FloOthLocally: new FormControl(false),
+      FloOral: new FormControl(''),
+      FloTransdermal: new FormControl(''),
+      FloSedation: new FormControl(''),
+      FloSideEffects: new FormControl(''),
+      Resimage: new FormControl(''),
+      Notation: new FormControl(''),
+      AttendPhy: new FormControl(this.storageService.getGpart()),
+      DocStatus: new FormControl('1'),
     });
   }
 
-  public switchTabs(tab) {
-    if (tab == 'isFacePain') {
-      this.isFacePain = true;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isNumericRating') {
-      this.isFacePain = false;
-      this.isNumericRating = true;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isFlacc') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = true;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isNips') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = true;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isComatosePatient') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = true;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isSedation') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = true;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isReAssessment') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = true;
-      this.isPainLocation = false;
-      this.isFlowSheet = false;
-    } else if (tab == 'isPainLocation') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = true;
-      this.isFlowSheet = false;
-    } else if (tab == 'isFlowSheet') {
-      this.isFacePain = false;
-      this.isNumericRating = false;
-      this.isFlacc = false;
-      this.isNips = false;
-      this.isComatosePatient = false;
-      this.isSedation = false;
-      this.isReAssessment = false;
-      this.isPainLocation = false;
-      this.isFlowSheet = true;
+  public switchTabs(tab: string) {
+    this.isFacePain = false;
+    this.isNumericRating = false;
+    this.isFlacc = false;
+    this.isNips = false;
+    this.isComatosePatient = false;
+    this.isSedation = false;
+    this.isReAssessment = false;
+    this.isPainLocation = false;
+    this.isFlowSheet = false;
+    this[tab] = true;
+
+    if(this.painAssessmentForm.value.NrsPainScore) {
+      this.painAssessmentForm.patchValue({
+        PlPainIntensity: `${this.painAssessmentForm.value.NrsTotalScore}-${this.painAssessmentForm.value.NrsTotalScoreTxt}`,
+        PlPainScaling: 'Face Scale'
+      })
     }
   }
 
@@ -773,21 +557,18 @@ export class PainAssessmentNurEmrComponent implements OnInit {
       ComPaRrHr: 1,
     };
 
-    // Calculate the total score based on selected checkboxes
     Object.keys(checkboxScores).forEach((key) => {
       if (this.painAssessmentForm.get(key).value) {
         totalScore += checkboxScores[key];
       }
     });
 
-    // Update the ComScore field in the form with the calculated score
     this.painAssessmentForm.patchValue({
-      ComScore: totalScore, // Convert score to string if needed
+      ComScore: totalScore,
     });
   }
 
   // Sedation & Agitation
-
   calculateOfSedation() {
     this.painAssessmentForm.patchValue({
       SedationScore: Number(this.painAssessmentForm.value.SedationAgitation),
@@ -808,25 +589,17 @@ export class PainAssessmentNurEmrComponent implements OnInit {
       PlLocation: this.painAssessmentForm.value.PlLocation,
       PlFrequency: this.painAssessmentForm.value.PlFrequency,
       PlDuration: this.painAssessmentForm.value.PlDuration,
-      PlInterventions: this.ReAssessmentInterventions.find(
-        (res) => this.painAssessmentForm.value.PlInterventions == res.value
-      ).label,
-      PlRadiation: this.ReAssessmentPainRadi.find(
-        (res) => this.painAssessmentForm.value.PlRadiation == res.value
-      ).label,
+      PlInterventions: this.painAssessmentForm.value.PlInterventions,
+      PlRadiation: this.painAssessmentForm.value.PlRadiation,
       PlRadiationTxt: this.painAssessmentForm.value.PlRadiationTxt,
-      PlPattern: this.ReAssessmentPainPattern.find(
-        (res) => this.painAssessmentForm.value.PlPattern == res.value
-      ).label,
-      PlOnset: this.ReAssessmentPainOnset.find(
-        (res) => this.painAssessmentForm.value.PlOnset == res.value
-      ).label,
+      PlPattern: this.painAssessmentForm.value.PlPattern,
+      PlOnset: this.painAssessmentForm.value.PlOnset,
       PlCauses: this.painAssessmentForm.value.PlCauses,
       PlRelieves: this.painAssessmentForm.value.PlRelieves,
       PlMedication: this.painAssessmentForm.value.PlMedication,
       PlNonMedication: nonMedicationJoin,
       PlComment: this.painAssessmentForm.value.PlComment,
-      doneBy: this.userProfile?.GpartName,
+      PlAssessedBy: this.userProfile?.GpartName,
     };
 
     this.reAssessmentTableList.push(payload);
@@ -843,6 +616,10 @@ export class PainAssessmentNurEmrComponent implements OnInit {
     }
   }
 
+  deletePIData(index) {
+    this.reAssessmentTableList.splice(index, 1);
+  }
+
   nonMedicationCheck(event, value) {
     if (event.target.checked) {
       this.NoMedicationConcate.push(value);
@@ -856,7 +633,6 @@ export class PainAssessmentNurEmrComponent implements OnInit {
 
   clearReAssessmentForm() {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
-
     this.painAssessmentForm.patchValue({
       PlDate: new Date(),
       PlTime: currentTime,
@@ -948,6 +724,10 @@ export class PainAssessmentNurEmrComponent implements OnInit {
     }
   }
 
+  deleteFlowSheetData(index) {
+    this.flowSheetAssessmentList.splice(index, 1);
+  }
+
   transformDate(dateString: string): string {
     const date = new Date(dateString);
     const timestamp = date.getTime();
@@ -959,55 +739,113 @@ export class PainAssessmentNurEmrComponent implements OnInit {
     return `PT${hours}H${minutes}M${seconds}S`;
   }
 
-  savePainAssessmentDoc(): Promise<any> {
-    let painAssessmentValue: any = JSON.parse(JSON.stringify(this.painAssessmentForm.value));
-    console.log(painAssessmentValue, '----');
+  savePainAssessmentDoc(docStatus?: any): Promise<any> {
+    this.painAssessmentForm.value.DocStatus = docStatus;
+
+    const painAssessmentValue = this.deepClone(this.painAssessmentForm.value);
+    const flowSheetAssessmentCloneValue = this.processFlowSheet(this.flowSheetAssessmentList, painAssessmentValue);
+    const reAssessmentCloneValue = this.processReAssessment(this.reAssessmentTableList, painAssessmentValue);
+  
+    const payload = this.createPayload(painAssessmentValue, reAssessmentCloneValue, flowSheetAssessmentCloneValue);
+  
     return new Promise((resolve, reject) => {
-      if(this.flowSheetAssessmentList.length) {
-        this.flowSheetAssessmentList.forEach((element) =>{
-          element.FloDate = this.transformDate(painAssessmentValue.FloDate),
-          element.FloTime = this.transformTime(painAssessmentValue.FloTime)
-        })
-      }
-
-      if(this.reAssessmentTableList.length) {
-        this.reAssessmentTableList.forEach((element) =>{
-          element.PlDate = this.transformDate(painAssessmentValue.PlDate),
-          element.PlTime = this.transformTime(painAssessmentValue.PlTime)
-        })
-      }
-      let payload = {
-        ...painAssessmentValue,
+      this.subscription = this.emergencyService.createPainAssessmentDoc({ d: payload }).subscribe({
+        next: (data: any) => {},
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+          reject(err);
+        },
+        complete: () => {
+          resolve(true);
+          this.sharedService.successSwallModel('Pain Assessment created successfully');
+        }
+      });
+    });
+  }
+  
+  deepClone(obj: any): any {
+    return JSON.parse(JSON.stringify(obj));
+  }
+  
+  processFlowSheet(flowSheetList: any[], painAssessmentValue: any): any[] {
+    return flowSheetList.length ? flowSheetList.map(element => ({
+      ...element,
+      FloDate: this.transformDate(painAssessmentValue.FloDate),
+      FloTime: this.transformTime(painAssessmentValue.FloTime),
+      FloPcaTimeInterval: Number(element.FloPcaTimeInterval)
+    })) : [];
+  }
+  
+  processReAssessment(reAssessmentList: any[], painAssessmentValue: any): any[] {
+    return reAssessmentList.length ? reAssessmentList.map(element => {
+      const { PlAssessedBy, ...rest } = element;
+      return {
+        ...rest,
         PlDate: this.transformDate(painAssessmentValue.PlDate),
-        PlTime: this.transformTime(painAssessmentValue.PlTime),
-        TOPAINLOGS: this.reAssessmentTableList,
-        TOFLOWSHEET: this.flowSheetAssessmentList,
-        FloDate: this.transformDate(painAssessmentValue.FloDate),
-        FloTime: this.transformTime(painAssessmentValue.FloTime),
-        FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval)
+        PlTime: this.transformTime(painAssessmentValue.PlTime)
       };
+    }) : [];
+  }
+  
+  createPayload(painAssessmentValue: any, reAssessmentCloneValue: any[], flowSheetAssessmentCloneValue: any[]): any {
+    const payload = {
+      ...painAssessmentValue,
+      PlDate: this.transformDate(painAssessmentValue.PlDate),
+      PlTime: this.transformTime(painAssessmentValue.PlTime),
+      TOPAINLOGS: reAssessmentCloneValue,
+      TOFLOWSHEET: flowSheetAssessmentCloneValue,
+      FloDate: this.transformDate(painAssessmentValue.FloDate),
+      FloTime: this.transformTime(painAssessmentValue.FloTime),
+      FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval)
+    };
+    return this.setEmptyStrings(payload);
+  }
+  
 
-      let mainPayload = { d: payload };
+  openImageEditor() {
+    this.imageEditorPainLocation.initializePainterro();
+  }
 
-      // return
-      this.subscription = this.emergencyService
-        .createPainAssessmentDoc(mainPayload)
-        .subscribe({
-          next: (data: any) => {},
-          error: (err: any) => {
-            this.sharedService.waringSwallModel(`Error ${err}`);
-            this.sharedService.waringSwallModel(
-              `POST Error at Nurse Endorsment : ${err}`
-            );
-          },
-          complete: () => {
-            resolve(true);
-            this.sharedService.successSwallModel(
-              'Nurse Endorsment created successfully'
-            );
-          },
-        });
+  getEditImage(event: any) {
+    console.log(event);
+    this.painAssessmentForm.patchValue({
+      Resimage: event,
     });
   }
 
+  removePainImg() {
+    this.painAssessmentForm.patchValue({
+      Resimage: '',
+    });
+  }
+
+  setEmptyStrings(obj: any): any {
+    if (obj === null || obj === undefined) {
+      return '';
+    }
+    if (typeof obj === 'object' && !Array.isArray(obj)) {
+      const newObj = {};
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          newObj[key] = this.setEmptyStrings(obj[key]);
+        }
+      }
+      return newObj;
+    }
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.setEmptyStrings(item));
+    }
+    return obj;
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
 }

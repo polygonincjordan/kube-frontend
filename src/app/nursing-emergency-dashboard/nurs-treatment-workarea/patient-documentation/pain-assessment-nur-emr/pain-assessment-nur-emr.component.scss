@@ -423,3 +423,11 @@ label {
   width: 24px;
   height: 24px;
 }
+.pain-location-image {
+  height: 100%;
+  img {
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+  }
+}
+

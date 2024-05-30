@@ -111,6 +111,7 @@ import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-doc
 import { SurgicalPassportComponent } from './nurs-treatment-workarea/patient-documentation/surgical-passport/surgical-passport.component';
 import { DiagnosisTabComponent } from './nurs-treatment-workarea/patient-documentation/surgical-passport/diagnosis-tab/diagnosis-tab.component';
 import { PainAssessmentNurEmrComponent } from './nurs-treatment-workarea/patient-documentation/pain-assessment-nur-emr/pain-assessment-nur-emr.component';
+import { ImageEditorModule } from '../shared-module/image-editor/image-editor.module';
 
 const route: Routes = [
   {
@@ -220,6 +221,7 @@ const route: Routes = [
     NgbCollapseModule,
     PopoverModule,
     NgxExtendedPdfViewerModule,
+    ImageEditorModule
   ],
 })
 export class NursingEmergencyDashboardModule { }
