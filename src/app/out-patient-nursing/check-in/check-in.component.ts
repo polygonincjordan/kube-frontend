@@ -24,8 +24,9 @@ import { EEmrService } from '@services/e-emr.service';
 import { SharedService } from '@services/shared.service';
 import { DataShareService } from '@services/data-share.service';
 import { FilterType } from '@services/interfaces/common.enum';
-import { dashboard } from 'src/environments/dashboardConfig';
+import {environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
+import { HelperService } from '@services/helper.service';
 
 @Component({
   selector: 'app-check-in',
@@ -88,7 +89,8 @@ export class CheckInComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private dataShareService: DataShareService,
     private _dataServices: EEmrService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    public helperService:HelperService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -158,7 +160,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
     
     this.refreshInterval = setInterval(() => {
       this.getErList(this.todayDate);
-    }, dashboard.nursingDashboardRefreshTime);
+    },environment.refreshTime);
   }
   getAssignedTime(triagetime, triagedate, index) {
     let {
@@ -638,6 +640,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
   }
 
   getErList(date?: any) {
+    this.helperService.isNotAllowedSpinnerInAPI = true;
     return new Promise((resolve, reject) => {
       const storedUser = JSON.parse(localStorage.getItem('UserConfiguration')).results;
       let link = ``;

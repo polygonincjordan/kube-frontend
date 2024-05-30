@@ -21,7 +21,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.interface';
 import { Subscription, forkJoin} from 'rxjs';
-import { dashboard } from 'src/environments/dashboardConfig';
+import { environment } from 'src/environments/environment';
+import { HelperService } from '@services/helper.service';
+// import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -99,6 +101,7 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
+    private helperService:HelperService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -138,7 +141,7 @@ export class CheckInComponent implements OnInit {
     this.getErList();
     this.refreshInterval = setInterval(() => {
       this.getErList();
-    }, dashboard.nursingDashboardRefreshTime);
+    }, environment.refreshTime);
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
       this.einri = params.einri;
@@ -636,6 +639,7 @@ export class CheckInComponent implements OnInit {
       // )}T00:00:00`,
       History: false,
     };
+    this.helperService.isNotAllowedSpinnerInAPI = true;
     this.emergencyService.getErCheckList(json).subscribe(
       (_success: any) => {
         // this.ERlistData = _success.d.results;
