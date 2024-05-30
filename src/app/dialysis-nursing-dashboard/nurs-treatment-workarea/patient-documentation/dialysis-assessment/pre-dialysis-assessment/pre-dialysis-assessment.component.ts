@@ -16,24 +16,78 @@ export class PreDialysisAssessmentComponent implements OnInit {
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
     this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
-    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('TreatmentDate').patchValue(new Date());
-    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('DialysisFDate').patchValue(new Date());
-    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('TreatmentTime').patchValue(new Date());
-    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('DialysisFTime').patchValue(new Date());
 
-    const date = new Date();
-    date.setMinutes(0);
-    date.setSeconds(0);
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
 
-    this.patientDocService.dialysisAssecementForm.controls['preDialysis'].get('PrescribedTime').patchValue(date);
+    if(this.patientDocService.isPatchValueForPreDialysis){
+      this.initializeFormData();
+
+      this.subscription =
+      this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
+        if(Object.keys(resp).length > 0){
+          this.predialysis.patchValue({
+            ...resp,
+            TreatmentDate: this.patientDocService.formatDate(resp.TreatmentDate),
+            DialysisFDate: this.patientDocService.formatDate(resp.DialysisFDate),
+          });
+        }
+      });
+
+      this.patientDocService.isPatchValueForPreDialysis = false;
+    }
   }
 
   ngOnInit(): void {
 
   }
 
+  initializeFormData(){
+    const date = new Date();
+    date.setMinutes(0);
+    date.setSeconds(0);
+    this.predialysis.patchValue({
+      TreatmentDate: new Date(),
+      TreatmentTime: new Date(),
+      DialysisFDate: new Date(),
+      DialysisFTime: new Date(),
+      BloodTest: null,
+      PrescribedTime: date,
+      DryWeight: '',
+      Machine: '',
+      BloodFlow: '',
+      PostWeight: '',
+      Treatment: '',
+      TypeDialyzer: null,
+      NewDryWeight: '',
+      Height: '',
+      WeightLoss: '',
+      PreWeight: '',
+      OxygenSaturation: '',
+      OxygenFlow: '',
+      OxygenDelivery: null,
+      OralTemp: '',
+      AxillaryTemp: '',
+      PulseRate: '',
+      RespiratoryRate: '',
+      SystolicBloodSitting: '',
+      DiastolicBloodSitting: '',
+      ArterialPressure: '',
+      SystolicBloodStanding: '',
+      DiastolicBloodStanding: '',
+    })
+  }
+
+
   createAssessment() {
     console.log(this.predialysis.value);
+  }
+
+  ngOnDestroy(): void {
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 
 }

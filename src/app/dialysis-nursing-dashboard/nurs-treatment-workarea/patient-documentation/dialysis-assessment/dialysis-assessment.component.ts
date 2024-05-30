@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
@@ -12,11 +12,12 @@ import { PostDialysisEvaluationComponent } from './post-dialysis-evaluation/post
 import { PreDialysisAssessmentComponent } from './pre-dialysis-assessment/pre-dialysis-assessment.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { PeritonealComponent } from './peritoneal/peritoneal.component';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'dialysis-assessment',
   templateUrl: './dialysis-assessment.component.html',
-  styleUrls: ['./dialysis-assessment.component.scss']
+  styleUrls: ['./dialysis-assessment.component.scss'],
 })
 export class DialysisAssessmentComponent implements OnInit {
   private subscription: Subscription;
@@ -29,45 +30,66 @@ export class DialysisAssessmentComponent implements OnInit {
 
   public dockeyValue: any = null;
   private actionTypeSubscription$: Subscription;
-  @ViewChild(HaemodialysisAccessComponent) HaemodialysisAccess: HaemodialysisAccessComponent;
-  @ViewChild(HaemodialysisMonitoringComponent) HaemodialysisMonitoringC: HaemodialysisMonitoringComponent;
-  @ViewChild(HaemodialysisLineInfectionSurveillanceComponent) HaemodialysisLineInfectionSurveillanceC: HaemodialysisMonitoringComponent;
-  @ViewChild(PostDialysisEvaluationComponent) PostDialysisEvaluationC: PostDialysisEvaluationComponent;
-  @ViewChild(PreDialysisAssessmentComponent) PreDialysisAssessmentC: PreDialysisAssessmentComponent;
-  @ViewChild(PeritonealComponent) peritonealC: PeritonealComponent;
 
-
+  latestDocData: any;
 
   patnr: any;
   einri: any;
   falnr: any;
   lfdnr: any;
 
-
-
-  constructor( private dataShareService: DataShareService, private emergencyService: EmergencyService, private _route: ActivatedRoute, private patientDocService : PatientDocumentationService) {
-    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-    if (data != null) {
-      if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
-        if (data.value.type == WordType.EditGGCS && data.value.docKey != '') {
-          this.dockeyValue = data.value.docKey ? data.value.docKey : null;
-          if (this.dockeyValue) {
-            // this.getFacePainDetail(data.value.docKey);
+  constructor(
+    private dataShareService: DataShareService,
+    private emergencyService: EmergencyService,
+    private _route: ActivatedRoute,
+    private patientDocService: PatientDocumentationService
+  ) {
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          if (
+            data.type == ActionType.Update$ &&
+            data.isAllow == true &&
+            data.value
+          ) {
+            if (
+              data.value.type == WordType.EditGGCS &&
+              data.value.docKey != ''
+            ) {
+              this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+              if (this.dockeyValue) {
+                // this.getFacePainDetail(data.value.docKey);
+              }
+            }
+          }
+          if (
+            data.type == ActionType.Copy$ &&
+            data.isAllow == true &&
+            data.value
+          ) {
+            if (
+              data.value.type == WordType.CopyFPS &&
+              data.value.docKey != ''
+            ) {
+              this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+              if (this.dockeyValue) {
+                // this.getFacePainDetail(data.value.docKey);
+              }
+            }
           }
         }
       }
-      if(data.type == ActionType.Copy$ && data.isAllow == true && data.value){
-        if (data.value.type == WordType.CopyFPS && data.value.docKey != '') {
-          this.dockeyValue = data.value.docKey ? data.value.docKey : null;
-          if (this.dockeyValue) {
-            // this.getFacePainDetail(data.value.docKey);
-          }
-        }
-      }
-    }
-  });}
+    );
+  }
 
   ngOnInit(): void {
+    this.patientDocService.isPatchValueForHemodialysis = true;
+    this.patientDocService.isPatchValueForHaemodialysisLineMonitoring = true;
+    this.patientDocService.isPatchValueForHaemodialysisMonitoring = true;
+    this.patientDocService.isPatchValueForPeritonial = true;
+    this.patientDocService.isPatchValueForPostDialysis = true;
+    this.patientDocService.isPatchValueForPreDialysis = true;
+
     this._route.queryParams.subscribe((params) => {
       this.einri = params.einri;
       this.patnr = params.patnr;
@@ -75,36 +97,86 @@ export class DialysisAssessmentComponent implements OnInit {
       this.lfdnr = params.lfdnr;
     });
     this.LatestDocSet();
-    this.DailysisSet();
   }
 
   LatestDocSet() {
-      const json = {
-        Einri: '1000',
-        Patnr: '0000001101',
-        Falnr: '0000001402',
-        Lfdnr: '00001'
-      };
-      this.emergencyService.getLatestDocSet(json).subscribe((data: any) => {
-          console.log(data);
-        }, (error) => {
-          console.error(error);
-        });
-
-  }
-
-  DailysisSet(){
     const json = {
-      Dockey : "MED000000000000001000002976100000",
+      Einri: this.einri,
+      Patnr: this.patnr,
+      Falnr: this.falnr,
+      Lfdnr: this.lfdnr,
     };
-    this.emergencyService.getDailysisSet(json).subscribe((data: any) =>{
-      console.log(data);
-    }, (error) => {
-      console.error(error);
-    });
+    this.emergencyService.getLatestDocSet(json).subscribe(
+      (data: any) => {
+        this.latestDocData = data.d.results[0];
+        this.DailysisSet();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
+  DailysisSet() {
+    const json = {
+      Dockey: this.latestDocData?.Dockey,
+    };
+    this.emergencyService.getDailysisSet(json).subscribe(
+      (data: any) => {
+        if (data.d.results[0]) {
+          this.patientDocService.formDataBehaviorSubject.next(
+            data.d.results[0]
+          );
 
+          const resp = data.d.results[0];
+
+          this.patientDocService.dialysisAssecementForm.controls[
+            'preDialysis'
+          ].patchValue({
+            ...resp,
+            TreatmentDate: this.patientDocService.formatDate(
+              resp.TreatmentDate
+            ),
+            DialysisFDate: this.patientDocService.formatDate(
+              resp.DialysisFDate
+            ),
+          });
+
+          this.patientDocService.dialysisAssecementForm.controls['haemodialysisLineMonitoring'].patchValue(resp);
+          
+          this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'].patchValue(resp);
+
+          const TOMONITOR = resp?.TOMONITOR.results;
+
+          console.log(TOMONITOR);
+
+          TOMONITOR.forEach((item) => {
+            const timee = item.Timee;
+            const hours = timee.substring(2, 4);
+            const minutes = timee.substring(5, 7);
+            const seconds = timee.substring(8, 10);
+
+            const date = new Date();
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            date.setSeconds(seconds);
+
+            this.patientDocService.ToMonitor.push(this.patientDocService.createForm({ ...item, Timee: date }));
+          });
+
+          this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].patchValue({
+            ...resp,
+            PTreatmentDate: this.patientDocService.formatDate(resp.PTreatmentDate),
+          })
+
+          this.patientDocService.dialysisAssecementForm.controls['peritonealForm'].patchValue(resp)
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -117,32 +189,65 @@ export class DialysisAssessmentComponent implements OnInit {
     }
   }
 
-  tabPanelNavigation(tabName: any){
+  tabPanelNavigation(tabName: any) {
     if (tabName && tabName === 'haemodialysis') {
-      this.Haemodialysis = true; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;this.Peritoneal = false;
+      this.Haemodialysis = true;
+      this.PreDialysis = false;
+      this.HaemodialysisLineInfectionSurveillance = false;
+      this.HaemodialysisMonitoring = false;
+      this.PostDialysisEvaluation = false;
+      this.Peritoneal = false;
     } else if (tabName && tabName === 'preDialysis') {
-      this.Haemodialysis = false; this.PreDialysis = true; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;this.Peritoneal = false;
-    } else if (tabName && tabName === 'haemodialysis-line-infection-surveillance'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = true ; this.HaemodialysisMonitoring = false; this.PostDialysisEvaluation = false;this.Peritoneal = false;
-    } else if (tabName && tabName === 'haemodialysis-monitoring'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false;this.HaemodialysisMonitoring = true ; this.PostDialysisEvaluation = false;this.Peritoneal = false;
-    } else if (tabName && tabName === 'postdialysisevaluation'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;  this.PostDialysisEvaluation = true;this.Peritoneal = false;
-    } else if (tabName && tabName === 'peritoneal'){
-      this.Haemodialysis = false; this.PreDialysis = false; this.HaemodialysisLineInfectionSurveillance = false; this.HaemodialysisMonitoring = false;  this.PostDialysisEvaluation = false;this.Peritoneal = true;
+      this.Haemodialysis = false;
+      this.PreDialysis = true;
+      this.HaemodialysisLineInfectionSurveillance = false;
+      this.HaemodialysisMonitoring = false;
+      this.PostDialysisEvaluation = false;
+      this.Peritoneal = false;
+    } else if (
+      tabName &&
+      tabName === 'haemodialysis-line-infection-surveillance'
+    ) {
+      this.Haemodialysis = false;
+      this.PreDialysis = false;
+      this.HaemodialysisLineInfectionSurveillance = true;
+      this.HaemodialysisMonitoring = false;
+      this.PostDialysisEvaluation = false;
+      this.Peritoneal = false;
+    } else if (tabName && tabName === 'haemodialysis-monitoring') {
+      this.Haemodialysis = false;
+      this.PreDialysis = false;
+      this.HaemodialysisLineInfectionSurveillance = false;
+      this.HaemodialysisMonitoring = true;
+      this.PostDialysisEvaluation = false;
+      this.Peritoneal = false;
+    } else if (tabName && tabName === 'postdialysisevaluation') {
+      this.Haemodialysis = false;
+      this.PreDialysis = false;
+      this.HaemodialysisLineInfectionSurveillance = false;
+      this.HaemodialysisMonitoring = false;
+      this.PostDialysisEvaluation = true;
+      this.Peritoneal = false;
+    } else if (tabName && tabName === 'peritoneal') {
+      this.Haemodialysis = false;
+      this.PreDialysis = false;
+      this.HaemodialysisLineInfectionSurveillance = false;
+      this.HaemodialysisMonitoring = false;
+      this.PostDialysisEvaluation = false;
+      this.Peritoneal = true;
     }
   }
 
-  createAssessment():Promise<any>{
-    return new Promise<any>((resolve, reject) => {
-      resolve({
-        ...this.HaemodialysisAccess.hemodialysis.value,
-        ...this.HaemodialysisMonitoringC.haemodialysisMonitoring.value,
-        ...this.HaemodialysisLineInfectionSurveillanceC.hemolineinfection.value,
-        ...this.PostDialysisEvaluationC.postDialysisMonitoring.value,
-        ...this.PreDialysisAssessmentC.predialysis.value
-      })
-    })
+  // createAssessment():Promise<any>{
+  //   return new Promise<any>((resolve, reject) => {
+  //     resolve({
+  //       ...this.HaemodialysisAccess.hemodialysis.value,
+  //       ...this.HaemodialysisMonitoringC.haemodialysisMonitoring.value,
+  //       ...this.HaemodialysisLineInfectionSurveillanceC.haemodialysisLineMonitoring.value,
+  //       ...this.PostDialysisEvaluationC.postDialysisMonitoring.value,
+  //       ...this.PreDialysisAssessmentC.predialysis.value
+  //     })
+  //   })
 
-  }
+  // }
 }
