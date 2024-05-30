@@ -24,6 +24,8 @@ import { EEmrService } from '@services/e-emr.service';
 import { SharedService } from '@services/shared.service';
 import { DataShareService } from '@services/data-share.service';
 import { FilterType } from '@services/interfaces/common.enum';
+import { dashboard } from 'src/environments/dashboardConfig';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-check-in',
@@ -74,6 +76,8 @@ export class CheckInComponent implements OnInit, OnDestroy {
   selectedDataForUpdate: any;
   visitComments: any;
   todayDate = [new Date(), new Date()];
+  private refreshSubscription: Subscription;
+  refreshInterval:any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -122,6 +126,12 @@ export class CheckInComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dataShareService.sendFilterType(null);
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -145,6 +155,10 @@ export class CheckInComponent implements OnInit, OnDestroy {
     }).catch((error: any) => {
       console.error('Error scale:', error);
     });
+    
+    this.refreshInterval = setInterval(() => {
+      this.getErList(this.todayDate);
+    }, dashboard.nursingDashboardRefreshTime);
   }
   getAssignedTime(triagetime, triagedate, index) {
     let {

@@ -20,7 +20,8 @@ import { PatientService } from '@services/e-kardex/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.interface';
-import { forkJoin } from 'rxjs';
+import { Subscription, forkJoin} from 'rxjs';
+import { dashboard } from 'src/environments/dashboardConfig';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -89,7 +90,8 @@ export class CheckInComponent implements OnInit {
   selectedPatientDetails: any;
   selectedRowOfAllTriage: any;
   selectedDocumentDetails: any;
-
+  private refreshSubscription: Subscription;
+  refreshInterval:any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -134,6 +136,9 @@ export class CheckInComponent implements OnInit {
 
   ngOnInit(): void {
     this.getErList();
+    this.refreshInterval = setInterval(() => {
+      this.getErList();
+    }, dashboard.nursingDashboardRefreshTime);
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
       this.einri = params.einri;
@@ -143,6 +148,16 @@ export class CheckInComponent implements OnInit {
     this.modalService.onHidden.subscribe((reason: string | undefined) => {
       this.getErList();
     });
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   assignMe(data: any) {
