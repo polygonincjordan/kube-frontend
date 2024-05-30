@@ -93,10 +93,7 @@ export class SurgicalPassportComponent implements OnInit {
              this.docKey = data.value.docKey
              this.getSurgiPassPortDetail(data.value.docKey)
           }
-        } else if (data.type == ActionType.Copy$  && data.value) {          
-           this.docKey = data.value.docKey
-           this.getSurgiPassPortDetail(data.value.docKey)
-        } else {
+        }  else {
         // for after code
         }
       })
@@ -401,6 +398,79 @@ export class SurgicalPassportComponent implements OnInit {
     };
 
     this.subscription = this.emergencyService.createSurgicalPassDetail(Payload).subscribe({
+      next: (data: any) => {
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(`PUT Error at Surgical Passport : ${err}`);
+      },
+      complete: () => {
+        resolve(true);
+        if(status === 'edit'){
+          this.sharedService.successSwallModel('Surgical Passport updated successfully');
+        }
+        this.sharedService.successSwallModel('Surgical Passport created successfully');
+      }
+    });    
+  })
+  }
+  copySurgicalPassDoc(status?:any) {
+    return new Promise((resolve, reject) => {
+    const Payload = {
+      d: {
+        Dockey: status === 'copy' ? this.docKey : '',
+        Dtid: 'ZMED_SRGPP',
+        Einri: this.paramsObject.einri,
+        Patnr: this.paramsObject.patnr,
+        Falnr: this.paramsObject.falnr,
+        Lfdnr: this.paramsObject.lfdnr,
+        Orgdo: this.storageService.patientData.deptOrgUnit,
+        IdBand: this.formSurgicalPaasDetailGroup.value.bandWithName,
+        IdNo: this.formSurgicalPaasDetailGroup.value.IdNo,
+        Generall: this.formSurgicalPaasDetailGroup.value.general,
+        HighRisk: this.formSurgicalPaasDetailGroup.value.highRisk,
+        Skin:  this.formSurgicalPaasDetailGroup.value.skin,
+        Bowel: this.formSurgicalPaasDetailGroup.value.bowel,
+        Allergies: this.formSurgicalPaasDetailGroup.value.allergies,
+        Food: this.formSurgicalPaasDetailGroup.value.food,
+        Medications: this.formSurgicalPaasDetailGroup.value.medication,
+        MedicationsTxt: this.formSurgicalPaasDetailGroup.value.medicationsTxt,
+        Prosthesis: this.formSurgicalPaasDetailGroup.value.prosthesisDenture,
+        PRemoved: this.formSurgicalPaasDetailGroup.value.pRemove,
+        Valuables: this.formSurgicalPaasDetailGroup.value.valuableNail,
+        VRemoved: this.formSurgicalPaasDetailGroup.value.vRemove,
+        Npo: this.formSurgicalPaasDetailGroup.value.npo,
+        Ngt: this.formSurgicalPaasDetailGroup.value.ngt,
+        Isolationn: this.formSurgicalPaasDetailGroup.value.typeOfIsolation,
+        ITime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.itime),
+        BloodArranged: this.formSurgicalPaasDetailGroup.value.bloodArranged,
+        Units: this.formSurgicalPaasDetailGroup.value.NoOfunit,
+        Voided: this.formSurgicalPaasDetailGroup.value.voided,
+        VTime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.VTime),
+        Catheter:  this.formSurgicalPaasDetailGroup.value.catheter,
+        PreMedication: this.formSurgicalPaasDetailGroup.value.PreMedicationAdministred,
+        SkinTest: this.formSurgicalPaasDetailGroup.value.skinTest,
+        FullDose: this.formSurgicalPaasDetailGroup.value.fullDose,
+        OtClothes: this.formSurgicalPaasDetailGroup.value.OtClothes,
+        Transportation: this.formSurgicalPaasDetailGroup.value.modeOfTrans,
+        Investigations: this.formSurgicalPaasDetailGroup.value.InvestigationsRecordAtteched,
+        Finance:  this.formSurgicalPaasDetailGroup.value.FinanceClearence,
+        Special: this.formSurgicalPaasDetailGroup.value.specialInstruction,
+        Implant: this.formSurgicalPaasDetailGroup.value.prosthesisImplant,
+        Comments: this.formSurgicalPaasDetailGroup.value.comments,
+        WardCheck: this.formSurgicalPaasDetailGroup.value.wardCheck,
+        WardCheckNm: this.formSurgicalPaasDetailGroup.value.nameOfAssignedStaff,
+        OrCheck: this.formSurgicalPaasDetailGroup.value.OrStaff,
+        OrCheckNm:  this.formSurgicalPaasDetailGroup.value.NameOfOrStaff,
+        Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
+        AttendPhy: this.storageService.getUserProfile().Gpart,
+        DocStatus: "5",
+        TODIAGNOSES: this.toDiagnosisArr,
+        TOVITALSIGNS: this.toVitalsArr,
+      },
+    };
+
+    this.subscription = this.emergencyService.copySurgicalPassP(Payload).subscribe({
       next: (data: any) => {
       },
       error: (err: any) => {

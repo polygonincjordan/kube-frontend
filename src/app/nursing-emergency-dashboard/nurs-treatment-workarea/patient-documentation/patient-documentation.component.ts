@@ -28,6 +28,7 @@ import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/
 import { NurseEndorsementComponent } from './nurse-endorsement/nurse-endorsement.component';
 import { SurgicalPassportComponent } from './surgical-passport/surgical-passport.component';
 import { PainAssessmentNurEmrComponent } from './pain-assessment-nur-emr/pain-assessment-nur-emr.component';
+import { PediatricEarlyWarningComponent } from './pediatric-early-warning/pediatric-early-warning.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -47,6 +48,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NurseEndorsementComponent) NurseEndorsmentComp: NurseEndorsementComponent;
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
   @ViewChild(PainAssessmentNurEmrComponent) PainAssessmentComp: PainAssessmentNurEmrComponent;
+  @ViewChild(PediatricEarlyWarningComponent) PediatricWarningScaleComp: PediatricEarlyWarningComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -59,6 +61,7 @@ export class PatientDocumentationComponent implements OnInit {
   attachments = false;
   nurseEndorsement = false;
   surgicalPassport = false;
+  pediatricEarlyWarningScale = false;
   educationAssessment = false;
   patienteducation = false;
   glasgowcomascale = false;
@@ -80,6 +83,7 @@ export class PatientDocumentationComponent implements OnInit {
   painAssessmentLaestDoc: any = [];
   nurseEndorsementList = [];
   surgicalPassportList = [];
+  pediatricEarlyWarningList = [];
   educationAssList = [];
   documentTypeFilter = []
   createDate: any;
@@ -107,6 +111,7 @@ export class PatientDocumentationComponent implements OnInit {
   openMedReport: boolean = false;
   openEducationAssessment: boolean = false;
   openNurseEndorsement: boolean = false;
+  openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
   selectedDocData: any;
   medlatestDocList = [];
@@ -190,6 +195,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.fetchLatestDetails();
     this.getNurseEndorsement()
     this.getSurgicalPass()
+    this.getPediatricWarningScore()
   }
 
   getLatestAssessmentPA() {
@@ -234,6 +240,21 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getNurseEndorsementDetail(this.apiJson).subscribe({
       next: (_success: any) => {
         this.nurseEndorsementList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getPediatricWarningScore() {
+    this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
+      next: (_success: any) => {
+        console.log('_success21212121',_success);
+        this.pediatricEarlyWarningList = _success.d.results
+        
+        // this.nurseEndorsementList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -457,6 +478,7 @@ export class PatientDocumentationComponent implements OnInit {
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
       'surgicalPassport': { surgicalPassport: true, selectedDocName: 'Surgical Passport' },
+      'pediatricEarlyWarningScale': { pediatricEarlyWarningScale: true, selectedDocName: 'Pediatric Early Warning Score' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
       'bradenscale': { bradenscale: true, selectedDocName: 'Braden Scale' },
@@ -473,6 +495,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.attachments = false;
     this.nurseEndorsement = false;
     this.surgicalPassport = false;
+    this.pediatricEarlyWarningScale = false;
     this.educationAssessment = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -788,6 +811,12 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openNurseEndorsement) {
       this.NurseEndorsmentComp.ngOnDestroy();
     }
+    if (this.openSurgicsalPassport) {
+      this.SurgicalPassComp.ngOnDestroy();
+    }
+    if (this.openPediatricEarlyWarningScale) {
+      this.PediatricWarningScaleComp.ngOnDestroy();
+    }
 
     if (this.openEmergencyNursingDoc) {
       this.EmergencyNursingDocumentComp.ngOnDestroy();
@@ -805,11 +834,11 @@ export class PatientDocumentationComponent implements OnInit {
     this.getEducationAssessment();
     this.getPatientProfile();
     this.getNurseEndorsement()
+    this.getPediatricWarningScore();
     this.getSurgicalPass();
     this.getLatestAssessmentPA();
-    // this.fetchLatestDetails();
-
-    this.phyAssess = false;
+    this.getSurgicalPass()
+    this.getPediatricWarningScore()
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -818,6 +847,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.educationAssessment = false;
     this.nurseEndorsement = false;
     this.surgicalPassport = false;
+    this.pediatricEarlyWarningScale = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
     this.isPainAssessment = false;
@@ -833,6 +863,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEmergencyNursingDoc = false;
     this.openNurseEndorsement = false
     this.openSurgicsalPassport = false
+    this.openPediatricEarlyWarningScale = false
 
     this.searchString = '';
     this.dateRange = '';
@@ -869,7 +900,6 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
       } else if (action == 'copy') {
-        this.openEducationAssessment = true;
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openEducationAssessment = true;;
           let valueObj = {
@@ -879,10 +909,10 @@ export class PatientDocumentationComponent implements OnInit {
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
-        // this.openEducationAssessment = true;
-        // this.educationAssessmentComp.saveAndReleaseEducation(false);
-        // this.educationAssessmentComp.ngOnInit();
-        // this.createAndReleaseMed();
+        this.openEducationAssessment = true;
+        this.educationAssessmentComp.saveAndReleaseEducation(false);
+        this.educationAssessmentComp.ngOnInit();
+        this.createAndReleaseMed();
       }
     }
     // nurse endorsement
@@ -966,6 +996,48 @@ export class PatientDocumentationComponent implements OnInit {
       } else if (action == 'createandrelease') {
         this.openSurgicsalPassport = true;
         this.SurgicalPassComp.createSurgicalPassDoc();
+        // this.educationAssessmentComp.ngOnInit();
+        // this.createAndReleaseMed();
+      }
+    }
+    // pediatric early warning 
+    if (this.pediatricEarlyWarningScale) {
+      if (action == 'create') {
+        this.openPediatricEarlyWarningScale = true;
+      } else if (action == 'edit') {        
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPediatricEarlyWarningScale = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNurseEndorsmentDoc();
+        } else {
+          // this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseNurseEndorsment();
+        } else {
+          // this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'copy') {
+        // this.openNurseEndorsement = true;
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPediatricEarlyWarningScale = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPediatricEarlyWarningScale = true;
+        this.PediatricWarningScaleComp.savePediatricEarlyWarningScale();
         // this.educationAssessmentComp.ngOnInit();
         // this.createAndReleaseMed();
       }
@@ -1449,6 +1521,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openPediatricEarlyWarningScale) {
+        this.PediatricWarningScaleComp.savePediatricEarlyWarningScale().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
     }
     else if (this.actionType == 'edit') {
       if (this.openGlasgowComaScale) {
@@ -1587,7 +1668,16 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openSurgicsalPassport) {
-        this.SurgicalPassComp.createSurgicalPassDoc('copy').then((formValue: any) => {
+        this.SurgicalPassComp.copySurgicalPassDoc('copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
+      if (this.openPediatricEarlyWarningScale) {
+        this.PediatricWarningScaleComp.copyPediatricEarlyWarningScale('copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }

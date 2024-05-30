@@ -1,25 +1,25 @@
 <div class="haemodialysis-main bg-white mt-4">
-  <form [formGroup]="hemolineinfection">
+  <form [formGroup]="haemodialysisLineMonitoring">
   <div class="haemodialysis-info">
     <div class="container-fluid">
       <div class="haemodialysis-dialysis-info position-relative p-3">
-        <label for="" class="title-text m-0" formControlName="HaemodialysisLine">Haemodialysis Line Site</label>
+        <label for="" class="title-text m-0">Haemodialysis Line Site</label>
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="1"  name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Cephalic Vein, Left</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="2" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Cephalic Vein, Right</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="3" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Besilic Vein, Left</label>
             </div>
           </div>
@@ -27,19 +27,19 @@
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="4" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Besilic Vein, Right</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="5" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Brachial Vein, Left</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="6" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Brachial Vein, Right</label>
             </div>
           </div>
@@ -47,19 +47,19 @@
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="7" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Median Cubital Vein, Left</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="8" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Median Cubital Vein, Right</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="9" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Median Antibrachial Vein, Left</label>
             </div>
           </div>
@@ -67,19 +67,19 @@
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="10" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Median Antibrachial Vein, Right</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="11" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Subclavian, Left</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="12" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Subclavian, Right</label>
             </div>
           </div>
@@ -87,19 +87,19 @@
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="13" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">External Jugular, Left</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="14" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">External Jugular, Right</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="15" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Internal Jugular, Left</label>
             </div>
           </div>
@@ -107,19 +107,19 @@
         <div class="row align-items-center my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="16" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Internal Jugular, Right</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="17" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Femoral Left</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="18" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Femoral Right</label>
             </div>
           </div>
@@ -127,17 +127,17 @@
         <div class="row align-items-start my-3">
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center w-100 custom-input">
-              <input type="radio" class="">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="19" name="HaemodialysisLine" (change)="patientDocService.radioSelectionChange($event)">
               <label for="" class="text-nowrap m-0">Trans lumbar</label>
             </div>
           </div>
           <div class="col-4 pr-5">
             <div class="d-flex align-items-center custom-input w-100">
-              <input type="radio" class="" formControlName="OtherTxt" (change)="toggleTextBox()">
+              <input type="radio" class="" formControlName="HaemodialysisLine" value="20" (change)="toggleTextBox()">
               <label for="" class="text-nowrap m-0">Other</label>
             </div>
             <div class="custom-input mt-2">
-              <input type="text" class="w-75" [disabled]="!isChecked">
+              <input type="text" class="w-75" formControlName="OtherTxt" [readonly]="!isChecked">
             </div>
           </div>
         </div>
@@ -150,87 +150,87 @@
           </div>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Redness" value="0" (change)="patientDocService.radioSelectionChange($event)" name="Redness">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Redness" value="1" (change)="patientDocService.radioSelectionChange($event)" name="Redness">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input d-flex flex-column">
             <label for="" class="mb-4">Score</label>
-            <input type="text" name="" id="" formControlName="RednessScore">
+            <input type="text" name="Redness" id="Redness" formControlName="RednessScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Swekking</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Swelling" value="0" (change)="patientDocService.radioSelectionChange($event)"  name="Swelling">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Swelling" value="1" (change)="patientDocService.radioSelectionChange($event)"  name="Swelling">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="SwellingScore">
+            <input type="text" name="Swelling" id="Swelling" formControlName="SwellingScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Exuade/Crust</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Exuade" value="0" (change)="patientDocService.radioSelectionChange($event)" name="Exuade">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Exuade" value="1" (change)="patientDocService.radioSelectionChange($event)" name="Exuade">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="ExuadeScore">
+            <input type="text" name="Exuade" id="Exuade" readonly formControlName="ExuadeScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Pus</label>
           <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Pus" value="0" (change)="patientDocService.radioSelectionChange($event)" name="Pus">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" formControlName="Pus" value="1" (change)="patientDocService.radioSelectionChange($event)" name="Pus">
               <label for="" class="mx-3">No</label>
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="PusScore">
+            <input type="text" name="PusScore" id="PusScore" formControlName="PusScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Total Score</label>
-          <div class="custom-input d-flex mr-5">
+          <!-- <div class="custom-input d-flex mr-5">
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" (change)="patientDocService.radioSelectionChange($event)" value="yes" name="Total">
               <label for="" class="mx-3">Yes</label>
             </div>
             <div class="d-flex align-items-center">
-              <input type="radio">
+              <input type="radio" (change)="patientDocService.radioSelectionChange($event)" value="no" name="Total">
               <label for="" class="mx-3">No</label>
             </div>
-          </div>
+          </div> -->
           <div class="score-input">
-            <input type="text" name="" id="" formControlName="TotalScore">
+            <input type="text" name="Total" id="Total" formControlName="TotalScore" readonly>
           </div>
         </div>
-        <div class="d-flex my-3">
-          <label for="" class="common-label m-0">Total Score</label>
-          <div class="score-input">
-            <input type="text" name="" id="" formControlName="TotalScore">
+        <div class="d-flex my-3 w-100">
+          <label for="" class="common-label m-0">Plan</label>
+          <div class="score-input w-100">
+            <input type="text" class="w-100" name="Plann" id="Plann" formControlName="Plann" readonly>
           </div>
         </div>
       </div>

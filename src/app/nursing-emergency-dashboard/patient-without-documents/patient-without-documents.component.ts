@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -65,11 +66,21 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataShareService.sendFilterType(null);
-    this.getPatientWithoutDocuments();
+    this.getPatientWithoutDocuments([new Date() , new Date()]);
   }
 
-  public getPatientWithoutDocuments() {
-    this.consumableService.getMissedDocsSet().subscribe({
+  public getPatientWithoutDocuments(date? :any) {
+    const json = {
+      Datege :`${new DatePipe('en-US').transform(
+        date ?  date[0] : new Date().setDate(new Date().getDate()),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+      Datele:`${new DatePipe('en-US').transform(
+        date ?  date[1]  :new Date().setDate(new Date().getDate()),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+    };
+    this.consumableService.getMissedDocsSet(json).subscribe({
       next: (resp: any) => {
         if (resp && resp) {
           this.noReleasedMissedDocumentsList = this.filterNoReleaseMissDoc = resp.d.results;

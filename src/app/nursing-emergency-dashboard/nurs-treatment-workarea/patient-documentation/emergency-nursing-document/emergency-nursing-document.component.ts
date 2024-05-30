@@ -380,6 +380,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   public toVitalsArr: any = [];
 
   public selectedTableDetails: any;
+  public selectedTriageDetails: any;
   private paramsObject: any;
   public encounterId: any;
 
@@ -461,6 +462,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
               this.ZMode = 'U';
               this.documentStatus = '1';
               this.statusDraftDocDetails(this.dockeyValue);
+              this.getTiragePriorityList();
               this.getSocialHistoryHabitList();
             }
           }
@@ -473,10 +475,10 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
               this.ZMode = 'I';
               this.documentStatus = '5';
               this.statusDraftDocDetails(this.dockeyValue);
+              this.getTiragePriorityList();
               this.getSocialHistoryHabitList();
             }
           }
-        } else {
 
         }
       }
@@ -1313,7 +1315,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         Accompanied: triageValue?.Accompanied ? triageValue?.Accompanied : '',
         AccompaniedTxt: triageValue?.AccompaniedTxt ? triageValue?.AccompaniedTxt : '',
         Language: triageValue?.Language ? triageValue?.Language : 'English',
-        TriagePriority: triageValue?.TriagePriority ? triageValue?.TriagePriority : this.selectedTableDetails.TriagePriorityCode,
+        TriagePriority: this.selectedTriageDetails?.TriagePriorityCode || (triageValue?.TriagePriority ?? ''),
+        // TriagePriority: triageValue?.TriagePriority ? triageValue?.TriagePriority : this.selectedTableDetails.TriagePriorityCode,
         ArrivalTime: triageValue?.ArrivalTime ? this.parseTime(triageValue?.ArrivalTime) : this.parseTime(this.selectedTableDetails.ZeitIntern),
         ChiefComplaint: triageValue?.ChiefComplaint ? triageValue?.ChiefComplaint : '',
         PsyNoProblem: triageValue?.PsyNoProblem ? triageValue?.PsyNoProblem : false,
@@ -1913,6 +1916,26 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         console.error('Error fetching Data:', err);
       },
     });
+  }
+
+  private getTiragePriorityList() {
+    const json = { "patnr": this.paramsObject.patnr, "falnr": this.paramsObject.falnr };
+    this.emergencyService.triagePriorityList(json).subscribe({
+      next: (data: any) => {
+        // Handle successful data retrieval
+        // console.log(data);
+        this.selectedTriageDetails = data?.d?.results[0];
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error Data:', err);
+      },
+      complete: () => {
+        // Handle completion (optional), invoked when the observable completes
+        // console.log('Complete');
+      }
+    });
+
   }
 
   public noConsumeSocial(index?: number, item?, type?: string) {

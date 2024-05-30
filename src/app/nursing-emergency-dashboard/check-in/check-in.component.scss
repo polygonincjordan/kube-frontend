@@ -29,15 +29,18 @@ span.pn-input-title {
   padding: 0 10px;
   background-color: white;
 }
+
 .edash-rightSide {
   background-color: white;
   border-radius: 10px;
 }
+
 .edash-mainContent {
   display: flex;
   padding-right: 0px;
   padding-left: 0px;
 }
+
 .check-in-table {
   max-height: 72vh;
   overflow: auto;
@@ -56,6 +59,7 @@ span.pn-input-title {
   width: 50px;
   text-align: center;
 }
+
 .search-functionality {
   min-width: 100% !important;
   width: 100% !important;
@@ -74,12 +78,15 @@ span.pn-input-title {
 }
 
 .custom-table-striped tbody tr:nth-child(even) {
-  background-color: #f8fbff; /* Light background color for odd rows */
+  background-color: #f8fbff;
+  /* Light background color for odd rows */
 }
 
 .custom-table-striped tbody tr:nth-child(odd) {
-  background-color: #ffffff; /* White background color for even rows */
+  background-color: #ffffff;
+  /* White background color for even rows */
 }
+
 .border-top-none {
   border-top: none !important;
 }
@@ -96,12 +103,14 @@ table {
   align-items: center;
   flex: 1;
 }
+
 .close-icon {
   border: none;
   padding: 0;
   margin: 0;
   flex: 1;
 }
+
 .img-size {
   width: 35px;
   float: right;
@@ -199,6 +208,11 @@ table {
   }
 }
 
-.ep-error-message{
+.ep-error-message {
   border: 1px solid red !important;
+}
+
+
+.modal .modal-content{
+  background-color: transparent !important;
 }

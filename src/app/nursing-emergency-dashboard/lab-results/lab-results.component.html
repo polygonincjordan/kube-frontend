@@ -9,10 +9,10 @@
           <thead>
             <tr class="checkin-table-header">
               <th scope="col" style="padding-left: 11px;">
-                Created On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
+                Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
               </th>
               <th scope="col" style="padding-left: 0px; ">
-                Created At <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
+                Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
               </th>
               <th scope="col" style="padding-left: 0px; ">
                 Patient Name
@@ -28,7 +28,7 @@
                 Order No
               </th>
               <th scope="col" style="padding-left: 0px;">
-                Order Status 
+                Order Status
               </th>
               <th scope="col" style="padding-left: 0px;">
                 Service Status
@@ -99,7 +99,7 @@
   </div>
   <app-er-bed #erBed (reloadCheckin)="reload($event)"></app-er-bed>
   <app-er-vitals #erVitalsModal></app-er-vitals>
-  
+
   <ng-template #labPrintLabel>
     <div>
       <div class="allergy-header">
@@ -111,7 +111,7 @@
     <div class="modal-body" style="padding: 0 11px 0px">
       <p>Are you sure you want to print label for "{{activelabLabelData?.Leitx}}" for "{{activelabLabelData?.Patient}}" with MRN {{activelabLabelData?.Patnr}}</p>
     </div>
-    <div class="modal-footer"> 
+    <div class="modal-footer">
       <div style="text-align: end">
         <button class="update-risk-save-btn" (click)="printLabel()">Print</button>
         <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
@@ -130,14 +130,14 @@
     <div class="modal-body" style="padding: 0 11px 0px">
       <p>Are you sure you want to change status “{{activelabLabelData?.Leitx}}” to sample collected?</p>
     </div>
-    <div class="modal-footer"> 
+    <div class="modal-footer">
       <div style="text-align: end">
         <button class="update-risk-save-btn" (click)="sampleCollectedprint()">Yes</button>
         <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
       </div>
     </div>
   </ng-template>
-  
+
   <ng-template #commonColModal>
     <div class="modal-body p-0">
       <div class="infoModel-title" style="background: #0056b0">
@@ -163,6 +163,5 @@
       </div>
     </div>
   </ng-template>
-  
+
   <app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
-  
