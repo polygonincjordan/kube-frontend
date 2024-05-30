@@ -750,6 +750,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getEducationAssessment();
     this.getPatientProfile();
     // this.fetchLatestDetails();
+    this.LatestDocSet();
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -775,8 +776,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.documentType = undefined;
     this.patientProfileDocumet = this.documentTypeFilterValue;
     this.medDocList = [];
-
-    this.refreshDialysisAssessment();
+    this.latestDocData = null;
   }
 
   

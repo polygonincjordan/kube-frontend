@@ -12,6 +12,7 @@ import { PostDialysisEvaluationComponent } from './post-dialysis-evaluation/post
 import { PreDialysisAssessmentComponent } from './pre-dialysis-assessment/pre-dialysis-assessment.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { PeritonealComponent } from './peritoneal/peritoneal.component';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'dialysis-assessment',
@@ -126,12 +127,80 @@ export class DialysisAssessmentComponent implements OnInit {
           this.patientDocService.formDataBehaviorSubject.next(
             data.d.results[0]
           );
+
+          const resp = data.d.results[0];
+
+          this.patientDocService.dialysisAssecementForm.controls[
+            'preDialysis'
+          ].patchValue({
+            ...resp,
+            TreatmentDate: this.patientDocService.formatDate(
+              resp.TreatmentDate
+            ),
+            DialysisFDate: this.patientDocService.formatDate(
+              resp.DialysisFDate
+            ),
+          });
+
+          this.patientDocService.dialysisAssecementForm.controls['haemodialysisLineMonitoring'].patchValue(resp);
+          
+          this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'].patchValue(resp);
+
+          const TOMONITOR = resp?.TOMONITOR.results;
+
+          console.log(TOMONITOR);
+
+          TOMONITOR.forEach((item) => {
+            const timee = item.Timee;
+            const hours = timee.substring(2, 4);
+            const minutes = timee.substring(5, 7);
+            const seconds = timee.substring(8, 10);
+
+            const date = new Date();
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            date.setSeconds(seconds);
+
+            this.ToMonitor.push(this.createForm({ ...item, Timee: date }));
+          });
+
+          this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].patchValue({
+            ...resp,
+            PTreatmentDate: this.patientDocService.formatDate(resp.PTreatmentDate),
+          })
+
+          this.patientDocService.dialysisAssecementForm.controls['peritonealForm'].patchValue(resp)
         }
       },
       (error) => {
         console.error(error);
       }
     );
+  }
+
+  get ToMonitor() {
+    return this.patientDocService.dialysisAssecementForm.get('TOMONITOR') as FormArray;
+  }
+
+  createForm(item?){
+    return new FormGroup({
+      Dockey : new FormControl(''),
+      Timee : new FormControl(item ? item.Timee : new Date()),
+      Bfr : new FormControl(item ? item.Bfr : ''),
+      Ap : new FormControl(item ? item.Ap : ''),
+      Vp : new FormControl(item ? item.Vp : ''),
+      Ufr : new FormControl(item ? item.Ufr : ''),
+      Tfr : new FormControl(item ? item.Tfr : ''),
+      Tmp : new FormControl(item ? item.Tmp : ''),
+      Dfr : new FormControl(item ? item.Dfr : ''),
+      Systolic : new FormControl(item ? item.Systolic : ''),
+      Diastolic : new FormControl(item ? item.Diastolic : ''),
+      PulseRate : new FormControl(item ? item.PulseRate : ''),
+      Replacement : new FormControl(item ? item.Replacement : ''),
+      FluidType : new FormControl(item ? item.FluidType : ''),
+      Medications : new FormControl(item ? item.Medications : ''),
+      Comments :new FormControl(item ? item.Comments : ''),
+    })
   }
 
   ngOnDestroy(): void {
