@@ -63,6 +63,7 @@ export class PatientDocumentationComponent implements OnInit {
   facepainscale = false;
   bradenscale = false;
   assessment = false;
+  morsefallScale = false;
   numericratingscale = false;
   fallrisk = false;
   functional = false;
@@ -89,6 +90,7 @@ export class PatientDocumentationComponent implements OnInit {
   openNumericRatingScale = false;
   openBradenScale = false;
   openAssessment = false;
+  openMorseFallScale = false;
   openEmergencyNursingDoc = false;
   actionType = '';
   selectedDocName: string;
@@ -131,6 +133,8 @@ export class PatientDocumentationComponent implements OnInit {
 
   latestDocData: any;
   DocStatus: any;
+
+  latestMorseFallScaleData: any;
 
   constructor(
     private modalService: BsModalService,
@@ -413,7 +417,8 @@ export class PatientDocumentationComponent implements OnInit {
       'numericratingscale': { numericratingscale: true, selectedDocName: 'Numeric rating scale(more than 8 years)' },
       'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
       'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
-      'assessment': { assessment: true, selectedDocName: 'Dialysis Assessment' }
+      'assessment': { assessment: true, selectedDocName: 'Dialysis Assessment' },
+      'morsefallScale': { morsefallScale: true, selectedDocName: 'Morse Fall Scale' }
     };
 
     // Reset all flags to false initially
@@ -428,6 +433,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.bradenscale = false;
     this.emergencynursingdoc = false;
     this.assessment = false;
+    this.morsefallScale = false;
 
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -1091,6 +1097,11 @@ export class PatientDocumentationComponent implements OnInit {
             );
           }
         });
+      }
+    }
+    else if (this.morsefallScale){
+      if (action == 'create'){
+        this.openMorseFallScale = true;
       }
     }
   }
