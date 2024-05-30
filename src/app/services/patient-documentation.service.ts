@@ -245,6 +245,31 @@ export class PatientDocumentationService {
   constructor() {
   }
 
+  get ToMonitor() {
+    return this.dialysisAssecementForm.get('TOMONITOR') as FormArray;
+  }
+
+  createForm(item?){
+    return new FormGroup({
+      Dockey : new FormControl(''),
+      Timee : new FormControl(item ? item.Timee : new Date()),
+      Bfr : new FormControl(item ? item.Bfr : ''),
+      Ap : new FormControl(item ? item.Ap : ''),
+      Vp : new FormControl(item ? item.Vp : ''),
+      Ufr : new FormControl(item ? item.Ufr : ''),
+      Tfr : new FormControl(item ? item.Tfr : ''),
+      Tmp : new FormControl(item ? item.Tmp : ''),
+      Dfr : new FormControl(item ? item.Dfr : ''),
+      Systolic : new FormControl(item ? item.Systolic : ''),
+      Diastolic : new FormControl(item ? item.Diastolic : ''),
+      PulseRate : new FormControl(item ? item.PulseRate : ''),
+      Replacement : new FormControl(item ? item.Replacement : ''),
+      FluidType : new FormControl(item ? item.FluidType : ''),
+      Medications : new FormControl(item ? item.Medications : ''),
+      Comments :new FormControl(item ? item.Comments : ''),
+    })
+  }
+
   formatDate(date: string) {
     if (typeof (date) === 'string') {
       if (date !== null) {

@@ -161,7 +161,7 @@ export class DialysisAssessmentComponent implements OnInit {
             date.setMinutes(minutes);
             date.setSeconds(seconds);
 
-            this.ToMonitor.push(this.createForm({ ...item, Timee: date }));
+            this.patientDocService.ToMonitor.push(this.patientDocService.createForm({ ...item, Timee: date }));
           });
 
           this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'].patchValue({
@@ -176,31 +176,6 @@ export class DialysisAssessmentComponent implements OnInit {
         console.error(error);
       }
     );
-  }
-
-  get ToMonitor() {
-    return this.patientDocService.dialysisAssecementForm.get('TOMONITOR') as FormArray;
-  }
-
-  createForm(item?){
-    return new FormGroup({
-      Dockey : new FormControl(''),
-      Timee : new FormControl(item ? item.Timee : new Date()),
-      Bfr : new FormControl(item ? item.Bfr : ''),
-      Ap : new FormControl(item ? item.Ap : ''),
-      Vp : new FormControl(item ? item.Vp : ''),
-      Ufr : new FormControl(item ? item.Ufr : ''),
-      Tfr : new FormControl(item ? item.Tfr : ''),
-      Tmp : new FormControl(item ? item.Tmp : ''),
-      Dfr : new FormControl(item ? item.Dfr : ''),
-      Systolic : new FormControl(item ? item.Systolic : ''),
-      Diastolic : new FormControl(item ? item.Diastolic : ''),
-      PulseRate : new FormControl(item ? item.PulseRate : ''),
-      Replacement : new FormControl(item ? item.Replacement : ''),
-      FluidType : new FormControl(item ? item.FluidType : ''),
-      Medications : new FormControl(item ? item.Medications : ''),
-      Comments :new FormControl(item ? item.Comments : ''),
-    })
   }
 
   ngOnDestroy(): void {

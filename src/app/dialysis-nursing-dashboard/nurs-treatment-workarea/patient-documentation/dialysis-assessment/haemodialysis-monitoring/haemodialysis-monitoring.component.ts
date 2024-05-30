@@ -49,8 +49,8 @@ export class HaemodialysisMonitoringComponent implements OnInit {
               date.setMinutes(minutes);
               date.setSeconds(seconds);
 
-              if (this.ToMonitor.controls.length !== TOMONITOR.length) {
-                this.ToMonitor.push(this.createForm({ ...item, Timee: date }));
+              if (this.patientDocService.ToMonitor.controls.length !== TOMONITOR.length) {
+                this.patientDocService.ToMonitor.push(this.patientDocService.createForm({ ...item, Timee: date }));
               }
             });
 
@@ -62,7 +62,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.isGenerateDefaultForm){  
-      const totalDefaultForm = this.ToMonitor.controls;
+      const totalDefaultForm = this.patientDocService.ToMonitor.controls;
       if(totalDefaultForm.length === 0){
         this.generateDefaultForm();
       }
@@ -80,37 +80,12 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   generateDefaultForm(){
     for(let i=0;i < 6;i++){
-      this.ToMonitor.push(this.createForm());
+      this.patientDocService.ToMonitor.push(this.patientDocService.createForm());
     }
   }
 
-  get ToMonitor() {
-    return this.patientDocService.dialysisAssecementForm.get('TOMONITOR') as FormArray;
-  }
-
-  createForm(item?){
-    return new FormGroup({
-      Dockey : new FormControl(''),
-      Timee : new FormControl(item ? item.Timee : new Date()),
-      Bfr : new FormControl(item ? item.Bfr : ''),
-      Ap : new FormControl(item ? item.Ap : ''),
-      Vp : new FormControl(item ? item.Vp : ''),
-      Ufr : new FormControl(item ? item.Ufr : ''),
-      Tfr : new FormControl(item ? item.Tfr : ''),
-      Tmp : new FormControl(item ? item.Tmp : ''),
-      Dfr : new FormControl(item ? item.Dfr : ''),
-      Systolic : new FormControl(item ? item.Systolic : ''),
-      Diastolic : new FormControl(item ? item.Diastolic : ''),
-      PulseRate : new FormControl(item ? item.PulseRate : ''),
-      Replacement : new FormControl(item ? item.Replacement : ''),
-      FluidType : new FormControl(item ? item.FluidType : ''),
-      Medications : new FormControl(item ? item.Medications : ''),
-      Comments :new FormControl(item ? item.Comments : ''),
-    })
-  }
-
   addRow(){
-    const inValidForm = this.ToMonitor.controls.filter(d =>  !d.valid)
+    const inValidForm = this.patientDocService.ToMonitor.controls.filter(d =>  !d.valid)
     console.log(inValidForm);
     
     if(inValidForm && inValidForm.length !== 0){
@@ -123,7 +98,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
         icon: 'error'
       });
     }else{
-      return this.ToMonitor.push(this.createForm())
+      return this.patientDocService.ToMonitor.push(this.patientDocService.createForm())
     }
   }
 
@@ -142,7 +117,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   deleteRow(i:number){
     if(this.checkedIndexes.includes(i)){
-      this.ToMonitor.removeAt(i)
+      this.patientDocService.ToMonitor.removeAt(i)
       const index = this.checkedIndexes.indexOf(i);
 
       const lastPartFromIndex = this.checkedIndexes.filter((index)=>{
