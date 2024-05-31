@@ -1034,6 +1034,18 @@ export class EmergencyService {
     })
   }
 
+  postMFSSet(payload){
+    return this.http.post(this.url + 'MFSSet', payload, {
+      withCredentials: true
+    })
+  }
+
+  getLatestMFSSet(json){
+    return this.http.get(this.url + `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`, {
+      withCredentials: true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 

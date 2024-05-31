@@ -29,6 +29,7 @@ import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-asse
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { DataService } from '@services/data.service';
 import { environment } from 'src/environments/environment';
+import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -46,6 +47,8 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NumericRatingScaleComponent) NumericRatingScaleComp: NumericRatingScaleComponent;
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
+  @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
+
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -182,7 +185,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
-    this.LatestDocSet()
+    this.LatestDocSet();
+    this.LatestMFSSet();
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -204,7 +208,23 @@ export class PatientDocumentationComponent implements OnInit {
       }, (error) => {
         console.error(error);
       });
-}
+  }
+
+  LatestMFSSet(){
+    const json = {
+      Einri: this.storageService.einri,
+      Patnr: this.storageService.patnr,
+      Falnr: this.storageService.falnr,
+    };
+
+    this.emergencyService.getLatestMFSSet(json).subscribe((data: any)=>{
+      if(data){
+        this.latestMorseFallScaleData = data.d.results[0];
+      }
+    }, (error)=>{
+      console.error(error);
+    })
+  }
 
   getLatestAssessment() {
     this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
@@ -757,6 +777,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPatientProfile();
     // this.fetchLatestDetails();
     this.LatestDocSet();
+    this.LatestMFSSet();
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -776,6 +797,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openBradenScale = false;
     this.openEducationAssessment = false;
     this.openEmergencyNursingDoc = false;
+    this.openMorseFallScale = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -783,6 +805,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.patientProfileDocumet = this.documentTypeFilterValue;
     this.medDocList = [];
     this.latestDocData = null;
+    this.latestMorseFallScaleData = null;
   }
 
   
@@ -1100,7 +1123,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
     else if (this.morsefallScale){
-      if (action == 'create'){
+      if (action == 'create'  && this.latestMorseFallScaleData?.StatusTxt != 'Draft'){
         this.openMorseFallScale = true;
       }
     }
@@ -1238,6 +1261,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.refresh();
   }
   saveDoc() {
+    console.log(this.actionType);
+    
     if (this.actionType == 'create') {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
@@ -1330,6 +1355,31 @@ export class PatientDocumentationComponent implements OnInit {
             })
             this.refresh();
         }, (error)=>{
+          console.log(error);
+        })
+      }
+      if(this.openMorseFallScale) {
+        console.log('status 1');
+
+        const formData = {
+          ...this.morseFallScaleC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1'
+        };
+        // console.log(formData);
+        this.emergencyService.postMFSSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
           console.log(error);
         })
       }

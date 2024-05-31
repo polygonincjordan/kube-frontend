@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import Swal from 'sweetalert2';
 import { OutpatientNursingService } from '@services/outpatient-nursing.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
+import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,8 @@ export class LoginComponent implements AfterViewInit {
     private storageService: StorageService,
     private router: Router,
     private outpatientNursingService: OutpatientNursingService,
-    private eprescriptionService: EPrescriptionService
+    private eprescriptionService: EPrescriptionService,
+    private userConfigService: UserConfigurationService
   ) { }
 
   ngAfterViewInit(): void {
@@ -104,6 +106,11 @@ export class LoginComponent implements AfterViewInit {
       this.router.navigate(['/in-patient-nurse-dashboard'], {});
     }
     else if ((getKubeRule == UserType.DIYNurse)) {
+      this.userConfigService.getUserConfigData().subscribe((resp)=>{
+        this.storageService.setUserConfig('userConfig', JSON.stringify(resp));
+      },(error)=>{
+        console.log(error);
+      })
       this.router.navigate(['/dialysis-nursing-dashboard'], {});
     }
     else if ((getKubeRule == UserType.opnurse)) {
