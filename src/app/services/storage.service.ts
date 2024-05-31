@@ -81,6 +81,10 @@ export class StorageService {
     localStorage.setItem(this.env['app_prefix'] + key, value);
   }
 
+  setUserConfig(key,value){
+    localStorage.setItem(this.env['app_prefix'] + key, value);
+  }
+
   remLocal(key: any) {
     localStorage.removeItem(this.env['app_prefix'] + key);
   }

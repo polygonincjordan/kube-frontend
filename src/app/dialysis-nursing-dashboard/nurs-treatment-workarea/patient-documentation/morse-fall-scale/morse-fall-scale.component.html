@@ -16,8 +16,8 @@
                             <div class="col-6 px-0 ">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Realized by</label>
-                                    <input type="text" class="col-2">
-                                    <input type="text" class="col-4" value="Matar, Zaid" disabled>
+                                    <input type="text" class="col-2" formControlName="AttendPhy" [disabled]="true">
+                                    <input type="text" class="col-4" [value]="userData.UserId" disabled>
                                 </div>
                             </div>
                        </div>

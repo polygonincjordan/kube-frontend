@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-morse-fall-scale',
@@ -9,17 +10,13 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class MorseFallScaleComponent implements OnInit {
   MorsefallForm: FormGroup<any>;
   CurrentDateAndTime: Date = new Date();
+  userData;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private storageService: StorageService) {
   }
 
   ngOnInit(): void {
     this.MorsefallForm = this.fb.group({
-      Dockey: new FormControl(''),
-      Einri: new FormControl(''),
-      Patnr: new FormControl(''),
-      Falnr: new FormControl(''),
-      Orgdo: new FormControl(''),
       HistoryFalls: new FormControl(''),
       SecondaryDiagnosis: new FormControl(''),
       AmbulatoryAid: new FormControl(''),
@@ -28,8 +25,14 @@ export class MorseFallScaleComponent implements OnInit {
       MentalStatus: new FormControl(''),
       Comments: new FormControl(''),
       AttendPhy: new FormControl(''),
-      DocStatus: new FormControl('')
     })
+
+    const userData = this.storageService.getLocal('userConfig', false);
+
+    this.userData = userData;
+    // console.log(userData);
+    this.MorsefallForm.controls['AttendPhy'].patchValue(userData.VMA);
+    
   }
 
   getFormData(){
