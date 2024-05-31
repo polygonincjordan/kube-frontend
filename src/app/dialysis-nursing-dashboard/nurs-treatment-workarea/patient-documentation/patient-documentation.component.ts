@@ -29,6 +29,7 @@ import { DialysisAssessmentComponent } from './dialysis-assessment/dialysis-asse
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { DataService } from '@services/data.service';
 import { environment } from 'src/environments/environment';
+import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -135,6 +136,7 @@ export class PatientDocumentationComponent implements OnInit {
   DocStatus: any;
 
   latestMorseFallScaleData: any;
+  @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
 
   constructor(
     private modalService: BsModalService,
@@ -1238,6 +1240,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.refresh();
   }
   saveDoc() {
+    console.log(this.actionType);
+    
     if (this.actionType == 'create') {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
@@ -1332,6 +1336,12 @@ export class PatientDocumentationComponent implements OnInit {
         }, (error)=>{
           console.log(error);
         })
+      }
+      if(this.openMorseFallScale) {
+        console.log('status 1');
+
+        const formData = this.morseFallScaleC.getFormData();
+        console.log(formData);
       }
     }
     else if (this.actionType == 'edit') {

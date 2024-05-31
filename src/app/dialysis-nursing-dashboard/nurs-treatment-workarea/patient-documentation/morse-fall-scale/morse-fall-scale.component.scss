@@ -1,9 +1,14 @@
 .haemodialysis-main {
+    border-radius: 10px;
+    border: 1px solid #cacaca;
+    padding: 0px 20px;
+
     .haemodialysis-info {
       .haemodialysis-dialysis-info {
         border: 1px solid #cacaca;
         border-radius: 13px;
-        padding: 25px;
+        padding: 20px;
+
         .title-text {
           position: absolute;
           top: -15px;
@@ -29,6 +34,12 @@
         .score-input {
           input {
             width: 300px;padding: 7.2px 0.75rem;
+          }
+        }
+        .risk-input-wrap{
+          width: 100%;
+          div{
+            width: 100%;
           }
         }
       }
