@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-morse-fall-scale',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./morse-fall-scale.component.scss']
 })
 export class MorseFallScaleComponent implements OnInit {
+Morsefall: FormGroup<any>;
 
   constructor() { }
 
