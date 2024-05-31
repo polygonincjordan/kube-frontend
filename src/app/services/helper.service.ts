@@ -1,10 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
-@Injectable()
+@Injectable(
+  {
+    providedIn:'root'
+  }
+)
 export class HelperService {
   imageString: string | ArrayBuffer;
-
+  isNotAllowedSpinnerInAPI = false;
   constructor(@Inject(DatePipe) private datePipe: DatePipe) {}
 
   getBase64String(gender: any) {

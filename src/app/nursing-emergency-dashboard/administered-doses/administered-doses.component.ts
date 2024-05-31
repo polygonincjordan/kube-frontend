@@ -140,9 +140,9 @@ export class AdministeredDosesComponent implements OnInit{
     });
 
     this.receviceCartForm = this.formBuilder.group({
-      dateFrom: [new Date()], 
-      dateTo: [new Date()],   
-      timeFrom: ['00:00'],    
+      dateFrom: [new Date()],
+      dateTo: [new Date()],
+      timeFrom: ['00:00'],
       timeTo: ['23:59'],
       nurseUnit: ['EMEEUAMC']
     })
@@ -151,7 +151,7 @@ export class AdministeredDosesComponent implements OnInit{
     this.getMedicationAdministrationlist();
     this.filterData();
     // this.getReceviceCartList();
-   
+
   }
   redirectToeKardex(data) {
     this.openModuleKardex.emit(data);
@@ -171,11 +171,10 @@ export class AdministeredDosesComponent implements OnInit{
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getMedicationAdministrationSet(fromDate,toDate).subscribe((res:any)=>{
+    this.hospitalistService.getMedicationAdministrationSet(null,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
-
 
 
   getReceviceCartList(){
@@ -203,7 +202,7 @@ export class AdministeredDosesComponent implements OnInit{
     this.receviceCartForm.get('timeFrom').setValue('00:00');
     this.receviceCartForm.get('timeTo').setValue('23:59');
     this.cardSection = false
-    this.getReceviceCartList() 
+    this.getReceviceCartList()
   }
 
 
@@ -212,20 +211,20 @@ export class AdministeredDosesComponent implements OnInit{
     const duration = `PT${hours}H${minutes}M00S`;
     return duration;
 }
-  
+
   handleEvent(value){
     this.rightside  = false;
     this.tablelistshow1 = false;
     this.tablelistshow = true;
   }
- 
+
   openRightside(item) {
     this.checkValue = false;
     this.selectedmissedMedPatientList=item;
     this.tablelist = [];
     this.ePrescriptionService.loadData(`e-prescription/EmarEventSet?Einri=${item?.Einri}&Falnr=${item?.Falnr}`, false, false, false, false).subscribe(((resp: any) => {
       if (resp.status === 200) {
-               
+
          this.hospitalistService.getMedicationAdministration(item?.Einri, item?.Falnr)
             .subscribe((res: any) => {
               for (var i = 0; i < res.d.results.length; i++) {
@@ -237,20 +236,20 @@ export class AdministeredDosesComponent implements OnInit{
                     item.EventSet = [EventSet[0]];
                   }
                 }
-                
+
                 if(i === res.d.results.length-1){
                   this.rightside = true;
                   this.tablelistshow1 = true;
                   this.tablelistshow = false;
                 }
-                
+
                 this.tablelist.push(item);
               }
             }, (error: any) => {
               this.tablelist.push(item);
             });
-        
-        
+
+
       }
       // this.loadMedicationHistoryData(this.tablelist[0].Einri);
     }))
@@ -267,8 +266,8 @@ export class AdministeredDosesComponent implements OnInit{
       delete e.isChecked;
       this.emergencyService.addReceviceCart(e).subscribe((res:any)=>{
       },( error: any)=>{})
-     } 
-     
+     }
+
    })
 
   }
@@ -280,7 +279,7 @@ export class AdministeredDosesComponent implements OnInit{
        e.Missed = "X";
        this.emergencyService.addReceviceCart(e).subscribe((res:any)=>{
        },( error: any)=>{})
-      } 
+      }
     })
   }
   handleSidebarToggle() {

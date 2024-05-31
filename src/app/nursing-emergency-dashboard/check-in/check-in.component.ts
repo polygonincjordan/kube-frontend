@@ -18,10 +18,12 @@ import { StorageService } from '@services/storage.service';
 import { ErTriageComponent } from './er-triage/er-triage.component';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { catchError, of } from 'rxjs';
-import { Patient } from '@services/e-kardex/interfaces/patient';
-import { DomSanitizer } from '@angular/platform-browser';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.interface';
+import { Subscription, forkJoin} from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { HelperService } from '@services/helper.service';
+// import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -29,7 +31,13 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./check-in.component.scss'],
 })
 export class CheckInComponent implements OnInit {
-
+  public triageList: commonKeyValuePariExt1[] = [
+    { value: '0', label: 'Level I Resuscritation', TriagePriorityCode: '01', TriageColor: 'blue', isActive: false },
+    { value: '1', label: 'Level II Emergency', TriagePriorityCode: '02', TriageColor: 'red', isActive: false },
+    { value: '2', label: 'Level III Urgency', TriagePriorityCode: '03', TriageColor: 'yellow', isActive: false },
+    { value: '3', label: 'Level IV Less Urgency', TriagePriorityCode: '04', TriageColor: 'green', isActive: false },
+    { value: '4', label: 'Level V Non Urgency', TriagePriorityCode: '05', TriageColor: 'white', isActive: false }
+  ];
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
 
   @ViewChild('erBed') erBed: ErBedComponent;
@@ -50,6 +58,7 @@ export class CheckInComponent implements OnInit {
   lastIndex: number;
   modalRefForRisk: BsModalRef;
   selectedERList: any;
+
   isRiskUpdate: boolean;
   riskList: any[];
   riskform: FormGroup;
@@ -79,7 +88,12 @@ export class CheckInComponent implements OnInit {
   encounterId: any;
   pdfUrl: any;
   selectedIconPdf: BsModalRef;
-
+  modalRefForTriage: BsModalRef;
+  selectedPatientDetails: any;
+  selectedRowOfAllTriage: any;
+  selectedDocumentDetails: any;
+  private refreshSubscription: Subscription;
+  refreshInterval:any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -87,6 +101,7 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
+    private helperService:HelperService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -124,6 +139,9 @@ export class CheckInComponent implements OnInit {
 
   ngOnInit(): void {
     this.getErList();
+    this.refreshInterval = setInterval(() => {
+      this.getErList();
+    }, environment.refreshTime);
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
       this.einri = params.einri;
@@ -133,6 +151,16 @@ export class CheckInComponent implements OnInit {
     this.modalService.onHidden.subscribe((reason: string | undefined) => {
       this.getErList();
     });
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   assignMe(data: any) {
@@ -602,7 +630,7 @@ export class CheckInComponent implements OnInit {
   getErList(date?: any) {
     const json = {
       // fromDate: `${new DatePipe('en-US').transform(
-      //   new Date().setDate(new Date().getDate() - 20),
+      //   new Date().setDate(new Date().getDate() - 100),
       //   'yyyy-MM-dd'
       // )}T00:00:00`,
       // toDate: `${new DatePipe('en-US').transform(
@@ -611,6 +639,7 @@ export class CheckInComponent implements OnInit {
       // )}T00:00:00`,
       History: false,
     };
+    this.helperService.isNotAllowedSpinnerInAPI = true;
     this.emergencyService.getErCheckList(json).subscribe(
       (_success: any) => {
         // this.ERlistData = _success.d.results;
@@ -990,20 +1019,44 @@ export class CheckInComponent implements OnInit {
   }
 
   openModalForTriage(template, data) {
-    this.emergencyService.getTriageLatestDocumentSet(data).subscribe((res: any) => {
-      if (res?.d?.results[0]?.StatusTxt === 'Released') {
-        this.openReleasedDocPdf(res?.d?.results[0]);
-        return
-      }
+    // Assuming this is within a method of your component or service
+    const json = { "patnr": data.Patnr, "falnr": data.Falnr };
+    console.log(data);
+    // Combine both API calls using forkJoin
+    forkJoin([
+      this.emergencyService.triagePriorityList(json),
+      this.emergencyService.getTriageLatestDocumentSet(data)
+    ]).subscribe({
+      next: ([triageListResponse, latestDocumentResponse]: [any, any]) => {
+        // Handle successful responses from both API calls
 
-      if (res?.d?.results.length === 0) {
-        this.triageModal.openModalForMain(data, '');
-      } else if (res?.d?.results.length) {
-        this.triageModal.openModalForMain(data, res?.d?.results[0]);
-      }
-    }, (error) => {
+        // Handle triagePriorityList response
+        const triageListData = triageListResponse.d.results[0];
 
-    })
+        // Handle getTriageLatestDocumentSet response
+        const latestDocumentData = latestDocumentResponse.d.results[0];
+        // Handle triage popup open based on condition
+        console.log('latestDocumentData', latestDocumentData);
+        console.log('triageListData', triageListData);
+        // Do whatever processing you need with the responses here
+        if (latestDocumentData === undefined) {
+          this.triageModal.openModalForMain(data, '', triageListData);
+        }
+        else {
+          if (latestDocumentResponse.d.results.length) {
+            this.triageModal.openModalForMain(data, latestDocumentData, triageListData);
+          }
+        }
+      },
+      error: (error: any) => {
+        // Handle errors from either API call
+        console.error('Error:', error);
+      },
+      complete: () => {
+        // Handle completion (optional), invoked when both observables complete
+        // This block will be executed once both observables complete
+      }
+    });
   }
 
   openReleasedDocPdf(traigeDetails: any) {
@@ -1054,6 +1107,98 @@ export class CheckInComponent implements OnInit {
     this.modalRef = this.modalService.show(template, config);
     this.visitComments = data.VisitComments;
     this.modalRef.onHide.subscribe((reason: string | any) => {
+    });
+  }
+
+  openStatusChange($event, item, template: TemplateRef<any>) {
+    if (item.TriagePriorityCode != '') {
+      $event.preventDefault();
+      this.selectedPatientDetails = item;
+      this.triageList.find((result) => {
+        if (item.TriagePriorityCode === result.TriagePriorityCode) {
+          result.isActive = true;
+        }
+      });
+      let json = { "patnr": this.selectedPatientDetails.Patnr, "falnr": this.selectedPatientDetails.Falnr }
+      this.emergencyService.triagePriorityList(json).subscribe({
+        next: (data: any) => {
+          // Handle successful data retrieval
+          this.selectedDocumentDetails = data.d.results[0];
+          const config: ModalOptions = { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true };
+          this.modalRefForTriage = this.modalService.show(template, config);
+        },
+        error: (err: any) => {
+          // Handle errors if the request fails
+          console.error('Error Data:', err);
+        },
+        complete: () => {
+          // Handle completion (optional), invoked when the observable completes
+          // console.log('Complete');
+        }
+      });
+    }
+  }
+
+  closeTriageModal() {
+    this.modalRefForTriage.hide();
+    this.triageList.find((result) => {
+      result.isActive = false;
+    });
+  }
+
+
+  selectedNewTriageRow(data, index) {
+    this.selectedRowOfAllTriage = data;
+    this.triageList.forEach((element, i) => {
+      if (index == i) {
+        this.triageList[i].isActive = true;
+      } else {
+        this.triageList[i].isActive = false;
+      }
+    });
+
+  }
+
+  saveTriageStatus() {
+    let payload = {
+      Dockey: this.selectedDocumentDetails.Dockey,
+      Dokst: this.selectedDocumentDetails.DocStatus,
+      Dokvr: "",
+      Dtid: "ZMED_TRPRI",
+      DtidText: "",
+      Einri: this.selectedPatientDetails.Einri,
+      Etag: "",
+      Falnr: this.selectedPatientDetails.Falnr,
+      Lfdnr: this.selectedPatientDetails.Lfdbw,
+      Mitarb: "",
+      Mitarbname: "",
+      Orgdo: "",
+      Orgfa: "",
+      Orgpf: "",
+      Patnr: this.selectedPatientDetails.Patnr,
+      Referredby: "",
+      Released: false,
+      TriageColor: this.selectedRowOfAllTriage.TriageColor,
+      TriagePriorityCode: this.selectedRowOfAllTriage.TriagePriorityCode,
+      TriagePriorityText: this.selectedRowOfAllTriage.label,
+      Zimmr: "",
+      Mode: true,
+    }
+    this.emergencyService.saveTriage(payload).subscribe({
+      next: (data: any) => {
+        // Handle successful data retrieval
+        this.triageList.find((result) => {
+          result.isActive = false;
+        });
+        this.modalRefForTriage.hide();
+      },
+      error: (error: any) => {
+        // Handle errors if the request fails
+        this.triageList.find((result) => {
+          result.isActive = false;
+        });
+        this.modalRefForTriage.hide();
+      },
     });
   }
 }

@@ -342,7 +342,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
         if (_success) {
           // _success = JSON.parse(_success._body);
 
-          this.getWards = _success.d.results;
+          // this.getWards = _success.d.results;
         }
       },
       (_error: any) => { }
@@ -887,7 +887,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
           patnr: checkindata.Patnr,
           falnr: checkindata.Falnr,
           einri: checkindata.Einri,
-          lfdnr: checkindata.Lfdbw
+          lfdnr: checkindata.Lfdnr
         },
         queryParamsHandling: 'merge',
         // preserve the existing query params in the route
@@ -902,7 +902,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
         '&einri=' +
         checkindata.Einri +
         '&lfdnr=' +
-        checkindata.Lfdbw +
+        checkindata.Lfdnr +
         '&nav=Treatmentarea',
         '_blank'
       );

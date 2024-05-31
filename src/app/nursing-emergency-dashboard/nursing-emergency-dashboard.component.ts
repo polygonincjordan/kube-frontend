@@ -832,7 +832,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     return Array.prototype.map.call(value, function (item) { return item.Deptou; }).join(",");
   }
   getMedicationAdministrationlist() {
-    this.hospitalistService?.getMedicationAdministrationSet(new Date(), new Date()).subscribe((res: any) => {
+    this.hospitalistService?.getMedicationAdministrationSet(null,new Date(), new Date()).subscribe((res: any) => {
       this.missedMedPatientList = res.d.results;
     })
   }

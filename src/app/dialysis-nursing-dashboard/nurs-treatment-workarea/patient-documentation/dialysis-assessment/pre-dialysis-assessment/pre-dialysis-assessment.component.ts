@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { SharedService } from '@services/shared.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,39 +14,80 @@ export class PreDialysisAssessmentComponent implements OnInit {
   predialysis: FormGroup<any>;
   private subscription: Subscription;
 
-  constructor() { }
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
+    this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
+
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+
+    if(this.patientDocService.isPatchValueForPreDialysis){
+      this.initializeFormData();
+
+      this.subscription =
+      this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
+        if(Object.keys(resp).length > 0){
+          this.predialysis.patchValue({
+            ...resp,
+            TreatmentDate: this.patientDocService.formatDate(resp.TreatmentDate),
+            DialysisFDate: this.patientDocService.formatDate(resp.DialysisFDate),
+          });
+        }
+      });
+
+      this.patientDocService.isPatchValueForPreDialysis = false;
+    }
+  }
 
   ngOnInit(): void {
-    this.predialysis = new FormGroup({
-      TreatmentDate : new FormControl(),
-      TreatmentTime : new FormControl(),
-      DialysisFDate: new FormControl(),
-      DialysisFTime : new FormControl(),
-      BloodTest : new FormControl(),
-      PrescribedTime : new FormControl(),
-      DryWeight : new FormControl(),
-      Machine : new FormControl(),
-      BloodFlow :new FormControl(),
-      PostWeight : new FormControl(),
-      Treatment : new FormControl(),
-      TypeDialyzer : new FormControl(),
-      NewDryWeight : new FormControl(),
-      Height :new FormControl(),
-      WeightLoss : new FormControl(),
-      PreWeight: new FormControl(),
-      OxygenSaturation : new FormControl(),
-      OxygenFlow : new FormControl(),
-      OxygenDelivery : new FormControl(),
-      OralTemp : new FormControl(),
-      AxillaryTemp : new FormControl(),
-      PulseRate: new FormControl(),
-      RespiratoryRate: new FormControl(),
-      SystolicBloodSitting : new FormControl(),
-      DiastolicBloodSitting: new FormControl(),
-      ArterialPressure : new FormControl(),
-      SystolicBloodStanding : new FormControl(),
-      DiastolicBloodStanding : new FormControl(),
-    });
+
+  }
+
+  initializeFormData(){
+    const date = new Date();
+    date.setMinutes(0);
+    date.setSeconds(0);
+    this.predialysis.patchValue({
+      TreatmentDate: new Date(),
+      TreatmentTime: new Date(),
+      DialysisFDate: new Date(),
+      DialysisFTime: new Date(),
+      BloodTest: null,
+      PrescribedTime: date,
+      DryWeight: '',
+      Machine: '',
+      BloodFlow: '',
+      PostWeight: '',
+      Treatment: '',
+      TypeDialyzer: null,
+      NewDryWeight: '',
+      Height: '',
+      WeightLoss: '',
+      PreWeight: '',
+      OxygenSaturation: '',
+      OxygenFlow: '',
+      OxygenDelivery: null,
+      OralTemp: '',
+      AxillaryTemp: '',
+      PulseRate: '',
+      RespiratoryRate: '',
+      SystolicBloodSitting: '',
+      DiastolicBloodSitting: '',
+      ArterialPressure: '',
+      SystolicBloodStanding: '',
+      DiastolicBloodStanding: '',
+    })
+  }
+
+
+  createAssessment() {
+    console.log(this.predialysis.value);
+  }
+
+  ngOnDestroy(): void {
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 
 }

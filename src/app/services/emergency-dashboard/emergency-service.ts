@@ -16,9 +16,11 @@ import {
   throwError,
   tap,
   lastValueFrom,
+  Subject,
 } from 'rxjs';
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
+import { truncate } from 'fs/promises';
 
 @Injectable()
 export class EmergencyService {
@@ -37,6 +39,7 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+  public currentTab: Subject<string> = new Subject<string>();
 
   constructor(
     private http: HttpClient,
@@ -182,7 +185,7 @@ export class EmergencyService {
     })
   }
 
-  getReceviceCart(dateFrom?:any,dateTo?:any,timeFrom?:any,timeTo?:any,nurseUnit?:any) {
+  getReceviceCart(dateFrom?: any, dateTo?: any, timeFrom?: any, timeTo?: any, nurseUnit?: any) {
     return this.http.get(this.url + `getSentCartRecesive?FromDt=${dateFrom}&ToDt=${dateTo}&FromTm=${timeFrom}&ToTm=${timeTo}&Nursingou=${nurseUnit}`, {
       withCredentials: true,
     })
@@ -890,6 +893,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  createPediatricWarninfScaletDetail(json): Observable<any> {
+    return this.http.post(this.url + 'postOfPrdiatricWarningScale', json, {
+      withCredentials: true,
+    });
+  }
   updateNurseEndDetail(json): Observable<any> {
     return this.http.post(this.url + 'updateNurseEndDetail', json, {
       withCredentials: true,
@@ -905,13 +913,18 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
-  deleteSurgicalPassPDoc(json): Observable<any> {    
+  deleteSurgicalPassPDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteSurgicalPassDoc?Dockey=${json}`, {
       withCredentials: true,
     });
   }
   getNurseEndDetail(json): Observable<any> {
     return this.http.get(this.url + `getNurseEndsormentDetail?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+  getPediatricWarningScoreDetail(json): Observable<any> {
+    return this.http.get(this.url + `getPediatricEarlyWarningScore?Dockey=${json}`, {
       withCredentials: true,
     });
   }
@@ -927,6 +940,17 @@ export class EmergencyService {
   }
   createSurgicalPassDetail(json): Observable<any> {
     return this.http.post(this.url + 'postOfSurgicalPassp', json, {
+      withCredentials: true,
+    });
+  }
+
+  copySurgicalPassP(json) {
+    return this.http.put(this.url + 'updateSurgicalPassPortDetail', json, {
+      withCredentials: true,
+    });
+  }
+  copyPediatricWarningScore(json) {
+    return this.http.put(this.url + 'copyPediatricWarningScore', json, {
       withCredentials: true,
     });
   }
@@ -975,14 +999,274 @@ export class EmergencyService {
   }
 
   getLatestDocSet(json) {
-    return this.http.get(this.url + `LatestDocSet?einri=${json.Einri}&patnr=${json.Patnr}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`, {
+    return this.http.get(this.url + `LatestDocSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
       withCredentials: true,
     });
   }
+
   getDailysisSet(json){
-    return this.http.get(this.url + `DailysisSet?Dockey${json.Dockey}`, {
+    return this.http.get(this.url + `DailysisSet?Dockey=${json.Dockey}`, {
       withCredentials:true
     });
   }
+
+  postDailysisSet(json){
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true
+    })
+  }
+
+  deleteDialysisDoc(Dockey){
+    return this.http.delete(this.url + `DailysisSet?Dockey=${Dockey}`, {
+      withCredentials: true
+    })
+  }
+
+  releaseDialysisDoc(json){
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true
+    })
+  }
+
+  getDiaAssessReleasedPdf(Dockey){
+    return this.http.get(this.url + `DialysisgetPDF?Dockey=${Dockey}`,{
+      withCredentials: true
+    })
+  }
+
+  postMFSSet(payload){
+    return this.http.post(this.url + 'MFSSet', payload, {
+      withCredentials: true
+    })
+  }
+
+  getLatestMFSSet(json){
+    return this.http.get(this.url + `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`, {
+      withCredentials: true
+    })
+  }
+
+  createAssessment(data:any) {
+    console.log(data);
+
+    // return new Promise((resolve, reject) => {
+    //   let payload = {
+    //       "Dockey" : "",
+    //       "Dtid" : "ZMED_DIALY",
+    //       "Einri" : "1000",
+    //       "Patnr" : "1101",
+    //       "Falnr" : "1402",
+    //       "Lfdnr" : "00001",
+    //       "Orgdo" : "F21IUAMC",
+    //       "HaSMonday" : true,
+    //       "HaSTuesday" : true,
+    //       "HaSWednesday" : true,
+    //       "HaSThursday" : true,
+    //       "HaSFriday" : true,
+    //       "HaSSaturday" : true,
+    //       "HaSSunday" : true,
+    //       "HaSOther" : true,
+    //       "HaSOtherTxt" : "Test",
+    //       "BloodDraw" : "0",
+    //       "BloodDrawTxt" : "text",
+    //       "HaAFistula" : true,
+    //       "HaAGraft" : true,
+    //       "HaACatheter" : true,
+    //       "HaATransLumbar" : true,
+    //       "HaAPd" : true,
+    //       "HaAOther" : true,
+    //       "HaAOtherTxt" : "Other",
+    //       "FistulaLocation" : "0",
+    //       "AvRightForearm" : true,
+    //       "AvRightUpperarm" : true,
+    //       "AvRightAnterior" : true,
+    //       "AvRightThigh" : true,
+    //       "AvRightLower" : true,
+    //       "AvLeftForearm" : true,
+    //       "AvLeftUpperarm" : true,
+    //       "AvLeftAnterior" : true,
+    //       "AvLeftThigh" : true,
+    //       "AvLeftLower" : true,
+    //       "DiSubclavianLeft" : true,
+    //       "DiSubclavianRight" : true,
+    //       "DiInternalLeft" : true,
+    //       "DiInternalRight" : true,
+    //       "DiFemoralLeft" : true,
+    //       "DiFemoralRight" : true,
+    //       "DiTransLumbar" : true,
+    //       "DiOther" : true,
+    //       "DiOtherTxt" : "other",
+    //       "FiBruising" : true,
+    //       "FiClotted" : true,
+    //       "FiAudible" : true,
+    //       "FiPalpable" : true,
+    //       "FiInflammed" : true,
+    //       "FiPatent" : true,
+    //       "FiNoAudible" : true,
+    //       "FiNoPalpable" : true,
+    //       "AvAudibleBruit" : false,
+    //       "AvPalpableThrill" : false,
+    //       "AvPatent" : true,
+    //       "AvNoAudible" : true,
+    //       "AvNoPalpable" : true,
+    //       "AvPulsePresent" : false,
+    //       "AvPulseAbsent" : true,
+    //       "DressingChanged" : "0",
+    //       "TreatmentDate" : "2024-05-02T00:00:00",
+    //       "TreatmentTime" : "PT14H32M17S",
+    //       "DialysisFDate" : "2024-05-02T00:00:00",
+    //       "DialysisFTime" : "PT14H32M23S",
+    //       "BloodTest" : "0",
+    //       "PrescribedTime" : "PT01H00M00S",
+    //       "DryWeight" : "1.000",
+    //       "Machine" : "1",
+    //       "BloodFlow" : "1",
+    //       "PostWeight" : "1.000",
+    //       "Treatment" : "1",
+    //       "TypeDialyzer" : "0",
+    //       "NewDryWeight" : "1.000",
+    //       "Height" : "11.00",
+    //       "WeightLoss" : "1.000",
+    //       "PreWeight" : "1.000",
+    //       "OxygenSaturation" : "1",
+    //       "OxygenFlow" : "1",
+    //       "OxygenDelivery" : "0",
+    //       "OralTemp" : "1",
+    //       "AxillaryTemp" : "1",
+    //       "PulseRate" : "1",
+    //       "RespiratoryRate" : "1",
+    //       "SystolicBloodSitting" : "1",
+    //       "DiastolicBloodSitting" : "1",
+    //       "ArterialPressure" : "1",
+    //       "SystolicBloodStanding" : "1",
+    //       "DiastolicBloodStanding" : "1",
+    //       "HaemodialysisLine" : "19",
+    //       "OtherTxt" : "Other",
+    //       "Redness" : "0",
+    //       "RednessScore" : "1",
+    //       "Swelling" : "0",
+    //       "SwellingScore" : "1",
+    //       "Exuade" : "0",
+    //       "ExuadeScore" : "2",
+    //       "Pus" : "0",
+    //       "PusScore" : "4",
+    //       "TotalScore" : "8",
+    //       "Plann" : "Exit site infection likely – Swab Site and consider empiric antibiotic X 2 weeks. Review swab report in 48 hours & modify antibiotic therapy accordingly.",
+    //       "ChronicDone" : "1",
+    //       "AcuteDone" : "1",
+    //       "InternationalDone" : "1",
+    //       "PTreatmentDate" : "2024-05-02T00:00:00",
+    //       "PTreatmentTime" : "PT14H34M04S",
+    //       "PPostWeight" : "1.000",
+    //       "PAxillaryTemp" : "1",
+    //       "POralTemp" : "1",
+    //       "PPulseRate" : "1",
+    //       "PRespiratoryRate" : "1",
+    //       "POxygenSaturation" : "1",
+    //       "POxygenFlow" : "1",
+    //       "POxygenDelivery" : "0",
+    //       "PSystolicBloodSitting" : "1",
+    //       "PDiastolicBloodSitting" : "1",
+    //       "PArterialPressure" : "1",
+    //       "PSystolicBloodStanding" : "1",
+    //       "PDiastolicBloodStanding" : "1",
+    //       "PBvp" : "1",
+    //       "PKt" : "1",
+    //       "PDialyserClearance" : "0",
+    //       "PHypotension" : "0",
+    //       "TypeDwelling" : "3",
+    //       "TypeDwellingTxt" : "Other",
+    //       "AcCentral" : true,
+    //       "AcWindowUnit" : true,
+    //       "FanCeiling" : true,
+    //       "FanStanding" : true,
+    //       "FanWindow" : true,
+    //       "HeatingElectric" : true,
+    //       "HeatingGas" : true,
+    //       "HeatingSolar" : true,
+    //       "ChOther" : true,
+    //       "ChOtherTxt" : "Other",
+    //       "Community" : "0",
+    //       "Occupants" : "1",
+    //       "RoomShared" : "1",
+    //       "HomeHospital" : "1",
+    //       "PdSmoke" : true,
+    //       "PdPhone" : true,
+    //       "PdFire" : true,
+    //       "PdOther" : true,
+    //       "PdOtherTxt" : "other",
+    //       "StIndoors" : true,
+    //       "StOutdoors" : true,
+    //       "StEnclosedWFloor" : true,
+    //       "StEnclosedWoFloor" : true,
+    //       "StAdequate" : true,
+    //       "StInadequate" : true,
+    //       "StAreaHeated" : true,
+    //       "StOther" : true,
+    //       "StOtherTxt" : "other",
+    //       "HoPlumbing" : true,
+    //       "HoEnclosed" : true,
+    //       "HoAdequate" : true,
+    //       "HoCleanlinessAd" : true,
+    //       "HoCleanlinessNeed" : true,
+    //       "HoPetsInside" : true,
+    //       "HoPetsOutside" : true,
+    //       "HoAbsent" : true,
+    //       "HoDoor" : true,
+    //       "HoWindows" : true,
+    //       "HoOther" : true,
+    //       "HoOtherTxt" : "Other",
+    //       "Tendency" : "0",
+    //       "PetsInside" : "1",
+    //       "TypePet" : "1",
+    //       "WaCity" : true,
+    //       "WaWell" : true,
+    //       "WaSpring" : true,
+    //       "WaCistern" : true,
+    //       "WaOther" : true,
+    //       "WaOtherTxt" : "Other",
+    //       "GaCity" : true,
+    //       "GaSepticTank" : true,
+    //       "GaGarbage" : true,
+    //       "GaOther" : true,
+    //       "GaOtherTxt" : "Other",
+    //       "Bathrooms" : "1",
+    //       "ShowerHead" : "1",
+    //       "AttendPhy" : "9000000020",
+    //       "DocStatus" : "1",
+    //       "TOMONITOR" : [{
+    //             "Dockey" : "",
+    //             "Timee" : "PT14H33M29S",
+    //             "Bfr" : "1",
+    //             "Ap" : "11",
+    //             "Vp" : "1",
+    //             "Ufr" : "1",
+    //             "Tfr" : "1",
+    //             "Tmp" : "1",
+    //             "Dfr" : "1",
+    //             "Systolic" : "1",
+    //             "Diastolic" : "1",
+    //             "PulseRate" : "1",
+    //             "Replacement" : "1",
+    //             "FluidType" : "1",
+    //             "Medications" : "1",
+    //             "Comments" : "1"
+    //           }
+    //         ]
+    //   };
+    //   this.subscription = this.emergencyService.DailysisSet(payload).subscribe({
+    //     next: (data: any) => {
+    //     },
+    //     error: (err: any) => {
+    //       this.sharedService.waringSwallModel(`Error ${err}`);
+    //       this.sharedService.waringSwallModel(`POST Error at glosgow : ${err}`);
+    //     },
+    //     complete: () => {
+    //       this.sharedService.successSwallModel('Numeric rating scale(more than 8 years) created successfully');
+    //     }
+    //   });
+    // });
+  }
+
 
 }

@@ -20,18 +20,18 @@
     </div>
     <div class="d-flex align-items-center justify-content-center menu-wrapper position-relative" (click)="tabPanelNavigation('haemodialysis-monitoring')" [ngClass]="this.HaemodialysisMonitoring ? 'active': ''">
       <img src="assets/img/grid-icon.svg" alt width="17px" height="auto">
-      <input type="radio" id="tab4" name="tab">
-      <label for="tab4" class="ml-3 m-0"> Haemodialysis Monitoring </label>
+      <input type="radio" name="tab">
+      <label class="ml-3 m-0"> Haemodialysis Monitoring </label>
     </div>
-    <div class="d-flex align-items-center justify-content-center menu-wrapper position-relative">
+    <div class="d-flex align-items-center justify-content-center menu-wrapper position-relative" (click)="tabPanelNavigation('postdialysisevaluation')" [ngClass]="this.PostDialysisEvaluation ? 'active': ''">
       <img src="assets/img/grid-icon.svg" alt width="17px" height="auto">
-      <input type="radio" id="tab4" name="tab">
-      <label for="tab4" class="ml-3 m-0"> Post Dialysis Evaluation </label>
+      <input type="radio" name="tab">
+      <label  class="ml-3 m-0"> Post Dialysis Evaluation </label>
     </div>
-    <div class="d-flex align-items-center justify-content-center menu-wrapper position-relative">
+    <div class="d-flex align-items-center justify-content-center menu-wrapper position-relative" (click)="tabPanelNavigation('peritoneal')" [ngClass]="this.Peritoneal ? 'active': ''">
       <img src="assets/img/grid-icon.svg" alt width="17px" height="auto">
-      <input type="radio" id="tab4" name="tab">
-      <label for="tab4" class="ml-3 m-0"> Peritoneal D... </label>
+      <input type="radio"  name="tab">
+      <label class="ml-3 m-0"> Peritoneal Dialysis Home Visit Checklist </label>
     </div>
   </div>
   <ng-container *ngIf="this.PreDialysis">
@@ -48,5 +48,13 @@
 
   <ng-container *ngIf="this.HaemodialysisMonitoring">
     <haemodialysis-monitoring></haemodialysis-monitoring>
+  </ng-container>
+
+  <ng-container *ngIf="this.PostDialysisEvaluation">
+    <post-dialysis-evaluation></post-dialysis-evaluation>
+  </ng-container>
+
+  <ng-container *ngIf="this.Peritoneal">
+    <peritoneal></peritoneal>
   </ng-container>
 </div>

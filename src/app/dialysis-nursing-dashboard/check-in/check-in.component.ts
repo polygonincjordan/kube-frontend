@@ -1024,7 +1024,7 @@ export class CheckInComponent implements OnInit {
       Patnr: data.Patnr,
       Einri: data.Einri,
       Falnr: data.Falnr,
-      Lfdnr: data.Lfdbw,
+      Lfdnr: data.Lfdnr,
       redirectFor: '',
       doctype: '',
       action: ''

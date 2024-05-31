@@ -151,6 +151,12 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         this.isConsumableAction = data;
       }
     });
+
+    this.emergencyService.currentTab.subscribe((tabName)=>{
+      console.log(tabName);
+      localStorage.setItem('tabName', tabName);
+      this.ngOnInit();
+    })
   }
   ngOnDestroy(): void {
     if (this.actionTypeSubscription$) {
@@ -169,7 +175,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     this.addministrationService.loadDurationUnit();
     this.addministrationService.loadRouteDropdownList();
     this.addministrationService.loadDropdownList();
-    if (localStorage.getItem('tabName') == "Documentation" && this.paramsObj.redirectFor == 'Documentation') {
+    if (localStorage.getItem('tabName') == "Documentation" || this.paramsObj.redirectFor == 'Documentation') {
       this.emergencyService.tabPanelNavigation('Documentation');
     } else if (localStorage.getItem('tabName') == "Consumables" && this.paramsObj.redirectFor == 'Consumables') {
       this.emergencyService.tabPanelNavigation('Consumables');
