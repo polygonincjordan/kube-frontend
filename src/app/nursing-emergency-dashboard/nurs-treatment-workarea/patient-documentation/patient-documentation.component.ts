@@ -11,7 +11,7 @@ import { UserConfigurationService } from '@services/e-kardex/user-configuration.
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Observable, ReplaySubject, filter, forkJoin } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, filter, forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PatientDiagnoisiHistoryComponent } from './patient-diagnoisi-history/patient-diagnoisi-history.component';
 import { PatientMedicalReportComponent } from './patient-medical-report/patient-medical-report.component';
@@ -1281,6 +1281,8 @@ export class PatientDocumentationComponent implements OnInit {
         } else if (action == 'release') {
           if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
             this.sharedService.waringSwallModel(`The document is already released`)
+          } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+            this.directReleasePainAss();
           }
         } else if (action == 'copy') {
           if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -1306,6 +1308,34 @@ export class PatientDocumentationComponent implements OnInit {
     }
     
   }
+  private subscription: Subscription;
+  directReleasePainAss() {
+    this.subscription = this.emergencyService
+    .getPainAssesmentDetails(this.selectedDocData.Dockey).subscribe({
+      next: (data: any) => {
+        let paylaod = data.d.results[0] 
+        paylaod.DocStatus = '2'; 
+        this.subscription = this.emergencyService.createPainAssessmentDoc({ d: paylaod }).subscribe({
+          next: (data: any) => {},
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+          },
+          complete: () => {
+            this.sharedService.successSwallModel('Pain Assessment released successfully');
+            this.refresh();
+          }
+        });
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(
+          `POST Error at Nurse Endorsment : ${err}`
+        );
+      }
+    });
+  }
+  
 
   public openModalForAttachment() {
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
@@ -1511,7 +1541,7 @@ export class PatientDocumentationComponent implements OnInit {
           
       if (this.openPainAssement) {
         let docStatus = '1';
-        if(this.selectedDocData?.Dockey) docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.PainAssessmentComp.savePainAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
@@ -1721,8 +1751,26 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.openSurgicsalPassport) {
       this.SurgicalPassComp.createSurgicalPassDoc('editRelease');
     } else if (this.openPainAssement) {
-      this.PainAssessmentComp.savePainAssessmentDoc('2');
+      this.PainAssessmentComp.savePainAssessmentDoc('2').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
     }
+  }
+
+  newVersionDirectReleased() {
+    this.PainAssessmentComp.savePainAssessmentDoc('5').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Glasgow coma scale:', error);
+    });
   }
 
   getReleasedPdf(item) {

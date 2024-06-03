@@ -10,6 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 export class HelperService {
   imageString: string | ArrayBuffer;
   isNotAllowedSpinnerInAPI = false;
+  public isSetValue = false
+
   constructor(@Inject(DatePipe) private datePipe: DatePipe) {}
 
   getBase64String(gender: any) {

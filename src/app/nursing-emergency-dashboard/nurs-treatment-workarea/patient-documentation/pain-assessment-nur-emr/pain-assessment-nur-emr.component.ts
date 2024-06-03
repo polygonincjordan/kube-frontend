@@ -5,6 +5,7 @@ import {
   HostListener,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -758,10 +759,20 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           resolve(true);
-          this.sharedService.successSwallModel('Pain Assessment created successfully');
+          this.sharedService.successSwallModel(this.manageMessage());
         }
       });
     });
+  }
+
+  manageMessage() {
+    if(this.documentType == ActionType.Add$) {
+      return 'Pain Assessment created successfully';
+    } else if(this.documentType == ActionType.Update$) {
+      return 'Pain Assessment edited successfully'
+    } else if(this.documentType == ActionType.Copy$) {
+      return 'Pain Assessment copied successfully'
+    }
   }
   
   deepClone(obj: any): any {
@@ -797,7 +808,8 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       TOFLOWSHEET: flowSheetAssessmentCloneValue,
       FloDate: this.transformDate(painAssessmentValue.FloDate),
       FloTime: this.transformTime(painAssessmentValue.FloTime),
-      FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval)
+      FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval),
+      ComScore: painAssessmentValue.ComNoSigns ? 0 : painAssessmentValue.ComScore
     };
     return this.setEmptyStrings(payload);
   }
