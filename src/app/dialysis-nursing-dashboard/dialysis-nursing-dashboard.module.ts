@@ -112,6 +112,7 @@ import { HaemodialysisMonitoringComponent } from './nurs-treatment-workarea/pati
 import { PostDialysisEvaluationComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/post-dialysis-evaluation/post-dialysis-evaluation.component';
 import { FormatTimePipe } from './nurs-treatment-workarea/format-time.pipe';
 import { PeritonealComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/peritoneal/peritoneal.component';
+import { MorseFallScaleComponent } from './nurs-treatment-workarea/patient-documentation/morse-fall-scale/morse-fall-scale.component';
 
 
 const route: Routes = [
@@ -201,6 +202,7 @@ const route: Routes = [
     PostDialysisEvaluationComponent,
     FormatTimePipe,
     PeritonealComponent,
+    MorseFallScaleComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

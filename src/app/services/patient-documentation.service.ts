@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { HaemodialysisMonitoringComponent } from '../dialysis-nursing-dashboard/nurs-treatment-workarea/patient-documentation/dialysis-assessment/haemodialysis-monitoring/haemodialysis-monitoring.component';
+import { BehaviorSubject } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +18,14 @@ export class PatientDocumentationService {
   isHoOtherChecked: boolean;
   isWaOtherChecked: boolean;
   isGaOtherChecked: boolean;
+  formDataBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject({});
+
+  isPatchValueForHemodialysis: boolean = true;
+  isPatchValueForHaemodialysisLineMonitoring: boolean = true;
+  isPatchValueForHaemodialysisMonitoring: boolean = true;
+  isPatchValueForPeritonial: boolean = true;
+  isPatchValueForPostDialysis: boolean = true;
+  isPatchValueForPreDialysis: boolean = true;
 
   dialysisAssecementForm = new FormGroup({
     // hemodialysis-access
@@ -218,9 +228,61 @@ export class PatientDocumentationService {
       Bathrooms: new FormControl(''),
       ShowerHead: new FormControl(''),
     }),
+
+    otherDetails: new FormGroup({
+      Dockey: new FormControl(''),
+      Dtid: new FormControl('ZMED_DIALY'),
+      Einri:new FormControl('1000'),
+      Patnr:new FormControl('1101'),
+      Falnr:new FormControl('1402'),
+      Lfdnr:new FormControl('00001'),
+      Orgdo:new FormControl('F21IUAMC'),
+      AttendPhy:new FormControl('9000000020'),
+      DocStatus:new FormControl('1'),
+    })
   });
 
   constructor() {
+  }
+
+  get ToMonitor() {
+    return this.dialysisAssecementForm.get('TOMONITOR') as FormArray;
+  }
+
+  createForm(item?){
+    return new FormGroup({
+      Dockey : new FormControl(''),
+      Timee : new FormControl(item ? item.Timee : new Date()),
+      Bfr : new FormControl(item ? item.Bfr : ''),
+      Ap : new FormControl(item ? item.Ap : ''),
+      Vp : new FormControl(item ? item.Vp : ''),
+      Ufr : new FormControl(item ? item.Ufr : ''),
+      Tfr : new FormControl(item ? item.Tfr : ''),
+      Tmp : new FormControl(item ? item.Tmp : ''),
+      Dfr : new FormControl(item ? item.Dfr : ''),
+      Systolic : new FormControl(item ? item.Systolic : ''),
+      Diastolic : new FormControl(item ? item.Diastolic : ''),
+      PulseRate : new FormControl(item ? item.PulseRate : ''),
+      Replacement : new FormControl(item ? item.Replacement : ''),
+      FluidType : new FormControl(item ? item.FluidType : ''),
+      Medications : new FormControl(item ? item.Medications : ''),
+      Comments :new FormControl(item ? item.Comments : ''),
+    })
+  }
+
+  formatDate(date: string) {
+    if (typeof (date) === 'string') {
+      if (date !== null) {
+        const generatedDate = new DatePipe('en-US').transform(
+          date.replace('/Date(', '').replace(')/', ''), 'yyyy-MM-dd'
+        );
+        return new Date(generatedDate);
+      } else {
+        return null
+      }
+    } else {
+      return date
+    }
   }
 
   checkChange(event: Event) {
@@ -244,32 +306,32 @@ export class PatientDocumentationService {
     }else if(name === 'ChOther'){
       this.isChOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('ChOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('ChOtherTxt').patchValue('');
       }
     }else if(name === 'PdOther'){
       this.isPdOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('PdOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('PdOtherTxt').patchValue('');
       }
     }else if(name === 'StOther'){
       this.isStOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('StOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('StOtherTxt').patchValue('');
       }
     }else if(name === 'HoOther'){
       this.isHoOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('HoOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('HoOtherTxt').patchValue('');
       }
     }else if(name === 'WaOther'){
       this.isWaOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('WaOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('WaOtherTxt').patchValue('');
       }
     }else if(name === 'GaOther'){
       this.isGaOtherChecked = checked;
       if(!checked){
-        this.dialysisAssecementForm.controls['peritoneal'].get('GaOtherTxt').patchValue('');
+        this.dialysisAssecementForm.controls['peritonealForm'].get('GaOtherTxt').patchValue('');
       }
     }
   }

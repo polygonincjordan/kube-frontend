@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openMorseFallScale"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -56,7 +56,8 @@
             </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'create'">
-            <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
+            <!-- <button type="button" class="action-doc" (click)="openDocument('createandrelease')"> -->
+            <button type="button" class="action-doc" (click)="releaseFromForm()">
               Release
             </button>
           </div>
@@ -98,7 +99,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -219,13 +220,25 @@
 
               <!-- Dialysis Assessment -->
               <div class="box-col d-flex mt-2 docs-event"
-              [ngClass]="assessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('assessment','')">
-              <div class="col-md-4">Dialysis Assessment</div>
-              <div class="col-md-2 status-color">N/A</div>
-              <div class="col-md-2"></div>
-              <div class="col-md-4"></div>
-            </div>
+                [ngClass]="assessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('assessment',latestDocData)">
+                <div class="col-md-4">Dialysis Assessment</div>
+                <div class="col-md-2 status-color">{{ latestDocData?.StatusTxt ? latestDocData.StatusTxt : "N/A" }}</div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                    (click)="openDiaAssessReleasePdf(latestDocData.Dockey)" *ngIf="latestDocData?.StatusTxt == 'Released'"></i>
+                </div>
+              </div>
+
+              <!-- Morse Fall Scale -->
+              <div class="box-col d-flex mt-2 docs-event"
+                [ngClass]="morsefallScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('morsefallScale',latestMorseFallScaleData)">
+                <div class="col-md-4">Morse Fall Scale</div>
+                <div class="col-md-2 status-color">{{ latestMorseFallScaleData?.StatusTxt ? latestMorseFallScaleData.StatusTxt : "N/A" }}</div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -279,6 +292,7 @@
       <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
       <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
       <dialysis-assessment *ngIf="openAssessment"></dialysis-assessment>
+      <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
     </div>
 
@@ -287,9 +301,9 @@
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
           [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
         </ngx-extended-pdf-viewer>
-        <div class="row" *ngIf="pdfUrlType == 'pdf'">
-          <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
-        </div>
+        <!-- <div class="row" *ngIf="pdfUrlType == 'pdf'">
+          <iframe [src]="pdfUrl" width="2000"> </iframe>
+        </div> -->
         <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
           <img [src]="releaseDocumentImage" style="height: 70vh;" />
         </div>

@@ -16,6 +16,7 @@ import {
   throwError,
   tap,
   lastValueFrom,
+  Subject,
 } from 'rxjs';
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
@@ -38,6 +39,7 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+  public currentTab: Subject<string> = new Subject<string>();
 
   constructor(
     private http: HttpClient,
@@ -1009,7 +1011,7 @@ export class EmergencyService {
   }
 
   getDailysisSet(json){
-    return this.http.get(this.url + `DailysisSet?Dockey${json.Dockey}`, {
+    return this.http.get(this.url + `DailysisSet?Dockey=${json.Dockey}`, {
       withCredentials:true
     });
   }
@@ -1045,6 +1047,36 @@ export class EmergencyService {
   }
   postDailysisSet(json){
     return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true
+    })
+  }
+
+  deleteDialysisDoc(Dockey){
+    return this.http.delete(this.url + `DailysisSet?Dockey=${Dockey}`, {
+      withCredentials: true
+    })
+  }
+
+  releaseDialysisDoc(json){
+    return this.http.post(this.url + 'DailysisSet', json, {
+      withCredentials: true
+    })
+  }
+
+  getDiaAssessReleasedPdf(Dockey){
+    return this.http.get(this.url + `DialysisgetPDF?Dockey=${Dockey}`,{
+      withCredentials: true
+    })
+  }
+
+  postMFSSet(payload){
+    return this.http.post(this.url + 'MFSSet', payload, {
+      withCredentials: true
+    })
+  }
+
+  getLatestMFSSet(json){
+    return this.http.get(this.url + `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`, {
       withCredentials: true
     })
   }

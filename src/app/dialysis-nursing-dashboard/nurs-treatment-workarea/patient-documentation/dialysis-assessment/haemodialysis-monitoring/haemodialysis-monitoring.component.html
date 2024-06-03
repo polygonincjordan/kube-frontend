@@ -27,7 +27,7 @@
           </tr>
         </thead>
         <tbody formArrayName="TOMONITOR">
-          <tr *ngFor="let data of ToMonitor.controls; let i =  index" [formGroupName]="i">
+          <tr *ngFor="let data of patientDocService.ToMonitor.controls; let i =  index" [formGroupName]="i">
             <td>
               <div class="d-flex align-items-center justify-content-center">
                 <input type="checkbox" name="" (change)="tableCheckChange($event,i)">

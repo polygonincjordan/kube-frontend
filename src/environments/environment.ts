@@ -11,7 +11,7 @@ export const environment = {
   ver: '1.0.0',
   app_prefix: 'amc_dev_',
   client: 210,
-
+  refreshTime :60000,
   url: 'http://localhost:6052/',
   widgetUrl: 'http://localhost:6052/',
   eOrderAPIUrl: 'http://localhost:6052/',
