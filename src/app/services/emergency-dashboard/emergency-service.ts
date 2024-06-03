@@ -883,6 +883,12 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  getLatestDocForPA(json): Observable<any> {
+    return this.http.post(this.url + 'getPALatestDoc', json, {
+      withCredentials: true,
+    });
+  }
   getNurseEndorsementDetail(json): Observable<any> {
     return this.http.post(this.url + 'getNurseEndsorment', json, {
       withCredentials: true,
@@ -1010,6 +1016,35 @@ export class EmergencyService {
     });
   }
 
+  createPainAssessmentDoc(json): Observable<any> {
+    return this.http.post(this.url + 'savePainAssessment', json, {
+      withCredentials: true,
+    });
+  }
+
+  getPainAssesmentDetails(json): Observable<any> {
+    return this.http.get(this.url + `getPainAssessment?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  getPABackGroundImage(einri) {
+    return this.http.get(this.url + `getPABackGroundImage?Einri=${einri}`, {
+      withCredentials: true,
+    });
+  }
+
+  deletePainAssessmentDoc(json): Observable<any> {    
+    return this.http.delete(this.url + `deletePainAssessmentDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  getPainAssessmentPDF(dockey: string) {
+    return this.http.get(this.url + `getPainAssessmentPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
   postDailysisSet(json){
     return this.http.post(this.url + 'DailysisSet', json, {
       withCredentials: true

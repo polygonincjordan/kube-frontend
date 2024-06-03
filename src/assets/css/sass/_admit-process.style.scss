@@ -30,7 +30,7 @@
 }
 
 .out-patient-config-select {
-  .dropdown-multiselect__caret { 
+  .dropdown-multiselect__caret {
     top: 12px !important;
   }
   .multiselect-adjust .dropdown-list {
@@ -168,7 +168,7 @@
   .ma-tab-content {
     height: 35vh;
   }
-} 
+}
 
 .order-details-modal-size {
   min-width: 110em !important;
@@ -229,25 +229,26 @@
     height: 28px !important;
   }
 }
-.diagnosis-kardex{
+.diagnosis-kardex {
   max-width: 70% !important;
 }
-.diagnosis-kardex .modal-content{
+.diagnosis-kardex .modal-content {
   border-radius: 1.5rem !important;
 }
 .disable-dropdown.ng-has-value.ng-select-container {
   background-color: #e9ecef !important;
 }
 
-.risk-item-rsfnr{
-  .ng-select .ng-select-container, .ng-select.ng-select-opened > .ng-select-container {
+.risk-item-rsfnr {
+  .ng-select .ng-select-container,
+  .ng-select.ng-select-opened > .ng-select-container {
     background-color: #e9ecef !important;
   }
 }
 .medication-order-case .modal-content {
   border-radius: 15px 15px 0 0 !important;
 }
-.medication-order-case{
+.medication-order-case {
   max-width: 80% !important;
 }
 .medication-administration-tabs {
@@ -278,7 +279,53 @@
   border-radius: 24px;
 }
 .background-disabled {
-  .ng-select-container{
+  .ng-select-container {
     background-color: #e9ecef !important;
   }
 }
+.side-effect-table {
+  .ng-select-container {
+    background: #fbfcff !important;
+    border: none !important;
+  }
+}
+// .ptro-center-tablecell {
+//   canvas {
+//     width: 1377.42px !important;
+//     height: 370.2px !important;
+//   }
+// }
+// .ptro-holder-wrapper {
+//   width: 89% !important;
+//   height: 54% !important;
+//   top: 39% !important;
+//   left: 7% !important;
+//   background-color: #fff !important;
+// }
+// .ptro-holder {
+//   height: 54% !important;
+//   width: 89% !important;
+//   top: 39% !important;
+//   left: 7% !important;
+//   box-shadow: none !important;
+// }
+
+// .ptro-scroller {
+//   overflow: hidden !important;
+// }
+// .ptro-center-tablecell {
+//   canvas {
+//     width: 100% !important;
+//     height: -webkit-fill-available !important;
+//   }
+
+//   .ptro-substrate {
+//     width: 100% !important;
+//     height: -webkit-fill-available !important;
+//   }
+
+//   .ptro-crp-el {
+//     height: -webkit-fill-available !important;
+//     width: 100% !important;
+//   }
+// }

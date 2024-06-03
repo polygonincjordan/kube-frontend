@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPediatricEarlyWarningScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPediatricEarlyWarningScale"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -62,6 +62,11 @@
           </div>
           <div class="header-btn" *ngIf="actionType == 'edit'">
             <button type="button" class="action-doc" (click)="releaseFromForm()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pain Assesment'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleased()">
               Release
             </button>
           </div>
@@ -93,14 +98,14 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPediatricEarlyWarningScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
             <div class="d-flex doc-header">
               <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
                   style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Document</h2>
+              <h2 style="font-weight: bold;">Current Visit Document sas</h2>
             </div>
             <div class="scrollable-div" [style.height.px]="getContentHeight()">
               <!-- Emergency Nursing Document -->
@@ -230,9 +235,7 @@
                 </div>
               </div>
             <!-- Surgical passport -->
-            <div
-            [ngClass]="surgicalPassport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-            style="font-weight: bold;"
+            <div [ngClass]="surgicalPassport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             (click)="selectAssessment('surgicalPassport',surgicalPassportList[0])">
             <div class="col-md-4">Surgical Passport {{surgicalPassportList[0]?.Zversion ?
               dockVer(surgicalPassportList[0]?.Zversion) : ''}} :</div>
@@ -248,14 +251,28 @@
             </div>
           </div>
 
+            <!-- Pain Assessment -->
+            <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+              (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
+              <div class="col-md-4">Pain Assessment {{painAssessmentLaestDoc[0]?.Zversion ?
+                dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
+            <div class="col-md-2 status-color">{{painAssessmentLaestDoc[0]?.StatusTxt || 'N/A'}}</div>
+            <div class="col-md-2" title="{{getTime(painAssessmentLaestDoc[0]?.DocTime)}}">
+              {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+            </div>
+            <div class="col-md-3">{{painAssessmentLaestDoc[0]?.PhyNm || '-'}}</div>
+            <div class="col-md-1">
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="openPainAssessmentPdf(painAssessmentLaestDoc[0].Dockey)"
+                *ngIf="painAssessmentLaestDoc[0]?.StatusTxt == 'Released'"></i>
+            </div>
+          </div>
           <!-- pediatric early warning scale -->
           <div
           [ngClass]="pediatricEarlyWarningScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-          style="font-weight: bold;"
           (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
           <div class="col-md-4">Pediatric Early Warning Scale {{pediatricEarlyWarningList[0]?.Zversion ?
             dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
-          <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
           <div class="col-md-2" title="{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}">
             {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
           </div>
@@ -269,38 +286,38 @@
 
 
             </div>
-          </div>
         </div>
         <!-- Patient Profile Document -->
-        <div class="col-md-6">
-          <div class="box-col document-overflow">
-            <div class="d-flex doc-header">
-              <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
-                  style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;flex:1">Patient Profile Document</h2>
-              <span *ngIf="asc"><img src="assets/img/asc.png" style="    width: 30px;cursor: pointer;" (click)="sort()"
-                  title="Sorting" /></span>
-              <span *ngIf="desc"><img src="assets/img/desc.png" style="    width: 30px;cursor: pointer;"
-                  (click)="sort()" title="Sorting" /></span>
-            </div>
-            <div class="scrollable-div" [style.height.px]="getContentHeight()">
-              <div class="m-0" style=" justify-content: right;"
-                *ngFor="let item of sortedDocuments | filter:searchString;">
-                <div class="mt-3 pl-2" style="width: 100px; font-weight: bold;">{{ item.date | date: "dd-MM-y" }}</div>
-                <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
-                  *ngFor="let member of item.documents">
-                  <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
-                    {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div>
-                  <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
-                    {{ member.DokstText ? member.DokstText : "N/A" }}</div>
-                  <div class="col-md-2" (click)="getPatientProfileData(member)">
-                    {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
-                  <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
-                  <div class="col-md-1 p-0">
-                    <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
-                      <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div>
+ 
+      </div>
+      <div class="col-md-6">
+        <div class="box-col document-overflow">
+          <div class="d-flex doc-header">
+            <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
+                style="font-size: 15px;font-weight: bold;color:white"></i></div>
+            <h2 style="font-weight: bold;flex:1">Patient Profile Document</h2>
+            <span *ngIf="asc"><img src="assets/img/asc.png" style="    width: 30px;cursor: pointer;" (click)="sort()"
+                title="Sorting" /></span>
+            <span *ngIf="desc"><img src="assets/img/desc.png" style="    width: 30px;cursor: pointer;"
+                (click)="sort()" title="Sorting" /></span>
+          </div>
+          <div class="scrollable-div" [style.height.px]="getContentHeight()">
+            <div class="m-0" style=" justify-content: right;"
+              *ngFor="let item of sortedDocuments | filter:searchString;">
+              <div class="mt-3 pl-2" style="width: 100px; font-weight: bold;">{{ item.date | date: "dd-MM-y" }}</div>
+              <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
+                *ngFor="let member of item.documents">
+                <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
+                  {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div>
+                <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
+                  {{ member.DokstText ? member.DokstText : "N/A" }}</div>
+                <div class="col-md-2" (click)="getPatientProfileData(member)">
+                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
+                <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
+                <div class="col-md-1 p-0">
+                  <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
+                    <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                      id=""></select>
                   </div>
                 </div>
               </div>
@@ -308,25 +325,25 @@
           </div>
         </div>
       </div>
-
-      <!-- Edit / Create / Release Mode  -->
-      <!-- <app-er-physician [hidden]="!openPhyAssess" [docDetails]="phyDocList"
-        [latestDocs]="latestDocList"></app-er-physician> -->
-      <app-patient-medical-report [hidden]="!openMedReport" [docDetails]="medDocList"></app-patient-medical-report>
-      <!-- [docDetails]="educationAssList" -->
-      <app-patient-education-details *ngIf="openEducationAssessment"
-        (reloadTableList)="reloadDoc($event)"></app-patient-education-details>
-
-        <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
-        <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
-        <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
-
-      <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
-      <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
-      <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
-      <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
-      <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
     </div>
+    <!-- Edit / Create / Release Mode  -->
+    <!-- <app-er-physician [hidden]="!openPhyAssess" [docDetails]="phyDocList"
+      [latestDocs]="latestDocList"></app-er-physician> -->
+    <app-patient-medical-report [hidden]="!openMedReport" [docDetails]="medDocList"></app-patient-medical-report>
+    <!-- [docDetails]="educationAssList" -->
+    <app-patient-education-details *ngIf="openEducationAssessment"
+      (reloadTableList)="reloadDoc($event)"></app-patient-education-details>
+
+      <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
+      <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
+      <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
+
+    <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
+    <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
+    <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
+    <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
+    <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
+    <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
 
     <ng-template #releasepdfmodal>
       <div class="modal-body">
