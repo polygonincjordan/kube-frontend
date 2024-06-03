@@ -1123,7 +1123,9 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
     else if (this.morsefallScale){
-      if (action == 'create'  && this.latestMorseFallScaleData?.StatusTxt != 'Draft'){
+      if (action == 'create'  && this.latestMorseFallScaleData?.StatusTxt != 'Released'){
+        this.openMorseFallScale = true;
+      }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
         this.openMorseFallScale = true;
       }
     }
@@ -1609,6 +1611,31 @@ export class PatientDocumentationComponent implements OnInit {
             console.log(error);
           }
         );
+      }
+      if(this.openMorseFallScale){
+        console.log('status 3');
+
+        const formData = {
+          ...this.morseFallScaleC.getFormData(),
+          Dockey: this.latestMorseFallScaleData.Dockey,
+          Einri: this.latestMorseFallScaleData.Einri,
+          Patnr: this.latestMorseFallScaleData.Patnr,
+          Falnr: this.latestMorseFallScaleData.Falnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '3'
+        };
+        // console.log(formData);
+        this.emergencyService.createNewMFSSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is released successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
       }
     }
   }

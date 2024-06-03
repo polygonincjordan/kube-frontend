@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openMorseFallScale"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale "
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>

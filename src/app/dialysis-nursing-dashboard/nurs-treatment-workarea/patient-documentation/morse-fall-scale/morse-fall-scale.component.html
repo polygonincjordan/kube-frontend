@@ -16,8 +16,8 @@
                             <div class="col-6 px-0 ">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Realized by</label>
-                                    <input type="text" class="col-2" formControlName="AttendPhy" [disabled]="true">
-                                    <input type="text" class="col-4" [value]="userData.UserId" disabled>
+                                    <input type="text" class="col-2" formControlName="AttendPhy" readonly>
+                                    <input type="text" class="col-4" [value]="realizedDescription" disabled>
                                 </div>
                             </div>
                        </div>
@@ -48,15 +48,15 @@
                             <label for="" class="common-label m-0">History of falls</label>
                             <div class="d-flex align-items-center custom-input mr-5 ">
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="A" name="HistoryFalls" formControlName="HistoryFalls">
+                                    <input type="radio" value="A" name="HistoryFalls" formControlName="HistoryFalls" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="1" name="HistoryFalls" formControlName="HistoryFalls">
+                                    <input type="radio" value="1" name="HistoryFalls" formControlName="HistoryFalls" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Yes</label>
                                 </div>
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="0" name="HistoryFalls" formControlName="HistoryFalls">
+                                    <input type="radio" value="0" name="HistoryFalls" formControlName="HistoryFalls" (change)="calculateTotal()">
                                     <label for="" class="mx-3">No</label>
                                 </div>
                             </div>
@@ -66,17 +66,17 @@
                             <div class="custom-input d-flex mr-5">
                                 <div class="d-flex align-items-center">
                                     <input type="radio" value="A" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis">
+                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <input type="radio" value="1" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis">
+                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Yes</label>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <input type="radio" value="0" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis">
+                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
                                     <label for="" class="mx-3">No</label>
                                 </div>
                             </div>
@@ -85,19 +85,19 @@
                             <label for="" class="common-label m-0">Ambulatory aid</label>
                             <div class="custom-input d-flex mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="AmbulatoryAid" formControlName="AmbulatoryAid">
+                                    <input type="radio" value="A" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="F" name="AmbulatoryAid" formControlName="AmbulatoryAid">
+                                    <input type="radio" value="F" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Furniture</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="C" name="AmbulatoryAid" formControlName="AmbulatoryAid">
+                                    <input type="radio" value="C" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Crutches / Cane / Walker</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="N" name="AmbulatoryAid" formControlName="AmbulatoryAid">
+                                    <input type="radio" value="N" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
                                     <label for="" class="mx-3">None / Bed rest / Immobile</label>
                                 </div>
                             </div>
@@ -106,15 +106,15 @@
                             <label for="" class="common-label m-0">IV acess</label>
                             <div class="custom-input d-flex mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="IvAccess" formControlName="IvAccess">
+                                    <input type="radio" value="A" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="1" name="IvAccess" formControlName="IvAccess">
+                                    <input type="radio" value="1" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Yes</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="0" name="IvAccess" formControlName="IvAccess">
+                                    <input type="radio" value="0" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
                                     <label for="" class="mx-3">No</label>
                                 </div>
                             </div>
@@ -123,19 +123,19 @@
                             <label for="" class="common-label m-0">Gait</label>
                             <div class="d-flex custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="Gait" formControlName="Gait">
+                                    <input type="radio" value="A" name="Gait" formControlName="Gait" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="I" name="Gait" formControlName="Gait">
+                                    <input type="radio" value="I" name="Gait" formControlName="Gait" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Impaired</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="W" name="Gait" formControlName="Gait">
+                                    <input type="radio" value="W" name="Gait" formControlName="Gait" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Weak</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="N" name="Gait" formControlName="Gait">
+                                    <input type="radio" value="N" name="Gait" formControlName="Gait" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Normal / Bed rest / Immobile</label>
                                 </div>
                             </div>
@@ -144,15 +144,15 @@
                             <label for="" class="common-label m-0">Mental status</label>
                             <div class="custom-input d-flex mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="MentalStatus" formControlName="MentalStatus">
+                                    <input type="radio" value="A" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="F" name="MentalStatus" formControlName="MentalStatus">
+                                    <input type="radio" value="F" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Forgets imitations</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="O" name="MentalStatus" formControlName="MentalStatus">
+                                    <input type="radio" value="O" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
                                     <label for="" class="mx-3">Oriented to own abilty</label>
                                 </div>
                             </div>
@@ -165,9 +165,8 @@
                         <div class="col-6 px-0">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-2">Total score</label>
-                                <input type="text" class="col-2" placeholder="125">
-                                <input type="text" class="col-5"
-                                    placeholder="High risk. High risk fall preventaion indicators.">
+                                <input type="text" class="col-2" [value]="totalScore" readonly>
+                                <input type="text" class="col-5" [value]="description" readonly>
                             </div>
                         </div>
                     </div>
@@ -177,7 +176,7 @@
                         <div class="col-8 px-0">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-1">Comments</label>
-                                <input type="text" class="col-10" placeholder="Comments" style="width: 100%;"
+                                <input type="text" class="col-10" style="width: 100%;"
                                     formControlName="Comments">
                             </div>
                         </div>

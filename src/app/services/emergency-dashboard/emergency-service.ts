@@ -1040,8 +1040,20 @@ export class EmergencyService {
     })
   }
 
+  createNewMFSSet(payload){
+    return this.http.put(this.url + 'MFSSet', payload, {
+      withCredentials: true
+    })
+  }
+
   getLatestMFSSet(json){
     return this.http.get(this.url + `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`, {
+      withCredentials: true
+    })
+  }
+
+  getMFSDoc(dockey){
+    return this.http.get(this.url + `MFSSet?Dockey=${dockey}`, {
       withCredentials: true
     })
   }
