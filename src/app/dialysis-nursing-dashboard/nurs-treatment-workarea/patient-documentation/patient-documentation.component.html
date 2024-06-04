@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale && !openHemoCatheter">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -99,7 +99,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale && !openHemoCatheter">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -239,6 +239,16 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-4"></div>
               </div>
+
+              <!--Hemo Catheter -->
+              <div class="box-col d-flex mt-2 docs-event"
+                [ngClass]="hemoCatheter ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('hemoCatheter',latestHemoCatheterData)">
+                <div class="col-md-4">Hemo Catheter</div>
+                <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -293,6 +303,7 @@
       <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
       <dialysis-assessment *ngIf="openAssessment"></dialysis-assessment>
       <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
+      <app-hemo-catheter *ngIf="openHemoCatheter"></app-hemo-catheter>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
     </div>
 

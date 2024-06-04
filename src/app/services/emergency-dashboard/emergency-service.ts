@@ -1093,6 +1093,12 @@ export class EmergencyService {
     })
   }
 
+  getLatestHemoCatheter(json){
+    return this.http.get(this.url + `LatestHemoCatheter?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+      withCredentials: true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 
