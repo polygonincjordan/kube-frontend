@@ -30,6 +30,7 @@ import { PatientDocumentationService } from '@services/patient-documentation.ser
 import { DataService } from '@services/data.service';
 import { environment } from 'src/environments/environment';
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
+import { HemoCatheterComponent } from './hemo-catheter/hemo-catheter.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -48,7 +49,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
-
+  @ViewChild(HemoCatheterComponent) hemoCatheterC: HemoCatheterComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -1420,6 +1421,21 @@ export class PatientDocumentationComponent implements OnInit {
         },(error)=>{
           console.log(error);
         })
+      }
+      if(this.openHemoCatheter){
+        console.log('status 1');
+
+        const payload = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1'
+        };
+        console.log(payload);
+      
       }
     }
     else if (this.actionType == 'edit') {

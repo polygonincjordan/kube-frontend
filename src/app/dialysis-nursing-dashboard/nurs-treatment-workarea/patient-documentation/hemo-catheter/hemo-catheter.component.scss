@@ -2,15 +2,19 @@
   .hemo-catheter-info {
     .custom-title {
       position: relative;
-      padding: 25px;
+      padding: 10px 25px;
       border-radius: 10px;
       border: 1px solid #cacaca;
       input[type="checkbox"] {
         width: 16px;
         height: 16px;
       }
+      input[type="radio"] {
+        width: 16px;
+        height: 16px;
+      }
       label {
-        min-width: 150px;
+        min-width: 180px;
         color: #000;
         font-size: 14px;
         font-weight: 600;
