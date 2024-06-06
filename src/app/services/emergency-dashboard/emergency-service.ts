@@ -1099,6 +1099,18 @@ export class EmergencyService {
     })
   }
 
+  postHemoCatheterSet(payload){
+    return this.http.post(this.url + 'HemoCatheter', payload, {
+      withCredentials: true
+    })
+  }
+
+  ReleaseHemoCatheterSet(payload){
+    return this.http.post(this.url + 'HemoCatheterSet', payload, {
+      withCredentials: true
+    })
+  }
+  
   createAssessment(data:any) {
     console.log(data);
 

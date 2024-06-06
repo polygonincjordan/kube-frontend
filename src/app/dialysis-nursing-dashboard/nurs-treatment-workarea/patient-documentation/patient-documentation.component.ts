@@ -825,6 +825,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEducationAssessment = false;
     this.openEmergencyNursingDoc = false;
     this.openMorseFallScale = false;
+    this.openHemoCatheter = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -1162,8 +1163,37 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Hemo Catheter
     else if(this.hemoCatheter){
-      if(action == 'create'){
+      if(action == 'create' && this.latestHemoCatheterData?.StatusTxt != 'Draft'){
         this.openHemoCatheter = true;
+      } else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
+        console.log('status 2');
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey:this.latestHemoCatheterData?.Dockey,
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '2',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.ReleaseHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+        console.log(formData);
       }
     }
   }
@@ -1424,18 +1454,33 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if(this.openHemoCatheter){
         console.log('status 1');
-
-        const payload = {
+        const formData = {
           ...this.hemoCatheterC.getFormData(),
           Dockey: '',
           Einri: this.storageService.einri,
           Patnr: this.storageService.patnr,
           Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
           Orgdo: 'F21IUAMC',
-          DocStatus: '1'
+          DocStatus: '1',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
         };
-        console.log(payload);
-      
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+        console.log(formData);
       }
     }
     else if (this.actionType == 'edit') {

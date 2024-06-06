@@ -49,7 +49,6 @@ export class PriorToAdmissionComponent implements OnInit {
   }
 
   openModal(data) {
-    debugger
     this.addministrationService.isExpanded = false;
     this.addministrationService.isConditionTrue = true;
     if (data.ContHospital) {

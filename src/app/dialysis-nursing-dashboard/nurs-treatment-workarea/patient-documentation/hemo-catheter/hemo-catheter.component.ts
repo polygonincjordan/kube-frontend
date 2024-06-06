@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -110,7 +111,7 @@ export class HemoCatheterComponent implements OnInit {
     this.patientData = JSON.parse(this.storageService.getLocal('patientData'));
     console.log(this.patientData);
 
-    debugger
+    
    
     const timeDifference = new Date().getTime() - new Date(this.patientData.periodStart).getTime();
     this.daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
