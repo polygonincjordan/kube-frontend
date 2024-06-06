@@ -1110,7 +1110,13 @@ export class EmergencyService {
       withCredentials: true
     })
   }
-  
+
+  getHemoCatheterDoc(dockey){
+    return this.http.get(this.url + `HemoCatheter?Dockey=${dockey}`, {
+      withCredentials: true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 
