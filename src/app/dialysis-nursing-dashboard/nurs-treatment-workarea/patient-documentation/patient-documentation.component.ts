@@ -805,6 +805,7 @@ export class PatientDocumentationComponent implements OnInit {
     // this.fetchLatestDetails();
     this.LatestDocSet();
     this.LatestMFSSet();
+    this.LatestHemoCatheter();
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -834,6 +835,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.medDocList = [];
     this.latestDocData = null;
     this.latestMorseFallScaleData = null;
+    this.latestHemoCatheterData = null;
   }
 
   
@@ -1167,33 +1169,40 @@ export class PatientDocumentationComponent implements OnInit {
         this.openHemoCatheter = true;
       } else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
         console.log('status 2');
-        const formData = {
-          ...this.hemoCatheterC.getFormData(),
-          Dockey:this.latestHemoCatheterData?.Dockey,
-          Einri: this.storageService.einri,
-          Patnr: this.storageService.patnr,
-          Falnr: this.storageService.falnr,
-          Lfdnr: this.storageService.lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '2',
-          Dtid : 'ZMED_HBCA',
-          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
-          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
-          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.ReleaseHemoCatheterSet(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is created successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
-        console.log(formData);
+
+        const dockey = this.latestHemoCatheterData?.Dockey
+        this.emergencyService.getHemoCatheterDoc(dockey).subscribe({
+          next: (resp:any)=>{
+            const formData = resp.d.results[0];
+            delete formData['__metadata']
+
+            console.log(formData);
+            
+            const payload = {
+              ...formData,
+              DocStatus: '2'
+            }
+            
+            console.log(payload);
+
+            this.emergencyService.ReleaseHemoCatheterSet(payload).subscribe((resp)=>{
+              Swal.fire({
+                text: "Document is released successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            },(error)=>{
+              console.log(error);
+            })
+          },
+          error: (error)=>{
+            console.log(error);
+          }
+        });
+
+        
       }
     }
   }
