@@ -1,0 +1,544 @@
+<div class="hemo-catheter-main bg-white mt-4">
+    <form [formGroup]="hemoCatheterForm">
+        <div class="hemo-catheter-info">
+            <div class="container-fluid">
+                <div class="custom-title">
+                    <div class="row align-items-center my-4">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 100px;">Patient Name</label>
+                                <input type="text" class="w-100" disabled [value]="patientData.name">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 50px;">MRN</label>
+                                <input type="number" class="w-100" disabled [value]="patientData.id">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 50px;">DOB</label>
+                                <input type="text" class="w-100" disabled [value]="patientData.birthDate | date : 'dd.MM.YYY'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center my-4">
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 100px;">Gender</label>
+                                <input type="text" class="w-100" disabled [value]="patientData?.gender">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 50px;">Location</label>
+                                <input type="text" class="w-100" disabled [value]="patientData?.location?.room || '-'">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 50px;">Case</label>
+                                <input type="number" class="w-100" disabled [value]="patientData?.case">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <label for="" class="mr-3 mb-0 text-nowrap" style="min-width: 140px;">Day Since Admission</label>
+                                <input type="text" class="w-100" disabled [value]="daysDifference">
+                            </div>
+                        </div>
+                    </div>                  
+                </div>
+                <div class="custom-title my-4">
+                    <div class="container-fluid p-0">
+                        <div class="row align-items-center my-4">
+                            <h4 class="m-0">Bundle Elements</h4>
+                            <div class="col-4">
+                                <div class="d-flex align-items-center">
+                                    <label for="" class="mr-3 mb-0 text-nowrap">Session Date</label>
+                                    <input type="text" class="w-100" formControlName="SessionDate" [bsConfig]="{showWeekNumbers:false,
+                                        dateInputFormat:
+                                        'DD.MM.YYYY'}" bsDatepicker>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="d-flex align-items-center">
+                                    <label for="" class="mr-3 mb-0 text-nowrap">Sesstion Time</label>
+                                    <input type="text" class="w-100" formControlName="SessionTime" [bsConfig]="{withTimepicker:true,showWeekNumbers:false,
+                                        dateInputFormat:
+                                        'HH:mm:ss'}" bsDatepicker>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="d-flex align-items-center">
+                                    <label for="" class="mr-3 mb-0 text-nowrap">Catheter Days</label>
+                                    <input type="text" class="w-100" formControlName="CatheterDays"> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center my-4 mb-5">
+                            <div class="col-4">
+                                <div class="d-flex align-items-center">
+                                    <label for="" class="mr-3 mb-0 text-nowrap">Date of catheter insertion</label>
+                                    <input type="text" class="w-100" formControlName="CatheterInsertion" [bsConfig]="{showWeekNumbers:false,
+                                        dateInputFormat:
+                                        'DD.MM.YYYY'}" bsDatepicker>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="d-flex align-items-center">
+                                    <label for="" class="mr-3 mb-0 text-nowrap">Date of catheter removal</label>
+                                    <input type="text" class="w-100" formControlName="CatheterRemoval" [bsConfig]="{showWeekNumbers:false,
+                                        dateInputFormat:
+                                        'DD.MM.YYYY'}" bsDatepicker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid px-2">
+                            <div class="row align-items-start my-3 custom-title pt-4">
+                                <h4 class="m-0">Catheter Connection</h4>
+                                <div class="row align-items-center w-100">
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterCon" name="CatheterCon" class="mr-3" value="2">
+                                                <label class="m-0">Not Applicable</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterCon" name="CatheterCon" value="1" class="mr-3">
+                                                <label class="m-0">No</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterCon" name="CatheterCon" value="0" class="mr-3">
+                                                <label class="m-0">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-start">
+                                            <input type="text" class="w-50"  formControlName="CatheterConTxt" [readonly]="this.hemoCatheterForm.get('CatheterCon').value === '2' ? false : true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="row">
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" class="mr-3" name="ConHandHygiene" (change)="checkChange($event)">
+                                                <label class="m-0">Perform hand hygiene</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConProperPpe" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Don proper PPE</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConProvideMask" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Provide mask for the patient</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConSoakDialysis" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Soak dialysis catheter with povidone iodine 3-5 minutes</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConScrubCatheter" (change)="checkChange($event)"> 
+                                                <label for="" class="m-0">Scrub catheter hub with antiseptic and allow to dry</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConConnectCatheter" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Connect catheter to blood lines aseptically</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConAttachNew" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Attach new caps aseptically/weekly (Saturday or Sunday)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-start my-3 custom-title pt-4">
+                                <h4 class="m-0">Catheter Disconnection</h4>
+                                <div class="row align-items-center w-100">
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterDiscon" name="CatheterDiscon" class="mr-3" value="2">
+                                                <label class="m-0">Not Applicable</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterDiscon" name="CatheterDiscon" value="1" class="mr-3">
+                                                <label class="m-0">No</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterDiscon" name="CatheterDiscon" value="0" class="mr-3">
+                                                <label class="m-0">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-start">
+                                            <input type="text" class="w-50" formControlName="CatheterDisconTxt" [readonly]="this.hemoCatheterForm.get('CatheterDiscon').value === '2' ? false : true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="row">
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconHandHygiene" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Perform hand hygiene</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconProperPpe" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Don proper PPE</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconProvideMask" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Provide mask for the patient</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconSoakDialysis" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Soak dialysis catheter with povidone iodine 3-5 minutes</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconDisCatheter" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Disconnect catheter from blood lines aseptically</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconDiscardTubing" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Discard tubing in a leak-proof container</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconScrubCatheter" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Scrub catheter hub with antiseptic and allow to dry</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-start my-3 custom-title pt-4">
+                                <h4 class="m-0">Catheter Exit Site Care</h4>
+                                <div class="row align-items-center w-100">
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="CatheterExit" name="CatheterExit" class="mr-3" value="2">
+                                                <label class="m-0">Not Applicable</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" name="CatheterExit" formControlName="CatheterExit" value="1" class="mr-3">
+                                                <label class="m-0">No</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" name="CatheterExit" formControlName="CatheterExit" value="0" class="mr-3">
+                                                <label class="m-0">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-start">
+                                            <input type="text" class="w-50" formControlName="CatheterExitTxt" [readonly]="this.hemoCatheterForm.get('CatheterExit').value === '2' ? false : true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="row">
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitHandHygiene" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Perform hand hygiene</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitApplySkin" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Apply skin antiseptic</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitAllowSkin" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Allow skin antiseptic to dry</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitApplyDressing" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Apply dressing aseptically</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-start my-3 custom-title pt-4">
+                                <h4 class="m-0">Medication Preparation</h4>
+                                <div class="row align-items-center w-100">
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="MedicationPrep" name="MedicationPrep" class="mr-3" value="2">
+                                                <label class="m-0">Not Applicable</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" name="MedicationPrep"  formControlName="MedicationPrep"  value="1" class="mr-3">
+                                                <label class="m-0">No</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" name="MedicationPrep" formControlName="MedicationPrep"  value="0" class="mr-3">
+                                                <label class="m-0">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-start">
+                                            <input type="text" class="w-50" [readonly]="this.hemoCatheterForm.get('MedicationPrep').value === '2' ? false : true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="row">
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepHandHygiene" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Perform hand hygiene</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepMedications" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Prepare medications in clean designated
+                                                    areas</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepInspectVials" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Inspect all vials</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepAsepticTechniq" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Prepare medications using antiseptic
+                                                    techniques</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepNewNeedle" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Use new needle and new syringe to enter all
+                                                    vials</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepDiscardAll" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Discard all single dose vial(s)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepProperlyStore" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Discard or properly store all multi dose
+                                                    vial(s)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-start my-4 custom-title pt-4">
+                                <h4 class="m-0">Medication Administration</h4>
+                                <div class="row align-items-center w-100">
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="MedicationAdm" name="MedicationAdm" class="mr-3" value="2">
+                                                <label class="m-0">Not Applicable</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="MedicationAdm" name="MedicationAdm" value="1" class="mr-3">
+                                                <label class="m-0">No</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio"  formControlName="MedicationAdm" name="MedicationAdm" value="0" class="mr-3">
+                                                <label class="m-0">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-start">
+                                            <input type="text"  class="w-50" formControlName="MedicationAdmTxt" [readonly]="this.hemoCatheterForm.get('MedicationAdm').value === '2' ? false : true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmHandHygiene" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Perform hand hygiene (before and
+                                                    after)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3"  [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmProperPpe" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Use proper PPE (gloves)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmProperlyTrans" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Properly transport medication to patient
+                                                    station</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmInjectionPort" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Disinfect injection port with appropiate
+                                                    antiseptic</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmAdministerMed" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Administer medications using aseptic
+                                                    techniques</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmDiscardSyringe" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Discard syringe point of use</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-start my-4 custom-title pt-4">
+                                <h4 class="m-0">Dialysis Station</h4>
+                                <div class="row align-items-center w-100">
+                                    <div class="col-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="DialysisStat" name="DialysisStat" class="mr-3" value="2">
+                                                <label class="m-0">Not Applicable</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="DialysisStat" name="DialysisStat" value="1" class="mr-3">
+                                                <label class="m-0">No</label>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="radio" formControlName="DialysisStat" name="DialysisStat" value="0" class="mr-3">
+                                                <label class="m-0">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-start">
+                                            <input type="text" class="w-50"  formControlName="DialysisStatTxt"
+                                            [readonly]="this.hemoCatheterForm.get('DialysisStat').value === '2' ? false : true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatProperPpe" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Don proper PPE (as per indication but at least
+                                                    use
+                                                    gloves)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatEnsureThat" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Ensure that the patient has left the dialysis
+                                                    station
+                                                    before cleaning</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatDiscardAll" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Discard all single-use supplies, Clean and
+                                                    disinfect
+                                                    reusable equipment</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatNursingClean" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Nursing:Clean and disinfect dialysis
+                                                    station(Dialysis
+                                                    machine and bedside table)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatKeepUsed" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Keep used or potentially contaminated items
+                                                    away from
+                                                    the
+                                                    disinfected surfaces</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 my-2">
+                                            <div class="d-flex align-items-center my-2">
+                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatHousekeeping" (change)="checkChange($event)">
+                                                <label for="" class="m-0">Housekeeping: Clean and disinfect dialysis
+                                                    chair or
+                                                    bed
+                                                    (rails, armrests & mattresses)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-start my-4 custom-title">
+                                <div class="col-12 my-2">
+                                    <div class="d-flex align-items-center my-2">
+                                        <label for="" class="col-3">Signs of Catheter-site Infections</label>
+                                        <input type="text" formControlName="SignsCatheter" class="col-9">
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="d-flex align-items-center my-2">
+                                        <label for="" class="col-3">Comments</label>
+                                        <input type="text"  formControlName="Comments" class="col-9">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

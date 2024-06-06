@@ -30,6 +30,7 @@ import { PatientDocumentationService } from '@services/patient-documentation.ser
 import { DataService } from '@services/data.service';
 import { environment } from 'src/environments/environment';
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
+import { HemoCatheterComponent } from './hemo-catheter/hemo-catheter.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -48,7 +49,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
-
+  @ViewChild(HemoCatheterComponent) hemoCatheterC: HemoCatheterComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -67,6 +68,7 @@ export class PatientDocumentationComponent implements OnInit {
   bradenscale = false;
   assessment = false;
   morsefallScale = false;
+  hemoCatheter = false
   numericratingscale = false;
   fallrisk = false;
   functional = false;
@@ -94,6 +96,7 @@ export class PatientDocumentationComponent implements OnInit {
   openBradenScale = false;
   openAssessment = false;
   openMorseFallScale = false;
+  openHemoCatheter = false;
   openEmergencyNursingDoc = false;
   actionType = '';
   selectedDocName: string;
@@ -138,6 +141,7 @@ export class PatientDocumentationComponent implements OnInit {
   DocStatus: any;
 
   latestMorseFallScaleData: any;
+  latestHemoCatheterData: any;
 
   constructor(
     private modalService: BsModalService,
@@ -187,6 +191,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.fetchLatestDetails();
     this.LatestDocSet();
     this.LatestMFSSet();
+    this.LatestHemoCatheter();
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -223,6 +228,26 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }, (error)=>{
       console.error(error);
+    })
+  }
+
+  LatestHemoCatheter(){
+    const json = {
+      Einri: this.storageService.einri,
+      Patnr: this.storageService.patnr,
+      Falnr: this.storageService.falnr,
+      Lfdnr: this.storageService.lfdnr,
+    }
+
+    this.emergencyService.getLatestHemoCatheter(json).subscribe({
+      next : (data: any)=>{
+        if(data){
+          this.latestHemoCatheterData = data.d.results[0];
+        }
+      },
+      error : (error)=>{
+        console.error(error);
+      }
     })
   }
 
@@ -438,7 +463,8 @@ export class PatientDocumentationComponent implements OnInit {
       'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
       'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
       'assessment': { assessment: true, selectedDocName: 'Dialysis Assessment' },
-      'morsefallScale': { morsefallScale: true, selectedDocName: 'Morse Fall Scale' }
+      'morsefallScale': { morsefallScale: true, selectedDocName: 'Morse Fall Scale' },
+      'hemoCatheter': { hemoCatheter: true, selectedDocName: 'Hemo Catheter' }
     };
 
     // Reset all flags to false initially
@@ -454,6 +480,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencynursingdoc = false;
     this.assessment = false;
     this.morsefallScale = false;
+    this.hemoCatheter = false;
 
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -798,6 +825,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEducationAssessment = false;
     this.openEmergencyNursingDoc = false;
     this.openMorseFallScale = false;
+    this.openHemoCatheter = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -819,6 +847,9 @@ export class PatientDocumentationComponent implements OnInit {
 
   openDocument(action) {
     this.actionType = action;
+    console.log(action);
+    console.log(this.hemoCatheter);
+    
     // education assessment...
     if (this.educationAssessment) {
       if (action == 'create') {
@@ -1122,11 +1153,47 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
     }
+    // Morse Fall Scale
     else if (this.morsefallScale){
       if (action == 'create'  && this.latestMorseFallScaleData?.StatusTxt != 'Released'){
         this.openMorseFallScale = true;
       }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
         this.openMorseFallScale = true;
+      }
+    }
+    // Hemo Catheter
+    else if(this.hemoCatheter){
+      if(action == 'create' && this.latestHemoCatheterData?.StatusTxt != 'Draft'){
+        this.openHemoCatheter = true;
+      } else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
+        console.log('status 2');
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey:this.latestHemoCatheterData?.Dockey,
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '2',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.ReleaseHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+        console.log(formData);
       }
     }
   }
@@ -1384,6 +1451,36 @@ export class PatientDocumentationComponent implements OnInit {
         },(error)=>{
           console.log(error);
         })
+      }
+      if(this.openHemoCatheter){
+        console.log('status 1');
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+        console.log(formData);
       }
     }
     else if (this.actionType == 'edit') {
