@@ -185,9 +185,9 @@ export class PatientDocumentationComponent implements OnInit {
       attachmentType: [null, Validators.required],
       attachmentFile: [null, Validators.required],
     });
-    this.getLatestAssessment();
-    this.getEducationAssessment();
-    this.getPatientProfile();
+    // this.getLatestAssessment();
+    // this.getEducationAssessment();
+    // this.getPatientProfile();
     this.getLatestAssessmentPA();
     this.getTriageLatestDocuments();
     this.getPhyAssessment();
@@ -201,11 +201,6 @@ export class PatientDocumentationComponent implements OnInit {
   getLatestAssessmentPA() {
     this.emergencyService.getLatestDocForPA(this.apiJson).subscribe({
       next: (_success: any) => {
-        // Handle successful data retrieval
-        // this.latestGlasgowComaScaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_COMA');
-        // this.latestFacePainScaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_FAC');
-        // this.latestNumericratingscaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_NMRTSC');
-        // this.latestBridentScaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_BRADEN');
         if(_success?.d?.results) {
           this.painAssessmentLaestDoc = _success.d.results;
         }
@@ -791,6 +786,9 @@ export class PatientDocumentationComponent implements OnInit {
     let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
     let file = new Blob([byteArray], { type: "application/pdf" });
     this.pdfUrl = file;
+
+    console.log(this.pdfUrl, "pdfUrl");
+    
   }
   refresh() {
     if (this.openGlasgowComaScale) {

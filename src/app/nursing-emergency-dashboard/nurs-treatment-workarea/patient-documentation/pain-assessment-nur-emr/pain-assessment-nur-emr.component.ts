@@ -16,9 +16,6 @@ import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
-import Painterro from 'painterro';
-import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
-import { PainLocationComponent } from './pain-location/pain-location.component';
 import {
   FacePainResponse,
   NonMedicationCheckBox,
@@ -38,6 +35,7 @@ import {
   painScoreList,
   sedationList,
 } from './pain-assissment-dropdown-list/dropdown-value';
+import { ImageEdittorComponent } from 'src/app/shared-module/image-editor/image-edittor/image-edittor.component';
 
 @Component({
   selector: 'app-pain-assessment-nur-emr',
@@ -46,7 +44,7 @@ import {
 })
 export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   @ViewChild('imageEditorPainLocation')
-  imageEditorPainLocation: PainLocationComponent;
+  imageEditorPainLocation: ImageEdittorComponent;
 
   painAssessmentForm: FormGroup;
   private subscription: Subscription;
