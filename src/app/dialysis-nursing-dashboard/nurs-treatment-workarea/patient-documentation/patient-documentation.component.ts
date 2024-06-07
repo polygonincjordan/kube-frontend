@@ -1907,12 +1907,64 @@ export class PatientDocumentationComponent implements OnInit {
     }else if(this.hemoCatheter){
       if(this.actionType == 'create'){
         console.log('status 4');
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '4',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is Release successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
       }
       if(this.actionType == 'edit'){
-        console.log('New version and release 5');
+        console.log('status 2');
+        
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: this.latestHemoCatheterData?.Dockey,
+          Einri: this.latestHemoCatheterData?.Einri,
+          Patnr: this.latestHemoCatheterData?.Patnr,
+          Falnr: this.latestHemoCatheterData?.Falnr,
+          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '2',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is Release successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
       }
     }
-
   }
 
   formatDate(dateTimeString){
