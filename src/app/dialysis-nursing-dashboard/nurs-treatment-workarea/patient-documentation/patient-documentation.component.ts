@@ -242,7 +242,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getLatestHemoCatheter(json).subscribe({
       next : (data: any)=>{
         if(data){
-          this.latestHemoCatheterData = data.d.results[0];
+          this.latestHemoCatheterData = {...data.d.results[0], AttMimeType: 'PDF'};
         }
       },
       error : (error)=>{

@@ -236,8 +236,15 @@
                 style="font-weight: bold;" (click)="selectAssessment('morsefallScale',latestMorseFallScaleData)">
                 <div class="col-md-4">Morse Fall Scale</div>
                 <div class="col-md-2 status-color">{{ latestMorseFallScaleData?.StatusTxt ? latestMorseFallScaleData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4"></div>
+                <div class="col-md-2" title="{{getTime(latestMorseFallScaleData?.DocTime)}}">
+                  {{getDate(latestMorseFallScaleData?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestMorseFallScaleData?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="15px" height="15px"
+                    (click)="getPatientProfileData(latestMorseFallScaleData)"
+                    *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
+                </div>
               </div>
 
               <!--Hemo Catheter -->
@@ -246,8 +253,15 @@
                 style="font-weight: bold;" (click)="selectAssessment('hemoCatheter',latestHemoCatheterData)">
                 <div class="col-md-4">Hemo Catheter</div>
                 <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4"></div>
+                <div class="col-md-2" title="{{getTime(latestHemoCatheterData?.DocTime)}}">
+                  {{getDate(latestHemoCatheterData?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestHemoCatheterData?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="15px" height="15px"
+                    (click)="getPatientProfileData(latestHemoCatheterData)"
+                    *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'" />
+                </div>
               </div>
             </div>
           </div>
