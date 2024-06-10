@@ -23,15 +23,15 @@ export class LoadingInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.service_count++;
+    if(!req.headers.get('repeat')){
+      this.spinner.show()
+    }
     return next.handle(req).pipe(
       finalize(() => {
        if(!this.helperService.isNotAllowedSpinnerInAPI) {
           this.spinner.show();
       }
         this.service_count--;
-        // decrement when service is completed (success/failed both 
-        //handled when finalize rxjs operator used)
-
         if (this.service_count === 0) {
           this.spinner.hide();
         }

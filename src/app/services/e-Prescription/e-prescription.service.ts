@@ -337,6 +337,7 @@ export class EPrescriptionService implements OnDestroy {
   }
 
   loadData(entitySetName: any, filters: any, expandEntities: any, isExpand: any, spnego: any, additionalString?: string) {
+    let header = {repeat: 'true'}
     let url = this.BaseUrl + this.generateURL(entitySetName, filters, expandEntities, isExpand)
     if (url.indexOf('$value') === -1) {
       if (filters === null) {
@@ -348,7 +349,7 @@ export class EPrescriptionService implements OnDestroy {
     if (additionalString) {
       url = `${url} ${additionalString}`;
     }
-    return this.httpClient.get(url, { withCredentials: true, observe: 'response' })
+    return this.httpClient.get(url, { withCredentials: true, observe: 'response',headers:header })
   }
   getData(entitySetName: any) {
     let url = this.BaseUrl + entitySetName
