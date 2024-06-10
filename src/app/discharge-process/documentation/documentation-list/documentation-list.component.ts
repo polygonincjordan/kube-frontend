@@ -226,7 +226,7 @@ export class DocumentationListComponent implements OnInit {
             this.mimetype = '';
             this.base64Value = '';
             this.createAttachmentForm.reset();
-            this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
             this.userConfigurationService.getListOfPatientVisitDataSet()
           });
         },

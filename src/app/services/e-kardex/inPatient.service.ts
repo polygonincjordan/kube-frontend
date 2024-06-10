@@ -44,8 +44,8 @@ export class InPatientConfigurationService {
     private storageService: StorageService,
     private route: ActivatedRoute
   ) {
-    this.route.queryParams.subscribe(() => {
-      this.getListOfAllPatientVisitDataSet()
+    this.route.queryParams.subscribe((params) => {
+      // this.getListOfAllPatientVisitDataSet()
     })
   }
 

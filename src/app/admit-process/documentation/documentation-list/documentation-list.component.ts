@@ -1020,7 +1020,7 @@ export class DocumentationListComponent implements OnInit {
             this.filename = '';
             this.mimetype = '';
             this.base64Value = '';
-            this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
             this.userConfigurationService.getListOfPatientVisitDataSet()
           });
         },
