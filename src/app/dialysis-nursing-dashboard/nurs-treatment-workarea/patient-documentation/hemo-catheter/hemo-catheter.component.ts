@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { StorageService } from '@services/storage.service';
 
@@ -27,7 +28,64 @@ export class HemoCatheterComponent implements OnInit {
   isdialysisStatus:boolean = false;
   daysDifference: number;
 
-  constructor(private storageService: StorageService) { }
+  latestHemoCatheterData: any;
+
+  constructor(private storageService: StorageService, private emergencyService:EmergencyService, private patientDocService: PatientDocumentationService) {
+    this.getLatestHemoCatheterDoc();
+  }
+
+  @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
+
+  getLatestHemoCatheterDoc(){
+    const json = {
+      Einri: this.storageService.einri,
+      Patnr: this.storageService.patnr,
+      Falnr: this.storageService.falnr,
+      Lfdnr: this.storageService.lfdnr,
+    }
+
+    this.emergencyService.getLatestHemoCatheter(json).subscribe({
+      next : (data: any)=>{
+        if(data){
+          this.latestHemoCatheterData = data.d.results[0];
+
+          if(this.latestHemoCatheterData){
+            this.getDocData();
+          }
+        }
+      },
+      error : (error)=>{
+        console.error(error);
+      }
+    })
+  }
+
+  getDocData(){
+    this.emergencyService.getHemoCatheterDoc(this.latestHemoCatheterData?.Dockey).subscribe({
+      next : (data: any) => {
+        if(data.d){
+          const resp = data.d.results[0];
+          this.hemoCatheterForm.patchValue({
+            ...resp,
+            SessionDate: this.patientDocService.formatDate(resp.SessionDate),
+            SessionTime: this.convertToDateTime(resp.SessionTime),
+            CatheterInsertion: this.patientDocService.formatDate(resp.CatheterInsertion),
+            CatheterRemoval: this.patientDocService.formatDate(resp.CatheterRemoval),
+          });
+
+          this.checkboxes.forEach((element:ElementRef)=>{
+            if(resp[element.nativeElement.name]){
+              element.nativeElement.checked = true;
+            }
+          })
+        }
+      },
+      error : (error)=>{
+        console.error(error);
+      }
+    })
+  }
+
 
   ngOnInit(): void {
     this.hemoCatheterForm = new FormGroup({
@@ -109,9 +167,6 @@ export class HemoCatheterComponent implements OnInit {
     this.hemoCatheterForm.controls['AttendPhy'].patchValue(this.realized);
 
     this.patientData = JSON.parse(this.storageService.getLocal('patientData'));
-    console.log(this.patientData);
-
-    
    
     const timeDifference = new Date().getTime() - new Date(this.patientData.periodStart).getTime();
     this.daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
@@ -124,5 +179,19 @@ export class HemoCatheterComponent implements OnInit {
 
   getFormData(){
     return this.hemoCatheterForm.value;
+  }
+
+  convertToDateTime(timeString){
+    const time = timeString;
+    const hours = time.substring(2, 4);
+    const minutes = time.substring(5, 7);
+    const seconds = time.substring(8, 10);
+
+    const date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+    date.setSeconds(seconds);
+
+    return date;
   }
 }

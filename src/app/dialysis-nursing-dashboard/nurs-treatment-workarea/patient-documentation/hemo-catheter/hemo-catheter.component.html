@@ -125,43 +125,43 @@
                                     <div class="row">
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" class="mr-3" name="ConHandHygiene" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" class="mr-3" name="ConHandHygiene" (change)="checkChange($event)">
                                                 <label class="m-0">Perform hand hygiene</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConProperPpe" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Don proper PPE</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConProvideMask" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConProvideMask" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Provide mask for the patient</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConSoakDialysis" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConSoakDialysis" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Soak dialysis catheter with povidone iodine 3-5 minutes</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConScrubCatheter" (change)="checkChange($event)"> 
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConScrubCatheter" (change)="checkChange($event)"> 
                                                 <label for="" class="m-0">Scrub catheter hub with antiseptic and allow to dry</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConConnectCatheter" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConConnectCatheter" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Connect catheter to blood lines aseptically</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConAttachNew" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterCon').value == '2' || this.hemoCatheterForm.get('CatheterCon').value == '1' ? true : false" name="ConAttachNew" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Attach new caps aseptically/weekly (Saturday or Sunday)</label>
                                             </div>
                                         </div>
@@ -197,43 +197,43 @@
                                     <div class="row">
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconHandHygiene" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconProperPpe" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Don proper PPE</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconProvideMask" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconProvideMask" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Provide mask for the patient</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconSoakDialysis" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconSoakDialysis" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Soak dialysis catheter with povidone iodine 3-5 minutes</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconDisCatheter" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconDisCatheter" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Disconnect catheter from blood lines aseptically</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconDiscardTubing" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconDiscardTubing" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard tubing in a leak-proof container</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconScrubCatheter" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterDiscon').value == '2' || this.hemoCatheterForm.get('CatheterDiscon').value == '1' ? true : false" name="DisconScrubCatheter" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Scrub catheter hub with antiseptic and allow to dry</label>
                                             </div>
                                         </div>
@@ -269,25 +269,25 @@
                                     <div class="row">
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitHandHygiene" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitApplySkin" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitApplySkin" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Apply skin antiseptic</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitAllowSkin" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitAllowSkin" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Allow skin antiseptic to dry</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox" class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitApplyDressing" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox  class="mr-3" [disabled]="this.hemoCatheterForm.get('CatheterExit').value == '2' || this.hemoCatheterForm.get('CatheterExit').value == '1' ? true : false" name="ExitApplyDressing" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Apply dressing aseptically</label>
                                             </div>
                                         </div>
@@ -323,46 +323,46 @@
                                     <div class="row">
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepHandHygiene" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepMedications" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepMedications" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Prepare medications in clean designated
                                                     areas</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepInspectVials" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepInspectVials" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Inspect all vials</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepAsepticTechniq" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepAsepticTechniq" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Prepare medications using antiseptic
                                                     techniques</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepNewNeedle" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepNewNeedle" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Use new needle and new syringe to enter all
                                                     vials</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepDiscardAll" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepDiscardAll" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard all single dose vial(s)</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepProperlyStore" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationPrep').value == '2' || this.hemoCatheterForm.get('MedicationPrep').value == '1' ? true : false" name="PrepProperlyStore" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard or properly store all multi dose
                                                     vial(s)</label>
                                             </div>
@@ -399,41 +399,41 @@
                                     <div class="row">
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmHandHygiene" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene (before and
                                                     after)</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3"  [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmProperPpe" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3"  [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Use proper PPE (gloves)</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmProperlyTrans" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmProperlyTrans" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Properly transport medication to patient
                                                     station</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmInjectionPort" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmInjectionPort" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Disinfect injection port with appropiate
                                                     antiseptic</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmAdministerMed" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmAdministerMed" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Administer medications using aseptic
                                                     techniques</label>
                                             </div>
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"  class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmDiscardSyringe" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox   class="mr-3" [disabled]="this.hemoCatheterForm.get('MedicationAdm').value == '2' || this.hemoCatheterForm.get('MedicationAdm').value == '1' ? true : false" name="AdmDiscardSyringe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard syringe point of use</label>
                                             </div>
                                         </div>
@@ -470,7 +470,7 @@
                                     <div class="row">
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatProperPpe" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox    class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Don proper PPE (as per indication but at least
                                                     use
                                                     gloves)</label>
@@ -478,7 +478,7 @@
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatEnsureThat" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox    class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatEnsureThat" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Ensure that the patient has left the dialysis
                                                     station
                                                     before cleaning</label>
@@ -486,7 +486,7 @@
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatDiscardAll" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox    class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatDiscardAll" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard all single-use supplies, Clean and
                                                     disinfect
                                                     reusable equipment</label>
@@ -494,7 +494,7 @@
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatNursingClean" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox    class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatNursingClean" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Nursing:Clean and disinfect dialysis
                                                     station(Dialysis
                                                     machine and bedside table)</label>
@@ -502,7 +502,7 @@
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatKeepUsed" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox    class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatKeepUsed" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Keep used or potentially contaminated items
                                                     away from
                                                     the
@@ -511,7 +511,7 @@
                                         </div>
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
-                                                <input type="checkbox"   class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatHousekeeping" (change)="checkChange($event)">
+                                                <input type="checkbox" #checkbox    class="mr-3" [disabled]="this.hemoCatheterForm.get('DialysisStat').value == '2' || this.hemoCatheterForm.get('DialysisStat').value == '1' ? true : false" name="StatHousekeeping" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Housekeeping: Clean and disinfect dialysis
                                                     chair or
                                                     bed

@@ -242,7 +242,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getLatestHemoCatheter(json).subscribe({
       next : (data: any)=>{
         if(data){
-          this.latestHemoCatheterData = data.d.results[0];
+          this.latestHemoCatheterData = {...data.d.results[0], AttMimeType: 'PDF'};
         }
       },
       error : (error)=>{
@@ -849,8 +849,6 @@ export class PatientDocumentationComponent implements OnInit {
 
   openDocument(action) {
     this.actionType = action;
-    console.log(action);
-    console.log(this.hemoCatheter);
     
     // education assessment...
     if (this.educationAssessment) {
@@ -1165,9 +1163,11 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Hemo Catheter
     else if(this.hemoCatheter){
-      if(action == 'create' && this.latestHemoCatheterData?.StatusTxt != 'Draft'){
+      if(action == 'create' && this.latestHemoCatheterData?.StatusTxt != 'Draft' && this.latestHemoCatheterData?.StatusTxt != 'Released'){
         this.openHemoCatheter = true;
-      } else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
+      }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
+        this.openHemoCatheter = true;
+      }else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
         console.log('status 2');
 
         const dockey = this.latestHemoCatheterData?.Dockey
@@ -1175,15 +1175,11 @@ export class PatientDocumentationComponent implements OnInit {
           next: (resp:any)=>{
             const formData = resp.d.results[0];
             delete formData['__metadata']
-
-            console.log(formData);
             
             const payload = {
               ...formData,
               DocStatus: '2'
             }
-            
-            console.log(payload);
 
             this.emergencyService.ReleaseHemoCatheterSet(payload).subscribe((resp)=>{
               Swal.fire({
@@ -1339,8 +1335,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.refresh();
   }
   saveDoc() {
-    console.log(this.actionType);
-    
     if (this.actionType == 'create') {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
@@ -1448,7 +1442,6 @@ export class PatientDocumentationComponent implements OnInit {
           Orgdo: 'F21IUAMC',
           DocStatus: '1'
         };
-        // console.log(formData);
         this.emergencyService.postMFSSet(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is created successfully",
@@ -1489,7 +1482,6 @@ export class PatientDocumentationComponent implements OnInit {
         },(error)=>{
           console.log(error);
         })
-        console.log(formData);
       }
     }
     else if (this.actionType == 'edit') {
@@ -1599,6 +1591,35 @@ export class PatientDocumentationComponent implements OnInit {
             console.log(error);
           }
         );
+      }
+      if(this.openHemoCatheter){
+        console.log('status 1 edit');
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: this.latestHemoCatheterData?.Dockey,
+          Einri: this.latestHemoCatheterData?.Einri,
+          Patnr: this.latestHemoCatheterData?.Patnr,
+          Falnr: this.latestHemoCatheterData?.Falnr,
+          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is updated successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
       }
     }
     else if (this.actionType == 'copy') {
@@ -1730,7 +1751,6 @@ export class PatientDocumentationComponent implements OnInit {
           Orgdo: 'F21IUAMC',
           DocStatus: '3'
         };
-        // console.log(formData);
         this.emergencyService.createNewMFSSet(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is released successfully",
@@ -1884,8 +1904,67 @@ export class PatientDocumentationComponent implements OnInit {
           }
         );
       }
+    }else if(this.hemoCatheter){
+      if(this.actionType == 'create'){
+        console.log('status 4');
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '4',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is Release successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
+      if(this.actionType == 'edit'){
+        console.log('status 2');
+        
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: this.latestHemoCatheterData?.Dockey,
+          Einri: this.latestHemoCatheterData?.Einri,
+          Patnr: this.latestHemoCatheterData?.Patnr,
+          Falnr: this.latestHemoCatheterData?.Falnr,
+          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '2',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is Release successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
     }
-
   }
 
   formatDate(dateTimeString){
