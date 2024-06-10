@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale && !openHemoCatheter">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale && !openHemoCatheter && !openHemoDialysisFistulaGraft">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,8 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter || openHemoDialysisFistulaGraft
+        "
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -99,7 +100,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale && !openHemoCatheter">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale && !openHemoCatheter && !openHemoDialysisFistulaGraft">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -263,6 +264,23 @@
                     *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'" />
                 </div>
               </div>
+
+              <!--HemoDialysis Fistula/Graft -->
+              <div class="box-col d-flex mt-2 docs-event"
+                [ngClass]="hemoDialysisFistulaGraft ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('hemoDialysisFistulaGraft',latestHemoDialysisFistulaGraftData)">
+                <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft</div>
+                <div class="col-md-2 status-color">{{ latestHemoDialysisFistulaGraftData?.StatusTxt ? latestHemoDialysisFistulaGraftData.StatusTxt : "N/A" }}</div>
+                <div class="col-md-2" title="{{getTime(latestHemoDialysisFistulaGraftData?.DocTime)}}">
+                  {{getDate(latestHemoDialysisFistulaGraftData?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestHemoDialysisFistulaGraftData?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="15px" height="15px"
+                    (click)="getPatientProfileData(latestHemoDialysisFistulaGraftData)"
+                    *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt == 'Released'" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -319,6 +337,7 @@
       <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
       <app-hemo-catheter *ngIf="openHemoCatheter"></app-hemo-catheter>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
+      <app-hemodialysis-fistula-graft *ngIf="openHemoDialysisFistulaGraft"></app-hemodialysis-fistula-graft>
     </div>
 
     <ng-template #releasepdfmodal>

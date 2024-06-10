@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -24,33 +25,12 @@ export class MorseFallScaleComponent implements OnInit {
 
   morseFallScaleData;
 
-  constructor(private fb: FormBuilder,private storageService: StorageService, private emergencyService: EmergencyService) {
-    this.getLatestMFSDoc();
-  }
-
-  getLatestMFSDoc(){
-    const json = {
-      Einri: this.storageService.einri,
-      Patnr: this.storageService.patnr,
-      Falnr: this.storageService.falnr,
-    };
-
-    this.emergencyService.getLatestMFSSet(json).subscribe((data: any)=>{
-      if(data){
-        this.morseFallScaleData = data.d.results[0];
-
-        if(this.morseFallScaleData){
-          this.getDocData();
-        }
-      }
-    }, (error)=>{
-      console.error(error);
-    })
+  constructor(private fb: FormBuilder,private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService) {
+    this.getDocData();
   }
 
   getDocData(){
-    this.emergencyService.getMFSDoc(this.morseFallScaleData?.Dockey).subscribe((data:any)=>{
-      console.log(data);
+    this.emergencyService.getMFSDoc(this.patientDocService.latestMorseFallScaleData?.Dockey).subscribe((data:any)=>{
       if(data.d){
         this.MorsefallForm.patchValue(data.d);
         this.calculateTotal();
