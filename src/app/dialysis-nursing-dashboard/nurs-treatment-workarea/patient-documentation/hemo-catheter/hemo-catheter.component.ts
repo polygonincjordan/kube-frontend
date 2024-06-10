@@ -31,37 +31,13 @@ export class HemoCatheterComponent implements OnInit {
   latestHemoCatheterData: any;
 
   constructor(private storageService: StorageService, private emergencyService:EmergencyService, private patientDocService: PatientDocumentationService) {
-    this.getLatestHemoCatheterDoc();
+    this.getDocData();
   }
 
   @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
 
-  getLatestHemoCatheterDoc(){
-    const json = {
-      Einri: this.storageService.einri,
-      Patnr: this.storageService.patnr,
-      Falnr: this.storageService.falnr,
-      Lfdnr: this.storageService.lfdnr,
-    }
-
-    this.emergencyService.getLatestHemoCatheter(json).subscribe({
-      next : (data: any)=>{
-        if(data){
-          this.latestHemoCatheterData = data.d.results[0];
-
-          if(this.latestHemoCatheterData){
-            this.getDocData();
-          }
-        }
-      },
-      error : (error)=>{
-        console.error(error);
-      }
-    })
-  }
-
   getDocData(){
-    this.emergencyService.getHemoCatheterDoc(this.latestHemoCatheterData?.Dockey).subscribe({
+    this.emergencyService.getHemoCatheterDoc(this.patientDocService.latestHemoCatheterData?.Dockey).subscribe({
       next : (data: any) => {
         if(data.d){
           const resp = data.d.results[0];
@@ -89,13 +65,6 @@ export class HemoCatheterComponent implements OnInit {
 
   ngOnInit(): void {
     this.hemoCatheterForm = new FormGroup({
-    // Dockey : "",
-    // Dtid : "ZMED_HBCA",
-    // Einri : "1000",
-    // Patnr : "1101",
-    // Falnr : "1402",
-    // Lfdnr : "00001",
-    // Orgdo : "F21IUAMC",
     SessionDate : new FormControl(new Date()),
     SessionTime : new FormControl(new Date()),
     CatheterDays : new FormControl(''),
@@ -153,7 +122,6 @@ export class HemoCatheterComponent implements OnInit {
     SignsCatheter : new FormControl(''),
     Comments : new FormControl(''),
     AttendPhy : new FormControl(''),
-    // DocStatus : "1"
     })
 
 
@@ -175,6 +143,8 @@ export class HemoCatheterComponent implements OnInit {
   checkChange(event){
     const {name,checked} = event.target as HTMLInputElement 
     this.hemoCatheterForm.get(name).patchValue(checked)
+
+    this.updateData();
   }
 
   getFormData(){
@@ -193,5 +163,40 @@ export class HemoCatheterComponent implements OnInit {
     date.setSeconds(seconds);
 
     return date;
+  }
+
+  radioChange(event: Event) {
+    const { name,value } = event.target as HTMLInputElement;
+  
+    const checkboxesToUpdate: { [key: string]: string[] } = {
+      CatheterCon: ['ConHandHygiene', 'ConProperPpe', 'ConProvideMask', 'ConSoakDialysis', 'ConScrubCatheter', 'ConConnectCatheter', 'ConAttachNew'],
+      CatheterDiscon: ['DisconHandHygiene', 'DisconProperPpe', 'DisconProvideMask', 'DisconSoakDialysis', 'DisconDisCatheter', 'DisconDiscardTubing', 'DisconScrubCatheter'],
+      CatheterExit: ['ExitHandHygiene', 'ExitApplySkin', 'ExitAllowSkin', 'ExitApplyDressing'],
+      MedicationPrep: ['PrepHandHygiene', 'PrepMedications', 'PrepInspectVials', 'PrepAsepticTechniq', 'PrepNewNeedle', 'PrepDiscardAll', 'PrepProperlyStore'],
+      MedicationAdm: ['AdmHandHygiene', 'AdmProperPpe', 'AdmProperlyTrans', 'AdmInjectionPort', 'AdmAdministerMed', 'AdmDiscardSyringe'],
+      DialysisStat: ['StatProperPpe', 'StatEnsureThat', 'StatDiscardAll', 'StatNursingClean', 'StatKeepUsed', 'StatHousekeeping']
+    };
+  
+    this.checkboxes.forEach((elem: ElementRef) => {
+      const elemName = elem.nativeElement.name;
+      const checked = checkboxesToUpdate[name].includes(elemName) ? false : elem.nativeElement.checked;
+      elem.nativeElement.checked = checked;
+      this.hemoCatheterForm.get(elemName).patchValue(checked);
+    });
+  }
+  
+  updateData() {
+    const updateField = (field: string, values: string[]) => {
+      const trueValues = values.filter(value => this.hemoCatheterForm.get(value).value === true);
+      const patchValue = trueValues.length === values.length ? '0' : (trueValues.length > 0 ? '1' : '2');
+      this.hemoCatheterForm.get(field).patchValue(patchValue)
+    };
+  
+    updateField('CatheterCon', ['ConHandHygiene', 'ConProperPpe', 'ConProvideMask', 'ConSoakDialysis', 'ConScrubCatheter', 'ConConnectCatheter', 'ConAttachNew']);
+    updateField('CatheterDiscon', ['DisconHandHygiene', 'DisconProperPpe', 'DisconProvideMask', 'DisconSoakDialysis', 'DisconDisCatheter', 'DisconDiscardTubing', 'DisconScrubCatheter']);
+    updateField('CatheterExit', ['ExitHandHygiene', 'ExitApplySkin', 'ExitAllowSkin', 'ExitApplyDressing']);
+    updateField('MedicationPrep', ['PrepHandHygiene', 'PrepMedications', 'PrepInspectVials', 'PrepAsepticTechniq', 'PrepNewNeedle', 'PrepDiscardAll', 'PrepProperlyStore']);
+    updateField('MedicationAdm', ['AdmHandHygiene', 'AdmProperPpe', 'AdmProperlyTrans', 'AdmInjectionPort', 'AdmAdministerMed', 'AdmDiscardSyringe']);
+    updateField('DialysisStat', ['StatProperPpe', 'StatEnsureThat', 'StatDiscardAll', 'StatNursingClean', 'StatKeepUsed', 'StatHousekeeping']);
   }
 }

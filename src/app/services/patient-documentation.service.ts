@@ -20,6 +20,9 @@ export class PatientDocumentationService {
   isGaOtherChecked: boolean;
   formDataBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject({});
 
+  latestMorseFallScaleData: any;
+  latestHemoCatheterData: any;
+
   isPatchValueForHemodialysis: boolean = true;
   isPatchValueForHaemodialysisLineMonitoring: boolean = true;
   isPatchValueForHaemodialysisMonitoring: boolean = true;

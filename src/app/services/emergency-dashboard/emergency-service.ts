@@ -1067,8 +1067,8 @@ export class EmergencyService {
     })
   }
 
-  getDiaAssessReleasedPdf(Dockey){
-    return this.http.get(this.url + `DialysisgetPDF?Dockey=${Dockey}`,{
+  getDiaAssessReleasedPdf(json){
+    return this.http.post(this.url + `DialysisgetPDF`, json,{
       withCredentials: true
     })
   }

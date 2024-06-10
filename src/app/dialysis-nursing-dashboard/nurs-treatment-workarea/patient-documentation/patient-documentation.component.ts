@@ -68,7 +68,8 @@ export class PatientDocumentationComponent implements OnInit {
   bradenscale = false;
   assessment = false;
   morsefallScale = false;
-  hemoCatheter = false
+  hemoCatheter = false;
+  hemoDialysisFistulaGraft = false;
   numericratingscale = false;
   fallrisk = false;
   functional = false;
@@ -97,6 +98,7 @@ export class PatientDocumentationComponent implements OnInit {
   openAssessment = false;
   openMorseFallScale = false;
   openHemoCatheter = false;
+  openHemoDialysisFistulaGraft = false;
   openEmergencyNursingDoc = false;
   actionType = '';
   selectedDocName: string;
@@ -142,6 +144,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   latestMorseFallScaleData: any;
   latestHemoCatheterData: any;
+  latestHemoDialysisFistulaGraftData: any;
 
   constructor(
     private modalService: BsModalService,
@@ -225,6 +228,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getLatestMFSSet(json).subscribe((data: any)=>{
       if(data){
         this.latestMorseFallScaleData = data.d.results[0];
+        this.patientDocService.latestMorseFallScaleData = this.latestMorseFallScaleData;
       }
     }, (error)=>{
       console.error(error);
@@ -243,6 +247,7 @@ export class PatientDocumentationComponent implements OnInit {
       next : (data: any)=>{
         if(data){
           this.latestHemoCatheterData = {...data.d.results[0], AttMimeType: 'PDF'};
+          this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
         }
       },
       error : (error)=>{
@@ -464,7 +469,8 @@ export class PatientDocumentationComponent implements OnInit {
       'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
       'assessment': { assessment: true, selectedDocName: 'Dialysis Assessment' },
       'morsefallScale': { morsefallScale: true, selectedDocName: 'Morse Fall Scale' },
-      'hemoCatheter': { hemoCatheter: true, selectedDocName: 'Hemo Catheter' }
+      'hemoCatheter': { hemoCatheter: true, selectedDocName: 'Hemo Catheter' },
+      'hemoDialysisFistulaGraft': { hemoDialysisFistulaGraft: true, selectedDocName: 'IC Bundle for Hemodialysis Fistula/Graft' } 
     };
 
     // Reset all flags to false initially
@@ -481,6 +487,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.assessment = false;
     this.morsefallScale = false;
     this.hemoCatheter = false;
+    this.hemoDialysisFistulaGraft = false;
 
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -1199,6 +1206,14 @@ export class PatientDocumentationComponent implements OnInit {
         });
 
         
+      }else if (action == 'copy' && this.latestHemoCatheterData?.StatusTxt == "Released") {
+        this.openHemoCatheter = true;
+      }
+    }
+    // HemoDialysis Fistula/Graft
+    else if(this.hemoDialysisFistulaGraft){
+      if(action == 'create' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != 'Released'){
+        this.openHemoDialysisFistulaGraft = true;
       }
     }
   }
@@ -1306,7 +1321,7 @@ export class PatientDocumentationComponent implements OnInit {
             this.filename = '';
             this.mimetype = '';
             this.base64Value = '';
-            this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
             this.userconfig.getListOfPatientVisitDataSet()
           });
         },
@@ -1663,7 +1678,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openAssessment) {
-        console.log("3");
+        console.log("5");
         
         const toMonitor =
         this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
@@ -1683,7 +1698,7 @@ export class PatientDocumentationComponent implements OnInit {
           Lfdnr: this.latestDocData?.Lfdnr,
           Orgdo: 'F21IUAMC',
           AttendPhy: this.latestDocData?.AttendPhy,
-          DocStatus: "3",
+          DocStatus: "5",
         };
 
         dAssessmentForm.patchValue({ otherDetails: otherData });
@@ -1752,6 +1767,36 @@ export class PatientDocumentationComponent implements OnInit {
           DocStatus: '3'
         };
         this.emergencyService.createNewMFSSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is released successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
+      if(this.openHemoCatheter){
+        console.log('5');
+
+        const formData = {
+          ...this.hemoCatheterC.getFormData(),
+          Dockey: this.latestHemoCatheterData?.Dockey,
+          Einri: this.latestHemoCatheterData?.Einri,
+          Patnr: this.latestHemoCatheterData?.Patnr,
+          Falnr: this.latestHemoCatheterData?.Falnr,
+          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '5',
+          Dtid : 'ZMED_HBCA',
+          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is released successfully",
             icon: 'success',
@@ -2248,8 +2293,11 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   getDiaAssessReleasedDoc(id) {
-    
-    this.emergencyService.getDiaAssessReleasedPdf(id).subscribe(
+    const json = {
+      Dockey: id
+    }
+
+    this.emergencyService.getDiaAssessReleasedPdf(json).subscribe(
       (_success: any) => {
 
         if (_success) {

@@ -273,14 +273,15 @@
           (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
           <div class="col-md-4">Pediatric Early Warning Scale {{pediatricEarlyWarningList[0]?.Zversion ?
             dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
+            <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
           <div class="col-md-2" title="{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}">
             {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
           </div>
           <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
           <div class="col-md-1">
-            <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
-              (click)="getPatientProfileData(nurseEndorsementList[0])"
-              *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+            <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+            (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
+            *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>
           </div>
         </div>
 

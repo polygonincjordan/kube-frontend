@@ -195,7 +195,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.fetchLatestDetails();
     this.getNurseEndorsement()
     this.getSurgicalPass()
-    this.getPediatricWarningScore()
   }
 
   getLatestAssessmentPA() {
@@ -243,21 +242,7 @@ export class PatientDocumentationComponent implements OnInit {
       },
     });
   }
-  getPediatricWarningScore() {
-    this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
-      next: (_success: any) => {
-        console.log('_success21212121',_success);
-        this.pediatricEarlyWarningList = _success.d.results
-        
-        // this.nurseEndorsementList = _success.d.results
-      },
-      error: (err: any) => {
-        // Handle errors if the request fails
-        console.error('Error  Data:', err);
-        this.sharedService.waringSwallModel(`GET Error : ${err}`);
-      },
-    });
-  }
+
   getSurgicalPass(){
     this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
@@ -360,6 +345,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.latestFacePainScaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_FAC');
         this.latestNumericratingscaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_NMRTSC');
         this.latestBridentScaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_BRADEN');
+        this.pediatricEarlyWarningList = latestAssessmentResponse.d.results.filter((ele) => ele.Dtid == 'ZSCA_PEWS');
 
         // Handle education assessment response
         this.educationAssList = educationAssessmentResponse.d.results;
@@ -451,6 +437,14 @@ export class PatientDocumentationComponent implements OnInit {
     }
     else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
       this.openEducationAssPdf(this.educationAssList[0].Dockey);
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.PEWS$) {
+      this.selectAssessment('pediatricEarlyWarningScale', this.pediatricEarlyWarningList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.PEWS$) {
+      this.selectAssessment('pediatricEarlyWarningScale', this.pediatricEarlyWarningList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.PEWS$) {
+      this.getScaleDetails(this.pediatricEarlyWarningList[0], RedirectionType.PEWS$);
     }
 
   }
@@ -832,11 +826,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.getEducationAssessment();
     this.getPatientProfile();
     this.getNurseEndorsement()
-    this.getPediatricWarningScore();
     this.getSurgicalPass();
     this.getLatestAssessmentPA();
     this.getSurgicalPass()
-    this.getPediatricWarningScore()
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -1438,7 +1430,7 @@ export class PatientDocumentationComponent implements OnInit {
             this.filename = '';
             this.mimetype = '';
             this.base64Value = '';
-            this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
             this.userconfig.getListOfPatientVisitDataSet()
           });
         },
@@ -1836,7 +1828,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   getScaleDetails(item, docType?) {
-    if (docType === RedirectionType.TRASM$) {
+    if (docType === RedirectionType.TRASM$ || docType === RedirectionType.PEWS$) {
       item.AttMimeType = 'PDF';
     } else {
       item.AttMimeType = 'HTML';
