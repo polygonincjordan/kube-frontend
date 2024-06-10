@@ -973,7 +973,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
         localStorage.setItem('initOrg', patientData.deptOrgUnit)
         this.titleService.setTitle(`${patientData?.name} | ${this._route.snapshot.parent.routeConfig.path}`);
         this.storageService.setPatientData(patientData);
-
       });
   }
 

@@ -119,8 +119,12 @@ export class EmergencyService {
   }
 
   getErCheckList(data) {
+    let header = {
+      repeat: 'true'
+    }
     return this.http.post(this.url + 'emergencyListCheckInSet', data, {
       withCredentials: true,
+      headers:header
     });
   }
   getLabResults(data) {
@@ -883,6 +887,12 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  getLatestDocForPA(json): Observable<any> {
+    return this.http.post(this.url + 'getPALatestDoc', json, {
+      withCredentials: true,
+    });
+  }
   getNurseEndorsementDetail(json): Observable<any> {
     return this.http.post(this.url + 'getNurseEndsorment', json, {
       withCredentials: true,
@@ -1010,6 +1020,35 @@ export class EmergencyService {
     });
   }
 
+  createPainAssessmentDoc(json): Observable<any> {
+    return this.http.post(this.url + 'savePainAssessment', json, {
+      withCredentials: true,
+    });
+  }
+
+  getPainAssesmentDetails(json): Observable<any> {
+    return this.http.get(this.url + `getPainAssessment?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  getPABackGroundImage(einri) {
+    return this.http.get(this.url + `getPABackGroundImage?Einri=${einri}`, {
+      withCredentials: true,
+    });
+  }
+
+  deletePainAssessmentDoc(json): Observable<any> {    
+    return this.http.delete(this.url + `deletePainAssessmentDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  getPainAssessmentPDF(dockey: string) {
+    return this.http.get(this.url + `getPainAssessmentPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
   postDailysisSet(json){
     return this.http.post(this.url + 'DailysisSet', json, {
       withCredentials: true
@@ -1028,8 +1067,8 @@ export class EmergencyService {
     })
   }
 
-  getDiaAssessReleasedPdf(Dockey){
-    return this.http.get(this.url + `DialysisgetPDF?Dockey=${Dockey}`,{
+  getDiaAssessReleasedPdf(json){
+    return this.http.post(this.url + `DialysisgetPDF`, json,{
       withCredentials: true
     })
   }
@@ -1040,8 +1079,44 @@ export class EmergencyService {
     })
   }
 
+  createNewMFSSet(payload){
+    return this.http.put(this.url + 'MFSSet', payload, {
+      withCredentials: true
+    })
+  }
+
   getLatestMFSSet(json){
     return this.http.get(this.url + `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`, {
+      withCredentials: true
+    })
+  }
+
+  getMFSDoc(dockey){
+    return this.http.get(this.url + `MFSSet?Dockey=${dockey}`, {
+      withCredentials: true
+    })
+  }
+
+  getLatestHemoCatheter(json){
+    return this.http.get(this.url + `LatestHemoCatheter?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+      withCredentials: true
+    })
+  }
+
+  postHemoCatheterSet(payload){
+    return this.http.post(this.url + 'HemoCatheter', payload, {
+      withCredentials: true
+    })
+  }
+
+  ReleaseHemoCatheterSet(payload){
+    return this.http.post(this.url + 'HemoCatheterSet', payload, {
+      withCredentials: true
+    })
+  }
+
+  getHemoCatheterDoc(dockey){
+    return this.http.get(this.url + `HemoCatheter?Dockey=${dockey}`, {
       withCredentials: true
     })
   }

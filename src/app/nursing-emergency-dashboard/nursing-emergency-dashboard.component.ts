@@ -244,7 +244,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     this.getMissedDocsCount();
     this.getNoConsumablesCount();
 
-    //this.selectModule('checkin');
+    // this.selectModule('checkin');
     this.getAssignSurgeonList();
     this.dropdownSettingsForLDRAttendPhy = {
       singleSelection: false,

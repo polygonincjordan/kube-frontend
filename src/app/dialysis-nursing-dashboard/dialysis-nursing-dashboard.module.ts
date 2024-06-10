@@ -113,6 +113,10 @@ import { PostDialysisEvaluationComponent } from './nurs-treatment-workarea/patie
 import { FormatTimePipe } from './nurs-treatment-workarea/format-time.pipe';
 import { PeritonealComponent } from './nurs-treatment-workarea/patient-documentation/dialysis-assessment/peritoneal/peritoneal.component';
 import { MorseFallScaleComponent } from './nurs-treatment-workarea/patient-documentation/morse-fall-scale/morse-fall-scale.component';
+import { HemoCatheterComponent } from './nurs-treatment-workarea/patient-documentation/hemo-catheter/hemo-catheter.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
+import { HemodialysisFistulaGraftComponent } from './nurs-treatment-workarea/patient-documentation/hemodialysis-fistula-graft/hemodialysis-fistula-graft.component';
 
 
 const route: Routes = [
@@ -203,8 +207,31 @@ const route: Routes = [
     FormatTimePipe,
     PeritonealComponent,
     MorseFallScaleComponent,
+    HemoCatheterComponent,
+    HemodialysisFistulaGraftComponent,
   ],
-  providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
+  providers: [
+    EmergencyService,
+    EPrescriptionService,
+    FeeListService,
+    HelperService,
+    DatePipe,
+    StorageService,
+    ErDischargeordersService,
+    eOrderService,
+    WebService,
+    EventService,
+    CpoeService,
+    AddministrationService,
+    PatientHistoryService,
+    OrdersDashboardService,
+    UserConfigurationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true,
+    },
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -225,4 +252,4 @@ const route: Routes = [
     NgxExtendedPdfViewerModule,
   ],
 })
-export class DialysisNursingDashboardModule { }
+export class DialysisNursingDashboardModule {}

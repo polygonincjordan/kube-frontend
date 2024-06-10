@@ -110,6 +110,8 @@ import { FacePainScalePopupComponent } from './nurs-treatment-workarea/patient-d
 import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/nurse-endorsement/nurse-endorsement.component';
 import { SurgicalPassportComponent } from './nurs-treatment-workarea/patient-documentation/surgical-passport/surgical-passport.component';
 import { DiagnosisTabComponent } from './nurs-treatment-workarea/patient-documentation/surgical-passport/diagnosis-tab/diagnosis-tab.component';
+import { PainAssessmentNurEmrComponent } from './nurs-treatment-workarea/patient-documentation/pain-assessment-nur-emr/pain-assessment-nur-emr.component';
+import { ImageEditorModule } from '../shared-module/image-editor/image-editor.module';
 import { PediatricEarlyWarningComponent } from './nurs-treatment-workarea/patient-documentation/pediatric-early-warning/pediatric-early-warning.component';
 
 const route: Routes = [
@@ -199,6 +201,7 @@ const route: Routes = [
     NurseEndorsementComponent,
     SurgicalPassportComponent,
     DiagnosisTabComponent,
+    PainAssessmentNurEmrComponent,
     PediatricEarlyWarningComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
@@ -220,6 +223,7 @@ const route: Routes = [
     NgbCollapseModule,
     PopoverModule,
     NgxExtendedPdfViewerModule,
+    ImageEditorModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

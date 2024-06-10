@@ -144,7 +144,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     });
 
     // this.phyOrderTableList();
-    this.occupationalGroupList();
+    // this.occupationalGroupList();
     this.myTag = this.el.nativeElement.querySelector("div");
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
@@ -176,7 +176,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     } else {
       this.emergencyService.tabPanelNavigation('patientProfile');
     }
-
+    // this.tabChange('Documentation');
   }
 
   addItemForPhyOrder(element): void {

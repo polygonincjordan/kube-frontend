@@ -112,6 +112,7 @@ export class StorageService {
 
   setPatientData(data: any) {
     this.patientData = data;
+    this.setLocal('patientData', JSON.stringify(data))
   }
 
   setCheckinData(data: any) {
