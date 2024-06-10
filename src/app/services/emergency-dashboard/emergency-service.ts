@@ -119,8 +119,12 @@ export class EmergencyService {
   }
 
   getErCheckList(data) {
+    let header = {
+      repeat: 'true'
+    }
     return this.http.post(this.url + 'emergencyListCheckInSet', data, {
       withCredentials: true,
+      headers:header
     });
   }
   getLabResults(data) {
