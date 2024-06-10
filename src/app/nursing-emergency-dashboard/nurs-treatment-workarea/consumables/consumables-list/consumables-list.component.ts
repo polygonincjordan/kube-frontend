@@ -296,13 +296,17 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
             customClass: 'myalertpopup'
           }).then((result) => {
             if (result.value) {
-              if (this.materialType === this.wordType.MaterialName$) {
-                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx');
-                control.reset();
-              } else {
-                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr');
-                control.reset();
-              }
+              this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'][index].patchValue({
+                Matnr: "",
+                Arktx: "",
+                Stock: "",
+                Meins: "",
+                Werks: "",
+                Vfdat: "",
+                Lgort: "",
+                Charg: "",
+                Menge: ''
+              });
             }
           })
         }

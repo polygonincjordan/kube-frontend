@@ -64,7 +64,8 @@ export enum RedirectionType {
   COMMA$ = 'COMA', // Glasgow Coma Scale
   BRADEN$ = 'BRADEN', // Braden Scale
   EDUAS$ = 'EDUAS', // Education Assessment
-  FAC$ = 'FAC' // Face Paing Scale
+  FAC$ = 'FAC', // Face Paing Scale
+  PEWS$ = 'PEWS'
 }
 
 export enum AssessmentType {

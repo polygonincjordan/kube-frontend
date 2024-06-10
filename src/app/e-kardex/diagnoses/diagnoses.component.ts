@@ -121,7 +121,7 @@ export class DiagnosesComponent implements OnInit {
     this.isLoading = true;
     this.subscription = this.route.queryParams.subscribe(() => {
       this.userConfigurationService.getListOfPatientVisitDataSet();
-      this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+      // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
       this.inPatientConfigurationService.getPatientCaseSet();
       this.getDataByUserConfig();
       this.getDataByInPatientConfig();
