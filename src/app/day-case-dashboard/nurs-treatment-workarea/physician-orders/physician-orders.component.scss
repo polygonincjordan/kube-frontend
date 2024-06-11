@@ -1,0 +1,56 @@
+.refresh-icon {
+    font-size: 20px;
+}
+
+.date-function {
+    p {
+        width: 46% !important;
+        padding: 5px 20px !important;
+    }
+}
+
+.search-functionalitypl-0 {
+    .tab-search-panel {
+        .search-functionality {
+            min-width: 26%;
+        }
+
+        .select-functionality {
+            min-width: 22%;
+            height: 42px;
+        }
+        input{
+            border-color: #0056b0;
+        }
+    }
+}
+.all-notes {
+    border: 1px solid;
+    background: #fff;
+    border-radius: 27px;
+    font-weight: 700;
+    height: 40px;
+    width: 93px;
+    margin-right: 5px;
+  }
+  ::ng-deep .select-functionality .ng-select-container {
+    border-color: #0056b0 !important;
+    height: 38px !important;
+}
+.date-function{
+    span.pn-input-title{
+        position: absolute !important;
+          top:17px;
+          left:7px;
+          cursor: text;
+          font-size: 12px;
+          opacity: 1;
+          left: 7;
+          z-index: 3;
+          line-height: 2px !important;
+          // font-weight: bold;
+          color: #0056b0;
+          padding: 0 10px;
+          background-color: white;
+      }
+}

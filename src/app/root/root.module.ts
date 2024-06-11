@@ -18,6 +18,7 @@ import { NursingEmergencyGuard } from '@services/interceptor/nursing-emergency.g
 import { OutPatientNursingGuard } from '@services/interceptor/out-patient-nursing.guard';
 import { DialysisNursingDashboardGuard } from '@services/interceptor/dialysis-nursing-dashboard.guard';
 import { PatientNurseDashboardGuard } from '@services/interceptor/patient-nurse-dashboard.guard';
+import { DayCaseDashboardGuard } from '@services/interceptor/day-case-dashboard.guard';
 
 export const rootRoutes: Routes = [
   {
@@ -99,6 +100,12 @@ export const rootRoutes: Routes = [
     component: RootComponent,
     canActivate: [NursingEmergencyGuard],
     loadChildren: () => import('../nursing-emergency-dashboard/nursing-emergency-dashboard.module').then((m) => m.NursingEmergencyDashboardModule),
+  },
+  {
+    path: 'day-case-dashboard',
+    component: RootComponent,
+    canActivate: [DayCaseDashboardGuard],
+    loadChildren: () => import('../day-case-dashboard/day-case-dashboard.module').then((m) => m.DayCaseDashboardModule),
   },
   {
     path: 'out-patient-nursing',

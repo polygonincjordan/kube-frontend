@@ -1,0 +1,32 @@
+<div class="card mt-2">
+  <div class="card-body p-0">
+    <accordion [closeOthers]="true">
+      <accordion-group #radiology [isOpen]="isCollpseOpen">
+        <div class="collaspe-header" accordion-heading>
+          Surgery
+          <i class="fa" [ngClass]="{'fa-chevron-down': radiology?.isOpen, 'fa-chevron-up': !radiology?.isOpen}"></i>
+        </div>
+        <div class="laboratory-list-table">
+          <table class="table medication-radiology-table">
+              <thead class="thead-back-color">
+                  <th *ngFor="let item of columnList">{{ item }}</th>
+              </thead>
+            <tbody>
+              <tr *ngFor="let item of surgeryList | filter: searchString; let i = index">
+                <td class="white-space">{{ item.Leitxt }}</td>
+                <!-- <td>{{ item.category ? item.category : '--' }}</td> -->
+                <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
+                <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                <td>{{item.SurgeonName}}</td>
+                <td>{{item.TrtoeText}}</td>
+                <td>{{item.OrgfaText}}</td>
+                <td>{{item.AddInfo}}</td>
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </accordion-group>
+    </accordion>
+  </div>
+</div>

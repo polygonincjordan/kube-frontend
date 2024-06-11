@@ -1,0 +1,172 @@
+<div class="braden-details">
+  <div class="braden-box">
+    <div class="scales-info">
+      <h4>Scale Information</h4>
+      <div class="scales-details">
+        <div class="row align-items-center m-0 mb-2">
+          <div class="col-md-2">
+            <label class="m-0">Date</label>
+          </div>
+          <div class="col-md-6 row m-0 pr-0">
+            <div class="col-md-4 p-0">
+              <input #drp="bsDatepicker" bsDatepicker [(ngModel)]="currentDate" [bsConfig]="{ rangeInputFormat: 'DD.MM.YYYY', dateInputFormat: 'DD.MM.YYYY',
+                          containerClass: 'daterangepicker documentation-datepicker', showWeekNumbers: false }"
+                class="form-control" [readOnly]="true" />
+            </div>
+            <div class="col-md-8">
+              <input type="time" step="2" class="form-control height-normal" id="surgery-time" [(ngModel)]="currentTime"
+                [readOnly]="true" />
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center m-0 mb-2">
+          <div class="col-md-2">
+            <label class="m-0">Realized by</label>
+          </div>
+          <div class="col-md-6 row m-0 pr-0">
+            <div class="col-md-4 p-0">
+              <input class="form-control" [readOnly]="true" [(ngModel)]="realized" />
+            </div>
+            <div class="col-md-8">
+              <input class="form-control" [readOnly]="true" [(ngModel)]="realizedDescription" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="splitter"></div>
+
+    <div class="scales-info">
+
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Braden Question</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let slist of initialValueList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" [for]="slist.keyId">{{slist.value}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Sensory perception</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let slist of SensoryPrescriptionList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input radio-input" [name]="'SensoryPrescriptionList'"
+                [id]="slist.keyId" [(ngModel)]="Sensoryperception" [value]="slist.value"
+                (change)="selectSensoryPerceptionQuestion($event, slist.value)" />
+              <label class="form-check-label" [for]="slist.keyId">{{slist.text}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Moisture</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let mlist of MoistureList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input radio-input" [name]="'MoistureList'" [id]="mlist.keyId"
+                [(ngModel)]="Moisture" [value]="mlist.value" (change)="selectMoistureQuestion($event, mlist.value)" />
+              <label class="form-check-label" [for]="mlist.keyId">{{mlist.text}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Activity</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let alist of ActivityList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input radio-input" [name]="'ActivityList'" [id]="alist.keyId"
+                [(ngModel)]="Activity" [value]="alist.value" (change)="selectActivityQuestion($event, alist.value)" />
+              <label class="form-check-label" [for]="alist.keyId">{{alist.text}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Mobility</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let molist of MobilityList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input radio-input" [name]="'MobilityList'" [id]="molist.keyId"
+                [(ngModel)]="Mobility" [value]="molist.value" (change)="selectMobilityQuestion($event, molist.value)" />
+              <label class="form-check-label" [for]="molist.keyId">{{molist.text}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Nutrition</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let nulist of NutritionList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input radio-input" [name]="'NutritionList'" [id]="nulist.keyId"
+                [(ngModel)]="Nutrition" [value]="nulist.value"
+                (change)="selectNutritionQuestion($event, nulist.value)" />
+              <label class="form-check-label" [for]="nulist.keyId">{{nulist.text}}</label>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-md-2">
+          <h4>Friction and shear</h4>
+        </div>
+        <div class="col-md-2" *ngFor="let fslist of FrictionNShearList">
+          <div class="selection-box">
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input radio-input" [name]="'FrictionNShearList'" [id]="fslist.keyId"
+                [(ngModel)]="Frictionandshear" [value]="fslist.value"
+                (change)="selectFrictionNSearQuestion($event, fslist.value)" />
+              <label class="form-check-label" [for]="fslist.keyId">{{fslist.text}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="splitter"></div>
+    <div class="scales-info">
+      <h4>Result</h4>
+      <div class="scales-details">
+        <div class="row align-items-center m-0 mb-2">
+          <div class="col-md-2">
+            <label class="m-0">Total score</label>
+          </div>
+          <div class="col-md-6 row m-0">
+            <div class="col-md-4 p-0">
+              <input class="form-control" [readOnly]="true" [(ngModel)]="totalProjectScore" />
+            </div>
+            <div class="col-md-8 pr-0">
+              <input class="form-control" [readOnly]="true" [(ngModel)]="totalScoreDescription" />
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center m-0">
+          <div class="col-md-2">
+            <label class="m-0">Comments</label>
+          </div>
+          <div class="col-md-10 row m-0">
+            <textarea class="form-control" [readOnly]="dockeyValue" [(ngModel)]="NrsComments"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

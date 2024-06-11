@@ -11,7 +11,8 @@ export enum UserType {
   SeniorHospitalist = 'SeniorHospitalist',
   Community = 'Community',
   PartTime = 'PartTime',
-  DIYNurse = "DIYNurse"
+  DIYNurse = "DIYNurse",
+  DayCaseNurse="DCNurse"
 }
 
 

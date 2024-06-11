@@ -1,0 +1,76 @@
+.road-map-red::before {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 10px;
+  Height:10px;
+  background:red;
+  z-index: 999;
+  }
+  .road-map-red::after {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 65%;
+  Height:10px;
+  background:red;
+  left: 30px;
+  }
+  .road-map-green::before {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 10px;
+  Height:10px;
+  background:#3cd87a;
+  z-index: 999;
+  }
+  .road-map-green::after {
+    border-radius: 50px;
+    content: "";
+    position: absolute;
+    width: 65%;
+  Height:10px;
+  background:#3cd87a;
+  left: 30px;
+  }
+  .box-registration .top-head-main.all-comun-boxs .list-table-simple{
+    text-align: end !important;
+  }
+ .user-id{
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+ }
+
+ .table-patient {
+  thead, tbody {
+    display: block;
+  }
+
+  tbody { 
+    overflow-y: auto; 
+    width: 100%;
+  }
+  .scrollAdd{
+    height: 300px;
+  }
+  thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+}
+table.table.table-patient tbody tr:after{
+  width: 100%;
+    position: absolute;
+    content: "";
+    height: 0px !important;
+    left: 0;
+    background: #f7f8fc;
+}

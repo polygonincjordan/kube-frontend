@@ -1,0 +1,126 @@
+<div class="edash-rightSide">
+    <div class="search-box d-flex justify-content-between align-items-center my-2">
+        <div class="d-flex align-items-center">
+            <div class="search-functionality col-md-5">
+                <img src="assets/img/pres-search-icon.svg" alt="" />
+                <input type="text" placeholder="Search" class="form-control w-100" id="searchFilter" [(ngModel)]="serchText"  />
+            </div>
+            <div class="date-function mr-4" style="
+          border-radius: 8px;
+          position: relative;
+          top: -8px;
+          min-width: 61%;
+        ">
+                <span class="pn-input-title z-indexlabel">Date </span>
+                <img src="assets/img/Calender.svg" alt="" style="
+            position: relative;
+            top: 37px;
+            right: 6px;
+            float: right;
+            transform: translateY(-50%);
+          " />
+                <input #drp="bsDatepicker" bsDatepicker [bsConfig]="{
+            rangeInputFormat: 'DD.MM.YYYY',
+            dateInputFormat: 'DD.MM.YYYY',
+            containerClass: 'daterangepicker',
+            showWeekNumbers: false
+          }" class="form-control" style="border-radius: 8px" [(ngModel)]="dateRange"
+                    (ngModelChange)="onDateChange($event)" />
+            </div>
+        </div>
+        <div class="">
+            <img class="ml-2 mr-2 cursor-pointer" src="assets/img/DocRefresh.svg" (click)="onRefresh()"/>
+        </div>
+    </div>
+    <div>
+        <ul class="nav">
+            <div class="col-md-11" style="display: flex; align-items: center">
+                <li class="nav-item mb-0">
+                    <button class="nav-link" [ngClass]="
+              dayShift
+                ? 'events-leftbar-active mb-3'
+                : 'events-leftbar-inactive mb-3'
+            " (click)="changeEvents('day')">
+                        Day
+                    </button>
+                </li>
+
+                <li class="nav-item mb-0">
+                    <button class="nav-link" [ngClass]="
+              !dayShift
+                ? 'events-leftbar-active mb-3'
+                : 'events-leftbar-inactive mb-3'
+            " (click)="changeEvents('night')">
+                        Night
+                    </button>
+                </li>
+            </div>
+            <div class="col-md-1" style="text-align: end">
+                <li class="nav-item">
+                    <div class="header-button"><button class="btn" (click)="saveList()">Save</button></div>
+                </li>
+            </div>
+            <span class="h-border"></span>
+        </ul>
+    </div>
+    <form [formGroup]="roomsForm">
+        <div class="d-flex flex-wrap p-2 card-box" *ngIf="dayShift">
+            <ng-container formArrayName="assignedRooms">
+                <ng-container *ngFor="let item of roomsForm.get('assignedRooms')['controls'] | formArraySearch: serchText; let i = index" >
+                    <ng-container [formGroupName]="i">
+                        <div class="room-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="assets/img/Patient-room.png" alt="room" />
+                                    <span class="ml-3 rooms">{{ item?.value?.roomName }}</span>
+                                </div>
+                                <img src="assets/img/edit-btn.png" alt="edit" (click)="editFormData(i)" />
+                            </div>
+                            <span class="mb-2 hr-border"></span>
+                            <div class="my-1 d-flex justify-content-between">
+                                <span class="asssigned-text">Assigned to:</span>&nbsp;&nbsp;
+                                <!-- <span
+                            style="font-size: 14px;font-weight: 600;color: #272A2E;">  -->
+                                <input type="text" formControlName="assignedTo"
+                                    [ngStyle]="{'background-color': item?.value?.isDisabled ? '#f2f2f2' : '#fff' }"
+                                    class="inp-form-control input-size" (input)="onSearchChange($event,i)"
+                                    [readOnly]="item?.value?.isDisabled" />
+                                <!-- </span> -->
+                            </div>
+                        </div>
+                    </ng-container>
+
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="d-flex flex-wrap p-2 card-box" *ngIf="!dayShift">
+            <ng-container formArrayName="nightAssignedRooms">
+                <ng-container *ngFor="let item of roomsForm.get('nightAssignedRooms')['controls'] | filter: serchText; let i = index;">
+                    <ng-container [formGroupName]="i">
+                        <div class="room-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="assets/img/Patient-room.png" alt="room" />
+                                    <span class="ml-3 rooms">{{ item?.value?.roomName }}</span>
+                                </div>
+                                <img src="assets/img/edit-btn.png" alt="edit" (click)="editFormData(i)" />
+                            </div>
+                            <span class="mb-2 hr-border"></span>
+                            <div class="my-1 d-flex justify-content-between">
+                                <span class="asssigned-text">Assigned to:</span>&nbsp;&nbsp;
+                                <!-- <span
+                            style="font-size: 14px;font-weight: 600;color: #272A2E;">  -->
+                                <input type="text" formControlName="assignedTo"
+                                    [ngStyle]="{'background-color': item?.value?.isDisabled ? '#f2f2f2' : '#fff' }"
+                                    class="inp-form-control input-size" (input)="onSearchChange($event,i)"
+                                    [readOnly]="item?.value?.isDisabled" />
+                                <!-- </span> -->
+                            </div>
+                        </div>
+                    </ng-container>
+
+                </ng-container>
+            </ng-container>
+        </div>
+    </form>
+</div>

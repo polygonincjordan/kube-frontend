@@ -1,0 +1,100 @@
+<ng-template #scalesNumericRating>
+  <div>
+    <div class="allergy-header">
+      <div class="allergy-header-title">
+        <span>Numeric rating scale(more than 8 years)</span>
+      </div>
+      <div class="allergy-header-details">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon">
+            <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer" (click)="closeModel()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="numericRatingForm">
+      <div class="main-scales">
+        <div class="scales-info">
+            <h4>Scale Information</h4>
+            <div class="scales-details">
+                <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2">
+                        <label class="m-0">Date</label>
+                    </div>
+                    <div class="col-md-6 row m-0 pr-0">
+                        <div class="col-md-4 p-0">
+                            <input #drp="bsDatepicker" bsDatepicker formControlName="date" [bsConfig]="{ rangeInputFormat: 'DD.MM.YYYY', dateInputFormat: 'DD.MM.YYYY',
+                                containerClass: 'daterangepicker documentation-datepicker', showWeekNumbers: false }" class="form-control" [readOnly]="true"/>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="time" step="2" class="form-control height-normal" id="surgery-time" formControlName="time" [readOnly]="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2">
+                        <label class="m-0">Realized by</label>
+                    </div>
+                    <div class="col-md-6 row m-0 pr-0">
+                        <div class="col-md-4 p-0">
+                            <input class="form-control" [readOnly]="true" formControlName="realized"/>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" [readOnly]="true" formControlName="realizedDescription"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scales-info mt-3">
+            <h4>NRS</h4>
+            <div class="scales-details">
+                <div class="row align-items-center m-0">
+                    <div class="col-md-2">
+                        <label class="m-0">Pain Score</label>
+                    </div>
+                    <div class="col-md-6 row m-0 pr-0">
+                        <div class="col-md-4 p-0">
+                            <ng-select placeholder="Select Mode of Arrival" formControlName="NrsPainScore" (change)="selectPainValue($event)"
+                                [readonly]="dockeyValue" [disabled]="dockeyValue" [ngClass]="dockeyValue ? 'background-disabled':''">
+                                <ng-option *ngFor="let item of painScoreList" [value]="item">{{item}}</ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scales-info mt-3">
+            <h4>Result</h4>
+            <div class="scales-details">
+                <div class="row align-items-center m-0 mb-2">
+                    <div class="col-md-2">
+                        <label class="m-0">Total score</label>
+                    </div>
+                    <div class="col-md-6 row m-0">
+                        <div class="col-md-4 p-0">
+                            <input class="form-control" [readOnly]="true" formControlName="totalScore"/>
+                        </div>
+                        <div class="col-md-8 pr-0">
+                            <input class="form-control" [readOnly]="true" formControlName="description"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center m-0">
+                    <div class="col-md-2">
+                        <label class="m-0">Comments</label>
+                    </div>
+                    <div class="col-md-10 row m-0">
+                        <textarea class="form-control" formControlName="NrsComments" [readOnly]="dockeyValue"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 p-0" style="text-align: end" *ngIf="!dockeyValue">
+            <button class="triage-model-btn" (click)="closeModel()">Cancel</button>
+            <button class="triage-model-btn" (click)="saveNumericData()">Save</button>
+          </div>
+      </div>
+  </form>
+</ng-template>
