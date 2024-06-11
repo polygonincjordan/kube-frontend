@@ -23,8 +23,9 @@ export class LoadingInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.service_count++;
-    this.spinner.show();
-
+    if(!req.headers.get('repeat')){
+      this.spinner.show()
+    }
     return next.handle(req).pipe(
       finalize(() => {
        if(!this.helperService.isNotAllowedSpinnerInAPI) {
