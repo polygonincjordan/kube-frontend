@@ -1,0 +1,13 @@
+.font-bsDaterangepicker{
+    font-size: 12px !important;
+  }
+  bs-daterangepicker-container{
+    &:has(> .daterangepickerdata) {
+      left: 147px!important;
+    }
+  }
+  .btn-history-group {
+    ul{
+        border: 2px solid  #dfe9f9 !important;
+    }
+}

@@ -20,8 +20,8 @@ import { RadiologyTableListComponent } from './nurs-treatment-workarea/patient-p
 import { MedicationTableListComponent } from './nurs-treatment-workarea/patient-profile/medication-table-list/medication-table-list.component';
 import { SurgeryTableListComponent } from './nurs-treatment-workarea/patient-profile/surgery-table-list/surgery-table-list.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { CustomDecimalPipe2 } from '../core/pipes/custom.decimal.pipe';
-import { EventfilterPipe2 } from '../core/pipes/eventfilter.pipe';
+// import { CustomDecimalPipe2 } from '../core/pipes/custom.decimal.pipe';
+// import { EventfilterPipe2 } from '../core/pipes/eventfilter.pipe';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
@@ -134,8 +134,8 @@ const route: Routes = [
     RadiologyTableListComponent,
     MedicationTableListComponent,
     SurgeryTableListComponent,
-    CustomDecimalPipe2,
-    EventfilterPipe2,
+    // CustomDecimalPipe2,
+    // EventfilterPipe2,
     PhysicianOrdersComponent,
     OrdersTemplatesComponent,
     PhysicianOrderListComponent,

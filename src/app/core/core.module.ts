@@ -23,6 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { NumberOnlyDirective } from './pipes/number-only.directive';
 import { DigitDecimaNumberUserSetDirective } from './pipes/digit-decima-number.directive';
+import { CustomDecimalPipe2 } from './pipes/custom.decimal.pipe';
+import { EventfilterPipe2 } from './pipes/eventfilter.pipe';
 @NgModule({
   declarations: [
     TopnavComponent,
@@ -35,6 +37,8 @@ import { DigitDecimaNumberUserSetDirective } from './pipes/digit-decima-number.d
     FormArrayAllFilterPipe,
     NumberOnlyDirective,
     DigitDecimaNumberUserSetDirective,
+    CustomDecimalPipe2,
+    EventfilterPipe2
   ],
   imports: [
     CommonModule,
@@ -62,7 +66,9 @@ import { DigitDecimaNumberUserSetDirective } from './pipes/digit-decima-number.d
     FormArrayFilterPipe,
     FormArrayAllFilterPipe,
     NumberOnlyDirective,
-    DigitDecimaNumberUserSetDirective
+    DigitDecimaNumberUserSetDirective,
+    CustomDecimalPipe2,
+    EventfilterPipe2
   ]
 })
 export class CoreModule { }

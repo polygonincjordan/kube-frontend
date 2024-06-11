@@ -127,6 +127,11 @@ export class EmergencyService {
       headers:header
     });
   }
+  getDayCaseErCheckList(data) {
+    return this.http.post(this.url + 'dayCaseListCheckInSet', data, {
+      withCredentials: true,
+    });
+  }
   getLabResults(data) {
     return this.http.post(this.url + 'nursingLabListSet', data, {
       withCredentials: true,

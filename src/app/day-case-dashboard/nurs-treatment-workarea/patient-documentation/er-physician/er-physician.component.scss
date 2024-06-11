@@ -1,0 +1,342 @@
+.top-bar-templete input {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  width: 30%;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+}
+
+.row.top-bar-templete {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.top-bar-templete .box-border-top {
+  background: #fbfcff;
+  /* border: 1px solid #6673b5; */
+  padding: 5px;
+  border-radius: 11px;
+}
+
+.row.top-bar-templete .col-first .select-box {
+  width: 100%;
+  height: 45px;
+}
+
+.row.top-bar-templete .col-first {
+  width: 15%;
+}
+
+.row.top-bar-templete .box-border-last-box input {
+  width: 22%;
+}
+
+ul.list-simple {
+  padding: 0px;
+  text-align: left;
+  margin: 0px;
+  line-height: 0px;
+  cursor: pointer;
+}
+
+.selected-li {
+  background: #1768bc;
+  color: white;
+}
+
+ul.list-simple li .header-date {
+  background: inherit;
+  border: none;
+  font-weight: 400;
+  font-size: 12px;
+  width: fit-content;
+  display: inline-block;
+  padding: 10px;
+}
+
+ul.list-simple li {
+  font-weight: 500;
+  list-style: none;
+  display: inline-block;
+  padding: 0px 10px;
+  font-size: 12px;
+  border: 1px solid #d3d1d1;
+  border-radius: 11px;
+  padding: 8px;
+  width: fit-content;
+  margin: 0px 5px;
+  text-align: start;
+}
+
+ul.list-simple li input:focus-visible,
+ul.list-simple li input:focus {
+  outline: none;
+  border: none;
+}
+
+ul.list-simple li.right-icons {
+  background: #0156b1;
+  border-radius: 50px !important;
+  float: right;
+  width: 40px;
+  height: 40px;
+  padding: 0px;
+  vertical-align: middle;
+  align-items: center;
+  line-height: 35px;
+}
+
+span.draf {
+  color: #7eb2e6;
+}
+
+ul.list-simple li input::placeholder {
+  color: #404040;
+  font-weight: 500;
+}
+
+ul.list-simple li.right-icons img {
+  width: 39px;
+}
+
+.er-physician-assessment .top-header {
+  margin: 10px 0px;
+}
+
+.top-row-inputs input {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  width: 100%;
+  font-size: 16px;
+  padding: 7px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+  ;
+}
+
+.er-physician-assessment-secound-bar {
+  margin: 0px 5px;
+}
+
+.er-physician-assessment-secound-bar textarea,
+.er-physician-assessment-secound-bar input,
+.er-physician-assessment-secound-bar .sick-leave {
+  /* background-color: #fff; */
+  color: #000000;
+  outline: 0;
+  width: 100%;
+  font-size: 16px;
+  padding: 7px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+  ;
+}
+
+.er-physician-assessment-secound-bar textarea::focus-visible,
+.er-physician-assessment-secound-bar input::focus-visible,
+.er-physician-assessment-secound-bar textarea::focus,
+.er-physician-assessment-secound-bar input::focus {
+  outline: none;
+  box-shadow: inherit;
+
+}
+
+.er-physician-assessment-secound-bar textarea::placeholder,
+.er-physician-assessment-secound-bar input::placeholder {
+  color: #808080;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.er-physician-assessment-secound-bar h3.common-heade {
+  font-size: 16px;
+  margin: 20px 0px 10px;
+  font-weight: bold;
+}
+
+.er-physician-assessment-secound-bar .box-shadow {
+  border: 2px solid #d3d1d1;
+  border-radius: 11px;
+  padding: 10px;
+  background: #fff;
+}
+
+.er-physician-assessment-secound-bar .box-shadow span.pn-input-title {
+  position: absolute !important;
+  left: 11px;
+  cursor: text;
+  font-size: 12px;
+  opacity: 1;
+  z-index: 3;
+  line-height: 2px !important;
+  color: #0056b0;
+  padding: 0 10px;
+  background-color: white;
+}
+
+.col-md-6.left-colum input,
+.col-md-6.right-colum input {
+  padding: 5px 10px;
+}
+
+div#Mediacal-history .border-boxes {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  width: 100%;
+  font-size: 16px;
+  padding: 7px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+  ;
+}
+
+div#Mediacal-history .border-boxes span.vital-sign {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+div#Mediacal-history .border-boxes .form-check {
+  display: flex;
+  width: fit-content;
+  float: right;
+}
+
+div#Mediacal-history .border-boxes .form-check input {
+  margin: 0px;
+  position: relative;
+}
+
+div#Mediacal-history .border-boxes .form-check label.form-check-label {
+  padding: 0px 10px;
+}
+
+/* nursing */
+.box-commun .top-bar-templete-new input {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+  margin: 0px 5px 0px 5px;
+  height: 30px;
+  width: 26%;
+}
+
+.box-commun {
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.box-commun .row.top-bar-templete-new .col-md-4 {
+  width: fit-content;
+}
+
+.row.top-bar-templete {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.top-bar-templete-new .box-border-top {
+  background: #fbfcff;
+  border: 1px solid #dedfe1;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.row.top-bar-templete-new .col-first .select-box {
+  width: 100%;
+  height: 45px;
+}
+
+.row.top-bar-templete-new-textarea textarea {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid #dedfe1;
+  width: 100%;
+}
+
+.tab-new .nav-tabs button.nav-link {
+  background: #fafdff;
+  border: 1px solid #dedfe1;
+  padding: 5px 15px;
+  border-radius: 25px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.tab-new .nav-tabs button.nav-link.isactive {
+  background: #1768bc;
+  color: #fff;
+  border-color: #1768bc;
+}
+
+.tab-new .nav-tabs {
+  border: none;
+  margin-bottom: 10px;
+}
+
+.tab-new .tab-content .border-box-tab {
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  padding: 0px;
+}
+
+.tab-new .tab-content .border-box-tab .same-five-boxes {
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  padding: 5px 10px 5px 35px;
+  width: 19%;
+  display: inline-block;
+  margin: 5px 5px 5px 5px;
+}
+
+.tab-new .tab-content .border-box-tab .three-boxes {
+  width: 32.4%;
+}
+
+.box-commun .fall-risk .top-bar-templete-new input {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+  margin: 0px 5px 0px 5px;
+  height: 30px;
+  width: 54%;
+}
+
+.box-commun .functional input {
+  background-color: #fff;
+  color: #000000;
+  outline: 0;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #0056b0;
+  margin: 0px 5px 0px 5px;
+  height: 36px;
+  width: 100%;
+}
+
+::ng-deep .template .ng-select-container {
+  border-color: #0056b0 !important;
+  border-radius: 8px !important;
+  height: 38px !important;
+  font-size: 14px !important;
+}

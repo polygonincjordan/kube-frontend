@@ -321,6 +321,8 @@ export class HeaderComponent implements OnInit {
       redirectPoint = 'e-kardex?';
     } else if (userType === UserType.ERNurse) {
       redirectPoint = 'nursing-emergncy-dashboard?';
+    }else if (userType === UserType.DayCaseNurse) {
+      redirectPoint = 'day-case-dashboard?';
     }
 
     const queryParams = `patnr=${data.Patnr}&falnr=${data.Falnr}&einri=${data.Einri}&lfdnr=${data.Lfdnr}&nav=Treatmentarea`;
