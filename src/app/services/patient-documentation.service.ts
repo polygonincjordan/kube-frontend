@@ -22,6 +22,7 @@ export class PatientDocumentationService {
 
   latestMorseFallScaleData: any;
   latestHemoCatheterData: any;
+  latestHemoDialysisFistulaGraftData: any;
 
   isPatchValueForHemodialysis: boolean = true;
   isPatchValueForHaemodialysisLineMonitoring: boolean = true;

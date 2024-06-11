@@ -116,8 +116,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Drugid: new FormControl(''),
       Phformid: new FormControl(null, Validators.required),
       Aprouteid: new FormControl(null),
-      Pdur: new FormControl(''),
-      Pduru: new FormControl(null),
+      Pdur: new FormControl('', Validators.required),
+      Pduru: new FormControl(null, Validators.required),
       Quan: new FormControl('0', Validators.required),
       Quanunit: new FormControl(null, Validators.required),
       N1znr: new FormControl(null, Validators.required),
@@ -955,6 +955,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         validData.Complex = validData.Complex ? "X" : "";
         validData.AddDose = validData.AddDose ? "X" : "";
         validData.Pduru = validData.Pduru !== null ? validData.Pduru : "";
+        validData.Aprouteid = validData.Routedescr.Aprouid !== undefined ? validData.Routedescr.Aprouid :validData.Aprouteid;
         delete validData.Routedescr;
         delete validData.Formatdescr;
         delete validData.Result_Drug_Name;

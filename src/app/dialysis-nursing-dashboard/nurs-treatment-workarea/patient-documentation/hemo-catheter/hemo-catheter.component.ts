@@ -14,18 +14,6 @@ export class HemoCatheterComponent implements OnInit {
   realized: string;
   realizedDescription: string;
   patientData: any;
-  isSelected:boolean = false;
-  isInputSelected:boolean = false;
-  isInputDisconnection:boolean =false;
-  isDisconnection:boolean =false;
-  isInputDisExitsit:boolean = false;
-  isDisExitsit:boolean = false;
-  isInputPreparation:boolean = false;
-  isPreparation:boolean = false;
-  isInputadministration:boolean = false;
-  isadministration:boolean = false;
-  isInputdialysisStatus:boolean = false;
-  isdialysisStatus:boolean = false;
   daysDifference: number;
 
   latestHemoCatheterData: any;
@@ -167,6 +155,15 @@ export class HemoCatheterComponent implements OnInit {
 
   radioChange(event: Event) {
     const { name,value } = event.target as HTMLInputElement;
+
+    const textFieldsToUpdate: { [key: string]: string } = {
+      CatheterCon: 'CatheterConTxt',
+      CatheterDiscon: 'CatheterDisconTxt',
+      CatheterExit: 'CatheterExitTxt',
+      MedicationPrep: 'MedicationPrepTxt',
+      MedicationAdm: 'MedicationAdmTxt',
+      DialysisStat: 'DialysisStatTxt'
+  };
   
     const checkboxesToUpdate: { [key: string]: string[] } = {
       CatheterCon: ['ConHandHygiene', 'ConProperPpe', 'ConProvideMask', 'ConSoakDialysis', 'ConScrubCatheter', 'ConConnectCatheter', 'ConAttachNew'],
@@ -183,6 +180,13 @@ export class HemoCatheterComponent implements OnInit {
       elem.nativeElement.checked = checked;
       this.hemoCatheterForm.get(elemName).patchValue(checked);
     });
+
+    if (value === '0' || value === '1') {
+      const textField = textFieldsToUpdate[name];
+      if (textField) {
+          this.hemoCatheterForm.get(textField).patchValue('');
+      }
+    }
   }
   
   updateData() {

@@ -31,6 +31,7 @@ import { DataService } from '@services/data.service';
 import { environment } from 'src/environments/environment';
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 import { HemoCatheterComponent } from './hemo-catheter/hemo-catheter.component';
+import { HemodialysisFistulaGraftComponent } from './hemodialysis-fistula-graft/hemodialysis-fistula-graft.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -50,6 +51,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
   @ViewChild(HemoCatheterComponent) hemoCatheterC: HemoCatheterComponent;
+  @ViewChild(HemodialysisFistulaGraftComponent) hemoDialysisFistulaGraftC: HemodialysisFistulaGraftComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -195,6 +197,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestDocSet();
     this.LatestMFSSet();
     this.LatestHemoCatheter();
+    this.LatestHemoDialysisFistulaGraft();
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -248,6 +251,27 @@ export class PatientDocumentationComponent implements OnInit {
         if(data){
           this.latestHemoCatheterData = {...data.d.results[0], AttMimeType: 'PDF'};
           this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
+        }
+      },
+      error : (error)=>{
+        console.error(error);
+      }
+    })
+  }
+
+  LatestHemoDialysisFistulaGraft(){
+    const json = {
+      Einri: this.storageService.einri,
+      Patnr: this.storageService.patnr,
+      Falnr: this.storageService.falnr,
+      Lfdnr: this.storageService.lfdnr,
+    }
+
+    this.emergencyService.getLatestHemoDialysisFistulaGraft(json).subscribe({
+      next : (data: any)=>{
+        if(data){
+          this.latestHemoDialysisFistulaGraftData = data.d.results[0];
+          this.patientDocService.latestHemoDialysisFistulaGraftData = this.latestHemoDialysisFistulaGraftData;
         }
       },
       error : (error)=>{
@@ -813,6 +837,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestDocSet();
     this.LatestMFSSet();
     this.LatestHemoCatheter();
+    this.LatestHemoDialysisFistulaGraft();
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -834,6 +859,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEmergencyNursingDoc = false;
     this.openMorseFallScale = false;
     this.openHemoCatheter = false;
+    this.openHemoDialysisFistulaGraft = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -843,6 +869,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.latestDocData = null;
     this.latestMorseFallScaleData = null;
     this.latestHemoCatheterData = null;
+    this.latestHemoDialysisFistulaGraftData = null;
   }
 
   
@@ -1214,6 +1241,68 @@ export class PatientDocumentationComponent implements OnInit {
     else if(this.hemoDialysisFistulaGraft){
       if(action == 'create' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != 'Released'){
         this.openHemoDialysisFistulaGraft = true;
+      }else if(action == 'edit' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != "Released") {
+        this.openHemoDialysisFistulaGraft = true;
+      }else if(action == 'release' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft'){
+        console.log('status 2');
+
+        const dockey = this.latestHemoDialysisFistulaGraftData?.Dockey
+        this.emergencyService.getHemoDialysisFistulaGraftDoc(dockey).subscribe({
+          next: (resp:any)=>{
+            const formData = resp.d.results[0];
+            delete formData['__metadata']
+            
+            const payload = {
+              ...formData,
+              DocStatus: '2'
+            }
+
+            this.emergencyService.releaseHemoDialysisFistiulaGraft(payload).subscribe((resp)=>{
+              Swal.fire({
+                text: "Document is released successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            },(error)=>{
+              console.log(error);
+            })
+          },
+          error: (error)=>{
+            console.log(error);
+          }
+        });
+
+        
+      }else if (action == 'copy' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == "Released") {
+        this.openHemoDialysisFistulaGraft = true;
+      }else if (action == 'delete' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft') {
+        Swal.fire({
+          title: 'Confirm',
+          text: 'Do you want to delete?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          customClass: 'myalertpopup'
+        }).then(async (result) => {
+          if (result.value) {
+
+            (this.emergencyService.deleteHemoDialysisFistulaGraftDoc(this.latestHemoDialysisFistulaGraftData.Dockey).subscribe((resp)=>{
+              Swal.fire({
+                text: "Document is deleted successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            }, (err)=>{
+              console.log(err);
+            })
+            );
+          }
+        });
       }
     }
   }
@@ -1498,6 +1587,33 @@ export class PatientDocumentationComponent implements OnInit {
           console.log(error);
         })
       }
+      if(this.openHemoDialysisFistulaGraft){
+        console.log('status 1');
+        const formData = {
+          ...this.hemoDialysisFistulaGraftC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1',
+          Dtid : 'ZMED_HBFG',
+          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
     }
     else if (this.actionType == 'edit') {
       if (this.openGlasgowComaScale) {
@@ -1625,6 +1741,33 @@ export class PatientDocumentationComponent implements OnInit {
           SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
         };
         this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is updated successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
+      if(this.openHemoDialysisFistulaGraft){
+        console.log('status 1');
+        const formData = {
+          ...this.hemoDialysisFistulaGraftC.getFormData(),
+          Dockey: this.latestHemoDialysisFistulaGraftData?.Dockey,
+          Einri: this.latestHemoDialysisFistulaGraftData?.Einri,
+          Patnr: this.latestHemoDialysisFistulaGraftData?.Patnr,
+          Falnr: this.latestHemoDialysisFistulaGraftData?.Falnr,
+          Lfdnr: this.latestHemoDialysisFistulaGraftData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1',
+          Dtid : 'ZMED_HBFG',
+          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is updated successfully",
             icon: 'success',
@@ -1797,6 +1940,33 @@ export class PatientDocumentationComponent implements OnInit {
           SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
         };
         this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is released successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
+      if(this.openHemoDialysisFistulaGraft){
+        console.log('status 5');
+        const formData = {
+          ...this.hemoDialysisFistulaGraftC.getFormData(),
+          Dockey: this.latestHemoDialysisFistulaGraftData?.Dockey,
+          Einri: this.latestHemoDialysisFistulaGraftData?.Einri,
+          Patnr: this.latestHemoDialysisFistulaGraftData?.Patnr,
+          Falnr: this.latestHemoDialysisFistulaGraftData?.Falnr,
+          Lfdnr: this.latestHemoDialysisFistulaGraftData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '5',
+          Dtid : 'ZMED_HBFG',
+          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is released successfully",
             icon: 'success',
@@ -1998,6 +2168,62 @@ export class PatientDocumentationComponent implements OnInit {
           SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
         };
         this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is Release successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
+    }else if(this.hemoDialysisFistulaGraft){
+      if(this.actionType == 'create'){
+        console.log('status 4');
+        const formData = {
+          ...this.hemoDialysisFistulaGraftC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Lfdnr: this.storageService.lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '4',
+          Dtid : 'ZMED_HBFG',
+          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is Release successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          console.log(error);
+        })
+      }
+      if(this.actionType == 'edit'){
+        console.log('status 2');
+        
+        const formData = {
+          ...this.hemoDialysisFistulaGraftC.getFormData(),
+          Dockey: this.latestHemoDialysisFistulaGraftData?.Dockey,
+          Einri: this.latestHemoDialysisFistulaGraftData?.Einri,
+          Patnr: this.latestHemoDialysisFistulaGraftData?.Patnr,
+          Falnr: this.latestHemoDialysisFistulaGraftData?.Falnr,
+          Lfdnr: this.latestHemoDialysisFistulaGraftData?.Lfdnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '2',
+          Dtid : 'ZMED_HBFG',
+          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
+          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+        };
+        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is Release successfully",
             icon: 'success',
@@ -2292,6 +2518,11 @@ export class PatientDocumentationComponent implements OnInit {
     this.getDiaAssessReleasedDoc(id);
   }
 
+  openFistulaGraftPDF(id){
+    this.pdfUrl = '';
+    this.getHemoDialysisFistulaGraft(id);
+  }
+
   getDiaAssessReleasedDoc(id) {
     const json = {
       Dockey: id
@@ -2312,6 +2543,24 @@ export class PatientDocumentationComponent implements OnInit {
       (_error: any) => { }
     );
   }
+
+  getHemoDialysisFistulaGraft(id) {
+    this.emergencyService.getHemoDialysisFistulaGraftPDF(id).subscribe(
+      (_success: any) => {
+
+        if (_success) {
+          this.pdfUrlType = 'pdf';
+          this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
+          const config: ModalOptions = {
+            class: 'modal-dialog-centered modal-xl pdfmodal-size',
+          };
+          this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+        }
+      },
+      (_error: any) => { }
+    );
+  }
+
 
   // Education Assessment
 
