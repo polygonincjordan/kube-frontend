@@ -67,6 +67,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy'">
+            <button type="button" class="action-doc" (click)="releaseFromForm()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"

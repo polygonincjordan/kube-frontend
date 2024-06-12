@@ -116,8 +116,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Drugid: new FormControl(''),
       Phformid: new FormControl(null, Validators.required),
       Aprouteid: new FormControl(null),
-      Pdur: new FormControl('', Validators.required),
-      Pduru: new FormControl(null, Validators.required),
+      Pdur: new FormControl('',),
+      Pduru: new FormControl(null,),
       Quan: new FormControl('0', Validators.required),
       Quanunit: new FormControl(null, Validators.required),
       N1znr: new FormControl(null, Validators.required),
@@ -946,7 +946,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       if (this.drugArray.controls[index].get('TOEVENTDATA').value && !this.drugArray.controls[index].get('TOEVENTDATA').value.length) {
         let postObject = this.ePrescriptionService.loadParameters(true, true, true, true);
         validData.Quan = `${validData.Quan}`;
-        validData.Pdur = `${validData.Pdur}`;
+        validData.Pdur = validData.Pdur ? validData.Pdur : '0';
         validData.Prncond = validData.Prn ? validData.Prncond : "";
         validData.StartT = this.parseTime(validData.StartD);
         validData.StartD = this.parseDate(validData.StartD);
