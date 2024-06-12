@@ -105,31 +105,32 @@
             <div class="d-flex doc-header">
               <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
                   style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Document sas</h2>
+              <h2 style="font-weight: bold;">Current Visit Document</h2>
             </div>
             <div class="scrollable-div" [style.height.px]="getContentHeight()">
-             
-              <!--  Braden Scale -->
-              <div
-                [ngClass]="bradenscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('bradenscale',latestBridentScaleList[0])">
-                <div class="col-md-4"> Braden Scale :</div>
-                <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
-                <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
-                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+
+              <!-- Surgical passport -->
+              <div [ngClass]="isSurgicalPassport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+                (click)="selectAssessment('isSurgicalPassport',surgicalPassportList[0])">
+                <div class="col-md-4">Surgical Passport {{surgicalPassportList[0]?.Zversion ?
+                  dockVer(surgicalPassportList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{surgicalPassportList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(surgicalPassportList[0]?.DocTime)}}">
+                  {{getDate(surgicalPassportList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
-                <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-3">{{surgicalPassportList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
-                    *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+                  <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
+                    (click)="getPatientProfileData(nurseEndorsementList[0])"
+                    *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
                 </div>
               </div>
+             
               <!-- Education Assessment -->
               <div
-                [ngClass]="educationAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('educationAssessment',educationAssList[0])">
-                <div class="col-md-4">Education Assessment {{educationAssList[0]?.Zversion ?
+                [ngClass]="isEducationAssement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isEducationAssement',educationAssList[0])">
+                <div class="col-md-4">Education Assessment : {{educationAssList[0]?.Zversion ?
                   dockVer(educationAssList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{educationAssList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(educationAssList[0]?.DocTime)}}">
@@ -142,38 +143,204 @@
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
+
+              <!--  Nursing Care Plan -->
+              <div
+                [ngClass]="isNursingCarePlan ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isNursingCarePlan',latestBridentScaleList[0])">
+                <div class="col-md-4"> Nursing Care Plan :</div>
+                <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+                </div>
+              </div>
+
+              <!--  Nursing Dicharge Summary -->
+              <div
+                [ngClass]="isNursingDischarge ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isNursingDischarge',latestBridentScaleList[0])">
+                <div class="col-md-4"> Nursing Dicharge Summary :</div>
+                <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+                </div>
+              </div>
+              <!--  Braden Scale -->
+              <div
+                [ngClass]="isBradenScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isBradenScale',latestBridentScaleList[0])">
+                <div class="col-md-4"> Braden Scale :</div>
+                <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+                </div>
+              </div>
+              
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event"
-                [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('attachments','')">
+                [ngClass]="isAttechmentDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isAttechmentDocument','')">
                 <div class="col-md-4">Attachments Document</div>
                 <div class="col-md-2 status-color">N/A</div>
                 <div class="col-md-2"></div>
                 <div class="col-md-4"></div>
               </div>
-              <!-- Nurse Endorsement -->
-            <!-- Surgical passport -->
-            <div [ngClass]="surgicalPassport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            (click)="selectAssessment('surgicalPassport',surgicalPassportList[0])">
-            <div class="col-md-4">Surgical Passport {{surgicalPassportList[0]?.Zversion ?
-              dockVer(surgicalPassportList[0]?.Zversion) : ''}} :</div>
-            <div class="col-md-2 status-color">{{surgicalPassportList[0]?.StatusTxt || 'N/A'}}</div>
-            <div class="col-md-2" title="{{getTime(surgicalPassportList[0]?.DocTime)}}">
-              {{getDate(surgicalPassportList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-            </div>
-            <div class="col-md-3">{{surgicalPassportList[0]?.PhyNm || '-'}}</div>
-            <div class="col-md-1">
-              <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
-                (click)="getPatientProfileData(nurseEndorsementList[0])"
-                *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
-            </div>
-          </div>
 
-            <!-- Pain Assessment -->
+            <!--  Morse Fall Scale (MFS) -->
+            <div
+              [ngClass]="isMorseFallScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isMorseFallScale',latestBridentScaleList[0])">
+              <div class="col-md-4"> Morse Fall Scale (MFS) :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Nursing Admission Assessment -->
+            <div
+              [ngClass]="isNursingAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isNursingAdmission',latestBridentScaleList[0])">
+              <div class="col-md-4"> Nursing Admission Assessment :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Nursing Assessment -->
+            <div
+              [ngClass]="isNursingAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isNursingAssessment',latestBridentScaleList[0])">
+              <div class="col-md-4"> Nursing Assessment :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Pediatrics Admission Assessment -->
+            <div
+              [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isPediatricsAdmission',latestBridentScaleList[0])">
+              <div class="col-md-4"> Pediatrics Admission Assessment :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Fall Risk Assessment - Pediatrics -->
+            <div
+              [ngClass]="isFallRiskAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isFallRiskAssessment',latestBridentScaleList[0])">
+              <div class="col-md-4"> Fall Risk Assessment - Pediatrics :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Pre-Cardiac Cath Checklist -->
+            <div
+              [ngClass]="isPreCardiacCath ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isPreCardiacCath',latestBridentScaleList[0])">
+              <div class="col-md-4"> Pre-Cardiac Cath Checklist :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Nursing Initial Assessment Gyno Obstetrics -->
+            <div
+              [ngClass]="isNursingInitialAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isNursingInitialAssessment',latestBridentScaleList[0])">
+              <div class="col-md-4"> Nursing Initial Assessment Gyno Obstetrics :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
+
+            <!--  Obstetrics Fall Risk Assessment -->
+            <div
+              [ngClass]="isObstetricsFallRisk ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isObstetricsFallRisk',latestBridentScaleList[0])">
+              <div class="col-md-4"> Obstetrics Fall Risk Assessment :</div>
+              <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
+                {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
         </div>
-        </div>
-        <!-- Patient Profile Document -->
- 
+        </div> 
       </div>
       <div class="col-md-6">
         <div class="box-col document-overflow">

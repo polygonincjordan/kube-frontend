@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { CheckInComponent } from './check-in/check-in.component';
@@ -24,6 +24,8 @@ import { FilterType } from '@services/interfaces/common.enum';
 import { PatientWithoutConsumableComponent } from './patient-without-consumable/patient-without-consumable.component';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithoutDocumentsComponent } from './patient-without-documents/patient-without-documents.component';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+
 @UntilDestroy()
 @Component({
   selector: 'app-day-case-dashboard',
@@ -120,6 +122,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   actionTypeSubscription$: Subscription;
   phyOrderRoomsList: any;
   updatedDate: any;
+  modalRef: BsModalRef;
+
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,
@@ -133,6 +137,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private dataShareService: DataShareService,
     private consumableService: ConsumableService,
+    private modalService: BsModalService,
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -239,7 +244,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     this.receiveDataFromChild();
     this.getMedicationcount();
     this.countForPhysicianOrder();
-    this.getNoConsumablesSetCount();
+    // this.getNoConsumablesSetCount();
     this.receiveDataFromPhysicianOrdersChild();
     this.getMissedDocsCount();
     this.getNoConsumablesCount();
@@ -288,7 +293,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     if (this.queryNav == 'Treatmentarea') {
       this.selectModule('treatmentarea');
       this.encounterId = this.einri + this.falnr + this.lfdnr;
-      // this.getDataPatient();
+      this.getDataPatient();
     } else {
       this.selectModule('checkin');
     }
@@ -651,7 +656,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
     } else if (module == 'erhistory') {
-      this.headerLabel = 'Emergency History List'
+      this.headerLabel = 'Day Case History'
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.treatmentarea = false;
       this.checkin = false;
@@ -1038,5 +1043,10 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       var date = new Date(num);
       return date;
     }
+  }
+
+  openPatientInfo(template: TemplateRef<any>,) {
+    const config: ModalOptions = { class: 'modal-dialog-centered patient-info-modal-size' };
+    this.modalRef = this.modalService.show(template, config);
   }
 }

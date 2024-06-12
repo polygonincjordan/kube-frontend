@@ -60,6 +60,23 @@ export class PatientDocumentationComponent implements OnInit {
   fallrisk = false;
   functional = false;
   nutritional = false;
+
+
+  public isSurgicalPassport: boolean = false;
+  public isEducationAssement: boolean = false;
+  public isNursingCarePlan: boolean = false;
+  public isNursingDischarge: boolean = false;
+  public isBradenScale: boolean = false;
+  public isAttechmentDocument: boolean = false;
+  public isMorseFallScale: boolean = false;
+  public isNursingAdmission: boolean = false;
+  public isNursingAssessment: boolean = false;
+  public isPediatricsAdmission: boolean = false;
+  public isFallRiskAssessment: boolean = false;
+  public isPreCardiacCath: boolean = false;
+  public isNursingInitialAssessment: boolean = false;
+  public isObstetricsFallRisk: boolean = false;
+ 
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -392,10 +409,10 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.TRASM$) {
       this.getScaleDetails(this.latestEmergencyNursingDocList[0], RedirectionType.TRASM$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
-      this.selectAssessment('bradenscale', this.latestBridentScaleList[0])
+      this.selectAssessment('isBradenScale', this.latestBridentScaleList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
-      this.selectAssessment('bradenscale', this.latestBridentScaleList[0])
+      this.selectAssessment('isBradenScale', this.latestBridentScaleList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
       this.getScaleDetails(this.latestBridentScaleList[0], RedirectionType.BRADEN$);
@@ -424,11 +441,11 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
       this.getScaleDetails(this.latestNumericratingscaleList[0], RedirectionType.NMRTSC$);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.selectAssessment('educationAssessment', this.educationAssList[0])
+      this.selectAssessment('isEducationAssement', this.educationAssList[0])
       this.openDocument('create');
     }
     else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.selectAssessment('educationAssessment', this.educationAssList[0])
+      this.selectAssessment('isEducationAssement', this.educationAssList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
       this.openEducationAssPdf(this.educationAssList[0].Dockey);
@@ -459,37 +476,37 @@ export class PatientDocumentationComponent implements OnInit {
 
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
-      'nursing': { educationAssessment: true, selectedDocName: 'Education Assessment' },
-      'phy': { phyAssess: true, selectedDocName: 'ER Physician Assessment' },
-      'medreport': { medReport: true, selectedDocName: 'Medical Report' },
-      'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
-      'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
-      'surgicalPassport': { surgicalPassport: true, selectedDocName: 'Surgical Passport' },
-      'pediatricEarlyWarningScale': { pediatricEarlyWarningScale: true, selectedDocName: 'Pediatric Early Warning Score' },
-      'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
-      'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
-      'bradenscale': { bradenscale: true, selectedDocName: 'Braden Scale' },
-      'numericratingscale': { numericratingscale: true, selectedDocName: 'Numeric rating scale(more than 8 years)' },
-      'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
-      'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
-      'isPainAssessment': { isPainAssessment: true, selectedDocName: 'Pain Assesment' },
+      'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
+      'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assement' },
+      'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
+      'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Dicharge Summary' },
+      'isBradenScale': { isBradenScale: true, selectedDocName: 'Braden Scale' },
+      'isAttechmentDocument': { isAttechmentDocument: true, selectedDocName: 'Attechment Document' },
+      'isMorseFallScale': { isMorseFallScale: true, selectedDocName: 'Morse Fall Scale (MFS)' },
+      'isNursingAdmission': { isNursingAdmission: true, selectedDocName: 'Nursing Admission Assessment' },
+      'isNursingAssessment': { isNursingAssessment: true, selectedDocName: 'Nursing Assessment' },
+      'isPediatricsAdmission': { isPediatricsAdmission: true, selectedDocName: 'Pediatrics Admission Assessment' },
+      'isFallRiskAssessment': { isFallRiskAssessment: true, selectedDocName: 'Fall Risk Assessment - Pediatrics' },
+      'isPreCardiacCath': { isPreCardiacCath: true, selectedDocName: 'Pre-Cardiac Cath Checklist' },
+      'isNursingInitialAssessment': { isNursingInitialAssessment: true, selectedDocName: 'Nursing Initial Assessment Gyno Obstetrics' },
+      'isObstetricsFallRisk': { isObstetricsFallRisk: true, selectedDocName: 'Obstetrics Fall Risk Assessment' },
     };
 
     // Reset all flags to false initially
-    this.phyAssess = false;
-    this.nursAssess = false;
-    this.medReport = false;
-    this.attachments = false;
-    this.nurseEndorsement = false;
-    this.surgicalPassport = false;
-    this.pediatricEarlyWarningScale = false;
-    this.educationAssessment = false;
-    this.glasgowcomascale = false;
-    this.facepainscale = false;
-    this.numericratingscale = false;
-    this.bradenscale = false;
-    this.emergencynursingdoc = false;
-    this.isPainAssessment = false;
+    this.isSurgicalPassport = false;
+    this.isEducationAssement = false;
+    this.isNursingCarePlan = false;
+    this.isNursingDischarge = false;
+    this.isBradenScale = false;
+    this.isAttechmentDocument = false;
+    this.isMorseFallScale = false;
+    this.isNursingAdmission = false;
+    this.isNursingAssessment = false;
+    this.isPediatricsAdmission = false;
+    this.isFallRiskAssessment = false;
+    this.isPreCardiacCath = false;
+    this.isNursingInitialAssessment = false;
+    this.isObstetricsFallRisk = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
       const assessment = assessments[name];
@@ -805,10 +822,10 @@ export class PatientDocumentationComponent implements OnInit {
     this.glasgowcomascale = false;
     this.facepainscale = false;
     this.numericratingscale = false;
-    this.bradenscale = false;
+    this.isBradenScale = false;
     this.educationAssessment = false;
     this.nurseEndorsement = false;
-    this.surgicalPassport = false;
+    this.isSurgicalPassport = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
@@ -837,7 +854,7 @@ export class PatientDocumentationComponent implements OnInit {
   openDocument(action) {
     this.actionType = action;
     // education assessment...
-    if (this.educationAssessment) {
+    if (this.isEducationAssement) {
       if (action == 'create') {
         this.openEducationAssessment = true;
       } else if (action == 'edit') {
@@ -920,7 +937,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
     // Surgical passport
-    if (this.surgicalPassport) {
+    if (this.isSurgicalPassport) {
       if (action == 'create') {
         this.openSurgicsalPassport = true;
       } else if (action == 'edit') {
@@ -972,7 +989,7 @@ export class PatientDocumentationComponent implements OnInit {
    
    
     // Braden Scale
-    else if (this.bradenscale) {
+    else if (this.isBradenScale) {
       if (action == 'create') {
         this.openBradenScale = true;
       } else if (action == 'edit') {
@@ -1266,7 +1283,7 @@ export class PatientDocumentationComponent implements OnInit {
       // this.release();
     } else if (this.medReport) {
       this.releaseMed();
-    } else if (this.educationAssessment) {
+    } else if (this.isEducationAssement) {
       this.createEducationAss(true);
     } else if (this.openSurgicsalPassport) {
       this.SurgicalPassComp.createSurgicalPassDoc('editRelease');
