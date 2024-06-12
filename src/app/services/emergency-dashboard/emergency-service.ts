@@ -1126,6 +1126,42 @@ export class EmergencyService {
     })
   }
 
+  getLatestHemoDialysisFistulaGraft(json){
+    return this.http.get(this.url + `LatestFistulaGraftSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+      withCredentials: true
+    })
+  }
+
+  postHemoDialysisFistulaGraft(payload){
+    return this.http.post(this.url + 'fistulaGraftSet', payload, {
+      withCredentials: true
+    })
+  }
+
+  getHemoDialysisFistulaGraftDoc(dockey){
+    return this.http.get(this.url + `getfistulaGraftSet?Dockey=${dockey}`, {
+      withCredentials: true
+    })
+  }
+
+  releaseHemoDialysisFistiulaGraft(payload){
+    return this.http.post(this.url + 'fistulaGraftSet', payload, {
+      withCredentials: true
+    })
+  }
+
+  deleteHemoDialysisFistulaGraftDoc(Dockey){
+    return this.http.delete(this.url + `deleteFistulaGraftSet?Dockey=${Dockey}`, {
+      withCredentials: true
+    })
+  }
+
+  getHemoDialysisFistulaGraftPDF(dockey){
+    return this.http.get(this.url + `getFistulaGraftDocPDF?Dockey=${dockey}`,{
+      withCredentials: true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 
