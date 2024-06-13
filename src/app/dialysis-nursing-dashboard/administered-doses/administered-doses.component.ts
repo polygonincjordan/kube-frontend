@@ -82,7 +82,7 @@ export class AdministeredDosesComponent implements OnInit{
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
   isExpanded: boolean;
-  value: any;
+value: any;
   selectedColData: any;
   isSelected=false;
   cardSection: boolean;
@@ -132,13 +132,6 @@ export class AdministeredDosesComponent implements OnInit{
       Rsfsn: [''],
       Repdt: [''],
     });
-    this.cartForm = this.formBuilder.group({
-      FromDt: [''],
-      ToDt: [''],
-      FromTm: [''],
-      ToTm: [''],
-      Nursingou: ['F2DTUAMC']
-    })
   }
   ngOnInit(): void {
     this.getMedicationAdministrationlist();
@@ -164,7 +157,7 @@ export class AdministeredDosesComponent implements OnInit{
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
+    this.hospitalistService.getMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
