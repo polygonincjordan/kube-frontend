@@ -86,13 +86,11 @@ export class AdministeredDosesComponent implements OnInit{
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
   isExpanded: boolean;
-  value: any;
+value: any;
   selectedColData: any;
   isSelected=false;
   cardSection: boolean;
   isCollapsed: boolean = false;
-  cartForm: FormGroup;
-
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -134,18 +132,11 @@ export class AdministeredDosesComponent implements OnInit{
       Rsfsn: [''],
       Repdt: [''],
     });
-    this.cartForm = this.formBuilder.group({
-      FromDt: [''],
-      ToDt: [''],
-      FromTm: [''],
-      ToTm: [''],
-      Nursingou: ['F2DTUAMC']
-    })
   }
   ngOnInit(): void {
     this.getMedicationAdministrationlist();
     this.filterData();
-    // this.getReceviceCartList();
+    this.getReceviceCartList();
 
   }
   redirectToeKardex(data) {
@@ -167,40 +158,18 @@ export class AdministeredDosesComponent implements OnInit{
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
+    this.hospitalistService.getMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
 
   getReceviceCartList(){
-    const dateFrom = this.formatDate(this.cartForm.get('FromDt').value);
-    const dateTo = this.formatDate(this.cartForm.get('ToDt').value);
-    const timeFrom = this.formatTime(this.cartForm.get('FromTm').value);
-    const timeTo = this.formatTime(this.cartForm.get('ToTm').value);
-    const nurseUnit = this.cartForm.get('Nursingou').value ? this.cartForm.get('Nursingou').value : null;
+    this.emergencyService.getReceviceCart().subscribe((res)=>{
+      console.log(res);
 
-    this.emergencyService.getReceviceCart(dateFrom,dateTo,timeFrom,timeTo,nurseUnit).subscribe({
-      next : (res) => {
-        console.log(res);
-      },
-      error: (error) => {
-        console.log(error);
-      }
+    },(error)=>{
+
     })
-  }
-
-  formatDate(dateTimeString){
-    if(dateTimeString){
-      const date = new Date(dateTimeString).toISOString()
-      const dateDataArr = date.split('T')
-      return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
-    }
-  }
-  formatTime(dateTimeString){
-    if(dateTimeString){
-      const dateDataArr = dateTimeString.split(':')
-      return `PT${dateDataArr[0]}H${dateDataArr[1]}M${dateDataArr[2] ? dateDataArr[2] : '00'}S`
-    }
   }
   handleEvent(value){
     this.rightside  = false;
