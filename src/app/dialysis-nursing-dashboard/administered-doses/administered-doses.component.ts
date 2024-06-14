@@ -13,6 +13,7 @@ import { HospitalistService } from '@services/e-hospitalist/hospitalist.service'
 import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-medication-doses.service';
 import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-administered-doses',
@@ -92,6 +93,9 @@ export class AdministeredDosesComponent implements OnInit{
   cardSection: boolean;
   isCollapsed: boolean = false;
   cartForm: FormGroup;
+  receiveCartData:any[]=[];
+  toContentData:any[]=[];
+  cartData:any;
 
   constructor(
     private emergencyService: EmergencyService,
@@ -180,14 +184,35 @@ export class AdministeredDosesComponent implements OnInit{
     const nurseUnit = this.cartForm.get('Nursingou').value ? this.cartForm.get('Nursingou').value : null;
 
     this.emergencyService.getReceviceCart(dateFrom,dateTo,timeFrom,timeTo,nurseUnit).subscribe({
-      next : (res) => {
-        console.log(res);
+      next : (res:any) => {
+        this.receiveCartData=res.d.results;
       },
       error: (error) => {
         console.log(error);
       }
     })
   }
+
+  formatDateFromTimestamp(timestamp: string): string {
+    const regex = /\/Date\((\d+)\)\//; 
+    const match = regex.exec(timestamp);
+    
+    if (match && match[1]) {
+      const milliseconds = parseInt(match[1], 10);
+      const date = new Date(milliseconds);
+      const day = date.getDate();
+      const month = date.getMonth() + 1; 
+      const year = date.getFullYear();
+  
+      const formattedDay = day < 10 ? '0' + day : day.toString();
+      const formattedMonth = month < 10 ? '0' + month : month.toString();
+  
+      return formattedDay + '-' + formattedMonth + '-' + year;
+
+    }
+    return ''; 
+  }
+  
 
   formatDate(dateTimeString){
     if(dateTimeString){
@@ -261,7 +286,7 @@ export class AdministeredDosesComponent implements OnInit{
     // this.listItem.filter((data) => data.Us)
   }
 
-  selectDateColumn(index: number) {
+  selectDateColumn(index: number, item:any) {
     if (this.selectedColData === index) {
       this.selectedColData = undefined;
       this.cardSection= false
@@ -269,7 +294,9 @@ export class AdministeredDosesComponent implements OnInit{
       this.selectedColData = index;
       this.cardSection= true
     }
+    this.toContentData = item;
   }
+  
   getDate(value) {
     if (value) {
       var str = value;
@@ -307,9 +334,12 @@ export class AdministeredDosesComponent implements OnInit{
   });
    }
 
-   openCartDetailModal(template: TemplateRef<any>){
+   openCartDetailModal(event:Event,template: TemplateRef<any>,item){
+    event.stopPropagation();
+
     const config: ModalOptions = { class: 'modal-dialog-centered lab-modal-size' };
     this.cartmodalRef = this.modalService.show(template,config);
+    this.cartData=item;
     this.cartmodalRef.onHide.subscribe((reason: string | any) => {
     });
    }
