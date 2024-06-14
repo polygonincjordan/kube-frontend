@@ -1,19 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PointofsaleService } from '@services/pointofsale.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import Swal from 'sweetalert2';
 import { ErBedComponent } from '../check-in/er-bed/er-bed.component';
 import { ErVitalsComponent } from '../check-in/er-vitals/er-vitals.component';
 import { NurErAllergyComponent } from '../check-in/nur-er-allergy/nur-er-allergy.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { StorageService } from '@services/storage.service';
 import { DatePipe } from '@angular/common';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-medication-doses.service';
-import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
-import { log } from 'console';
 
 @Component({
   selector: 'app-administered-doses',
@@ -91,7 +86,7 @@ export class AdministeredDosesComponent implements OnInit{
   selectedColData: any;
   isSelected=false;
   cardSection: boolean;
-  isCollapsed: boolean = false;
+  isCollapsed: boolean[] = [];
   cartForm: FormGroup;
   receiveCartData:any[]=[];
   toContentData:any[]=[];
@@ -102,7 +97,6 @@ export class AdministeredDosesComponent implements OnInit{
     private modalService: BsModalService,
     private hospitalistService: HospitalistService,
     private formBuilder: FormBuilder,
-    private storageService:StorageService,
     public ePrescriptionService: EPrescriptionService,
     public missedMedicationService: MissedMedicationDosesService
   ) {
@@ -149,7 +143,6 @@ export class AdministeredDosesComponent implements OnInit{
   ngOnInit(): void {
     this.getMedicationAdministrationlist();
     this.filterData();
-    // this.getReceviceCartList();
 
   }
   redirectToeKardex(data) {
@@ -268,7 +261,6 @@ export class AdministeredDosesComponent implements OnInit{
 
 
       }
-      // this.loadMedicationHistoryData(this.tablelist[0].Einri);
     }))
   }
 
@@ -343,4 +335,9 @@ export class AdministeredDosesComponent implements OnInit{
     this.cartmodalRef.onHide.subscribe((reason: string | any) => {
     });
    }
+
+   toggleAccordion(index: number): void {
+    this.isCollapsed[index] = !this.isCollapsed[index];
+  }
+  
 }
