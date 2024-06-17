@@ -45,7 +45,7 @@ export class ErTriageComponent implements OnInit {
   psychologicalHistory: boolean = false;
   socialHistory: boolean = true;
   noHabitApplicable: boolean = false;
-
+  isTriagePrioritySelected:boolean = false;
   modeArrivalList = [
     { value: '0', label: 'Stretcher' },
     { value: '1', label: 'Ambulatory' },
@@ -118,6 +118,7 @@ export class ErTriageComponent implements OnInit {
     { value: '04', label: 'Less Urgency', backgroundColor: 'green', borderColor: '#cacaca', fontColor: 'white' },
     { value: '05', label: 'Non Urgency', backgroundColor: 'white', borderColor: '#cacaca', fontColor: 'black' }
   ];
+  selectedTriagePriorityData: any;
 
   constructor(
     private modalService: BsModalService,
@@ -193,6 +194,9 @@ export class ErTriageComponent implements OnInit {
 
   // triahe main form group
   initForm(triageValue?: any) {
+    this.selectedTriagePriorityData = triageValue?.TriagePriority
+    console.log(this.selectedTriagePriorityData);
+    
     this.triageForm = this.formBuilder.group({
       Dockey: triageValue?.Dockey ? triageValue?.Dockey : '',
       Dtid: triageValue?.Dtid ? triageValue?.Dtid : 'ZMED_TRASM',
@@ -262,6 +266,11 @@ export class ErTriageComponent implements OnInit {
   // if traige list status is Draft then call this API
   statusDraftDocDetails(documentStatus) {
     this.emergencyService.getTriageDataIfStatusDraft(documentStatus).subscribe((res: any) => {
+      console.log(res?.d?.results[0].TriagePriority,"++++");
+      debugger
+      if(res?.d?.results[0].TriagePriority){
+        this.isTriagePrioritySelected = true
+      }
       this.initForm(res?.d?.results[0]);
       this.toAllergyArr = res?.d?.results[0].TOALLERGIES?.results;
       this.toVitalsArr = res?.d?.results[0].TOVITALSIGNS.results;
@@ -749,6 +758,21 @@ export class ErTriageComponent implements OnInit {
     });
 
   }
+
+alreadySelected(){
+  if(this.isTriagePrioritySelected){
+    Swal.fire({
+      text: 'Triage can’t be changed from this document',
+      icon: 'warning',
+      confirmButtonText: 'Ok',
+     customClass: 'myalertpopup',
+    })
+    this.triageForm.patchValue({
+      TriagePriority:this.selectedTriageDetails?.TriagePriorityCode ? this.selectedTriageDetails?.TriagePriorityCode : this.selectedTriagePriorityData
+    })
+  }
+ }
+ 
   public updateTriageStatus(): void {
 
     let payload = {
@@ -796,6 +820,7 @@ export class ErTriageComponent implements OnInit {
       customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
+        this.isTriagePrioritySelected = false;
         this.modalRefForAllergy?.hide();
       }
     });

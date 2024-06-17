@@ -13,6 +13,7 @@ import { HospitalistService } from '@services/e-hospitalist/hospitalist.service'
 import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-medication-doses.service';
 import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @Component({
   selector: 'app-administered-doses',
@@ -104,7 +105,8 @@ export class AdministeredDosesComponent implements OnInit{
     private formBuilder: FormBuilder,
     private storageService:StorageService,
     public ePrescriptionService: EPrescriptionService,
-    public missedMedicationService: MissedMedicationDosesService
+    public missedMedicationService: MissedMedicationDosesService,
+    private dayCaseDashboardService:DayCaseDashboardService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -171,7 +173,7 @@ export class AdministeredDosesComponent implements OnInit{
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getMedicationAdministrationSet(null,fromDate,toDate).subscribe((res:any)=>{
+    this.dayCaseDashboardService.getPatientAdministration(fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
