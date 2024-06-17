@@ -92,7 +92,7 @@
                 <ng-container *ngFor="let priority of triagePriorities">
                   <li class="checkbox-margin">
                     <input type="radio" name="TriagePriority" id="{{ 'flexRadioDefault' + priority.value }}"
-                      formControlName="TriagePriority" [value]="priority.value" />
+                      formControlName="TriagePriority" [value]="priority.value" (change)="alreadySelected()" />
                     <span class="mr-2"></span>
                     <label for="{{ 'flexRadioDefault' + priority.value }}" class="m-0 font-width"
                       [title]="'Triage ' + priority.value">
