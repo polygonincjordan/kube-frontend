@@ -1480,59 +1480,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openAssessment) {
-        console.log("status 1");
-
-        const toMonitor = this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value
-         const dAssessmentForm = this.patientDocService.dialysisAssecementForm
-
-        toMonitor.forEach(monitor => {
-            monitor.Timee = this.formatTime(monitor.Timee)
-        });
-        
-        const otherData = {
-          Dockey: '',
-          Dtid: 'ZMED_DIALY',
-          Einri: this.apiJson.Einri,
-          Patnr: this.apiJson.Patnr,
-          Falnr: this.apiJson.Falnr,
-          Lfdnr: this.apiJson.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          AttendPhy: '9000000020',
-          DocStatus: '1',
-        }
-
-        dAssessmentForm.patchValue({otherDetails: otherData})
-
-        const payload = {
-          ...dAssessmentForm.controls['hemodialysis'].value,
-          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
-          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
-          ...dAssessmentForm.controls['peritonealForm'].value,
-          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
-          ...dAssessmentForm.controls['preDialysis'].value,
-          ...dAssessmentForm.controls['otherDetails'].value,
-          TreatmentDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value),
-          DialysisFDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value),
-          TreatmentTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value),
-          DialysisFTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value),
-          PTreatmentDate: this.formatDate(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentDate').value),
-          PTreatmentTime: this.formatTime(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentTime').value),
-          PrescribedTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value),
-          TOMONITOR: toMonitor,
-        };
-        
-
-        this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
-            Swal.fire({
-              text: "Document is created successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-            this.refresh();
-        }, (error)=>{
-          console.log(error);
-        })
+        this.postOpenAssessment('1', this.actionType);
       }
       if(this.openMorseFallScale) {
         console.log('status 1');
@@ -1559,60 +1507,10 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
       if(this.openHemoCatheter){
-        console.log('status 1');
-        const formData = {
-          ...this.hemoCatheterC.getFormData(),
-          Dockey: '',
-          Einri: this.storageService.einri,
-          Patnr: this.storageService.patnr,
-          Falnr: this.storageService.falnr,
-          Lfdnr: this.storageService.lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '1',
-          Dtid : 'ZMED_HBCA',
-          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
-          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
-          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is created successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoCatheter('1', this.actionType);
       }
       if(this.openHemoDialysisFistulaGraft){
-        console.log('status 1');
-        const formData = {
-          ...this.hemoDialysisFistulaGraftC.getFormData(),
-          Dockey: '',
-          Einri: this.storageService.einri,
-          Patnr: this.storageService.patnr,
-          Falnr: this.storageService.falnr,
-          Lfdnr: this.storageService.lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '1',
-          Dtid : 'ZMED_HBFG',
-          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is created successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoDialysisFistulaGraft('1', this.actionType);
       }
     }
     else if (this.actionType == 'edit') {
@@ -1647,137 +1545,13 @@ export class PatientDocumentationComponent implements OnInit {
         this.updateEducationAss(false);
       }
       if (this.openAssessment) {
-        console.log("status 1 edit");
-        
-        const toMonitor =
-        this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
-        const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
-
-
-        toMonitor.forEach((monitor) => {
-          monitor.Timee = this.formatTime(monitor.Timee);
-        });
-
-        const otherData = {
-          Dockey: this.latestDocData?.Dockey,
-          Dtid: 'ZMED_DIALY',
-          Einri: this.latestDocData?.Einri,
-          Patnr: this.latestDocData?.Patnr,
-          Falnr: this.latestDocData?.Falnr,
-          Lfdnr: this.latestDocData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          AttendPhy: this.latestDocData?.AttendPhy,
-          DocStatus: this.latestDocData?.DocStatus,
-        };
-
-        dAssessmentForm.patchValue({ otherDetails: otherData });
-
-        const payload = {
-          ...dAssessmentForm.controls['hemodialysis'].value,
-          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
-          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
-          ...dAssessmentForm.controls['peritonealForm'].value,
-          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
-          ...dAssessmentForm.controls['preDialysis'].value,
-          ...dAssessmentForm.controls['otherDetails'].value,
-          TreatmentDate: this.formatDate(
-            dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value
-          ),
-          DialysisFDate: this.formatDate(
-            dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
-          ),
-          TreatmentTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
-          ),
-          DialysisFTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
-          ),
-          PTreatmentDate: this.formatDate(
-            dAssessmentForm.controls['postDialysisMonitoring'].get(
-              'PTreatmentDate'
-            ).value
-          ),
-          PTreatmentTime: this.formatTime(
-            dAssessmentForm.controls['postDialysisMonitoring'].get(
-              'PTreatmentTime'
-            ).value
-          ),
-          PrescribedTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
-          ),
-          TOMONITOR: toMonitor,
-        };
-
-        this.emergencyService.postDailysisSet(payload).subscribe(
-          (resp) => {
-            Swal.fire({
-              text: "Document is updated successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-            this.refresh();
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        this.postOpenAssessment('1', this.actionType);
       }
       if(this.openHemoCatheter){
-        console.log('status 1 edit');
-        const formData = {
-          ...this.hemoCatheterC.getFormData(),
-          Dockey: this.latestHemoCatheterData?.Dockey,
-          Einri: this.latestHemoCatheterData?.Einri,
-          Patnr: this.latestHemoCatheterData?.Patnr,
-          Falnr: this.latestHemoCatheterData?.Falnr,
-          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '1',
-          Dtid : 'ZMED_HBCA',
-          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
-          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
-          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is updated successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoCatheter('1', this.actionType);
       }
       if(this.openHemoDialysisFistulaGraft){
-        console.log('status 1');
-        const formData = {
-          ...this.hemoDialysisFistulaGraftC.getFormData(),
-          Dockey: this.latestHemoDialysisFistulaGraftData?.Dockey,
-          Einri: this.latestHemoDialysisFistulaGraftData?.Einri,
-          Patnr: this.latestHemoDialysisFistulaGraftData?.Patnr,
-          Falnr: this.latestHemoDialysisFistulaGraftData?.Falnr,
-          Lfdnr: this.latestHemoDialysisFistulaGraftData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '1',
-          Dtid : 'ZMED_HBFG',
-          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is updated successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoDialysisFistulaGraft('1', this.actionType);
       }
     }
     else if (this.actionType == 'copy') {
@@ -1821,81 +1595,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openAssessment) {
-        console.log("5");
-        
-        const toMonitor =
-        this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
-        const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
-
-
-        toMonitor.forEach((monitor) => {
-          monitor.Timee = this.formatTime(monitor.Timee);
-        });
-
-        const otherData = {
-          Dockey: this.latestDocData?.Dockey,
-          Dtid: 'ZMED_DIALY',
-          Einri: this.latestDocData?.Einri,
-          Patnr: this.latestDocData?.Patnr,
-          Falnr: this.latestDocData?.Falnr,
-          Lfdnr: this.latestDocData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          AttendPhy: this.latestDocData?.AttendPhy,
-          DocStatus: "5",
-        };
-
-        dAssessmentForm.patchValue({ otherDetails: otherData });
-
-        const payload = {
-          ...dAssessmentForm.controls['hemodialysis'].value,
-          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
-          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
-          ...dAssessmentForm.controls['peritonealForm'].value,
-          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
-          ...dAssessmentForm.controls['preDialysis'].value,
-          ...dAssessmentForm.controls['otherDetails'].value,
-          TreatmentDate: this.formatDate(
-            dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value
-          ),
-          DialysisFDate: this.formatDate(
-            dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
-          ),
-          TreatmentTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
-          ),
-          DialysisFTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
-          ),
-          PTreatmentDate: this.formatDate(
-            dAssessmentForm.controls['postDialysisMonitoring'].get(
-              'PTreatmentDate'
-            ).value
-          ),
-          PTreatmentTime: this.formatTime(
-            dAssessmentForm.controls['postDialysisMonitoring'].get(
-              'PTreatmentTime'
-            ).value
-          ),
-          PrescribedTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
-          ),
-          TOMONITOR: toMonitor,
-        };
-
-        this.emergencyService.postDailysisSet(payload).subscribe(
-          (resp) => {
-            Swal.fire({
-              text: "Document is created successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-            this.refresh();
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        this.postOpenAssessment('3', this.actionType);
       }
       if(this.openMorseFallScale){
         console.log('status 3');
@@ -1922,61 +1622,10 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
       if(this.openHemoCatheter){
-        console.log('5');
-
-        const formData = {
-          ...this.hemoCatheterC.getFormData(),
-          Dockey: this.latestHemoCatheterData?.Dockey,
-          Einri: this.latestHemoCatheterData?.Einri,
-          Patnr: this.latestHemoCatheterData?.Patnr,
-          Falnr: this.latestHemoCatheterData?.Falnr,
-          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '5',
-          Dtid : 'ZMED_HBCA',
-          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
-          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
-          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is released successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoCatheter('3', this.actionType);
       }
       if(this.openHemoDialysisFistulaGraft){
-        console.log('status 5');
-        const formData = {
-          ...this.hemoDialysisFistulaGraftC.getFormData(),
-          Dockey: this.latestHemoDialysisFistulaGraftData?.Dockey,
-          Einri: this.latestHemoDialysisFistulaGraftData?.Einri,
-          Patnr: this.latestHemoDialysisFistulaGraftData?.Patnr,
-          Falnr: this.latestHemoDialysisFistulaGraftData?.Falnr,
-          Lfdnr: this.latestHemoDialysisFistulaGraftData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '5',
-          Dtid : 'ZMED_HBFG',
-          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is released successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoDialysisFistulaGraft('3', this.actionType);
       }
     }
   }
@@ -1987,253 +1636,35 @@ export class PatientDocumentationComponent implements OnInit {
       this.releaseMed();
     } else if (this.educationAssessment) {
       this.createEducationAss(true);
-    }else if (this.assessment){
+    } else if (this.assessment){
       if(this.actionType === "create"){
-        console.log("status 4");
-
-        const toMonitor = this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value
-         const dAssessmentForm = this.patientDocService.dialysisAssecementForm
-
-        toMonitor.forEach(monitor => {
-            monitor.Timee = this.formatTime(monitor.Timee)
-        });
-        
-        const otherData = {
-          Dockey: '',
-          Dtid: 'ZMED_DIALY',
-          Einri: this.apiJson.Einri,
-          Patnr: this.apiJson.Patnr,
-          Falnr: this.apiJson.Falnr,
-          Lfdnr: this.apiJson.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          AttendPhy: '9000000020',
-          DocStatus: '4',
-        }
-
-        dAssessmentForm.patchValue({otherDetails: otherData})
-
-        const payload = {
-          ...dAssessmentForm.controls['hemodialysis'].value,
-          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
-          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
-          ...dAssessmentForm.controls['peritonealForm'].value,
-          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
-          ...dAssessmentForm.controls['preDialysis'].value,
-          ...dAssessmentForm.controls['otherDetails'].value,
-          TreatmentDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value),
-          DialysisFDate: this.formatDate(dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value),
-          TreatmentTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value),
-          DialysisFTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value),
-          PTreatmentDate: this.formatDate(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentDate').value),
-          PTreatmentTime: this.formatTime(dAssessmentForm.controls['postDialysisMonitoring'].get('PTreatmentTime').value),
-          PrescribedTime: this.formatTime(dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value),
-          TOMONITOR: toMonitor,
-        };
-        
-
-        this.emergencyService.postDailysisSet(payload).subscribe((resp)=>{
-            Swal.fire({
-              text: "Document is created successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-            this.refresh();
-        }, (error)=>{
-          console.log(error);
-        })
-      }else if(this.actionType === "edit"){
-        console.log("status 2 edit");
-
-        const toMonitor =
-        this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
-        const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
-
-
-        toMonitor.forEach((monitor) => {
-          monitor.Timee = this.formatTime(monitor.Timee);
-        });
-
-        const otherData = {
-          Dockey: this.latestDocData?.Dockey,
-          Dtid: 'ZMED_DIALY',
-          Einri: this.latestDocData?.Einri,
-          Patnr: this.latestDocData?.Patnr,
-          Falnr: this.latestDocData?.Falnr,
-          Lfdnr: this.latestDocData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          AttendPhy: this.latestDocData?.AttendPhy,
-          DocStatus: '2',
-        };
-
-        dAssessmentForm.patchValue({ otherDetails: otherData });
-
-        const payload = {
-          ...dAssessmentForm.controls['hemodialysis'].value,
-          ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
-          ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
-          ...dAssessmentForm.controls['peritonealForm'].value,
-          ...dAssessmentForm.controls['postDialysisMonitoring'].value,
-          ...dAssessmentForm.controls['preDialysis'].value,
-          ...dAssessmentForm.controls['otherDetails'].value,
-          TreatmentDate: this.formatDate(
-            dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value
-          ),
-          DialysisFDate: this.formatDate(
-            dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
-          ),
-          TreatmentTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
-          ),
-          DialysisFTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
-          ),
-          PTreatmentDate: this.formatDate(
-            dAssessmentForm.controls['postDialysisMonitoring'].get(
-              'PTreatmentDate'
-            ).value
-          ),
-          PTreatmentTime: this.formatTime(
-            dAssessmentForm.controls['postDialysisMonitoring'].get(
-              'PTreatmentTime'
-            ).value
-          ),
-          PrescribedTime: this.formatTime(
-            dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
-          ),
-          TOMONITOR: toMonitor,
-        };
-
-        this.emergencyService.postDailysisSet(payload).subscribe(
-          (resp) => {
-            Swal.fire({
-              text: "Document is updated successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-            this.refresh();
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        this.postOpenAssessment('4', this.actionType);
       }
-    }else if(this.hemoCatheter){
+      if(this.actionType === "edit"){
+        this.postOpenAssessment('2', this.actionType);
+      }
+      if(this.actionType == 'copy'){
+        this.postOpenAssessment('5', this.actionType);
+      }
+    } else if(this.hemoCatheter){
       if(this.actionType == 'create'){
-        console.log('status 4');
-        const formData = {
-          ...this.hemoCatheterC.getFormData(),
-          Dockey: '',
-          Einri: this.storageService.einri,
-          Patnr: this.storageService.patnr,
-          Falnr: this.storageService.falnr,
-          Lfdnr: this.storageService.lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '4',
-          Dtid : 'ZMED_HBCA',
-          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
-          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
-          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is Release successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoCatheter('4', this.actionType);
       }
       if(this.actionType == 'edit'){
-        console.log('status 2');
-        
-        const formData = {
-          ...this.hemoCatheterC.getFormData(),
-          Dockey: this.latestHemoCatheterData?.Dockey,
-          Einri: this.latestHemoCatheterData?.Einri,
-          Patnr: this.latestHemoCatheterData?.Patnr,
-          Falnr: this.latestHemoCatheterData?.Falnr,
-          Lfdnr: this.latestHemoCatheterData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '2',
-          Dtid : 'ZMED_HBCA',
-          CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
-          CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
-          SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is Release successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoCatheter('2', this.actionType);
       }
-    }else if(this.hemoDialysisFistulaGraft){
+      if(this.actionType == 'copy'){
+        this.postHemoCatheter('5', this.actionType);
+      }
+    } else if(this.hemoDialysisFistulaGraft){
       if(this.actionType == 'create'){
-        console.log('status 4');
-        const formData = {
-          ...this.hemoDialysisFistulaGraftC.getFormData(),
-          Dockey: '',
-          Einri: this.storageService.einri,
-          Patnr: this.storageService.patnr,
-          Falnr: this.storageService.falnr,
-          Lfdnr: this.storageService.lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '4',
-          Dtid : 'ZMED_HBFG',
-          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is Release successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoDialysisFistulaGraft('4', this.actionType);
       }
       if(this.actionType == 'edit'){
-        console.log('status 2');
-        
-        const formData = {
-          ...this.hemoDialysisFistulaGraftC.getFormData(),
-          Dockey: this.latestHemoDialysisFistulaGraftData?.Dockey,
-          Einri: this.latestHemoDialysisFistulaGraftData?.Einri,
-          Patnr: this.latestHemoDialysisFistulaGraftData?.Patnr,
-          Falnr: this.latestHemoDialysisFistulaGraftData?.Falnr,
-          Lfdnr: this.latestHemoDialysisFistulaGraftData?.Lfdnr,
-          Orgdo: 'F21IUAMC',
-          DocStatus: '2',
-          Dtid : 'ZMED_HBFG',
-          SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
-          SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
-        };
-        this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
-          Swal.fire({
-            text: "Document is Release successfully",
-            icon: 'success',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          })
-          this.refresh();
-        },(error)=>{
-          console.log(error);
-        })
+        this.postHemoDialysisFistulaGraft('2', this.actionType);
+      }
+      if(this.actionType == 'copy'){
+        this.postHemoDialysisFistulaGraft('5', this.actionType);
       }
     }
   }
@@ -2672,6 +2103,138 @@ export class PatientDocumentationComponent implements OnInit {
   closePdfModal() {
     this.releaseDocumentImage = '';
     this.modalRef.hide();
+  }
+
+  postHemoDialysisFistulaGraft(docStatus:string,action:string){
+    const formData = {
+      ...this.hemoDialysisFistulaGraftC.getFormData(),
+      Dockey: action == 'create' ? '' : this.latestHemoDialysisFistulaGraftData?.Dockey,
+      Einri: action == 'create' ? this.storageService.einri : this.latestHemoDialysisFistulaGraftData?.Einri,
+      Patnr: action == 'create' ? this.storageService.patnr : this.latestHemoDialysisFistulaGraftData?.Patnr,
+      Falnr: action == 'create' ? this.storageService.falnr : this.latestHemoDialysisFistulaGraftData?.Falnr,
+      Lfdnr: action == 'create' ? this.storageService.lfdnr : this.latestHemoDialysisFistulaGraftData?.Lfdnr,
+      Orgdo: 'F21IUAMC',
+      DocStatus: docStatus,
+      Dtid : 'ZMED_HBFG',
+      SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
+      SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+    };
+    this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
+      Swal.fire({
+        text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : 'Released' } successfully`,
+        icon: 'success',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+      this.refresh();
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+  postHemoCatheter(docStatus:string,action:string){
+    const formData = {
+      ...this.hemoCatheterC.getFormData(),
+      Dockey: action == 'create' ? '' : this.latestHemoCatheterData?.Dockey,
+      Einri: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Einri,
+      Patnr: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Patnr,
+      Falnr: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Falnr,
+      Lfdnr: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Lfdnr,
+      Orgdo: 'F21IUAMC',
+      DocStatus: docStatus,
+      Dtid : 'ZMED_HBCA',
+      CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
+      CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
+      SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
+      SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+    };
+    this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
+      Swal.fire({
+        text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : 'Released' } successfully`,
+        icon: 'success',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+      this.refresh();
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+  postOpenAssessment(docStatus:string,action:string){
+    const toMonitor =
+    this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
+    const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
+
+
+    toMonitor.forEach((monitor) => {
+      monitor.Timee = this.formatTime(monitor.Timee);
+    });
+
+    const otherData = {
+      Dockey: action == 'create' ? '' : this.latestDocData?.Dockey,
+      Dtid: 'ZMED_DIALY',
+      Einri: action == 'create' ? this.storageService.einri : this.latestDocData?.Einri,
+      Patnr: action == 'create' ? this.storageService.patnr : this.latestDocData?.Patnr,
+      Falnr: action == 'create' ? this.storageService.falnr : this.latestDocData?.Falnr,
+      Lfdnr: action == 'create' ? this.storageService.lfdnr : this.latestDocData?.Lfdnr,
+      Orgdo: 'F21IUAMC',
+      AttendPhy: action == 'create' ? '9000000020' : this.latestDocData?.AttendPhy,
+      DocStatus: docStatus,
+    };
+
+    dAssessmentForm.patchValue({ otherDetails: otherData });
+
+    const payload = {
+      ...dAssessmentForm.controls['hemodialysis'].value,
+      ...dAssessmentForm.controls['haemodialysisMonitoring'].value,
+      ...dAssessmentForm.controls['haemodialysisLineMonitoring'].value,
+      ...dAssessmentForm.controls['peritonealForm'].value,
+      ...dAssessmentForm.controls['postDialysisMonitoring'].value,
+      ...dAssessmentForm.controls['preDialysis'].value,
+      ...dAssessmentForm.controls['otherDetails'].value,
+      TreatmentDate: this.formatDate(
+        dAssessmentForm.controls['preDialysis'].get('TreatmentDate').value
+      ),
+      DialysisFDate: this.formatDate(
+        dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
+      ),
+      TreatmentTime: this.formatTime(
+        dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
+      ),
+      DialysisFTime: this.formatTime(
+        dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
+      ),
+      PTreatmentDate: this.formatDate(
+        dAssessmentForm.controls['postDialysisMonitoring'].get(
+          'PTreatmentDate'
+        ).value
+      ),
+      PTreatmentTime: this.formatTime(
+        dAssessmentForm.controls['postDialysisMonitoring'].get(
+          'PTreatmentTime'
+        ).value
+      ),
+      PrescribedTime: this.formatTime(
+        dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
+      ),
+      TOMONITOR: toMonitor,
+    };
+
+    this.emergencyService.postDailysisSet(payload).subscribe(
+      (resp) => {
+        Swal.fire({
+          text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : 'Released' } successfully`,
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        this.refresh();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   // Calculate content height based on screen resolution

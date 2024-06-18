@@ -1,17 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PointofsaleService } from '@services/pointofsale.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import Swal from 'sweetalert2';
 import { ErBedComponent } from '../check-in/er-bed/er-bed.component';
 import { ErVitalsComponent } from '../check-in/er-vitals/er-vitals.component';
 import { NurErAllergyComponent } from '../check-in/nur-er-allergy/nur-er-allergy.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { StorageService } from '@services/storage.service';
 import { DatePipe } from '@angular/common';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-medication-doses.service';
-import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @Component({
@@ -86,17 +82,21 @@ export class AdministeredDosesComponent implements OnInit{
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
   isExpanded: boolean;
-value: any;
+  value: any;
   selectedColData: any;
   isSelected=false;
   cardSection: boolean;
-  isCollapsed: boolean = false;
+  isCollapsed: boolean[] = [];
+  cartForm: FormGroup;
+  receiveCartData:any[]=[];
+  toContentData:any[]=[];
+  cartData:any;
+
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
     private hospitalistService: HospitalistService,
     private formBuilder: FormBuilder,
-    private storageService:StorageService,
     public ePrescriptionService: EPrescriptionService,
     public missedMedicationService: MissedMedicationDosesService
   ) {
@@ -132,11 +132,17 @@ value: any;
       Rsfsn: [''],
       Repdt: [''],
     });
+    this.cartForm = this.formBuilder.group({
+      FromDt: [''],
+      ToDt: [''],
+      FromTm: [''],
+      ToTm: [''],
+      Nursingou: ['F2DTUAMC']
+    })
   }
   ngOnInit(): void {
     this.getMedicationAdministrationlist();
     this.filterData();
-    this.getReceviceCartList();
 
   }
   redirectToeKardex(data) {
@@ -158,18 +164,61 @@ value: any;
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
+    this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
 
   getReceviceCartList(){
-    this.emergencyService.getReceviceCart().subscribe((res)=>{
-      console.log(res);
+    const dateFrom = this.formatDate(this.cartForm.get('FromDt').value);
+    const dateTo = this.formatDate(this.cartForm.get('ToDt').value);
+    const timeFrom = this.formatTime(this.cartForm.get('FromTm').value);
+    const timeTo = this.formatTime(this.cartForm.get('ToTm').value);
+    const nurseUnit = this.cartForm.get('Nursingou').value ? this.cartForm.get('Nursingou').value : null;
 
-    },(error)=>{
-
+    this.emergencyService.getReceviceCart(dateFrom,dateTo,timeFrom,timeTo,nurseUnit).subscribe({
+      next : (res:any) => {
+        this.receiveCartData=res.d.results;
+      },
+      error: (error) => {
+        console.log(error);
+      }
     })
+  }
+
+  formatDateFromTimestamp(timestamp: string): string {
+    const regex = /\/Date\((\d+)\)\//; 
+    const match = regex.exec(timestamp);
+    
+    if (match && match[1]) {
+      const milliseconds = parseInt(match[1], 10);
+      const date = new Date(milliseconds);
+      const day = date.getDate();
+      const month = date.getMonth() + 1; 
+      const year = date.getFullYear();
+  
+      const formattedDay = day < 10 ? '0' + day : day.toString();
+      const formattedMonth = month < 10 ? '0' + month : month.toString();
+  
+      return formattedDay + '-' + formattedMonth + '-' + year;
+
+    }
+    return ''; 
+  }
+  
+
+  formatDate(dateTimeString){
+    if(dateTimeString){
+      const date = new Date(dateTimeString).toISOString()
+      const dateDataArr = date.split('T')
+      return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
+    }
+  }
+  formatTime(dateTimeString){
+    if(dateTimeString){
+      const dateDataArr = dateTimeString.split(':')
+      return `PT${dateDataArr[0]}H${dateDataArr[1]}M${dateDataArr[2] ? dateDataArr[2] : '00'}S`
+    }
   }
   handleEvent(value){
     this.rightside  = false;
@@ -212,7 +261,6 @@ value: any;
 
 
       }
-      // this.loadMedicationHistoryData(this.tablelist[0].Einri);
     }))
   }
 
@@ -230,7 +278,7 @@ value: any;
     // this.listItem.filter((data) => data.Us)
   }
 
-  selectDateColumn(index: number) {
+  selectDateColumn(index: number, item:any) {
     if (this.selectedColData === index) {
       this.selectedColData = undefined;
       this.cardSection= false
@@ -238,7 +286,9 @@ value: any;
       this.selectedColData = index;
       this.cardSection= true
     }
+    this.toContentData = item;
   }
+  
   getDate(value) {
     if (value) {
       var str = value;
@@ -276,10 +326,18 @@ value: any;
   });
    }
 
-   openCartDetailModal(template: TemplateRef<any>){
+   openCartDetailModal(event:Event,template: TemplateRef<any>,item){
+    event.stopPropagation();
+
     const config: ModalOptions = { class: 'modal-dialog-centered lab-modal-size' };
     this.cartmodalRef = this.modalService.show(template,config);
+    this.cartData=item;
     this.cartmodalRef.onHide.subscribe((reason: string | any) => {
     });
    }
+
+   toggleAccordion(index: number): void {
+    this.isCollapsed[index] = !this.isCollapsed[index];
+  }
+  
 }
