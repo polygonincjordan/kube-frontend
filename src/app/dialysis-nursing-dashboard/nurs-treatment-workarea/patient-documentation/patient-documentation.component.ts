@@ -418,14 +418,14 @@ export class PatientDocumentationComponent implements OnInit {
 
 
   checkForRedirectionAction() {
-    if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.TRASM$) {
-      this.selectAssessment('emergencynursingdoc', this.latestEmergencyNursingDocList[0])
+    if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.DIALYSIS$) {
+      this.selectAssessment('assessment', this.latestDocData)
       this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.TRASM$) {
-      this.selectAssessment('emergencynursingdoc', this.latestEmergencyNursingDocList[0])
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.DIALYSIS$) {
+      this.selectAssessment('assessment', this.latestDocData)
       this.openDocument('edit');
-    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.TRASM$) {
-      this.getPatientProfileData(this.latestEmergencyNursingDocList[0]);
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.DIALYSIS$) {
+      this.getPatientProfileData(this.latestDocData);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
       this.selectAssessment('bradenscale', this.latestBridentScaleList[0])
       this.openDocument('create');
@@ -434,39 +434,33 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.BRADEN$) {
       this.getPatientProfileData(this.latestBridentScaleList[0]);
-    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.COMMA$) {
-      this.selectAssessment('glasgowcomascale', this.latestGlasgowComaScaleList[0])
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.MORSE$) {
+      this.selectAssessment('morsefallScale', this.latestMorseFallScaleData)
       this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.COMMA$) {
-      this.selectAssessment('glasgowcomascale', this.latestGlasgowComaScaleList[0])
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.MORSE$) {
+      this.selectAssessment('morsefallScale', this.latestMorseFallScaleData)
       this.openDocument('edit');
-    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.COMMA$) {
-      this.getPatientProfileData(this.latestGlasgowComaScaleList[0]);
-    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.FAC$) {
-      this.selectAssessment('facepainscale', this.latestFacePainScaleList[0])
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.MORSE$) {
+      this.getPatientProfileData(this.latestMorseFallScaleData);
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.HBCA$) {
+      this.selectAssessment('hemoCatheter', this.latestHemoCatheterData)
       this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.FAC$) {
-      this.selectAssessment('facepainscale', this.latestFacePainScaleList[0])
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.HBCA$) {
+      this.selectAssessment('hemoCatheter', this.latestHemoCatheterData)
       this.openDocument('edit');
-    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.FAC$) {
-      this.getPatientProfileData(this.latestFacePainScaleList[0]);
-    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
-      this.selectAssessment('numericratingscale', this.latestNumericratingscaleList[0])
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.HBCA$) {
+      this.getPatientProfileData(this.latestHemoCatheterData);
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.HBFG$) {
+      this.selectAssessment('hemoDialysisFistulaGraft', this.latestHemoDialysisFistulaGraftData)
       this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
-      this.selectAssessment('numericratingscale', this.latestNumericratingscaleList[0])
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.HBFG$) {
+      console.log(this.latestHemoDialysisFistulaGraftData);
+      debugger
+      this.selectAssessment('hemoDialysisFistulaGraft', this.latestHemoDialysisFistulaGraftData)
       this.openDocument('edit');
-    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
-      this.getPatientProfileData(this.latestNumericratingscaleList[0]);
-    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.selectAssessment('educationAssessment', this.educationAssList[0])
-      this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.selectAssessment('educationAssessment', this.educationAssList[0])
-      this.openDocument('edit');
-    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.EDUAS$) {
-      this.openEducationAssPdf(this.educationAssList[0].Dockey);
-    }
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.HBFG$) {
+      this.getPatientProfileData(this.latestHemoDialysisFistulaGraftData);
+    } 
   }
 
   openPastHistory(template: TemplateRef<any>) {
