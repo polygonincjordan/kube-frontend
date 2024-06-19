@@ -66,7 +66,11 @@ export enum RedirectionType {
   BRADEN$ = 'BRADEN', // Braden Scale
   EDUAS$ = 'EDUAS', // Education Assessment
   FAC$ = 'FAC', // Face Paing Scale
-  PEWS$ = 'PEWS'
+  PEWS$ = 'PEWS',
+  MORSE$ = 'MORSE', // Morse Fall Scale
+  DIALYSIS$ = 'DIALYSIS', // Dialysis Assessment
+  HBCA$ = 'HBCA', // Hemo Catheter,
+  HBFG$ = 'HBFG' // Hemo Dialysis Fistula Graft
 }
 
 export enum AssessmentType {

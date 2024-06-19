@@ -2514,7 +2514,7 @@ export class FeeListService {
     let url = environment.url;
     let filter = {
       Einri: this.jsonObj.Einri,
-      Falnr: this.jsonObj.Falnr.replace(/^0+/, ''),
+      Falnr: this.jsonObj.Falnr?.replace(/^0+/, ''),
     };
     return this.http.post(url + 'getServiceHistorySet', filter, {
       withCredentials: true,
