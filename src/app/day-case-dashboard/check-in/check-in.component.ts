@@ -23,6 +23,7 @@ import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.
 import { Subscription, forkJoin} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -101,7 +102,8 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
-    private helperService:HelperService
+    private helperService:HelperService,
+    private dayCaseDashboardService:DayCaseDashboardService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -635,7 +637,7 @@ export class CheckInComponent implements OnInit {
        )}T00:00:00`,
   }
     this.helperService.isNotAllowedSpinnerInAPI = true;
-    this.emergencyService.getDayCaseErCheckList(json).subscribe(
+    this.dayCaseDashboardService.getDayCaseErCheckList(json).subscribe(
       (_success: any) => {
         // this.ERlistData = _success.d.results;
         this.ERlistData = [];

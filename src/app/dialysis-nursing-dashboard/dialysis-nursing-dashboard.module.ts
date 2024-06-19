@@ -117,6 +117,7 @@ import { HemoCatheterComponent } from './nurs-treatment-workarea/patient-documen
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
 import { HemodialysisFistulaGraftComponent } from './nurs-treatment-workarea/patient-documentation/hemodialysis-fistula-graft/hemodialysis-fistula-graft.component';
+import { TimePipe } from './administered-doses/time.pipe';
 
 
 const route: Routes = [
@@ -209,6 +210,7 @@ const route: Routes = [
     MorseFallScaleComponent,
     HemoCatheterComponent,
     HemodialysisFistulaGraftComponent,
+    TimePipe,
   ],
   providers: [
     EmergencyService,

@@ -770,7 +770,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.form.controls['admittedTo'].disable();
     } else if (module == 'AdministeredDoses') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-      this.headerLabel = 'Medication Administration'
+      this.headerLabel = 'Patient Administration'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;

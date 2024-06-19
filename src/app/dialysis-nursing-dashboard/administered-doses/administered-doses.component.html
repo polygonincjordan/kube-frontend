@@ -321,15 +321,15 @@
             </thead>
             <tbody>
              
-                <ng-container *ngFor="let item of [1,2,3,4,5,6]; let i = index">
+                <ng-container *ngFor="let item of receiveCartData; let i = index">
                   <tr [ngClass]="selectedColData === i ? 'selectedCol' : ''">
-                    <td class="border-top-none" (click)="selectDateColumn(i)" style="padding-left: 1px;">CART_ALL-00001041</td>
-                    <td class="border-top-none" (click)="selectDateColumn(i)" style="padding-left: 1px;" title="Lorem Ipsum is simply">Lorem Ipsum is simply....</td>
-                    <td class="border-top-none" (click)="selectDateColumn(i)">Abujamma’ah Rahuf</td>
-                    <td class="border-top-none" (click)="selectDateColumn(i)" style="padding-left: 1px;">05.09.2023</td>
-                    <td class="border-top-none" (click)="selectDateColumn(i)" style="padding-left: 1px;">05:29:26</td>
-                    <td class="border-top-none allergy" (click)="selectDateColumn(i)" style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden; text-align: center;">
-                      <img src="assets/img/information.jfif" style="width: 31px; height: 26px; cursor: pointer; position: relative; bottom: 5px;" title="Visit Comments" (click)="openCartDetailModal(cartDetails)">
+                    <td class="border-top-none" (click)="selectDateColumn(i, item.TOCONTENT.results)" style="padding-left: 1px;">{{item.Cartid}}</td>
+                    <td class="border-top-none" (click)="selectDateColumn(i, item.TOCONTENT.results)" style="padding-left: 1px;" title="Lorem Ipsum is simply">{{item.CartDescr}}</td>
+                    <td class="border-top-none" (click)="selectDateColumn(i, item.TOCONTENT.results)">{{item.EmpNm}}</td>
+                    <td class="border-top-none" (click)="selectDateColumn(i, item.TOCONTENT.results)" style="padding-left: 1px;">{{item.EstShipTm | time}}</td>
+                    <td class="border-top-none" (click)="selectDateColumn(i, item.TOCONTENT.results)" style="padding-left: 1px;">{{formatDateFromTimestamp(item.EstShipDt)}}</td>
+                    <td class="border-top-none allergy" (click)="selectDateColumn(i, item.TOCONTENT.results)" style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden; text-align: center;">
+                      <img src="assets/img/information.jfif" style="width: 31px; height: 26px; cursor: pointer; position: relative; bottom: 5px;" title="Visit Comments" (click)="openCartDetailModal($event,cartDetails,item)">
                     </td>
                   </tr>
                 
@@ -566,23 +566,21 @@
             </tr>
           </thead>
         </table>
-        <div class="row"  *ngIf="cardSection"> 
-          <div class="accordion w-100" id="accordionExample">
-            <div class="medication-table">
-                <div class="card-header cardheader" id="headingTwo" style="display: flex; justify-content: space-between; align-items: center; height: 30px;" (click)="isCollapsed = !isCollapsed">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link btn-color" type="button" 
-                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseTwo">
-                            Test Patients For Demo
-                        </button>
-                    </h2>
-                    <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
-          font-size: 21px;color:#7a7f84" *ngIf="isCollapsed"></i>
-                    <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
-          font-size: 21px;color:#7a7f84" *ngIf="!isCollapsed"></i>
+        <div *ngIf="cardSection">
+          <div class="row" *ngFor="let item of toContentData; let i = index"> 
+            <div class="accordion w-100" [id]="'accordion' + i">
+              <div class="medication-table">
+                <div class="card-header cardheader" [id]="'heading' + i" style="display: flex; justify-content: space-between; align-items: center; height: 30px;" (click)="toggleAccordion(i)">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-color" type="button" 
+                      [attr.aria-expanded]="!isCollapsed[i]" [attr.aria-controls]="'collapse' + i">
+                      {{ item.PatientNm }}
+                    </button>
+                  </h2>
+                  <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px; font-size: 21px; color: #7a7f84" *ngIf="isCollapsed[i]"></i>
+                  <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px; font-size: 21px; color: #7a7f84" *ngIf="!isCollapsed[i]"></i>
                 </div>
-                <div id="collapseTwo" [ngClass]="{'collapse': isCollapsed, 'show': !isCollapsed}"
-                    aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div [id]="'collapse' + i" [ngClass]="{'collapse': !isCollapsed[i], 'show': isCollapsed[i]}" [attr.aria-labelledby]="'heading' + i" [attr.data-parent]="'#accordion' + i">
                     <div class="card-body" style="padding-top: 0">
                       <div style="overflow: auto; max-height: 22vh;">
                         <table class="table checkin-table checkin-table-popups second-table custom-table-striped table-responsive-sm">
@@ -609,38 +607,38 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let item of [1,2,3,4,5]">
+                            <tr>
                               <td ><input type="checkbox" ></td>
                               <td class="border-top-none" style="padding-left: 1px; ">
-                                2027AMC
+                               {{item.BedouNm}}
                               </td>
-                              <td class="border-top-none patient" style="padding-left: 1px;"> 000001002</td>
+                              <td class="border-top-none patient" style="padding-left: 1px;"> {{item.Patientid}}</td>
                               <td class="border-top-none patient" style="padding-left: 1px;">
-                                Test Patients For Demo
-                              </td>
-                              <td class="border-top-none patient" style="padding-left: 1px;">
-                                Received
+                               {{item.PatientNm}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;">
-                                1
+                               {{item.Prepstat}}
+                              </td>
+                              <td class="border-top-none patient" style="padding-left: 1px;">
+                               {{item.Qtotal}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;" title="Table, extended release">
-                                Table, extended release
+                               {{item.Qunit}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;" title="Voltaren 100 mg Oral Tablet (20)">
-                                Voltaren 100 mg Oral Tablet (20)
+                               {{item.Descrlt}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;">
-                                CENTRAL_IN
+                               {{item.Fillsource}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;">
-                                -
+                                {{item.ReasonTxt}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;">
-                                -
+                               {{item.DrugControl}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;">
-                                -
+                               {{item.SupplyStatus}}
                               </td>
                             </tr>
                            
@@ -651,7 +649,8 @@
                 </div>
             </div>
         </div> 
-  </div>
+        </div>
+      </div>
       </div>
       </div>
     </div>
@@ -671,35 +670,35 @@
   <div class="main p-3">
     <div class="detail-row">
         <div class="detail-label">Cart Descriptiondi:</div>
-        <div class="detail-value">18-09-24</div>
+        <div class="detail-value">{{cartData.CartDescr}}</div>
     </div>
     <div class="detail-row">
         <div class="detail-label">Cart Type:</div>
-        <div class="detail-value">From Templete</div>
+        <div class="detail-value">{{cartData.FromTm | time}}</div>
     </div>
     <div class="detail-row">
         <div class="detail-label">Cart Template:</div>
-        <div class="detail-value">All-fours</div>
+        <div class="detail-value">{{cartData.CartTempl}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Cart Template:</div>
-      <div class="detail-value">All-fours</div>
+      <div class="detail-value">{{cartData.CartTempl}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Cart Status:</div>
-      <div class="detail-value">Sent</div>
+      <div class="detail-value">{{cartData.CartStatus}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Estimated Shipment:</div>
-      <div class="detail-value">18-09-24 | 18-09-24</div>
+      <div class="detail-value">{{formatDateFromTimestamp(cartData.EstShipDt)}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Prepare Durgs Up To:</div>
-      <div class="detail-value">18-09-24 | 18-09-24</div>
+      <div class="detail-value">{{formatDateFromTimestamp(cartData.PrepDrugDt)}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Include Urgent Preperation:</div>
-      <div class="detail-value">18-09-24</div>
+      <div class="detail-value">{{cartData.UrgPrep}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Cart Content Header:</div>

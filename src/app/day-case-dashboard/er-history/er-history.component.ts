@@ -9,6 +9,7 @@ import { PatientSearchComponent } from './patient-search/patient-search.componen
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { ERDiagnosisComponent } from './diagnosis/diagnosis.component';
 import { DatePipe } from '@angular/common';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @Component({
   selector: 'app-er-history',
@@ -85,7 +86,7 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
-  constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService) {
+  constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private dayCaseDashboardService:DayCaseDashboardService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
     });
@@ -392,9 +393,8 @@ export class ErHistoryComponent implements OnInit {
         date ?  date[1]  :new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
       )}T00:00:00`,
-      History:true
     }
-    this.emergencyService.getErList(json).subscribe(
+    this.dayCaseDashboardService.getActualDeparturesList(json).subscribe(
       (_success: any) => {
       // this.ERlistData = _success.d.results;
       this.ERlistData = [];

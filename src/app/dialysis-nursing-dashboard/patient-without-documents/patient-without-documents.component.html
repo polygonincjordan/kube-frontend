@@ -52,9 +52,6 @@
                 aria-hidden="true"></i>
             </th>
             <th scope="col">
-              BRADEN
-            </th>
-            <th scope="col">
               MORSE
             </th>
             <th scope="col">
@@ -95,16 +92,6 @@
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               {{ item.NurseName }}
-            </td>
-            <td [title]="item.NurseName" class="border-top-none">
-              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.EmergencyNursingStatus == ''"
-                (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.Add$)" />
-              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" title="Draft"
-                *ngIf="item.EmergencyNursingStatus == 'IA'"
-                (click)="redirectToDocuments(item,RedirectionType.TRASM$, ActionType.Update$)" />
-              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 24px; color: red;" title="View PDF"
-                *ngIf="item.EmergencyNursingStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.View$)"></i>
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.NrsScaleStatus == ''"

@@ -247,39 +247,28 @@
                     *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                 </div>
               </div>
-
               <!--Hemo Catheter -->
               <div class="box-col d-flex mt-2 docs-event"
-                [ngClass]="hemoCatheter ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('hemoCatheter',latestHemoCatheterData)">
-                <div class="col-md-4">Hemo Catheter</div>
-                <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2" title="{{getTime(latestHemoCatheterData?.DocTime)}}">
-                  {{getDate(latestHemoCatheterData?.DocDate) | date: "dd.MM.y" || '-'}}
-                </div>
-                <div class="col-md-3">{{latestHemoCatheterData?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="getPatientProfileData(latestHemoCatheterData)"
-                    *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'" />
-                </div>
+              [ngClass]="hemoCatheter ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('hemoCatheter',latestHemoCatheterData)">
+              <div class="col-md-4">Hemo Catheter</div>
+              <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
+              <div class="col-md-2"></div>
+              <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                (click)="getPatientProfileData(latestHemoCatheterData)" *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'"></i>
+              </div>
               </div>
 
               <!--HemoDialysis Fistula/Graft -->
               <div class="box-col d-flex mt-2 docs-event"
-                [ngClass]="hemoDialysisFistulaGraft ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('hemoDialysisFistulaGraft',latestHemoDialysisFistulaGraftData)">
-                <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft</div>
-                <div class="col-md-2 status-color">{{ latestHemoDialysisFistulaGraftData?.StatusTxt ? latestHemoDialysisFistulaGraftData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2" title="{{getTime(latestHemoDialysisFistulaGraftData?.DocTime)}}">
-                  {{getDate(latestHemoDialysisFistulaGraftData?.DocDate) | date: "dd.MM.y" || '-'}}
-                </div>
-                <div class="col-md-3">{{latestHemoDialysisFistulaGraftData?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
-                  <img src="assets/img/document-html.png" width="15px" height="15px"
-                    (click)="openFistulaGraftPDF(latestHemoDialysisFistulaGraftData?.Dockey)"
-                    *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt == 'Released'" />
-                </div>
+              [ngClass]="hemoDialysisFistulaGraft ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('hemoDialysisFistulaGraft',latestHemoDialysisFistulaGraftData)">
+              <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft</div>
+              <div class="col-md-2 status-color">{{ latestHemoDialysisFistulaGraftData?.StatusTxt ? latestHemoDialysisFistulaGraftData.StatusTxt : "N/A" }}</div>
+              <div class="col-md-2"></div>
+              <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                (click)="openFistulaGraftPDF(latestHemoDialysisFistulaGraftData?.Dockey)" *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt == 'Released'"></i>
+              </div>
               </div>
             </div>
           </div>

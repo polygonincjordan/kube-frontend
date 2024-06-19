@@ -465,7 +465,7 @@ font-size: 12px;
       <div style="height: 50px; margin-bottom: 6px">
         <img [src]="
             AdministeredDoses ? 'assets/img/drugs1.svg' : 'assets/img/drugs2.svg'
-          " data-bs-toggle="tooltip" data-bs-placement="right" title="Medication Administration"
+          " data-bs-toggle="tooltip" data-bs-placement="right" title="Patient Administration"
           [ngClass]="AdministeredDoses ? '' : ''" (click)="selectModule('AdministeredDoses')" style="width: 45px;">
         <span class="notification-dot" style="bottom: 55px;" *ngIf="Medicationcount != 0">{{ Medicationcount
           }}</span>
