@@ -194,10 +194,10 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
-    this.LatestDocSet();
-    this.LatestMFSSet();
-    this.LatestHemoCatheter();
-    this.LatestHemoDialysisFistulaGraft();
+    // this.LatestDocSet();
+    // this.LatestMFSSet();
+    // this.LatestHemoCatheter();
+    // this.LatestHemoDialysisFistulaGraft();
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -388,6 +388,29 @@ export class PatientDocumentationComponent implements OnInit {
         this.latestNumericratingscaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_NMRTSC');
         this.latestBridentScaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_BRADEN');
 
+        // if(this.paramsObject.action && this.paramsObject.doctype){
+          const latestDocData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_DIALY');
+          if(latestDocData){
+            this.latestDocData = {...latestDocData, StatusTxt: latestDocData.DokstText == "In Work" ? 'Draft' : latestDocData.DokstText}
+          }
+          const latestMorseFallScaleData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'SCA_MORSE');
+          if(latestMorseFallScaleData){
+            this.latestMorseFallScaleData = {...latestMorseFallScaleData, StatusTxt: latestMorseFallScaleData.DokstText == "In Work" ? 'Draft' : latestMorseFallScaleData.DokstText, PhyNm: latestMorseFallScaleData.MitarbName, DocDate: latestMorseFallScaleData.Dodat }
+            this.patientDocService.latestMorseFallScaleData = this.latestMorseFallScaleData;
+          }
+          const latestHemoCatheterData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBCA');
+          if(latestHemoCatheterData){
+            this.latestHemoCatheterData = {...latestHemoCatheterData, StatusTxt: latestHemoCatheterData.DokstText == "In Work" ? 'Draft' : latestHemoCatheterData.DokstText}
+            this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
+          }
+          const latestHemoDialysisFistulaGraftData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBFG');
+          if(latestHemoDialysisFistulaGraftData){
+            this.latestHemoDialysisFistulaGraftData = {...latestHemoDialysisFistulaGraftData, StatusTxt: latestHemoDialysisFistulaGraftData.DokstText == "In Work" ? 'Draft' : latestHemoDialysisFistulaGraftData.DokstText}
+            this.patientDocService.latestHemoDialysisFistulaGraftData = this.latestHemoDialysisFistulaGraftData;
+          }
+        // }
+
+
         // Handle education assessment response
         this.educationAssList = educationAssessmentResponse.d.results;
 
@@ -454,8 +477,6 @@ export class PatientDocumentationComponent implements OnInit {
       this.selectAssessment('hemoDialysisFistulaGraft', this.latestHemoDialysisFistulaGraftData)
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.HBFG$) {
-      console.log(this.latestHemoDialysisFistulaGraftData);
-      debugger
       this.selectAssessment('hemoDialysisFistulaGraft', this.latestHemoDialysisFistulaGraftData)
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.HBFG$) {
@@ -808,6 +829,7 @@ export class PatientDocumentationComponent implements OnInit {
     }
     if (this.openBradenScale) {
       this.BradenScaleComp.ngOnDestroy();
+      this.redirecTreatment();
     }
     if (this.openAssessment) {
       this.DialysisAssessment.ngOnDestroy();
@@ -827,7 +849,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getMedLatestAssessment();
     this.getEducationAssessment();
     this.getPatientProfile();
-    // this.fetchLatestDetails();
+    this.fetchLatestDetails();
     this.LatestDocSet();
     this.LatestMFSSet();
     this.LatestHemoCatheter();
@@ -864,6 +886,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.latestMorseFallScaleData = null;
     this.latestHemoCatheterData = null;
     this.latestHemoDialysisFistulaGraftData = null;
+  }
+
+  redirecTreatment(){
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    urlSearchParams.set('redirectFor', '');
+    urlSearchParams.set('action', '');
+    urlSearchParams.set('doctype', '');
+
+    // Construct the new URL
+    const newUrl = `${window.location.origin}${window.location.pathname}?${urlSearchParams.toString()}${window.location.hash}`;
+
+    // Redirect to the new URL
+    window.location.href = newUrl;
   }
 
   
@@ -1206,7 +1241,10 @@ export class PatientDocumentationComponent implements OnInit {
             
             const payload = {
               ...formData,
-              DocStatus: '2'
+              DocStatus: '2',
+              CatheterInsertion: formData.CatheterInsertion == null ? this.formatDate(new Date()) : formData.CatheterInsertion,
+              CatheterRemoval: formData.CatheterRemoval == null ? this.formatDate(new Date()) : formData.CatheterRemoval,
+              SessionDate: formData.SessionDate == null ? this.formatDate(new Date()) : formData.SessionDate,
             }
 
             this.emergencyService.ReleaseHemoCatheterSet(payload).subscribe((resp)=>{
@@ -1486,7 +1524,8 @@ export class PatientDocumentationComponent implements OnInit {
           Patnr: this.storageService.patnr,
           Falnr: this.storageService.falnr,
           Orgdo: 'F21IUAMC',
-          DocStatus: '1'
+          DocStatus: '1',
+          Dtid: 'SCA_MORSE',
         };
         this.emergencyService.postMFSSet(formData).subscribe((resp)=>{
           Swal.fire({
@@ -1601,7 +1640,8 @@ export class PatientDocumentationComponent implements OnInit {
           Patnr: this.latestMorseFallScaleData.Patnr,
           Falnr: this.latestMorseFallScaleData.Falnr,
           Orgdo: 'F21IUAMC',
-          DocStatus: '3'
+          DocStatus: '3',
+          Dtid: 'SCA_MORSE',
         };
         this.emergencyService.createNewMFSSet(formData).subscribe((resp)=>{
           Swal.fire({
@@ -2131,9 +2171,9 @@ export class PatientDocumentationComponent implements OnInit {
       ...this.hemoCatheterC.getFormData(),
       Dockey: action == 'create' ? '' : this.latestHemoCatheterData?.Dockey,
       Einri: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Einri,
-      Patnr: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Patnr,
-      Falnr: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Falnr,
-      Lfdnr: action == 'create' ? this.storageService.einri : this.latestHemoCatheterData?.Lfdnr,
+      Patnr: action == 'create' ? this.storageService.patnr : this.latestHemoCatheterData?.Patnr,
+      Falnr: action == 'create' ? this.storageService.falnr : this.latestHemoCatheterData?.Falnr,
+      Lfdnr: action == 'create' ? this.storageService.lfdnr : this.latestHemoCatheterData?.Lfdnr,
       Orgdo: 'F21IUAMC',
       DocStatus: docStatus,
       Dtid : 'ZMED_HBCA',

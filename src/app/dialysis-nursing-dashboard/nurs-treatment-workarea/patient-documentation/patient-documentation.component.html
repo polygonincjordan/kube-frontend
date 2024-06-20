@@ -185,7 +185,7 @@
                 <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
                   {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
-                <div class="col-md-3">{{educationAssList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
                   <img src="assets/img/document-html.png" width="15px" height="15px"
                     (click)="getPatientProfileData(latestBridentScaleList[0])"
