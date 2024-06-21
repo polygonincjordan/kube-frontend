@@ -537,30 +537,6 @@ export class PatientDocumentationComponent implements OnInit {
     }
   }
 
-  selectNursAssessment(name) {
-    if (name == 'patienteducation') {
-      this.patienteducation = true;
-      this.fallrisk = false;
-      this.functional = false;
-      this.nutritional = false;
-    } else if (name == 'fallrisk') {
-      this.fallrisk = true;
-      this.patienteducation = false;
-      this.functional = false;
-      this.nutritional = false;
-    } else if (name == 'functional') {
-      this.functional = true;
-      this.patienteducation = false;
-      this.fallrisk = false;
-      this.nutritional = false;
-    } else if (name == 'nutritional') {
-      this.nutritional = true;
-      this.functional = false;
-      this.patienteducation = false;
-      this.fallrisk = false;
-    }
-  }
-
   getDate(value) {
     if (value) {
       var str = value;
@@ -1149,9 +1125,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.openAssessment = true;
       }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
         this.openAssessment = true;
-      }else if (action == 'release' && this.selectedDocData?.StatusTxt == 'Draft') {   
-        console.log("status 2")
-
+      }else if (action == 'release' && this.selectedDocData?.StatusTxt == 'Draft') { 
         const json = {
           Dockey: this.latestDocData?.Dockey,
         };
@@ -1231,8 +1205,6 @@ export class PatientDocumentationComponent implements OnInit {
       }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
         this.openHemoCatheter = true;
       }else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
-        console.log('status 2');
-
         const dockey = this.latestHemoCatheterData?.Dockey
         this.emergencyService.getHemoCatheterDoc(dockey).subscribe({
           next: (resp:any)=>{
@@ -1276,8 +1248,6 @@ export class PatientDocumentationComponent implements OnInit {
       }else if(action == 'edit' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != "Released") {
         this.openHemoDialysisFistulaGraft = true;
       }else if(action == 'release' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft'){
-        console.log('status 2');
-
         const dockey = this.latestHemoDialysisFistulaGraftData?.Dockey
         this.emergencyService.getHemoDialysisFistulaGraftDoc(dockey).subscribe({
           next: (resp:any)=>{
@@ -1442,7 +1412,6 @@ export class PatientDocumentationComponent implements OnInit {
             this.filename = '';
             this.mimetype = '';
             this.base64Value = '';
-            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
             this.userconfig.getListOfPatientVisitDataSet()
           });
         },
@@ -1515,8 +1484,6 @@ export class PatientDocumentationComponent implements OnInit {
         this.postOpenAssessment('1', this.actionType);
       }
       if(this.openMorseFallScale) {
-        console.log('status 1');
-
         const formData = {
           ...this.morseFallScaleC.getFormData(),
           Dockey: '',
@@ -1631,8 +1598,6 @@ export class PatientDocumentationComponent implements OnInit {
         this.postOpenAssessment('3', this.actionType);
       }
       if(this.openMorseFallScale){
-        console.log('status 3');
-
         const formData = {
           ...this.morseFallScaleC.getFormData(),
           Dockey: this.latestMorseFallScaleData.Dockey,
@@ -1723,12 +1688,10 @@ export class PatientDocumentationComponent implements OnInit {
     }
   }
 
-
   getReleasedPdf(item) {
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {
       this.admissionService.getPatientProfilePDF(item.Dockey).subscribe((_success: any) => {
         if (item.AttMimeType == 'PDF') {
-          // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,' + _success.d.AttachmentData);
           const config: ModalOptions = {
             class: 'modal-dialog-centered modal-xl pdfmodal-size',
           };
@@ -1752,11 +1715,7 @@ export class PatientDocumentationComponent implements OnInit {
           this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
           this.pdfUrlType = 'html';
         }
-        // this.pdfUrl=this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,'+ _success.d.AttachmentData);
-        // const config: ModalOptions = {
-        //   class: 'modal-dialog-centered modal-xl pdfmodal-size',
-        // };
-        // this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+  
       });
     }
   }
@@ -1781,8 +1740,6 @@ export class PatientDocumentationComponent implements OnInit {
       this.desc = false;
       this.sortedDocuments.sort((a, b) => a.date - b.date);
     }
-    // this.documentTypeFilterValue.sort((a, b) => 0 - (a > b ? -1 : 1));
-    // console.log(this.patientProfileDocumet, "this.patientProfileDocumet");
   }
 
   jsonString() {
@@ -1794,27 +1751,8 @@ export class PatientDocumentationComponent implements OnInit {
       item.AttMimeType = 'HTML';
     }
     this.getReleasedPdf(item);
-    // if (item.AttMimeType !== '' && item.Dtid == 'ZMED_SOAP') {
-    //   this.openSoapDetails(item);
-    // }else{
-    // }
   }
-  openSoapDetails(item) {
-    this.userConfigurationService
-      .getSoapPatientdata(
-        item.Dockey,
-        item.Einri,
-        this.storageService.falnr
-      ).subscribe((_success: any) => {
-        this.PatientData = _success?.d?.results[0];
-        this.PatientData['VisitDate'] = this.getDate(this.PatientData?.Visitdate);
-        const config: ModalOptions = {
-          class: 'modal-dialog-centered modal-xl soap-modal',
-        };
-        this.modalRef = this.modalService.show(this.notreleasedmodal, config);
-      })
 
-  }
   // Med report
   getMedLatestAssessment() {
     const json = {
@@ -1842,25 +1780,8 @@ export class PatientDocumentationComponent implements OnInit {
       (_error: any) => { }
     );
   }
-  saveMedDoc() {
-    if (this.actionType == 'create') {
-      // this.createMedDoc();
-    } else if (this.actionType == 'edit') {
-      this.updateMedDoc();
-    } else if (this.actionType == 'copy') {
-      this.CopyMedReport();
-    }
-  }
 
-  saveEducationAss() {
-    if (this.actionType == 'create') {
-      this.createEducationAss(false);
-    } else if (this.actionType == 'edit') {
-      this.updateEducationAss(false);
-    } else if (this.actionType == 'copy') {
-      this.createEducationAss(false);
-    }
-  }
+
   getMedReportData() {
     const json = {
       Dockey: this.medlatestDocList[0].Dockey
