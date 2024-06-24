@@ -481,14 +481,14 @@ font-size: 12px;
           " data-bs-toggle="tooltip" data-bs-placement="right" title="Dialysis History" [ngClass]="erhistory ? '' : ''"
           (click)="selectModule('erhistory')" />
       </div>
-      <div style="height: 50px; margin-bottom: 6px">
+      <!-- <div style="height: 50px; margin-bottom: 6px">
         <img [src]="
             analysis
               ? 'assets/img/nur-emr-analysis-white.svg'
               : 'assets/img/nur-emr-analysis.svg'
           " data-bs-toggle="tooltip" data-bs-placement="right" title="Analysis" [ngClass]="analysis ? '' : ''"
           (click)="selectModule('analysis')" />
-      </div>
+      </div> -->
       <!-- <div style="height: 50px; margin-bottom: 6px">
         <img [src]="erSetting ? 'assets/img/nur-emr-setting-white.svg' : 'assets/img/nur-emr-setting.svg'"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Assignment" class=""
@@ -519,9 +519,9 @@ font-size: 12px;
     (redirectCheckInData)="collectCheckInData($event)"></app-patient-without-consumable>
   <app-patient-assignment style="width: calc(100% - 78px);padding-left: 15px;"
     *ngIf="erSetting"></app-patient-assignment>
-  <app-analisys-dashboard style="width: calc(100% - 78px);padding-left: 15px;" *ngIf="analysis"
+  <!-- <app-analisys-dashboard style="width: calc(100% - 78px);padding-left: 15px;" *ngIf="analysis"
     [updatedDate]="updatedDate">
-  </app-analisys-dashboard>
+  </app-analisys-dashboard> -->
   <app-patient-without-documents style="width: calc(100% - 78px);" *ngIf="noReleaseDoc"
     (sendErNoDocumentCount)="collectErPatientCount($event)"
     (redirectCheckInData)="collectCheckInData($event)"></app-patient-without-documents>

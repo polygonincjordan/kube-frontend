@@ -113,12 +113,15 @@ export class HemoCatheterComponent implements OnInit {
     })
 
 
-    this.realized = JSON.parse(
-      localStorage.getItem('amc_dev_loggedInUserProfile')
-    ).Gpart;
-    this.realizedDescription = JSON.parse(
-      localStorage.getItem('amc_dev_loggedInUserProfile')
-    ).GpartName;
+    // this.realized = JSON.parse(
+    //   localStorage.getItem('amc_dev_loggedInUserProfile')
+    // ).Gpart;
+    // this.realizedDescription = JSON.parse(
+    //   localStorage.getItem('amc_dev_loggedInUserProfile')
+    // ).GpartName;
+
+    this.realized = this.storageService.getLocal('amc_dev_loggedInUserProfile', false)
+    this.realizedDescription = this.storageService.getLocal('amc_dev_loggedInUserProfile',false)
 
     this.hemoCatheterForm.controls['AttendPhy'].patchValue(this.realized);
 

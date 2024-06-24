@@ -292,7 +292,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.encounterId = this.einri + this.falnr + this.lfdnr;
       this.getDataPatient();
     } else {
-      this.selectModule('checkin');
+      this.selectModule('erhistory');
     }
   }
 
@@ -910,13 +910,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
     } else {
       this._router.navigate([], {
         relativeTo: this._route,
-        // queryParams: {
-        //   patnr: checkindata.Patnr,
-        //   falnr: checkindata.Falnr,
-        //   einri: checkindata.Einri,
-        //   lfdnr: checkindata.Lfdnr,
-        //   redirectFor: checkindata.redirectFor
-        // },
         queryParamsHandling: 'merge',
         // preserve the existing query params in the route
         skipLocationChange: false

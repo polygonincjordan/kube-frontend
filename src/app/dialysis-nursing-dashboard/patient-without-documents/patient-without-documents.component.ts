@@ -183,23 +183,20 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
       this.redirectToTreatment(json);
     } else {
       switch (type) {
-        case RedirectionType.NMRTSC$:
-          this.getReleasedPdf('HTML', data.NrsScaleDoknr);
-          break;
-        case RedirectionType.COMMA$:
-          this.getReleasedPdf('HTML', data.GlasgowScaleDoknr);
+        case RedirectionType.DIALYSIS$:
+          this.getReleasedPdf('PDF', `MED${data.ZmedDialyDoknr}00000`);
           break;
         case RedirectionType.BRADEN$:
-          this.getReleasedPdf('HTML', data.BradenScaleDoknr);
+          this.getReleasedPdf('HTML', `SCA${data.ScaBradenDoknr}00000`);
           break;
-        case RedirectionType.FAC$:
-          this.getReleasedPdf('HTML', data.FacePainScaleDoknr);
+        case RedirectionType.MORSE$:
+          this.getReleasedPdf('HTML', `SCA${data.ScaMorseDoknr}00000`);
           break;
-        case RedirectionType.TRASM$:
-          this.getReleasedPdf('PDF', data.EmergencyNursingDoknr);
+        case RedirectionType.HBCA$:
+          this.getReleasedPdf('PDF', `MED${data.ZmedHbcaDoknr}00000`);
           break;
-        case RedirectionType.EDUAS$:
-          this.getReleasedPdf('PDF', data.EducationAssessDoknr);
+        case RedirectionType.HBFG$:
+          this.getReleasedPdf('PDF', `MED${data.ZmedHbfgDoknr}00000`);
           break;
         default:
           // Handle other cases if needed
