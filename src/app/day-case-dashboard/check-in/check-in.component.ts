@@ -698,7 +698,7 @@ export class CheckInComponent implements OnInit {
         event.Physician.forEach((physicianValue) => {
           this.physicianValueArr.push(
             filterValue.filter((element) => {
-              if (element.Behpersname === physicianValue.trimStart()) {
+              if (element.PernrName === physicianValue.trimStart()) {
                 return element;
               }
             })
@@ -711,7 +711,7 @@ export class CheckInComponent implements OnInit {
         event.Status.forEach((statusValue) => {
           this.statusValueArr.push(
             filterValue.filter((element) => {
-              if (element.StatusTxt == statusValue) {
+              if (element.StatusName == statusValue) {
                 return element;
               }
             })
@@ -720,15 +720,15 @@ export class CheckInComponent implements OnInit {
         filterValue = this.statusValueArr.flat();
       }
       if (event.FCategory && event.FCategory?.length) {
-        if (event.FCategory == 'Self Payer') {
+        if (event.FCategory == 'Self-Pay') {
           filterValue = filterValue.filter((element: any) => {
-            if (element.ZzfinCat === 'Self Payer') {
+            if (element.KostrName === 'Self-Pay') {
               return element;
             }
           });
         } else {
           filterValue = filterValue.filter((element: any) => {
-            if (element.ZzfinCat !== 'Self Payer') {
+            if (element.KostrName !== 'Self-Pay') {
               return element;
             }
           });
