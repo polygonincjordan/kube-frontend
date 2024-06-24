@@ -142,45 +142,58 @@ export class PatientWithoutConsumableComponent implements OnInit {
 
   public filterListData(event) {
     let filterValue = this.filteredPatients;
-    if ((event.Status && event.Status != '') && (event.FCategory && event.FCategory != '')) {
-      // if (event.Status && event.Status.length) {
-      //   console.log('event',event);
-
-      //   this.statusValueArr = event.Status.map((statusValue) => {
-      //     console.log('statusValue',statusValue);
-      //     return filterValue.filter((element: any) => {
-      //       const statusText = element.StatusText ? element.StatusText.trim().toLowerCase() : ''; // Handle undefined or missing StatusText
-      //       return statusText === statusValue.trim().toLowerCase()
-      //     });
-      //   });
-      // }
-
-
-      // if (event.FCategory && event.FCategory.length) {
-      //   this.categoryValueArr = event.FCategory.map((categoryValue) => {
-      //     return filterValue.filter((element: any) => {
-      //       const financeCategory = element.FinancecategoryName ? element.FinancecategoryName.trim().toLowerCase() : ''; // Handle undefined or missing FinancecategoryName
-      //       return financeCategory === categoryValue.trim().toLowerCase();
-      //     });
-      //   });
-      // }
-      const filteredData = filterValue.filter((item:any) => {
-        const statusMatch = event.Status.includes(item.StatusText);
-
-        const fCategoryMatch = event.FCategory.includes(item.FinancecategoryName);
-
-        return statusMatch && fCategoryMatch;
-    });
-
-      // filterValue = this.flattenArrays([...this.statusValueArr, ...this.categoryValueArr]);
-
-      this.patientWithoutConsumableList = filteredData;
-      this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
-    } else {
-      // Reset the filter and show all patients
-      this.patientWithoutConsumableList = this.filteredPatients;
-      this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+    console.log(filterValue);
+    if(event.Status || event.FCategory){
+      if(event.Status && event.Status?.length){
+        filterValue = filterValue.filter((item: any) => {
+          return event.Status.includes(item.StatusText);
+        });
+      }
+      if(event.FCategory && event.FCategory?.length){
+        filterValue = filterValue.filter((item: any) => {
+          return event.FCategory.includes(item.FinancecategoryName);
+        });
+      }
+    this.patientWithoutConsumableList = filterValue 
     }
+
+    // if (event.Status && event.Status != '') {
+    //   if (event.Status && event.Status.length) {
+    //     this.statusValueArr = event.Status.map((statusValue) => {
+    //       console.log('statusValue',statusValue);
+    //       return filterValue.filter((element: any) => {
+    //         const statusText = element.StatusText ? element.StatusText.trim().toLowerCase() : ''; // Handle undefined or missing StatusText
+    //         return statusText === statusValue.trim().toLowerCase()
+    //       });
+    //     });
+    //   }
+
+
+    //   if (event.FCategory && event.FCategory.length) {
+    //     this.categoryValueArr = event.FCategory.map((categoryValue) => {
+    //       return filterValue.filter((element: any) => {
+    //         const financeCategory = element.FinancecategoryName ? element.FinancecategoryName.trim().toLowerCase() : ''; // Handle undefined or missing FinancecategoryName
+    //         return financeCategory === categoryValue.trim().toLowerCase();
+    //       });
+    //     });
+    //   }
+    //   const filteredData = filterValue.filter((item:any) => {
+    //     const statusMatch = event.Status.includes(item.StatusText);
+
+    //     const fCategoryMatch = event.FCategory.includes(item.FinancecategoryName);
+
+    //     return statusMatch && fCategoryMatch;
+    // });
+
+    //   // filterValue = this.flattenArrays([...this.statusValueArr, ...this.categoryValueArr]);
+
+    //   this.patientWithoutConsumableList = filteredData;
+    //   this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+    // } else {
+    //   // Reset the filter and show all patients
+    //   this.patientWithoutConsumableList = this.filteredPatients;
+    //   this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+    // }
   }
 
 
