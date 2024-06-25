@@ -69,21 +69,21 @@
             <th scope="col" style="padding-left: 0px">
               Financial clearance status
             </th>
-            <th scope="col" style="text-align: center">Actions</th>
+            <!-- <th scope="col" style="text-align: center">Actions</th> -->
           </tr>
         </thead>
         &nbsp;
         <tbody>
           <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-            <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.Patient"
+            <td scope="row" style="cursor: pointer"[title]="item.Pnamec"
               class="border-top-none" (click)="redirectToTreatByName(item)">
               {{ item.Pnamec }}
             </td>
             <td style="width: 5%; padding-left: 0px" [title]="item.Agepat" class="border-top-none">{{ item.Agepat }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Gschle }}</td>
+            <td style="padding-left: 0px" [title]="item.Gschle" class="border-top-none">{{ item.Gschle }}</td>
             <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Falnr }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.AdmissionStatus }}</td>
+            <td style="padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
+            <td style="padding-left: 0px" [title]="item.AdmissionStatus" class="border-top-none">{{ item.AdmissionStatus }}</td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
               [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
               {{ getDate(item.Bwidt) | date : "dd.MM.y" }}
@@ -92,22 +92,22 @@
               [title]="getTime(item.Bwizt)">
               {{ getTime(item.Bwizt) }}
             </td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Zimmkub }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Bettkub }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Orgfa }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Diagnose }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Allergies }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Zznmealstat }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.KostrName }}</td>
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.BehArztName }}</td>
+            <td style="padding-left: 0px" [title]="item.Zimmkub" class="border-top-none">{{ item.Zimmkub }}</td>
+            <td style="padding-left: 0px" [title]="item.Bettkub" class="border-top-none">{{ item.Bettkub }}</td>
+            <td style="padding-left: 0px" [title]="item.Orgfa" class="border-top-none">{{ item.Orgfa }}</td>
+            <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
+            <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td>
+            <td style="padding-left: 0px" [title]="item.Zznmealstat" class="border-top-none">{{ item.Zznmealstat }}</td>
+            <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>
+            <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ? item.BehArztName:'--'}}</td>
 
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.PordneInd }}</td>
+            <td style="padding-left: 0px" [title]="item.PordneInd" class="border-top-none">{{ item.PordneInd }}</td>
 
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.DokIcon }}</td>
+            <td style="padding-left: 0px" [title]="item.DokIcon" class="border-top-none">{{ item.DokIcon }}</td>
 
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Zzisoindi }}</td>
+            <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
 
-            <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.ZzfinClear }}</td>
+            <td style="padding-left: 0px" [title]="item.ZzfinClear" class="border-top-none">{{ item.ZzfinClear? item.ZzfinClear:'--' }}</td>
           </tr>
         </tbody>
       </table>
