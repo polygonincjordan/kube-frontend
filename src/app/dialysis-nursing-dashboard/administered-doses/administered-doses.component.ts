@@ -195,7 +195,8 @@ value: any;
       ToTm:''
     })
     // this.getReceviceCartList();
-    this.receiveCartData=[];
+    this.receiveCartData=null;
+    this.toContentData = null;
   }
   
   formatDateFromTimestamp(timestamp: string): string {
