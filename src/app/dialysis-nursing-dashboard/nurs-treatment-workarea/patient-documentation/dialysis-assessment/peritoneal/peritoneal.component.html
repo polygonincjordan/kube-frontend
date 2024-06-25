@@ -66,8 +66,8 @@
             </div>
             <div class="col-4 position-relative">
               <div class="d-flex align-items-center">
-                <input type="checkbox" formControlName="FanStanding" />
-                <label class="m-0 mx-2">Fan: Standing</label>
+                <input type="checkbox" formControlName="FanWindow" />
+                <label class="m-0 mx-2">Fan: Window</label>
               </div>
             </div>
           </div>
@@ -75,10 +75,11 @@
             <div class="col-4 position-relative"></div>
             <div class="col-4 position-relative">
               <div class="d-flex align-items-center">
-                <input type="checkbox" formControlName="FanWindow" />
-                <label class="m-0 mx-2">Fan: Window</label>
+                <input type="checkbox" formControlName="FanStanding" />
+                <label class="m-0 mx-2">Fan: Standing</label>
               </div>
             </div>
+                
             <div class="col-4 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="HeatingElectric" />
@@ -107,7 +108,7 @@
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="ChOther" name="ChOther" (change)="this.patientDocService.checkChange($event)" />
-                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
                 </div>
                 <input
                   type="text"
@@ -123,7 +124,7 @@
         <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative">
+            <div class="col-6 position-relative mb-3">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
                   >Community Enviroment</label
@@ -134,9 +135,37 @@
                 </ng-select>
               </div>
             </div>
+            <div class="col-6 position-relative mb-3">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  ># of Occupants</label
+                >
+                <input type="text" class="w-50" formControlName="Occupants" />
+              </div>
+            </div>
+            <div class="col-6 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Room shared w/other</label
+                >
+                <input type="text" class="w-50" formControlName="RoomShared" />
+              </div>
+            </div>
+            <div class="col-6 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowra heading-title m-0"
+                  >Km from home to hospital</label
+                >
+                <input
+                  type="text"
+                  class="w-50"
+                  formControlName="HomeHospital"
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div class="peritoneal-info position-relative p-3 my-3">
+        <!-- <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
             <div class="col-4 position-relative">
@@ -148,8 +177,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="peritoneal-info position-relative p-3 my-3">
+        </div> -->
+        <!-- <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
             <div class="col-4 position-relative">
@@ -161,8 +190,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="peritoneal-info position-relative p-3 my-3">
+        </div> -->
+        <!-- <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
             <div class="col-4 position-relative">
@@ -178,41 +207,44 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
                   >PD Safety Checklist</label
                 >
-                <div class="d-flex align-items-center">
+                <!-- <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="PdSmoke" />
                   <label class="m-0 mx-2">Smoke Alarm present</label>
-                </div>
+                </div> -->
               </div>
             </div>
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="PdSmoke" />
+                <label class="m-0 mx-2">Smoke Alarm present</label>
+              </div>
+            </div>
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="PdPhone" />
                 <label class="m-0 mx-2">Phone service</label>
               </div>
             </div>
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="PdFire" />
                 <label class="m-0 mx-2">Fire extinguisher present</label>
               </div>
             </div>
-          </div>
-          <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative"></div>
-            <div class="col-4 position-relative">
+            <div class="col-3 position-relative">
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="PdOther" name="PdOther" (change)="this.patientDocService.checkChange($event)"/>
-                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
                 </div>
                 <input
                   type="text"
@@ -224,6 +256,24 @@
               </div>
             </div>
           </div>
+          <!-- <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="PdOther" name="PdOther" (change)="this.patientDocService.checkChange($event)"/>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  name=""
+                  class="custom-input w-50 mx-3"
+                  formControlName="PdOtherTxt"
+                  [readonly]="!this.patientDocService.isPdOtherChecked"
+                />
+              </div>
+            </div>
+          </div> -->
         </div>
         <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
@@ -285,7 +335,7 @@
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="StOther" name="StOther" (change)="this.patientDocService.checkChange($event)"/>
-                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
                 </div>
                 <input
                   type="text"
@@ -380,7 +430,7 @@
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="HoOther" name="HoOther" (change)="this.patientDocService.checkChange($event)"/>
-                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
                 </div>
                 <input
                   type="text"
@@ -406,8 +456,6 @@
                 </ng-select>
               </div>
             </div>
-          </div>
-          <div class="row align-items-center my-3 custom-input">
             <div class="col-4 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
@@ -416,8 +464,6 @@
                 <input type="text" class="w-50" formControlName="PetsInside" />
               </div>
             </div>
-          </div>
-          <div class="row align-items-center my-3 custom-input">
             <div class="col-4 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0">Type of pet</label>
@@ -425,35 +471,67 @@
               </div>
             </div>
           </div>
+          <!-- <div class="row align-items-center my-3 custom-input">
+            
+          </div>
+          <div class="row align-items-center my-3 custom-input">
+            
+          </div> -->
         </div>
         <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
                   >Water System</label
                 >
-                <div class="d-flex align-items-center">
+                <!-- <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="WaCity" />
                   <label class="m-0 mx-2">City</label>
-                </div>
+                </div> -->
               </div>
             </div>
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="WaCity" />
+                <label class="m-0 mx-2">City</label>
+              </div>
+            </div>
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="WaWell" />
                 <label class="m-0 mx-2">Well</label>
               </div>
             </div>
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="WaSpring" />
                 <label class="m-0 mx-2">Spring</label>
               </div>
+            </div> 
+            <div class="col-2 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="WaCistern" />
+                <label class="m-0 mx-2">Cisterm</label>
+              </div>
+            </div>          
+            <div class="col-2 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="WaOther" name="WaOther" (change)="this.patientDocService.checkChange($event)" />
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  formControlName="WaOtherTxt"
+                  class="custom-input w-50 mx-3"
+                  [readonly]="!this.patientDocService.isWaOtherChecked"
+                />
+              </div>
             </div>
           </div>
-          <div class="row align-items-center my-3 custom-input">
+          <!-- <div class="row align-items-center my-3 custom-input">
             <div class="col-4 position-relative"></div>
             <div class="col-4 position-relative">
               <div class="d-flex align-items-center">
@@ -465,7 +543,7 @@
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="WaOther" name="WaOther" (change)="this.patientDocService.checkChange($event)" />
-                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
                 </div>
                 <input
                   type="text"
@@ -475,42 +553,45 @@
                 />
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
                   >Gabage System</label
                 >
-                <div class="d-flex align-items-center">
+                <!-- <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="GaCity" />
                   <label class="m-0 mx-2">City</label>
-                </div>
+                </div> -->
               </div>
             </div>
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
+              <div class="d-flex align-items-center">
+                <input type="checkbox" formControlName="GaCity" />
+                <label class="m-0 mx-2">City</label>
+              </div>
+            </div>
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="GaSepticTank" />
                 <label class="m-0 mx-2">Septic tank</label>
               </div>
             </div>
-            <div class="col-4 position-relative">
+            <div class="col-2 position-relative">
               <div class="d-flex align-items-center">
                 <input type="checkbox" formControlName="GaGarbage" />
                 <label class="m-0 mx-2">Garbage service</label>
               </div>
             </div>
-          </div>
-          <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative"></div>
-            <div class="col-4 position-relative">
+            <div class="col-3 position-relative">
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="GaOther" name="GaOther" (change)="this.patientDocService.checkChange($event)" />
-                  <label class="m-0 mx-2" style="min-width: 175px">Other</label>
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
                 </div>
                 <input
                   type="text"
@@ -521,11 +602,28 @@
               </div>
             </div>
           </div>
+          <!-- <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative"></div>
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                  <input type="checkbox" formControlName="GaOther" name="GaOther" (change)="this.patientDocService.checkChange($event)" />
+                  <label class="m-0 mx-2" style="min-width: 50px">Other</label>
+                </div>
+                <input
+                  type="text"
+                  formControlName="GaOtherTxt"
+                  class="custom-input w-50 mx-3"
+                  [readonly]="!this.patientDocService.isGaOtherChecked"
+                />
+              </div>
+            </div>
+          </div> -->
         </div>
         <div class="peritoneal-info position-relative p-3 my-3">
           <label class="title-text m-0"></label>
           <div class="row align-items-center my-3 mb-4 custom-input">
-            <div class="col-4 position-relative">
+            <div class="col-6 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
                   ># of bathrooms</label
@@ -533,9 +631,7 @@
                 <input type="text" class="w-50" formControlName="Bathrooms" />
               </div>
             </div>
-          </div>
-          <div class="row align-items-center my-3 custom-input">
-            <div class="col-4 position-relative">
+            <div class="col-6 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap heading-title m-0"
                   >Condition of shower head</label
@@ -544,6 +640,16 @@
               </div>
             </div>
           </div>
+          <!-- <div class="row align-items-center my-3 custom-input">
+            <div class="col-4 position-relative">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label class="text-nowrap heading-title m-0"
+                  >Condition of shower head</label
+                >
+                <input type="text" class="w-50" formControlName="ShowerHead" />
+              </div>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -3,23 +3,20 @@
     <div class="perdialysis-info">
       <div class="container-fluid">
         <div class="pre-dialysis-info position-relative p-3 mb-4">
-          <label for="" class="title-text m-0">1</label>
+          <label for="" class="title-text m-0"></label>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Treatment Date</label>
-                <input type="text" class="w-100" formControlName="TreatmentDate"
-                bsDatepicker
-                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
-                >
+                <input type="text" class="w-100" formControlName="TreatmentDate" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
               </div>
             </div>
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Dialysis First Date</label>
-                <input type="text" class="w-100" formControlName="DialysisFDate"
-                bsDatepicker
-                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
+                <input type="text" class="w-100" formControlName="DialysisFDate" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
               </div>
             </div>
             <div class="col-4 pr-5">
@@ -37,8 +34,11 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Prescribed Time</label>
-                <input type="text" class="w-100" bsDatepicker
-                [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" class="w-50"  formControlName="PrescribedTime">
+                <!-- <input type="text" class="w-100" bsDatepicker
+                [bsConfig]="{showWeekNumbers: false,withTimepicker:true, dateInputFormat:'HH:mm:ss'}"  formControlName="PrescribedTime"> -->
+                <input type="text" class="form-control" step="2" formControlName="PrescribedTime" [bsConfig]="{withTimepicker:
+                true,showWeekNumbers:false,
+                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
                 <label for="" class="unites-labels text-nowrap m-0">hr</label>
               </div>
             </div>
@@ -61,7 +61,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Blood Flow Rate</label>
                 <input type="text" class="w-100" formControlName="BloodFlow">
-                <label for="" class="unites-ml text-nowrap m-0" style="right: 5px;">ml/min</label>
+                <label for="" class="unites-ml text-nowrap m-0" style="min-width: unset;right: 5px;">ml/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
@@ -99,7 +99,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Height</label>
                 <input type="text" class="w-100" formControlName="Height">
-                <label for="" class="unites-labels text-nowrap m-0" style="right: 27px;">cm</label>
+                <label for="" class="unites-labels text-nowrap m-0">cm</label>
               </div>
             </div>
           </div>
@@ -111,28 +111,49 @@
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Treatment Time</label>
+                <!-- <input type="time" bsDatepicker
+                [bsConfig]="{showWeekNumbers: false,withTimepicker:true, dateInputFormat:'HH:mm:ss'}" class="w-100" formControlName="TreatmentTime"> -->
+                <input type="text" class="form-control" step="2" formControlName="TreatmentTime" [bsConfig]="{withTimepicker:
+                true,showWeekNumbers:false,
+                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
+              </div>
+            </div>
+            <div class="col-4 pr-5">
+              <div class="d-flex align-items-center w-100 custom-input">
+                <label for="" class="text-nowrap m-0">Dialysis First Time</label>
+                <!-- <input type="time" bsDatepicker
+                [bsConfig]="{showWeekNumbers: false,withTimepicker:true, dateInputFormat:'HH:mm:ss'}" class="w-100" formControlName="DialysisFTime"> -->
+                <input type="text" class="form-control" step="2" formControlName="DialysisFTime" [bsConfig]="{withTimepicker:
+                true,showWeekNumbers:false,
+                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
+              </div>
+            </div>
           </div>
+
         </div>
-        <div class="pre-dialysis-info position-relative p-3 mb-4">
+        <!-- <div class="pre-dialysis-info position-relative p-3 mb-4">
           <label for="" class="title-text m-0">2</label>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Treatment Time</label>
                 <input type="time" bsDatepicker
-                [bsConfig]="{ dateInputFormat: 'HH:mm:ss', showWeekNumbers: false }" class="w-100" formControlName="TreatmentTime">
+                [bsConfig]="{ dateInputFormat: 'HH:mm:ss', showWeekNumbers: false }" class="w-45" formControlName="TreatmentTime">
               </div>
             </div>
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Dialysis First Time</label>
                 <input type="time" bsDatepicker
-                [bsConfig]="{ dateInputFormat: 'HH:mm:ss', showWeekNumbers: false }" class="w-100" formControlName="DialysisFTime">
+                [bsConfig]="{ dateInputFormat: 'HH:mm:ss', showWeekNumbers: false }" class="w-45" formControlName="DialysisFTime">
               </div>
             </div>
           </div>
-        </div>
-        <div class="pre-dialysis-info position-relative p-3 mb-4">
+        </div> -->
+        <div class="pre-dialysis-info-second position-relative p-3 mb-4">
           <label for="" class="title-text m-0">PRE DIALYSIS CHECKS</label>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5 position-relative">
@@ -153,7 +174,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Oxygen Flow</label>
                 <input type="text" class="w-100" formControlName="OxygenFlow">
-                <label for="" class="unites-ml text-nowrap m-0" style="right: 10px;">L/min</label>
+                <label for="" class="unites-ml text-nowrap m-0">L/min</label>
               </div>
             </div>
           </div>
@@ -189,7 +210,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Pulse Rate</label>
                 <input type="text" class="w-100" formControlName="PulseRate">
-                <label for="" class="unites-labels text-nowrap m-0" style="right: 17px;">bpm</label>
+                <label for="" class="unites-labels text-nowrap m-0">bpm</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
@@ -201,7 +222,7 @@
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
-                <label for="" class="text-nowrap m-0">Systolic Blood Pressre Sitting</label>
+                <label for="" class="text-nowrap m-0" style="min-width: 220px;">Systolic Blood Pressre Sitting</label>
                 <input type="text" class="w-100" formControlName="SystolicBloodSitting">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
@@ -210,21 +231,21 @@
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
-                <label for="" class="text-nowrap m-0">Diastolic Blood Pressre Sitting</label>
+                <label for="" class="text-nowrap m-0" style="min-width: 220px;">Diastolic Blood Pressre Sitting</label>
                 <input type="text" class="w-100" formControlName="DiastolicBloodSitting">
-                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 8px;">br/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
-                <label for="" class="text-nowrap m-0">Mean Arterial Pressure</label>
+                <label for="" class="text-nowrap m-0" style="right: 5px;">Mean Arterial Pressure</label>
                 <input type="text" class="w-100" formControlName="ArterialPressure">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
-                <label for="" class="text-nowrap m-0">Systolic Bllod Pressure Standing</label>
+                <label for="" class="text-nowrap m-0" style="min-width: 220px;">Systolic Bllod Pressure Standing</label>
                 <input type="text" class="w-100" formControlName="SystolicBloodStanding">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
               </div>
@@ -233,9 +254,10 @@
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
-                <label for="" class="text-nowrap m-0">Diastolic Bllod Pressure Standing</label>
+                <label for="" class="text-nowrap m-0" style="min-width: 220px;">Diastolic Bllod Pressure
+                  Standing</label>
                 <input type="text" class="w-100" formControlName="DiastolicBloodStanding">
-                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 8px;">br/min</label>
               </div>
             </div>
           </div>

@@ -422,25 +422,26 @@ export class ErHistoryComponent implements OnInit {
     // }, (_error: any) => { });
     this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe(
       (_success: any) => {
-      this.ERlistData = [];
+      // this.ERlistData = [];
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
-       _success.d.results.forEach(element => {
-        if (element.StatusName == 'Checked Out') {
-          this.ERlistData.push(element);
-          this.sendErPatientCount.emit( this.ERlistData.length);
-        }
-       });
-       this.ERlistData.forEach((element,index) => {
-        if (element.TriageDate != null && element.TriageDate != '') {
-        this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-        }
-        else{
-          this.ERlistData[index]['assignedTime'] = '';
-        }
-      });
-      this.ERlistDataClone = this.ERlistData;
+      //  _success.d.results.forEach(element => {
+      //   if (element.StatusName == 'Checked Out') {
+      //     this.ERlistData.push(element);
+      //     this.sendErPatientCount.emit( this.ERlistData.length);
+      //   }
+      //  });
+      //  this.ERlistData.forEach((element,index) => {
+      //   if (element.TriageDate != null && element.TriageDate != '') {
+      //   this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
+      //   }
+      //   else{
+      //     this.ERlistData[index]['assignedTime'] = '';
+      //   }
+      // });
+      // this.ERlistDataClone = this.ERlistData;
+      this.ERlistData = _success.d.results;
       this.lastIndex = this.ERlistData.length - 1;
 
       },

@@ -273,18 +273,6 @@ export class HospitalistService {
       withCredentials: true,
     })
   }
-  getDialysisMedicationAdministrationSet(Deptcode?:any,fromDate?:any, toDate?:any){
-    let urlWithParams = ''
-
-    if(Deptcode === null || Deptcode === ""){
-      urlWithParams = `${this.url}DialysisMedicationAdministrationSet?fromDate=${fromDate}&toDate=${toDate}`;
-    }else{
-      urlWithParams = `${this.url}DialysisMedicationAdministrationSet?Deptcode=${Deptcode}&fromDate=${fromDate}&toDate=${toDate}`;
-    }
-    return this.http.get(urlWithParams, {
-      withCredentials: true,
-    })
-  }
   getAdministerEvent(orderValue: any) {
     const url = `${environment.eKardexApiUrl}/e-prescription/getAdministerEvent`;
     return this.http.post(url, orderValue ,{
