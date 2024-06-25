@@ -391,8 +391,8 @@ export class SurgicalPassportComponent implements OnInit {
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
         DocStatus: status === 'copy' ? '5' : status === 'editRelease' ? '4' : '1',
-        TODIAGNOSES: this.toDiagnosisArr,
-        TOVITALSIGNS: this.toVitalsArr,
+        TODIAGNOSES: [this.toDiagnosisArr],
+        TOVITALSIGNS: [this.toVitalsArr],
       },
     };
     if(this.formSurgicalPaasDetailGroup.valid){
@@ -466,8 +466,8 @@ export class SurgicalPassportComponent implements OnInit {
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
         DocStatus: "5",
-        TODIAGNOSES: this.toDiagnosisArr,
-        TOVITALSIGNS: this.toVitalsArr,
+        TODIAGNOSES: [this.toDiagnosisArr],
+        TOVITALSIGNS: [this.toVitalsArr],
       },
     };
 

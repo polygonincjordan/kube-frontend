@@ -22,7 +22,7 @@ import { ActionType, RedirectionType, WordType } from '@services/interfaces/comm
 import { SharedService } from '@services/shared.service';
 import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { SurgicalPassportComponent } from './surgical-passport/surgical-passport.component';
-
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -162,6 +162,7 @@ export class PatientDocumentationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private sharedService: SharedService,
+    private dayCaseDashboardService:DayCaseDashboardService
   ) {
 
     this.RedirectionType = RedirectionType;
@@ -1806,6 +1807,23 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.admissionService
       .getEducationPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+  openSurgicalAssPdf(Dockey){
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getSurgicalPDF(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);

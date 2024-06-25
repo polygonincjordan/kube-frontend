@@ -123,6 +123,9 @@
                   <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
                     (click)="getPatientProfileData(nurseEndorsementList[0])"
                     *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                    <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openSurgicalAssPdf(surgicalPassportList[0]?.Dockey)"
+                    *ngIf="surgicalPassportList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
              
