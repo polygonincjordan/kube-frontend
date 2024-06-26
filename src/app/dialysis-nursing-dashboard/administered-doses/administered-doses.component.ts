@@ -165,7 +165,7 @@ value: any;
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
+  this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }

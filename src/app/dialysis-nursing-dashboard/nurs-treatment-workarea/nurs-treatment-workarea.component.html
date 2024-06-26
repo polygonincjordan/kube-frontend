@@ -84,11 +84,6 @@
             <img class="cursor-pointer height-data" src="assets/img/Frame-data.svg" style=" position: sticky;
           z-index: 999;cursor: pointer;" />
           </span>
-          <button type="button" class="btn-show-data p-2" (click)="showhidePatients()"
-            *ngIf="this.showPatients ? false:true">
-            <img src="assets/img/Frame.svg" alt="" height="15" class="mr-1">
-            Assigned Patients
-          </button>
         </span>
       </div>
       <div *ngIf="this.emergencyService.OrderSet">

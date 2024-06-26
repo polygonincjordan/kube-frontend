@@ -55,9 +55,9 @@ export class PatientSearchComponent implements OnInit {
       Patnr:this.form.controls.mrn.value,
       Vname:this.form.controls.firstName.value,
       Nname:this.form.controls.lastName.value,
-      Telnr:this.form.controls.mrn.value
+      Telnr:this.form.controls.telephone.value
     }
-    this.emergencyService.PatientSearchSet(json).subscribe(
+    this.emergencyService.DialysisPatientSearch(json).subscribe(
       (_success: any) => {
         this.openModalForPatientList(template);
         this.patientSearchData = _success.d.results;

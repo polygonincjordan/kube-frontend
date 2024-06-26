@@ -68,9 +68,12 @@
                             <div class="col-4">
                                 <div class="d-flex align-items-center">
                                     <label for="" class="mr-3 mb-0 text-nowrap">Sesstion Time</label>
-                                    <input type="text" class="w-100" formControlName="SessionTime" [bsConfig]="{withTimepicker:true,showWeekNumbers:false,
-                                        dateInputFormat:
-                                        'HH:mm:ss'}" bsDatepicker>
+                                    <input type="text" class="w-100" formControlName="SessionTime" [bsConfig]="{
+                                     withTimepicker: true,
+                                     showWeekNumbers: false,
+                                     dateInputFormat: 'HH:mm:ss',
+                                     selectFromOtherMonth: true
+                                   }" bsDatepicker [isDisabled]="true">
                                 </div>
                             </div>
                             <div class="col-4">
