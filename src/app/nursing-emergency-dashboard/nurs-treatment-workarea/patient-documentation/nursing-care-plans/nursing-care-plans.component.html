@@ -1,0 +1,492 @@
+<div class="tab-navigation-part">
+  <div class="tab-navigate">
+    <div class="tab-nav">
+      <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+        <li
+          class="d-flex m-0 align-items-center"
+          *ngFor="let label of tabLabelList"
+          [ngClass]="selectedTabName == label ? 'active' : ''"
+          (click)="switchTabs(label)"
+        >
+          <p class="d-inline-block m-0 input-lable">
+            {{ label }}
+          </p>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-contant">
+      <div class="nutrition" *ngIf="selectedTabName == tabLabelList[0]">
+        <div class="nur-problem-details row">
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Problem</strong></h4>
+              <div class="row">
+                <div class="col-md-8">
+                  <input type="checkbox" />
+                  <label
+                    >Imbalanced Nutrition (Less Than Body Requirements)</label
+                  >
+                </div>
+                <div class="col-md-4">
+                  <div>
+                    <input type="checkbox" />
+                    <label>Actual</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Potential</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Goals</strong></h4>
+              <div class="">
+                <div>
+                  <input type="checkbox" />
+                  <label>Improve Nutritional Intake</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Promote and Optimize Nutrition Support</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Promote and Optimize Oral Intake</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3">Others: </label>
+                  <input type="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nur-interventions-details mt-3">
+          <div class="nutrotion-problem">
+            <h4><strong>Interventions</strong></h4>
+            <div class="row">
+              <div class="col-md-4">
+                <div>
+                  <input type="checkbox" />
+                  <label>Nutritional Counseling</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Monitor Intake and Output</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Daily Body Weight as Ordered</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Maintain Parenteral Fluid as Ordered
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div>
+                  <input type="checkbox" />
+                  <label>Determine Food Preferences</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Monitor Electrolytes</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Refer to Dietician</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3">Patient's Family Education</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div>
+                  <input type="checkbox" />
+                  <label>Provide Skin Care</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Swallowing Therapy</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3">Others: </label>
+                  <input type="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nur-problem-details row mt-3">
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Evaluation</strong></h4>
+              <div class="row">
+                <div>
+                  <input type="checkbox" />
+                  <label>Met</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Partially Met</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Not Met</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Revision</strong></h4>
+              <div class="row">
+                <div>
+                  <input type="checkbox" />
+                  <label>Reviewed and Continue</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Reviewed and Edited</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Achieved</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="Diarrhea" *ngIf="selectedTabName == tabLabelList[1]">
+        <div class="nur-problem-details row">
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Problem</strong></h4>
+              <div class="row">
+                <div class="col-md-8">
+                  <input type="checkbox" />
+                  <label>Diarrhea;</label>
+                </div>
+                <div class="col-md-4">
+                  <div>
+                    <input type="checkbox" />
+                    <label>Actual</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Potential</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Goals</strong></h4>
+              <div class="">
+                <div>
+                  <input type="checkbox" />
+                  <label>Diarrheal Epispodes Decline or Disappear</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Usual Bowel Pattern Resumes</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Maintain Fluid and Electrolyte Balance</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Keep Skin Cleanand Free from Ulcer/Irritation</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3">Others: </label>
+                  <input type="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nur-interventions-details mt-3">
+          <div class="nutrotion-problem">
+            <h4><strong>Interventions</strong></h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Monitor and Record Frequency and Characteristics of
+                    Stool</label
+                  >
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Administer Medications (as ordered)</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Replece Fluids (as ordered)</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Intake and Output Monitoring (as ordered)
+                  </label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Monitor Skin Irratation and Ulceration
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <input type="checkbox" />
+                  <label>Provide Meticulous Skin Care and Keep Skin Dry</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Educate Patient and Family about Management of
+                    Diarrhea</label
+                  >
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Provide Psycological Support</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3">Refer to Dietician</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3">Others: </label>
+                  <input type="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nur-problem-details row mt-3">
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Evaluation</strong></h4>
+              <div class="row">
+                <div>
+                  <input type="checkbox" />
+                  <label>Met</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Partially Met</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Not Met</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Revision</strong></h4>
+              <div class="row">
+                <div>
+                  <input type="checkbox" />
+                  <label>Reviewed and Continue</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Reviewed and Edited</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Achieved</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-rest" *ngIf="selectedTabName == tabLabelList[2]">
+        <div class="nur-problem-details row">
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Problem</strong></h4>
+              <div class="row">
+                <div class="col-md-8">
+                  <input type="checkbox" />
+                  <label>Activity Intolerance;</label>
+                </div>
+                <div class="col-md-4">
+                  <div>
+                    <input type="checkbox" />
+                    <label>Actual</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Potential</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Goals</strong></h4>
+              <div class="">
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Understanding of the Needs to Increase Daily Activity
+                    Level</label
+                  >
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Demonstrate Decrease in Fatigue by Participating in AoDL
+                  </label>
+                </div>
+                <input type="checkbox" />
+                <label class="mr-3">Others: </label>
+                <input type="text" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nur-interventions-details mt-3">
+          <div class="nutrotion-problem">
+            <h4><strong>Interventions</strong></h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <input type="checkbox" />
+                  <label>Encouraging Patient to Note Daily Progress</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Evaluating Patient's Pain and the Present Treatment
+                    Regimen</label
+                  >
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Providing Sufficient Support to Ensure Safety</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Moving from Bed to Chair with and without Assistance
+                  </label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Providing Assistive Devices for Ambulation as-required
+                  </label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Providing Assistive Devices for Ambulation as-required
+                  </label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label class="mr-3"
+                    >Educate Patient about Management of Activity Intolerance
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Adequate Nutrition and Rest to Promote Ideal Weight</label
+                  >
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label>Encourage Patient to Participate in AoDL</label>
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label
+                    >Monitor Patient's Vital Signs and Pain before and after
+                    AoDL Physiotherapy</label
+                  >
+                </div>
+                <div>
+                  <input type="checkbox" />
+                  <label> Physiotherapy</label>
+                </div>
+                <div>
+                  <div>
+                    <input type="checkbox" />
+                    <label class="mr-3">Others: </label>
+                    <input type="text" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nur-problem-details row mt-3">
+            <div class="col-md-6">
+              <div class="nutrotion-problem">
+                <h4><strong>Evaluation</strong></h4>
+                <div class="row">
+                  <div>
+                    <input type="checkbox" />
+                    <label>Met</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Partially Met</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Not Met</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="nutrotion-problem">
+                <h4><strong>Revision</strong></h4>
+                <div class="row">
+                  <div>
+                    <input type="checkbox" />
+                    <label>Reviewed and Continue</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Reviewed and Edited</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" />
+                    <label>Achieved</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
