@@ -1,0 +1,58 @@
+.tab-ui::-webkit-scrollbar {
+  height: 0 !important;
+}
+
+.tab-ui {
+  border-bottom: 1px solid #d6d6d6;
+  white-space: nowrap;
+  overflow: auto;
+}
+
+.tab-nav {
+  border: none !important;
+  padding: 10px 6px 0 !important;
+}
+
+.na-title {
+  input {
+    width: 16px !important;
+  }
+  label {
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}
+
+.tab-navigation-part {
+  background: none !important;
+  border: 1px solid #cacaca;
+  padding: 10px 16px;
+  border-radius: 12px;
+}
+
+.tab-content {
+  height: calc(100vh - 350px);
+  overflow: auto;
+  padding: 20px;
+}
+
+.tab-contant {
+  padding: 6px;
+  .nutrotion-problem {
+    border: 1px solid #cacaca;
+    padding: 6px 10px;
+    height: 100%;
+
+    label {
+      margin-left: 10px !important;
+    }
+
+    input[type='checkbox'] {
+      position: relative;
+      top: 2px;
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
