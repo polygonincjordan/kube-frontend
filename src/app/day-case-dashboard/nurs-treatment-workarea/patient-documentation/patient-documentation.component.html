@@ -65,6 +65,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Surgical Passport'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSurgical()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pain Assesment'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleased()">
               Release
@@ -199,8 +204,8 @@
               
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event"
-                [ngClass]="isAttechmentDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isAttechmentDocument','')">
+                [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('attachments','')">
                 <div class="col-md-4">Attachments Document</div>
                 <div class="col-md-2 status-color">N/A</div>
                 <div class="col-md-2"></div>

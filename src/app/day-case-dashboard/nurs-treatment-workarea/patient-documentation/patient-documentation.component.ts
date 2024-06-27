@@ -482,7 +482,6 @@ export class PatientDocumentationComponent implements OnInit {
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Dicharge Summary' },
       'isBradenScale': { isBradenScale: true, selectedDocName: 'Braden Scale' },
-      'isAttechmentDocument': { isAttechmentDocument: true, selectedDocName: 'Attechment Document' },
       'isMorseFallScale': { isMorseFallScale: true, selectedDocName: 'Morse Fall Scale (MFS)' },
       'isNursingAdmission': { isNursingAdmission: true, selectedDocName: 'Nursing Admission Assessment' },
       'isNursingAssessment': { isNursingAssessment: true, selectedDocName: 'Nursing Assessment' },
@@ -491,6 +490,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isPreCardiacCath': { isPreCardiacCath: true, selectedDocName: 'Pre-Cardiac Cath Checklist' },
       'isNursingInitialAssessment': { isNursingInitialAssessment: true, selectedDocName: 'Nursing Initial Assessment Gyno Obstetrics' },
       'isObstetricsFallRisk': { isObstetricsFallRisk: true, selectedDocName: 'Obstetrics Fall Risk Assessment' },
+      'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
     };
 
     // Reset all flags to false initially
@@ -508,6 +508,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPreCardiacCath = false;
     this.isNursingInitialAssessment = false;
     this.isObstetricsFallRisk = false;
+    this.attachments = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
       const assessment = assessments[name];
@@ -974,9 +975,14 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openSurgicsalPassport = true;
-        this.SurgicalPassComp.createSurgicalPassDoc();
-        // this.educationAssessmentComp.ngOnInit();
-        // this.createAndReleaseMed();
+        this.SurgicalPassComp.createSurgicalPassDoc('4').then((formValue)=>{
+          if(formValue){
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });;
       }
     }
     // pediatric early warning 
@@ -1209,8 +1215,8 @@ export class PatientDocumentationComponent implements OnInit {
      
       
       if (this.openSurgicsalPassport) {
-        this.SurgicalPassComp.createSurgicalPassDoc().then((formValue: any) => {
-
+        let docStatus = '1';
+        this.SurgicalPassComp.createSurgicalPassDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -1238,7 +1244,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
      
       if (this.openSurgicsalPassport) {
-        this.SurgicalPassComp.createSurgicalPassDoc('edit').then((formValue: any) => {
+        this.SurgicalPassComp.createSurgicalPassDoc('1','edit').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -1249,8 +1255,6 @@ export class PatientDocumentationComponent implements OnInit {
      
     }
     else if (this.actionType == 'copy') {
-      
-     
       if (this.openBradenScale) {
         this.BradenScaleComp.copyBradeScale().then((formValue: any) => {
           if (formValue) {
@@ -1260,13 +1264,13 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error copy numeric rating Scale:', error);
         });
       }
+      
       if (this.openEducationAssessment) {
         this.createEducationAss(false);
       }
-     
-     
+      
       if (this.openSurgicsalPassport) {
-        this.SurgicalPassComp.copySurgicalPassDoc('copy').then((formValue: any) => {
+        this.SurgicalPassComp.copySurgicalPassDoc('3','copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -1274,8 +1278,6 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
-    
-     
     }
   }
 
@@ -1287,8 +1289,15 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.isEducationAssement) {
       this.createEducationAss(true);
     } else if (this.openSurgicsalPassport) {
-      this.SurgicalPassComp.createSurgicalPassDoc('editRelease');
-    } 
+      this.SurgicalPassComp.createSurgicalPassDoc('2','edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
   }
 
   newVersionDirectReleased() {
@@ -1800,6 +1809,17 @@ export class PatientDocumentationComponent implements OnInit {
         }
       );
     })
+  }
+
+  newVersionDirectReleasedSurgical() {
+    this.SurgicalPassComp.copySurgicalPassDoc('5','copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Glasgow coma scale:', error);
+    });
   }
 
 
