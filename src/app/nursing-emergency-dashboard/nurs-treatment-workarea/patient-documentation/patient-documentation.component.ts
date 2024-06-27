@@ -480,7 +480,7 @@ export class PatientDocumentationComponent implements OnInit {
       'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
       'educationAssessment': { educationAssessment: true, selectedDocName: 'Education Assesment' },
       'isPainAssessment': { isPainAssessment: true, selectedDocName: 'Pain Assesment' },
-      'isNursingCarePlans': { isNursingCarePlans: true, selectedDocName: 'Nursing Care Plans' },
+      'isNursingCarePlans': { isNursingCarePlans: true, selectedDocName: 'Nursing Care Plan' },
     };
 
     // Reset all flags to false initially

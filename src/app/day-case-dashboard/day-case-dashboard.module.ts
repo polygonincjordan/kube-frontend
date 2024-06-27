@@ -101,6 +101,7 @@ import { DiagnosisTabComponent } from './nurs-treatment-workarea/patient-documen
 import { PainAssessmentNurEmrComponent } from './nurs-treatment-workarea/patient-documentation/pain-assessment-nur-emr/pain-assessment-nur-emr.component';
 import { ImageEditorModule } from '../shared-module/image-editor/image-editor.module';
 import { DayCaseDashboardComponent } from './day-case-dashboard.component';
+import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-plan-document/nursing-care-plan-document.module';
 
 const route: Routes = [
   {
@@ -199,7 +200,8 @@ const route: Routes = [
     NgbCollapseModule,
     PopoverModule,
     NgxExtendedPdfViewerModule,
-    ImageEditorModule
+    ImageEditorModule,
+    NursingCarePlanDocumentModule
   ],
 })
 export class DayCaseDashboardModule { }

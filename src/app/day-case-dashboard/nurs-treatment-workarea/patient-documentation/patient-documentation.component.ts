@@ -117,6 +117,8 @@ export class PatientDocumentationComponent implements OnInit {
   openNurseEndorsement: boolean = false;
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
+  openNursingCarePlans: boolean = false;
+
   selectedDocData: any;
   medlatestDocList = [];
   medDocList = [];
@@ -845,6 +847,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openNurseEndorsement = false
     this.openSurgicsalPassport = false
     this.openPediatricEarlyWarningScale = false
+    this.openNursingCarePlans = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -994,7 +997,6 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
    
-   
     // Braden Scale
     else if (this.isBradenScale) {
       if (action == 'create') {
@@ -1034,8 +1036,49 @@ export class PatientDocumentationComponent implements OnInit {
         // this.createAndRelease();
       }
     }
-    // Emergency Nursing Document
-   
+    // Nusring Care Plans
+    else if (this.isNursingCarePlan) {
+      if (action == 'create') {
+        this.openNursingCarePlans = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNursingCarePlans = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deletePainAssessmentDocument(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleasePainAss();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNursingCarePlans = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNursingCarePlans = true;
+      }
+    
+  }
    
   }
   private subscription: Subscription;
