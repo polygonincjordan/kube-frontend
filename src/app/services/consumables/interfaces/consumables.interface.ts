@@ -102,6 +102,7 @@ export interface ConsumablesHistoryResult {
   Batch: string
   Erdat: string
   Erusr: string
+  NonBillable: string
 }
 
 

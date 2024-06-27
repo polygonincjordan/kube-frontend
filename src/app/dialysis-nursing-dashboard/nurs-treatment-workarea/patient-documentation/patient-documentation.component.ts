@@ -866,12 +866,13 @@ export class PatientDocumentationComponent implements OnInit {
 
   redirecTreatment(){
     const urlSearchParams = new URLSearchParams(window.location.search);
-    urlSearchParams.set('redirectFor', '');
+    urlSearchParams.set('redirectFor', 'Documentation');
     urlSearchParams.set('action', '');
     urlSearchParams.set('doctype', '');
 
     // Construct the new URL
     const newUrl = `${window.location.origin}${window.location.pathname}?${urlSearchParams.toString()}${window.location.hash}`;
+    localStorage.setItem('tabName',"Documenatation")
 
     // Redirect to the new URL
     window.location.href = newUrl;
@@ -1154,11 +1155,11 @@ export class PatientDocumentationComponent implements OnInit {
               })
               this.refresh();
             },(error)=>{
-              console.log(error);
+              this.sharedService.errorSwallModel(error?.error?.error.message.value)
             })
           }
-        }, (err)=>{
-          console.log(err);
+        }, (error)=>{
+          this.sharedService.errorSwallModel(error?.error?.error.message.value)
         }) 
       }else if (action == 'copy' && this.selectedDocData?.StatusTxt == "Released") {
         this.openAssessment = true;
@@ -1182,8 +1183,8 @@ export class PatientDocumentationComponent implements OnInit {
                 customClass: 'myalertpopup'
               })
               this.refresh();
-            }, (err)=>{
-              console.log(err);
+            }, (error)=>{
+              this.sharedService.errorSwallModel(error?.error?.error.message.value)
             })
             );
           }
@@ -1228,11 +1229,11 @@ export class PatientDocumentationComponent implements OnInit {
               })
               this.refresh();
             },(error)=>{
-              console.log(error);
+              this.sharedService.errorSwallModel(error?.error?.error.message.value)
             })
           },
           error: (error)=>{
-            console.log(error);
+            this.sharedService.errorSwallModel(error?.error?.error.message.value)
           }
         });
 
@@ -1268,11 +1269,11 @@ export class PatientDocumentationComponent implements OnInit {
               })
               this.refresh();
             },(error)=>{
-              console.log(error);
+              this.sharedService.errorSwallModel(error?.error?.error.message.value)
             })
           },
           error: (error)=>{
-            console.log(error);
+            this.sharedService.errorSwallModel(error?.error?.error.message.value)
           }
         });
 
@@ -1299,8 +1300,8 @@ export class PatientDocumentationComponent implements OnInit {
                 customClass: 'myalertpopup'
               })
               this.refresh();
-            }, (err)=>{
-              console.log(err);
+            }, (error)=>{
+              this.sharedService.errorSwallModel(error?.error?.error.message.value)
             })
             );
           }
@@ -1503,7 +1504,7 @@ export class PatientDocumentationComponent implements OnInit {
           })
           this.refresh();
         },(error)=>{
-          console.log(error);
+          this.sharedService.errorSwallModel(error?.error?.error.message.value)
         })
       }
       if(this.openHemoCatheter){
@@ -1617,7 +1618,7 @@ export class PatientDocumentationComponent implements OnInit {
           })
           this.refresh();
         },(error)=>{
-          console.log(error);
+          this.sharedService.errorSwallModel(error?.error?.error.message.value)
         })
       }
       if(this.openHemoCatheter){
@@ -2083,7 +2084,7 @@ export class PatientDocumentationComponent implements OnInit {
       })
       this.refresh();
     },(error)=>{
-      console.log(error);
+      this.sharedService.errorSwallModel(error?.error?.error.message.value)
     })
   }
 
@@ -2112,7 +2113,7 @@ export class PatientDocumentationComponent implements OnInit {
       })
       this.refresh();
     },(error)=>{
-      console.log(error);
+      this.sharedService.errorSwallModel(error?.error?.error.message.value)
     })
   }
 
@@ -2187,7 +2188,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.refresh();
       },
       (error) => {
-        console.log(error);
+        this.sharedService.errorSwallModel(error?.error?.error.message.value)
       }
     );
   }

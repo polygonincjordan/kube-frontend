@@ -103,7 +103,7 @@
                                                 <label class="m-0">No</label>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <input type="radio" disabled
+                                                <input type="radio" [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value !== '0'"
                                                     [checked]="this.hemoDialysisFistulGraftForm.get('AvCan').value === '0'"
                                                     name="AvCan" class="mr-3">
                                                 <label class="m-0">Yes</label>
@@ -123,7 +123,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value == '2' ? true : false"
                                                     class="mr-3" name="CanHandHygiene" (change)="checkChange($event)">
                                                 <label class="m-0">Perform hand hygiene</label>
                                             </div>
@@ -131,7 +130,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value == '2' ? true : false"
                                                     class="mr-3" name="CanProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Don proper PPE (mask with face shield or mask
                                                     with goggles, plus gown & gloves)</label>
@@ -140,7 +138,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value == '2' ? true : false"
                                                     class="mr-3" name="CanCleanSite" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Clean site with 2% CHG wipes or soap and
                                                     water</label>
@@ -149,7 +146,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value == '2' ? true : false"
                                                     class="mr-3" name="CanApplySkin" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Apply skin antiseptic (Chlorhexidine 2% or 10%
                                                     Povidone lodine) & allow it to dry</label>
@@ -158,7 +154,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value == '2' ? true : false"
                                                     class="mr-3" name="CanContactSite" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Do not contact site (after antisepsis)</label>
                                             </div>
@@ -166,7 +161,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvCan').value == '2' ? true : false"
                                                     class="mr-3" name="CanInsertNeedles" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Insert needles & Connect to blood lines
                                                     aseptically</label>
@@ -193,7 +187,7 @@
                                                 <label class="m-0">No</label>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <input type="radio" disabled
+                                                <input type="radio" [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value !== '0'"
                                                     [checked]="this.hemoDialysisFistulGraftForm.get('AvDecan').value === '0'"
                                                     name="AvDecan" class="mr-3">
                                                 <label class="m-0">Yes</label>
@@ -213,7 +207,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene</label>
                                             </div>
@@ -221,7 +214,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Don proper PPE (mask with face shield or mask
                                                     with goggles, plus gown & gloves)</label>
@@ -230,7 +222,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanDisconnectFrom"
                                                     (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard tubing in a leak-proof
@@ -240,7 +231,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanDiscardTubing"
                                                     (change)="checkChange($event)">
                                                 <label for="" class="m-0">Wear clean gloves (patient and/or staff) to
@@ -250,7 +240,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanWearClean" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Disconnect catheter from blood lines
                                                     aseptically</label>
@@ -259,7 +248,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanRemoveNeedles"
                                                     (change)="checkChange($event)">
                                                 <label for="" class="m-0">Remove needles aseptically</label>
@@ -268,7 +256,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value == '2' ? true : false"
                                                     class="mr-3" name="DecanApplyClean" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Apply clean gauze/bandage to site</label>
                                             </div>
@@ -294,7 +281,7 @@
                                                 <label class="m-0">No</label>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <input type="radio" disabled
+                                                <input type="radio" [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value !== '0'"
                                                     [checked]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value === '0'"
                                                     name="MedicationPrep" class="mr-3">
                                                 <label class="m-0">Yes</label>
@@ -314,7 +301,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene</label>
                                             </div>
@@ -322,7 +308,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepMedications" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Prepare medications in clean designated
                                                     areas</label>
@@ -331,7 +316,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepInspectVials" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Inspect all vials</label>
                                             </div>
@@ -339,7 +323,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepAsepticTechniq"
                                                     (change)="checkChange($event)">
                                                 <label for="" class="m-0">Prepare medications using antiseptic
@@ -349,7 +332,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepNewNeedle" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Use new needle and new syringe to enter all
                                                     vials</label>
@@ -358,7 +340,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepDiscardAll" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard all single dose vial(s)</label>
                                             </div>
@@ -366,7 +347,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value == '2' ? true : false"
                                                     class="mr-3" name="PrepProperlyStore"
                                                     (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard or properly store all multi dose
@@ -394,7 +374,7 @@
                                                 <label class="m-0">No</label>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <input type="radio" disabled
+                                                <input type="radio" [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value !== '0'"
                                                     [checked]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value === '0'"
                                                     name="MedicationAdm" class="mr-3">
                                                 <label class="m-0">Yes</label>
@@ -414,7 +394,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value == '2' ? true : false"
                                                     class="mr-3" name="AdmHandHygiene" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Perform hand hygiene (before and
                                                     after)</label>
@@ -423,7 +402,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value == '2' ? true : false"
                                                     class="mr-3" name="AdmProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Use proper PPE (gloves)</label>
                                             </div>
@@ -431,7 +409,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value == '2' ? true : false"
                                                     class="mr-3" name="AdmProperlyTrans" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Properly transport medication to patient
                                                     station</label>
@@ -440,7 +417,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value == '2' ? true : false"
                                                     class="mr-3" name="AdmInjectionPort" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Disinfect injection port with appropiate
                                                     antiseptic</label>
@@ -449,7 +425,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value == '2' ? true : false"
                                                     class="mr-3" name="AdmAdministerMed" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Administer medications using aseptic
                                                     techniques</label>
@@ -458,7 +433,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value == '2' ? true : false"
                                                     class="mr-3" name="AdmDiscardSyringe"
                                                     (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard syringe point of use</label>
@@ -485,7 +459,7 @@
                                                 <label class="m-0">No</label>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <input type="radio" disabled
+                                                <input type="radio" [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value !== '0'"
                                                     [checked]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value === '0'"
                                                     name="DialysisStat" class="mr-3">
                                                 <label class="m-0">Yes</label>
@@ -505,7 +479,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value == '2' ? true : false"
                                                     class="mr-3" name="StatProperPpe" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Don proper PPE (as per indication but at least
                                                     use
@@ -515,7 +488,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value == '2' ? true : false"
                                                     class="mr-3" name="StatEnsureThat" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Ensure that the patient has left the dialysis
                                                     station
@@ -525,7 +497,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value == '2' ? true : false"
                                                     class="mr-3" name="StatDiscardAll" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Discard all single-use supplies, Clean and
                                                     disinfect
@@ -535,7 +506,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value == '2' ? true : false"
                                                     class="mr-3" name="StatNursingClean" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Nursing:Clean and disinfect dialysis
                                                     station(Dialysis
@@ -545,7 +515,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value == '2' ? true : false"
                                                     class="mr-3" name="StatKeepUsed" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Keep used or potentially contaminated items
                                                     away from
@@ -556,7 +525,6 @@
                                         <div class="col-4 my-2">
                                             <div class="d-flex align-items-center my-2">
                                                 <input type="checkbox" #checkbox class="mr-3"
-                                                    [disabled]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value == '2' ? true : false"
                                                     class="mr-3" name="StatHousekeeping" (change)="checkChange($event)">
                                                 <label for="" class="m-0">Housekeeping: Clean and disinfect dialysis
                                                     chair or bed (rails, armrests & mattresses)</label>

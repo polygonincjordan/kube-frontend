@@ -197,6 +197,8 @@ value: any;
     // this.getReceviceCartList();
     this.receiveCartData=null;
     this.toContentData = null;
+
+    this.modalRef.hide();
   }
   
   formatDateFromTimestamp(timestamp: string): string {

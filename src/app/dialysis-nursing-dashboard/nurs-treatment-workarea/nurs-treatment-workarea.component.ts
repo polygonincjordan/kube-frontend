@@ -153,7 +153,6 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     });
 
     this.emergencyService.currentTab.subscribe((tabName)=>{
-      console.log(tabName);
       localStorage.setItem('tabName', tabName);
       this.ngOnInit();
     })

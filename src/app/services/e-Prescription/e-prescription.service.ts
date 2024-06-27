@@ -127,6 +127,15 @@ export class EPrescriptionService implements OnDestroy {
   }
 
   loadEmarPanelData() {
+    this.selectedItems=[];
+    this.checkedFilterData ={
+      Administered:false,
+      Cancelled:false,
+      NotAdministered:false
+    }
+    this.formDetailGroup.get('SearchData').patchValue(null);
+    this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
+
     this.prescriptionList = { medicationData: [], eventData: [] };
     this.loadMARData();
     if (this.formgroupData.DateRange && this.formgroupData.DateRange[0]) {
