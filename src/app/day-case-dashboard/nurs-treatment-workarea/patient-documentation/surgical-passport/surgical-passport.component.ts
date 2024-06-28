@@ -339,12 +339,12 @@ export class SurgicalPassportComponent implements OnInit {
 
 
 
-  createSurgicalPassDoc(status?:any) {
+  createSurgicalPassDoc(status?:any,actionType?:any) {
     this.isFormValidError = true
     return new Promise((resolve, reject) => {
     const Payload = {
       d: {
-        Dockey: status === 'edit' ? this.docKey : '',
+        Dockey: actionType === 'edit' ? this.docKey : '',
         Dtid: 'ZMED_SRGPP',
         Einri: this.paramsObject.einri,
         Patnr: this.paramsObject.patnr,
@@ -390,7 +390,7 @@ export class SurgicalPassportComponent implements OnInit {
         OrCheckNm:  this.formSurgicalPaasDetailGroup.value.NameOfOrStaff,
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
-        DocStatus: status === 'copy' ? '5' : status === 'editRelease' ? '4' : '1',
+        DocStatus: status,
         TODIAGNOSES: [this.toDiagnosisArr],
         TOVITALSIGNS: [this.toVitalsArr],
       },
@@ -407,19 +407,20 @@ export class SurgicalPassportComponent implements OnInit {
           resolve(true);
           if(status === 'edit'){
             this.sharedService.successSwallModel('Surgical Passport updated successfully');
+          }else{
+            this.sharedService.successSwallModel('Surgical Passport created successfully');
           }
-          this.sharedService.successSwallModel('Surgical Passport created successfully');
           this.isFormValidError = false
         }
       });    
     }
   })
   }
-  copySurgicalPassDoc(status?:any) {
+  copySurgicalPassDoc(status?:any,actionType?:any) {
     return new Promise((resolve, reject) => {
     const Payload = {
       d: {
-        Dockey: status === 'copy' ? this.docKey : '',
+        Dockey: actionType === 'copy' ? this.docKey : '',
         Dtid: 'ZMED_SRGPP',
         Einri: this.paramsObject.einri,
         Patnr: this.paramsObject.patnr,
@@ -465,13 +466,13 @@ export class SurgicalPassportComponent implements OnInit {
         OrCheckNm:  this.formSurgicalPaasDetailGroup.value.NameOfOrStaff,
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
-        DocStatus: "5",
+        DocStatus: status,
         TODIAGNOSES: [this.toDiagnosisArr],
         TOVITALSIGNS: [this.toVitalsArr],
       },
     };
 
-    this.subscription = this.emergencyService.copySurgicalPassP(Payload).subscribe({
+    this.subscription = this.emergencyService.createSurgicalPassDetail(Payload).subscribe({
       next: (data: any) => {
       },
       error: (err: any) => {

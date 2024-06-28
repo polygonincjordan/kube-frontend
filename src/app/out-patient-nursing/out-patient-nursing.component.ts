@@ -430,11 +430,10 @@ export class OutPatientNursingComponent implements OnInit {
   createConfig() {
     const physicianArray = this.selectedPhysicianConf.map(item => item.Gpart);
     const specialityArray = this.selectedSpecialityConf.map(item => item.Orgid);
-    let Payload = {
+    const userName = this.storageService.getUserProfile().UserName
+     let Payload = {
       d: {
-        // Username: this.userConfiguration.Username,
-        // Usrevma: this.userConfiguration.Usrevma,
-        Username: this.clinicConfigDetail?.Username,
+        Username: userName,
         Usrevma: this.clinicConfigDetail?.Usrevma,
         AttendPhy: physicianArray[0] ? physicianArray[0] : '',
         AttendPhyNm: '',

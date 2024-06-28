@@ -656,7 +656,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
     } else if (module == 'erhistory') {
-      this.headerLabel = 'Day Case History'
+      this.headerLabel = 'Day Case Discharged Patients'
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.treatmentarea = false;
       this.checkin = false;
