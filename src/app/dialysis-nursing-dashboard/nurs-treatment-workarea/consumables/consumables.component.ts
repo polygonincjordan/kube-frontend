@@ -18,13 +18,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./consumables.component.scss'],
   providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }],
 })
-export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ConsumablesComponent implements OnInit, OnDestroy {
 
   public formDetailGroup: FormGroup;
   public disableSwitching: boolean;
-  // @ViewChild('tabset') tabset: TabsetComponent;
-  // @ViewChild('first') first: TabDirective;
-  // @ViewChild('second') second: TabDirective;k
 
   actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
@@ -63,7 +60,6 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnDestroy(): void {
-    // this.dataShareService.sendActionType(null);
     if (JSON.parse(localStorage.getItem('forConsumable'))) {
       localStorage.removeItem('forConsumable');
     }
@@ -73,10 +69,6 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.consumablesFrom();
     this.dataShareService.sendData('2');
     this.getStoragelocations();
-  }
-
-  ngAfterViewInit() {
-    // Set the second tab as the active tab after the view has been initialized
   }
 
   public consumablesFrom() {
@@ -119,13 +111,11 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       next: (data: StorageLocation) => {
         // Handle successful data retrieval
         this.storageLocationList = data.d.results;
-        // Set default selection if only one item in the list
         if (this.storageLocationList.length === 1) {
           this.selectedLocation = this.storageLocationList[0];
           this.formDetailGroup.get('selectedLocation').setValue(this.selectedLocation);
           this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, this.selectedLocation);
         }
-        // resolve(formValue); // Resolve the promise with formValue
       },
       error: (err: any) => {
         // Handle errors if the request fails

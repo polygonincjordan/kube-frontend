@@ -333,7 +333,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         this.inHospitalist = resp.body.d.results[0]?.ToLDRBu?.results;
         this.inLDRAttendPhyList = resp.body.d.results[0]?.ToPhysician?.results;
-        //this.form.reset();
       }
     });
   }
@@ -341,9 +340,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this._dataServices.getWardList().subscribe(
       (_success: any) => {
         if (_success) {
-          // _success = JSON.parse(_success._body);
-
-          // this.getWards = _success.d.results;
         }
       },
       (_error: any) => { }
@@ -442,7 +438,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
         (_success: any) => {
           _success = JSON.parse(_success._body);
           if (_success.module == 'Not_Executed_Physician_Order') {
-            // this.Ordercount = _success.count;
           }
         },
         (_error: any) => { }

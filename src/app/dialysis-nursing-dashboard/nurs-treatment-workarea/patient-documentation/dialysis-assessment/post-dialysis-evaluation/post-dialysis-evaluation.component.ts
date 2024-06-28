@@ -65,11 +65,6 @@ export class PostDialysisEvaluationComponent implements OnInit {
     })
   }
 
-
-  createAssessment() {
-    console.log(this.postDialysisMonitoring.value);
-  }
-
   ngOnDestroy(): void {
     if(this.subscription){
       this.subscription.unsubscribe();

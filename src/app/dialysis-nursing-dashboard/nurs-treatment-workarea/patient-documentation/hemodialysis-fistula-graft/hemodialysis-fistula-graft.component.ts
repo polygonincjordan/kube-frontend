@@ -111,13 +111,6 @@ export class HemodialysisFistulaGraftComponent implements OnInit {
       AttendPhy: new FormControl(''),
     });
 
-    // this.realized = JSON.parse(
-    //   localStorage.getItem('amc_dev_loggedInUserProfile')
-    // ).Gpart;
-    // this.realizedDescription = JSON.parse(
-    //   localStorage.getItem('amc_dev_loggedInUserProfile')
-    // ).GpartName;
-
     this.realized = this.storageService.getLocal('amc_dev_loggedInUserProfile', false)
     this.realizedDescription = this.storageService.getLocal('amc_dev_loggedInUserProfile',false)
 

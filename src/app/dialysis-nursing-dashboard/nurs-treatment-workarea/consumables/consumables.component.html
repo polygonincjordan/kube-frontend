@@ -2,10 +2,6 @@
   <form action="" [formGroup]="formDetailGroup">
     <div class="tab-search-panel d-flex align-items-center justify-content-between">
       <div class="tab-set w-100 row ">
-        <!-- <tabset #tabset class="custom-tabset">
-          <tab tab1 heading="History" id="1" #first (selectTab)="changeTab('1')"></tab>
-          <tab tab2 heading="New Issue" id="2" #second (selectTab)="changeTab('2')"   ></tab>
-        </tabset> -->
         <tabset class="col-2">
           <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="tabz.active = true"
             (selectTab)="changeTab(tabz)">
@@ -25,14 +21,12 @@
       <div class="d-flex align-items-center justify-content-between" *ngIf="isConsumableAction == '2'">
         <div>
           <button type="button" class="header-btn" (click)="resetForm()">
-            <!-- <i aria-hidden="true" class="fa fa-close fa-lg cursor-pointer"></i> -->
             <span>Cancel</span>
           </button>
         </div>
         <div class="spacer"></div>
         <div>
           <button type="button" class="header-btn" (click)="saveConsumable()">
-            <!-- <i aria-hidden="true" class="fa fa-save fa-lg cursor-pointer"></i> -->
             <span>Post</span>
           </button>
         </div>
