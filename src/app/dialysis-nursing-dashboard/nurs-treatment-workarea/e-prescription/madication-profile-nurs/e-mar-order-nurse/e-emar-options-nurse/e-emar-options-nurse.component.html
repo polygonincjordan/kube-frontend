@@ -37,20 +37,20 @@
         <form action="">
           <ul class="d-flex py-2 px-3 m-0">
             <li class="d-flex align-items-center m-0 mr-3">
-              <input type="checkbox"
+              <input type="checkbox" [checked]="ePrescriptionService.checkedFilterData.NotAdministered"
                 (change)="ePrescriptionService.EMAREventDataFilter('NotAdministered',
                 $event)">
               <span class="mr-2"></span>
               <label for="not-administered" class="m-0">Not Administered</label>
             </li>
             <li class="d-flex align-items-center m-0 mr-3">
-              <input type="checkbox"
+              <input type="checkbox" [checked]="ePrescriptionService.checkedFilterData.Cancelled"
                 (change)="ePrescriptionService.EMAREventDataFilter('Cancelled', $event)">
               <span class="mr-2"></span>
               <label for="cancelled" class="m-0">Cancelled</label>
             </li>
             <li class="d-flex align-items-center m-0 mr-3">
-              <input type="checkbox"
+              <input type="checkbox" [checked]="ePrescriptionService.checkedFilterData.Administered"
                 (change)="ePrescriptionService.EMAREventDataFilter('Administered',
                 $event)">
               <span class="mr-2"></span>

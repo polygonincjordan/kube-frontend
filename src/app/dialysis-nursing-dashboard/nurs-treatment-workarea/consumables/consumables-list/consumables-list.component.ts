@@ -267,8 +267,10 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     });
   }
 
-
   public getDetailsOfMaterial(event: any, index: number) {
+    const material = this.materialList.find((elem) => elem.Matnr === event);
+    (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx').patchValue(material.Maktx);
+    (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr').patchValue(material.Matnr);
     const enteredValue = event;
     let parms = {
       enteredValue: event,
@@ -296,15 +298,15 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup'
           }).then((result) => {
-            if (result.value) {
-              if (this.materialType === this.wordType.MaterialName$) {
-                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx');
-                control.reset();
-              } else {
-                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr');
-                control.reset();
-              }
-            }
+            // if (result.value) {
+            //   if (this.materialType === this.wordType.MaterialName$) {
+            //     const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx');
+            //     control.reset();
+            //   } else {
+            //     const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr');
+            //     control.reset();
+            //   }
+            // }
           })
         }
       }
@@ -330,6 +332,12 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
         .map(d => d.value);
     }
 
+    this.dataShareService.filterType$.subscribe((data)=>{
+      this.consumableHistoryForm.patchValue({
+        Lgort: data.value.Lgort,
+      })
+    })
+
     payload.forEach(element => {
       delete element.Id;
       delete element.Arktx;
@@ -338,8 +346,11 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       delete element.Lgort;
     });
     let newpayload = payload.filter(item => item.Matnr !== '');
-    this.consumableHistoryForm.patchValue({
-      Lgort: 'DI02',
+    
+    newpayload.forEach((elem)=>{
+      if(elem.Charg === null){
+        elem.Charg = ""
+      }
     })
     delete this.consumableHistoryForm.value.isAllSelected;
     this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];

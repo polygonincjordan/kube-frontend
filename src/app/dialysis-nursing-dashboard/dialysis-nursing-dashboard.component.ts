@@ -995,7 +995,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
   }
 
   collectNoDocuentCount(event){
-    this.noReleaseDoc = event;
+    this.NoReleaseDocCount = event;
   }
 
   collectPhysicinOrderCount(event){
