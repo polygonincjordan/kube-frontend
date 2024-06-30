@@ -324,15 +324,13 @@ export class OutPatientNursingComponent implements OnInit {
   clinicConfigGet() {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d) {
-        this.clinicConfigDetail = resp.body.d.results;
-        // this.selectedPhysicianConf = resp.body?.d.results[0].AttendPhy ? [this.assignUsersList.find(res => res.Gpart === resp.body?.d.results[0].AttendPhy)] : [];
-        // this.selectedSpecialityConf = resp.body?.d.results[0].SpecialityCode && this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode) ? [this.specialityList.find(res => res.Orgid === resp.body?.d.results[0].SpecialityCode)] : [];
+        this.clinicConfigDetail = resp.body.d.results
+        const attendPhy = this.clinicConfigDetail[0].AttendPhy.split(',')
+        this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
 
-        const assignUsersMap = new Map(this.assignUsersList.map(user => [user.Gpart, user]));
-        this.selectedPhysicianConf = this.clinicConfigDetail.filter(element => assignUsersMap.has(element.AttendPhy)).map(element => assignUsersMap.get(element.AttendPhy));
-        const specialityMap = new Map(this.specialityList.map(specialty => [specialty.Orgid, specialty]));
-        this.selectedSpecialityConf = this.clinicConfigDetail.filter(element => specialityMap.has(element.SpecialityCode)).map(element => specialityMap.get(element.SpecialityCode));
-
+        
+      const specialityCode =this.clinicConfigDetail[0].SpecialityCode.split(',');
+      this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
       }
     });
   }
@@ -430,19 +428,18 @@ export class OutPatientNursingComponent implements OnInit {
   createConfig() {
     const physicianArray = this.selectedPhysicianConf.map(item => item.Gpart);
     const specialityArray = this.selectedSpecialityConf.map(item => item.Orgid);
-    let Payload = {
+    const userName = this.storageService.getUserProfile().UserName
+    const usrevma = this.storageService.getUserProfile().Gpart
+    let arrayAsString = physicianArray.join(',');
+    let arraysAsString = specialityArray.join(',');
+     let Payload = {
       d: {
-        // Username: this.userConfiguration.Username,
-        // Usrevma: this.userConfiguration.Usrevma,
-        Username: this.clinicConfigDetail?.Username,
-        Usrevma: this.clinicConfigDetail?.Usrevma,
-        AttendPhy: physicianArray[0] ? physicianArray[0] : '',
-        AttendPhyNm: '',
-        SpecialityCode: specialityArray[0] ? specialityArray[0] : '',
-        SpecialityDesc: '',
+        Username: userName,
+        Usrevma: usrevma,
+        AttendPhy: arrayAsString ,
+        SpecialityCode: arraysAsString,
       },
     };
-
     if (!this.clinicConfigDetail) {
       this.orderDashboardService.updateClinicConfig(Payload).subscribe((res) => {
         this.showConfiguration = false;
