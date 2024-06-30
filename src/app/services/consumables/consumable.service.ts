@@ -40,6 +40,12 @@ export class ConsumableService {
     return this.http.get(`${environment.eKardexApiUrl}/getNoConsumablesSet?Deptcode=${'2'}`, { withCredentials: true })
   }
 
+  getDialysisConsumableSet(json){
+    return this.http.get(`${environment.eKardexApiUrl}/DialysisNoConsumablesSet?Deptcode=${json.Deptcode}&fromDate=${json.fromDate}&toDate=${json.toDate}`, {
+      withCredentials: true
+    })
+  }
+
   getMissedDocsSet(json?: any){
     return this.http.get(`${environment.eKardexApiUrl}/getMissedDocsSet`, {
       params: json,

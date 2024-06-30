@@ -59,6 +59,11 @@
               [ngClass]="{'fa-sort': sortColumn !== 'Batch', 'fa-sort-up': sortColumn === 'Batch' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Batch' && sortDirection === 'desc'}"
               aria-hidden="true"></i>
           </th>
+          <th colspan="1" scope="col" (click)="sortTable('NonBillable')">Billable
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'NonBillable', 'fa-sort-up': sortColumn === 'NonBillable' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'NonBillable' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
         </tr>
       </thead>
       <tbody style="background-color: #fbfcff;" *ngIf="consumableHistoryList.length > 0">
@@ -71,11 +76,12 @@
           <td colspan="1">{{ phyOrder.Sloc }}</td>
           <td colspan="1">{{ phyOrder.Erusr }}</td>
           <td colspan="1">{{ phyOrder.Batch }}</td>
+          <td colspan="1">{{ phyOrder.NonBillable }}</td>
         </tr>
       </tbody>
       <tfoot *ngIf="consumableHistoryList.length <= 0">
         <tr>
-          <td colspan="11">
+          <td colspan="12">
             <div class="pagination-container text-center p-3">
               No Record Found!
             </div>

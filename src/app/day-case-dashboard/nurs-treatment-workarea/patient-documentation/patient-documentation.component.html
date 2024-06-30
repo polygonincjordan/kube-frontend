@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -62,6 +62,11 @@
           </div>
           <div class="header-btn" *ngIf="actionType == 'edit'">
             <button type="button" class="action-doc" (click)="releaseFromForm()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Surgical Passport'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSurgical()">
               Release
             </button>
           </div>
@@ -98,7 +103,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -123,6 +128,9 @@
                   <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
                     (click)="getPatientProfileData(nurseEndorsementList[0])"
                     *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                    <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openSurgicalAssPdf(surgicalPassportList[0]?.Dockey)"
+                    *ngIf="surgicalPassportList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
              
@@ -196,8 +204,8 @@
               
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event"
-                [ngClass]="isAttechmentDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isAttechmentDocument','')">
+                [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('attachments','')">
                 <div class="col-md-4">Attachments Document</div>
                 <div class="col-md-2 status-color">N/A</div>
                 <div class="col-md-2"></div>
@@ -391,6 +399,7 @@
 
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
+    <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
 
     <ng-template #releasepdfmodal>
       <div class="modal-body">

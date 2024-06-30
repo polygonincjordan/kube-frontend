@@ -1,8 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithouConsumables } from '@services/consumables/interfaces/consumables.interface';
 import { DataShareService } from '@services/data-share.service';
 import { FilterType } from '@services/interfaces/common.enum';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -13,7 +15,7 @@ import { StorageService } from '@services/storage.service';
 export class PatientWithoutConsumableComponent implements OnInit {
 
   @Output() redirectCheckInData = new EventEmitter<any>();
-  @Output() sendErPatientCount = new EventEmitter<any>();
+  @Output() sendNoConsumableCount = new EventEmitter<any>();
   @Output() sendFilterOption = new EventEmitter<any>();
 
   public patientWithoutConsumableList: Array<PatientWithouConsumables> = [];
@@ -41,9 +43,40 @@ export class PatientWithoutConsumableComponent implements OnInit {
     this.getPatientWithoutConsumable();
   }
 
-  public getPatientWithoutConsumable() {
-    this.consumableService.getNoConsumablesSet().subscribe({
-      next: (resp: PatientWithouConsumables) => {
+  public getPatientWithoutConsumable(date?) {
+    // this.consumableService.getNoConsumablesSet().subscribe({
+    //   next: (resp: PatientWithouConsumables) => {
+    //     if (resp && resp) {
+    //       this.patientWithoutConsumableList = this.filteredPatients = resp.d.results;
+    //       this.patientWithoutConsumableList.forEach((ele: any) => {
+    //         this.financialCategory.push(ele?.FinancecategoryName);
+    //         this.statucList.push(ele?.StatusText);
+    //       });
+    //       this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
+    //       this.statucList = Array.from(new Set(this.statucList.filter(category => category.trim() !== '')));
+    //       const value = {
+    //         filterCategoryList: this.financialCategory,
+    //         filterStatusList: this.statucList
+    //       };
+    //       this.dataShareService.sendFilterType(FilterType.PatientWithNoConsumable$, true, value);
+    //       this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
+    //     }
+    //   }
+    // });
+    const json = {
+      Deptcode: '2',
+      fromDate: `${new DatePipe('en-US').transform(
+        date ? date[0] : new Date().setDate(new Date().getDate()),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+      toDate: `${new DatePipe('en-US').transform(
+        date ? date[1] : new Date().setDate(new Date().getDate()),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+    };
+
+    this.consumableService.getDialysisConsumableSet(json).subscribe({
+      next: (resp:PatientWithouConsumables) =>{
         if (resp && resp) {
           this.patientWithoutConsumableList = this.filteredPatients = resp.d.results;
           this.patientWithoutConsumableList.forEach((ele: any) => {
@@ -57,10 +90,18 @@ export class PatientWithoutConsumableComponent implements OnInit {
             filterStatusList: this.statucList
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoConsumable$, true, value);
-          this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+          // this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
         }
-      }
-    });
+      } 
+    })
+  }
+
+  formatDate(dateTimeString){
+    if(dateTimeString){
+      const date = new Date(dateTimeString).toISOString()
+      const dateDataArr = date.split('T')
+      return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
+    }
   }
 
   public getDate(value) {
@@ -97,7 +138,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
         return typeof value === 'string' && value.toLowerCase().includes(searchValue);
       });
     });
-    this.sendErPatientCount.emit(this.filteredPatients.length);
+    // this.sendNoConsumableCount.emit(this.filteredPatients.length);
   }
 
 
@@ -142,45 +183,58 @@ export class PatientWithoutConsumableComponent implements OnInit {
 
   public filterListData(event) {
     let filterValue = this.filteredPatients;
-    if ((event.Status && event.Status != '') && (event.FCategory && event.FCategory != '')) {
-      // if (event.Status && event.Status.length) {
-      //   console.log('event',event);
-
-      //   this.statusValueArr = event.Status.map((statusValue) => {
-      //     console.log('statusValue',statusValue);
-      //     return filterValue.filter((element: any) => {
-      //       const statusText = element.StatusText ? element.StatusText.trim().toLowerCase() : ''; // Handle undefined or missing StatusText
-      //       return statusText === statusValue.trim().toLowerCase()
-      //     });
-      //   });
-      // }
-
-
-      // if (event.FCategory && event.FCategory.length) {
-      //   this.categoryValueArr = event.FCategory.map((categoryValue) => {
-      //     return filterValue.filter((element: any) => {
-      //       const financeCategory = element.FinancecategoryName ? element.FinancecategoryName.trim().toLowerCase() : ''; // Handle undefined or missing FinancecategoryName
-      //       return financeCategory === categoryValue.trim().toLowerCase();
-      //     });
-      //   });
-      // }
-      const filteredData = filterValue.filter((item:any) => {
-        const statusMatch = event.Status.includes(item.StatusText);
-
-        const fCategoryMatch = event.FCategory.includes(item.FinancecategoryName);
-
-        return statusMatch && fCategoryMatch;
-    });
-
-      // filterValue = this.flattenArrays([...this.statusValueArr, ...this.categoryValueArr]);
-
-      this.patientWithoutConsumableList = filteredData;
-      this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
-    } else {
-      // Reset the filter and show all patients
-      this.patientWithoutConsumableList = this.filteredPatients;
-      this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+    console.log(filterValue);
+    if(event.Status || event.FCategory){
+      if(event.Status && event.Status?.length){
+        filterValue = filterValue.filter((item: any) => {
+          return event.Status.includes(item.StatusText);
+        });
+      }
+      if(event.FCategory && event.FCategory?.length){
+        filterValue = filterValue.filter((item: any) => {
+          return event.FCategory.includes(item.FinancecategoryName);
+        });
+      }
+    this.patientWithoutConsumableList = filterValue 
     }
+
+    // if (event.Status && event.Status != '') {
+    //   if (event.Status && event.Status.length) {
+    //     this.statusValueArr = event.Status.map((statusValue) => {
+    //       console.log('statusValue',statusValue);
+    //       return filterValue.filter((element: any) => {
+    //         const statusText = element.StatusText ? element.StatusText.trim().toLowerCase() : ''; // Handle undefined or missing StatusText
+    //         return statusText === statusValue.trim().toLowerCase()
+    //       });
+    //     });
+    //   }
+
+
+    //   if (event.FCategory && event.FCategory.length) {
+    //     this.categoryValueArr = event.FCategory.map((categoryValue) => {
+    //       return filterValue.filter((element: any) => {
+    //         const financeCategory = element.FinancecategoryName ? element.FinancecategoryName.trim().toLowerCase() : ''; // Handle undefined or missing FinancecategoryName
+    //         return financeCategory === categoryValue.trim().toLowerCase();
+    //       });
+    //     });
+    //   }
+    //   const filteredData = filterValue.filter((item:any) => {
+    //     const statusMatch = event.Status.includes(item.StatusText);
+
+    //     const fCategoryMatch = event.FCategory.includes(item.FinancecategoryName);
+
+    //     return statusMatch && fCategoryMatch;
+    // });
+
+    //   // filterValue = this.flattenArrays([...this.statusValueArr, ...this.categoryValueArr]);
+
+    //   this.patientWithoutConsumableList = filteredData;
+    //   this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
+    // } else {
+    //   // Reset the filter and show all patients
+    //   this.patientWithoutConsumableList = this.filteredPatients;
+    //   this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
+    // }
   }
 
 

@@ -27,4 +27,11 @@ export class DayCaseDashboardService {
         withCredentials: true,
       });
     }
+
+    getSurgicalPDF(dockey: string) {
+      const url = `${this.url}getSurgicalPassportPdf?dockey=${dockey}`;
+      return this.http.get(url, {
+        withCredentials: true,
+      });
+    }
 }

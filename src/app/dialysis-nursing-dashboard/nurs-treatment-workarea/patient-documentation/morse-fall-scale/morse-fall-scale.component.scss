@@ -53,7 +53,7 @@
     .risk-wrap{
         .custom-input {
             div{
-                width: 300px !important; 
+                width: 250px !important; 
             }
         }
     } 
@@ -66,6 +66,10 @@
           line-height: 1.5;
           margin: 0;
         //   width: 20%;
+        &.morse-label-comments{
+          max-width: 142px !important;
+          flex: 0 0 142px;
+        }
         }
         input {
           border: 1px solid #bfbfbf;

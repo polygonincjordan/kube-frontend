@@ -65,6 +65,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Surgical Passport'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSurgical()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pain Assesment'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleased()">
               Release
@@ -285,7 +290,22 @@
           </div>
         </div>
 
-
+      <!-- Pain Assessment -->
+        <!-- <div [ngClass]="isNursingCarePlans ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+          (click)="selectAssessment('isNursingCarePlans',nursingCarePlanDoc[0])">
+          <div class="col-md-4">Nursing care plans {{nursingCarePlanDoc[0]?.Zversion ?
+            dockVer(nursingCarePlanDoc[0]?.Zversion) : ''}} :</div>
+            <div class="col-md-2 status-color">{{nursingCarePlanDoc[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(nursingCarePlanDoc[0]?.DocTime)}}">
+                {{getDate(nursingCarePlanDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+            <div class="col-md-3">{{nursingCarePlanDoc[0]?.PhyNm || '-'}}</div>
+            <div class="col-md-1">
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="openPainAssessmentPdf(nursingCarePlanDoc[0].Dockey)"
+                *ngIf="nursingCarePlanDoc[0]?.StatusTxt == 'Released'"></i>
+            </div>
+        </div> -->
             </div>
         </div>
         <!-- Patient Profile Document -->
@@ -345,6 +365,7 @@
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
     <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
+    <!-- <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans> -->
 
     <ng-template #releasepdfmodal>
       <div class="modal-body">

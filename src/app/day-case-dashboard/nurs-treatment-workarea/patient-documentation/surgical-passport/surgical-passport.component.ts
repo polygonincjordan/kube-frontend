@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { PatientService } from '@services/e-kardex/patient.service';
@@ -30,7 +30,6 @@ export class SurgicalPassportComponent implements OnInit {
   public enableCreateVitals: boolean = false;
   public enableCreateDiagnosis: boolean = false;
   private encounterId: any;
-
   conmonDropOption = [
     { label: 'Yes', value: '0' },
     { label: 'No', value: '1' },
@@ -64,6 +63,7 @@ export class SurgicalPassportComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   docKey: any;
+  isFormValidError: boolean = false;
 
   constructor(private formBuilder: FormBuilder,private _route: ActivatedRoute,private patientService: PatientService,public storageService: StorageService,private emergencyService:EmergencyService,private sharedService: SharedService,private dataShareService:DataShareService) {
     this._route.queryParams.subscribe((params) => {
@@ -151,9 +151,9 @@ export class SurgicalPassportComponent implements OnInit {
       voided:  SurgicalPassData && SurgicalPassData.Voided ? SurgicalPassData.Voided : '',
       catheter:  SurgicalPassData && SurgicalPassData.Catheter ? SurgicalPassData.Catheter : '',
       ngt: SurgicalPassData && SurgicalPassData.Ngt ? SurgicalPassData.Ngt : '',
-      itime: SurgicalPassData && SurgicalPassData.ITime ? this.convertDurationToTime(SurgicalPassData.ITime) : '',
+      itime: [SurgicalPassData && SurgicalPassData.ITime ? this.convertDurationToTime(SurgicalPassData.ITime) : '',Validators.required],
       NoOfunit: SurgicalPassData && SurgicalPassData.Units ? SurgicalPassData.Units : '',
-      VTime: SurgicalPassData && SurgicalPassData.VTime ? this.convertDurationToTime(SurgicalPassData.VTime) : '',
+      VTime: [SurgicalPassData && SurgicalPassData.VTime ? this.convertDurationToTime(SurgicalPassData.VTime) : '',Validators.required],
       PreMedicationAdministred: SurgicalPassData && SurgicalPassData.PreMedication ? SurgicalPassData.PreMedication : '',
       skinTest: SurgicalPassData && SurgicalPassData.SkinTest ? SurgicalPassData.SkinTest : '',
       fullDose: SurgicalPassData && SurgicalPassData.FullDose ? SurgicalPassData.FullDose : '',
@@ -339,11 +339,12 @@ export class SurgicalPassportComponent implements OnInit {
 
 
 
-  createSurgicalPassDoc(status?:any) {
+  createSurgicalPassDoc(status?:any,actionType?:any) {
+    this.isFormValidError = true
     return new Promise((resolve, reject) => {
     const Payload = {
       d: {
-        Dockey: status === 'edit' ? this.docKey : '',
+        Dockey: actionType === 'edit' ? this.docKey : '',
         Dtid: 'ZMED_SRGPP',
         Einri: this.paramsObject.einri,
         Patnr: this.paramsObject.patnr,
@@ -389,86 +390,89 @@ export class SurgicalPassportComponent implements OnInit {
         OrCheckNm:  this.formSurgicalPaasDetailGroup.value.NameOfOrStaff,
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
-        DocStatus: status === 'copy' ? '5' : status === 'editRelease' ? '4' : '1',
-        TODIAGNOSES: this.toDiagnosisArr,
-        TOVITALSIGNS: this.toVitalsArr,
+        DocStatus: status,
+        TODIAGNOSES: [this.toDiagnosisArr],
+        TOVITALSIGNS: [this.toVitalsArr],
+      },
+    };
+    if(this.formSurgicalPaasDetailGroup.valid){
+      this.subscription = this.emergencyService.createSurgicalPassDetail(Payload).subscribe({
+        next: (data: any) => {
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at Surgical Passport : ${err}`);
+        },
+        complete: () => {
+          resolve(true);
+          if(status === 'edit'){
+            this.sharedService.successSwallModel('Surgical Passport updated successfully');
+          }else{
+            this.sharedService.successSwallModel('Surgical Passport created successfully');
+          }
+          this.isFormValidError = false
+        }
+      });    
+    }
+  })
+  }
+  copySurgicalPassDoc(status?:any,actionType?:any) {
+    return new Promise((resolve, reject) => {
+    const Payload = {
+      d: {
+        Dockey: actionType === 'copy' ? this.docKey : '',
+        Dtid: 'ZMED_SRGPP',
+        Einri: this.paramsObject.einri,
+        Patnr: this.paramsObject.patnr,
+        Falnr: this.paramsObject.falnr,
+        Lfdnr: this.paramsObject.lfdnr,
+        Orgdo: this.storageService.patientData.deptOrgUnit,
+        IdBand: this.formSurgicalPaasDetailGroup.value.bandWithName,
+        IdNo: this.formSurgicalPaasDetailGroup.value.IdNo,
+        Generall: this.formSurgicalPaasDetailGroup.value.general,
+        HighRisk: this.formSurgicalPaasDetailGroup.value.highRisk,
+        Skin:  this.formSurgicalPaasDetailGroup.value.skin,
+        Bowel: this.formSurgicalPaasDetailGroup.value.bowel,
+        Allergies: this.formSurgicalPaasDetailGroup.value.allergies,
+        Food: this.formSurgicalPaasDetailGroup.value.food,
+        Medications: this.formSurgicalPaasDetailGroup.value.medication,
+        MedicationsTxt: this.formSurgicalPaasDetailGroup.value.medicationsTxt,
+        Prosthesis: this.formSurgicalPaasDetailGroup.value.prosthesisDenture,
+        PRemoved: this.formSurgicalPaasDetailGroup.value.pRemove,
+        Valuables: this.formSurgicalPaasDetailGroup.value.valuableNail,
+        VRemoved: this.formSurgicalPaasDetailGroup.value.vRemove,
+        Npo: this.formSurgicalPaasDetailGroup.value.npo,
+        Ngt: this.formSurgicalPaasDetailGroup.value.ngt,
+        Isolationn: this.formSurgicalPaasDetailGroup.value.typeOfIsolation,
+        ITime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.itime),
+        BloodArranged: this.formSurgicalPaasDetailGroup.value.bloodArranged,
+        Units: this.formSurgicalPaasDetailGroup.value.NoOfunit,
+        Voided: this.formSurgicalPaasDetailGroup.value.voided,
+        VTime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.VTime),
+        Catheter:  this.formSurgicalPaasDetailGroup.value.catheter,
+        PreMedication: this.formSurgicalPaasDetailGroup.value.PreMedicationAdministred,
+        SkinTest: this.formSurgicalPaasDetailGroup.value.skinTest,
+        FullDose: this.formSurgicalPaasDetailGroup.value.fullDose,
+        OtClothes: this.formSurgicalPaasDetailGroup.value.OtClothes,
+        Transportation: this.formSurgicalPaasDetailGroup.value.modeOfTrans,
+        Investigations: this.formSurgicalPaasDetailGroup.value.InvestigationsRecordAtteched,
+        Finance:  this.formSurgicalPaasDetailGroup.value.FinanceClearence,
+        Special: this.formSurgicalPaasDetailGroup.value.specialInstruction,
+        Implant: this.formSurgicalPaasDetailGroup.value.prosthesisImplant,
+        Comments: this.formSurgicalPaasDetailGroup.value.comments,
+        WardCheck: this.formSurgicalPaasDetailGroup.value.wardCheck,
+        WardCheckNm: this.formSurgicalPaasDetailGroup.value.nameOfAssignedStaff,
+        OrCheck: this.formSurgicalPaasDetailGroup.value.OrStaff,
+        OrCheckNm:  this.formSurgicalPaasDetailGroup.value.NameOfOrStaff,
+        Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
+        AttendPhy: this.storageService.getUserProfile().Gpart,
+        DocStatus: status,
+        TODIAGNOSES: [this.toDiagnosisArr],
+        TOVITALSIGNS: [this.toVitalsArr],
       },
     };
 
     this.subscription = this.emergencyService.createSurgicalPassDetail(Payload).subscribe({
-      next: (data: any) => {
-      },
-      error: (err: any) => {
-        this.sharedService.waringSwallModel(`Error ${err}`);
-        this.sharedService.waringSwallModel(`PUT Error at Surgical Passport : ${err}`);
-      },
-      complete: () => {
-        resolve(true);
-        if(status === 'edit'){
-          this.sharedService.successSwallModel('Surgical Passport updated successfully');
-        }
-        this.sharedService.successSwallModel('Surgical Passport created successfully');
-      }
-    });    
-  })
-  }
-  copySurgicalPassDoc(status?:any) {
-    return new Promise((resolve, reject) => {
-    const Payload = {
-      d: {
-        Dockey: status === 'copy' ? this.docKey : '',
-        Dtid: 'ZMED_SRGPP',
-        Einri: this.paramsObject.einri,
-        Patnr: this.paramsObject.patnr,
-        Falnr: this.paramsObject.falnr,
-        Lfdnr: this.paramsObject.lfdnr,
-        Orgdo: this.storageService.patientData.deptOrgUnit,
-        IdBand: this.formSurgicalPaasDetailGroup.value.bandWithName,
-        IdNo: this.formSurgicalPaasDetailGroup.value.IdNo,
-        Generall: this.formSurgicalPaasDetailGroup.value.general,
-        HighRisk: this.formSurgicalPaasDetailGroup.value.highRisk,
-        Skin:  this.formSurgicalPaasDetailGroup.value.skin,
-        Bowel: this.formSurgicalPaasDetailGroup.value.bowel,
-        Allergies: this.formSurgicalPaasDetailGroup.value.allergies,
-        Food: this.formSurgicalPaasDetailGroup.value.food,
-        Medications: this.formSurgicalPaasDetailGroup.value.medication,
-        MedicationsTxt: this.formSurgicalPaasDetailGroup.value.medicationsTxt,
-        Prosthesis: this.formSurgicalPaasDetailGroup.value.prosthesisDenture,
-        PRemoved: this.formSurgicalPaasDetailGroup.value.pRemove,
-        Valuables: this.formSurgicalPaasDetailGroup.value.valuableNail,
-        VRemoved: this.formSurgicalPaasDetailGroup.value.vRemove,
-        Npo: this.formSurgicalPaasDetailGroup.value.npo,
-        Ngt: this.formSurgicalPaasDetailGroup.value.ngt,
-        Isolationn: this.formSurgicalPaasDetailGroup.value.typeOfIsolation,
-        ITime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.itime),
-        BloodArranged: this.formSurgicalPaasDetailGroup.value.bloodArranged,
-        Units: this.formSurgicalPaasDetailGroup.value.NoOfunit,
-        Voided: this.formSurgicalPaasDetailGroup.value.voided,
-        VTime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.VTime),
-        Catheter:  this.formSurgicalPaasDetailGroup.value.catheter,
-        PreMedication: this.formSurgicalPaasDetailGroup.value.PreMedicationAdministred,
-        SkinTest: this.formSurgicalPaasDetailGroup.value.skinTest,
-        FullDose: this.formSurgicalPaasDetailGroup.value.fullDose,
-        OtClothes: this.formSurgicalPaasDetailGroup.value.OtClothes,
-        Transportation: this.formSurgicalPaasDetailGroup.value.modeOfTrans,
-        Investigations: this.formSurgicalPaasDetailGroup.value.InvestigationsRecordAtteched,
-        Finance:  this.formSurgicalPaasDetailGroup.value.FinanceClearence,
-        Special: this.formSurgicalPaasDetailGroup.value.specialInstruction,
-        Implant: this.formSurgicalPaasDetailGroup.value.prosthesisImplant,
-        Comments: this.formSurgicalPaasDetailGroup.value.comments,
-        WardCheck: this.formSurgicalPaasDetailGroup.value.wardCheck,
-        WardCheckNm: this.formSurgicalPaasDetailGroup.value.nameOfAssignedStaff,
-        OrCheck: this.formSurgicalPaasDetailGroup.value.OrStaff,
-        OrCheckNm:  this.formSurgicalPaasDetailGroup.value.NameOfOrStaff,
-        Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
-        AttendPhy: this.storageService.getUserProfile().Gpart,
-        DocStatus: "5",
-        TODIAGNOSES: this.toDiagnosisArr,
-        TOVITALSIGNS: this.toVitalsArr,
-      },
-    };
-
-    this.subscription = this.emergencyService.copySurgicalPassP(Payload).subscribe({
       next: (data: any) => {
       },
       error: (err: any) => {

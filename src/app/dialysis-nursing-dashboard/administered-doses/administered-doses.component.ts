@@ -82,7 +82,7 @@ export class AdministeredDosesComponent implements OnInit{
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
   isExpanded: boolean;
-  value: any;
+value: any;
   selectedColData: any;
   isSelected=false;
   cardSection: boolean;
@@ -132,9 +132,10 @@ export class AdministeredDosesComponent implements OnInit{
       Rsfsn: [''],
       Repdt: [''],
     });
+
     this.cartForm = this.formBuilder.group({
-      FromDt: [''],
-      ToDt: [''],
+      FromDt: [new Date()],
+      ToDt: [new Date()],
       FromTm: [''],
       ToTm: [''],
       Nursingou: ['F2DTUAMC']
@@ -164,7 +165,7 @@ export class AdministeredDosesComponent implements OnInit{
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
+  this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }
@@ -186,6 +187,20 @@ export class AdministeredDosesComponent implements OnInit{
     })
   }
 
+  refresh(){
+    this.cartForm.patchValue({
+      FromDt:new Date(),
+      ToDt:new Date(),
+      FromTm:'',
+      ToTm:''
+    })
+    // this.getReceviceCartList();
+    this.receiveCartData=null;
+    this.toContentData = null;
+
+    this.modalRef.hide();
+  }
+  
   formatDateFromTimestamp(timestamp: string): string {
     const regex = /\/Date\((\d+)\)\//; 
     const match = regex.exec(timestamp);

@@ -103,7 +103,7 @@
                             </div>
                         </div>
                         <div class="d-flex my-3 risk-wrap">
-                            <label for="" class="common-label m-0">IV acess</label>
+                            <label for="" class="common-label m-0">IV Access</label>
                             <div class="custom-input d-flex mr-5">
                                 <div class="d-flex align-items-center">
                                     <input type="radio" value="A" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <input type="radio" value="O" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
-                                    <label for="" class="mx-3">Oriented to own abilty</label>
+                                    <label for="" class="mx-3">Oriented to own ability</label>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +166,7 @@
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-2">Total score</label>
                                 <input type="text" class="col-2" [value]="totalScore" readonly>
-                                <input type="text" class="col-5" [value]="description" readonly>
+                                <input type="text" class="col-7" [value]="description" readonly>
                             </div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                     <div class=" my-0">
                         <div class="col-8 px-0">
                             <div class="row align-items-center w-100 custom-input">
-                                <label for="" class="text-nowrap m-0 col-1">Comments</label>
+                                <label for="" class="text-nowrap m-0 col-1 morse-label-comments">Comments</label>
                                 <input type="text" class="col-10" style="width: 100%;"
                                     formControlName="Comments">
                             </div>

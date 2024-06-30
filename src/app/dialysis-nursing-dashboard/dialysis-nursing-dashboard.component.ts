@@ -83,7 +83,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
   public formgroupData: any = {};
   form: FormGroup;
   formSubscription: any;
-  ErPatientCount: any;
+  ErPatientCount = 0;
   inLDRAttendPhyList: any;
   day: string;
   encounterId: any;
@@ -184,6 +184,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
           this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
           this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
           this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
+          this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
 
         }
       }
@@ -987,6 +988,18 @@ export class DialysisNursingDashboardComponent implements OnInit {
 
   collectErHistPatientCount(event) {
     this.ErHistoryPatientCount = event;
+  }
+
+  collectNoConsumableCount(event){
+    this.NoConsumablesSetCount = event;
+  }
+
+  collectNoDocuentCount(event){
+    this.NoReleaseDocCount = event;
+  }
+
+  collectPhysicinOrderCount(event){
+    this.phyOrder = event;
   }
 
   previousDate() {

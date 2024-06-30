@@ -435,6 +435,12 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  //Dialysis patient search
+  DialysisPatientSearch(json){
+    return this.http.get(this.url + `DialysisPatientSearchSet?Patnr=${json.Patnr}&Vname=${json.Vname}&Nname=${json.Nname}&Telnr=${json.Telnr}`,{
+      withCredentials: true
+    })
+  }
   // analysis
   getAnalysisDetails(json) {
     return this.http.post(this.url + 'getAnalysisDetails', json, {

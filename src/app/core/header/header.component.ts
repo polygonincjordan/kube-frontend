@@ -323,6 +323,8 @@ export class HeaderComponent implements OnInit {
       redirectPoint = 'nursing-emergncy-dashboard?';
     }else if (userType === UserType.DayCaseNurse) {
       redirectPoint = 'day-case-dashboard?';
+    }else if(userType===UserType.DIYNurse){
+      redirectPoint = 'dialysis-nursing-dashboard?'
     }
 
     const queryParams = `patnr=${data.Patnr}&falnr=${data.Falnr}&einri=${data.Einri}&lfdnr=${data.Lfdnr}&nav=Treatmentarea`;

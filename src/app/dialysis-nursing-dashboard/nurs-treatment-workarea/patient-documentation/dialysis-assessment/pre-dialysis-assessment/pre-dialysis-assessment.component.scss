@@ -4,6 +4,14 @@
       border: 1px solid #cacaca;
       border-radius: 13px;
       padding: 25px;
+      .custom-input {
+        label {
+          min-width: 150px;
+        }        
+        .unites-labels{
+          min-width: 20px;
+        }
+      }
       .title-text {
         position: absolute;
         top: -15px;
@@ -11,6 +19,16 @@
         background-color: white;
         padding: 0 15px;
         z-index: 1;
+      }
+    }
+    .pre-dialysis-info-second {
+      .custom-input {
+        label {
+          min-width: 150px;
+        }
+        .unites-labels{
+          min-width: 20px;
+        }
       }
     }
     .title-text {
@@ -31,7 +49,7 @@
     }
     .unites-ml {
       position: absolute;
-      right: 0;
+      right: 75px;
       z-index: 1;
       min-width: fit-content;
       width: fit-content;
@@ -42,7 +60,7 @@
     }
     .unites-labels {
       position: absolute;
-      right: 30px;
+      right: 20px;
       z-index: 1;
       min-width: fit-content;
       width: fit-content;

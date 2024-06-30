@@ -36,8 +36,6 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
             const TOMONITOR = resp?.TOMONITOR.results;
 
-            console.log(TOMONITOR);
-
             TOMONITOR.forEach((item) => {
               const timee = item.Timee;
               const hours = timee.substring(2, 4);
@@ -86,7 +84,7 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   addRow(){
     const inValidForm = this.patientDocService.ToMonitor.controls.filter(d =>  !d.valid)
-    console.log(inValidForm);
+   
     
     if(inValidForm && inValidForm.length !== 0){
       swal.fire({

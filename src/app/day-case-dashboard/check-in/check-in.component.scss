@@ -2,7 +2,17 @@
   // background-color: #fbfcff;
 }
 
+
 .checkin-table {
+  width: 100%;
+  white-space: nowrap;
+  td{
+    border: none;
+    background: #fbfcff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100px;
+  }
   thead {
     position: sticky;
     top: 0;
@@ -15,6 +25,10 @@
     font-size: 12px;
     font-weight: bold;
   }
+}
+
+.checkin-table{
+  
 }
 
 span.pn-input-title {

@@ -148,8 +148,6 @@ export class DialysisAssessmentComponent implements OnInit {
 
           const TOMONITOR = resp?.TOMONITOR.results;
 
-          console.log(TOMONITOR);
-
           TOMONITOR.forEach((item) => {
             const timee = item.Timee;
             const hours = timee.substring(2, 4);
