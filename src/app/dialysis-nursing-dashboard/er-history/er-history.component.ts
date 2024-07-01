@@ -442,6 +442,7 @@ export class ErHistoryComponent implements OnInit {
       // });
       // this.ERlistDataClone = this.ERlistData;
       this.ERlistData = _success.d.results;
+      this.ERlistDataClone = this.ERlistData;
       this.lastIndex = this.ERlistData.length - 1;
 
       },
@@ -1695,21 +1696,20 @@ export class ErHistoryComponent implements OnInit {
         });
         filterValue = this.physicianValueArr.flat();
       }
-      if(event.FCategory && event.FCategory?.length){
-        if(event.FCategory == 'Self Payer'){
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat === 'Self Payer'){
+      if (event.FCategory && event.FCategory?.length) {
+        if (event.FCategory == 'Self-Pay') {
+          filterValue = filterValue.filter((element: any) => {
+            if (element.KostrName === 'Self-Pay') {
               return element;
             }
-          })
-        }else{
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat !== 'Self Payer'){
+          });
+      } else {
+          filterValue = filterValue.filter((element: any) => {
+            if (element.KostrName !== 'Self-Pay') {
               return element;
             }
-          })
+          });
         }
-
       }
         this.ERlistData = filterValue;
         this.sendErPatientCount.emit( this.ERlistData.length);
@@ -1718,6 +1718,72 @@ export class ErHistoryComponent implements OnInit {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
   }
+  // filterListData(event) {
+  //   this.triageValueArr = [];
+  //   this.physicianValueArr = [];
+  //   this.statusValueArr = [];
+  //   if (event.Triage || event.Physician || event.Status || event.FCategory) {
+  //     let filterValue = this.ERlistDataClone;
+  //     if (event.Triage && event.Triage?.length) {
+  //       event.Triage.forEach((triageValue) => {
+  //         this.triageValueArr.push(
+  //           filterValue.filter((element) => {
+  //             if (element.TriagePriorityCode === triageValue) {
+  //               return element;
+  //             }
+  //           })
+  //         );
+  //       });
+  //       filterValue = this.triageValueArr.flat();
+  //     }
+
+  //     if (event.Physician && event.Physician?.length) {
+  //       event.Physician.forEach((physicianValue) => {
+  //         this.physicianValueArr.push(
+  //           filterValue.filter((element) => {
+  //             if (element.Behpersname === physicianValue.trimStart()) {
+  //               return element;
+  //             }
+  //           })
+  //         );
+  //       });
+  //       filterValue = this.physicianValueArr.flat();
+  //     }
+
+  //     if (event.Status && event.Status?.length) {
+  //       event.Status.forEach((statusValue) => {
+  //         this.statusValueArr.push(
+  //           filterValue.filter((element) => {
+  //             if (element.ZzfinCat == statusValue) {
+  //               return element;
+  //             }
+  //           })
+  //         );
+  //       });
+  //       filterValue = this.statusValueArr.flat();
+  //     }
+  //     if (event.FCategory && event.FCategory?.length) {
+  //       if (event.FCategory == 'Self-Pay') {
+  //         filterValue = filterValue.filter((element: any) => {
+  //           if (element.KostrName === 'Self-Pay') {
+  //             return element;
+  //           }
+  //         });
+  //       } else {
+  //         filterValue = filterValue.filter((element: any) => {
+  //           if (element.KostrName !== 'Self-Pay') {
+  //             return element;
+  //           }
+  //         });
+  //       }
+  //     }
+  //     this.ERlistData = filterValue;
+  //     this.sendErPatientCount.emit(this.ERlistData.length);
+  //   } else {
+  //     this.ERlistData = this.ERlistDataClone;
+  //     this.sendErPatientCount.emit(this.ERlistData.length);
+  //   }
+  // }
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){
   const config: ModalOptions = { class: 'modal-dialog-centered' };
@@ -1973,8 +2039,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1988,8 +2054,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
