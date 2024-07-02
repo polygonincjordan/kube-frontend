@@ -15,8 +15,9 @@
             <div class="col-4 pl-5 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Treatment Time</label>
-                <input type="text"  bsDatepicker
-                [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" class="w-50" formControlName="PTreatmentTime">
+                <input type="text" [bsConfig]="{withTimepicker:
+                  true,showWeekNumbers:false,
+                  dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" class="w-50" formControlName="PTreatmentTime">
               </div>
             </div>
           </div>
@@ -25,7 +26,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Post Weight</label>
                 <input type="text" class="w-50" formControlName="PPostWeight">
-                <label class="unites-labels text-nowrap m-0" style="right: 40px;">kg</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 25px;">kg</label>
               </div>
             </div>
           </div>
@@ -34,7 +35,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Axlilary Temp (&#8451;)</label>
                 <input type="text" class="w-50" formControlName="PAxillaryTemp">
-                <label class="unites-labels text-nowrap m-0" style="right: 40px;">&#8451;</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 25px;">&#8451;</label>
               </div>
             </div>
           </div>
@@ -43,7 +44,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Oral Temp (&#8451;)</label>
                 <input type="text" class="w-50" formControlName="POralTemp">
-                <label class="unites-labels text-nowrap m-0" style="right: 40px;">&#8451;</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 25px;">&#8451;</label>
               </div>
             </div>
           </div>
@@ -52,7 +53,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Pulse Rate</label>
                 <input type="text" class="w-50" formControlName="PPulseRate">
-                <label class="unites-labels text-nowrap m-0" style="right: 25px;">bpm</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 10px;">bpm</label>
               </div>
             </div>
           </div>
@@ -61,7 +62,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Respiratory Rate</label>
                 <input type="text" class="w-50" formControlName="PRespiratoryRate">
-                <label class="unites-ml text-nowrap m-0" style="right: 15px;">br/min</label>
+                <label class="unites-ml text-nowrap m-0" style="right: 0px;">br/min</label>
               </div>
             </div>
           </div>
@@ -70,7 +71,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Oxygen Saturation</label>
                 <input type="text" class="w-50" formControlName="POxygenSaturation">
-                <label class="unites-labels text-nowrap m-0" style="right: 40px;">%</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 25px;">%</label>
               </div>
             </div>
           </div>
@@ -79,7 +80,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Oxygen Flow</label>
                 <input type="text" class="w-50" formControlName="POxygenFlow">
-                <label class="unites-labels text-nowrap m-0" style="right: 20px;">L/min</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 5px;">L/min</label>
               </div>
             </div>
           </div>
@@ -100,11 +101,12 @@
             <div class="col-4 pl-5 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Systolic Blood Pressure Sitting</label>
-                <ng-select class="w-50" formControlName="PSystolicBloodSitting">
+                <!-- <ng-select class="w-50" formControlName="PSystolicBloodSitting">
                   <ng-option value="0">High Flux</ng-option>
                   <ng-option value="1">Low Flux</ng-option>
-                </ng-select>
-                <label class="unites-labels text-nowrap m-0" style="right: 15px;">mmHg</label>
+                </ng-select> -->
+                <input type="text" class="w-50" formControlName="PSystolicBloodSitting">
+                <label class="unites-labels text-nowrap m-0" style="right: 0px;">mmHg</label>
               </div>
             </div>
           </div>
@@ -113,7 +115,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Diastolic Blood Pressure Sitting</label>
                 <input type="text" class="w-50" formControlName="PDiastolicBloodSitting">
-                <label class="unites-labels text-nowrap m-0" style="right: 15px;">mmHg</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 0px;">mmHg</label>
               </div>
             </div>
           </div>
@@ -122,7 +124,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Mean Arterial Pressure</label>
                 <input type="text" class="w-50" formControlName="PArterialPressure">
-                <label class="unites-labels text-nowrap m-0" style="right: 15px;">mmHg</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 0px;">mmHg</label>
               </div>
             </div>
           </div>
@@ -131,7 +133,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Systolic Boold Pressure Standing</label>
                 <input type="text" class="w-50" formControlName="PSystolicBloodStanding">
-                <label class="unites-labels text-nowrap m-0" style="right: 15px;">mmHg</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 0px;">mmHg</label>
               </div>
             </div>
           </div>
@@ -140,7 +142,7 @@
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Diastolic Boold Pressure Standing</label>
                 <input type="text" class="w-50" formControlName="PDiastolicBloodStanding">
-                <label class="unites-labels text-nowrap m-0" style="right: 15px;">mmHg</label>
+                <label class="unites-labels text-nowrap m-0" style="right: 0px;">mmHg</label>
               </div>
             </div>
           </div>
