@@ -1,0 +1,144 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="UbpBloodGlucose" />
+            <label>Unstable Blood Glucose Level</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="UbpActual" (change)="onCheckboxChange('UbpActual', ['UbpPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="UbpPotential" (change)="onCheckboxChange('UbpPotential', ['UbpActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="UbgSymptoms" />
+            <label>The patient will be free from symptoms of hyperglycemia/hypoglycemia</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbgSerum" />
+            <label>The patient will have serum glucose to the prescribed range</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbgVerbalize" />
+            <label>The patient will verbalize how to control blood glucose level</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="UbgOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="UbgOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('UbgOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="UbiEducate" />
+            <label>Educate and ensure patient is compliant with dietary and medication requirements</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiMonitor" />
+            <label>Monitor & document patient's medication history, level of understanding & compliance</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiEducatePatient" />
+            <label>Educate patient about signs of hypoglycemia and hyperglycemia</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiObserve" />
+            <label>Observe and report signs of hypoglycemia or hyperglycemia</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiAdmister" />
+            <label>Administer medication as protocol and ordered</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="UbiBlood" />
+            <label>Monitor blood glucose levels as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiPatientRefer" />
+            <label>Patient referred to dietitian if needed</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiIntake" />
+            <label class="mr-3">Monitor intake and output</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbiProtect" />
+            <label class="mr-3">Protect patient from injury</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="UbiOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="UbiOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('UbiOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input type="checkbox" formControlName="UbeMet" (change)="onCheckboxChange('UbeMet', ['UbePartiallyMet', 'UbeNotMet'])" />
+            <label>Met</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbePartiallyMet" (change)="onCheckboxChange('UbePartiallyMet', ['UbeMet', 'UbeNotMet'])" />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbeNotMet" (change)="onCheckboxChange('UbeNotMet', ['UbeMet', 'UbePartiallyMet'])" />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input type="checkbox" formControlName="UbrContinue" (change)="onCheckboxChange('UbrContinue', ['UbrEdited', 'UbrAchieved'])" />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbrEdited" (change)="onCheckboxChange('UbrEdited', ['UbrContinue', 'UbrAchieved'])" />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="UbrAchieved" (change)="onCheckboxChange('UbrAchieved', ['UbrContinue', 'UbrEdited'])" />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>

@@ -1,0 +1,148 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="DepDehydration" />
+            <label>Dehdration</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="DepActual" 
+              (change)="onCheckboxChange('DepActual', ['DepPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="DepPotential" 
+              (change)="onCheckboxChange('DepPotential', ['DepActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="DegExhibit" />
+            <label
+              >The patient will not exhibit signs or symptoms of
+              dehydration</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DegMaintain" />
+            <label>The patient will maintain adequate urinary output</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="DegOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="DegOthersTxt"  class="form-control"
+            [readOnly]="nursingCarePlanForm.get('DegOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="DeiExamine" />
+            <label
+              >Examine Patn's capillary refill time, mucous membranes, skin
+              turgor</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DeiSupport" />
+            <label
+              >Support patient and encourage oral fluid intake, as
+              tolerated</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DeiMeasure" />
+            <label
+              >Measure fluid loss from GI drainage, emesis, and stools</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="DeiMonitor" />
+            <label>Monitor blood loss</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DeiObtain" />
+            <label>Obtain urine-specific gravity, as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DeiAdminister" />
+            <label class="mr-3"
+              >Administer replacement fluids, as ordered, if necessary</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input type="checkbox" formControlName="DeeMet"  (change)="
+            onCheckboxChange('DeeMet', ['DeeNotMet', 'DeePartiallyMet'])
+          "/>
+            <label>Met</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DeePartiallyMet"  (change)="
+            onCheckboxChange('DeePartiallyMet', ['DeeMet', 'DeeNotMet'])
+          "/>
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DeeNotMet"  (change)="
+            onCheckboxChange('DeeNotMet', ['DeeMet', 'DeePartiallyMet'])
+          "/>
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input type="checkbox" formControlName="DerContinue"  (change)="
+            onCheckboxChange('DerContinue', ['DerAchieved', 'DerEdited'])
+          "/>
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DerEdited"  (change)="
+            onCheckboxChange('DerEdited', ['DerContinue', 'DerAchieved'])
+          "/>
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DerAchieved"  (change)="
+            onCheckboxChange('DerAchieved', ['DerContinue', 'DerEdited'])
+          "/>
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

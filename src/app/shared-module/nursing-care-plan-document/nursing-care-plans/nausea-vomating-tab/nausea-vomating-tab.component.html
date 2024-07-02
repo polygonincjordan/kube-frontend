@@ -1,0 +1,211 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="NvpNausea" />
+            <label>Nausea & Vomiting</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="NvpActual" (change)="onCheckboxChange('NvpActual', ['NvpPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NvpPotential" (change)="onCheckboxChange('NvpPotential', ['NvpActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="NvgPatient" />
+            <label>The patient will be Free of nausea and vomiting</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="NvgOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="NvgOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('NvgOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="NviCollaborate" />
+            <label
+              >Collaborate with the practitioner to identify the cause of
+              vomiting</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviAssess" />
+            <label
+              >Assess the patient's abdomen for distention and auscultate for
+              bowel sounds</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviAdministerMed" />
+            <label
+              >Administer medications, as ordered, and monitor the patient's
+              response</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviStartWith" />
+            <label
+              >Start with sips of water, gradually increase from fluids to
+              semi-solid to solid</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviAvoidSpicy" />
+            <label
+              >Avoid spicy, fatty, and salty food, or ones with strong
+              odors</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviUseSmall" />
+            <label>Use small, frequent, bland meals when hungry</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviReport" />
+            <label
+              >Report & document dietary history, patterns of ingestion,
+              intolerance to food</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviPosition" />
+            <label
+              >Position the Pt in an upright position; if unable to sit up, roll
+              onto the side</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="NviKeep" />
+            <label>Keep strict intake and output record</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviEncourage" />
+            <label>Encourage patient to drink warm fluids</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviEnsure" />
+            <label class="mr-3">Ensure good mouth care</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviAdminister" />
+            <label class="mr-3"
+              >Administer intravenous fluids, as ordered</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviCheckSigns" />
+            <label class="mr-3">Check for signs of dehydration</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviRestrict" />
+            <label class="mr-3"
+              >Restrict intake when gastric distension is a factor</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="NviEducate" />
+            <label class="mr-3">Educate the patient and family</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="NviOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="NviOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('NviOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="NveMet" 
+              (change)="onCheckboxChange('NveMet', ['NvePartiallyMet', 'NveNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="NvePartiallyMet" 
+              (change)="onCheckboxChange('NvePartiallyMet', ['NveMet', 'NveNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="NveNotMet" 
+              (change)="onCheckboxChange('NveNotMet', ['NveMet', 'NvePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="NvrContinue" 
+              (change)="onCheckboxChange('NvrContinue', ['NvrEdited', 'NvrAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="NvrEdited" 
+              (change)="onCheckboxChange('NvrEdited', ['NvrContinue', 'NvrAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="NvrAchieved" 
+              (change)="onCheckboxChange('NvrAchieved', ['NvrContinue', 'NvrEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>

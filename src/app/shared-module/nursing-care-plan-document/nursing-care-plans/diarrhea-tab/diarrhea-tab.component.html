@@ -1,0 +1,205 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="EpDiarrhea" />
+            <label>Diarrhea;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="EpActual"
+                (change)="onCheckboxChange('EpActual', ['EpPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="EpPotential"
+                (change)="onCheckboxChange('EpPotential', ['EpActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="EgDiarrheal" />
+            <label>Diarrheal Epispodes Decline or Disappear</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EgUsualBowel" />
+            <label>Usual Bowel Pattern Resumes</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EgMaintainFluid" />
+            <label>Maintain Fluid and Electrolyte Balance</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EgKeepSkin" />
+            <label>Keep Skin Cleanand Free from Ulcer/Irritation</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="EgOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="EgOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('EgOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="EiMonitor" />
+            <label
+              >Monitor and Record Frequency and Characteristics of Stool</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiAdminister" />
+            <label>Administer Medications (as ordered)</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiReplace" />
+            <label>Replece Fluids (as ordered)</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiIntake" />
+            <label class="mr-3"
+              >Intake and Output Monitoring (as ordered)
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiMonitorSkin" />
+            <label class="mr-3">Monitor Skin Irratation and Ulceration </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="EiProvideMeticulous" />
+            <label>Provide Meticulous Skin Care and Keep Skin Dry</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiEducatePatient" />
+            <label
+              >Educate Patient and Family about Management of Diarrhea</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiProvidePsycological" />
+            <label>Provide Psycological Support</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="EiReferDietician" />
+            <label class="mr-3">Refer to Dietician</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="EiOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="EiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('EiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="EeMet"
+              (change)="
+                onCheckboxChange('EeMet', ['EeNotMet', 'EePartiallyMet'])
+              "
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="EePartiallyMet"
+              (change)="
+                onCheckboxChange('EePartiallyMet', ['EeMet', 'EeNotMet'])
+              "
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="EeNotMet"
+              (change)="
+                onCheckboxChange('EeNotMet', ['EeMet', 'EePartiallyMet'])
+              "
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="ErContinue"
+              (change)="
+                onCheckboxChange('ErContinue', ['ErEdited', 'ErAchieved'])
+              "
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="ErEdited"
+              (change)="
+                onCheckboxChange('ErEdited', ['ErAchieved', 'ErContinue'])
+              "
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="ErAchieved"
+              (change)="
+                onCheckboxChange('ErAchieved', ['ErContinue', 'ErEdited'])
+              "
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

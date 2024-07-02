@@ -1,0 +1,207 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="BlpBleeding" />
+            <label>Bleeding;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BlpActual"
+                (change)="onCheckboxChange('BlpActual', ['BlpPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BlpPotential"
+                (change)="onCheckboxChange('BlpPotential', ['BlpActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="BlgMaintain" />
+            <label>Demonstrate behaviors to reduce risk of bleeding </label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="BlgDemonstrate" />
+              <label>Maintain homeostasis</label>
+            </div>
+            <div class="col-md-6 d-flex">
+              <input type="checkbox" formControlName="BlgOther" />
+              <label class="mr-3">Other: </label>
+              <input
+                type="text"
+                formControlName="BlgOtherTxt"
+                class="form-control"
+                [readOnly]="nursingCarePlanForm.get('BlgOther').value == false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="BliMonitor" />
+            <label>Monitor patient's vital signs</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliEvaluate" />
+            <label
+              >Evaluate patient's use of any medications that can affect
+              hemostasis</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliReview" />
+            <label
+              >Review laboratory results for coagulation status (as
+              ordered)</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliCheckStool" />
+            <label
+              >Check stool (guaiac) and urine (Hemastix) for occult blood</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliMonitorHemato" />
+            <label>Monitor hematocrit and hemoglobin (as ordered)</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="BliOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="BliOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('BliOthers').value == false"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="BliEducate" />
+            <label
+              >Educate the at-risk patient about precautionary measures</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliProvideThe" />
+            <label>Provide the patient psychological support</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliProvideGood" />
+            <label>Provide good tight dressing,in uncontrolled bleeding</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliApplyHeavy" />
+            <label>Apply heavy weight clamp (arm strong)</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="BliMonitorSite" />
+            <label>Monitor site of surgery frequantly</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nur-problem-details row mt-3">
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Evaluation</strong></h4>
+          <div class="row">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BleMet"
+                (change)="
+                  onCheckboxChange('BleMet', ['BleNotMet', 'BlePartiallyMet'])
+                "
+              />
+              <label>Met</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BlePartiallyMet"
+                (change)="
+                  onCheckboxChange('BlePartiallyMet', ['BleMet', 'BleNotMet'])
+                "
+              />
+              <label>Partially Met</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BleNotMet"
+                (change)="
+                  onCheckboxChange('BleNotMet', ['BleMet', 'BlePartiallyMet'])
+                "
+              />
+              <label>Not Met</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Revision</strong></h4>
+          <div class="row">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BlrContinue"
+                (change)="
+                  onCheckboxChange('BlrContinue', ['BlrAchieved', 'BlrEdited'])
+                "
+              />
+              <label>Reviewed and Continue</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BlrEdited"
+                (change)="
+                  onCheckboxChange('BlrEdited', ['BlrContinue', 'BlrAchieved'])
+                "
+              />
+              <label>Reviewed and Edited</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="BlrAchieved"
+                (change)="
+                  onCheckboxChange('BlrAchieved', ['BlrContinue', 'BlrEdited'])
+                "
+              />
+              <label>Achieved</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

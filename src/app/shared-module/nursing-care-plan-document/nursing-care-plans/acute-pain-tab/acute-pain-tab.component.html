@@ -1,0 +1,185 @@
+<form [formGroup]="nursingCarePlanForm" class="tab-contant">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="CapAcutePain" />
+            <label>Activity Intolerance;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="CapActual" (change)="onCheckboxChange('CapActual', ['CapPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="CapPotential" 
+              (change)="onCheckboxChange('CapPotential', ['CapActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="CagBeRelief" />
+            <label>Be Relief of Pain/Discomfort; Pain Score Less than 3 </label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="CagOptimal" />
+              <label>Optimal Pain Control </label>
+            </div>
+            <div class="col-md-6 d-flex">
+              <input type="checkbox" formControlName="CagOthers" />
+              <label class="mr-3">Others: </label>
+              <input type="text" formControlName="CagOthersTxt" class="form-control"
+              [readOnly]="nursingCarePlanForm.get('CagOthers').value == false"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="CaiAssess" />
+            <label
+              >Assess and Reassesss Pateint's Pain Scale (as Protocol)</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiCheckVital" />
+            <label>Check Vital Signs</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiPatient" />
+            <label>Patient and Family Education</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiPharmacologic" />
+            <label class="mr-3"
+              >Provide Pharmacologic Pain Management (as ordered)
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiPainPump" />
+            <label class="mr-3">Pain Pump in Use </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiNonPharmacologic" />
+            <label class="mr-3"
+              >Provide Non-Pharmacologic Pain Management:
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiCold" />
+            <label class="mr-3">Cold Applied </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiHeat" />
+            <label class="mr-3">Heat Applied </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="CaiMassage" />
+            <label>Massage Therapy</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiPlayTherapy" />
+            <label>Play Therapy</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiEssential" />
+            <label>Essential Oils</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiPosition" />
+            <label>Position Adjusted</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiQuiet" />
+            <label>Quiet Environment Facilitated</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiRelaxation" />
+            <label>Relaxation Techniques Promoted</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CaiPillowSupport" />
+            <label>Pillow Support Provided</label>
+          </div>
+            <div class="d-flex">
+              <input type="checkbox" formControlName="CaiOthers" />
+              <label class="mr-3">Others: </label>
+              <input type="text" formControlName="CaiOthersTxt" 
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('CaiOthers').value == false"/>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="nur-problem-details row mt-3">
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Evaluation</strong></h4>
+          <div class="row">
+            <div>
+              <input type="checkbox" formControlName="CaeMet" (change)="
+              onCheckboxChange('CaeMet', ['CaeNotMet', 'CaePartiallyMet'])
+            "/>
+              <label>Met</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="CaePartiallyMet" (change)="
+              onCheckboxChange('CaePartiallyMet', ['CaeMet', 'CaeNotMet'])
+            "/>
+              <label>Partially Met</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="CaeNotMet" (change)="
+              onCheckboxChange('CaeNotMet', ['CaeMet', 'CaePartiallyMet'])
+            "/>
+              <label>Not Met</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Revision</strong></h4>
+          <div class="row">
+            <div>
+              <input type="checkbox" formControlName="CarContinue" (change)="
+              onCheckboxChange('CarContinue', ['CarAchieved', 'CarEdited'])
+            "/>
+              <label>Reviewed and Continue</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="CarEdited" (change)="
+              onCheckboxChange('CarEdited', ['CarContinue', 'CarAchieved'])
+            "/>
+              <label>Reviewed and Edited</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="CarAchieved" (change)="
+              onCheckboxChange('CarAchieved', ['CarContinue', 'CarEdited'])
+            "/>
+              <label>Achieved</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,160 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="ImpImpaired" />
+            <label>Impaired Physical Mobility</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="ImpActual" (change)="onCheckboxChange('ImpActual', ['ImpPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="ImpPotential" (change)="onCheckboxChange('ImpPotential', ['ImpActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="ImgMaxPhys" />
+            <label>Max Phys. Mobility with limits of disease, treatment plan</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="ImgOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="ImgOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('ImgOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="ImiSafe" />
+            <label>SafeEnvironment: Bed RailsUp, DownPosition, Imprtnt ItemsClose</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiEstablish" />
+            <label>Establish measures to prevent Skin Breakdown, thrombophlebitis</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiMobility" />
+            <label>Mobility devices used; trapeze, crutches, walkers</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiTeach" />
+            <label class="mr-3">Teach patient/family to maintain home atmosphere, Hazard-free</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiPromote" />
+            <label class="mr-3">Promote and facilitate early ambulation when possible</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="ImiMedications" />
+            <label>Give medications as appropriate</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiHelp" />
+            <label>Help patient in accepting limitations</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiExplanation" />
+            <label>Give explanation about progressive activity to patient</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="ImiCall" />
+            <label class="mr-3">Call physiotherapy if ordered</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="ImiOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="ImiOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('ImiOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="ImeMet" 
+              (change)="onCheckboxChange('ImeMet', ['ImePartiallyMet', 'ImeNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="ImePartiallyMet" 
+              (change)="onCheckboxChange('ImePartiallyMet', ['ImeMet', 'ImeNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="ImeNotMet" 
+              (change)="onCheckboxChange('ImeNotMet', ['ImeMet', 'ImePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="ImrContinue" 
+              (change)="onCheckboxChange('ImrContinue', ['ImrEdited', 'ImrAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="ImrEdited" 
+              (change)="onCheckboxChange('ImrEdited', ['ImrContinue', 'ImrAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="ImrAchieved" 
+              (change)="onCheckboxChange('ImrAchieved', ['ImrContinue', 'ImrEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>
