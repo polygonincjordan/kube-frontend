@@ -397,50 +397,13 @@ export class ErHistoryComponent implements OnInit {
       )}T00:00:00`,
       History:true
     }
-    // this.ePrescriptionService.loadData(`e-prescription/dialysisTAget?Bwidtge=${this.parseDate(date[0])}&Bwidtle=${this.parseDate(date[1])}`, false, false, false, false).subscribe((_success:any)=>{
-    //   this.ERlistData = [];
-    //   if (_success.body.d.results.length == 0) {
-    //     this.sendErPatientCount.emit( this.ERlistData.length);
-    //   }
-    //    _success.body.d.results.forEach(element => {
-    //     if (element.StatusName == 'Checked Out') {
-    //       this.ERlistData.push(element);
-    //       this.sendErPatientCount.emit( this.ERlistData.length);
-    //     }
-    //    });
-    //    this.ERlistData.forEach((element,index) => {
-    //     if (element.TriageDate != null && element.TriageDate != '') {
-    //     this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-    //     }
-    //     else{
-    //       this.ERlistData[index]['assignedTime'] = '';
-    //     }
-    //   });
-    //   this.ERlistDataClone = this.ERlistData;
-    //   this.lastIndex = this.ERlistData.length - 1;
-
-    // }, (_error: any) => { });
+  
     this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe(
       (_success: any) => {
       // this.ERlistData = [];
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
-      //  _success.d.results.forEach(element => {
-      //   if (element.StatusName == 'Checked Out') {
-      //     this.ERlistData.push(element);
-      //     this.sendErPatientCount.emit( this.ERlistData.length);
-      //   }
-      //  });
-      //  this.ERlistData.forEach((element,index) => {
-      //   if (element.TriageDate != null && element.TriageDate != '') {
-      //   this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-      //   }
-      //   else{
-      //     this.ERlistData[index]['assignedTime'] = '';
-      //   }
-      // });
-      // this.ERlistDataClone = this.ERlistData;
       this.ERlistData = _success.d.results;
       this.ERlistDataClone = this.ERlistData;
       this.lastIndex = this.ERlistData.length - 1;
@@ -1718,72 +1681,7 @@ export class ErHistoryComponent implements OnInit {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
   }
-  // filterListData(event) {
-  //   this.triageValueArr = [];
-  //   this.physicianValueArr = [];
-  //   this.statusValueArr = [];
-  //   if (event.Triage || event.Physician || event.Status || event.FCategory) {
-  //     let filterValue = this.ERlistDataClone;
-  //     if (event.Triage && event.Triage?.length) {
-  //       event.Triage.forEach((triageValue) => {
-  //         this.triageValueArr.push(
-  //           filterValue.filter((element) => {
-  //             if (element.TriagePriorityCode === triageValue) {
-  //               return element;
-  //             }
-  //           })
-  //         );
-  //       });
-  //       filterValue = this.triageValueArr.flat();
-  //     }
 
-  //     if (event.Physician && event.Physician?.length) {
-  //       event.Physician.forEach((physicianValue) => {
-  //         this.physicianValueArr.push(
-  //           filterValue.filter((element) => {
-  //             if (element.Behpersname === physicianValue.trimStart()) {
-  //               return element;
-  //             }
-  //           })
-  //         );
-  //       });
-  //       filterValue = this.physicianValueArr.flat();
-  //     }
-
-  //     if (event.Status && event.Status?.length) {
-  //       event.Status.forEach((statusValue) => {
-  //         this.statusValueArr.push(
-  //           filterValue.filter((element) => {
-  //             if (element.ZzfinCat == statusValue) {
-  //               return element;
-  //             }
-  //           })
-  //         );
-  //       });
-  //       filterValue = this.statusValueArr.flat();
-  //     }
-  //     if (event.FCategory && event.FCategory?.length) {
-  //       if (event.FCategory == 'Self-Pay') {
-  //         filterValue = filterValue.filter((element: any) => {
-  //           if (element.KostrName === 'Self-Pay') {
-  //             return element;
-  //           }
-  //         });
-  //       } else {
-  //         filterValue = filterValue.filter((element: any) => {
-  //           if (element.KostrName !== 'Self-Pay') {
-  //             return element;
-  //           }
-  //         });
-  //       }
-  //     }
-  //     this.ERlistData = filterValue;
-  //     this.sendErPatientCount.emit(this.ERlistData.length);
-  //   } else {
-  //     this.ERlistData = this.ERlistDataClone;
-  //     this.sendErPatientCount.emit(this.ERlistData.length);
-  //   }
-  // }
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){
   const config: ModalOptions = { class: 'modal-dialog-centered' };
