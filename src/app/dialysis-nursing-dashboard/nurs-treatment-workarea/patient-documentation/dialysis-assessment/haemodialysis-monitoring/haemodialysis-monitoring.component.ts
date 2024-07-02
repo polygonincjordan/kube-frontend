@@ -140,10 +140,6 @@ export class HaemodialysisMonitoringComponent implements OnInit {
       
     }
   }
-
-  createAssessment() {
-    console.log(this.haemodialysisMonitoring.value);
-  }
   
   ngOnDestroy(): void {
     if(this.subscription){

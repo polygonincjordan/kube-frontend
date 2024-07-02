@@ -150,10 +150,19 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  dialysisNursingList(){
+    if(this.route.url==='/dialysis-nursing-dashboard'){
+      this.outpatientlistdata = false
+    }else{
+      this.outpatientlistdata = true
+    }
+  }
+
   myWidgetConfigSet() {
     this.hospitalistdata()
     this.outpatientlist()
     this.emNursingList()
+    this.dialysisNursingList()
     this._dataServices.getMyWidgetConfigSet().subscribe(
       (_success: any) => {
         if (_success) {
