@@ -1,0 +1,219 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="TipImpaired" />
+            <label>Impaired Tissue Integrity;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TipActual"
+                (change)="onCheckboxChange('TipActual', ['TipPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TipPotential"
+                (change)="onCheckboxChange('TipPotential', ['TipActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="TigOptimize" />
+              <label>Optimize Skin Protection</label>
+            </div>
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="TigComplications" />
+              <label>Complications avoided</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="TigPatient" />
+              <label>Patient reports increased comfort</label>
+            </div>
+            <div class="col-md-6 d-flex">
+              <input type="checkbox" formControlName="TigOthers" />
+              <label class="mr-3">Others: </label>
+              <input
+                type="text"
+                formControlName="TigOthersTxt"
+                class="form-control"
+                [readOnly]="nursingCarePlanForm.get('TigOthers').value == false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="TiiGently" />
+            <label
+              >Gently massage around reddened areas at least every 2
+              hours</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiAssist" />
+            <label>Assist patient to turn at least every 2 hours</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiLift" />
+            <label>Lift and move patient carefully using a turn sheet</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiKeepPatient" />
+            <label>Keep patient's skin clean</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiKeepBed" />
+            <label>Keep bed linens dry and wrinkle-free</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiTubing" />
+            <label>Tubing/devices free from skin contact</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="TiiProtect" />
+            <label>Protect the skin from contact with urine and feces</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiHeels" />
+            <label>Heels elevated off bed</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiPressure" />
+            <label>Pressure points protected</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiElectrode" />
+            <label>Electrode sites changed </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="TiiNutritional" />
+            <label>Nutritional therapy counseling </label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="TiiPressureRedi" />
+              <label>Pressure-redistr mattress utilized </label>
+            </div>
+            <div class="col-md-6 d-flex">
+              <input type="checkbox" formControlName="TiiOthers" />
+              <label class="mr-3">Others: </label>
+              <input
+                type="text"
+                formControlName="TiiOthersTxt"
+                class="form-control"
+                [readOnly]="nursingCarePlanForm.get('TiiOthers').value == false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nur-problem-details row mt-3">
+      <!-- Evaluation section -->
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Evaluation</strong></h4>
+          <div class="row">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TieMet"
+                (change)="
+                  onCheckboxChange('TieMet', ['TiePartiallyMet', 'TieNotMet'])
+                "
+              />
+              <label>Met</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TiePartiallyMet"
+                (change)="
+                  onCheckboxChange('TiePartiallyMet', ['TieMet', 'TieNotMet'])
+                "
+              />
+              <label>Partially Met</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TieNotMet"
+                (change)="
+                  onCheckboxChange('TieNotMet', ['TieMet', 'TiePartiallyMet'])
+                "
+              />
+              <label>Not Met</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revision section -->
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Revision</strong></h4>
+          <div class="row">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TirContinue"
+                (change)="
+                  onCheckboxChange('TirContinue', ['TirEdited', 'TirAchieved'])
+                "
+              />
+              <label>Reviewed and Continue</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TirEdited"
+                (change)="
+                  onCheckboxChange('TirEdited', ['TirContinue', 'TirAchieved'])
+                "
+              />
+              <label>Reviewed and Edited</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="TirAchieved"
+                (change)="
+                  onCheckboxChange('TirAchieved', ['TirContinue', 'TirEdited'])
+                "
+              />
+              <label>Achieved</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

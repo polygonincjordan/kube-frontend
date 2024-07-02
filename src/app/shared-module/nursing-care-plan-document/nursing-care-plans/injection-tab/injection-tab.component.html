@@ -1,0 +1,181 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="InpInfection" />
+            <label>Injection;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="InpActual" 
+              (change)="onCheckboxChange('InpActual', ['InpPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="InpPotential" 
+              (change)="onCheckboxChange('InpPotential', ['InpActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="row">
+          <div class="col-md-6">
+            <input type="checkbox" formControlName="IngPateint" />
+            <label>Pateint will be free from infection</label>
+          </div>
+          <div class="col-md-6 d-flex">
+            <input type="checkbox" formControlName="IngPateintDemonst" />
+            <label>Appropriate care of catheter and invasive lines</label>
+          </div>
+          <div class="col-md-6 d-flex">
+            <input type="checkbox" formControlName="IngAppropriate" />
+            <label
+              >Pateint will demonstrate complete recovery from infection</label
+            >
+          </div>
+          <div class="col-md-6 d-flex">
+            <input type="checkbox" formControlName="IngOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="IngOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('IngOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="IniStrictlyAseptic" />
+            <label
+              >Strictly follow aseptic precutions during any procedures</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IniStrictlyApprpri" />
+            <label
+              >Strictly follow the apprpriate isolation precutions to prevent
+              (HAI)</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IniAdhere" />
+            <label>Adhere to infection control policies and procedurs</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IniEquipment" />
+            <label class="mr-3">Equipment highly cleaned </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IniReport" />
+            <label class="mr-3"
+              >Report abnormal changes in WBC count and/or pathogenic growth on
+              cultures
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="IniUtilizeGood" />
+            <label>Utilize good hand washing technique and PPE</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IniEncourage" />
+            <label>Encourage high protein/high carbohydrate</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IniVisitors" />
+            <label
+              >Visitors with active infection are avoid contact with
+              patient</label
+            >
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="IniOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="IniOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('IniOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IneMet"
+              (change)="onCheckboxChange('IneMet', ['InePartiallyMet', 'IneNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="InePartiallyMet"
+              (change)="onCheckboxChange('InePartiallyMet', ['IneMet', 'IneNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IneNotMet"
+              (change)="onCheckboxChange('IneNotMet', ['IneMet', 'InePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="InrContinue"
+              (change)="onCheckboxChange('InrContinue', ['InrEdited', 'InrAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="InrEdited"
+              (change)="onCheckboxChange('InrEdited', ['InrContinue', 'InrAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="InrAchieved"
+              (change)="onCheckboxChange('InrAchieved', ['InrContinue', 'InrEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>

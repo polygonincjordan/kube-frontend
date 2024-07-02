@@ -1,0 +1,168 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="HepHyperthermia" />
+            <label>Hyperthermia;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="HepActual" 
+              (change)="onCheckboxChange('HepActual', ['HepPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="HepPotential" 
+              (change)="onCheckboxChange('HepPotential', ['HepActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="HegMaintain" />
+              <label>Maintain normal body temperature</label>
+            </div>
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="HegIncreased" />
+              <label class="mr-3">Increased comfort</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="HegComplications" />
+              <label>Prevent complications such as seizures</label>
+            </div>
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="HegDehydration" />
+              <label>Prevent dehydration</label>
+            </div>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="HegOthers" />
+            <label class="mr-3">Other: </label>
+            <input type="text" formControlName="HegOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('HegOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="HeiProvide" />
+            <label
+              >Provide Sponging, cold compress, indicated by degree of
+              temprature</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="HeiMonitor" />
+            <label>Monitor environmental temprature</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="HeiAssess" />
+            <label>Assess vital signs (as ordered)</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="HeiEncourage" />
+            <label>Encourage fluids (when indicated)</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="HeiAdminister" />
+            <label>Administer antipyretics (as per physician's order)</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="HeiRemove" />
+            <label>Remove excess clothing or blankets</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="HeiEducate" />
+            <label>Educate patient and family about management of fever</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="HeiOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="HeiOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('HeiOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nur-problem-details row mt-3">
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Evaluation</strong></h4>
+          <div class="row">
+            <div>
+              <input type="checkbox" formControlName="HeeMet" 
+              (change)="
+                  onCheckboxChange('HeeMet', ['HeeNotMet', 'HeePartiallyMet'])
+                " />
+              <label>Met</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="HeePartiallyMet" 
+              (change)="
+                  onCheckboxChange('HeePartiallyMet', ['HeeMet', 'HeeNotMet'])
+                " />
+              <label>Partially Met</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="HeeNotMet" 
+              (change)="
+                  onCheckboxChange('HeeNotMet', ['HeeMet', 'HeePartiallyMet'])
+                " />
+              <label>Not Met</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Revision</strong></h4>
+          <div class="row">
+            <div>
+              <input type="checkbox" formControlName="HerContinue" 
+              (change)="
+                  onCheckboxChange('HerContinue', ['HerAchieved', 'HerEdited'])
+                " />
+              <label>Reviewed and Continue</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="HerEdited" 
+              (change)="
+                  onCheckboxChange('HerEdited', ['HerContinue', 'HerAchieved'])
+                " />
+              <label>Reviewed and Edited</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="HerAchieved" 
+              (change)="
+                  onCheckboxChange('HerAchieved', ['HerContinue', 'HerEdited'])
+                " />
+              <label>Achieved</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

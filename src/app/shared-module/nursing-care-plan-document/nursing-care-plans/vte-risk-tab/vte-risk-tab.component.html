@@ -1,0 +1,202 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="VtpVenous" />
+            <label>Venous Thromboembolism Risk</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="VtpActual"
+                (change)="onCheckboxChange('VtpActual', ['VtpPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="VtpPotential"
+                (change)="onCheckboxChange('VtpPotential', ['VtpActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="VtgPatient" />
+            <label
+              >The patient will remain free from venous thromboembolism
+              (VTE)</label
+            >
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="VtgOthers" />
+            <label class="mr-3">Others</label>
+            <input
+              type="text"
+              formControlName="VtgOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('VtgOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="VtiEncourage" />
+            <label
+              >Encourage the patient to move the legs while in bed to increase
+              blood flow</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiApply" />
+            <label
+              >Apply and maintain intermittent compression stockings, as
+              ordered</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiAdminister" />
+            <label
+              >Administer VTE prophylaxis medications as ordered and monitor
+              their effect</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiCollaborate" />
+            <label>Collaborate with the physical therapist, if indicated</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiObtain" />
+            <label
+              >Obtain patient's history regarding previous blood clots from the
+              patient/family</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="VtiSignsSymptoms" />
+            <label>Assess the patient for signs and symptoms of VTE</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiComfortLevel" />
+            <label>Assess the patient's comfort level</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiMobilityStatus" />
+            <label class="mr-3">Assess the patient's mobility status</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="VtiEducate" />
+            <label class="mr-3">Educate the patient and family</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="VtiOthers" />
+            <label class="mr-3">Others</label>
+            <input
+              type="text"
+              formControlName="VtiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('VtiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="VteMet"
+              (change)="
+                onCheckboxChange('VteMet', ['VtePartiallyMet', 'VteNotMet'])
+              "
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="VtePartiallyMet"
+              (change)="
+                onCheckboxChange('VtePartiallyMet', ['VteMet', 'VteNotMet'])
+              "
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="VteNotMet"
+              (change)="
+                onCheckboxChange('VteNotMet', ['VteMet', 'VtePartiallyMet'])
+              "
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="VtrContinue"
+              (change)="
+                onCheckboxChange('VtrContinue', ['VtrEdited', 'VtrAchieved'])
+              "
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="VtrEdited"
+              (change)="
+                onCheckboxChange('VtrEdited', ['VtrContinue', 'VtrAchieved'])
+              "
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="VtrAchieved"
+              (change)="
+                onCheckboxChange('VtrAchieved', ['VtrContinue', 'VtrEdited'])
+              "
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

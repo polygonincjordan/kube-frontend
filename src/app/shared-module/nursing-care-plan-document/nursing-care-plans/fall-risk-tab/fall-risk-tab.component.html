@@ -1,0 +1,189 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="FrpFallInjury" />
+            <label>Fall Injury Risk;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="FrpActual" 
+              (change)="onCheckboxChange('FrpActual', ['FrpPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="FrpPotential" 
+              (change)="onCheckboxChange('FrpPotential', ['FrpActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="FrgAbsence" />
+            <label>Absence of Fall and Fall-Related Injury </label>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <input type="checkbox" formControlName="FrgPromote" />
+              <label>Promote Injury-Free Environment</label>
+            </div>
+            <div class="col-md-6 d-flex">
+              <input type="checkbox" formControlName="FrgOthers" />
+              <label class="mr-3">Other: </label>
+              <input type="text" formControlName="FrgOthersTxt" 
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('FrgOthers').value == false"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="FriRemove" />
+            <label
+              >Remove clutter,wire,scatter rug from pathogenic growth on
+              culture</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriMaintain" />
+            <label> Maintain bed in lowest position with wheels locked</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriPutOn" />
+            <label
+              >Put on purple bracelet for moderate & high risk for fall</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriEvaluate" />
+            <label
+              >Evaluate medications to determine whether increase the risk of
+              falling</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriThoroughly" />
+            <label
+              >Thoroughly orientation to environment.Place call light within
+              reach</label
+            >
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="FriOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="FriOthersTxt" 
+            class="form-control"
+            [readOnly]="nursingCarePlanForm.get('FriOthers').value == false"/>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="FriShowHow" />
+            <label
+              >Show how calling for assistance; answer call light
+              promptly</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriProvide" />
+            <label
+              >Provide adequet light in room; keep dim light in room at
+              night</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriRoutinely" />
+            <label
+              >Routinely assist with toileting on his/her own schedule</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriEncourage" />
+            <label
+              >Encourage use of handrails in hallway, stairwells,
+              bathrooms</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="FriPatient" />
+            <label>Patient and family education</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nur-problem-details row mt-3">
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Evaluation</strong></h4>
+          <div class="row">
+            <div>
+              <input type="checkbox" formControlName="FreMet" 
+              (change)="
+                  onCheckboxChange('FreMet', ['FreNotMet', 'FrePartiallyMet'])
+                "/>
+              <label>Met</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="FrePartiallyMet" 
+              (change)="
+                  onCheckboxChange('FrePartiallyMet', ['FreMet', 'FreNotMet'])
+                "/>
+              <label>Partially Met</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="FreNotMet" 
+              (change)="
+                  onCheckboxChange('FreNotMet', ['FreMet', 'FrePartiallyMet'])
+                "/>
+              <label>Not Met</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Revision</strong></h4>
+          <div class="row">
+            <div>
+              <input type="checkbox" formControlName="FrrContinue" 
+              (change)="
+                  onCheckboxChange('FrrContinue', ['FrrAchieved', 'FrrEdited'])
+                "/>
+              <label>Reviewed and Continue</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="FrrEdited" 
+              (change)="
+                  onCheckboxChange('FrrEdited', ['FrrContinue', 'FrrAchieved'])
+                "/>
+              <label>Reviewed and Edited</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="FrrAchieved" 
+              (change)="
+                  onCheckboxChange('FrrAchieved', ['FrrContinue', 'FrrEdited'])
+                "/>
+              <label>Achieved</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

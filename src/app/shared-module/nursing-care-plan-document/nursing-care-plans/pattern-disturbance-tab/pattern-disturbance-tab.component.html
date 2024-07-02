@@ -1,0 +1,187 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="SppSleep" />
+            <label>Sleep Pattern Disturbance</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="SppActual" 
+              (change)="onCheckboxChange('SppActual', ['SppPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="SppPotential" 
+              (change)="onCheckboxChange('SppPotential', ['SppActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="row">
+          <div class="col-md-12 pl-1">
+            <label class="m-0 mb-2">
+              Patient will attain optimal amounts of sleep, evidenced by:
+            </label>
+          </div>
+          <div class="col-md-6">
+            <input type="checkbox" formControlName="SpgRested" />
+            <label>Rested Appearance</label>
+          </div>
+          <div class="col-md-6">
+            <input type="checkbox" formControlName="SpgVerbalization" />
+            <label>Verbalization of Feeling Rested</label>
+          </div>
+          <div class="col-md-6">
+            <input type="checkbox" formControlName="SpgImprovement" />
+            <label>Improvement in Sleep Pattern</label>
+          </div>
+          <div class="col-md-6 d-flex">
+            <input type="checkbox" formControlName="SpgOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="SpgOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('SpgOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="SpiAssist" />
+            <label>
+              Assist Pt to turn at least every 2 hours unless contra indicated
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiEvaluate" />
+            <label>
+              Evaluate timing or effects of medications that disrupt sleep
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiAssess" />
+            <label>
+              Assess patient's perception of cause of sleep difficulty
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiOffer" />
+            <label class="mr-3">
+              Offer patient an evening snack that includes milk
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiInstruct" />
+            <label class="mr-3">
+              Instruct to avoid large fluid intake before bedtime
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="SpiDiscourage" />
+            <label>Discourage long periods of sleep during the day</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiPerform" />
+            <label>Perform actions to relieve discomfort if present</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiReduce" />
+            <label>Reduce environmental distractions</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="SpiIncrease" />
+            <label>Increase daytime physical activities as indicated</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="SpiOthers" />
+            <label class="mr-3">Others: </label>
+            <input type="text" formControlName="SpiOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('SpiOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="SpeMet" 
+              (change)="onCheckboxChange('SpeMet', ['SpePartiallyMet', 'SpeNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="SpePartiallyMet" 
+              (change)="onCheckboxChange('SpePartiallyMet', ['SpeMet', 'SpeNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="SpeNotMet" 
+              (change)="onCheckboxChange('SpeNotMet', ['SpeMet', 'SpePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="SprContinue" 
+              (change)="onCheckboxChange('SprContinue', ['SprEdited', 'SprAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="SprEdited" 
+              (change)="onCheckboxChange('SprEdited', ['SprContinue', 'SprAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="SprAchieved" 
+              (change)="onCheckboxChange('SprAchieved', ['SprContinue', 'SprEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>

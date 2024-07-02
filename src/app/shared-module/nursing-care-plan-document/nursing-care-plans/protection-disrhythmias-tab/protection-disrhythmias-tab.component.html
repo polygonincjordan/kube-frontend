@@ -1,0 +1,211 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="DipDisrhythmias" />
+            <label>Disrhythmias</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="DipActual"
+                (change)="onCheckboxChange('DipActual', ['DipPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="DipPotential"
+                (change)="onCheckboxChange('DipPotential', ['DipActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="DigPatientWill" />
+            <label>Patient will be Free of life-threatening dysrhythmias</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DigPatientFree" />
+            <label
+              >Patient free of complications of impaired cardiac
+              output/tissue</label
+            >
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="DigOthers" />
+            <label class="mr-3">Others</label>
+            <input
+              type="text"
+              formControlName="DigOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('DigOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="DiiSupport" />
+            <label
+              >Support in dealing with anxiety/fear of potentially
+              life-threatening situation</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiTreat" />
+            <label
+              >Treat the arrhythmias accordingly as per the guidelines of (ACLS
+              protocol)</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiReview" />
+            <label
+              >Review information regarding condition/prognosis/treatment</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiPrepare" />
+            <label
+              >Prepare in advance for direct defibrillation and
+              cardioversion</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiAssist" />
+            <label
+              >Assist in identification of cause/precipitating factors</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="DiiBlood" />
+            <label>Monitor blood serum electrolytes as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiEcg" />
+            <label>Monitor ECG as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiVitalSigns" />
+            <label class="mr-3">Monitor patient's vital signs as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiAdminister" />
+            <label class="mr-3">Administer medications as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="DiiPatient" />
+            <label class="mr-3">Patient and family education</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="DiiOthers" />
+            <label class="mr-3">Others</label>
+            <input
+              type="text"
+              formControlName="DiiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('DiiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="DieMet"
+              (change)="
+                onCheckboxChange('DieMet', ['DiePartiallyMet', 'DieNotMet'])
+              "
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="DiePartiallyMet"
+              (change)="
+                onCheckboxChange('DiePartiallyMet', ['DieMet', 'DieNotMet'])
+              "
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="DieNotMet"
+              (change)="
+                onCheckboxChange('DieNotMet', ['DieMet', 'DiePartiallyMet'])
+              "
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="DirContinue"
+              (change)="
+                onCheckboxChange('DirContinue', ['DirEdited', 'DirAchieved'])
+              "
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="DirEdited"
+              (change)="
+                onCheckboxChange('DirEdited', ['DirContinue', 'DirAchieved'])
+              "
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="DirAchieved"
+              (change)="
+                onCheckboxChange('DirAchieved', ['DirContinue', 'DirEdited'])
+              "
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

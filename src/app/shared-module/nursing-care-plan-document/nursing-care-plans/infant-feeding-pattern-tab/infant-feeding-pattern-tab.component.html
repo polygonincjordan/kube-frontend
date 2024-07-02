@@ -1,0 +1,208 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="IipIneffective" />
+            <label>Ineffecive Infant Feeding Pattern</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="IipActual" 
+              (change)="onCheckboxChange('IipActual', ['IipPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="IipPotential" 
+              (change)="onCheckboxChange('IipPotential', ['IipActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="IigWeightLoss" />
+            <label>No signs of Weight Loss</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IigSymptoms" />
+            <label>No signs and symptoms of Dehydration</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IigNoImbalances" />
+            <label>No imbalances in the body's fluid and electrolytes</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IigInfant" />
+            <label>Infant's ability to suck milk correctly and suffic</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IigIncrease" />
+            <label
+              >Increase Parents' Confidence in performing feeding
+              techniques</label
+            >
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="IigOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="IigOthersTxt" 
+            class="form-control"
+                [readOnly]="nursingCarePlanForm.get('IigOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="IiiWeigh" />
+            <label
+              >Weigh the newborn daily using the standard weighing scale</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiSuckingPattern" />
+            <label
+              >Assess the infant's sucking pattern during breastfeeding</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiClarify" />
+            <label
+              >Clarify the importance of infants Proper Nutrition to
+              mothers</label
+            >
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="IiiSymptoms" />
+            <label
+              >Assess infants for Signs and Symptoms of dehydration; such as:
+              Poor Skin Turgor, Dry MM, Conc. Urine, Sunken Fontanels or
+              Eyeballs</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiTrain" />
+            <label>Train the parents on the correct Feeding Position</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiRecord" />
+            <label
+              >Record the amount fed from bottle, time needed in
+              breast-feed</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="IiiActivity" />
+            <label>Assess Infant's Activity</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiCheckSigns" />
+            <label>Check signs and symptoms of Feeding Intolerance</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiAbdominal" />
+            <label class="mr-3"
+              >Check abdominal sounds, movement, and soften</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiRecordNumber" />
+            <label class="mr-3"
+              >Record the number of bowel motions and the amount of urine</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IiiAdminister" />
+            <label class="mr-3">Administer IV fluid as ordered</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="IiiOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="IiiOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('IiiOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IieMet"
+              (change)="onCheckboxChange('IieMet', ['IiePartiallyMet', 'IieNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IiePartiallyMet"
+              (change)="onCheckboxChange('IiePartiallyMet', ['IieMet', 'IieNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IieNotMet"
+              (change)="onCheckboxChange('IieNotMet', ['IieMet', 'IiePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IirContinue"
+              (change)="onCheckboxChange('IirContinue', ['IirEdited', 'IirAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IirEdited"
+              (change)="onCheckboxChange('IirEdited', ['IirContinue', 'IirAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IirAchieved"
+              (change)="onCheckboxChange('IirAchieved', ['IirContinue', 'IirEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>

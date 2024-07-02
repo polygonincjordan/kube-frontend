@@ -1,0 +1,176 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+    <div class="nur-problem-details row">
+        <div class="col-md-6">
+          <div class="nutrotion-problem">
+            <h4><strong>Problem</strong></h4>
+            <div class="row">
+              <div class="col-md-8">
+                <input type="checkbox" formControlName="HopHypothermia" />
+                <label>Hypothermia;</label>
+              </div>
+              <div class="col-md-4">
+                <div>
+                  <input type="checkbox" formControlName="HopActual" 
+                   (change)="onCheckboxChange('HopActual', ['HopPotential'])"/>
+                  <label>Actual</label>
+                </div>
+                <div>
+                  <input type="checkbox" formControlName="HopPotential" 
+                   (change)="onCheckboxChange('HopPotential', ['HopActual'])"/>
+                  <label>Potential</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="nutrotion-problem">
+            <h4><strong>Goals</strong></h4>
+            <div class="">
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="checkbox" formControlName="HogMaintain" />
+                  <label>Maintain normal body temperature</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="checkbox" formControlName="HogIncreased" />
+                  <label class="mr-3">Increased comfort</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 d-flex">
+                  <input type="checkbox" formControlName="HogPrevent" />
+                  <label>Prevent complications such as hypovolomic shock</label>
+                </div>
+                <div class="col-md-6 d-flex">
+                  <input type="checkbox" formControlName="HogOthers" />
+                  <label class="mr-3">Other: </label>
+                  <input type="text" formControlName="HogOthersTxt" class="form-control"
+                  [readOnly]="nursingCarePlanForm.get('HogOthers').value == false"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nur-interventions-details mt-3">
+        <div class="nutrotion-problem">
+          <h4><strong>Interventions</strong></h4>
+          <div class="row">
+            <div class="col-md-6">
+              <div>
+                <input type="checkbox" formControlName="HoiMonitor" />
+                <label>Monitor environmental temprature</label>
+              </div>
+              <div>
+                <input type="checkbox" formControlName="HoiRewarm" />
+                <label
+                  >Rewarm patient gradually to prevent complications of rapid rewarming</label
+                >
+              </div>
+              <div>
+                <input type="checkbox" formControlName="HoiAssess" />
+                <label
+                  >Assess vital signs (as ordered)</label
+                >
+              </div>
+              <div>
+                <input type="checkbox" formControlName="HoiEncourage" />
+                <label
+                  >Encourage fluids (when indicated)</label
+                >
+              </div>     
+            </div>
+            <div class="col-md-6">
+              <div>
+                <input type="checkbox" formControlName="HoiEducate" />
+                <label
+                  >Educate patient and family about management of hypothermia</label
+                >
+              </div>
+              <div>
+                <input type="checkbox" formControlName="HoiApply" />
+                <label>Apply extra blankets and Use warming blanket</label>
+              </div>
+              <div>
+                <input type="checkbox" formControlName="HoiAssessPoss" />
+                <label
+                  >Assess possible Etiology of increased temperature</label
+                >
+              </div>
+              <div class="d-flex">
+                <input type="checkbox" formControlName="HoiOthers" />
+                <label class="mr-3">Others: </label>
+                <input type="text" formControlName="HoiOthersTxt" 
+                class="form-control"
+                [readOnly]="nursingCarePlanForm.get('HoiOthers').value == false"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nur-problem-details row mt-3">
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Evaluation</strong></h4>
+              <div class="row">
+                <div>
+                  <input
+                    type="checkbox"
+                    formControlName="HoeMet"
+                    (change)="onCheckboxChange('HoeMet', ['HoePartiallyMet', 'HoeNotMet'])"
+                  />
+                  <label>Met</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    formControlName="HoePartiallyMet"
+                    (change)="onCheckboxChange('HoePartiallyMet', ['HoeMet', 'HoeNotMet'])"
+                  />
+                  <label>Partially Met</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    formControlName="HoeNotMet"
+                    (change)="onCheckboxChange('HoeNotMet', ['HoeMet', 'HoePartiallyMet'])"
+                  />
+                  <label>Not Met</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="nutrotion-problem">
+              <h4><strong>Revision</strong></h4>
+              <div class="row">
+                <div>
+                  <input
+                    type="checkbox"
+                    formControlName="HorContinue"
+                    (change)="onCheckboxChange('HorContinue', ['HorEdited', 'HorAchieved'])"
+                  />
+                  <label>Reviewed and Continue</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    formControlName="HorEdited"
+                    (change)="onCheckboxChange('HorEdited', ['HorContinue', 'HorAchieved'])"
+                  />
+                  <label>Reviewed and Edited</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    formControlName="HorAchieved"
+                    (change)="onCheckboxChange('HorAchieved', ['HorContinue', 'HorEdited'])"
+                  />
+                  <label>Achieved</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
