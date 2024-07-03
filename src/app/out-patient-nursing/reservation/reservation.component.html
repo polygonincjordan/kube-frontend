@@ -1,0 +1,52 @@
+<div class="search-functionalitypl-0 mt-2">
+    <form [formGroup]="formDetailGroup" >
+     <div class=" tab-search-panel row">
+          <div class="col-3">
+            <tabset>
+              <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="changeTab(tabz)">
+                {{ tabz?.content }}
+              </tab>
+            </tabset>
+          </div>
+          <div class="col-7">
+            <div class="w-100 d-flex">
+              <div class="storage-box w-100 d-flex align-items-center">
+                <label class="location-label" for="movement type ">Movement type </label>
+                <ng-select class="ng-select-dropdown" [placeholder]="'Movement type'" (change)="selectType($event)">
+                  <ng-option value="201">201</ng-option>
+                  <ng-option value="311">311</ng-option>
+                </ng-select>
+              </div>
+              <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '311'">
+                <label class="location-label" for="storage-location">Storage Location</label>
+                <ng-select class="ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
+                  formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
+                  <ng-option *ngFor="let item of storageLocationList" [value]="item">{{ item.Lgort }}</ng-option>
+                </ng-select>
+              </div>
+              <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '201'">
+                <label class="location-label" for="Cost-Center">Cost Center</label>
+                <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
+                  formControlName="selectedCostCenter" [(ngModel)]="selectedCostCenter" (change)="onLocationChange($event)">
+                  <ng-option *ngFor="let item of costCenterList" [value]="item">{{ item.Kostl }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="d-flex justify-content-end">
+             <button type="button" class="header-btn" (click)="resetForm()" >
+                  <span>Cancel</span>
+                </button>
+                <button type="submit" class="header-btn" (click)="createReservationSet()">
+                  <span>Post</span>
+                </button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+  <ng-container>
+    <app-history-list *ngIf="isConsumableAction == '1'"></app-history-list>
+    <app-reservation-list [selectedType]="selectedType"  *ngIf="isConsumableAction == '2'"></app-reservation-list>
+  </ng-container>

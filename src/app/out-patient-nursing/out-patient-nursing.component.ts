@@ -47,6 +47,7 @@ export class OutPatientNursingComponent implements OnInit {
   appointments = false;
   erhistory = false;
   PhysicianOrder: boolean = false;
+  reservation: boolean = false;
   AdministeredDoses: boolean = false;
   dischargeorder: boolean = false;
   erSetting: boolean = false;
@@ -611,6 +612,7 @@ export class OutPatientNursingComponent implements OnInit {
       this.appointments = false;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
     } else if (module == 'treatmentarea') {
       this.treatmentarea = true;
       this.checkin = false;
@@ -623,6 +625,7 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = false;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
     } else if (module == 'erhistory') {
       this.headerLabel = ""
       this.treatmentarea = false;
@@ -636,6 +639,7 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = false;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
     } else if (module == 'erSetting') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -648,6 +652,7 @@ export class OutPatientNursingComponent implements OnInit {
       this.appointments = false;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
     } else if (module == 'dischargeorder') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -659,6 +664,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = false;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
+
     } else if (module == 'appointments') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -671,6 +678,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = false;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
+
     } else if (module == 'rxEmr') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -683,6 +692,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = true;
       this.erFile = false;
       this.LabResults = false;
+      this.reservation= false;
+
     } else if (module == 'erFile') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -695,6 +706,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = true;
       this.erFile = true;
       this.LabResults = false;
+      this.reservation= false;
+
     } else if (module == 'LabResults') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Lab Extraction';
@@ -709,6 +722,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.rxEmr = false;
       this.erFile = false;
       this.LabResults = true;
+      this.reservation= false;
+
     } else if (module == 'PhysicianOrder') {
       this.headerLabel = 'Not Executed Physician Order'
       this.treatmentarea = false;
@@ -724,6 +739,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.AdministeredDoses = false;
       this.form.controls['admittedFrom'].disable();
       this.form.controls['admittedTo'].disable();
+      this.reservation= false;
+
     } else if (module == 'AdministeredDoses') {
       this.headerLabel = 'Medication Administration'
       this.treatmentarea = false;
@@ -737,6 +754,23 @@ export class OutPatientNursingComponent implements OnInit {
       this.erFile = false;
       this.PhysicianOrder = false;
       this.AdministeredDoses = true;
+      this.reservation= false;
+
+    }else if (module == 'reservation') {
+      this.headerLabel = 'Reservation'
+      this.treatmentarea = false;
+      this.checkin = false;
+      this.erhistory = false;
+      this.dischargeorder = false;
+      this.erSetting = false;
+      this.appointments = false;
+      this.LabResults = false;
+      this.rxEmr = false;
+      this.erFile = false;
+      this.PhysicianOrder = false;
+      this.AdministeredDoses = false;
+      this.reservation= true;
+
     }
     this.refreshFormGroup();
     this.closeAndRefresh();

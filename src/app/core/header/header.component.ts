@@ -150,6 +150,21 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  removeSomeContentIntoProfile(){
+    const getKubeRule = this.storageService.getKubeRule();
+    if(getKubeRule === UserType.DayCaseNurse){
+      this.outpatientlistdata=false
+    }else if(getKubeRule === UserType.DIYNurse){
+      this.outpatientlistdata=false
+    }else if (getKubeRule === UserType.opnurse){
+      this.outpatientlistdata=false
+    }else if(getKubeRule === UserType.ERNurse){
+      this.outpatientlistdata=false
+    }else{
+      this.outpatientlistdata=true
+    }
+  }
+  
   dialysisNursingList(){
     if(this.route.url==='/dialysis-nursing-dashboard'){
       this.outpatientlistdata = false
@@ -162,6 +177,7 @@ export class HeaderComponent implements OnInit {
     this.hospitalistdata()
     this.outpatientlist()
     this.emNursingList()
+    this.removeSomeContentIntoProfile();
     this.dialysisNursingList()
     this._dataServices.getMyWidgetConfigSet().subscribe(
       (_success: any) => {
