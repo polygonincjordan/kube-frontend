@@ -15,10 +15,11 @@
             <div class="col-4 pl-5 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Treatment Time</label>
-                <input type="text" [bsConfig]="{withTimepicker:
+                <!-- <input type="text" [bsConfig]="{withTimepicker:
                   true,showWeekNumbers:false,
-                  dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" class="w-50" formControlName="PTreatmentTime">
-              </div>
+                  dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" class="w-50" formControlName="PTreatmentTime"> -->
+                  <timepicker [showSeconds]=true formControlName="PTreatmentTime"></timepicker>
+                </div>
             </div>
           </div>
           <div class="row align-items-center my-3">

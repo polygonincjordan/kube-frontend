@@ -248,7 +248,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     // this.getNoConsumablesSetCount();
     this.receiveDataFromPhysicianOrdersChild();
     this.getMissedDocsCount();
-    this.getNoConsumablesCount();
+    // this.getNoConsumablesCount();
 
     //this.selectModule('checkin');
     this.getAssignSurgeonList();

@@ -90,7 +90,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
             filterStatusList: this.statucList
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoConsumable$, true, value);
-          // this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
+          this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
         }
       } 
     })
@@ -138,7 +138,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
         return typeof value === 'string' && value.toLowerCase().includes(searchValue);
       });
     });
-    // this.sendNoConsumableCount.emit(this.filteredPatients.length);
+    this.sendNoConsumableCount.emit(this.filteredPatients.length);
   }
 
 
@@ -196,6 +196,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
         });
       }
     this.patientWithoutConsumableList = filterValue 
+    this.sendNoConsumableCount.emit(this.patientWithoutConsumableList.length);
     }
 
     // if (event.Status && event.Status != '') {
