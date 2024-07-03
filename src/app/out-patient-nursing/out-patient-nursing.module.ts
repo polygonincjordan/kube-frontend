@@ -75,6 +75,9 @@ import { OpCreateServiceComponent } from './nurs-treatment-workarea/op-services/
 import { OpServiceHistoryComponent } from './nurs-treatment-workarea/op-services/op-serviceslist/op-service-history/op-service-history.component';
 import { DataShareService } from '@services/data-share.service';
 import { OutpatientNursingService } from '@services/outpatient-nursing.service';
+import { ReservationComponent } from './reservation/reservation.component';
+import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
+import { HistoryListComponent } from './reservation/history-list/history-list.component';
 
 const route: Routes = [
   {
@@ -132,6 +135,9 @@ const route: Routes = [
     OpServiceslistComponent,
     OpCreateServiceComponent,
     OpServiceHistoryComponent,
+    ReservationComponent,
+    ReservationListComponent,
+    HistoryListComponent,
 
   ],
   providers: [EmergencyService, FeeListService,OutpatientNursingService, EPrescriptionService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService, DataShareService],

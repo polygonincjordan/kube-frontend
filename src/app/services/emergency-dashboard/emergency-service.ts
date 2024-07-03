@@ -1164,6 +1164,24 @@ export class EmergencyService {
     })
   }
 
+  createReservation(payload:any){
+    return this.http.post(this.url + 'saveReservationSet',payload,{
+      withCredentials:true
+    })
+  }
+
+  getStorageLocation(){
+    return this.http.get(this.url + 'getStoragelocationReservationList',{
+      withCredentials:true
+    })
+  }
+
+  getCostcenter(){
+    return this.http.get(this.url + 'getCostCenterReservationList',{
+      withCredentials:true
+    })
+  }
+
   createAssessment(data:any) {
     console.log(data);
 

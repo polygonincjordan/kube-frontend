@@ -1,0 +1,158 @@
+.order-templete-main {
+    max-height: 550px;
+    overflow: hidden;
+  
+    .consumable-histry-table {
+      max-height: 500px;
+      height: 450px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+  
+      table {
+        border-collapse: separate;
+        border-spacing: 2px;
+  
+        thead {
+          background: #e4edf5 !important;
+          position: sticky;
+          top: 0;
+          z-index: 9;
+  
+          tr {
+            th {
+              font-weight: 700;
+              font-size: larger;
+  
+            }
+          }
+        }
+  
+        tbody {
+          background-color: #fbfcff;
+  
+          tr {
+            font-weight: 600;
+  
+            td {
+              padding: 10px;
+              font-size: larger;
+  
+  
+              &:nth-child(2) {
+                ::ng-deep .ng-select-dropdown {
+                  .ng-select-container {
+                    width: 100% !important;
+                    background-color: transparent;
+                  }
+  
+                  /* Custom CSS to increase font size of ng-select */
+                  .ng-select .ng-input {
+                    font-size: 16px;
+                    /* Adjust the font size as needed */
+                  }
+  
+                  .ng-select-container .ng-value .ng-value-label {
+                    font-size: 16px;
+                    /* Adjust the font size as needed */
+                  }
+  
+                  .ng-dropdown-panel {
+                    width: calc(2em * 20) !important; // TODO:  need to fix with percentage
+                    background-color: transparent;
+  
+                    .ng-dropdown-panel-items {
+                      // font-size: larger;
+                      width: calc(2em * 20) !important;
+                      z-index: 20;
+                    }
+                  }
+                }
+              }
+  
+              &:nth-child(3) {
+                ::ng-deep .ng-select-dropdown {
+  
+                  /* Custom CSS to increase font size of ng-select */
+                  .ng-select .ng-input {
+                    font-size: 16px;
+                    /* Adjust the font size as needed */
+                  }
+  
+                  .ng-select-container .ng-value .ng-value-label {
+                    font-size: 16px;
+                    /* Adjust the font size as needed */
+                  }
+  
+                }
+              }
+  
+              &:nth-child(8) {
+                img {
+                  font-weight: 700;
+                  height: 24px;
+                  width: 24px;
+                  margin: 5px 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // ::ng-deep .ng-select-dropdown {
+  //   .ng-select-container {
+  //     cursor: pointer !important;
+  //     border-radius: 5px !important;
+  //     .ng-value {
+  //       color: #9a99ac !important;
+  //       font-family: Lato !important;
+  //       font-size: 14px !important;
+  //       font-weight: 500 !important;
+  //     }
+  //   }
+  // }
+  
+  
+  table {
+    border-spacing: 0px;
+    table-layout: fixed;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  th {
+    border: 1px solid black;
+  }
+  
+  td {
+    border: 1px solid black;
+    word-wrap: break-word;
+  }
+  
+  .modal-header {
+    display: flex;
+    padding: 17px;
+    background-color: #0082c8;
+    color: white;
+    border-radius: 16px 16px 0 0;
+  }
+  
+  .fliter-box {
+    padding: 2px;
+  
+    ::ng-deep .ng-select-container {
+      border-color: #0056b0 !important;
+      height: 38px !important;
+    }
+  
+    .header-occupational {
+      width: 20%;
+    }
+  
+    .header-category {
+      width: 50%;
+    }
+  }
+  

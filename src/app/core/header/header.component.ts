@@ -150,10 +150,26 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  removeSomeContentIntoProfile(){
+    const getKubeRule = this.storageService.getKubeRule();
+    if(getKubeRule === UserType.DayCaseNurse){
+      this.outpatientlistdata=false
+    }else if(getKubeRule === UserType.DIYNurse){
+      this.outpatientlistdata=false
+    }else if (getKubeRule === UserType.opnurse){
+      this.outpatientlistdata=false
+    }else if(getKubeRule === UserType.ERNurse){
+      this.outpatientlistdata=false
+    }else{
+      this.outpatientlistdata=true
+    }
+  }
+
   myWidgetConfigSet() {
     this.hospitalistdata()
     this.outpatientlist()
     this.emNursingList()
+    this.removeSomeContentIntoProfile();
     this._dataServices.getMyWidgetConfigSet().subscribe(
       (_success: any) => {
         if (_success) {
