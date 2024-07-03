@@ -34,10 +34,11 @@
             <div class="col-4 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Prescribed Time</label>
-                <input type="text" class="form-control" step="2" formControlName="PrescribedTime" [bsConfig]="{withTimepicker:
+                <!-- <input type="text" class="form-control" step="2" formControlName="PrescribedTime" [bsConfig]="{withTimepicker:
                 true,showWeekNumbers:false,
                 dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
-                <label for="" class="unites-labels text-nowrap m-0">hr</label>
+                <label for="" class="unites-labels text-nowrap m-0">hr</label> -->
+                <timepicker [showSeconds]=true formControlName="PrescribedTime"></timepicker>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
@@ -114,17 +115,19 @@
                 <label for="" class="text-nowrap m-0">Treatment Time</label>
                 <!-- <input type="time" bsDatepicker
                 [bsConfig]="{showWeekNumbers: false,withTimepicker:true, dateInputFormat:'HH:mm:ss'}" class="w-100" formControlName="TreatmentTime"> -->
-                <input type="text" class="form-control" step="2" formControlName="TreatmentTime" [bsConfig]="{withTimepicker:
+                <!-- <input type="text" class="form-control" step="2" formControlName="TreatmentTime" [bsConfig]="{withTimepicker:
                 true,showWeekNumbers:false,
-                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
+                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" /> -->
+                <timepicker [showSeconds]=true formControlName="TreatmentTime"></timepicker>
               </div>
             </div>
             <div class="col-4 pr-5">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label for="" class="text-nowrap m-0">Dialysis First Time</label>
-                <input type="text" class="form-control" step="2" formControlName="DialysisFTime" [bsConfig]="{withTimepicker:
+                <!-- <input type="text" class="form-control" step="2" formControlName="DialysisFTime" [bsConfig]="{withTimepicker:
                 true,showWeekNumbers:false,
-                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
+                dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" /> -->
+                <timepicker [showSeconds]=true formControlName="DialysisFTime"></timepicker>
               </div>
             </div>
           </div>

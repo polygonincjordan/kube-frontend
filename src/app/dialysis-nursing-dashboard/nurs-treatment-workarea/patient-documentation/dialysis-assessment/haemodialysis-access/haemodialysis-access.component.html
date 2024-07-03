@@ -358,11 +358,23 @@
       <div class="row align-items-center my-4 custom-title">
         <h4>Dressing Changed</h4>
         <div class="col-3 my-lg-2">
-          <div class="d-flex align-items-center w-100">
+          <!-- <div class="d-flex align-items-center w-100">
             <ng-select class="w-100" formControlName="DressingChanged">
               <ng-option value="0">Yes</ng-option>
               <ng-option value="1">No</ng-option>
             </ng-select>
+          </div> -->
+          <div>
+            <div class="custom-input d-flex mr-5">
+              <div class="d-flex align-items-center">
+                <input type="radio" formControlName="DressingChanged" id="yesDressingChanges" value="0" >
+                <label for="yesDressingChanges" class="mx-3 ms-2 mb-0">Yes</label>
+              </div>
+              <div class="d-flex align-items-center">
+                <input type="radio" formControlName="DressingChanged" id="noDressingChanges" value="1">
+                <label for="noDressingChanges" class="mx-3 ms-2 mb-0">No</label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
