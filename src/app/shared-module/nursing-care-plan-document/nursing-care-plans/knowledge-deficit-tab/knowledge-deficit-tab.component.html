@@ -1,0 +1,183 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="KdpKnowledge" />
+            <label>Knowledge Deficit</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="KdpActual" 
+              (change)="onCheckboxChange('KdpActual', ['KdpPotential'])"/>
+              <label>Actual</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="KdpPotential" 
+              (change)="onCheckboxChange('KdpPotential', ['KdpActual'])"/>
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="KdgUnderstanding" />
+            <label
+              >Patient's understanding of desired content /desired skill</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdgDemonstrates" />
+            <label>Patient demonstrates motivation to learn</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdgIdentifies" />
+            <label>Patient identifies perceived learning needs</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="KdgOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="KdgOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('KdgOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="KdiObjectives" />
+            <label
+              >Establish objectives for learning at the beginning of
+              session</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiPhysical" />
+            <label>Provide physical comfort for the learner</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiLearning" />
+            <label>Do Learning Need Assessment</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiAssign" />
+            <label>Assign familiar staff whenever possible</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiQuietAtmos" />
+            <label>Provide a quiet atmosphere without interruption</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="KdiAllow" />
+            <label
+              >Allow learner to know what is the most important to
+              him/her</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiGiveClear" />
+            <label
+              >Give clear education, through explanations and
+              demonstrations</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiDocument" />
+            <label class="mr-3"
+              >Document progress of teaching and learning</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="KdiRapport" />
+            <label class="mr-3">Establish rapport to gain patient trust</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="KdiOthers" />
+            <label class="mr-3">Others</label>
+            <input type="text" formControlName="KdiOthersTxt" class="form-control"
+            [readOnly]="nursingCarePlanForm.get('KdiOthers').value == false"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="KdeMet" 
+              (change)="onCheckboxChange('KdeMet', ['KdePartiallyMet', 'KdeNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="KdePartiallyMet" 
+              (change)="onCheckboxChange('KdePartiallyMet', ['KdeMet', 'KdeNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="KdeNotMet" 
+              (change)="onCheckboxChange('KdeNotMet', ['KdeMet', 'KdePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="KdrContinue" 
+              (change)="onCheckboxChange('KdrContinue', ['KdrEdited', 'KdrAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="KdrEdited" 
+              (change)="onCheckboxChange('KdrEdited', ['KdrContinue', 'KdrAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input 
+              type="checkbox" 
+              formControlName="KdrAchieved" 
+              (change)="onCheckboxChange('KdrAchieved', ['KdrContinue', 'KdrEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</form>

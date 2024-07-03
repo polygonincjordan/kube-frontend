@@ -80,6 +80,9 @@ export class DialysisNursingDashboardComponent implements OnInit {
   dateFrom: Date;
   dateTo: Date;
   getWards: WardList[];
+  physicianList:any=[];
+  visitStatusList:any =[];
+  roomList:any =[];
   public formgroupData: any = {};
   form: FormGroup;
   formSubscription: any;
@@ -245,7 +248,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     // this.getNoConsumablesSetCount();
     this.receiveDataFromPhysicianOrdersChild();
     this.getMissedDocsCount();
-    this.getNoConsumablesCount();
+    // this.getNoConsumablesCount();
 
     //this.selectModule('checkin');
     this.getAssignSurgeonList();
@@ -333,7 +336,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         this.inHospitalist = resp.body.d.results[0]?.ToLDRBu?.results;
         this.inLDRAttendPhyList = resp.body.d.results[0]?.ToPhysician?.results;
-        //this.form.reset();
       }
     });
   }
@@ -341,9 +343,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this._dataServices.getWardList().subscribe(
       (_success: any) => {
         if (_success) {
-          // _success = JSON.parse(_success._body);
-
-          // this.getWards = _success.d.results;
         }
       },
       (_error: any) => { }
@@ -442,7 +441,6 @@ export class DialysisNursingDashboardComponent implements OnInit {
         (_success: any) => {
           _success = JSON.parse(_success._body);
           if (_success.module == 'Not_Executed_Physician_Order') {
-            // this.Ordercount = _success.count;
           }
         },
         (_error: any) => { }
@@ -475,25 +473,56 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.labReceivedData = data;
       this.filterStatusList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
         if (!accumulator.includes(currentValue.Posstatus)) {
-          accumulator.push(currentValue.Posstatus);
+          if(currentValue.Posstatus!==''){
+            accumulator.push(currentValue.Posstatus);
+          }
         }
         return accumulator;
       }, []);
 
       this.filterBehraumList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
         if (!accumulator.includes(currentValue.Behraum)) {
-          accumulator.push(currentValue.Behraum);
+          if(currentValue.Behraum!==''){
+            accumulator.push(currentValue.Behraum);
+          }
         }
         return accumulator;
       }, []);
-
+    
       this.filterBehpersonList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
         if (!accumulator.includes(currentValue.Behperson)) {
-          accumulator.push(currentValue.Behperson);
+          if(currentValue.Behperson!==''){
+            accumulator.push(currentValue.Behperson);
+          }
         }
         return accumulator;
       }, []);
 
+      this.physicianList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.AttendingDoctorName)) {
+          if(currentValue.AttendingDoctorName!=''){
+            accumulator.push(currentValue.AttendingDoctorName);
+          }
+        }
+        return accumulator;
+      }, []);
+
+      this.visitStatusList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.VisitStatus)) {
+          accumulator.push(currentValue.VisitStatus);
+        }
+        return accumulator;
+      }, []);
+
+      this.roomList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.RoomidText)) {
+          if(currentValue.RoomidText!==''){
+            accumulator.push(currentValue.RoomidText);
+          }
+        }
+        return accumulator;
+      }, []);
+      
     }
   }
 
@@ -538,14 +567,17 @@ export class DialysisNursingDashboardComponent implements OnInit {
     }else if (this.selectedModule == 'bed') {
       this.BedComponent.filterListData(this.filterForm.value);
     } else if (this.selectedModule == 'erhistory') {
-      this.ErHistoryComponent.filterListData(this.filterForm.value);
+      this.ErHistoryComponent?.filterListData(this.filterForm.value);
     } else if (this.selectedModule == 'LabResults') {
       this.LabResultsComponent?.filterListDataLab(this.filterFormLab.value);
     } else if (this.selectedModule == 'noConsumables') {
       this.PatientWithoutConsumableComponent?.filterListData(this.filterFormPatientWithNoConsumable.value);
     } else if (this.selectedModule == 'noReleaseDoc') {
       this.PatientWithoutDocumentsComponent?.filterListData(this.filterFormPatientWithNoConsumable.value);
-    } else {
+    }else if(this.selectedModule=='AdministeredDoses') {
+      this.AdministeredDosesComponent?.filterListData(this.AdministeredDosesform.value);
+    }
+    else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
     this.showfilter = false;

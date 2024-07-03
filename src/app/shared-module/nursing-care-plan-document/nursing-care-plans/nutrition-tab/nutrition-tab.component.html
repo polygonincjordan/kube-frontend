@@ -1,0 +1,194 @@
+<form [formGroup]="nursingCarePlanForm">
+  <div class="tab-contant">
+    <div class="nur-problem-details row">
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Problem</strong></h4>
+          <div class="row">
+            <div class="col-md-8">
+              <input type="checkbox" formControlName="NpImbalanced" />
+              <label>Imbalanced Nutrition (Less Than Body Requirements)</label>
+            </div>
+            <div class="col-md-4">
+              <div>
+                <input
+                  type="checkbox"
+                  formControlName="NpActual"
+                  id="inlineCheckboxActual"
+                  (change)="onCheckboxChange('NpActual', ['NpPotential'])"
+                />
+                <label for="inlineCheckboxActual">Actual</label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  formControlName="NpPotential"
+                  id="inlineCheckboxPotential"
+                  (change)="onCheckboxChange('NpPotential', ['NpActual'])"
+                />
+                <label for="inlineCheckboxPotential">Potential</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Goals</strong></h4>
+          <div class="">
+            <div>
+              <input type="checkbox" formControlName="NgImprove" />
+              <label>Improve Nutritional Intake</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NgNutritionSupport" />
+              <label>Promote and Optimize Nutrition Support</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NgOralIntake" />
+              <label>Promote and Optimize Oral Intake</label>
+            </div>
+            <div class="d-flex">
+              <input type="checkbox" formControlName="NgOthers" />
+              <label class="mr-3">Others: </label>
+              <input
+                type="text"
+                formControlName="NgOthersTxt"
+                class="form-control"
+                [readOnly]="nursingCarePlanForm.get('NgOthers').value == false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nur-interventions-details mt-3">
+      <div class="nutrotion-problem">
+        <h4><strong>Interventions</strong></h4>
+        <div class="row">
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="NiCounseling" />
+              <label>Nutritional Counseling</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiMonitorIntake" />
+              <label>Monitor Intake and Output</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiDailyBody" />
+              <label>Daily Body Weight as Ordered</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiParenteralFluid" />
+              <label class="mr-3">Maintain Parenteral Fluid as Ordered </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="NiDetermineFood" />
+              <label>Determine Food Preferences</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiMonitorElectro" />
+              <label>Monitor Electrolytes</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiReferDietician" />
+              <label>Refer to Dietician</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiPatientFamily" />
+              <label class="mr-3">Patient's Family Education</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input type="checkbox" formControlName="NiProvideSkin" />
+              <label>Provide Skin Care</label>
+            </div>
+            <div>
+              <input type="checkbox" formControlName="NiSwallowingTherapy" />
+              <label>Swallowing Therapy</label>
+            </div>
+            <div class="d-flex">
+              <input type="checkbox" formControlName="NiOthers" />
+              <label class="mr-3">Others: </label>
+              <input
+                type="text"
+                formControlName="NiOthersTxt"
+                class="form-control"
+                [disabled]="nursingCarePlanForm.get('NiOthers').value == false"
+                [readOnly]="nursingCarePlanForm.get('NiOthers').value == false"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="NeMet"
+              (change)="onCheckboxChange('NeMet', ['NePartiallyMet', 'NeNotMet'])"
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="NePartiallyMet"
+              (change)="onCheckboxChange('NePartiallyMet', ['NeMet', 'NeNotMet'])"
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="NeNotMet"
+              (change)="onCheckboxChange('NeNotMet', ['NeMet', 'NePartiallyMet'])"
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="NrContinue"
+              (change)="onCheckboxChange('NrContinue', ['NrEdited', 'NrAchieved'])"
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="NrEdited"
+              (change)="onCheckboxChange('NrEdited', ['NrContinue', 'NrAchieved'])"
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="NrAchieved"
+              (change)="onCheckboxChange('NrAchieved', ['NrContinue', 'NrEdited'])"
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</form>

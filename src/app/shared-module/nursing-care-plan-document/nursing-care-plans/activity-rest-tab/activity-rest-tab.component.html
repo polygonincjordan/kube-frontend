@@ -1,0 +1,212 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="ApActivityIntoler" />
+            <label>Activity Intolerance;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="ApActual"
+                (change)="onCheckboxChange('ApActual', ['ApPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="ApPotential"
+                (change)="onCheckboxChange('ApPotential', ['ApActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="AgUnderstanding" />
+            <label
+              >Understanding of the Needs to Increase Daily Activity
+              Level</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AgDemonstrate" />
+            <label
+              >Demonstrate Decrease in Fatigue by Participating in AoDL
+            </label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="AgOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="AgOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('AgOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="AiEncouraging" />
+            <label>Encouraging Patient to Note Daily Progress</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiEvaluating" />
+            <label
+              >Evaluating Patient's Pain and the Present Treatment
+              Regimen</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiProvidingSuffic" />
+            <label>Providing Sufficient Support to Ensure Safety</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiMoving" />
+            <label class="mr-3"
+              >Moving from Bed to Chair with and without Assistance
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiProvidingAssist" />
+            <label class="mr-3"
+              >Providing Assistive Devices for Ambulation as-required
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiEducate" />
+            <label class="mr-3"
+              >Educate Patient about Management of Activity Intolerance
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="AiAdequate" />
+            <label>Adequate Nutrition and Rest to Promote Ideal Weight</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiEncourage" />
+            <label>Encourage Patient to Participate in AoDL</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiMonitor" />
+            <label
+              >Monitor Patient's Vital Signs and Pain before and after
+              AoDL</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AiPhysiotherapy" />
+            <label> Physiotherapy</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="AiOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="AiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('AiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nur-problem-details row mt-3">
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Evaluation</strong></h4>
+          <div class="row">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="AeMet"
+                (change)="
+                  onCheckboxChange('AeMet', ['AePartiallyMet', 'AeNotMet'])
+                "
+              />
+              <label>Met</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="AePartiallyMet"
+                (change)="
+                  onCheckboxChange('AePartiallyMet', ['AeMet', 'AeNotMet'])
+                "
+              />
+              <label>Partially Met</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="AeNotMet"
+                (change)="
+                  onCheckboxChange('AeNotMet', ['AeMet', 'AePartiallyMet'])
+                "
+              />
+              <label>Not Met</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="nutrotion-problem">
+          <h4><strong>Revision</strong></h4>
+          <div class="row">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="ArContinue"
+                (change)="
+                  onCheckboxChange('ArContinue', ['ArEdited', 'ArAchieved'])
+                "
+              />
+              <label>Reviewed and Continue</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="ArEdited"
+                (change)="
+                  onCheckboxChange('ArEdited', ['ArContinue', 'ArAchieved'])
+                "
+              />
+              <label>Reviewed and Edited</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="ArAchieved"
+                (change)="
+                  onCheckboxChange('ArAchieved', ['ArContinue', 'ArEdited'])
+                "
+              />
+              <label>Achieved</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

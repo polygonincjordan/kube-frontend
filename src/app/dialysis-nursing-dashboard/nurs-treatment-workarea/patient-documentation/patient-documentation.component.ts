@@ -1337,7 +1337,6 @@ export class PatientDocumentationComponent implements OnInit {
   }
   cancelDoc() {
     this.modalService.hide()
-    // this.createAttachmentForm.reset();
   }
 
   handleFileChange(event) {
@@ -1867,7 +1866,6 @@ export class PatientDocumentationComponent implements OnInit {
         if (_success) {
           this.pdfUrlType = 'pdf';
           this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
-          // this.pdfUrl=this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,'+ _success?.d?.AttachmentData);
           const config: ModalOptions = {
             class: 'modal-dialog-centered modal-xl pdfmodal-size',
           };
@@ -2042,9 +2040,6 @@ export class PatientDocumentationComponent implements OnInit {
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
-        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-        //   'data:application/pdf;base64,' + data.d.AttachmentData
-        // );
         const config: ModalOptions = {
           class: 'modal-dialog-centered modal-xl pdfmodal-size',
         };

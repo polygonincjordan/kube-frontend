@@ -1,0 +1,210 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="AspAspiration" />
+            <label>Aspiration;</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="AspActual"
+                (change)="onCheckboxChange('AspActual', ['AspPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="AspPotential"
+                (change)="onCheckboxChange('AspPotential', ['AspActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="AsgPatient" />
+            <label>Patient Remain free from aspiration</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="AsgOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="AsgOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('AsgOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="AsiMonitorPatient" />
+            <label>Monitor patient's cough reflex</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiPerform" />
+            <label>Perform oral care every 4 hours and as needed</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiMonitor" />
+            <label
+              >Monitor respiration depth, effort, rhythm, & breath sounds every
+              hour</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiHead" />
+            <label class="mr-3"
+              >Head of bed kept elevated 30-45 degrees at all
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiTurn" />
+            <label class="mr-3"
+              >Turn or reposition patient every two hours
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiSuction" />
+            <label class="mr-3">Suction every 2 hours and as needed </label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiEnsure" />
+            <label class="mr-3">Ensure security of feeding tube </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="AsiEnteral" />
+            <label>Enteral feeding protocol as ordered by physician</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiAssess" />
+            <label>Assess pateint for gag and swalllow reflex</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiEncourage" />
+            <label>Encourage pateint to cough</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiAdministre" />
+            <label>Administre medication as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiPateint" />
+            <label>Pateint and family education</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="AsiConsult" />
+            <label>Consult respiratorytherapy as ordered</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="AsiOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="AsiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('AsiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="AseMet"
+              (change)="
+                onCheckboxChange('AseMet', ['AseNotMet', 'AsePartiallyMet'])
+              "
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="AsePartiallyMet"
+              (change)="
+                onCheckboxChange('AsePartiallyMet', ['AseMet', 'AseNotMet'])
+              "
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="AseNotMet"
+              (change)="
+                onCheckboxChange('AseNotMet', ['AseMet', 'AsePartiallyMet'])
+              "
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="AsrContinue"
+              (change)="
+                onCheckboxChange('AsrContinue', ['AsrAchieved', 'AsrEdited'])
+              "
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="AsrEdited"
+              (change)="
+                onCheckboxChange('AsrEdited', ['AsrContinue', 'AsrAchieved'])
+              "
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="AsrAchieved"
+              (change)="
+                onCheckboxChange('AsrAchieved', ['AsrContinue', 'AsrEdited'])
+              "
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

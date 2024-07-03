@@ -397,51 +397,15 @@ export class ErHistoryComponent implements OnInit {
       )}T00:00:00`,
       History:true
     }
-    // this.ePrescriptionService.loadData(`e-prescription/dialysisTAget?Bwidtge=${this.parseDate(date[0])}&Bwidtle=${this.parseDate(date[1])}`, false, false, false, false).subscribe((_success:any)=>{
-    //   this.ERlistData = [];
-    //   if (_success.body.d.results.length == 0) {
-    //     this.sendErPatientCount.emit( this.ERlistData.length);
-    //   }
-    //    _success.body.d.results.forEach(element => {
-    //     if (element.StatusName == 'Checked Out') {
-    //       this.ERlistData.push(element);
-    //       this.sendErPatientCount.emit( this.ERlistData.length);
-    //     }
-    //    });
-    //    this.ERlistData.forEach((element,index) => {
-    //     if (element.TriageDate != null && element.TriageDate != '') {
-    //     this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-    //     }
-    //     else{
-    //       this.ERlistData[index]['assignedTime'] = '';
-    //     }
-    //   });
-    //   this.ERlistDataClone = this.ERlistData;
-    //   this.lastIndex = this.ERlistData.length - 1;
-
-    // }, (_error: any) => { });
+  
     this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe(
       (_success: any) => {
       // this.ERlistData = [];
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
-      //  _success.d.results.forEach(element => {
-      //   if (element.StatusName == 'Checked Out') {
-      //     this.ERlistData.push(element);
-      //     this.sendErPatientCount.emit( this.ERlistData.length);
-      //   }
-      //  });
-      //  this.ERlistData.forEach((element,index) => {
-      //   if (element.TriageDate != null && element.TriageDate != '') {
-      //   this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-      //   }
-      //   else{
-      //     this.ERlistData[index]['assignedTime'] = '';
-      //   }
-      // });
-      // this.ERlistDataClone = this.ERlistData;
       this.ERlistData = _success.d.results;
+      this.ERlistDataClone = this.ERlistData;
       this.lastIndex = this.ERlistData.length - 1;
 
       },
@@ -1695,21 +1659,20 @@ export class ErHistoryComponent implements OnInit {
         });
         filterValue = this.physicianValueArr.flat();
       }
-      if(event.FCategory && event.FCategory?.length){
-        if(event.FCategory == 'Self Payer'){
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat === 'Self Payer'){
+      if (event.FCategory && event.FCategory?.length) {
+        if (event.FCategory == 'Self-Pay') {
+          filterValue = filterValue.filter((element: any) => {
+            if (element.KostrName === 'Self-Pay') {
               return element;
             }
-          })
-        }else{
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat !== 'Self Payer'){
+          });
+      } else {
+          filterValue = filterValue.filter((element: any) => {
+            if (element.KostrName !== 'Self-Pay') {
               return element;
             }
-          })
+          });
         }
-
       }
         this.ERlistData = filterValue;
         this.sendErPatientCount.emit( this.ERlistData.length);
@@ -1718,6 +1681,7 @@ export class ErHistoryComponent implements OnInit {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
   }
+
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){
   const config: ModalOptions = { class: 'modal-dialog-centered' };
@@ -1973,8 +1937,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1988,8 +1952,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

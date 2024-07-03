@@ -59,6 +59,7 @@ export class AdministeredDosesComponent implements OnInit{
   allergyReactionValues: any;
   severityValues: any;
   allergyTypeValues: any;
+  filteredPatients:any=[];
   riskValues: any;
   riskItemsArr: any[];
   riskJson: any[];
@@ -167,6 +168,8 @@ value: any;
   )}T00:00:00`
   this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
+      this.filteredPatients=res.d.results;
+      this.dataToParent.emit(this.missedMedPatientList);
    })
   }
 
@@ -292,6 +295,37 @@ value: any;
   filterData(){
     // this.listItem.filter((data) => data.Us)
   }
+
+  filterListData(event) {
+    let filterValue = this.filteredPatients;
+    if(event.wardNo || event.patientStatus || event.Physician)
+  
+      if(event.wardNo && event.wardNo?.length){
+        filterValue = filterValue.filter((item: any) => {
+          // return event.wardNo.includes(item.RoomidText);
+          return event.wardNo ==item.RoomidText;
+        });
+      }
+      
+      if(event.patientStatus && event.patientStatus?.length){
+        filterValue = filterValue.filter((item: any) => {
+          // return event.patientStatus.includes(item.VisitStatus);
+          return event.patientStatus ==item.VisitStatus;
+        });
+      }
+      
+      if(event.Physician && event.Physician?.length){
+        filterValue = filterValue.filter((item: any) => {
+          // return event.Physician.includes(item.AttendingDoctorName);
+          return event.Physician ==item.AttendingDoctorName;
+        });
+      }
+
+
+      this.missedMedPatientList = filterValue;
+      console.log(this.missedMedPatientList);
+  }
+
 
   selectDateColumn(index: number, item:any) {
     if (this.selectedColData === index) {

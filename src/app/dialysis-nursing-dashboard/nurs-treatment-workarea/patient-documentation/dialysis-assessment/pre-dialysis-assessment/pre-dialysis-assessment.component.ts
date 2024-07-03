@@ -79,11 +79,6 @@ export class PreDialysisAssessmentComponent implements OnInit {
     })
   }
 
-
-  createAssessment() {
-    console.log(this.predialysis.value);
-  }
-
   ngOnDestroy(): void {
     if(this.subscription){
       this.subscription.unsubscribe();

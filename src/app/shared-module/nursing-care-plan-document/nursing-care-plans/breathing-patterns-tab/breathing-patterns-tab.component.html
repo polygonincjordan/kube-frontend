@@ -1,0 +1,202 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="IbpIneffective" />
+            <label>Ineffective Breathing Patterns</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="IbpActual"
+                (change)="onCheckboxChange('IbpActual', ['IbpPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="IbpPotential"
+                (change)="onCheckboxChange('IbpPotential', ['IbpActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <label class="goal-patient m-0 mb-2"
+              >Patient shows effective respiratory rate/depth, evidenced
+              by:</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbgColor" />
+            <label>Color pink/absence of cyanosis</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbgAbsence" />
+            <label class="mr-3">Absence of diminished breath sounds</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="IbiAssess" />
+            <label>Assess for and maintain patient airway</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiPosition" />
+            <label>Position to facilitate optimum breathing patterns</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiNebulization" />
+            <label>Administer Oxygen and Nebulization as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiEncourage" />
+            <label class="mr-3"
+              >Encourage patient to breath deeply and cough</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiPrescribed" />
+            <label class="mr-3"
+              >Administer Oxygen, as prescribed, and monitor pt's
+              response</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiAdministerPresc" />
+            <label class="mr-3"
+              >Administer prescribed medications and monitor for effect</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="IbiCollaborate" />
+            <label>Collaborate with respiratory therapy, as needed</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiPerform" />
+            <label>Perform chest physiotherapy as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiAuscultate" />
+            <label>Auscultate the patient's lungs, as ordered</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiFrequent" />
+            <label class="mr-3">Frequent suction</label>
+          </div>
+          <div>
+            <input type="checkbox" formControlName="IbiMonitor" />
+            <label class="mr-3">Monitor pulse oximetry, as ordered</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="IbiOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="IbiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('IbiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IbeMet"
+              (change)="
+                onCheckboxChange('IbeMet', ['IbeNotMet', 'IbePartiallyMet'])
+              "
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IbePartiallyMet"
+              (change)="
+                onCheckboxChange('IbePartiallyMet', ['IbeMet', 'IbeNotMet'])
+              "
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IbeNotMet"
+              (change)="
+                onCheckboxChange('IbeNotMet', ['IbeMet', 'IbePartiallyMet'])
+              "
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IbrContinue"
+              (change)="
+                onCheckboxChange('IbrContinue', ['IbrAchieved', 'IbrEdited'])
+              "
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IbrEdited"
+              (change)="
+                onCheckboxChange('IbrEdited', ['IbrContinue', 'IbrAchieved'])
+              "
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="IbrAchieved"
+              (change)="
+                onCheckboxChange('IbrAchieved', ['IbrContinue', 'IbrEdited'])
+              "
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

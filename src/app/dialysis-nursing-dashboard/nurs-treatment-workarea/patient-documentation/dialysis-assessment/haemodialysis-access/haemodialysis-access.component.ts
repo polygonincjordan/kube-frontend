@@ -108,10 +108,6 @@ constructor(private sharedService: SharedService, private emergencyService: Emer
     }
   }
 
-  createAssessment() {
-    console.log(this.hemodialysis.value);
-  }
-
   ngOnDestroy(): void {
     if(this.subscription){
       this.subscription.unsubscribe()

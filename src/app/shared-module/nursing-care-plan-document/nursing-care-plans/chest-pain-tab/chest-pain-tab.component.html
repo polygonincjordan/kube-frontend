@@ -1,0 +1,189 @@
+<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+  <div class="nur-problem-details row">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Problem</strong></h4>
+        <div class="row">
+          <div class="col-md-8">
+            <input type="checkbox" formControlName="CppChest" />
+            <label>Chest Pain</label>
+          </div>
+          <div class="col-md-4">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="CppActual"
+                (change)="onCheckboxChange('CppActual', ['CppPotential'])"
+              />
+              <label>Actual</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="CppPotential"
+                (change)="onCheckboxChange('CppPotential', ['CppActual'])"
+              />
+              <label>Potential</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Goals</strong></h4>
+        <div class="">
+          <div>
+            <input type="checkbox" formControlName="CpgRelief" />
+            <label>Relief of chest pain, pain score < 3 </label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="CpgOthers" />
+            <label class="mr-3">Others</label>
+            <input
+              type="text"
+              formControlName="CpgOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('CpgOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-interventions-details mt-3">
+    <div class="nutrotion-problem">
+      <h4><strong>Interventions</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="CpiLeadEcg" />
+            <label
+              >12 lead ECG while symptomatic, to know extension of
+              infarction</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CpiO2Therapy" />
+            <label
+              >02 therapy-as order-to increase oxygen supply to
+              myocardium</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CpiAdhere" />
+            <label
+              >Adhere to Medication Regimens prescribed; antiplatelets,
+              etc..</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CpiCardiac" />
+            <label class="mr-3"
+              >Cardiac Diet(low salt & low fat), if Pt keep blood glucose level
+              within normal</label
+            >
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <input type="checkbox" formControlName="CpiEnsure" />
+            <label
+              >Ensure Physical Rest and Avoid any Stressful Stimulation</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" formControlName="CpiConnect" />
+            <label>Connect the patient to Cardiac Monitor, as ordered</label>
+          </div>
+          <div class="d-flex">
+            <input type="checkbox" formControlName="CpiOthers" />
+            <label class="mr-3">Others: </label>
+            <input
+              type="text"
+              formControlName="CpiOthersTxt"
+              class="form-control"
+              [readOnly]="nursingCarePlanForm.get('CpiOthers').value == false"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nur-problem-details row mt-3">
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Evaluation</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="CpeMet"
+              (change)="
+                onCheckboxChange('CpeMet', ['CpePartiallyMet', 'CpeNotMet'])
+              "
+            />
+            <label>Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="CpePartiallyMet"
+              (change)="
+                onCheckboxChange('CpePartiallyMet', ['CpeMet', 'CpeNotMet'])
+              "
+            />
+            <label>Partially Met</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="CpeNotMet"
+              (change)="
+                onCheckboxChange('CpeNotMet', ['CpeMet', 'CpePartiallyMet'])
+              "
+            />
+            <label>Not Met</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nutrotion-problem">
+        <h4><strong>Revision</strong></h4>
+        <div class="row">
+          <div>
+            <input
+              type="checkbox"
+              formControlName="CprContinue"
+              (change)="
+                onCheckboxChange('CprContinue', ['CprAchieved', 'CprEdited'])
+              "
+            />
+            <label>Reviewed and Continue</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="CprEdited"
+              (change)="
+                onCheckboxChange('CprEdited', ['CprContinue', 'CprAchieved'])
+              "
+            />
+            <label>Reviewed and Edited</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              formControlName="CprAchieved"
+              (change)="
+                onCheckboxChange('CprAchieved', ['CprContinue', 'CprEdited'])
+              "
+            />
+            <label>Achieved</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
