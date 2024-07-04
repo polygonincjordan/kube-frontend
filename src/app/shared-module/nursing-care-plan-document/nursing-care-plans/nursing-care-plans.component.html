@@ -3,12 +3,12 @@
     <div class="tab-nav">
       <ul class="m-0 p-0 d-flex mb-2 tab-ui">
         <li
-          class="d-flex m-0 align-items-center"
+          class="d-flex m-0 mr-4 align-items-center"
           *ngFor="let label of tabLabelList"
           [ngClass]="selectedTabName == label ? 'active' : ''"
           (click)="switchTabs(label)"
         >
-          <p class="d-inline-block m-0 input-lable">
+          <p [ngClass]="selectedTabName == label ? 'tab-color-active' : 'tab-color'" class="d-inline-block m-0 input-lable">
             {{ label }}
           </p>
         </li>

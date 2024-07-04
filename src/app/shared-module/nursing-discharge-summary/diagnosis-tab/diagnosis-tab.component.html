@@ -1,0 +1,100 @@
+<div class="tab-content">
+  <div
+    class="d-flex mb-2 py-3"
+    style="justify-content: space-between; padding-right: 22px"
+  >
+    <div style="display: flex; align-items: center; gap: 10px">
+      <input
+        type="checkbox"
+        style="width: 36px; height: 22px"
+        id="noDiagnosisApplicable"
+        (change)="handleCheckboxDiagnosis()"
+        [attr.disabled]="toDiagnosisArr.length > 0 ? true : null"
+      />
+      <label class="admitting-physician" for="noDiagnosisApplicable"
+        >No Diagnosis Applicable</label
+      >
+    </div>
+    <!-- <div>
+        <button class="create-diagnosis" 
+        (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button>
+      </div> -->
+    <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
+      <img
+        src="assets/img/file1.svg"
+        title="Create & Import"
+        class="img-size"
+      />
+    </div>
+  </div>
+  <div style="max-height: 296px; overflow: auto">
+    <table class="table table-bordered past-table">
+      <thead
+        style="background-color: #e4edf5; color: black; text-align: center"
+      >
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Description</th>
+          <th scope="col">Remarks</th>
+          <th scope="col">Administion Diag.</th>
+          <th scope="col">Surgery Diag.</th>
+          <th scope="col">Preop Diag.</th>
+          <th scope="col">Discharge Diag.</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody style="background-color: #fbfcff">
+        <tr
+          class="past-med-input"
+          *ngFor="let item of toDiagnosisArr; let i = index"
+        >
+          <td style="width: 14%; padding: 10px !important">{{ item.DCode }}</td>
+          <td style="width: 32%; padding: 10px !important">
+            {{ item.DDescription }}
+          </td>
+          <td style="width: 23%; padding: 10px !important">
+            {{ item.DRemarks }}
+          </td>
+          <td style="text-align: center">
+            <input
+              type="checkbox"
+              style="width: 18px"
+              [(ngModel)]="item.DAdmission"
+            />
+          </td>
+          <td style="text-align: center">
+            <input
+              type="checkbox"
+              style="width: 18px"
+              [(ngModel)]="item.DSurgery"
+            />
+          </td>
+          <td style="text-align: center">
+            <input
+              type="checkbox"
+              style="width: 18px"
+              [(ngModel)]="item.DPreoperative"
+            />
+          </td>
+          <td style="text-align: center">
+            <input
+              type="checkbox"
+              style="width: 18px"
+              [(ngModel)]="item.DDischarge"
+            />
+          </td>
+          <td
+            style="text-align: center; width: 5%"
+            (click)="deleteDiagnosisFromTable(item, i)"
+          >
+            <img
+              src="assets/img/Delete.svg"
+              style="position: relative; top: 6px"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-import-diagnosis #diagnosisNotesKardexId (importEvent)="importDiagnosisData($event)"></app-import-diagnosis>
