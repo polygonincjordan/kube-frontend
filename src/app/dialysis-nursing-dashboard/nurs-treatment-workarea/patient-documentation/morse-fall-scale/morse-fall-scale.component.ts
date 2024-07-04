@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { ActionType } from '@services/interfaces/common.enum';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { StorageService } from '@services/storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-morse-fall-scale',
@@ -24,9 +27,19 @@ export class MorseFallScaleComponent implements OnInit {
   description: string;
 
   morseFallScaleData;
+  private actionTypeSubscription$: Subscription;
 
-  constructor(private fb: FormBuilder,private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService) {
-    this.getDocData();
+  constructor(private fb: FormBuilder,private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService,private dataShareService:DataShareService) {
+    // this.getDocData();
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+      if (data != null) {
+       console.log('data',data);
+       
+        if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
+           this.getDocData();
+        }
+      }
+    });
   }
 
   getDocData(){

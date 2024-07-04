@@ -224,6 +224,9 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
 
   createBradeScale(): Promise<any> {
     return new Promise((resolve, reject) => {
+      if(this.Sensoryperception === '0' || this.Moisture === '0' || this.Activity === '0' || this.Mobility === '0' || this.Nutrition === '0' || this.Frictionandshear === '0'){
+        return  this.sharedService.waringSwallModel('All Questions must be answered in order to release this document');
+      }
       let payload = {
         d: {
           Dockey: this.dockeyValue != null ? this.dockeyValue : '',
