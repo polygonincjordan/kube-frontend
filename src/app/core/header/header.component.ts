@@ -135,20 +135,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  outpatientlist() {
-    if (this.route.url === '/out-patient-nursing') {
-      this.outpatientlistdata = false
-    } else {
-      this.outpatientlistdata = true
-    }
-  }
-  emNursingList() {
-    if (this.route.url === '/nursing-emergncy-dashboard') {
-      this.outpatientlistdata = false
-    } else {
-      this.outpatientlistdata = true
-    }
-  }
+  
 
   removeSomeContentIntoProfile(){
     const getKubeRule = this.storageService.getKubeRule();
@@ -165,20 +152,10 @@ export class HeaderComponent implements OnInit {
     }
   }
   
-  dialysisNursingList(){
-    if(this.route.url==='/dialysis-nursing-dashboard'){
-      this.outpatientlistdata = false
-    }else{
-      this.outpatientlistdata = true
-    }
-  }
 
   myWidgetConfigSet() {
     this.hospitalistdata()
-    this.outpatientlist()
-    this.emNursingList()
     this.removeSomeContentIntoProfile();
-    this.dialysisNursingList()
     this._dataServices.getMyWidgetConfigSet().subscribe(
       (_success: any) => {
         if (_success) {
