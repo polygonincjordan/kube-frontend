@@ -1,0 +1,19 @@
+h4 {
+  border-bottom: 1px solid #cacaca;
+  padding-bottom: 9px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+label {
+  font-weight: 500;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  top: -1px;
+  width: 15px;
+  height: 15px;
+}

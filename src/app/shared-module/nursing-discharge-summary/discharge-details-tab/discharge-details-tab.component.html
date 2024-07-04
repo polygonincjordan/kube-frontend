@@ -1,0 +1,342 @@
+<form [formGroup]="nursingDischargeForm" class="tab-content-part">
+  <div class="row m-0 mb-5">
+    <div class="col-md-4">
+      <div class="d-flex align-items-center">
+        <label class="mr-3 m-0">Date of discharge</label>
+        <input
+          class="form-control w-40"
+          formControlName="DischargeDate"
+          style="font-weight: 800; color: #000"
+          type="text"
+          [minDate]=""
+          [maxDate]=""
+          #dp="bsDatepicker"
+          bsDatepicker
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+        />
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex align-items-center">
+        <label class="mr-3 m-0">Time</label>
+        <input
+          type="time"
+          class="form-control w-40"
+          formControlName="DischargeTime"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row m-0 mb-4">
+    <div class="col-md-12">
+      <h4>Discharge Instructions</h4>
+    </div>
+    <div class="col-md-6 m-0">
+      <div class="row">
+        <div class="col-md-6">
+          <label>Advice/information given</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DiAdvice">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Wound/Perineal care</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DiWound">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <label>Discharge to : Home/Other</label>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="DiWound" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>If Patient id deceased, disposal of body:</label>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="DiPatientDeceased" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-6">
+          <label>Fundus Check</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DiFundus">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Breast care / Breast feeding</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DiBreastCare">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0 mb-4">
+    <div class="col-md-12">
+      <h4>Discharge Details</h4>
+    </div>
+    <div class="col-md-6 m-0">
+      <div class="row">
+        <div class="col-md-5">
+          <label>Mode of Discharge</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select class="p-0 mb-2" formControlName="DdMode">
+            <ng-option
+              *ngFor="let item of modeOfDischargeValue"
+              [value]="item.value"
+              >{{ item.label }}</ng-option
+            >
+          </ng-select>
+        </div>
+      
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            formControlName="DdModeTxt"
+            [disabled]="nursingDischargeForm.get('DdMode').value != '2'"
+            [readOnly]="nursingDischargeForm.get('DdMode').value != '2'"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-9">
+          <label>If Discharged Against Medical Advice, Release signed?</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select class="p-0 mb-2" formControlName="DdDischargedAgainst">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 row m-0 p-0">
+          <div class="col-md-6">
+            <label>Discharge Summary</label>
+          </div>
+          <div class="col-md-6">
+            <ng-select class="p-0 mb-2" formControlName="DdDischargeSummary">
+              <ng-option
+                *ngFor="let item of dischargeDropdownValue"
+                [value]="item.value"
+                >{{ item.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 row m-0 p-0">
+          <div class="col-md-6">
+            <label>Dressing changed</label>
+          </div>
+          <div class="col-md-6">
+            <ng-select class="p-0 mb-2" formControlName="DdDressingChanged">
+              <ng-option
+                *ngFor="let item of dischargeDropdownValue"
+                [value]="item.value"
+                >{{ item.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6 row m-0 p-0">
+          <div class="col-md-6">
+            <label>Medications</label>
+          </div>
+          <div class="col-md-6">
+            <ng-select class="p-0 mb-2" formControlName="DdMedications">
+              <ng-option
+                *ngFor="let item of dischargeDropdownValue"
+                [value]="item.value"
+                >{{ item.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 row m-0 p-0">
+          <div class="col-md-6">
+            <label>Devices</label>
+          </div>
+          <div class="col-md-6">
+            <ng-select class="p-0 mb-2" formControlName="DdDevices">
+              <ng-option
+                *ngFor="let item of dischargeDropdownValue"
+                [value]="item.value"
+                >{{ item.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Radiology/Laboratory Appointment</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DdRadiology">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Outpatient Appointment</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DdOutpatient">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Discharge instruction sheet given?</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DdDischargeInstruct">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-5">
+          <label>Patient discharged with</label>
+        </div>
+        <div class="col-md-3">
+          <ng-select class="p-0 mb-2" formControlName="DdDischargedWith">
+            <ng-option
+              *ngFor="let item of patientDischargeValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            [disabled]="nursingDischargeForm.get('DdMode').value != '1'"
+            [readOnly]="nursingDischargeForm.get('DdMode').value != '1'"
+            formControlName="DdDischargedWithTxt"
+          />
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <label>Reason</label>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="DdReason" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Supplies</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DdSupplies">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Prosthesis / Dentures</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DdProsthesis">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Related patient/family education</label>
+        </div>
+        <div class="col-md-4">
+          <ng-select class="p-0 mb-2" formControlName="DdRelatedPatient">
+            <ng-option
+              *ngFor="let item of dischargeDropdownValue"
+              [value]="item.value"
+              >{{ item.label }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>When</label>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="DdWhen" />
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

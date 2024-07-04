@@ -131,6 +131,7 @@ export class PatientDocumentationComponent implements OnInit {
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
   openNursingCarePlans: boolean = false;
+  openDischargeSummery: boolean = false;
 
   selectedDocData: any;
   medlatestDocList = [];
@@ -865,6 +866,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencynursingdoc = false;
     this.isPainAssessment = false;
     this.openPainAssement = false;
+    this.openDischargeSummery = false;
 
     this.openPhyAssess = false;
     this.openMedReport = false;
@@ -879,6 +881,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openPediatricEarlyWarningScale = false
     this.openNursingCarePlans = false;
     this.isNursingCarePlan = false;
+    this.isNursingDischarge = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -1067,6 +1070,7 @@ export class PatientDocumentationComponent implements OnInit {
         // this.createAndRelease();
       }
     }
+
     // Nusring Care Plans
     else if (this.isNursingCarePlan) {
       if (action == 'create') {
@@ -1117,7 +1121,59 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
     
-  }
+    }
+
+    // Nursing Discharge Summery
+    else if (this.isNursingDischarge) {
+      if (action == 'create') {
+        this.openDischargeSummery = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openDischargeSummery = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseNursingCarePlanDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openDischargeSummery = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openDischargeSummery = true;
+        this.NursingCarePlansComp.createNursingCarePlan('4').then((formValue)=>{
+          if(formValue){
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    
+    }
    
   }
   private subscription: Subscription;

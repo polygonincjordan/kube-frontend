@@ -1,0 +1,78 @@
+<form [formGroup]="nursingDischargeForm" class="pl-3 pr-3">
+  <div class="row m-0 mb-4">
+    <div class="col-md-4">
+      <div class="d-flex align-items-center">
+        <label class="m-0 mr-3">Environmental Safety</label>
+        <ng-select class="p-0 mb-2 w-40" formControlName="EnvironmentalSafety">
+          <ng-option
+            *ngFor="let item of dischargeDropdownValue"
+            [value]="item.value"
+            >{{ item.label }}
+          </ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex align-items-center">
+        <label class="m-0 mr-3">Environmental Assessment</label>
+        <ng-select class="p-0 mb-2 w-40" formControlName="EnvironmentalAss">
+          <ng-option
+            *ngFor="let item of dischargeDropdownValue"
+            [value]="item.value"
+            >{{ item.label }}
+          </ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0">
+    <div class="col-md-12">
+        <h4>Environmental Safety</h4>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsShower"/>
+        <label class="m-0">Shower</label>
+      </div>
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsTub" />
+        <label class="m-0">Cool/dry Place</label>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsRefrigerator" />
+        <label class="m-0">Tub</label>
+      </div>
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsCool" />
+        <label class="m-0">Toilet</label>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsToilet" />
+        <label class="m-0">Refrigerator</label>
+      </div>
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsDoorway" />
+        <label class="m-0">Doorway</label>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0">
+    <div class="col-md-4">
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsStairs" />
+        <label class="m-0">Stairs</label>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="d-flex align-items-center mb-2">
+        <input class="mr-2" type="checkbox" formControlName="EsOther" />
+        <label class="m-0 mr-4">Other</label>
+        <input class="form-control w-40" [disabled]="true" formControlName="EsOtherTxt" />
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,56 @@
+<form [formGroup]="nursingDischargeForm">
+  <div class="row m-0">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2">
+        <label>Maternal Vaccination</label>
+      </div>
+      <div class="col-md-2">
+        <ng-select class="p-0 mb-2" formControlName="MaternalVaccination">
+          <ng-option
+            *ngFor="let item of dischargeDropdownValue"
+            [value]="item.value"
+            >{{ item.label }}
+          </ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-md-12 m-0 p-3">
+      <h4>Maternal Vaccination</h4>
+      <div class="row m-0">
+        <div class="col-md-2 d-flex align-items-center">
+          <label class="mr-2">Vaccine</label>
+          <input class="form-control" formControlName="MvVaccine" />
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+          <label class="mr-2">Batch No.</label>
+          <input class="form-control" formControlName="MvBatch" />
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+          <label class="mr-2">Anti-D</label>
+          <input class="form-control" formControlName="MvAntiD" />
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+          <label class="mr-2">Lot No.</label>
+          <input class="form-control" formControlName="MvLotNo" />
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+          <label class="mr-2">Date</label>
+          <input
+            class="form-control"
+            formControlName="MvDate"
+            style="font-weight: 800; color: #000"
+            type="text"
+            [minDate]=""
+            [maxDate]=""
+            #dp="bsDatepicker"
+            bsDatepicker
+            [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD.MM.YYYY'
+            }"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

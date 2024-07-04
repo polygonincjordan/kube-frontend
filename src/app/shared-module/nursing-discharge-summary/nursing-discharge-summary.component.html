@@ -1,0 +1,56 @@
+<div class="tab-navigation-part">
+  <div class="tab-navigate">
+    <div class="tab-nav">
+      <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+        <li
+          class="d-flex m-0 mr-4 align-items-center"
+          *ngFor="let label of tabLabelList"
+          [ngClass]="selectedTabName == label ? 'active' : ''"
+          (click)="switchTabs(label)"
+        >
+          <p
+            [ngClass]="
+              selectedTabName == label ? 'tab-color-active' : 'tab-color'
+            "
+            class="d-inline-block m-0 input-lable"
+          >
+            {{ label }}
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <form [formGroup]="nursingDischargeForm">
+    <div class="tab-content">
+      <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[0]">
+        <app-discharge-plan-tab
+          [nursingDischargeForm]="nursingDischargeForm"
+          [dischargeDropdownValue]="dischargeDropdownValue"
+        ></app-discharge-plan-tab>
+      </div>
+      <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[1]">
+        <app-discharge-details-tab
+          [nursingDischargeForm]="nursingDischargeForm"
+          [dischargeDropdownValue]="dischargeDropdownValue"
+          [modeOfDischargeValue]="modeOfDischargeValue"
+          [patientDischargeValue]="patientDischargeValue"
+        ></app-discharge-details-tab>
+      </div>
+      <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[2]">
+        <app-diagnosis-tab></app-diagnosis-tab>
+      </div>
+      <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[3]">
+        <app-maternal-vaccination-tab
+        [nursingDischargeForm]="nursingDischargeForm"
+          [dischargeDropdownValue]="dischargeDropdownValue"
+        ></app-maternal-vaccination-tab>
+      </div>
+      <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[4]">
+        <app-environmental-safety-tab
+        [nursingDischargeForm]="nursingDischargeForm"
+          [dischargeDropdownValue]="dischargeDropdownValue"
+        ></app-environmental-safety-tab>
+      </div>
+    </div>
+  </form>
+</div>
