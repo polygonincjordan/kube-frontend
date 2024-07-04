@@ -32,13 +32,17 @@
           </div>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-8">
                 <label for="" class="text-nowrap m-0">Prescribed Time</label>
                 <!-- <input type="text" class="form-control" step="2" formControlName="PrescribedTime" [bsConfig]="{withTimepicker:
                 true,showWeekNumbers:false,
                 dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" />
                 <label for="" class="unites-labels text-nowrap m-0">hr</label> -->
-                <timepicker [showSeconds]=true formControlName="PrescribedTime"></timepicker>
+                <!-- <timepicker [showSeconds]=true formControlName="PrescribedTime"></timepicker> -->
+                <input  type="time"
+                class="form-control w-100"
+                placeholder="HH:mm:ss"
+                style="width:31%;margin: 0px 0px 0px -23px;" formControlName="PrescribedTime">
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
@@ -111,23 +115,31 @@
               </div>
             </div>
             <div class="col-4 pr-5">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-8">
                 <label for="" class="text-nowrap m-0">Treatment Time</label>
                 <!-- <input type="time" bsDatepicker
                 [bsConfig]="{showWeekNumbers: false,withTimepicker:true, dateInputFormat:'HH:mm:ss'}" class="w-100" formControlName="TreatmentTime"> -->
                 <!-- <input type="text" class="form-control" step="2" formControlName="TreatmentTime" [bsConfig]="{withTimepicker:
                 true,showWeekNumbers:false,
                 dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" /> -->
-                <timepicker [showSeconds]=true formControlName="TreatmentTime"></timepicker>
+                <!-- <timepicker [showSeconds]=true formControlName="TreatmentTime"></timepicker> -->
+                <input  type="time"
+                class="form-control w-100"
+                placeholder="HH:mm:ss"
+                style="width:31%;margin: 0px 0px 0px -23px;" formControlName="TreatmentTime">
               </div>
             </div>
             <div class="col-4 pr-5">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-8">
                 <label for="" class="text-nowrap m-0">Dialysis First Time</label>
                 <!-- <input type="text" class="form-control" step="2" formControlName="DialysisFTime" [bsConfig]="{withTimepicker:
                 true,showWeekNumbers:false,
                 dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" /> -->
-                <timepicker [showSeconds]=true formControlName="DialysisFTime"></timepicker>
+                <!-- <timepicker [showSeconds]=true formControlName="DialysisFTime"></timepicker> -->
+                <input  type="time"
+                class="form-control w-100"
+                placeholder="HH:mm:ss"
+                style="width:31%;margin: 0px 0px 0px -23px;" formControlName="DialysisFTime">
               </div>
             </div>
           </div>
@@ -137,48 +149,48 @@
           <label for="" class="title-text m-0">PRE DIALYSIS CHECKS</label>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Pre Weight</label>
                 <input type="text" class="w-100" formControlName="PreWeight">
                 <label for="" class="unites-labels text-nowrap m-0">kg</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input  gap-22">
                 <label for="" class="text-nowrap m-0">Oxygen Saturation</label>
                 <input type="text" class="w-100" formControlName="OxygenSaturation">
                 <label for="" class="unites-labels text-nowrap m-0">%</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Oxygen Flow</label>
                 <input type="text" class="w-100" formControlName="OxygenFlow">
-                <label for="" class="unites-ml text-nowrap m-0">L/min</label>
+                <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">L/min</label>
               </div>
             </div>
           </div>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Oxygen Delivery</label>
                 <ng-select class="w-100" formControlName="OxygenDelivery">
                   <ng-option value="0">Nasal Cannula</ng-option>
                   <ng-option value="1">Oxygen Face Mask</ng-option>
-                  <ng-option value="2">Face Mask with 02</ng-option>
+                  <ng-option value="2">Face Mask with O<sub>2</sub></ng-option>
                   <ng-option value="3">Venturi Mask</ng-option>
                 </ng-select>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Oral Temp</label>
                 <input type="text" class="w-100" formControlName="OralTemp">
                 <label for="" class="unites-labels text-nowrap m-0">*C</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Axillary Temp</label>
                 <input type="text" class="w-100" formControlName="AxillaryTemp">
                 <label for="" class="unites-labels text-nowrap m-0">*C</label>
@@ -187,14 +199,14 @@
           </div>
           <div class="row align-items-center my-3">
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Pulse Rate</label>
                 <input type="text" class="w-100" formControlName="PulseRate">
                 <label for="" class="unites-labels text-nowrap m-0">bpm</label>
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0">Respiratoty Rate</label>
                 <input type="text" class="w-100" formControlName="RespiratoryRate">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>
@@ -217,7 +229,7 @@
               </div>
             </div>
             <div class="col-4 pr-5 position-relative">
-              <div class="d-flex align-items-center w-100 custom-input">
+              <div class="d-flex align-items-center w-100 custom-input gap-22">
                 <label for="" class="text-nowrap m-0" style="right: 5px;">Mean Arterial Pressure</label>
                 <input type="text" class="w-100" formControlName="ArterialPressure">
                 <label for="" class="unites-labels text-nowrap m-0" style="right: 5px;">br/min</label>

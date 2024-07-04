@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter || openHemoDialysisFistulaGraft
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter || openHemoDialysisFistulaGraft 
         "
         style="justify-content: space-between;">
         <div>
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale "
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -110,7 +110,8 @@
               <div
                 [ngClass]="bradenscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('bradenscale',latestBridentScaleList[0])">
-                <div class="col-md-4"> Braden Scale :</div>
+                <div class="col-md-4"> Braden Scale {{latestBridentScaleList[0]?.Zversion ?
+                  dockVer(latestBridentScaleList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
                   {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -137,10 +138,13 @@
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="assessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('assessment',latestDocData)">
-                <div class="col-md-4">Dialysis Assessment</div>
+                <div class="col-md-4">Dialysis Assessment {{latestDocData?.Dokvr ?
+                  dockVer(latestDocData?.Dokvr) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestDocData?.StatusTxt ? latestDocData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                <div class="col-md-2" title="{{getTime(latestDocData?.DocTime)}}">
+                  {{getDate(latestDocData?.Dodat) | date: "dd.MM.y" || '-'}}</div>
+                  <div class="col-md-3">{{latestDocData?.MitarbName || '-'}}</div>
+                <div class="col-md-1"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openDiaAssessReleasePdf(latestDocData.Dockey)" *ngIf="latestDocData?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
@@ -149,7 +153,8 @@
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="morsefallScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('morsefallScale',latestMorseFallScaleData)">
-                <div class="col-md-4">Morse Fall Scale</div>
+                <div class="col-md-4">Morse Fall Scale {{latestMorseFallScaleData?.Zversion ?
+                  dockVer(latestMorseFallScaleData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestMorseFallScaleData?.StatusTxt ? latestMorseFallScaleData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestMorseFallScaleData?.DocTime)}}">
                   {{getDate(latestMorseFallScaleData?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -166,10 +171,14 @@
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="hemoCatheter ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('hemoCatheter',latestHemoCatheterData)">
-                <div class="col-md-4">Hemo Catheter</div>
+                <div class="col-md-4">Hemo Catheter {{latestHemoCatheterData?.Dokvr ?
+                  dockVer(latestHemoCatheterData?.Dokvr) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                <div class="col-md-2" title="{{getTime(latestHemoCatheterData?.DocTime)}}">
+                  {{getDate(latestHemoCatheterData?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestHemoCatheterData?.PhyNm || '-'}}</div>
+                <div class="col-md-1"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="getPatientProfileData(latestHemoCatheterData)" *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
@@ -178,10 +187,14 @@
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="hemoDialysisFistulaGraft ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('hemoDialysisFistulaGraft',latestHemoDialysisFistulaGraftData)">
-                <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft</div>
+                <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft {{latestHemoDialysisFistulaGraftData?.Dokvr ?
+                  dockVer(latestHemoDialysisFistulaGraftData?.Dokvr) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestHemoDialysisFistulaGraftData?.StatusTxt ? latestHemoDialysisFistulaGraftData.StatusTxt : "N/A" }}</div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
+                <div class="col-md-2" title="{{getTime(latestHemoDialysisFistulaGraftData?.DocTime)}}">
+                  {{getDate(latestHemoDialysisFistulaGraftData?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestHemoDialysisFistulaGraftData?.PhyNm || '-'}}</div>
+                <div class="col-md-1"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openFistulaGraftPDF(latestHemoDialysisFistulaGraftData.Dockey)" *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt == 'Released'"></i>
                 </div>
               </div>

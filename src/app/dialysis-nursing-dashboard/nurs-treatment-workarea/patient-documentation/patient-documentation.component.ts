@@ -195,7 +195,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
     // this.LatestDocSet();
-    // this.LatestMFSSet();
+    this.LatestMFSSet();
     // this.LatestHemoCatheter();
     // this.LatestHemoDialysisFistulaGraft();
 
@@ -248,7 +248,7 @@ export class PatientDocumentationComponent implements OnInit {
 
     this.emergencyService.getLatestHemoCatheter(json).subscribe({
       next : (data: any)=>{
-        if(data){
+        if(data){          
           this.latestHemoCatheterData = {...data.d.results[0], AttMimeType: 'PDF'};
           this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
         }
@@ -318,7 +318,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   }
 
-  getPatientProfile() {
+  getPatientProfile() {    
     this.admissionService.getDicumentDetails(this.storageService.einri, '1', this.storageService.patnr, '', this.storageService.falnr).subscribe({
       next: (_success: any) => {
         // Handle successful data retrieval
@@ -393,11 +393,11 @@ export class PatientDocumentationComponent implements OnInit {
           if(latestDocData){
             this.latestDocData = {...latestDocData, StatusTxt: latestDocData.DokstText == "In Work" ? 'Draft' : latestDocData.DokstText}
           }
-          const latestMorseFallScaleData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'SCA_MORSE');
-          if(latestMorseFallScaleData){
-            this.latestMorseFallScaleData = {...latestMorseFallScaleData, StatusTxt: latestMorseFallScaleData.DokstText == "In Work" ? 'Draft' : latestMorseFallScaleData.DokstText, PhyNm: latestMorseFallScaleData.MitarbName, DocDate: latestMorseFallScaleData.Dodat }
-            this.patientDocService.latestMorseFallScaleData = this.latestMorseFallScaleData;
-          }
+          // const latestMorseFallScaleData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'SCA_MORSE');
+          // if(latestMorseFallScaleData){
+          //   this.latestMorseFallScaleData = {...latestMorseFallScaleData, StatusTxt: latestMorseFallScaleData.DokstText == "In Work" ? 'Draft' : latestMorseFallScaleData.DokstText, PhyNm: latestMorseFallScaleData.MitarbName, DocDate: latestMorseFallScaleData.Dodat }
+          //   this.patientDocService.latestMorseFallScaleData = this.latestMorseFallScaleData;
+          // }
           const latestHemoCatheterData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBCA');
           if(latestHemoCatheterData){
             this.latestHemoCatheterData = {...latestHemoCatheterData, StatusTxt: latestHemoCatheterData.DokstText == "In Work" ? 'Draft' : latestHemoCatheterData.DokstText}
@@ -793,7 +793,7 @@ export class PatientDocumentationComponent implements OnInit {
     let file = new Blob([byteArray], { type: "application/pdf" });
     this.pdfUrl = file;
   }
-  refresh() {
+  refresh() {    
     if (this.openGlasgowComaScale) {
       this.GlasgowComaScaleComp.ngOnDestroy();
     }
@@ -1193,15 +1193,34 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Morse Fall Scale
     else if (this.morsefallScale){
-      if (action == 'create'  && this.latestMorseFallScaleData?.StatusTxt != 'Released'){
+      if (action == 'create'  ){
         this.openMorseFallScale = true;
       }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
         this.openMorseFallScale = true;
+        let valueObj = {
+          type: WordType.CopyEA,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+      }else if (action == 'edit'){
+         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
       }
+      else if (action == 'delete' ||  action == 'release'){
+         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      }
+      
     }
     // Hemo Catheter
     else if(this.hemoCatheter){
-      if(action == 'create' && this.latestHemoCatheterData?.StatusTxt != 'Draft' && this.latestHemoCatheterData?.StatusTxt != 'Released'){
+      if(action == 'create' ){
         this.openHemoCatheter = true;
       }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
         this.openHemoCatheter = true;
@@ -1244,7 +1263,7 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // HemoDialysis Fistula/Graft
     else if(this.hemoDialysisFistulaGraft){
-      if(action == 'create' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != 'Released'){
+      if(action == 'create' ){
         this.openHemoDialysisFistulaGraft = true;
       }else if(action == 'edit' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != "Released") {
         this.openHemoDialysisFistulaGraft = true;
@@ -1484,6 +1503,10 @@ export class PatientDocumentationComponent implements OnInit {
         this.postOpenAssessment('1', this.actionType);
       }
       if(this.openMorseFallScale) {
+        if(this.morseFallScaleC.getFormData().AmbulatoryAid === 'A' || this.morseFallScaleC.getFormData().Gait === 'A' || this.morseFallScaleC.getFormData().HistoryFalls === 'A' || this.morseFallScaleC.getFormData().IvAccess === 'A' || this.morseFallScaleC.getFormData().MentalStatus === 'A' || this.morseFallScaleC.getFormData().SecondaryDiagnosis === 'A'){
+          return this.sharedService.waringSwallModel('All Questions must be answered in order to release this document')
+        }
+        
         const formData = {
           ...this.morseFallScaleC.getFormData(),
           Dockey: '',
@@ -1494,6 +1517,7 @@ export class PatientDocumentationComponent implements OnInit {
           DocStatus: '1',
           Dtid: 'SCA_MORSE',
         };
+        
         this.emergencyService.postMFSSet(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is created successfully",
@@ -1668,15 +1692,19 @@ export class PatientDocumentationComponent implements OnInit {
     }
   }
 
-  formatDate(dateTimeString){
+  formatDate(dateTimeString){    
     if(dateTimeString){
       const date = new Date(dateTimeString).toISOString()
       const dateDataArr = date.split('T')
       return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
     }
   }
+  convertTimeToPTFormat(time: string): string {
+    const [hours, minutes] = time.split(':');
+    return `PT${hours}H${minutes}M00S`;
+  }
 
-  formatTime(dateTimeString){
+  formatTime(dateTimeString){    
     if(dateTimeString){
       if(!dateTimeString.toString().includes('PT')){
         const date = new Date(dateTimeString).toISOString()
@@ -2150,10 +2178,10 @@ export class PatientDocumentationComponent implements OnInit {
       DialysisFDate: this.formatDate(
         dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
       ),
-      TreatmentTime: this.formatTime(
+      TreatmentTime: this.convertTimeToPTFormat(
         dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
       ),
-      DialysisFTime: this.formatTime(
+      DialysisFTime: this.convertTimeToPTFormat(
         dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
       ),
       PTreatmentDate: this.formatDate(
@@ -2166,11 +2194,11 @@ export class PatientDocumentationComponent implements OnInit {
           'PTreatmentTime'
         ).value
       ),
-      PrescribedTime: this.formatTime(
+      PrescribedTime: this.convertTimeToPTFormat(
         dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
       ),
       TOMONITOR: toMonitor,
-    };
+    };    
 
     this.emergencyService.postDailysisSet(payload).subscribe(
       (resp) => {

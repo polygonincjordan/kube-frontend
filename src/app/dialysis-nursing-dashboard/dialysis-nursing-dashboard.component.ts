@@ -296,7 +296,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.encounterId = this.einri + this.falnr + this.lfdnr;
       this.getDataPatient();
     } else {
-      this.selectModule('erhistory');
+      this.selectModule('checkin');
     }
   }
 
