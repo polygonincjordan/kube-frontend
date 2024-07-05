@@ -27,11 +27,11 @@
   </div>
   <div class="row m-0">
     <div class="col-md-12">
-        <h4>Environmental Safety</h4>
+      <h4>Environmental Safety</h4>
     </div>
     <div class="col-md-4">
       <div class="d-flex align-items-center mb-2">
-        <input class="mr-2" type="checkbox" formControlName="EsShower"/>
+        <input class="mr-2" type="checkbox" formControlName="EsShower" />
         <label class="m-0">Shower</label>
       </div>
       <div class="d-flex align-items-center mb-2">
@@ -71,7 +71,12 @@
       <div class="d-flex align-items-center mb-2">
         <input class="mr-2" type="checkbox" formControlName="EsOther" />
         <label class="m-0 mr-4">Other</label>
-        <input class="form-control w-40" [disabled]="true" formControlName="EsOtherTxt" />
+        <input
+          class="form-control w-40"
+          [disabled]="nursingDischargeForm.get('EsOther').value == false"
+          [readOnly]="nursingDischargeForm.get('EsOther').value == false"
+          formControlName="EsOtherTxt"
+        />
       </div>
     </div>
   </div>
