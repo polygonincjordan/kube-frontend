@@ -24,6 +24,7 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { SurgicalPassportComponent } from './surgical-passport/surgical-passport.component';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { NursingCarePlansComponent } from 'src/app/shared-module/nursing-care-plan-document/nursing-care-plans/nursing-care-plans.component';
+import { NursingDischargeSummaryComponent } from 'src/app/shared-module/nursing-discharge-summary/nursing-discharge-summary.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -38,6 +39,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
+  @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -218,6 +220,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSurgicalPass()
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
+    this.getNursingDischargeDocDeatils();
   }
 
   getLatestAssessmentPA() {
@@ -303,6 +306,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService.getNursingCarePlanLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
         this.latestNurCarePlanList = _success.d.results        
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Nursing Discharge Assessment Document Latest
+  getNursingDischargeDocDeatils(){
+    this.dayCaseDashboardService.nursingDischargeLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {        
+        this.latestNurDischargeSummeryList = _success.d.results        
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -841,6 +857,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openNursingCarePlans) {
       this.NursingCarePlansComp.ngOnDestroy();
     }
+    if (this.openDischargeSummery) {
+      this.NursingDischargeComp.ngOnDestroy();
+    }
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getTriageLatestDocuments();
@@ -853,6 +872,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getLatestAssessmentPA();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
+    this.getNursingDischargeDocDeatils();
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -1163,13 +1183,13 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openDischargeSummery = true;
-        this.NursingCarePlansComp.createNursingCarePlan('4').then((formValue)=>{
+        this.NursingDischargeComp.createNursingDischargeDoc('4').then((formValue)=>{
           if(formValue){
             this.refresh()
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
+          console.error('Error creating Nursing discharge summary:', error);
         });
       }
     
@@ -1403,6 +1423,19 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+
+      // Nursing Discharge Assessment Create API
+      if (this.openDischargeSummery) {
+        let docStatus = '1';
+        this.NursingDischargeComp.createNursingDischargeDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
      
     }
     else if (this.actionType == 'edit') {
@@ -1432,6 +1465,19 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNursingCarePlans) {
         let docStatus = '1';
         this.NursingCarePlansComp.createNursingCarePlan(docStatus, 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      // Nursing Discharge Assessment edit API
+      if (this.openDischargeSummery) {
+        let docStatus = '1';
+        this.NursingDischargeComp.createNursingDischargeDoc(docStatus, 'edit').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -1476,6 +1522,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+
+      // Nursing Discharge Assessment copy API
+      if (this.openDischargeSummery) {
+        this.NursingDischargeComp.createNursingDischargeDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
     }
   }
 
@@ -1497,6 +1555,15 @@ export class PatientDocumentationComponent implements OnInit {
       });
     } else if(this.openNursingCarePlans) {
       this.NursingCarePlansComp.createNursingCarePlan('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if(this.openDischargeSummery) {
+      this.NursingDischargeComp.createNursingDischargeDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -2074,6 +2141,18 @@ export class PatientDocumentationComponent implements OnInit {
     }).catch((error: any) => {
       console.error('Error scale:', error);
       console.error('Error creating Glasgow coma scale:', error);
+    });
+  }
+
+  // Copy + Release Nursing Discharge Document
+  copyDirectReleaseNursingDischargeDoc() {
+    this.NursingDischargeComp.createNursingDischargeDoc('5','copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing discharge summary:', error);
     });
   }
 

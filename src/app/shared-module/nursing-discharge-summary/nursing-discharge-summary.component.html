@@ -37,7 +37,7 @@
         ></app-discharge-details-tab>
       </div>
       <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[2]">
-        <app-diagnosis-tab></app-diagnosis-tab>
+        <app-diagnosis-tab [toDiagnosisArr]="diagnosisList" (getDiagnosisData)="getDiagnosisData($event)"></app-diagnosis-tab>
       </div>
       <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[3]">
         <app-maternal-vaccination-tab

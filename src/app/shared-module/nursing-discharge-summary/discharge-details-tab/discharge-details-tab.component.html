@@ -24,7 +24,9 @@
         <label class="mr-3 m-0">Time</label>
         <input
           type="time"
+          step="2"
           class="form-control w-40"
+          min="08:00:00" max="17:00:00"
           formControlName="DischargeTime"
         />
       </div>
@@ -273,8 +275,8 @@
         <div class="col-md-4">
           <input
             class="form-control"
-            [disabled]="nursingDischargeForm.get('DdMode').value != '1'"
-            [readOnly]="nursingDischargeForm.get('DdMode').value != '1'"
+            [disabled]="nursingDischargeForm.get('DdDischargedWith').value != '1'"
+            [readOnly]="nursingDischargeForm.get('DdDischargedWith').value != '1'"
             formControlName="DdDischargedWithTxt"
           />
         </div>

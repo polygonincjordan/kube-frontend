@@ -1,34 +1,41 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ImportDiagnosisComponent } from './import-diagnosis/import-diagnosis.component';
 
 @Component({
   selector: 'app-diagnosis-tab',
   templateUrl: './diagnosis-tab.component.html',
-  styleUrls: ['./diagnosis-tab.component.scss']
+  styleUrls: ['./diagnosis-tab.component.scss'],
 })
-export class DiagnosisTabComponent implements OnInit {
-  @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: ImportDiagnosisComponent;
+export class DiagnosisTabComponent implements OnInit, OnDestroy {
+  @ViewChild('diagnosisNotesKardexId')
+  diagnosisNotesKardex: ImportDiagnosisComponent;
   public enableCreateDiagnosis: boolean = false;
-  public toDiagnosisArr: any = [];
+  @Output() getDiagnosisData = new EventEmitter<any>();
+  @Input() toDiagnosisArr: any = []
+
+  // public toDiagnosisArr: any = [];
   duplicates: any[];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public handleCheckboxDiagnosis() {
     this.enableCreateDiagnosis = !this.enableCreateDiagnosis;
   }
 
   public openModalForDiagnosis() {
-    if(this.enableCreateDiagnosis) return
+    if (this.enableCreateDiagnosis) return;
     this.diagnosisNotesKardex.openModalForDiagnosisKardex();
   }
 
   public deleteDiagnosisFromTable(index, i) {
     this.toDiagnosisArr.splice(index, 1);
+  }
+
+  ngOnDestroy(): void {
+    this.getDiagnosisData.emit(this.toDiagnosisArr);
   }
 
   importDiagnosisData(data) {
@@ -85,5 +92,4 @@ export class DiagnosisTabComponent implements OnInit {
       customClass: 'myalertpopup',
     });
   }
-
 }
