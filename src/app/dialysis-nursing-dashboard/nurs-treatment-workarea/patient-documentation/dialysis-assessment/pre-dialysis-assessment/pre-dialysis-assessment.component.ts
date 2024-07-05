@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -14,7 +15,7 @@ export class PreDialysisAssessmentComponent implements OnInit {
   predialysis: FormGroup<any>;
   private subscription: Subscription;
 
-  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService) {
+  constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService,private datePipe:DatePipe) {
     this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
 
     if(this.subscription){
@@ -26,11 +27,15 @@ export class PreDialysisAssessmentComponent implements OnInit {
 
       this.subscription =
       this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
+       
         if(Object.keys(resp).length > 0){
           this.predialysis.patchValue({
             ...resp,
             TreatmentDate: this.patientDocService.formatDate(resp.TreatmentDate),
             DialysisFDate: this.patientDocService.formatDate(resp.DialysisFDate),
+            TreatmentTime:this.parseTime(resp.PTreatmentTime),
+            DialysisFTime:this.parseTime(resp.DialysisFTime),
+            PrescribedTime:this.parseTime(resp.PrescribedTime),
           });
         }
       });
@@ -39,21 +44,53 @@ export class PreDialysisAssessmentComponent implements OnInit {
     }
   }
 
+  parseTime(data: string) {    
+    if (data && data.length) {
+      const strArr: string[] = data.split('');
+      if (
+        data &&
+        data.length === 11 &&
+        strArr[4] === 'H' &&
+        strArr[7] === 'M' &&
+        strArr[10] === 'S' &&
+        !isNaN(+(strArr[2] + strArr[3])) &&
+        !isNaN(+(strArr[5] + strArr[6])) &&
+        !isNaN(+(strArr[8] + strArr[9]))
+      ) {
+        const hours =
+          +(strArr[2] + strArr[3]) <= 9
+            ? `0${+(strArr[2] + strArr[3])}`
+            : +(strArr[2] + strArr[3]);
+        const Minute =
+          +(strArr[5] + strArr[6]) <= 9
+            ? `0${+(strArr[5] + strArr[6])}`
+            : +(strArr[5] + strArr[6]);
+        const Second =
+          +(strArr[8] + strArr[9]) <= 9
+            ? `0${+(strArr[8] + strArr[9])}`
+            : +(strArr[8] + strArr[9]);
+        return `${hours}:${Minute}:${Second}`;
+      }
+    }
+    return null;
+  }
+
   ngOnInit(): void {
 
   }
 
   initializeFormData(){
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
     const date = new Date();
     date.setMinutes(0);
     date.setSeconds(0);
     this.predialysis.patchValue({
       TreatmentDate: new Date(),
-      TreatmentTime: new Date(),
+      TreatmentTime: currentTime,
       DialysisFDate: new Date(),
-      DialysisFTime: new Date(),
+      DialysisFTime: currentTime,
       BloodTest: null,
-      PrescribedTime: date,
+      PrescribedTime: currentTime,
       DryWeight: '',
       Machine: '',
       BloodFlow: '',

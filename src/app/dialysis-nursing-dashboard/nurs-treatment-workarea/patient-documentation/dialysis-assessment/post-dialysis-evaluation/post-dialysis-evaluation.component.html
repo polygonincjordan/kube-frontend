@@ -18,7 +18,13 @@
                 <!-- <input type="text" [bsConfig]="{withTimepicker:
                   true,showWeekNumbers:false,
                   dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker [isDisabled]="true" class="w-50" formControlName="PTreatmentTime"> -->
-                  <timepicker [showSeconds]=true formControlName="PTreatmentTime"></timepicker>
+                  <!-- <timepicker [showSeconds]=true formControlName="PTreatmentTime"></timepicker> -->
+                  <input  type="time"
+                  class="form-control w-100"
+                  step="2"
+                  min="08:00:00" max="17:00:00"
+                  placeholder="HH:mm:ss"
+                  style="width:31%;margin: 0px 0px 0px -23px;" formControlName="PTreatmentTime">
                 </div>
             </div>
           </div>
@@ -89,10 +95,10 @@
             <div class="col-4 pl-5 pr-5 position-relative">
               <div class="d-flex align-items-center w-100 custom-input">
                 <label class="text-nowrap m-0">Oxygen Delivery</label>
-                <ng-select class="w-50" formControlName="POxygenDelivery">
+                <ng-select class="w-37" formControlName="POxygenDelivery" [title]="getSelectLableName(postDialysisMonitoring.controls['POxygenDelivery'].value)">
                   <ng-option value="0">Nasal Cannula</ng-option>
                   <ng-option value="1">Oxygen Face Mask</ng-option>
-                  <ng-option value="2">Face Mask with 02</ng-option>
+                  <ng-option value="2">Face Mask with O<sub>2</sub></ng-option>
                   <ng-option value="3">Venturi Mask</ng-option>
                 </ng-select>
               </div>
