@@ -116,6 +116,14 @@ export class DialysisAssessmentComponent implements OnInit {
       }
     );
   }
+  // parsePayloadFormateTime(data: string) {
+  //   if (data && data.length) {
+  //     let hours = data.substring(2, 4);
+  //     let minute = data.substring(5, 7);
+
+  //     return `${hours}:${minute}:AM`;
+  //   }
+  // }
 
   DailysisSet() {
     const json = {
@@ -128,7 +136,7 @@ export class DialysisAssessmentComponent implements OnInit {
             data.d.results[0]
           );
 
-          const resp = data.d.results[0];
+          const resp = data.d.results[0];          
 
           this.patientDocService.dialysisAssecementForm.controls[
             'preDialysis'

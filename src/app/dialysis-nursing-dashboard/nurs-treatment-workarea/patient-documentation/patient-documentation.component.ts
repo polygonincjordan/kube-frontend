@@ -194,7 +194,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.fetchLatestDetails();
-    // this.LatestDocSet();
+    this.LatestDocSet();
     this.LatestMFSSet();
     // this.LatestHemoCatheter();
     // this.LatestHemoDialysisFistulaGraft();
@@ -389,10 +389,10 @@ export class PatientDocumentationComponent implements OnInit {
         this.latestBridentScaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_BRADEN');
 
         // if(this.paramsObject.action && this.paramsObject.doctype){
-          const latestDocData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_DIALY');
-          if(latestDocData){
-            this.latestDocData = {...latestDocData, StatusTxt: latestDocData.DokstText == "In Work" ? 'Draft' : latestDocData.DokstText}
-          }
+          // const latestDocData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_DIALY');
+          // if(latestDocData){
+          //   this.latestDocData = {...latestDocData, StatusTxt: latestDocData.DokstText == "In Work" ? 'Draft' : latestDocData.DokstText}
+          // }
           // const latestMorseFallScaleData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'SCA_MORSE');
           // if(latestMorseFallScaleData){
           //   this.latestMorseFallScaleData = {...latestMorseFallScaleData, StatusTxt: latestMorseFallScaleData.DokstText == "In Work" ? 'Draft' : latestMorseFallScaleData.DokstText, PhyNm: latestMorseFallScaleData.MitarbName, DocDate: latestMorseFallScaleData.Dodat }
@@ -1193,8 +1193,9 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Morse Fall Scale
     else if (this.morsefallScale){
-      if (action == 'create'  ){
+      if (action == 'create' ){
         this.openMorseFallScale = true;
+        this.dataShareService.sendActionType(ActionType.Add$, false, {});
       }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
         this.openMorseFallScale = true;
         let valueObj = {
@@ -1691,28 +1692,38 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
   }
+  
 
   formatDate(dateTimeString){    
     if(dateTimeString){
+
       const date = new Date(dateTimeString).toISOString()
       const dateDataArr = date.split('T')
       return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
     }
   }
+
   convertTimeToPTFormat(time: string): string {
-    const [hours, minutes] = time.split(':');
-    return `PT${hours}H${minutes}M00S`;
+    if(time.toString().includes('PT')){
+     return time
+    }else{
+      const [hours, minutes] = time.split(':');
+      return `PT${hours}H${minutes}M00S`;
+    }
   }
 
-  formatTime(dateTimeString){    
+ 
+
+  formatTime(dateTimeString){     
     if(dateTimeString){
       if(!dateTimeString.toString().includes('PT')){
-        const date = new Date(dateTimeString).toISOString()
-        const dateDataArr = date.split('T')
-        return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
-      }else{
-        return dateTimeString;
-      }
+            const date = new Date(dateTimeString)?.toISOString()            
+            const dateDataArr = date.split('T')        
+            return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
+        }
+    }
+    else{
+      return dateTimeString;
     }
   }
 
@@ -2141,6 +2152,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   postOpenAssessment(docStatus:string,action:string){
+    
     const toMonitor =
     this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
     const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
@@ -2189,7 +2201,7 @@ export class PatientDocumentationComponent implements OnInit {
           'PTreatmentDate'
         ).value
       ),
-      PTreatmentTime: this.formatTime(
+      PTreatmentTime: this.convertTimeToPTFormat(
         dAssessmentForm.controls['postDialysisMonitoring'].get(
           'PTreatmentTime'
         ).value
@@ -2203,7 +2215,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.postDailysisSet(payload).subscribe(
       (resp) => {
         Swal.fire({
-          text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : 'Released' } successfully`,
+          text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : action == 'copy' ? 'Created' : 'Released' } successfully`,
           icon: 'success',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup'
