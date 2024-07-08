@@ -21,6 +21,13 @@
               MRN
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
+            <th scope="col">Risk</th>
+            <th scope="col" style="padding-left: 0px; text-align: center" >
+              Allergy
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
+              Vital
+            </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
               Case
             </th>
@@ -45,9 +52,9 @@
             <th scope="col" style="padding-left: 0px; text-align: center">
               Diagnosis
             </th>
-            <th scope="col" style="padding-left: 0px; text-align: center">
+            <!-- <th scope="col" style="padding-left: 0px; text-align: center">
               Allergy
-            </th>
+            </th> -->
             <th scope="col" style="padding-left: 0px; text-align: center; min-width: 70px">
               Diet
             </th>
@@ -82,6 +89,22 @@
             <td style="width: 5%; padding-left: 0px" [title]="item.Agepat" class="border-top-none">{{ item.Agepat }}</td>
             <td style="padding-left: 0px" [title]="item.Gschle" class="border-top-none">{{ item.Gschle }}</td>
             <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
+            <td class="border-left" style="width: 3%"
+              [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+              <span>
+                <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
+                  (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
+              </span>
+            </td>
+            <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"
+              [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  ">
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies" style="width: 23px"
+                (click)="openModalForAllergy('', item)" />
+            </td>
+            <td class="border-right" scope="row" style="padding-left: 0px; text-align: center"
+              [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
+              <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
+            </td>
             <td style="padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td style="padding-left: 0px" [title]="item.AdmissionStatus" class="border-top-none">{{ item.AdmissionStatus }}</td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
@@ -96,7 +119,7 @@
             <td style="padding-left: 0px" [title]="item.Bettkub" class="border-top-none">{{ item.Bettkub }}</td>
             <td style="padding-left: 0px" [title]="item.Orgfa" class="border-top-none">{{ item.Orgfa }}</td>
             <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
-            <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td>
+            <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
             <td style="padding-left: 0px" [title]="item.Zznmealstat" class="border-top-none">{{ item.Zznmealstat }}</td>
             <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>
             <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ? item.BehArztName:'--'}}</td>

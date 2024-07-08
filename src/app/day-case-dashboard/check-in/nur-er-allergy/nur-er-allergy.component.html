@@ -2,17 +2,17 @@
   <div>
     <div class="allergy-header">
       <div class="allergy-header-title">
-        <span>Allergy History a</span>
+        <span>Allergy History</span>
       </div>
       <div class="allergy-header-details">
         <ul class="allergy-header-ul d-flex">
           <li class="allergy-header-item" style="margin-left: 10%">
-            Patient Name : <span>{{ selectedERList.Patient }}</span>
+            Patient Name : <span>{{ selectedERList.Pnamec }}</span>
           </li>
           <li class="allergy-header-item">MRN: {{ selectedERList.Patnr }}</li>
           <li class="allergy-header-item">
             Admission date:
-            {{ getDate(selectedERList.Erdat) | date : "dd.MM.y" }}
+            {{ getDate(selectedERList.Bwidt) | date : "dd.MM.y" }}
           </li>
           <li class="close-icon allergy-header-item">
             <img

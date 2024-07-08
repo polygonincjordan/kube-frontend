@@ -47,7 +47,7 @@
                 <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Matnr"
                   (search)="searchMaterial($event.term, wordType.MaterialCode$, i)"
-                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Matnr">
+                   [title]="product.value.Matnr">
                   <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
                     {{item.Maktx}}</ng-option>
                 </ng-select>
