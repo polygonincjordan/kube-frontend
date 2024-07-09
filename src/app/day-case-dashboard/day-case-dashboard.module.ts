@@ -103,6 +103,7 @@ import { ImageEditorModule } from '../shared-module/image-editor/image-editor.mo
 import { DayCaseDashboardComponent } from './day-case-dashboard.component';
 import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-plan-document/nursing-care-plan-document.module';
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
+import { MorseFallScaleComponent } from './nurs-treatment-workarea/patient-documentation/morse-fall-scale/morse-fall-scale.component';
 
 const route: Routes = [
   {
@@ -180,7 +181,9 @@ const route: Routes = [
     SurgicalPassportComponent,
     DiagnosisTabComponent,
     PainAssessmentNurEmrComponent,
-    EMarOrderNurseComponent
+    EMarOrderNurseComponent,
+    MorseFallScaleComponent,
+    
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

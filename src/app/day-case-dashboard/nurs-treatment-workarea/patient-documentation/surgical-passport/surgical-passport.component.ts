@@ -12,6 +12,8 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 import { SharedService } from '@services/shared.service';
 import { DataShareService } from '@services/data-share.service';
 import { ActionType } from '@services/interfaces/common.enum';
+import { ErVitalsComponent } from 'src/app/day-case-dashboard/check-in/er-vitals/er-vitals.component';
+
 
 @Component({
   selector: 'app-surgical-passport',
@@ -20,6 +22,7 @@ import { ActionType } from '@services/interfaces/common.enum';
 })
 export class SurgicalPassportComponent implements OnInit {
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: DiagnosisTabComponent;
+  @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   public surgicalPassp: boolean = true;
   public diagnosis: boolean = false;
   public vitals: boolean = false;
@@ -64,6 +67,8 @@ export class SurgicalPassportComponent implements OnInit {
   private actionTypeSubscription$: Subscription;
   docKey: any;
   isFormValidError: boolean = false;
+  isChecked: any;
+  isCheckedDiagnosis: any;
 
   constructor(private formBuilder: FormBuilder,private _route: ActivatedRoute,private patientService: PatientService,public storageService: StorageService,private emergencyService:EmergencyService,private sharedService: SharedService,private dataShareService:DataShareService) {
     this._route.queryParams.subscribe((params) => {
@@ -169,13 +174,19 @@ export class SurgicalPassportComponent implements OnInit {
       OrStaff: SurgicalPassData && SurgicalPassData.OrCheck ? SurgicalPassData.OrCheck : false,
       NameOfOrStaff: SurgicalPassData && SurgicalPassData.OrCheckNm ? SurgicalPassData.OrCheckNm : '',
       commentslast: SurgicalPassData && SurgicalPassData.Comments1 ? SurgicalPassData.Comments1 : '',
+      isVitals:[false],
+      isDiagnosis:[false]
     })
   }
-  public deleteVitalsFromTable(index, i) {
-    this.toVitalsArr.splice(index, 1);
+  public deleteVitalsFromTable(index:number) {
+    if(index > -1){
+      this.toVitalsArr.splice(index, 1);
+    }
   }
-  public deleteDiagnosisFromTable(index, i) {
-    this.toDiagnosisArr.splice(index, 1);
+  public deleteDiagnosisFromTable(index: number) {
+    if (index > -1) {
+      this.toDiagnosisArr.splice(index, 1);
+    }
   }
 
   public importVitalsData(data) {
@@ -226,13 +237,14 @@ export class SurgicalPassportComponent implements OnInit {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
     return null;
   }
-  public handleCheckboxVitals() {
-    this.enableCreateVitals = !this.enableCreateVitals;
+  public handleCheckboxVitals(event) {
+    this.isChecked = event.target.checked;
+    this.formSurgicalPaasDetailGroup.get('isVitals')?.setValue(this.isChecked);
+  } 
+  public handleCheckboxDiagnosis(event) {
+    this.isCheckedDiagnosis = event.target.checked;
+    this.formSurgicalPaasDetailGroup.get('isDiagnosis')?.setValue(this.isCheckedDiagnosis);
   }
-  public handleCheckboxDiagnosis() {
-    this.enableCreateDiagnosis = !this.enableCreateDiagnosis;
-  }
-
   public getPatinetDetails(encounterId) {
     this.patientService.getDataPatient(encounterId).pipe(catchError(() => {
       return of({} as Patient);
@@ -244,7 +256,7 @@ export class SurgicalPassportComponent implements OnInit {
   }
 
   public openModalVital() {
-    if (this.enableCreateVitals) return;
+    if (this.isChecked) return;
     const item = {
       Einri: this.paramsObject.einri,
       Patnr: this.paramsObject.patnr,
@@ -253,10 +265,10 @@ export class SurgicalPassportComponent implements OnInit {
       Patient: this.storageService?.patientData?.name,
       admissionDate: this.storageService.patientData.periodStart,
     };
-    
+    this.erVitalsModal.openModalForErVital(item);
   }
   public openModalForDiagnosis() {
-    if(this.enableCreateDiagnosis) return
+    if(this.isCheckedDiagnosis) return
     this.diagnosisNotesKardex.openModalForDiagnosisKardex();
   }
 
@@ -391,8 +403,8 @@ export class SurgicalPassportComponent implements OnInit {
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
         DocStatus: status,
-        TODIAGNOSES: [this.toDiagnosisArr],
-        TOVITALSIGNS: [this.toVitalsArr],
+        TODIAGNOSES: this.toDiagnosisArr ?  this.toDiagnosisArr :[] ,
+        TOVITALSIGNS: this.toVitalsArr ? this.toVitalsArr:[] ,
       },
     };
     if(this.formSurgicalPaasDetailGroup.valid){
@@ -467,8 +479,8 @@ export class SurgicalPassportComponent implements OnInit {
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
         DocStatus: status,
-        TODIAGNOSES: [this.toDiagnosisArr],
-        TOVITALSIGNS: [this.toVitalsArr],
+        TODIAGNOSES: this.toDiagnosisArr ?  this.toDiagnosisArr :[] ,
+        TOVITALSIGNS: this.toVitalsArr ? this.toVitalsArr:[] ,
       },
     };
 

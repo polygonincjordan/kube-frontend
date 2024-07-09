@@ -10,7 +10,7 @@
         padding: 15px;
         border: 1px solid #D2EAFF;
         border-radius: 15px;
-        height: 420px;
+        height: calc(100vh - 300px);
         overflow: auto;
   
         .selection-box {

@@ -334,7 +334,7 @@
               align-items: center;
               gap: 10px;">
                 <input type="checkbox" style="width: 36px; 
-                height: 22px;" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+                height: 22px;" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)" formControlName="isDiagnosis" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
                 <label class="admitting-physician" for="noDiagnosisApplicable">No Diagnosis Applicable</label>
               </div>
               <!-- <div>
@@ -367,14 +367,14 @@
                     <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
                     <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
                     <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                        [(ngModel)]="item.DAdmission"></td>
+                        [(ngModel)]="item.DAdmission"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;" ><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DSurgery"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;" ><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DPreoperative"  [ngModelOptions]="{standalone: true}"></td>
                     <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                        [(ngModel)]="item.DSurgery"></td>
-                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                        [(ngModel)]="item.DPreoperative"></td>
-                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                        [(ngModel)]="item.DDischarge"></td>
-                    <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
+                        [(ngModel)]="item.DDischarge"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(i)"><img
                         src="assets/img/Delete.svg" style="position: relative;
                       top: 6px;" /></td>
                   </tr>
@@ -389,7 +389,7 @@
                 
                 <div class="allergy-box d-flex justify-content-between py-3">
                   <div class="allergy-checkbox-section d-flex align-items-center">
-                    <input type="checkbox"  id="noVitalSignsApplicable" (change)="handleCheckboxVitals()" style="width: 24px;height: 20px;"
+                    <input type="checkbox"  id="noVitalSignsApplicable" (change)="handleCheckboxVitals($event)" formControlName="isVitals" style="width: 24px;height: 20px;"
                     [attr.disabled]="toVitalsArr?.length >0 ? true:null"  />
                     <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No Vitals Signs Applicable</label>
                   </div>
@@ -420,7 +420,7 @@
                         <td style="    padding: 10px !important;
                       width: 15%;pointer-events: none;">{{item.DateTime}}</td>
                         <td style="    padding: 10px !important;
-                      width: 3%;text-align: center;" (click)="deleteVitalsFromTable(item,i)"><img
+                      width: 3%;text-align: center;" (click)="deleteVitalsFromTable(i)"><img
                             src="assets/img/Delete.svg" /></td>
                       </tr>
                     </tbody>
