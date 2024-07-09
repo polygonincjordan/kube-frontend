@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ImportDiagnosisComponent } from './import-diagnosis/import-diagnosis.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-diagnosis-tab',
@@ -13,6 +14,8 @@ export class DiagnosisTabComponent implements OnInit, OnDestroy {
   public enableCreateDiagnosis: boolean = false;
   @Output() getDiagnosisData = new EventEmitter<any>();
   @Input() toDiagnosisArr: any = []
+  @Input() nursingDischargeForm: FormGroup;
+
 
   // public toDiagnosisArr: any = [];
   duplicates: any[];
@@ -26,7 +29,7 @@ export class DiagnosisTabComponent implements OnInit, OnDestroy {
   }
 
   public openModalForDiagnosis() {
-    if (this.enableCreateDiagnosis) return;
+    if (this.nursingDischargeForm.value.enableCreateDiagnosis) return;
     this.diagnosisNotesKardex.openModalForDiagnosisKardex();
   }
 
