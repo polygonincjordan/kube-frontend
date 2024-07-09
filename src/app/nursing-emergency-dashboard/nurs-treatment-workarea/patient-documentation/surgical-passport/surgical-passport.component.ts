@@ -66,6 +66,8 @@ export class SurgicalPassportComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   docKey: any;
+  isChecked: any;
+  isCheckedDiagnosis: any;
 
   constructor(private formBuilder: FormBuilder,private _route: ActivatedRoute,private patientService: PatientService,public storageService: StorageService,private emergencyService:EmergencyService,private sharedService: SharedService,private dataShareService:DataShareService) {
     this._route.queryParams.subscribe((params) => {
@@ -171,13 +173,19 @@ export class SurgicalPassportComponent implements OnInit {
       OrStaff: SurgicalPassData && SurgicalPassData.OrCheck ? SurgicalPassData.OrCheck : false,
       NameOfOrStaff: SurgicalPassData && SurgicalPassData.OrCheckNm ? SurgicalPassData.OrCheckNm : '',
       commentslast: SurgicalPassData && SurgicalPassData.Comments1 ? SurgicalPassData.Comments1 : '',
+      isVitals:[false],
+      isDiagnosis:[false]
     })
   }
-  public deleteVitalsFromTable(index, i) {
-    this.toVitalsArr.splice(index, 1);
+  public deleteVitalsFromTable(index:number) {
+    if(index > -1){
+      this.toVitalsArr.splice(index, 1);
+    }
   }
-  public deleteDiagnosisFromTable(index, i) {
-    this.toDiagnosisArr.splice(index, 1);
+  public deleteDiagnosisFromTable(index: number) {
+    if (index > -1) {
+      this.toDiagnosisArr.splice(index, 1);
+    }
   }
 
   public importVitalsData(data) {
@@ -228,11 +236,13 @@ export class SurgicalPassportComponent implements OnInit {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
     return null;
   }
-  public handleCheckboxVitals() {
-    this.enableCreateVitals = !this.enableCreateVitals;
-  }
-  public handleCheckboxDiagnosis() {
-    this.enableCreateDiagnosis = !this.enableCreateDiagnosis;
+  public handleCheckboxVitals(event) {
+    this.isChecked = event.target.checked;
+    this.formSurgicalPaasDetailGroup.get('isVitals')?.setValue(this.isChecked);
+  } 
+  public handleCheckboxDiagnosis(event) {
+    this.isCheckedDiagnosis = event.target.checked;
+    this.formSurgicalPaasDetailGroup.get('isDiagnosis')?.setValue(this.isCheckedDiagnosis);
   }
 
   public getPatinetDetails(encounterId) {
@@ -246,7 +256,7 @@ export class SurgicalPassportComponent implements OnInit {
   }
 
   public openModalVital() {
-    if (this.enableCreateVitals) return;
+    if (this.isChecked) return;
     const item = {
       Einri: this.paramsObject.einri,
       Patnr: this.paramsObject.patnr,
@@ -258,7 +268,7 @@ export class SurgicalPassportComponent implements OnInit {
     this.erVitalsModal.openModalForErVital(item);
   }
   public openModalForDiagnosis() {
-    if(this.enableCreateDiagnosis) return
+    if(this.isCheckedDiagnosis) return
     this.diagnosisNotesKardex.openModalForDiagnosisKardex();
   }
 
@@ -392,8 +402,8 @@ export class SurgicalPassportComponent implements OnInit {
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
         DocStatus: status,
-        TODIAGNOSES: this.toDiagnosisArr,
-        TOVITALSIGNS: this.toVitalsArr,
+        TODIAGNOSES: this.toDiagnosisArr ?  this.toDiagnosisArr :[] ,
+        TOVITALSIGNS: this.toVitalsArr ? this.toVitalsArr:[] ,
       },
     };
 
@@ -465,8 +475,8 @@ export class SurgicalPassportComponent implements OnInit {
         Comments1: this.formSurgicalPaasDetailGroup.value.commentslast,
         AttendPhy: this.storageService.getUserProfile().Gpart,
         DocStatus: status,
-        TODIAGNOSES: this.toDiagnosisArr,
-        TOVITALSIGNS: this.toVitalsArr,
+        TODIAGNOSES: this.toDiagnosisArr ?  this.toDiagnosisArr :[] ,
+        TOVITALSIGNS: this.toVitalsArr ? this.toVitalsArr:[] ,
       },
     };
 

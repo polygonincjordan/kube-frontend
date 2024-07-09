@@ -182,7 +182,8 @@ const route: Routes = [
     DiagnosisTabComponent,
     PainAssessmentNurEmrComponent,
     EMarOrderNurseComponent,
-    MorseFallScaleComponent
+    MorseFallScaleComponent,
+    
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
