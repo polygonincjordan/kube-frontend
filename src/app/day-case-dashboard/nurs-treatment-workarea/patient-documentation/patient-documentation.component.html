@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -88,7 +88,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -113,7 +113,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -225,21 +225,22 @@
               </div>
 
             <!--  Morse Fall Scale (MFS) -->
-            <div
-              [ngClass]="isMorseFallScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isMorseFallScale',latestMorseFallScaleList[0])">
-              <div class="col-md-4"> Morse Fall Scale (MFS) :</div>
-              <div class="col-md-2 status-color">{{latestMorseFallScaleList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2" title="{{getTime(latestMorseFallScaleList[0]?.DocTime)}}">
-                {{getDate(latestMorseFallScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-              </div>
-              <div class="col-md-3">{{latestMorseFallScaleList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-                <img src="assets/img/document-html.png" width="18px" height="18px"
-                  (click)="getScaleDetails(latestMorseFallScaleList[0],RedirectionType.BRADEN$)"
-                  *ngIf="latestMorseFallScaleList[0]?.StatusTxt == 'Released'" />
-              </div>
+          <div
+            [ngClass]="morsefallScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+            style="font-weight: bold;" (click)="selectAssessment('morsefallScale',latestMorseFallScaleData)">
+            <div class="col-md-4">Morse Fall Scale {{latestMorseFallScaleData?.Zversion ?
+              dockVer(latestMorseFallScaleData?.Zversion) : ''}} :</div>
+            <div class="col-md-2 status-color">{{ latestMorseFallScaleData?.StatusTxt ? latestMorseFallScaleData.StatusTxt : "N/A" }}</div>
+            <div class="col-md-2" title="{{getTime(latestMorseFallScaleData?.DocTime)}}">
+              {{getDate(latestMorseFallScaleData?.DocDate) | date: "dd.MM.y" || '-'}}
             </div>
+            <div class="col-md-3">{{latestMorseFallScaleData?.PhyNm || '-'}}</div>
+            <div class="col-md-1">
+              <img src="assets/img/document-html.png" width="18px" height="18px"
+              (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
+                *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
+            </div>
+          </div>
 
             <!--  Nursing Admission Assessment -->
             <div
@@ -252,7 +253,7 @@
               </div>
               <div class="col-md-3">{{latestNurAdmissionList[0]?.PhyNm || '-'}}</div>
               <div class="col-md-1">
-                <img src="assets/img/document-html.png" width="18px" height="18px"
+                <img src="assets/img/document-html.png" width="15px" height="15px"
                   (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.BRADEN$)"
                   *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
               </div>
@@ -413,7 +414,7 @@
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
     <app-nursing-discharge-summary *ngIf="openDischargeSummery" ></app-nursing-discharge-summary>
-
+    <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
     <ng-template #releasepdfmodal>
       <div class="modal-body">
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"

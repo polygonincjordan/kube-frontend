@@ -25,6 +25,8 @@ import { SurgicalPassportComponent } from './surgical-passport/surgical-passport
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { NursingCarePlansComponent } from 'src/app/shared-module/nursing-care-plan-document/nursing-care-plans/nursing-care-plans.component';
 import { NursingDischargeSummaryComponent } from 'src/app/shared-module/nursing-discharge-summary/nursing-discharge-summary.component';
+import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
+import { PatientDocumentationService } from '@services/patient-documentation.service';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -40,6 +42,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
+  @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -73,6 +76,7 @@ export class PatientDocumentationComponent implements OnInit {
   public isBradenScale: boolean = false;
   public isAttechmentDocument: boolean = false;
   public isMorseFallScale: boolean = false;
+  public morsefallScale:boolean = false;
   public isNursingAdmission: boolean = false;
   public isNursingAssessment: boolean = false;
   public isPediatricsAdmission: boolean = false;
@@ -80,7 +84,8 @@ export class PatientDocumentationComponent implements OnInit {
   public isPreCardiacCath: boolean = false;
   public isNursingInitialAssessment: boolean = false;
   public isObstetricsFallRisk: boolean = false;
- 
+  latestMorseFallScaleData: any;
+  
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -165,7 +170,7 @@ export class PatientDocumentationComponent implements OnInit {
   public RedirectionType: any;
   public ActionType: any;
   openPainAssement: any = false;
-
+  openMorseFallScale = false;
   constructor(
     private modalService: BsModalService,
     private emergencyService: EmergencyService,
@@ -180,7 +185,8 @@ export class PatientDocumentationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private sharedService: SharedService,
-    private dayCaseDashboardService:DayCaseDashboardService
+    private dayCaseDashboardService:DayCaseDashboardService,
+    private patientDocService: PatientDocumentationService,
   ) {
 
     this.RedirectionType = RedirectionType;
@@ -221,6 +227,24 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingDischargeDocDeatils();
+    this.LatestMFSSet();
+  }
+
+  LatestMFSSet(){
+    const json = {
+      Einri: this.storageService.einri,
+      Patnr: this.storageService.patnr,
+      Falnr: this.storageService.falnr,
+    };
+
+    this.emergencyService.getLatestMFSSet(json).subscribe((data: any)=>{
+      if(data){
+        this.latestMorseFallScaleData = data.d.results[0];
+        this.patientDocService.latestMorseFallScaleData = this.latestMorseFallScaleData;
+      }
+    }, (error)=>{
+      console.error(error);
+    })
   }
 
   getLatestAssessmentPA() {
@@ -507,6 +531,14 @@ export class PatientDocumentationComponent implements OnInit {
     }
     else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NMRTSC$) {
       this.openEducationAssPdf(this.educationAssList[0].Dockey);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.MORSE$) {
+      this.selectAssessment('morsefallScale', this.latestMorseFallScaleData)
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.MORSE$) {
+      this.selectAssessment('morsefallScale', this.latestMorseFallScaleData)
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.MORSE$) {
+      this.getPatientProfileData(this.latestMorseFallScaleData);
     }
 
   }
@@ -528,7 +560,6 @@ export class PatientDocumentationComponent implements OnInit {
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Dicharge Summary' },
       'isBradenScale': { isBradenScale: true, selectedDocName: 'Braden Scale' },
-      'isMorseFallScale': { isMorseFallScale: true, selectedDocName: 'Morse Fall Scale (MFS)' },
       'isNursingAdmission': { isNursingAdmission: true, selectedDocName: 'Nursing Admission Assessment' },
       'isNursingAssessment': { isNursingAssessment: true, selectedDocName: 'Nursing Assessment' },
       'isPediatricsAdmission': { isPediatricsAdmission: true, selectedDocName: 'Pediatrics Admission Assessment' },
@@ -537,6 +568,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isNursingInitialAssessment': { isNursingInitialAssessment: true, selectedDocName: 'Nursing Initial Assessment Gyno Obstetrics' },
       'isObstetricsFallRisk': { isObstetricsFallRisk: true, selectedDocName: 'Obstetrics Fall Risk Assessment' },
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
+      'morsefallScale': { morsefallScale: true, selectedDocName: 'Morse Fall Scale' },
     };
 
     // Reset all flags to false initially
@@ -547,6 +579,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isBradenScale = false;
     this.isAttechmentDocument = false;
     this.isMorseFallScale = false;
+    this.morsefallScale = false;
     this.isNursingAdmission = false;
     this.isNursingAssessment = false;
     this.isPediatricsAdmission = false;
@@ -873,6 +906,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingDischargeDocDeatils();
+    this.LatestMFSSet();
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -902,7 +936,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openNursingCarePlans = false;
     this.isNursingCarePlan = false;
     this.isNursingDischarge = false;
-
+    this.openMorseFallScale = false;
+    this.latestMorseFallScaleData = null;
     this.searchString = '';
     this.dateRange = '';
     this.documentType = undefined;
@@ -1194,6 +1229,33 @@ export class PatientDocumentationComponent implements OnInit {
       }
     
     }
+    else if (this.morsefallScale){
+      if (action == 'create' ){
+        this.openMorseFallScale = true;
+        this.dataShareService.sendActionType(ActionType.Add$, false, {});
+      }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
+        this.openMorseFallScale = true;
+        let valueObj = {
+          type: WordType.CopyEA,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+      }else if (action == 'edit'){
+         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      }
+      else if (action == 'delete' ||  action == 'release'){
+         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      }
+      
+    }
    
   }
   private subscription: Subscription;
@@ -1436,6 +1498,35 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+
+      if(this.openMorseFallScale) {
+        if(this.morseFallScaleC.getFormData().AmbulatoryAid === 'A' || this.morseFallScaleC.getFormData().Gait === 'A' || this.morseFallScaleC.getFormData().HistoryFalls === 'A' || this.morseFallScaleC.getFormData().IvAccess === 'A' || this.morseFallScaleC.getFormData().MentalStatus === 'A' || this.morseFallScaleC.getFormData().SecondaryDiagnosis === 'A'){
+          return this.sharedService.waringSwallModel('All Questions must be answered in order to release this document')
+        }
+        
+        const formData = {
+          ...this.morseFallScaleC.getFormData(),
+          Dockey: '',
+          Einri: this.storageService.einri,
+          Patnr: this.storageService.patnr,
+          Falnr: this.storageService.falnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '1',
+          Dtid: 'SCA_MORSE',
+        };
+        
+        this.emergencyService.postMFSSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is created successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          this.sharedService.errorSwallModel(error?.error?.error.message.value)
+        })
+      }
      
     }
     else if (this.actionType == 'edit') {
@@ -1532,6 +1623,30 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => { 
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      if(this.openMorseFallScale){
+        const formData = {
+          ...this.morseFallScaleC.getFormData(),
+          Dockey: this.latestMorseFallScaleData.Dockey,
+          Einri: this.latestMorseFallScaleData.Einri,
+          Patnr: this.latestMorseFallScaleData.Patnr,
+          Falnr: this.latestMorseFallScaleData.Falnr,
+          Orgdo: 'F21IUAMC',
+          DocStatus: '3',
+          Dtid: 'SCA_MORSE',
+        };
+        this.emergencyService.createNewMFSSet(formData).subscribe((resp)=>{
+          Swal.fire({
+            text: "Document is released successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.refresh();
+        },(error)=>{
+          this.sharedService.errorSwallModel(error?.error?.error.message.value)
         })
       }
     }
