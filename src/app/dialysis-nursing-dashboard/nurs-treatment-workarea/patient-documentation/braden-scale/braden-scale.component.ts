@@ -139,12 +139,12 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
     this.totalProjectScore = 0;
     this.totalScoreDescription = "Not all questions are answered";
 
-    this.realized = JSON.parse(
-      localStorage.getItem('amc_dev_loggedInUserProfile')
-    ).Gpart;
-    this.realizedDescription = JSON.parse(
-      localStorage.getItem('amc_dev_loggedInUserProfile')
-    ).GpartName;
+    // this.realized = JSON.parse(
+    //   localStorage.getItem('amc_dev_loggedInUserProfile')
+    // ).Gpart;
+    this.realized =this.storageService.getUserProfile().Gpart
+
+    this.realizedDescription = this.storageService.getUserProfile().GpartName;
   }
 
 

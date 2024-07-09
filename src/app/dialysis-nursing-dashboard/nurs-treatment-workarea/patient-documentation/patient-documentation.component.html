@@ -142,7 +142,7 @@
                   dockVer(latestDocData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestDocData?.StatusTxt ? latestDocData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestDocData?.DocTime)}}">
-                  {{getDate(latestDocData?.Dodat) | date: "dd.MM.y" || '-'}}</div>
+                  {{getDate(latestDocData?.DocDate) | date: "dd.MM.y" || '-'}}</div>
                   <div class="col-md-3">{{latestDocData?.PhyNm || '-'}}</div>
                 <div class="col-md-1"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openDiaAssessReleasePdf(latestDocData.Dockey)" *ngIf="latestDocData?.StatusTxt == 'Released'"></i>
