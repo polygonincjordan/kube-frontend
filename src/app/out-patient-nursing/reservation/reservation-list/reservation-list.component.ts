@@ -144,44 +144,44 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  public getDetailsOfMaterial(event: any, index: number) {
-    const enteredValue = event;
-    let parms = {
-      enteredValue: event,
-      location:this.selectedType === "201" ? this.selectedCostCenter : this.selectedStorageLocation
-    }
-    this.consumableService.getMaterialStockDetails(`${JSON.stringify(parms)}`).subscribe({
-      next: (resp: MaterialStockDetails) => {
-        if (resp && resp.d.results && resp.d.results.length > 0) {
-          let materialDetail = resp.d.results[0];
-          this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
-            Matnr: materialDetail.Matnr,
-            Meins: materialDetail.Uom,
-            sloc: materialDetail.Lgort,
-            plant: "1000",
-            Menge:"1"
-          });
-        } else {
-          Swal.fire({
-            text: `No Stock data for the selected item ${enteredValue}`,
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
-          }).then((result) => {
-            if (result.value) {
-              this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
-                Matnr: "",
-                Meins: "",
-                sloc:"",
-                plant: "1000",
-                Menge:""
-              });
-            }
-          })
-        }
-      }
-    })
-  }
+  // public getDetailsOfMaterial(event: any, index: number) {
+  //   const enteredValue = event;
+  //   let parms = {
+  //     enteredValue: event,
+  //     location:this.selectedType === "201" ? this.selectedCostCenter : this.selectedStorageLocation
+  //   }
+  //   this.consumableService.getMaterialStockDetails(`${JSON.stringify(parms)}`).subscribe({
+  //     next: (resp: MaterialStockDetails) => {
+  //       if (resp && resp.d.results && resp.d.results.length > 0) {
+  //         let materialDetail = resp.d.results[0];
+  //         this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
+  //           Matnr: materialDetail.Matnr,
+  //           Meins: materialDetail.Uom,
+  //           sloc: materialDetail.Lgort,
+  //           plant: "1000",
+  //           Menge:"1"
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           text: `No Stock data for the selected item ${enteredValue}`,
+  //           icon: 'error',
+  //           confirmButtonText: 'Ok',
+  //           customClass: 'myalertpopup'
+  //         }).then((result) => {
+  //           if (result.value) {
+  //             this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
+  //               Matnr: "",
+  //               Meins: "",
+  //               sloc:"",
+  //               plant: "1000",
+  //               Menge:""
+  //             });
+  //           }
+  //         })
+  //       }
+  //     }
+  //   })
+  // }
 
   createPayload() {
     const plantValue = this.reservationForm.get('reservationToItem').get('results')['controls'][0].get('plant').value;
