@@ -37,17 +37,21 @@
         ></app-discharge-details-tab>
       </div>
       <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[2]">
-        <app-diagnosis-tab [toDiagnosisArr]="diagnosisList" (getDiagnosisData)="getDiagnosisData($event)"></app-diagnosis-tab>
+        <app-diagnosis-tab
+          [toDiagnosisArr]="diagnosisList"
+          (getDiagnosisData)="getDiagnosisData($event)"
+          [nursingDischargeForm]="nursingDischargeForm"
+        ></app-diagnosis-tab>
       </div>
       <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[3]">
         <app-maternal-vaccination-tab
-        [nursingDischargeForm]="nursingDischargeForm"
+          [nursingDischargeForm]="nursingDischargeForm"
           [dischargeDropdownValue]="dischargeDropdownValue"
         ></app-maternal-vaccination-tab>
       </div>
       <div class="tab-content-part" *ngIf="selectedTabName == tabLabelList[4]">
         <app-environmental-safety-tab
-        [nursingDischargeForm]="nursingDischargeForm"
+          [nursingDischargeForm]="nursingDischargeForm"
           [dischargeDropdownValue]="dischargeDropdownValue"
         ></app-environmental-safety-tab>
       </div>

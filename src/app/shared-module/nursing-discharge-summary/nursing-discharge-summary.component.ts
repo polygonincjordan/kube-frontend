@@ -236,6 +236,8 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
       EsOtherTxt: '',
       AttendPhy: this.storageService.getUserProfile().Gpart,
       DocStatus: '',
+
+      enableCreateDiagnosis: false
     });
   }
 
@@ -263,6 +265,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
       let paylaod = {
         d: this.nursingDischargeForm.value,
       };
+      delete paylaod?.d?.enableCreateDiagnosis
 
       this.subscription = this.dayCaseDashboard
         .createNursingDischargeDoc(paylaod)

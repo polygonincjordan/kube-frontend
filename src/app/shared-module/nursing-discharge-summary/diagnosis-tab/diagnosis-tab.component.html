@@ -3,18 +3,23 @@
     class="d-flex mb-2 py-3"
     style="justify-content: space-between; padding-right: 22px"
   >
+  <form [formGroup]="nursingDischargeForm">
+
     <div style="display: flex; align-items: center; gap: 10px">
       <input
         type="checkbox"
         style="width: 36px; height: 22px"
+        formControlName="enableCreateDiagnosis"
         id="noDiagnosisApplicable"
         (change)="handleCheckboxDiagnosis()"
         [attr.disabled]="toDiagnosisArr.length > 0 ? true : null"
       />
-      <label class="admitting-physician" for="noDiagnosisApplicable"
+      <label class="admitting-physician m-0" for="noDiagnosisApplicable"
         >No Diagnosis Applicable</label
       >
     </div>
+  </form>
+
     <!-- <div>
         <button class="create-diagnosis" 
         (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button>
