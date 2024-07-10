@@ -679,21 +679,8 @@ export class CheckInComponent implements OnInit {
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
-    if (event.Triage || event.Physician || event.Status || event.FCategory) {
+    if (event.Physician || event.Status || event.FCategory) {
       let filterValue = this.ERlistDataClone;
-      if (event.Triage && event.Triage?.length) {
-        event.Triage.forEach((triageValue) => {
-          this.triageValueArr.push(
-            filterValue.filter((element) => {
-              if (element.TriagePriorityCode === triageValue) {
-                return element;
-              }
-            })
-          );
-        });
-        filterValue = this.triageValueArr.flat();
-      }
-
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
           this.physicianValueArr.push(

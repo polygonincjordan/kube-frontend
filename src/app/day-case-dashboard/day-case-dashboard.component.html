@@ -144,14 +144,6 @@ float: right;" />
             (click)="showFilterFn($event)"></i></span>
       </div>
       <form [formGroup]="filterForm">
-        <p style="margin: auto; margin-top: 5px">Triage</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="Triage" [multiple]="true">
-          <!-- <ng-option selected value="">Choose Triage</ng-option> -->
-          <ng-option [value]="item.Triage" *ngFor="let item of allTriageData">
-            {{ item.Allergen }}
-          </ng-option>
-        </ng-select>
-
         <p style="margin: auto; margin-top: 5px">Physician</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
@@ -201,14 +193,6 @@ font-size: 12px;
             (click)="showFilterFn($event)"></i></span>
       </div>
       <form [formGroup]="filterForm">
-        <p style="margin: auto; margin-top: 5px">Triage</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="Triage" [multiple]="true">
-          <!-- <ng-option selected value="">Choose Triage</ng-option> -->
-          <ng-option [value]="item.Triage" *ngFor="let item of allTriageData">
-            {{item.Allergen}}
-          </ng-option>
-        </ng-select>
-
         <p style="margin: auto; margin-top: 5px">Physician</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
@@ -254,7 +238,6 @@ font-size: 12px;
       <form [formGroup]="filterFormLab">
         <p style="margin: auto; margin-top: 5px">Rooms</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="Rooms" [multiple]="true">
-          <!-- <ng-option selected value="">Choose Triage</ng-option> -->
           <ng-option [value]="item" *ngFor="let item of filterBehraumList">
             {{item}}
           </ng-option>
