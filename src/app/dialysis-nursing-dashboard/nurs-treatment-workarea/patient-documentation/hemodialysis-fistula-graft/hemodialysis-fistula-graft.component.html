@@ -66,14 +66,20 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center gap-5">
                                     <label for="" class="mr-3 mb-0 text-nowrap">Sesstion Time</label>
-                                    <input type="text" class="w-100" formControlName="SessionTime" [bsConfig]="{
+                                    <!-- <input type="text" class="w-100" formControlName="SessionTime" [bsConfig]="{
                                      withTimepicker: true,
                                      showWeekNumbers: false,
                                      dateInputFormat: 'HH:mm:ss',
                                      selectFromOtherMonth: true
-                                   }" bsDatepicker [isDisabled]="true">
+                                   }" bsDatepicker [isDisabled]="true"> -->
+                                   <input  type="time"
+                                   class="form-control w-100 h-35"
+                                   step="2"
+                                   min="08:00:00" max="17:00:00"
+                                   placeholder="HH:mm:ss"
+                                   style="width:31%;margin: 0px 0px 0px -23px;" formControlName="SessionTime">
                                 </div>
                             </div>
                             <div class="col-4">
@@ -113,6 +119,7 @@
                                     <div class="col-6">
                                         <div class="d-flex align-items-start">
                                             <input type="text" formControlName="AvCanTxt"
+                                            [ngClass]="{'error-border': this.hemoDialysisFistulGraftForm.get('AvCan').value === '2' && this.hemoDialysisFistulGraftForm.get('AvCanTxt').value === ''}"
                                                 [readonly]="this.hemoDialysisFistulGraftForm.get('AvCan').value === '2' ? false : true"
                                                 class="w-50">
                                         </div>
@@ -188,6 +195,7 @@
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <input type="radio" [disabled]="this.hemoDialysisFistulGraftForm.get('AvDecan').value !== '0'"
+                                                   
                                                     [checked]="this.hemoDialysisFistulGraftForm.get('AvDecan').value === '0'"
                                                     name="AvDecan" class="mr-3">
                                                 <label class="m-0">Yes</label>
@@ -197,6 +205,7 @@
                                     <div class="col-6">
                                         <div class="d-flex align-items-start">
                                             <input type="text" formControlName="AvDecanTxt"
+                                            [ngClass]="{'error-border': this.hemoDialysisFistulGraftForm.get('AvDecan').value === '2' && this.hemoDialysisFistulGraftForm.get('AvDecanTxt').value === ''}"
                                                 [readonly]="this.hemoDialysisFistulGraftForm.get('AvDecan').value === '2' ? false : true"
                                                 class="w-50">
                                         </div>
@@ -291,6 +300,7 @@
                                     <div class="col-6">
                                         <div class="d-flex align-items-start">
                                             <input type="text" formControlName="MedicationPrepTxt"
+                                            [ngClass]="{'error-border': this.hemoDialysisFistulGraftForm.get('MedicationPrep').value === '2' && this.hemoDialysisFistulGraftForm.get('MedicationPrepTxt').value === ''}"
                                                 [readonly]="this.hemoDialysisFistulGraftForm.get('MedicationPrep').value === '2' ? false : true"
                                                 class="w-50">
                                         </div>
@@ -384,6 +394,7 @@
                                     <div class="col-6">
                                         <div class="d-flex align-items-start">
                                             <input type="text" formControlName="MedicationAdmTxt"
+                                            [ngClass]="{'error-border': this.hemoDialysisFistulGraftForm.get('MedicationAdm').value === '2' && this.hemoDialysisFistulGraftForm.get('MedicationAdmTxt').value === ''}"
                                                 [readonly]="this.hemoDialysisFistulGraftForm.get('MedicationAdm').value === '2' ? false : true"
                                                 class="w-50">
                                         </div>
@@ -469,6 +480,7 @@
                                     <div class="col-6">
                                         <div class="d-flex align-items-start">
                                             <input type="text" formControlName="DialysisStatTxt"
+                                            [ngClass]="{'error-border': this.hemoDialysisFistulGraftForm.get('DialysisStat').value === '2' && this.hemoDialysisFistulGraftForm.get('DialysisStatTxt').value === ''}"
                                                 [readonly]="this.hemoDialysisFistulGraftForm.get('DialysisStat').value === '2' ? false : true"
                                                 class="w-50">
                                         </div>

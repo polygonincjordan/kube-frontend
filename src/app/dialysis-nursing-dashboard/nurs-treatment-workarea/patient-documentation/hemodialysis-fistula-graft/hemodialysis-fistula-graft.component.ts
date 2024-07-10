@@ -1,8 +1,12 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { ActionType } from '@services/interfaces/common.enum';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { StorageService } from '@services/storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-hemodialysis-fistula-graft',
@@ -30,9 +34,22 @@ export class HemodialysisFistulaGraftComponent implements OnInit {
   ];
 
   @ViewChildren('checkbox') checkboxes: QueryList<ElementRef>;
+  private actionTypeSubscription$: Subscription;
+
   
-  constructor(private storageService: StorageService, private emergencyService: EmergencyService, private patientDocService:PatientDocumentationService) {
-    this.getDocData();
+  constructor(private storageService: StorageService, private emergencyService: EmergencyService, private patientDocService:PatientDocumentationService,private dataShareService:DataShareService,private datePipe:DatePipe) {
+    
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+
+      if (data != null) {       
+        if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
+           this.getDocData();
+        }
+        if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
+           this.getDocData();
+        }
+      }
+    });
   }
 
   getDocData(){
@@ -43,7 +60,7 @@ export class HemodialysisFistulaGraftComponent implements OnInit {
           this.hemoDialysisFistulGraftForm.patchValue({
             ...resp,
             SessionDate: this.patientDocService.formatDate(resp.SessionDate),
-            SessionTime: this.convertToDateTime(resp.SessionTime),
+            SessionTime: this.parseTime(resp.SessionTime),
           });
 
           this.checkboxes.forEach((element:ElementRef)=>{
@@ -60,9 +77,10 @@ export class HemodialysisFistulaGraftComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
     this.hemoDialysisFistulGraftForm = new FormGroup({
       SessionDate: new FormControl(new Date()),
-      SessionTime: new FormControl(new Date()),
+      SessionTime: new FormControl(currentTime),
       AnatomicalSite: new FormControl(''),
       AvCan: new FormControl('2'),
       AvCanTxt: new FormControl(''),
@@ -123,6 +141,37 @@ export class HemodialysisFistulaGraftComponent implements OnInit {
     const timeDifference =
       new Date().getTime() - new Date(this.patientData.periodStart).getTime();
     this.daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
+  }
+
+  parseTime(data: string) {    
+    if (data && data.length) {
+      const strArr: string[] = data.split('');
+      if (
+        data &&
+        data.length === 11 &&
+        strArr[4] === 'H' &&
+        strArr[7] === 'M' &&
+        strArr[10] === 'S' &&
+        !isNaN(+(strArr[2] + strArr[3])) &&
+        !isNaN(+(strArr[5] + strArr[6])) &&
+        !isNaN(+(strArr[8] + strArr[9]))
+      ) {
+        const hours =
+          +(strArr[2] + strArr[3]) <= 9
+            ? `0${+(strArr[2] + strArr[3])}`
+            : +(strArr[2] + strArr[3]);
+        const Minute =
+          +(strArr[5] + strArr[6]) <= 9
+            ? `0${+(strArr[5] + strArr[6])}`
+            : +(strArr[5] + strArr[6]);
+        const Second =
+          +(strArr[8] + strArr[9]) <= 9
+            ? `0${+(strArr[8] + strArr[9])}`
+            : +(strArr[8] + strArr[9]);
+        return `${hours}:${Minute}:${Second}`;
+      }
+    }
+    return null;
   }
 
   checkChange(event){
