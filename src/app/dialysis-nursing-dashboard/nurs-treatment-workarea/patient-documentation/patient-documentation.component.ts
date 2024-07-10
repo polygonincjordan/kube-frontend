@@ -196,8 +196,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.fetchLatestDetails();
     this.LatestDocSet();
     this.LatestMFSSet();
-    // this.LatestHemoCatheter();
-    // this.LatestHemoDialysisFistulaGraft();
+    this.LatestHemoCatheter();
+    this.LatestHemoDialysisFistulaGraft();
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -398,16 +398,18 @@ export class PatientDocumentationComponent implements OnInit {
           //   this.latestMorseFallScaleData = {...latestMorseFallScaleData, StatusTxt: latestMorseFallScaleData.DokstText == "In Work" ? 'Draft' : latestMorseFallScaleData.DokstText, PhyNm: latestMorseFallScaleData.MitarbName, DocDate: latestMorseFallScaleData.Dodat }
           //   this.patientDocService.latestMorseFallScaleData = this.latestMorseFallScaleData;
           // }
-          const latestHemoCatheterData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBCA');
-          if(latestHemoCatheterData){
-            this.latestHemoCatheterData = {...latestHemoCatheterData, StatusTxt: latestHemoCatheterData.DokstText == "In Work" ? 'Draft' : latestHemoCatheterData.DokstText}
-            this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
-          }
-          const latestHemoDialysisFistulaGraftData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBFG');
-          if(latestHemoDialysisFistulaGraftData){
-            this.latestHemoDialysisFistulaGraftData = {...latestHemoDialysisFistulaGraftData, StatusTxt: latestHemoDialysisFistulaGraftData.DokstText == "In Work" ? 'Draft' : latestHemoDialysisFistulaGraftData.DokstText}
-            this.patientDocService.latestHemoDialysisFistulaGraftData = this.latestHemoDialysisFistulaGraftData;
-          }
+          // const latestHemoCatheterData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBCA');
+          // if(latestHemoCatheterData){
+          //   this.latestHemoCatheterData = {...latestHemoCatheterData, StatusTxt: latestHemoCatheterData.DokstText == "In Work" ? 'Draft' : latestHemoCatheterData.DokstText}
+          //   this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
+          // }
+          // const latestHemoDialysisFistulaGraftData = patientProfileResponse.d.results.find(ele => ele.Dtid === 'ZMED_HBFG');
+          // if(latestHemoDialysisFistulaGraftData){
+          //   this.latestHemoDialysisFistulaGraftData = {...latestHemoDialysisFistulaGraftData, StatusTxt: latestHemoDialysisFistulaGraftData.DokstText == "In Work" ? 'Draft' : latestHemoDialysisFistulaGraftData.DokstText}
+          //   this.patientDocService.latestHemoDialysisFistulaGraftData = this.latestHemoDialysisFistulaGraftData;
+          // }
+
+
         // }
 
 
@@ -875,7 +877,7 @@ export class PatientDocumentationComponent implements OnInit {
     localStorage.setItem('tabName',"Documenatation")
 
     // Redirect to the new URL
-    window.location.href = newUrl;
+    // window.location.href = newUrl;
   }
 
   
@@ -1122,7 +1124,7 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Dialysis Assessment
     else if (this.assessment) {
-      if (action == 'create' && this.selectedDocData?.StatusTxt != 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
+      if (action == 'create') {
         this.openAssessment = true;
       }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
         this.openAssessment = true;
@@ -1221,10 +1223,15 @@ export class PatientDocumentationComponent implements OnInit {
     }
     // Hemo Catheter
     else if(this.hemoCatheter){
-      if(action == 'create' ){
+      if(action == 'create'){
         this.openHemoCatheter = true;
       }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
         this.openHemoCatheter = true;
+        let valueObj = {
+          type: WordType.EditBS,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
       }else if(action == 'release' && this.latestHemoCatheterData?.StatusTxt == 'Draft'){
         const dockey = this.latestHemoCatheterData?.Dockey
         this.emergencyService.getHemoCatheterDoc(dockey).subscribe({
@@ -1260,6 +1267,11 @@ export class PatientDocumentationComponent implements OnInit {
         
       }else if (action == 'copy' && this.latestHemoCatheterData?.StatusTxt == "Released") {
         this.openHemoCatheter = true;
+        let valueObj = {
+          type: WordType.CopyHC,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
       }
     }
     // HemoDialysis Fistula/Graft
@@ -1268,6 +1280,11 @@ export class PatientDocumentationComponent implements OnInit {
         this.openHemoDialysisFistulaGraft = true;
       }else if(action == 'edit' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft' && this.latestHemoDialysisFistulaGraftData?.StatusTxt != "Released") {
         this.openHemoDialysisFistulaGraft = true;
+        let valueObj = {
+          type: WordType.EditBS,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
       }else if(action == 'release' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft'){
         const dockey = this.latestHemoDialysisFistulaGraftData?.Dockey
         this.emergencyService.getHemoDialysisFistulaGraftDoc(dockey).subscribe({
@@ -1300,6 +1317,11 @@ export class PatientDocumentationComponent implements OnInit {
         
       }else if (action == 'copy' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == "Released") {
         this.openHemoDialysisFistulaGraft = true;
+        let valueObj = {
+          type: WordType.CopyICB,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
       }else if (action == 'delete' && this.latestHemoDialysisFistulaGraftData?.StatusTxt == 'Draft') {
         Swal.fire({
           title: 'Confirm',
@@ -1493,8 +1515,11 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
+          console.log('formValue',formValue);
+          
           if (formValue) {
-            this.refresh();
+            this.sharedService.successSwallModel('Braden scale created successfully');
+              this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating Glasgow coma scale:', error);
@@ -2107,7 +2132,7 @@ export class PatientDocumentationComponent implements OnInit {
       DocStatus: docStatus,
       Dtid : 'ZMED_HBFG',
       SessionDate:this.formatDate(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionDate'].value),
-      SessionTime:this.formatTime(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
+      SessionTime:this.convertTimeToPTFormat(this.hemoDialysisFistulaGraftC.hemoDialysisFistulGraftForm.controls['SessionTime'].value)
     };
     this.emergencyService.postHemoDialysisFistulaGraft(formData).subscribe((resp)=>{
       Swal.fire({
@@ -2136,7 +2161,7 @@ export class PatientDocumentationComponent implements OnInit {
       CatheterInsertion:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterInsertion'].value),
       CatheterRemoval:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['CatheterRemoval'].value),
       SessionDate:this.formatDate(this.hemoCatheterC.hemoCatheterForm.controls['SessionDate'].value),
-      SessionTime:this.formatTime(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
+      SessionTime:this.convertTimeToPTFormat(this.hemoCatheterC.hemoCatheterForm.controls['SessionTime'].value)
     };
     this.emergencyService.postHemoCatheterSet(formData).subscribe((resp)=>{
       Swal.fire({

@@ -171,8 +171,8 @@
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="hemoCatheter ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('hemoCatheter',latestHemoCatheterData)">
-                <div class="col-md-4">Hemo Catheter {{latestHemoCatheterData?.Dokvr ?
-                  dockVer(latestHemoCatheterData?.Dokvr) : ''}} :</div>
+                <div class="col-md-4">Hemo Catheter {{latestHemoCatheterData?.Zversion ?
+                  dockVer(latestHemoCatheterData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestHemoCatheterData?.DocTime)}}">
                   {{getDate(latestHemoCatheterData?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -187,8 +187,8 @@
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="hemoDialysisFistulaGraft ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('hemoDialysisFistulaGraft',latestHemoDialysisFistulaGraftData)">
-                <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft {{latestHemoDialysisFistulaGraftData?.Dokvr ?
-                  dockVer(latestHemoDialysisFistulaGraftData?.Dokvr) : ''}} :</div>
+                <div class="col-md-4">IC Bundle for Hemodialysis Fistula/Graft {{latestHemoDialysisFistulaGraftData?.Zversion ?
+                  dockVer(latestHemoDialysisFistulaGraftData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestHemoDialysisFistulaGraftData?.StatusTxt ? latestHemoDialysisFistulaGraftData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestHemoDialysisFistulaGraftData?.DocTime)}}">
                   {{getDate(latestHemoDialysisFistulaGraftData?.DocDate) | date: "dd.MM.y" || '-'}}

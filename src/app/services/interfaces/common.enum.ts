@@ -40,6 +40,8 @@ export enum WordType {
   EditNE = 'EditNurseEndorsment',
   EditEND = 'EditEmergencyNursingDocument',
   CopyEA = 'CopyEducationAssessment',
+  CopyHC = 'CopyhomeCathe',
+  CopyICB = 'CopyICbundle',
   CopyNED = 'CopyEmergencyNursingDocument',
   CopyGGCS = 'CopyGlosgowCommaScale',
   CopyFPS = 'CopyFacePainScale',

@@ -241,7 +241,7 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
           Mobility: this.Mobility,
           Nutrition: this.Nutrition,
           FrictionShear: this.Frictionandshear,
-          NrsComments: this.NrsComments,
+          NrsComments: this.NrsComments ?? '',
           AttendPhy: this.storageService.getGpart(),
           DocStatus: '1',
         },
@@ -258,17 +258,14 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
             time: currentTime,
             date: new Date()
           }
-          // this.glasgowValue.next(formValue); // emit value if needed...
-          // resolve(formValue); // Resolve the promise with formValue
+          
         },
         error: (err: any) => {
-          // Handle errors if the request fails
           this.sharedService.waringSwallModel(`POST Error at braden scale : ${err}`);
+          resolve(false); 
         },
-        complete: () => {
-          // Handle completion (optional), invoked when the observable completes
-          resolve(true); // Resolve the promise with formValue
-          this.sharedService.successSwallModel('Braden scale created successfully');
+        complete: () => {          
+          resolve(true); 
         }
       });
     });
@@ -317,7 +314,7 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
           Mobility: this.Mobility,
           Nutrition: this.Nutrition,
           FrictionShear: this.Frictionandshear,
-          NrsComments: this.NrsComments,
+          NrsComments: this.NrsComments ?? '',
           AttendPhy: this.storageService.getGpart(),
           DocStatus: '3',
         },
@@ -325,6 +322,7 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
       // Subscribe using an object to define handlers
       this.subscription = this.emergencyService.copyBradenScaleSet(payload).subscribe({
         next: (data: any) => {
+          debugger
           // Handle successful data retrieval
           // resolve(formValue); // Resolve the promise with formValue
         },
