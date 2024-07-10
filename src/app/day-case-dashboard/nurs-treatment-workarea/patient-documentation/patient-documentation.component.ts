@@ -134,6 +134,7 @@ export class PatientDocumentationComponent implements OnInit {
   medReport: boolean = false;
   openMedReport: boolean = false;
   openEducationAssessment: boolean = false;
+  openNurseAdmission: boolean = false;
   openNurseEndorsement: boolean = false;
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
@@ -1235,6 +1236,32 @@ export class PatientDocumentationComponent implements OnInit {
         this.dataShareService.sendActionType(ActionType.Add$, false, {});
       }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
         this.openMorseFallScale = true;
+        let valueObj = {
+          type: WordType.CopyEA,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+      }else if (action == 'edit'){
+         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      }
+      else if (action == 'delete' ||  action == 'release'){
+         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      }
+      
+    } else if (this.isNursingAdmission){
+      if (action == 'create' ){
+        this.openNurseAdmission = true;
+        this.dataShareService.sendActionType(ActionType.Add$, false, {});
+      }else if(action == 'copy' && this.latestMorseFallScaleData?.StatusTxt == "Released"){
+        this.openNurseAdmission = true;
         let valueObj = {
           type: WordType.CopyEA,
           docKey: this.selectedDocData.Dockey
