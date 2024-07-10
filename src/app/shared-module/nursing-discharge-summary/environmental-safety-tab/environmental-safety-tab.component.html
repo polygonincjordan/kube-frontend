@@ -39,7 +39,7 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsShower"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Shower</label>
       </div>
@@ -48,7 +48,7 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsTub"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Cool/dry Place</label>
       </div>
@@ -59,7 +59,7 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsRefrigerator"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Tub</label>
       </div>
@@ -68,7 +68,7 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsCool"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Toilet</label>
       </div>
@@ -79,7 +79,7 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsToilet"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Refrigerator</label>
       </div>
@@ -88,7 +88,7 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsDoorway"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Doorway</label>
       </div>
@@ -101,14 +101,14 @@
           class="mr-2"
           type="checkbox"
           formControlName="EsStairs"
-          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"
+          [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"
         />
         <label class="m-0">Stairs</label>
       </div>
     </div>
     <div class="col-md-8">
       <div class="d-flex align-items-center mb-2">
-        <input class="mr-2" type="checkbox" formControlName="EsOther" [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value === '2' ? true : null"/>
+        <input class="mr-2" type="checkbox" formControlName="EsOther" [attr.disabled]="nursingDischargeForm.get('EnvironmentalAss').value != '2' ? true : null"/>
         <label class="m-0 mr-4">Other</label>
         <input
           class="form-control w-40"

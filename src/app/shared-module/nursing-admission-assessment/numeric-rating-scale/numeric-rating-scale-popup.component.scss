@@ -1,0 +1,26 @@
+.allergy-header-title {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.main-scales {
+  padding: 16px;
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .scales-details {
+    border: 1px solid #cacaca;
+    border-radius: 13px;
+    padding: 10px 0px;
+  }
+
+  .scales-info {
+    h4 {
+      padding-bottom: 10px;
+      font-weight: 600;
+    }
+  }
+}

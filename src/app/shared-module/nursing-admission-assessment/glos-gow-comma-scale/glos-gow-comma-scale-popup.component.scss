@@ -1,0 +1,53 @@
+.main-glosgow {
+  padding: 25px;
+
+  label {
+    margin: 0;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .radio-input {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #000;
+    /* Change color as needed */
+    border-radius: 50%;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+
+  .radio-section {
+    padding: 15px;
+    border-bottom: 2px solid #cacaca;
+    margin: 0;
+  }
+
+  h4 {
+    font-weight: 600;
+  }
+}
+
+.scale-result {
+  padding: 15px 25px;
+  border-bottom: 2px solid #cacaca;
+}
+
+.comment-input {
+  padding: 0 15px;
+
+  label {
+    margin-right: 45px;
+  }
+
+  textarea {
+    margin-right: 12px;
+  }
+}
+
+.allergy-header-title {
+  font-size: 18px;
+  font-weight: 800;
+}

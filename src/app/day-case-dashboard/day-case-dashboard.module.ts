@@ -104,6 +104,7 @@ import { DayCaseDashboardComponent } from './day-case-dashboard.component';
 import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-plan-document/nursing-care-plan-document.module';
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
 import { MorseFallScaleComponent } from './nurs-treatment-workarea/patient-documentation/morse-fall-scale/morse-fall-scale.component';
+import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admission-assessment/nursing-admission-assessment.module';
 
 const route: Routes = [
   {
@@ -206,7 +207,7 @@ const route: Routes = [
     NgxExtendedPdfViewerModule,
     ImageEditorModule,
     NursingCarePlanDocumentModule,
-    NursingDischargeSummaryModule
+    NursingDischargeSummaryModule,NursingAdmissionAssessmentModule
   ],
 })
 export class DayCaseDashboardModule { }

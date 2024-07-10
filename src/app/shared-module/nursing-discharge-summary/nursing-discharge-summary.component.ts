@@ -262,6 +262,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
 
       this.nursingDischargeForm.value.TODIAGNOSES = this.diagnosisList;
 
+      this.nursingDischargeForm.value.MvLotNo = this.nursingDischargeForm.value.MvLotNo ? this.nursingDischargeForm.value.MvLotNo : ""
       let paylaod = {
         d: this.nursingDischargeForm.value,
       };
