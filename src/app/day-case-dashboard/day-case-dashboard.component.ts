@@ -63,7 +63,6 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   selectedModule: any;
   currentDate: Date;
   defaultSelectedDateRange: any[] = [];
-  allTriageData = [];
   assignUsersList: any;
   allStatus = [];
   allFinancialCategory = [];
@@ -192,7 +191,6 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       }
     );
     this.filterForm = this.formBuilder.group({
-      Triage: [''],
       Physician: [''],
       Status: [''],
       FCategory: [''],
@@ -282,7 +280,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       defaultOpen: false,
       selectAllText: 'All',
     };
-    this.dataForTriage();
+    
     this.dataForStatus();
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
@@ -351,40 +349,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       (_error: any) => { }
     );
   }
-  dataForTriage() {
-    this.allTriageData = [
-      {
-        Allergen: 'Level I - Resuscitation',
-        Triage: '01',
-        color: 'blue',
-        isActive: false,
-      },
-      {
-        Allergen: 'Level II - Emergency',
-        Triage: '02',
-        color: 'red',
-        isActive: false,
-      },
-      {
-        Allergen: 'Level III - Urgency',
-        Triage: '03',
-        color: 'yellow',
-        isActive: false,
-      },
-      {
-        Allergen: 'Level IV - Less Urgency',
-        Triage: '04',
-        color: 'green',
-        isActive: false,
-      },
-      {
-        Allergen: 'Level V - Non Urgency',
-        Triage: '05',
-        color: 'white',
-        isActive: false,
-      },
-    ];
-  }
+  
   getAssignSurgeonList() {
     this.orderDashboardService.getAssignUsersData().subscribe((data: any) => {
       this.assignUsersList = data?.d?.results;
@@ -579,7 +544,6 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     }
     // Resetting filter form values
     this.filterForm.patchValue({
-      Triage: '',
       Physician: '',
       Status: '',
       FCategory: '',
@@ -947,7 +911,6 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
 
   refreshFormGroup() {
     this.filterForm = this.formBuilder.group({
-      Triage: [''],
       Physician: [''],
       Status: [''],
       FCategory: [''],
