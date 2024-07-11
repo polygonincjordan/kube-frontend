@@ -529,6 +529,8 @@ export class CheckInComponent implements OnInit {
     };
     this.modalRefForRisk = this.modalService.show(template, config);
     this.selectedERList = data;
+    console.log('this.selectedERList',this.selectedERList);
+    
     this.getRiskList(data);
     this.getRiskValues();
     this.isRiskUpdate = false;
