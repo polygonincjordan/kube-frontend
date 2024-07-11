@@ -17,9 +17,9 @@
           </th>
           <th colspan="1" scope="col">Material</th>
           <th colspan="1" scope="col">Quantity</th>
-          <th colspan="1" scope="col">UnE</th>
+          <th colspan="1" scope="col">Unit of Entry (UnE)</th>
           <th colspan="1" scope="col">Plant</th>
-          <th colspan="1" scope="col">SLoc</th>
+          <th colspan="1" scope="col">Storage Location</th>
           <th colspan="1" scope="col">
             <div class="d-flex align-items-center justify-content-between">
               <div>Action</div>
@@ -47,7 +47,7 @@
                 <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Matnr"
                   (search)="searchMaterial($event.term, wordType.MaterialCode$, i)"
-                   [title]="product.value.Matnr">
+                  [title]="product.get('Matnr').value?.Maktx">
                   <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
                     {{item.Maktx}}</ng-option>
                 </ng-select>
@@ -73,6 +73,8 @@
               <td colspan="1">
                 <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="sloc" [title]="product.value.sloc">
+                  <ng-option *ngFor="let item of storageLocationList" [value]="item.Lgort">{{ item.Lgort }}</ng-option>
+
                 </ng-select>
 
               </td>
