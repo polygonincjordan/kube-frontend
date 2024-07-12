@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConsumableService } from '@services/consumables/consumable.service';
@@ -7,7 +7,7 @@ import { MaterialDetails, MaterialDetailsResult, MaterialStockDetails } from '@s
 import { DataShareService } from '@services/data-share.service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { FilterType, WordType } from '@services/interfaces/common.enum';
+import { ActionType, FilterType, WordType } from '@services/interfaces/common.enum';
 import { Subject, Subscription, debounceTime, filter, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
 
@@ -18,6 +18,8 @@ import Swal from 'sweetalert2';
 })
 export class ReservationListComponent implements OnInit {
   @Input() selectedType: any;
+  @Input() storageLocationList:any
+  @Output() reservationSaved: EventEmitter<void> = new EventEmitter<void>();
   public reservationForm: FormGroup;
   public materialList: Array<MaterialDetailsResult> = [];
   public materialListCopy: Array<MaterialDetailsResult> = [];
@@ -40,6 +42,17 @@ export class ReservationListComponent implements OnInit {
     private emergencyService: EmergencyService
   ) {
     this.getMaterialList();
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+      if (data != null) {
+        if (data.type == ActionType.Reset$ && data.isAllow == true) {
+          this.reservationForm.reset();
+          const resultsArray = this.reservationForm.get('reservationToItem').get('results') as FormArray;
+          resultsArray.controls.forEach(control => {
+            control.get('plant').setValue('1000');
+          });
+        }
+      }
+    });
   }
 
  ngOnDestroy(): void {
@@ -188,11 +201,11 @@ export class ReservationListComponent implements OnInit {
     const toItems = this.reservationForm.get('reservationToItem').get('results')['controls']
       .filter(control => control.get('isSelected').value)  // Filter only selected rows
       .map(control => ({
-        Material: control.get('Matnr').value,
+        Material: control.get('Matnr').value.Matnr,
         StoreLoc: control.get('sloc').value,
         Batch: "0000000004",
         Quantity: control.get('Menge').value,
-        Unit: control.gey('Meins').value,
+        Unit: control.get('Meins').value,
         ReqDate: `${new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd')}T00:00:00`,
         ShortText: "Testing"
       }));
@@ -226,9 +239,55 @@ export class ReservationListComponent implements OnInit {
     const { payload, secondPayload } = this.createPayload();
     if(this.selectedType && (this.selectedStorageLocation || this.selectedCostCenter)){
       if(this.selectedType ==="201"){
-           this.emergencyService.createReservation(secondPayload).subscribe((res)=>{},(error:any)=>{})
+           this.emergencyService.createReservation(secondPayload).subscribe((res)=>{
+            if(res){
+              this.reservationForm.reset();
+              this.reservationSaved.emit();
+              const resultsArray = this.reservationForm.get('reservationToItem').get('results') as FormArray;
+              resultsArray.controls.forEach(control => {
+                control.get('plant').setValue('1000');
+              });
+              
+              Swal.fire({
+                text: 'Reservation Created',
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+            }
+           },(error:any)=>{
+            Swal.fire({
+              text:'something went worng',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+           })
          }else{
-           this.emergencyService.createReservation(payload).subscribe((res)=>{},(error:any)=>{})
+           this.emergencyService.createReservation(payload).subscribe((res)=>{
+            if(res){
+              this.reservationForm.reset();
+              this.reservationSaved.emit();
+              const resultsArray = this.reservationForm.get('reservationToItem').get('results') as FormArray;
+              resultsArray.controls.forEach(control => {
+                control.get('plant').setValue('1000');
+              });
+              Swal.fire({
+                text: 'Reservation Created',
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+            }
+           },(error:any)=>{
+              Swal.fire({
+              text:'something went worng',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            
+           })
          }
     }else {
       Swal.fire({
