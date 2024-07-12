@@ -645,9 +645,9 @@ export class CheckInComponent implements OnInit, OnDestroy {
       const storedUser = JSON.parse(localStorage.getItem('UserConfiguration')).results;
       let link = ``;
       if (storedUser.length > 1) {
-        link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)}&AttendPhy=${this.getAttendPhy(storedUser)}`
+        link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser) ? this.getSpecialityCodes(storedUser) : null}&AttendPhy=${this.getAttendPhy(storedUser) ? this.getAttendPhy(storedUser) : null}`
       } else {
-        link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)[0]}&AttendPhy=${this.getAttendPhy(storedUser)[0]}`
+        link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)[0] ? this.getSpecialityCodes(storedUser)[0]  : null}&AttendPhy=${this.getAttendPhy(storedUser)[0] ? this.getAttendPhy(storedUser)[0] : null}`
       }
       if (date != undefined) {
         this.ePrescriptionService.loadData(link, false, false, false, false).subscribe({

@@ -591,8 +591,10 @@ export class DialysisNursingDashboardComponent implements OnInit {
   }
 
   refreshCheckIn() {
+    console.log('this.selectedModule',this.selectedModule);
+    
     if (this.selectedModule === 'checkin') {
-      this.CheckInComponent.getErList([new Date(), new Date()]);
+      this.CheckInComponent.getErList(this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }else if (this.selectedModule === 'bed') {
       this.BedComponent.getErList(this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     } else if (this.selectedModule === 'erhistory') {

@@ -326,6 +326,7 @@ export class OutPatientNursingComponent implements OnInit {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d) {
         this.clinicConfigDetail = resp.body.d.results
+        localStorage.setItem('UserConfiguration', JSON.stringify(resp.body.d));
         const attendPhy = this.clinicConfigDetail[0].AttendPhy.split(',')
         this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
 
