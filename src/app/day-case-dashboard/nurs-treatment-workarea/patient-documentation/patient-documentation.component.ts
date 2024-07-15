@@ -922,6 +922,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPainAssessment = false;
     this.openPainAssement = false;
     this.openDischargeSummery = false;
+    this.openNurseAdmission = false;
+    this.isNursingAdmission = false;
 
     this.openPhyAssess = false;
     this.openMedReport = false;

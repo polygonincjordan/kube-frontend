@@ -1,0 +1,101 @@
+<div class="end-container">
+  <div class="sph-box">
+    <label class="box-label"
+      >Medical History</label
+    >
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav w-100">
+            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+              <li
+                *ngFor="let item of tabList"
+                class="d-flex m-0 align-items-center"
+                (click)="selectTab(item)"
+                [ngClass]="item == selectedTabName ? 'active' : ''"
+              >
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">{{ item }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="tab-content" style="border-radius: 7px">
+          <div *ngIf="selectedTabName == 'Vaccination History'">
+            <div class="scale-box-table">
+              <table class="table table-bordered past-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Vaccination</th>
+                    <th class="w-25" scope="col">Other Vaccines</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Upto Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of vaccinationList; let i = index">
+                    <td>
+                      <ng-select>
+                        <ng-option></ng-option>
+                      </ng-select>
+                    </td>
+                    <td><input class="form-control" /></td>
+                    <td>
+                      <ng-select>
+                        <ng-option *ngFor="let item of statusList">{{
+                          item
+                        }}</ng-option>
+                      </ng-select>
+                    </td>
+                    <td>
+                      <input type="checkbox"  />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="selectedTabName == 'Exposure to Infectious Diseases'">
+            <div class="row m-0">
+              <label>Patient has expirienced in the last 2 weeks</label>
+            </div>
+            <div class="scale-box-table">
+              <table class="table table-bordered past-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Infectious diesease</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Type of Isolation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of vaccinationList; let i = index">
+                    <td>
+                      <ng-select>
+                        <ng-option></ng-option>
+                      </ng-select>
+                    </td>
+                    <td>
+                      <ng-select>
+                        <ng-option *ngFor="let item of statusList">{{
+                          item
+                        }}</ng-option>
+                      </ng-select>
+                    </td>
+                    <td>
+                      <ng-select>
+                        <ng-option *ngFor="let item of IsolationList">{{
+                          item
+                        }}</ng-option>
+                      </ng-select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
