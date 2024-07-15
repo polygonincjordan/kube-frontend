@@ -23,7 +23,7 @@ export class ReservationComponent implements OnInit {
   public storageLocationList: any;
   public costCenterList:any;
   public tabs = [
-    { id: 1, title: 'History', content: '' },
+    // { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
   ];
   constructor( private dataShareService: DataShareService,private emergencyService: EmergencyService, private formBuilder: FormBuilder) { 
@@ -52,6 +52,7 @@ export class ReservationComponent implements OnInit {
 
   public consumablesFrom() {
     this.formDetailGroup = this.formBuilder.group({
+      movementType:[null,[Validators.required]],
       selectedLocation: [null, [Validators.required]],
       selectedCostCenter:[null,Validators.required]
     });
@@ -103,6 +104,11 @@ export class ReservationComponent implements OnInit {
   }
   
   public resetForm() {
+    this.formDetailGroup.reset();
     this.dataShareService.sendActionType(ActionType.Reset$, true);
+  }
+
+  onReservationSaved() {
+    this.formDetailGroup.reset();
   }
 }
