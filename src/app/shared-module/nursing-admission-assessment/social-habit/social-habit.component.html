@@ -1,0 +1,191 @@
+<ng-template #addHabit>
+  <div class="allergy-header">
+    <div class="allergy-header-title">
+      <span>{{ habitType }}</span>
+    </div>
+  </div>
+  <form class="habit-form" [formGroup]="habitForm">
+    <div class="no-consumpation mb-3">
+      <input type="checkbox" formControlName="NoConsumpation" />
+      <label>No Consumpation Known</label>
+    </div>
+    <div style="padding: 0 10px">
+      <strong style="font-size: 18px">Habit Consumpation</strong>
+      <div class="from-years row mt-3">
+        <div class="col-md-3 text-center">
+          <label>From </label>
+        </div>
+        <div class="col-md-2 pl-0 pr-0">
+          <input class="form-control" formControlName="fromYears" [readOnly]="habitForm.value.NoConsumpation"
+            numbersOnly [ngClass]="
+              isFormSubmitted &&
+              habitForm.controls.fromYears.errors &&
+              habitForm.controls.fromYears.errors.required
+                ? 'ep-error-message'
+                : ''
+            " />
+        </div>
+        <div class="col-md-1 text-right mr-2">
+          <label>To </label>
+        </div>
+        <div class="col-md-2 pl-0 pr-0">
+          <input type="text" class="form-control" formControlName="toYears" [readOnly]="habitForm.value.NoConsumpation"
+            numbersOnly />
+        </div>
+        <div class="col-md-2">
+          <label>Years old </label>
+        </div>
+      </div>
+
+      <div class="row mb-3 align-items-center">
+        <div class="col-md-3 pr-0 text-center">
+          <label>Frequency</label>
+        </div>
+        <div class="col-md-3 pl-0 pr-2 mr-2">
+          <ng-select formControlName="fOnce" [readonly]="habitForm.value.NoConsumpation" [ngClass]="
+              habitForm.value.NoConsumpation ? 'background-disabled' : ''
+            ">
+            <ng-option *ngFor="let item of frequencyList" [value]="item.value">{{
+              item.label
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-2 pl-0 pr-0 mr-3">
+          <ng-select formControlName="fDaily" [readonly]="habitForm.value.NoConsumpation" [ngClass]="
+              habitForm.value.NoConsumpation ? 'background-disabled' : ''
+            ">
+            <ng-option *ngFor="let item of dailyList" [value]="item.value">{{
+              item.label
+              }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="pl-0" [ngClass]="habitType == 'Drugs' ? 'col-md-3' : 'col-md-2 pr-0'">
+          <ng-select formControlName="fSocial" [readonly]="habitForm.value.NoConsumpation" [ngClass]="
+              habitForm.value.NoConsumpation ? 'background-disabled' : ''
+            ">
+            <ng-option *ngFor="let item of frequencySocial" [value]="item.value">{{
+              item.label
+              }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row mb-3" *ngIf="habitType == 'Tobacco'">
+        <div class="col-md-5 row pr-0 m-0">
+          <div class="col-md-7">
+            <ng-select formControlName="cigaretters" [readonly]="habitForm.value.NoConsumpation" [ngClass]="
+                habitForm.value.NoConsumpation ? 'background-disabled' : ''
+              ">
+              <ng-option *ngFor="let item of cigarettersList" [value]="item.value">{{
+                item.label
+                }}</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-5 pl-0 pr-0">
+            <input type="text" class="form-control" formControlName="cigarettersTxt"
+              [readOnly]="habitForm.value.NoConsumpation" />
+          </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-6 row align-items-center pl-0 m-0">
+          <div class="col-md-5 text-right">
+            <label>Packs year</label>
+          </div>
+          <div class="col-md-5 pl-2 pr-2">
+            <input type="text" class="form-control" [disabled]="true" [readOnly]="true" formControlName="pickYears" />
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" *ngIf="habitType == 'Alcohol'">
+        <div class="col-md-6 row pr-0 m-0 align-items-center">
+          <div class="col-md-6" style="max-width: 48% !important">
+            <label class="pl-4">Grams/week</label>
+          </div>
+          <div class="col-md-6 pl-0 pr-0 d-flex">
+            <input class="form-control" formControlName="agramWeek" [readOnly]="habitForm.value.NoConsumpation"
+              numbersOnly />
+            <div class="calculator-img">
+              <img class="img" src="./assets/img/calculator.png" />
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-1"></div> -->
+        <div class="col-md-6 row align-items-center pl-0 m-0">
+          <div class="col-md-5 p-0 text-right">
+            <label>Avg. units/day</label>
+          </div>
+          <div class="col-md-5">
+            <input class="form-control" [disabled]="true" [readOnly]="true" formControlName="units" />
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" *ngIf="habitType == 'Drugs'">
+        <div class="col-md-5 row pr-0 m-0 align-items-center">
+          <div class="col-md-7">
+            <label class="pl-4">Grams/week</label>
+          </div>
+          <div class="col-md-5 pl-0 pr-0">
+            <input class="form-control" formControlName="dgramWeek" [readOnly]="habitForm.value.NoConsumpation" />
+          </div>
+        </div>
+        <div class="col-md-7 row align-items-center pl-0 m-0">
+          <div class="col-md-4 text-right pr-2">
+            <label>Comments</label>
+          </div>
+          <div class="col-md-8 pl-3">
+            <input class="form-control" formControlName="dComments" [readOnly]="habitForm.value.NoConsumpation" />
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" *ngIf="habitType == 'Other'">
+        <div class="col-md-12 row align-items-center pl-0 m-0 mb-3">
+          <div class="col-md-3 text-center">
+            <label>Type</label>
+          </div>
+          <div class="col-md-8 pl-1">
+            <input class="form-control" formControlName="dType" [readOnly]="habitForm.value.NoConsumpation" [ngClass]="
+                isFormSubmitted &&
+                habitForm.controls.dType.errors &&
+                habitForm.controls.dType.errors.required
+                  ? 'ep-error-message'
+                  : ''
+              " />
+          </div>
+        </div>
+        <div class="col-md-5 row pr-0 m-0 align-items-center">
+          <div class="col-md-7">
+            <label class="pl-4">Quantity</label>
+          </div>
+          <div class="col-md-5 pl-0 pr-0">
+            <input numbersOnly class="form-control" formControlName="quantity"
+              [readOnly]="habitForm.value.NoConsumpation" [ngClass]="
+                isFormSubmitted &&
+                habitForm.controls.quantity.errors &&
+                habitForm.controls.quantity.errors.required
+                  ? 'ep-error-message'
+                  : ''
+              " />
+          </div>
+        </div>
+        <!-- <div class="col-md-1"></div> -->
+        <div class="col-md-6 row align-items-center pl-0 m-0 justify-content-end">
+          <div class="col-md-3 text-right pr-0">
+            <label>Unit</label>
+          </div>
+          <div class="col-md-5">
+            <ng-select formControlName="dUnits" [readonly]="habitForm.value.NoConsumpation" [ngClass]="
+                habitForm.value.NoConsumpation ? 'background-disabled' : ''
+              ">
+              <ng-option *ngFor="let item of otherHabitUnitList" [value]="item.code">{{
+                item.description
+                }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mt-4 p-0 footer-btn">
+        <button class="triage-model-btn" (click)="closeModel()">Cancel</button>
+        <button class="triage-model-btn" (click)="saveHabit()">Save</button>
+      </div>
+    </div>
+  </form>
+</ng-template>

@@ -1,194 +1,251 @@
-<div class="end-container">
-  <form>
-    <label class="box-label">Admisiion Data</label>
-    <div class="container-fluid">
-      <div class="row create-form-inputs">
-        <div class="col-md-5 row m-0">
-          <div class="col-md-5 p-0">
-            <label>Admitted Ward / Unit</label>
+<div class="nursing-admission-main">
+  <div class="end-container">
+    <form>
+      <label class="box-label">Admission Data</label>
+      <div class="container-fluid">
+        <div class="row create-form-inputs">
+          <div class="col-md-5 row m-0">
+            <div class="col-md-5 p-0">
+              <label>Admitted Ward / Unit</label>
+            </div>
+            <div class="col-md-7 p-0">
+              <input type="text" class="form-control" style="height: 33px" />
+            </div>
           </div>
-          <div class="col-md-7 p-0">
-            <input type="text" class="form-control" style="height: 33px" />
+          <div class="col-md-3 row m-0">
+            <div class="col-md-3 text-right">
+              <label>Date</label>
+            </div>
+            <div class="col-md-7">
+              <input type="date" class="form-control" style="height: 33px" />
+            </div>
+          </div>
+          <div class="col-md-3 row m-0">
+            <div class="col-md-3 text-right">
+              <label>Time</label>
+            </div>
+            <div class="col-md-6">
+              <input type="time" class="form-control" style="height: 33px" />
+            </div>
           </div>
         </div>
-        <div class="col-md-3 row m-0">
-          <div class="col-md-3 text-right">
-            <label>Date</label>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Room</label>
           </div>
-          <div class="col-md-7">
-            <input type="date" class="form-control" style="height: 33px" />
-          </div>
-        </div>
-        <div class="col-md-3 row m-0">
-          <div class="col-md-3 text-right">
-            <label>Time</label>
-          </div>
-          <div class="col-md-6">
-            <input type="time" class="form-control" style="height: 33px" />
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
           </div>
         </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Room</label>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Referral Type</label>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Admission Mode</label>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            [disabled]="true"
-            [readOnly]="true"
-          />
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Accompanied By</label>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            [disabled]="true"
-            [readOnly]="true"
-          />
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Info. Obtained from</label>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            [disabled]="true"
-            [readOnly]="true"
-          />
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Language Spoken</label>
-        </div>
-        <div class="col-md-3">
-          <input type="text" class="form-control" />
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Schoole Grade</label>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-        <div class="col-md-3">
-          <ng-select placeholder="Select Accompanied By">
-            <ng-option>Test</ng-option>
-          </ng-select>
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Favourite Toy / Hobbies</label>
-        </div>
-        <div class="col-md-4">
-          <input type="text" class="form-control" />
-        </div>
-      </div>
-      <div class="row create-form-inputs">
-        <div class="col-md-2">
-          <label>Reason for Visit/Admission</label>
-        </div>
-        <div class="col-md-5">
-          <input type="text" class="form-control" />
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="chief-complain mt-3 ml-4 mb-3 mr-3">
-        <span class="text-area-label">Chief Complaint</span>
-        <textarea class="form-control"></textarea>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="end-container">
-  <div class="scale-box-main">
-    <label class="box-label">Allergies & Vitals</label>
-    <div class="container-fluid">
-      <div class="tab-navigation-part">
-        <div class="tab-navigate">
-          <div class="tab-nav mb-4">
-            <label>Allergies</label>
-            <input type="text" class="form-control w-70" />
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Referral Type</label>
           </div>
-          <div class="secound-bar-vital-sign" (click)="openModalForAllergy()">
-            <img
-              src="assets/img/file1.svg"
-              title="Create & Import"
-              class="img-size"
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Admission Mode</label>
+          </div>
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              [disabled]="true"
+              [readOnly]="true"
             />
           </div>
         </div>
-        <div class="tab-content">
-          <div>
-            <div class="allergy-box">
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Accompanied By</label>
+          </div>
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              [disabled]="true"
+              [readOnly]="true"
+            />
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Info. Obtained from</label>
+          </div>
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              [disabled]="true"
+              [readOnly]="true"
+            />
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Language Spoken</label>
+          </div>
+          <div class="col-md-3">
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Schoole Grade</label>
+          </div>
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <ng-select placeholder="Select Accompanied By">
+              <ng-option>Test</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Favourite Toy / Hobbies</label>
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-2">
+            <label>Reason for Visit/Admission</label>
+          </div>
+          <div class="col-md-5">
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="chief-complain mt-3 ml-4 mb-3 mr-3">
+          <span class="text-area-label">Chief Complaint</span>
+          <textarea class="form-control"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="end-container">
+    <div class="scale-box-main">
+      <label class="box-label">Allergies & Vitals</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate allergies-header">
+            <div class="tab-nav mb-4">
+              <label>Allergies</label>
+              <input type="text" class="form-control w-70" [value]="toAllergyArr.length ? 'Allergy Exists' : 'No Known Allergies'" />
+            </div>
+            <div class="" (click)="openModalForAllergy()">
+              <img
+                src="assets/img/file1.svg"
+                title="Create & Import"
+                class="img-size"
+              />
+            </div>
+          </div>
+          <div class="tab-content">
+            <div>
+              <div class="allergy-box">
+                <table class="table table-bordered past-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Group</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of toAllergyArr; let i = index">
+                      <td>{{ item.Agroup || item.AllergenGrp }}</td>
+                      <td>{{ item.Description || item.Allergen }}</td>
+                      <td>
+                        <img
+                          src="assets/img/Delete.svg"
+                          alt="delete"
+                          (click)="deleteFromAllergy(item, i)"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <app-medication-substances-section></app-medication-substances-section>
+  </div>
+
+  <div class="end-container">
+    <div class="scale-box-main">
+      <label class="box-label">Scales</label>
+      <div class="container-fluid">
+        <div class="row create-form-inputs">
+          <div class="scale-box">
+            <div class="scale-box-checkbox">
+              <input
+                type="checkbox"
+                id="noScaleAppicable"
+                [(ngModel)]="noScaleAppicable"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <label class="admitting-physician" for="noScaleAppicable"
+                >No Scale Applicable</label
+              >
+            </div>
+            <div class="scale-box-table">
               <table class="table table-bordered past-table">
                 <thead>
                   <tr>
-                    <th scope="col">Group</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col">Measured Value</th>
+                    <th scope="col">Normal Range</th>
+                    <th scope="col">Date/Time</th>
+                    <th scope="col" colspan="2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of toAllergyArr; let i = index">
-                    <td>{{ item.Agroup || item.AllergenGrp }}</td>
-                    <td>{{ item.Description || item.Allergen }}</td>
+                  <tr *ngFor="let item of scalesList; let i = index">
+                    <td>{{ item.ScaleType }}</td>
+                    <td>{{ item.LastScore }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.Datetimee }}</td>
                     <td>
-                      <img
-                        src="assets/img/Delete.svg"
-                        alt="delete"
-                        (click)="deleteFromAllergy(item, i)"
-                      />
+                      <a (click)="openGlosgowComaModel(item)">Create</a>
+                    </td>
+                    <td>
+                      <a (click)="viewGlosgowModel(item)">View</a>
                     </td>
                   </tr>
                 </tbody>
@@ -199,188 +256,444 @@
       </div>
     </div>
   </div>
-</div>
 
-<div class="end-container">
-  <div class="scale-box-main">
-    <label class="box-label">Scales</label>
-    <div class="container-fluid">
-      <div class="row create-form-inputs">
-        <div class="scale-box">
-          <div class="scale-box-checkbox">
-            <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
-              [ngModelOptions]="{ standalone: true }" />
-            <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
-          </div>
-          <div class="scale-box-table">
-            <table class="table table-bordered past-table">
-              <thead>
-                <tr>
-                  <th scope="col">Description</th>
-                  <th scope="col">Measured Value </th>
-                  <th scope="col">Normal Range</th>
-                  <th scope="col">Date/Time</th>
-                  <th scope="col" colspan="2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of scalesList;let i=index">
-                  <td>{{item.ScaleType}}</td>
-                  <td>{{item.LastScore}}</td>
-                  <td>{{item.description}}</td>
-                  <td>{{item.Datetimee}}</td>
-                  <td>
-                    <a (click)="openGlosgowComaModel(item)">Create</a>
-                  </td>
-                  <td>
-                    <a (click)="viewGlosgowModel(item)">View</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div>
+    <app-vaccination-exposure-section></app-vaccination-exposure-section>
   </div>
-</div>
 
-<div class="end-container">
-  <div class="sph-box">
-    <label class="box-label">Social & Psychological History</label>
-    <div class="container-fluid">
-      <div class="tab-navigation-part">
-        <div class="tab-navigate">
-          <div class="tab-nav">
-            <ul class="m-0 p-0 d-flex flex-wrap mb-2">
-              <li class="d-flex m-0 align-items-center" (click)="socialAndPsychologicalTabs('social')"
-                [ngClass]="socialHistory ? 'active' : ''">
-                <img src="./assets/img/grid-icon.svg" />
-                <p class="d-inline-block m-0">Social history</p>
-              </li>
-              <li (click)="socialAndPsychologicalTabs('psychological')" class="d-flex m-0 align-items-center"
-                [ngClass]="psychologicalHistory ? 'active' : ''">
-                <img src="./assets/img/grid-icon.svg" />
-                <p class="d-inline-block m-0">Psychological history</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- <div class="tab-content" style="border-radius: 7px;">
-          <div *ngIf="socialHistory" class="psychological-main">
-            <div class="scale-box-checkbox">
-              <input type="checkbox" id="noHabitApplicable" [(ngModel)]="noHabitApplicable"
-                [ngModelOptions]="{ standalone: true }" />
-              <label class="admitting-physician" for="noHabitApplicable">No habits applicable</label>
-            </div>
-            <div class="main-tab-contant">
-              <div>
-                <table class="table table-bordered table-er-traige">
-                  <thead>
-                    <tr>
-                      <th scope="col">Habit</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Consumpation quantity </th>
-                      <th scope="col">Duration</th>
-                      <th scope="col">Year</th>
-                      <th scope="col">Last Update</th>
-                      <th scope="col">Add Habit</th>
-                      <th scope="col">No Consumpation</th>
-                      <th scope="col">Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody style="background-color: #fbfcff;">
-                    <tr style="height: 30px;" *ngFor="let item of socialHistoryList;let i=index">
-                      <td>{{ item.label }}</td>
-                      <td>{{ item.Status }}</td>
-                      <td>{{ item.Quantity }}</td>
-                      <td>{{ item.Duration }}</td>
-                      <td>{{ item.Year }}</td>
-                      <td>{{ getDate(item.DateFrom) | date: 'dd/MM/yyyy' }}</td>
-                      <td class="text-center"><input type="checkbox" [checked]="item.Status && item.Status != 'No'"
-                          [disabled]="noHabitApplicable" style="height: 16px;"
-                          (click)="openModelForAddHabitSocial(i,item)" /></td>
-                      <td class="text-center"><input type="checkbox" [checked]="item.Status && item.Status == 'No'"
-                          [disabled]="noHabitApplicable" style="height: 16px;"
-                          (click)="noConsumeSocial(i, item, 'noConsume')" /></td>
-                      <td><img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer"
-                          style="margin-left: 11px;" (click)="deleteData(i, item)"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="mt-4">
-                <div class="row">
-                  <div class="col-md-3 row m-0 align-items-center">
-                    <div class="col-md-6">Marital Status</div>
-                    <div class="col-md-6">
-                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [disabled]="true" />
-                    </div>
-                  </div>
-                  <div class="col-md-2 row m-0 align-items-center">
-                    <div class="col-md-3">Since</div>
-                    <div class="col-md-8">
-                      <input class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-md-3 row m-0 align-items-center">
-                    <div class="col-md-6">Number of spouse</div>
-                    <div class="col-md-6">
-                      <input class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-md-12 row m-0 align-items-center">
-                    <div class="col-md-1" style="margin-right: 38px ;">
-                      <label>Comments</label>
-                    </div>
-                    <div class="col-md-10">
-                      <textarea class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <div class="end-container">
+    <div class="sph-box">
+      <label class="box-label">Social / Psychological History / Occupational History / Economic History</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav w-100">
+              <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+                <li
+                  class="d-flex m-0 align-items-center"
+                  (click)="socialAndPsychologicalTabs('social')"
+                  [ngClass]="socialHistory ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Social history</p>
+                </li>
+                <li
+                  (click)="socialAndPsychologicalTabs('psychological')"
+                  class="d-flex m-0 align-items-center"
+                  [ngClass]="psychologicalHistory ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Psychological history</p>
+                </li>
+                <li
+                  (click)="socialAndPsychologicalTabs('occupational')"
+                  class="d-flex m-0 align-items-center"
+                  [ngClass]="occupationalHistory ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Occupational history</p>
+                </li>
+                <li
+                  (click)="socialAndPsychologicalTabs('economic')"
+                  class="d-flex m-0 align-items-center"
+                  [ngClass]="economicHistory ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Economic history</p>
+                </li>
+              </ul>
             </div>
           </div>
-          <form [formGroup]="triageForm">
-            <div *ngIf="psychologicalHistory" class="psychological-main">
-              <div class="d-flex mb-2">
-                <div class="scale-box-checkbox">
-                  <input type="checkbox" id="PsyNoProblem" formControlName="PsyNoProblem"
-                    (change)="onCheckboxChange($event)" />
-                  <label class="admitting-physician" for="PsyNoProblem">No Psychological Applicable</label>
+          <div class="tab-content" style="border-radius: 7px">
+            <div *ngIf="socialHistory" class="psychological-main">
+              <div class="scale-box-checkbox">
+                <input
+                  type="checkbox"
+                  id="noHabitApplicable"
+                  [(ngModel)]="noHabitApplicable"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+                <label class="admitting-physician" for="noHabitApplicable"
+                  >No habits applicable</label
+                >
+              </div>
+              <div class="main-tab-contant">
+                <div>
+                  <table class="table table-bordered table-er-traige">
+                    <thead>
+                      <tr>
+                        <th scope="col">Habit</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Consumpation quantity</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Last Update</th>
+                        <th scope="col">Add Habit</th>
+                        <th scope="col">No Consumpation</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fbfcff">
+                      <tr
+                        style="height: 30px"
+                        *ngFor="let item of socialHistoryList; let i = index"
+                      >
+                        <td>{{ item.label }}</td>
+                        <td>{{ item.Status }}</td>
+                        <td>{{ item.Quantity }}</td>
+                        <td>{{ item.Duration }}</td>
+                        <td>{{ item.Year }}</td>
+                        <td>
+                          {{ getDate(item.DateFrom) | date : "dd/MM/yyyy" }}
+                        </td>
+                        <td class="text-center">
+                          <input
+                            type="checkbox"
+                            [checked]="item.Status && item.Status != 'No'"
+                            [disabled]="noHabitApplicable"
+                            style="height: 16px"
+                            (click)="openModelForAddHabitSocial(i, item)"
+                          />
+                        </td>
+                        <td class="text-center">
+                          <input
+                            type="checkbox"
+                            [checked]="item.Status && item.Status == 'No'"
+                            [disabled]="noHabitApplicable"
+                            style="height: 16px"
+                            (click)="noConsumeSocial(i, item, 'noConsume')"
+                          />
+                        </td>
+                        <td>
+                          <img
+                            src="assets/img/Delete.svg"
+                            title="Delete"
+                            class="cursor-pointer"
+                            style="margin-left: 11px"
+                            (click)="deleteData(i, item)"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="mt-4">
+                  <div class="row">
+                    <div class="col-md-3 row m-0 align-items-center">
+                      <div class="col-md-6">Marital Status</div>
+                      <div class="col-md-6">
+                        <input
+                          class="form-control"
+                          placeholder="Married"
+                          [(ngModel)]="maritalStatus"
+                          [disabled]="true"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-2 row m-0 align-items-center">
+                      <div class="col-md-3">Since</div>
+                      <div class="col-md-8">
+                        <input class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-md-3 row m-0 align-items-center">
+                      <div class="col-md-6">Number of spouse</div>
+                      <div class="col-md-6">
+                        <input class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-12 row m-0 align-items-center">
+                      <div class="col-md-1" style="margin-right: 38px">
+                        <label>Comments</label>
+                      </div>
+                      <div class="col-md-10">
+                        <textarea class="form-control"></textarea>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="row checbox-list">
-                <div class="col-md-2 d-flex align-items-center habit-box-checkbox"
-                  *ngFor="let item of psychologicalHistoryList">
-                  <input type="checkbox" [formControlName]="item.controlname" [id]="item.label"
-                    [attr.disabled]="triageForm.value.PsyNoProblem ? true:null" />
-                  <label class="admitting-physician" [for]="item.label">{{item.label}}</label>
+            </div>
+            <form [formGroup]="triageForm">
+              <div *ngIf="psychologicalHistory" class="psychological-main">
+                <div class="d-flex mb-2">
+                  <div class="scale-box-checkbox">
+                    <input
+                      type="checkbox"
+                      id="PsyNoProblem"
+                      formControlName="PsyNoProblem"
+                      (change)="onCheckboxChange($event)"
+                    />
+                    <label class="admitting-physician" for="PsyNoProblem"
+                      >No Psychological Applicable</label
+                    >
+                  </div>
+                </div>
+                <div class="row checbox-list">
+                  <div
+                    class="col-md-2 d-flex align-items-center habit-box-checkbox"
+                    *ngFor="let item of psychologicalHistoryList"
+                  >
+                    <input
+                      type="checkbox"
+                      [formControlName]="item.controlname"
+                      [id]="item.label"
+                      [attr.disabled]="
+                        triageForm.value.PsyNoProblem ? true : null
+                      "
+                    />
+                    <label class="admitting-physician" [for]="item.label">{{
+                      item.label
+                    }}</label>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-md-2">
+                    <label class="admitting-physician">Comments</label>
+                  </div>
+                  <div class="col-md-10">
+                    <textarea
+                      class="form-control"
+                      formControlName="PsyComments"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
-              <div class="row align-items-center">
+            </form>
+            <div *ngIf="occupationalHistory" class="psychological-main">
+              <div class="row mb-3">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-8">
+                    <label>Current Occupational Status</label>
+                  </div>
+                  <div class="col-md-4">
+                    <ng-select>
+                      <ng-option>Test</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 text-right">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4" style="padding-left: 20px !important">
+                  <label>Nuture of job</label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" style="height: 33px" />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-8">
+                    <label
+                      >Left any previous job because of health problems?</label
+                    >
+                  </div>
+                  <div class="col-md-4">
+                    <ng-select>
+                      <ng-option>Test</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 text-right">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-8">
+                    <label
+                      >Been restricted in your work or given light duty because
+                      of your health injury?</label
+                    >
+                  </div>
+                  <div class="col-md-4">
+                    <ng-select>
+                      <ng-option>Test</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 text-right">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-8">
+                    <label>Content with the job</label>
+                  </div>
+                  <div class="col-md-4">
+                    <ng-select>
+                      <ng-option>Test</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 text-right">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-8">
+                    <label>Can manage daily needs</label>
+                  </div>
+                  <div class="col-md-4">
+                    <ng-select>
+                      <ng-option>Test</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 text-right">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-8">
+                    <label>Does your spouse work?</label>
+                  </div>
+                  <div class="col-md-4">
+                    <ng-select>
+                      <ng-option>Test</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                  <div class="col-md-4 text-right">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-4" style="padding-left: 20px !important">
+                  <label>Comments</label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" style="height: 33px" />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="economicHistory" class="psychological-main">
+              <div class="row mb-3">
+                <div class="col-md-8 row m-0">
+                  <div class="col-md-3 pl-0">
+                    <label>Living with</label>
+                  </div>
+                  <div class="col-md-6 pl-1">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+                <div class="col-md-4 row m-0">
+                  <div class="col-md-3">
+                    <label>No. People</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input class="form-control" style="height: 33px" />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
                 <div class="col-md-2">
-                  <label class="admitting-physician">Comments</label>
+                  <label>Relationaship</label>
                 </div>
-                <div class="col-md-10">
-                  <textarea class="form-control" formControlName="PsyComments"></textarea>
+                <div class="col-md-2">
+                  <ng-select>
+                    <ng-option>Test</ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-4">
+                  <input class="form-control" style="height: 33px" />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-2">
+                  <label>Phone</label>
+                </div>
+                <div class="col-md-4">
+                  <input class="form-control" style="height: 33px" />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-2">
+                  <label>Father's job</label>
+                </div>
+                <div class="col-md-5">
+                  <input class="form-control" style="height: 33px" />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-2">
+                  <label>Insurance</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select>
+                    <ng-option>Test</ng-option>
+                  </ng-select>
                 </div>
               </div>
             </div>
-          </form>
-        </div> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <div>
+    <app-assessment-section></app-assessment-section>
+  </div>
+  <div>
+    <app-orientation-section></app-orientation-section>
+  </div>
+  <div>
+    <app-physical-assessment-section></app-physical-assessment-section>
+  </div>
+  
 </div>
 <app-physician-allergy
   #createAllergyId
   (importEvent)="importAllergyData($event)"
 ></app-physician-allergy>
 
-<app-glos-gow-comma-scale-popup #scalesGlosgow (glasgowValue)="glasgowValue($event)"></app-glos-gow-comma-scale-popup>
-<app-face-pain-scale-popup #scalesFacePain (facePainValue)="facePainValue($event)"></app-face-pain-scale-popup>
-<app-numeric-rating-scale-popup #scalesNumericRating
-  (numericValue)="numericValue($event)"></app-numeric-rating-scale-popup>
+<app-glos-gow-comma-scale-popup
+  #scalesGlosgow
+  (glasgowValue)="glasgowValue($event)"
+></app-glos-gow-comma-scale-popup>
+<app-face-pain-scale-popup
+  #scalesFacePain
+  (facePainValue)="facePainValue($event)"
+></app-face-pain-scale-popup>
+<app-numeric-rating-scale-popup
+  #scalesNumericRating
+  (numericValue)="numericValue($event)"
+></app-numeric-rating-scale-popup>
