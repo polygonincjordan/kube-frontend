@@ -1185,4 +1185,18 @@ export class CheckInComponent implements OnInit {
       },
     });
   }
+
+
+  getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
+  }
 }
