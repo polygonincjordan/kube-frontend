@@ -73,7 +73,7 @@
             top: 0;
             z-index: 9;">
           <tr>
-            <th scope="col" *ngFor="let item of vitalListResp" (click)="selectDateColumn(item)" [ngClass]="(selectedColData?.Obsid == item?.Obsid) && isSelected ? 'selectedCol' : ''" style="    min-width: 155px;">{{getDate(item.Odate) | date : "dd.MM.y" }} {{getTime(item.Otime)}}</th>
+            <th scope="col" *ngFor="let item of vitalListResp" (click)="selectDateColumn(item)" [ngClass]="(selectedColData?.Obsid == item?.Obsid) && isSelected ? 'selectedCol' : ''" style="    min-width: 155px;">{{getDate(item.Odate) | date : "dd.MM.y" }} {{convertDurationToTime(item.Otime)}}</th>
             
           </tr>
         </thead>
