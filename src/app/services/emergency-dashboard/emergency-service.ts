@@ -273,6 +273,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  dialysisTAgetHis(Bwidtge: any, Bwidtle: any) {
+    return this.http.get(this.url + `dialysisTAgetHis?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}&status=${70}`, {
+      withCredentials: true,
+    });
+  }
 
   Dialysisget(Bwidtge: any, Bwidtle: any) {
     return this.http.get(this.url + `Dialysisget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {

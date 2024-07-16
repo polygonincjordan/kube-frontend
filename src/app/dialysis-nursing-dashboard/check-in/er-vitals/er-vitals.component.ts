@@ -385,17 +385,18 @@ export class ErVitalsComponent implements OnInit {
       return date;
     }
   }
-  getTime(value) {
-    if (value) {
-      var str = value;
-      var str = str.replace(/[PT]/g, '');
-      var str = str.replace(/[H]/g, ':');
-      var str = str.replace(/[M]/g, ':');
-      var str = str.replace(/[S]/g, '');
-      var str = str.slice(0,5)
-      return str;
-    }
+ 
+ 
+convertDurationToTime(durationString: string): string {
+  const match = durationString.match(/PT(\d{2})H(\d{2})M/);
+  if (match) {
+      const hours = parseInt(match[1], 10);
+      const minutes = parseInt(match[2], 10);
+      const timeString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+      return timeString;
   }
+  return ''; 
+}
 
   EditVitalList(){
     if(this.isSelected){
@@ -411,12 +412,12 @@ export class ErVitalsComponent implements OnInit {
           // }
           this.addItemForVital(element);
         });
-        let currentTime = this.datePipe.transform(new Date(), "hh:mm");
+        let currentTime = this.datePipe.transform(new Date(), "hh:mm");        
                 
        this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData.Treatmentou); 
        this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart()); 
        this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate)); 
-       this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime) ? this.getTime(this.selectedColData.Otime) : currentTime);
+       this.maintainVitalBarForm.controls.Otime.setValue(this.convertDurationToTime(this.selectedColData.Otime) ? this.convertDurationToTime(this.selectedColData.Otime) : currentTime);
        this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);  
         
       }
@@ -590,6 +591,7 @@ export class ErVitalsComponent implements OnInit {
   CreateVitalList(){
     this.showMaintain = true;
     let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S';
+    
     // if (this.vitalListResp.length != 0) {
     //   this.maintainVitalBarForm.controls.Orgdo.setValue(this.vitalListResp[0].Orgdo);
     // }else{
@@ -598,7 +600,7 @@ export class ErVitalsComponent implements OnInit {
     this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData.Treatmentou);
     this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart()); 
      this.maintainVitalBarForm.controls.Odate.setValue(new Date()); 
-     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));     
+     this.maintainVitalBarForm.controls.Otime.setValue(this.convertDurationToTime(createTime));     
     this.vitalDefaultListResp.forEach(element => {
       this.addItemForVital(element);
     });

@@ -396,9 +396,9 @@ export class ErHistoryComponent implements OnInit {
         'yyyy-MM-dd'
       )}T00:00:00`,
       History:true
-    }
+    }    
   
-    this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe(
+    this.emergencyService.dialysisTAgetHis(this.parseDate(date[0]),this.parseDate(date[1])).subscribe(
       (_success: any) => {
       // this.ERlistData = [];
       if (_success.d.results.length == 0) {
