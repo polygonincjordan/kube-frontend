@@ -19,12 +19,16 @@ export class ReservationComponent implements OnInit {
   public selectedCostCenter:any;
   public isConsumableAction: string = '1';
   public activeTab: string = '2';
-  public selectedType: string;
+  public selectedType: string ;
   public storageLocationList: any;
   public costCenterList:any;
   public tabs = [
     // { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
+  ];
+  public movementTypes = [
+    { value: '201', label: '201' },
+    { value: '311', label: '311' }
   ];
   constructor( private dataShareService: DataShareService,private emergencyService: EmergencyService, private formBuilder: FormBuilder) { 
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
@@ -32,7 +36,9 @@ export class ReservationComponent implements OnInit {
         this.isConsumableAction = data;
       }
     });
+    this.selectedType = this.movementTypes[1].value ;
     this.formDetailGroup = new FormGroup({
+      movementType:new FormControl(this.movementTypes[1].value),
       selectedLocation: new FormControl(null), // Initialize form control
       selectedCostCenter:new FormControl(null)
     });
@@ -52,7 +58,7 @@ export class ReservationComponent implements OnInit {
 
   public consumablesFrom() {
     this.formDetailGroup = this.formBuilder.group({
-      movementType:[null,[Validators.required]],
+      movementType:[this.movementTypes[1].value,[Validators.required]],
       selectedLocation: [null, [Validators.required]],
       selectedCostCenter:[null,Validators.required]
     });
@@ -105,10 +111,12 @@ export class ReservationComponent implements OnInit {
   
   public resetForm() {
     this.formDetailGroup.reset();
+    this.formDetailGroup.get('movementType').setValue(this.movementTypes[1].value)
     this.dataShareService.sendActionType(ActionType.Reset$, true);
   }
 
   onReservationSaved() {
     this.formDetailGroup.reset();
+    this.formDetailGroup.get('movementType').setValue(this.movementTypes[1].value)
   }
 }

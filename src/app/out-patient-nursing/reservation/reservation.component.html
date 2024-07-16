@@ -13,8 +13,7 @@
               <div class="storage-box w-100 d-flex align-items-center">
                 <label class="location-label" for="movement type ">Movement type </label>
                 <ng-select class="ng-select-dropdown"  formControlName="movementType"  [placeholder]="'Movement type'" (change)="selectType($event)">
-                  <ng-option value="201">201</ng-option>
-                  <ng-option value="311">311</ng-option>
+                  <ng-option *ngFor="let type of movementTypes" [value]="type.value">{{ type.label }}</ng-option>
                 </ng-select>
               </div>
               <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '311'">

@@ -157,45 +157,6 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  // public getDetailsOfMaterial(event: any, index: number) {
-  //   const enteredValue = event;
-  //   let parms = {
-  //     enteredValue: event,
-  //     location:this.selectedType === "201" ? this.selectedCostCenter : this.selectedStorageLocation
-  //   }
-  //   this.consumableService.getMaterialStockDetails(`${JSON.stringify(parms)}`).subscribe({
-  //     next: (resp: MaterialStockDetails) => {
-  //       if (resp && resp.d.results && resp.d.results.length > 0) {
-  //         let materialDetail = resp.d.results[0];
-  //         this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
-  //           Matnr: materialDetail.Matnr,
-  //           Meins: materialDetail.Uom,
-  //           sloc: materialDetail.Lgort,
-  //           plant: "1000",
-  //           Menge:"1"
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           text: `No Stock data for the selected item ${enteredValue}`,
-  //           icon: 'error',
-  //           confirmButtonText: 'Ok',
-  //           customClass: 'myalertpopup'
-  //         }).then((result) => {
-  //           if (result.value) {
-  //             this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
-  //               Matnr: "",
-  //               Meins: "",
-  //               sloc:"",
-  //               plant: "1000",
-  //               Menge:""
-  //             });
-  //           }
-  //         })
-  //       }
-  //     }
-  //   })
-  // }
-
   createPayload() {
     const plantValue = this.reservationForm.get('reservationToItem').get('results')['controls'][0].get('plant').value;
     const toItems = this.reservationForm.get('reservationToItem').get('results')['controls']
@@ -205,7 +166,7 @@ export class ReservationListComponent implements OnInit {
         StoreLoc: control.get('sloc').value,
         Batch: "0000000004",
         Quantity: control.get('Menge').value,
-        Unit: control.get('Meins').value,
+        Unit: '',
         ReqDate: `${new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd')}T00:00:00`,
         ShortText: "Testing"
       }));
@@ -231,75 +192,55 @@ export class ReservationListComponent implements OnInit {
       }
 
     }
-  
     return { payload, secondPayload };
   }
 
   saveReservationSet(){
     const { payload, secondPayload } = this.createPayload();
-    if(this.selectedType && (this.selectedStorageLocation || this.selectedCostCenter)){
-      if(this.selectedType ==="201"){
-           this.emergencyService.createReservation(secondPayload).subscribe((res)=>{
-            if(res){
-              this.reservationForm.reset();
-              this.reservationSaved.emit();
-              const resultsArray = this.reservationForm.get('reservationToItem').get('results') as FormArray;
-              resultsArray.controls.forEach(control => {
-                control.get('plant').setValue('1000');
-              });
-              
-              Swal.fire({
-                text: 'Reservation Created',
-                icon: 'success',
-                confirmButtonText: 'Ok',
-                customClass: 'myalertpopup'
-              })
-            }
-           },(error:any)=>{
-            Swal.fire({
-              text:'something went worng',
-              icon: 'error',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-           })
-         }else{
-           this.emergencyService.createReservation(payload).subscribe((res)=>{
-            if(res){
-              this.reservationForm.reset();
-              this.reservationSaved.emit();
-              const resultsArray = this.reservationForm.get('reservationToItem').get('results') as FormArray;
-              resultsArray.controls.forEach(control => {
-                control.get('plant').setValue('1000');
-              });
-              Swal.fire({
-                text: 'Reservation Created',
-                icon: 'success',
-                confirmButtonText: 'Ok',
-                customClass: 'myalertpopup'
-              })
-            }
-           },(error:any)=>{
-              Swal.fire({
-              text:'something went worng',
-              icon: 'error',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-            
-           })
-         }
-    }else {
+    if (!this.selectedType) {
+     this.showErrorMessage('Please select a movement type.');
+     return;
+    }
+    if (!this.selectedStorageLocation && !this.selectedCostCenter) {
+      const missingField = this.selectedType === '201' ? 'cost center.' : 'storage location.';
+      this.showErrorMessage(`Please select a ${missingField}`);
+      return;
+    }
+    const reservationPayload = this.selectedType === "201" ? secondPayload : payload;
+  
+    this.emergencyService.createReservation(reservationPayload).subscribe(
+      (res: any) => this.handleSuccessResponse(res),
+      () => this.showErrorMessage('Something went wrong')
+    );
+  }
+
+
+  private handleSuccessResponse(res: any) {
+    if (res) {
+      this.reservationForm.reset();
+      this.reservationSaved.emit();
+      const resultsArray = this.reservationForm.get('reservationToItem').get('results') as FormArray;
+      resultsArray.controls.forEach(control => {
+        control.get('plant').setValue('1000');
+      });
+  
       Swal.fire({
-        text: !this.selectedType 
-        ? 'Please select a movement type.' 
-        : `Please select a ${this.selectedType === '201' ? 'cost center.' : 'storage location.'}`,
-        icon: 'error',
+        text: `Reservation Created With Document #${res.d?.ResNo}`,
+        icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      });
     }
-   }
+  }
+  
+  private showErrorMessage(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup'
+    });
+  }
 
   public removeRow($event: any, index: number) {
     this.resultsFormArray.removeAt(index);
