@@ -20,7 +20,7 @@
             <th scope="col" style="padding-left: 0px;text-align: center;">Vitals</th>
 
             <th scope="col" style="padding-left: 0px;text-align: center">Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i></th>
-            <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Status<i class="fa fa-sort" aria-hidden="true" (click)="sortStatus()"></i></th>
             <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i></th>
             <th scope="col" style="width: 14%;">Assigned Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
             <!-- <th scope="col">Assigned Nurse</th> -->
@@ -46,12 +46,12 @@
             <td scope="row" class="border-top-none" style="width: 5%; padding-left: 0px; text-align: center" [title]="getTime(item.Bwizt)">
               {{ getTime(item.Bwizt) }}
             </td>
-            <td style="width: 3%" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+            <td style="width: 3%" >
               <span>
                 <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;" (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
               </span>
             </td>
-            <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"  [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  " >
+            <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"  >
               <img src="assets/img/Allergy.svg" [title]="item.Allergies" style="width: 23px" (click)="openModalForAllergy(allergyModal,item)" />
             </td>
             <td scope="row" style="padding-left: 0px; text-align: center">
@@ -72,7 +72,7 @@
             <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.Leitx" class="pl-2 w-12">
               {{ item.Leitx }}
             </td>
-            <td style="width: 1%" [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">
+            <td style="width: 1%" >
               <div style="display: flex; justify-content: end; line-height: 14px;align-items:end">
                 <div style="margin-left: 3px; margin-right: 3px">
                   <img src="assets/img/nur-emr-user.svg" style="width: 32px; cursor: pointer" title="Assign to Me"/>

@@ -696,8 +696,8 @@ export class LabResultsComponent implements OnInit{
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Datum.Bett.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Datum.Bett.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Datum.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Datum.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -709,8 +709,8 @@ export class LabResultsComponent implements OnInit{
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Datum.Bett.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Datum.Bett.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Datum.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Datum.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

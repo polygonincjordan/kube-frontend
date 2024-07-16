@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -38,7 +39,7 @@ export class ErVitalsComponent implements OnInit {
   selectedRowIndex: any;
   stickyHead = true;
   searchString = '';
-  constructor(private modalService: BsModalService,private emergencyService :EmergencyService,private formBuilder: FormBuilder,private storageService : StorageService) {
+  constructor(private modalService: BsModalService,private emergencyService :EmergencyService,private formBuilder: FormBuilder,private storageService : StorageService,private datePipe:DatePipe) {
     this.maintainvitalform = this.formBuilder.group({
       maintainVitalFormitems: new FormArray([]),
     });
@@ -410,10 +411,12 @@ export class ErVitalsComponent implements OnInit {
           // }
           this.addItemForVital(element);
         });
-       this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo); 
+        let currentTime = this.datePipe.transform(new Date(), "hh:mm");
+                
+       this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData.Treatmentou); 
        this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart()); 
        this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate)); 
-       this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
+       this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime) ? this.getTime(this.selectedColData.Otime) : currentTime);
        this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);  
         
       }
@@ -530,7 +533,8 @@ export class ErVitalsComponent implements OnInit {
       "Lfdnr" : this.erListSelectedData.Lfdbw,
       "Orgfa" : "",
       "Orgpf" : "",
-      "Orgdo" : this.maintainVitalBarForm.controls.Orgdo.value,
+      // "Orgdo" : this.maintainVitalBarForm.controls.Orgdo.value,
+      "Orgdo" : this.erListSelectedData.Treatmentou,
       "Mitarb" : this.storageService.getGpart(),
       "Origin" : "",
       "Odate" : createDate,
@@ -591,12 +595,10 @@ export class ErVitalsComponent implements OnInit {
     // }else{
     //   this.maintainVitalBarForm.controls.Orgdo.setValue('');
     // }
-    this.maintainVitalBarForm.controls.Orgdo.setValue('EMEMDAMC');
+    this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData.Treatmentou);
     this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart()); 
      this.maintainVitalBarForm.controls.Odate.setValue(new Date()); 
-     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));
-     console.log(this.maintainVitalBarForm);
-     
+     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));     
     this.vitalDefaultListResp.forEach(element => {
       this.addItemForVital(element);
     });
