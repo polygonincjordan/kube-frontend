@@ -99,7 +99,8 @@ value: any;
     private hospitalistService: HospitalistService,
     private formBuilder: FormBuilder,
     public ePrescriptionService: EPrescriptionService,
-    public missedMedicationService: MissedMedicationDosesService
+    public missedMedicationService: MissedMedicationDosesService,
+    private datePipe:DatePipe
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -134,11 +135,12 @@ value: any;
       Repdt: [''],
     });
 
+    let currentTime = this.datePipe.transform(new Date(), "hh:mm"); 
     this.cartForm = this.formBuilder.group({
       FromDt: [new Date()],
       ToDt: [new Date()],
-      FromTm: [''],
-      ToTm: [''],
+      FromTm: [currentTime],
+      ToTm: [currentTime],
       Nursingou: ['F2DTUAMC']
     })
   }

@@ -24,6 +24,7 @@ import { Patient } from '@services/e-kardex/interfaces/patient';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { formatDate } from 'ngx-bootstrap/chronos';
+import { ProgressNotePopupComponent } from './progress-note-popup/progress-note-popup.component';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -36,6 +37,7 @@ export class CheckInComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
   @ViewChild('triageModal') triageModal: ErTriageComponent;
+  @ViewChild('progressNotesKardexId') progressNotesKardex: ProgressNotePopupComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
   isFormValidError: boolean = false;
@@ -1145,5 +1147,9 @@ export class CheckInComponent implements OnInit {
     this.visitComments = data.VisitComments;
     this.modalRef.onHide.subscribe((reason: string | any) => {
     });
+  }
+
+  openModalForProgressNotes(item) {
+    this.progressNotesKardex.openProgressNotesModal(item);
   }
 }
