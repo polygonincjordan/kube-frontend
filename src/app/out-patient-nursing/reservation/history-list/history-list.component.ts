@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ConsumableService } from '@services/consumables/consumable.service';
-import { ConsumablesHistory, ConsumablesHistoryResult, MaterialDetails, MaterialDetailsResult } from '@services/consumables/interfaces/consumables.interface';
-import { DataShareService } from '@services/data-share.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @Component({
   selector: 'app-history-list',
@@ -11,8 +7,39 @@ import { DataShareService } from '@services/data-share.service';
   styleUrls: ['./history-list.component.scss']
 })
 export class HistoryListComponent implements OnInit {
-  constructor() {}
+  historyList: any;
+  constructor(private emergencyService: EmergencyService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getHistoryList();
+  }
+
+  getHistoryList(){
+    let payload = {
+      CostCtr:'',
+      MoveType:'',
+      Matnr:'',
+      Sloc:''
+    }
+    this.emergencyService.getHistoryReservationLiat(payload).subscribe({
+      next:(res:any)=>{
+        if(res){
+          this.historyList = res.d?.results
+        }else{
+          this.historyList = [];
+        }
+      },error:(err:any)=>{}
+    })
+  }
+
+
+  getDate(value) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
+    }
+  }
 
 }
