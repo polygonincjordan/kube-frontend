@@ -284,6 +284,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  DialysisIPSet(Bwidtge: any, Bwidtle: any) {
+    return this.http.get(this.url + `DialysisIPSet?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
+      withCredentials: true,
+    });
+  }
 
   getAllergyReactionValues() {
     return this.http.get(this.url + 'getAllergyReactionValues', {

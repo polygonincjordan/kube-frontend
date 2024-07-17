@@ -588,7 +588,7 @@ export class BedComponent  {
     );
   }
   getErList(date?: any) {
-    this.emergencyService.Dialysisget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
+    this.emergencyService.DialysisIPSet(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
       this.ERlistData = [];
       if (_success.d.results.length > 0) {
         this.sendErPatientCount.emit(this.ERlistData.length);

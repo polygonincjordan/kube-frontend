@@ -1,0 +1,40 @@
+
+   <ng-template #progressNotesKardexModal>
+    <div class="modal-body" style="padding: 0 !important;">
+      <div class="allergy-header">
+        <div style="
+          font-size: 23px;
+          font-weight: bold">
+          <span>Progress Notes</span>
+          </div>
+          <div style="display: flex;
+        justify-content: end;align-items: center;flex:1">
+        <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{erListSelectedData.PatnrName}}</span></li><li  class="allergy-header-item">MRN: {{erListSelectedData.Patnr}}</li>
+          <li  class="allergy-header-item">Admission date: {{erListSelectedData.admissionDate | date : "dd.MM.y"}}</li>
+        <li  class="close-icon allergy-header-item" style="border: none;
+          padding: 0;
+          margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float:right" (click)="modalRef.hide()"></li></ul>
+        </div>
+          </div>
+      <app-physician-order
+                (onSetDateFilterEventForProgressNotes)="
+                  progressNotesFilterList($event)
+                "
+                (onSetDateFilterEvent)="progressNotesFilterList($event)"
+                [occupationalGroupData]="occupationalGroupData"
+                (onSearchChangEvent)="onSearchChange($event)"
+                (onSearchChangEventForProgressNotes)="onSearchChange($event)"
+              ></app-physician-order>
+              <div
+              class="order-templete-main mt-3" *ngIf="this.emergencyService.ProgressNotes" style="padding: 10px;"
+            >
+              <app-progress-note
+                [searchString]="searchString"
+                [ProgressNotesList]="ProgressNotesList"
+                [occupationalGroupData]="occupationalGroupData"
+                [erListSelectedData]="erListSelectedData"
+              ></app-progress-note>
+            </div>
+    </div>
+  </ng-template>
+  
