@@ -172,6 +172,7 @@ export class PatientDocumentationComponent implements OnInit {
   public ActionType: any;
   openPainAssement: any = false;
   openMorseFallScale = false;
+  sortedDocuments: any;
   constructor(
     private modalService: BsModalService,
     private emergencyService: EmergencyService,
@@ -215,9 +216,9 @@ export class PatientDocumentationComponent implements OnInit {
       attachmentType: [null, Validators.required],
       attachmentFile: [null, Validators.required],
     });
-    this.getLatestAssessment();
-    this.getEducationAssessment();
-    this.getPatientProfile();
+    // this.getLatestAssessment();
+    // this.getEducationAssessment();
+    // this.getPatientProfile();
     this.getLatestAssessmentPA();
     this.getTriageLatestDocuments();
     this.getPhyAssessment();
@@ -879,6 +880,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = file;
   }
   refresh() {
+    this.asc = true;
+    this.desc = false;
     if (this.openBradenScale) {
       this.BradenScaleComp.ngOnDestroy();
     }
@@ -894,12 +897,12 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openDischargeSummery) {
       this.NursingDischargeComp.ngOnDestroy();
     }
+    this.getPatientProfile();
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getTriageLatestDocuments();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
-    this.getPatientProfile();
     this.getNurseEndorsement()
     this.getPediatricWarningScore();
     this.getSurgicalPass();
@@ -1756,16 +1759,13 @@ export class PatientDocumentationComponent implements OnInit {
     }
   }
 
-  sortedDocuments: any;
+  
   sort() {
-
     this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
-
     this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
       date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
       documents: this.patientProfileDocumet[key]
     }));
-
     // Sort the array based on the date property
     if (this.asc) {
       this.asc = false;
