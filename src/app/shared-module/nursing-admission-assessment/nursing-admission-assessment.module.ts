@@ -14,6 +14,7 @@ import { OrientationSectionComponent } from './orientation-section/orientation-s
 import { PhysicalAssessmentSectionComponent } from './physical-assessment-section/physical-assessment-section.component';
 import { MedicationSubstancesSectionComponent } from './medication-substances-section/medication-substances-section.component';
 import { VaccinationExposureSectionComponent } from './vaccination-exposure-section/vaccination-exposure-section.component';
+import { AdmissionDataSectionComponent } from './admission-data-section/admission-data-section.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { VaccinationExposureSectionComponent } from './vaccination-exposure-sect
     OrientationSectionComponent,
     PhysicalAssessmentSectionComponent,
     MedicationSubstancesSectionComponent,
-    VaccinationExposureSectionComponent
+    VaccinationExposureSectionComponent,
+    AdmissionDataSectionComponent
   ],
   exports: [NursingAdmissionAssessmentComponent],
   imports: [

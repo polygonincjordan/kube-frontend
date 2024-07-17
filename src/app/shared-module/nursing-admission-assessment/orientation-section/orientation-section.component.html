@@ -1,53 +1,55 @@
-<div class="end-container">
-  <div class="sph-box">
-    <label class="box-label">Orientation of the unit</label>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">ID Band</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Bathroom</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Batch Call Light</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Nurse Call</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Mell Times</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Visiting Hours</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Tv Control</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Non-smoking Policy</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Equal</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Telephone</label>
-        </div>
-        <div class="col-md-2 d-flex mb-2">
-          <input type="checkbox" />
-          <label class="m-0">Fall Risk Score</label>
+<form [formGroup]="nursingAdmissionForm">
+  <div class="end-container">
+    <div class="sph-box">
+      <label class="box-label">Orientation of the unit</label>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OIdBand" />
+            <label class="m-0">ID Band</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OBathroom" />
+            <label class="m-0">Bathroom</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OBatchCallLight" />
+            <label class="m-0">Batch Call Light</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="ONurseCall" />
+            <label class="m-0">Nurse Call</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OMealTimes" />
+            <label class="m-0">Meal Times</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OVisitingHours" />
+            <label class="m-0">Visiting Hours</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OTvControl" />
+            <label class="m-0">Tv Control</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="ONonSmokingPolicy" />
+            <label class="m-0">Non-smoking Policy</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OEqual" />
+            <label class="m-0">Equal</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OTelephone" />
+            <label class="m-0">Telephone</label>
+          </div>
+          <div class="col-md-2 d-flex mb-2">
+            <input type="checkbox" formControlName="OFallRiskScore" />
+            <label class="m-0">Fall Risk Score</label>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</form>

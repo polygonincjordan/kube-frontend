@@ -36,14 +36,12 @@
     padding: 4px 10px 4px 10px;
 
     .create-form-inputs {
-      margin-bottom: 15px;
+      margin-bottom: 8px;
 
       .col-md-2 {
         width: 16.67%;
 
-        label {
-          font-weight: bold;
-        }
+      
       }
 
       .col-md-4 {
@@ -475,7 +473,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 15px 0px;
+      padding: 8px 0px;
 
       input[type="checkbox"] {
         width: 18px;
@@ -498,7 +496,7 @@
     .scale-box {
       margin-top: -25px;
       justify-content: space-between;
-      padding: 0px 25px;
+      padding: 0px 10px;
       width: 100%;
 
       .scale-box-checkbox {
@@ -864,4 +862,8 @@
   border-bottom: 1px solid #cacaca;
   margin-bottom: 12px;
   padding: 6px 10px;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
 }
