@@ -112,15 +112,17 @@
             <td style="padding-left: 0px" [title]="item.Orgfa" class="border-top-none">{{ item.Orgfa }}</td>
             <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
-            <td style="padding-left: 0px" [title]="item.Zznmealstat" class="border-top-none">
-              <span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span>
-            </td>
+            <td style="padding-left: 0px" 
+            [title]="item.Zznmealstat === 'Red' ? 'No Active Diet' : 'Active Diet Exist'" 
+            class="border-top-none">
+          <span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span>
+        </td>
             <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>
             <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ? item.BehArztName:'--'}}</td>
 
             <td style="padding-left: 0px" [title]="item.PordneInd" class="border-top-none">{{ item.PordneInd }}</td>
 
-            <td style="padding-left: 0px" [title]="item.DokIcon" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
+            <td style="padding-left: 0px" [title]="item.DokIcon === 'Red' ? 'No Attached Documents':'Attached Documents Exist ' " class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
 
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
 
