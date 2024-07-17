@@ -15,6 +15,10 @@ import { SocialHabitComponent } from './social-habit/social-habit.component';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, of } from 'rxjs';
+import { PatientService } from '@services/e-kardex/patient.service';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-nursing-admission-assessment',
@@ -28,7 +32,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   @ViewChild('scalesNumericRating')
   scalesNumericRating: NumericRatingScalePopupComponent;
   @ViewChild('socialAddHabit') socialAddHabit: SocialHabitComponent;
-  public triageForm: FormGroup;
+  public nursingAdmissionForm: FormGroup;
 
   toAllergyArr: any = [];
   duplicates: any[];
@@ -39,7 +43,6 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   public economicHistory: boolean = false;
   public socialHistory: boolean = true;
   public noHabitApplicable: boolean = false;
-
 
   public selectedTableDetails: any;
   public maritalStatus: any;
@@ -81,6 +84,83 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     { value: '06', label: 'Combative', controlname: 'PsyCombative' },
     { value: '07', label: 'Other', controlname: 'PsyOther' },
   ];
+
+  public currentOccupationList = [
+    {
+      label: 'Full Time Employment',
+      value: '0'
+    },
+    {
+      label: 'Part Time Employment',
+      value: '1'
+    },
+    {
+      label: 'Self-employed',
+      value: '2'
+    },
+    {
+      label: 'Multiple Jobs',
+      value: '3'
+    },
+    {
+      label: 'Unemployed',
+      value: '4'
+    },
+    {
+      label: 'Student',
+      value: '5'
+    },
+    {
+      label: 'Retied',
+      value: '6'
+    },
+  ];
+
+  occupationalOtherList = [
+    {
+      label: 'Yes',
+      value:'0',
+    },
+    {
+      label: 'No',
+      value:'1',
+    }
+  ]
+
+  relationashipList = [
+    {
+      label: 'Parents',
+      value:'0',
+    },
+    {
+      label: 'Father',
+      value:'1',
+    },
+    {
+      label: 'Mother',
+      value:'2',
+    },
+    {
+      label: 'Grandparents',
+      value:'3',
+    },
+    {
+      label: 'Uncle/Aunt',
+      value:'4',
+    },
+    {
+      label: 'Cousin',
+      value:'5',
+    },
+    {
+      label: 'Brother/Sister',
+      value:'6',
+    },
+    {
+      label: 'Other',
+      value:'7',
+    },
+  ]
 
   public socialHistoryList: commonKeyValuePariExt0[] = [
     {
@@ -126,27 +206,278 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   ];
   noScaleAppicable: any;
   paramsObject: any;
+  encounterId: any;
   constructor(
     private sharedService: SharedService,
     private formBuilder: FormBuilder,
-    private emergencyService: EmergencyService
-  ) {}
+    private emergencyService: EmergencyService,
+    private datePipe: DatePipe,
+    private _route: ActivatedRoute,
+    private patientService: PatientService,
+    private storageService: StorageService
+  ) {
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+      this.encounterId = this.paramsObject.einri + this.paramsObject.falnr + this.paramsObject.lfdnr;
+      this.getPatinetDetails(this.encounterId);
+    });
+  }
+
+  public getPatinetDetails(encounterId) {
+    this.patientService.getDataPatient(encounterId).pipe(catchError(() => {
+      return of({} as Patient);
+    })).subscribe((patientData: Patient) => {
+      this.patientDetails = patientData;
+      this.maritalStatus = this.patientDetails.maritalStatus;
+      this.storageService.setPatientData(patientData);
+    });
+  }
 
   ngOnInit(): void {
     this.initForm();
   }
 
   initForm() {
-    this.triageForm = this.formBuilder.group({
-      PsyNoProblem: [false],
-      PsyAnxious: [false],
-      PsyUncooperative: [false],
-      PsyDepressed: [false],
-      PsyAngry: new FormControl(),
-      PsyAgitated: new FormControl(),
-      PsyCombative: new FormControl(),
-      PsyOther: new FormControl(),
-      PsyComments: new FormControl(),
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+
+    this.nursingAdmissionForm = this.formBuilder.group({
+      Dockey: '',
+      Dtid: 'ZMED_NRADM',
+      Einri: '',
+      Patnr: '',
+      Falnr: '',
+      Lfdnr: '',
+      Orgdo: '',
+      AAdmittedWard: '',
+      ADate: [new Date()],
+      ATime: currentTime,
+      ARoom: '',
+      AReferralType: '',
+      AAdmissionMode: '',
+      AAdmissionModeT: '',
+      AAccompaniedBy: '',
+      AAccompaniedByT: '',
+      AInfoObtained: '',
+      AInfoObtainedT: '',
+      ALanguageSpoken: 'English',
+      ASchoolGrade: '',
+      AEducated: '',
+      AFavouriteToy: '',
+      AReasonVisit: '',
+      AChiefComplaint: '',
+      Substances: '',
+      Vaccinated: '',
+      InfectionStatus: '',
+      PsyNoProblem: false,
+      PsyAnxious: false,
+      PsyUncooperative: false,
+      PsyDepressed: false,
+      PsyAngry: false,
+      PsyAgitated: false,
+      PsyCombative: false,
+      PsyOther: false,
+      PsyComments: '',
+      OccOccupationalStatus: '',
+      OccOccupationalStatusTxt: '',
+      OccJobNature: '',
+      OccHealthProblems: '',
+      OccHealthProblemsTxt: '',
+      OccHealthInjury: '',
+      OccHealthInjuryTxt: '',
+      OccJob: '',
+      OccJobTxt: '',
+      OccDailyNeeds: '',
+      OccDailyNeedsTxt: '',
+      OccSpouseWork: '',
+      OccSpouseWorkTxt: '',
+      OccComments: '',
+      EcoLiving: '',
+      EcoNoPeople: '',
+      EcoRelationship: '',
+      EcoRelationshipTxt: '',
+      EcoPhone: '',
+      EcoFatherJob: '',
+      EcoInsurance: '',
+      GgRectalPain: false,
+      GgIndigestion: false,
+      GbAbsent: false,
+      GbPresent: false,
+      GbHypoactive: false,
+      GbHyperactive: false,
+      GaSoft: false,
+      GaDistendend: false,
+      GaFirm: false,
+      GaTenderness: false,
+      GeEnema: false,
+      GeLaxatives: false,
+      GeOstomyType: false,
+      GeOstomyTypeTxt: '',
+      GeOther: false,
+      GeOtherTxt: '',
+      RmProstate: false,
+      RmLesions: false,
+      RmDischarge: false,
+      RmScrotal: false,
+      RmDescr: '',
+      RfPregnant: false,
+      RfLmp: null,
+      RfDischarge: false,
+      RfLesions: false,
+      RfItching: false,
+      RfPelvic: false,
+      RfMenarcheAge: '',
+      RfNotReached1: false,
+      RfMenopauseAge: '',
+      RfNotReached2: false,
+      RfBirthCont: false,
+      RfBirthContTxt: '',
+      RbTenderness: false,
+      RbDischarge: false,
+      RbSwelling: false,
+      RbProsthesis: false,
+      RbLumps: false,
+      GPainful: false,
+      GIncontinence: false,
+      GBurning: false,
+      GHematuria: false,
+      GOliguria: false,
+      GDysuria: false, //
+      GPolyuria: false,
+      GDribbling: false,
+      GNocturia: false,
+      GRetention: false,
+      GStraining: false,
+      GUrineColour: '',
+      GUrineClarity: '',
+      GCatheterType: false,
+      GCatheterTypeTxt: '',
+      GMicturition: '',
+      GOther: false,
+      GOtherTxt: '',
+      SSkinColor: '',
+      SSkinColorTxt: '',
+      STemperature: '',
+      SMoisture: '',
+      SLesions: '',
+      SLocation: '',
+      NnHeadache: false,
+      NnDizziness: false,
+      NnNumbness: false,
+      NnNumbnessLoc: '',
+      NnTingling: false,
+      NnTinglingLoc: '',
+      NnParalysis: false,
+      NnParalysisLoc: '',
+      NnTremors: false,
+      NnTremorsLoc: '',
+      NLevelConscious: '',
+      NoPlace: false,
+      NoTime: false,
+      NoPresent: false,
+      NResponsiveness: '',
+      CgChestPain: false,
+      CgPalpitations: false,
+      CgPacemaker: false,
+      CgPainCalves: false,
+      CpRegular: false,
+      CpIrregular: false,
+      CpStrong: false,
+      CpWeak: false,
+      CPedalPulses: '',
+      CeYes: false,
+      CeNo: false,
+      CePitting: false,
+      CeNonPitting: false,
+      CeLocation: '',
+      CNailBed: '',
+      CCapillaryRefill: '',
+      EeHardHearing: '',
+      EePain: '',
+      EeDrainage: '',
+      EeDeaf: '',
+      EnEpistaxis: false,
+      EnCongestion: false,
+      EnDrainage: false,
+      EnType: '',
+      EtDysphagia: false,
+      EtBleeding: false,
+      EtSwollenGlands: false,
+      EtSwollenGums: false,
+      EtPain: false,
+      EtLesions: false,
+      EtLocation: '',
+      OGlassEye: '',
+      ORedness: '',
+      OPain: '',
+      ODischarge: '',
+      OBlind: '',
+      OComments: '',
+      RChestAppearance: '',
+      RbDyspneaRest: false,
+      RbDyspneaExertion: false,
+      RbNonLabored: false,
+      RBbreathSounds: '',
+      RRhonchi: '',
+      RCough: '',
+      RColor: '',
+      RAmount: '',
+      RTracheostomy: false,
+      RTubeSize: '',
+      RO2: false,
+      RBy: '',
+      ROtherTxt: '', //
+      RAt: '',
+      FunSelfNoProblem: false,
+      FunSelfNeedsSuper: false,
+      FunSelfNeedsFeeding: false,
+      FunSelfNeedsHygiene: false,
+      FunSelfNeedsToileting: false,
+      FunSelfNeedsAmulation: false,
+      FunMusNoProblem: false,
+      FunMusProblemIdentified: false,
+      FunMusProblems: '',
+      FunAssEquipmentNone: false,
+      FunAssEquipmentUseOf: false,
+      FunAssEquipmentUseOfTyp: '',
+      FunAssEquipmentUseOfTxt: '',
+      FunDrNotification: '',
+      FunNotified: '',
+      ImpairedNutritional0: false,
+      ImpairedNutritional1: false,
+      ImpairedNutritional2: false,
+      ImpairedNutritional3: false,
+      ImpairedNutritionalScore: '',
+      SeverityDisease0: false,
+      SeverityDisease1: false,
+      SeverityDisease2: false,
+      SeverityDisease3: false,
+      SeverityDiseaseScore: '',
+      TotalScore: '',
+      AgeAdjustedScore: '',
+      PhysicianInformed: '',
+      NamePhysician: '',
+      PComments: '',
+      SSleepRest: '',
+      SSleepTime: '',
+      SNumberHours: '',
+      SComments: '',
+      OIdBand: false,
+      OBathroom: false,
+      OBatchCallLight: false,
+      ONurseCall: false,
+      OMealTimes: false,
+      OVisitingHours: false,
+      OTvControl: false,
+      ONonSmokingPolicy: false,
+      OEqual: false,
+      OTelephone: false,
+      OFallRiskScore: false,
+      MaritalStatus: '',
+      Since: '',
+      NumberSpouse: '',
+      HComments: '',
+      AttendPhy: '',
+      DocStatus: '1',
     });
   }
 
@@ -159,12 +490,16 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   }
   public onCheckboxChange(event: any) {
     const isChecked = event.target.checked;
-    // If 'No Psychological Applicable' checkbox is unchecked
     if (isChecked) {
-      // Uncheck all other psychological history checkboxes
-      this.psychologicalHistoryList.forEach((item) => {
-        this.triageForm.get(item.controlname)?.setValue(false);
-      });
+      this.nursingAdmissionForm.patchValue({
+        PsyAnxious: false,
+        PsyUncooperative: false,
+        PsyDepressed: false,
+        PsyAngry: false,
+        PsyAgitated: false,
+        PsyCombative: false,
+        PsyOther: false,
+      })
     }
   }
 
@@ -246,7 +581,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
 
   public openGlosgowComaModel(item: any) {
     if (this.noScaleAppicable) return;
-    if(item.Dockey) {
+    if (item.Dockey) {
       this.scalesEditConfirmationMsg(item);
     } else {
       this.openModalScale(item);
@@ -263,7 +598,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
-        this.openModalScale(item)
+        this.openModalScale(item);
       }
     });
   }
@@ -317,18 +652,28 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     }
   }
 
-
-
   public openModelForAddHabitSocial(index: any, item: any) {
     if (item.Status) {
       this.swallConfirmation(item.label, index);
     } else {
       this.socialAddHabit.openModalForAddHabit(
         item.label,
-        this.selectedTableDetails,
+        this.paramsObject,
         this.patientDetails,
         item
       );
+    }
+  }
+
+  saveHabitData(event) {
+    if (event == 'success') {
+      this.getSocialHistoryHabitList();
+    }
+    if (event?.isNoConsume) {
+      if (event.habitType == 'Alcohol') this.saveAlcoholWithNoDrink();
+      if (event.habitType == 'Tobacco') this.saveTabaccolWithNoSmoke();
+      if (event.habitType == 'Drugs') this.saveDrugsWithNoDrugs();
+      if (event.habitType == 'Other') this.saveOtherWithNoOther();
     }
   }
 
@@ -350,7 +695,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         } else {
           this.socialAddHabit.openModalForAddHabit(
             habitType,
-            this.selectedTableDetails,
+            this.paramsObject,
             this.patientDetails,
             this.socialHistoryList[index]
           );

@@ -25,3 +25,9 @@ input[type="radio"] {
   overflow: auto;
   white-space: nowrap;
 }
+.top-0 {
+  top: 0 !important;
+}
+.form-control:focus {
+  box-shadow: none !important;
+}
