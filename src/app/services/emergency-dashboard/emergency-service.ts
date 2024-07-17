@@ -21,7 +21,6 @@ import {
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
 import { truncate } from 'fs/promises';
-import { join } from 'path';
 
 @Injectable()
 export class EmergencyService {

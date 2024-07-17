@@ -1,18 +1,33 @@
 .checkin-table {
   width: 100%;
-  white-space: nowrap;
+  // white-space: nowrap;
   td{
     border: none;
     background: #fbfcff;
     text-overflow: ellipsis;
     overflow: hidden;
-    // max-width: 100px;
+    white-space: nowrap;;
+
+    &:nth-child(12){
+      border: none;
+    background: #fbfcff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 80px;
+    white-space: nowrap;;
+    }
   }
   thead {
     position: sticky;
     top: 0;
     z-index: 9 !important;
     background-color: white;
+
+    tr {
+      th{
+        white-space: nowrap;
+      }
+    }
   }
 
   .checkin-table-header {
