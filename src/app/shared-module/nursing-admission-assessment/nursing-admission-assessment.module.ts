@@ -8,6 +8,13 @@ import { FacePainScalePopupComponent } from './face-pain-scale/face-pain-scale-p
 import { GlosGowCommaScalePopupComponent } from './glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
 import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric-rating-scale-popup.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SocialHabitComponent } from './social-habit/social-habit.component';
+import { AssessmentSectionComponent } from './assessment-section/assessment-section.component';
+import { OrientationSectionComponent } from './orientation-section/orientation-section.component';
+import { PhysicalAssessmentSectionComponent } from './physical-assessment-section/physical-assessment-section.component';
+import { MedicationSubstancesSectionComponent } from './medication-substances-section/medication-substances-section.component';
+import { VaccinationExposureSectionComponent } from './vaccination-exposure-section/vaccination-exposure-section.component';
+import { AdmissionDataSectionComponent } from './admission-data-section/admission-data-section.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +23,13 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     FacePainScalePopupComponent,
     GlosGowCommaScalePopupComponent,
     NumericRatingScalePopupComponent,
+    SocialHabitComponent,
+    AssessmentSectionComponent,
+    OrientationSectionComponent,
+    PhysicalAssessmentSectionComponent,
+    MedicationSubstancesSectionComponent,
+    VaccinationExposureSectionComponent,
+    AdmissionDataSectionComponent
   ],
   exports: [NursingAdmissionAssessmentComponent],
   imports: [

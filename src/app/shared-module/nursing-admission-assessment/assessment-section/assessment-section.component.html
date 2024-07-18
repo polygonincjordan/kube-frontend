@@ -1,0 +1,573 @@
+<form [formGroup]="nursingAdmissionForm">
+  <div class="end-container">
+    <div class="sph-box">
+      <label class="box-label">Assessment</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav w-100">
+              <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+                <li
+                  class="d-flex m-0 align-items-center"
+                  (click)="assessmentTabSelect('functional')"
+                  [ngClass]="isFunctionalAssessemnt ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Functional Assessment</p>
+                </li>
+                <li
+                  (click)="assessmentTabSelect('nutritional')"
+                  class="d-flex m-0 align-items-center"
+                  [ngClass]="isNutritionalRisk ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Nutritional Rish Screening</p>
+                </li>
+                <li
+                  (click)="assessmentTabSelect('sleep')"
+                  class="d-flex m-0 align-items-center"
+                  [ngClass]="isSleepRest ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Sleep/Rest</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-content pl-2" style="border-radius: 7px">
+            <div *ngIf="isFunctionalAssessemnt">
+              <h4
+                class="mb-2"
+                style="font-weight: 600; font-size: 14px !important"
+              >
+                Requires physician to be notified for physiotherapy referral
+              </h4>
+              <div class="assessment-section-box">
+                <label class="assessment-label">Self-caring</label>
+                <div class="assesment-card">
+                  <div class="row m-0">
+                    <div class="col-md-6">
+                      <input
+                        type="checkbox"
+                        formControlName="FunSelfNoProblem"
+                        (change)="selfCaringUncheck()"
+                      />
+                      <label>No problem identified</label>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-12 mb-2">
+                          <input
+                            type="checkbox"
+                            formControlName="FunSelfNeedsSuper"
+                            [attr.disabled]="
+                              checkBoxDisabled('FunSelfNoProblem')
+                            "
+                          />
+                          <label>Needs supervision / Totally Dependent</label>
+                        </div>
+                        <div class="col-md-3">
+                          <input
+                            type="checkbox"
+                            formControlName="FunSelfNeedsFeeding"
+                            [attr.disabled]="
+                              supervisionCheckboxDisabled('FunSelfNeedsSuper')
+                            "
+                          />
+                          <label>Feeding</label>
+                        </div>
+                        <div class="col-md-3">
+                          <input
+                            type="checkbox"
+                            formControlName="FunSelfNeedsHygiene"
+                            [attr.disabled]="
+                              supervisionCheckboxDisabled('FunSelfNeedsSuper')
+                            "
+                          />
+                          <label>Hygiene</label>
+                        </div>
+                        <div class="col-md-3">
+                          <input
+                            type="checkbox"
+                            formControlName="FunSelfNeedsToileting"
+                            [attr.disabled]="
+                              supervisionCheckboxDisabled('FunSelfNeedsSuper')
+                            "
+                          />
+                          <label>Toileting</label>
+                        </div>
+                        <div class="col-md-3">
+                          <input
+                            type="checkbox"
+                            formControlName="FunSelfNeedsAmulation"
+                            [attr.disabled]="
+                              supervisionCheckboxDisabled('FunSelfNeedsSuper')
+                            "
+                          />
+                          <label>Amulation</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="assessment-section-box mt-2">
+                <label class="assessment-label">Musculoskeletal</label>
+                <div class="assesment-card">
+                  <div class="row m-0">
+                    <div class="col-md-4">
+                      <input
+                        type="checkbox"
+                        formControlName="FunMusNoProblem"
+                      />
+                      <label>No problem identified</label>
+                    </div>
+                    <div class="col-md-4">
+                      <input
+                        type="checkbox"
+                        formControlName="FunMusProblemIdentified"
+                        [attr.disabled]="checkBoxDisabled('FunSelfNoProblem')"
+                      />
+                      <label>Problem identified</label>
+                    </div>
+                    <div class="col-md-4">
+                      <ng-select
+                        formControlName="FunMusProblems"
+                        [readonly]="
+                          isGeOstomyTypeTxtDisabled('FunMusProblemIdentified')
+                        "
+                      >
+                        <ng-option
+                          *ngFor="let item of musculoskeletalList"
+                          [value]="item.value"
+                          >{{ item.label }}</ng-option
+                        >
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="assessment-section-box mt-2">
+                <label class="assessment-label"
+                  >Use of assisting equipment</label
+                >
+                <div class="assesment-card">
+                  <div class="row m-0">
+                    <div class="col-md-12">
+                      <input
+                        type="checkbox"
+                        formControlName="FunAssEquipmentNone"
+                        (change)="useOfAssessment()"
+                      />
+                      <label>None</label>
+                    </div>
+                  </div>
+                  <div class="row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="FunAssEquipmentUseOf"
+                        [attr.disabled]="
+                          checkBoxDisabled('FunAssEquipmentNone')
+                        "
+                      />
+                      <label>Use of</label>
+                    </div>
+                    <div class="col-md-2">
+                      <ng-select
+                        formControlName="FunAssEquipmentUseOfTyp"
+                        [readonly]="
+                          isGeOstomyTypeTxtDisabled('FunAssEquipmentUseOf')
+                        "
+                      >
+                        <ng-option
+                          *ngFor="let item of useOfList"
+                          [value]="item.value"
+                          >{{ item.label }}</ng-option
+                        >
+                      </ng-select>
+                    </div>
+                    <div class="col-md-3">
+                      <input
+                        class="form-control"
+                        formControlName="FunAssEquipmentUseOfTxt"
+                        [disabled]="isInputDisabled('FunAssEquipmentNone', '5')"
+                        [readOnly]="isInputDisabled('FunAssEquipmentNone', '5')"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row m-0 mt-3">
+                <div class="col-md-3">
+                  <label>Requires Dr.Notification</label>
+                </div>
+                <div class="col-md-3">
+                  <ng-select formControlName="FunDrNotification">
+                    <ng-option
+                      *ngFor="let item of notificationList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mt-2">
+                <div class="col-md-3">
+                  <label>Notified</label>
+                </div>
+                <div class="col-md-3">
+                  <ng-select formControlName="FunNotified">
+                    <ng-option
+                      *ngFor="let item of notificationList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="isNutritionalRisk">
+              <div class="nutritional-main mb-3">
+                <div class="row nutritional-header m-0 mb-3">
+                  <div class="col-md-6">Impaired Nutritional Status</div>
+                  <div class="col-md-6">Severity of Disease</div>
+                </div>
+
+                <!-- Impaired Nutritional Status -->
+                <div class="row m-0">
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="ImpairedNutritional0"
+                        (change)="
+                          onCheckboxChange(
+                            'ImpairedNutritional',
+                            0,
+                            [1, 2, 3],
+                            0
+                          )
+                        "
+                      />
+                      <label>0</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>- Normal Nutritional Status</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="SeverityDisease0"
+                        (change)="
+                          onCheckboxChange('SeverityDisease', 0, [1, 2, 3], 0)
+                        "
+                      />
+                      <label>0</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>- Normal Nutritional Requirements</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row m-0">
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="ImpairedNutritional1"
+                        (change)="
+                          onCheckboxChange(
+                            'ImpairedNutritional',
+                            1,
+                            [0, 2, 3],
+                            1
+                          )
+                        "
+                      />
+                      <label>1</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>
+                        - Wt loss > 5% in 3 months <br />
+                        &nbsp; &nbsp; or <br />- Food Intake below 50-75% of
+                        normal requirement in preceding week
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="SeverityDisease1"
+                        (change)="
+                          onCheckboxChange('SeverityDisease', 1, [0, 2, 3], 1)
+                        "
+                      />
+                      <label>1</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>
+                        - Hip Fracture <br />- Chronic Patients ( Cirrhosis,
+                        COPD, Haemodialysis, Diabetes, Oncology )
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row m-0">
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="ImpairedNutritional2"
+                        (change)="
+                          onCheckboxChange(
+                            'ImpairedNutritional',
+                            2,
+                            [0, 1, 3],
+                            2
+                          )
+                        "
+                      />
+                      <label>2</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>
+                        - Wt loss > 5% in 2 months <br />
+                        &nbsp; or <br />- BMI 18.5-20.5 + impaired general
+                        condition<br />
+                        &nbsp; or <br />- Food Intake below 25-50% of normal
+                        requirement in preceding week
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="SeverityDisease2"
+                        (change)="
+                          onCheckboxChange('SeverityDisease', 2, [0, 1, 3], 2)
+                        "
+                      />
+                      <label>2</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>
+                        - Major abdominal surgery <br />
+                        - Stroke <br />- Severe Pneumonia, hematological
+                        malignancy
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row m-0">
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="ImpairedNutritional3"
+                        (change)="
+                          onCheckboxChange(
+                            'ImpairedNutritional',
+                            3,
+                            [0, 1, 2],
+                            3
+                          )
+                        "
+                      />
+                      <label>3</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>
+                        - Wt loss > 5% in 1 months( > 15% in 3 months ) <br />
+                        &nbsp; or <br />- BMI < 18.5 + impaired general
+                        condition<br />
+                        &nbsp; or <br />- Food Intake below 0-25% of normal
+                        requirement in preceding week
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 row m-0">
+                    <div class="col-md-1">
+                      <input
+                        type="checkbox"
+                        formControlName="SeverityDisease3"
+                        (change)="
+                          onCheckboxChange('SeverityDisease', 3, [0, 1, 2], 3)
+                        "
+                      />
+                      <label>3</label>
+                    </div>
+                    <div class="col-md-10">
+                      <label>
+                        - Head Injury <br />- Bone Marrow Transplantation
+                        <br />- Intensive Care Patient( APACHE > 10 )
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row m-0 mb-3">
+                <div class="col-md-6 d-flex align-items-center">
+                  <label class="mr-3 m-0">Score</label>
+                  <input
+                    formControlName="ImpairedNutritionalScore"
+                    class="form-control w-30"
+                    [disabled]="true"
+                    [readOnly]="true"
+                  />
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                  <label class="mr-3 m-0">Score</label>
+                  <input
+                    formControlName="SeverityDiseaseScore"
+                    class="form-control w-30"
+                    [disabled]="true"
+                    [readOnly]="true"
+                  />
+                </div>
+              </div>
+              <div class="nutritional-main mb-3">
+                <div class="nutritional-header row m-0">
+                  <h6 class="m-0">Total Score</h6>
+                </div>
+                <div class="row m-0 p-2">
+                  <div class="col-md-4 d-flex align-items-center">
+                    <label class="mr-3 m-0">Total Score</label>
+                    <input
+                      class="form-control w-30"
+                      [disabled]="true"
+                      [readOnly]="true"
+                      formControlName="TotalScore"
+                    />
+                  </div>
+                  <div class="col-md-4 d-flex align-items-center">
+                    <label class="mr-3 m-0">Age</label>
+                    <input
+                      class="form-control w-30"
+                      [disabled]="true"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <div class="col-md-4 d-flex align-items-center">
+                    <label class="mr-3 m-0">Age Adjusted Total Score</label>
+                    <input
+                      class="form-control w-30"
+                      [disabled]="true"
+                      [readOnly]="true"
+                      formControlName="AgeAdjustedScore"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-8">
+                  <div class="mb-3">
+                    Score >= 2: the patient is nutritionally at-risk and
+                    nutrition care plan is intiated
+                  </div>
+                  <div>
+                    Score < 2: Weekly re-screening of yhe patient. if the
+                    patient is (e.g) scheduled for a major operation, preventive
+                    nutritional care plan is considered to try to avoid the
+                    associated risk
+                  </div>
+                </div>
+              </div>
+              <div class="nutritional-main mb-3 p-2">
+                <div class="row m-0 mb-3">
+                  <div class="col-md-1 d-flex align-items-center">
+                    <input
+                      class="mr-2"
+                      type="radio"
+                      formControlName="PhysicianInformed"
+                      value="0"
+                    />
+                    <label class="m-0">No</label>
+                  </div>
+                  <div class="col-md-1 d-flex align-items-center">
+                    <input
+                      class="mr-2"
+                      type="radio"
+                      formControlName="PhysicianInformed"
+                      value="1"
+                    />
+                    <label class="m-0">Yes</label>
+                  </div>
+                </div>
+                <div>
+                  <div class="row m-0 mb-3">
+                    <div class="col-md-3">
+                      <label>Name of Physician Informed</label>
+                    </div>
+                    <div class="col-md-6">
+                      <input
+                        class="form-control"
+                        formControlName="NamePhysician"
+                      />
+                    </div>
+                  </div>
+                  <div class="row m-0">
+                    <div class="col-md-3">
+                      <label>Comments</label>
+                    </div>
+                    <div class="col-md-6">
+                      <input class="form-control" formControlName="PComments" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="isSleepRest">
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label>Sleep/Rest</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="SSleepRest">
+                    <ng-option
+                      *ngFor="let item of sleepRestList"
+                      [value]="item.label"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label>Sleep Time</label>
+                </div>
+                <div class="col-md-4">
+                  <input class="form-control" formControlName="SSleepTime" />
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label>Number of hours</label>
+                </div>
+                <div class="col-md-1">
+                  <input class="form-control" formControlName="SNumberHours" />
+                </div>
+              </div>
+              <div class="row m-0">
+                <div class="col-md-2">
+                  <label>Comments</label>
+                </div>
+                <div class="col-md-8">
+                  <input class="form-control" formControlName="SComments" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,6 +1,17 @@
-// Assuming this is your main styles.scss file
+.nursing-admission-main {
+  height: calc(100vh - 260px);
+  overflow: auto;
+}
+
+.allergies-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .end-container {
-  padding: 20px; // Add padding around the container
+  padding: 20px;
   font-size: 15px;
 
   .box-label {
@@ -15,10 +26,8 @@
     font-size: 18px;
     text-align: center;
     display: inline-block;
-    // width: 300px;
     padding: 0px 20px;
     color: #0890c5;
-    /* Allow width to adjust based on content */
   }
 
   form {
@@ -27,31 +36,28 @@
     padding: 4px 10px 4px 10px;
 
     .create-form-inputs {
-      margin-bottom: 15px; // Spacing between input sections
+      margin-bottom: 8px;
 
       .col-md-2 {
-        width: 16.67%; // Set column width for labels
+        width: 16.67%;
 
-        label {
-          font-weight: bold;
-        }
+      
       }
 
       .col-md-4 {
-        width: 33.33%; // Set column width for input fields
+        width: 33.33%;
 
         ng-select {
-          // Customize ng-select styles if needed
           width: 100%;
         }
 
         input.form-control {
-          height: 33px; // Set height for form controls
+          height: 33px;
         }
       }
 
       .col-md-10 {
-        width: 83.33%; // Adjust width for full-width content
+        width: 83.33%;
       }
 
       .prior-media {
@@ -61,7 +67,7 @@
         align-items: center;
 
         li {
-          margin-right: 30px; // Spacing between radio buttons
+          margin-right: 30px;
           display: flex;
           align-items: center;
           padding: 4px 10px 4px 10px;
@@ -70,7 +76,7 @@
           height: 35px;
 
           input[type="radio"] {
-            margin-right: 5px; // Spacing between radio button and label
+            margin-right: 5px;
             cursor: pointer;
 
             label {
@@ -94,15 +100,15 @@
     }
 
     .chief-complain {
-      margin-left: 20px; // Adjust left margin for chief complaint section
-      margin-right: 20px; // Adjust right margin for chief complaint section
+      margin-left: 20px;
+      margin-right: 20px;
 
       .text-area-label {
         font-weight: bold;
       }
 
       textarea.form-control {
-        height: 100px; // Set height for textarea
+        height: 100px;
         font-size: 18px;
         padding: 10px 30px;
       }
@@ -129,10 +135,8 @@
       font-size: 15px;
       text-align: center;
       display: inline-block;
-      // width: 300px;
       padding: 0px 20px;
       color: #0890c5;
-      /* Allow width to adjust based on content */
     }
   }
 
@@ -140,7 +144,6 @@
     .tab-navigation-part {
       background: none !important;
 
-      // border-bottom: 2px solid #cacaca;
       .tab-content {
         border-radius: 7px;
 
@@ -194,7 +197,6 @@
                 width: 15%;
 
                 td {
-                  // pointer-events: none;
                   text-align: left;
                   padding-left: 24px !important;
                   line-height: 39px;
@@ -247,7 +249,6 @@
 
     .psychological-main {
       justify-content: space-between;
-      // padding-right: 22px;
 
       .scale-box-checkbox {
         display: flex;
@@ -328,10 +329,8 @@
             font-size: 18px;
             text-align: center;
             display: inline-block;
-            // width: 300px;
             padding: 0px 20px;
             color: #0890c5;
-            /* Allow width to adjust based on content */
           }
 
           .option-section {
@@ -358,30 +357,30 @@
             }
 
             .checkbox-list {
-              display: flex; // Use flexbox layout
-              flex-wrap: wrap; // Allow items to wrap to the next line if necessary
+              display: flex;
+              flex-wrap: wrap;
               gap: 10px;
               justify-content: space-between;
               width: 35%;
             }
 
             .use-of-box {
-              display: flex; // Use flexbox layout
-              align-items: center; // Center align items vertically
+              display: flex;
+              align-items: center;
               gap: 10px;
 
               .scale-box-checkbox {
-                flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                display: flex; // Display inline as flexbox
-                align-items: center; // Center align items vertically
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
                 padding: 10px;
 
                 input[type="checkbox"] {
-                  margin-right: 5px; // Add spacing between checkbox and label
+                  margin-right: 5px;
                 }
 
                 input[type="text"] {
-                  margin-right: 5px !important; // Add spacing between checkbox and label
+                  margin-right: 5px !important;
                 }
               }
 
@@ -391,18 +390,17 @@
               }
 
               ng-select {
-                flex: 1 1 auto; // Allow to grow and shrink; take remaining space
+                flex: 1 1 auto;
               }
 
               input[type="text"] {
-                flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                // width: 150px; // Set a specific width for the input field
+                flex: 0 0 auto;
               }
 
               .scale-box-list {
-                flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                display: flex; // Display inline as flexbox
-                align-items: center; // Center align items vertically
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
                 padding: 15px 0px;
 
                 label {
@@ -410,8 +408,7 @@
                 }
 
                 input[type="text"] {
-                  flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                  // width: 350px !important;
+                  flex: 0 0 auto;
                 }
 
                 .drop-down-list {
@@ -424,9 +421,9 @@
               }
 
               .scale-box-kg-list {
-                flex: 0 0 auto; // Do not grow or shrink; maintain initial size
-                display: flex; // Display inline as flexbox
-                align-items: center; // Center align items vertically
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
                 padding: 15px 0px;
 
                 label {
@@ -441,7 +438,7 @@
                 }
 
                 input[type="text"] {
-                  flex: 0 0 auto; // Do not grow or shrink; maintain initial size
+                  flex: 0 0 auto;
                   width: 150px !important;
                 }
               }
@@ -476,7 +473,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 15px 0px;
+      padding: 8px 0px;
 
       input[type="checkbox"] {
         width: 18px;
@@ -499,7 +496,7 @@
     .scale-box {
       margin-top: -25px;
       justify-content: space-between;
-      padding: 0px 25px;
+      padding: 0px 10px;
       width: 100%;
 
       .scale-box-checkbox {
@@ -647,16 +644,16 @@
             padding: 4px 10px 4px 10px;
 
             .checkbox-list {
-              display: flex; // Use flexbox layout
-              flex-wrap: wrap; // Allow items to wrap to the next line if necessary
+              display: flex;
+              flex-wrap: wrap;
               gap: 10px;
               justify-content: space-between;
               width: 90%;
             }
 
             .checkbox-list-no-justtification {
-              display: flex; // Use flexbox layout
-              flex-wrap: wrap; // Allow items to wrap to the next line if necessary
+              display: flex;
+              flex-wrap: wrap;
               gap: 80px;
               width: 100%;
             }
@@ -675,7 +672,6 @@
 
 .splitter {
   position: relative;
-  /* Ensure position relative for ::after */
   background-color: #e5e5e5;
   z-index: 1;
   flex: 0 0 auto;
@@ -708,14 +704,6 @@
 
 .risk-section {
   padding: 30px 0px 0px 0px;
-}
-
-.scale-box-checkbox-label {
-  // width: 115px;
-}
-
-.scale-box-checkbox-note-label {
-  // width: 250px;
 }
 
 .drop-down-list {
@@ -758,19 +746,6 @@
   width: 400px !important;
 }
 
-// .nutritional-complain {
-
-//   .text-area-label {
-//     font-weight: bold;
-//   }
-
-//   textarea.form-control {
-//     height: 100px; // Set height for textarea
-//     font-size: 18px;
-//     padding: 10px 30px;
-//   }
-// }
-
 .nutritional-complain {
   textarea {
     height: 112px;
@@ -792,10 +767,8 @@
     font-size: 15px;
     text-align: center;
     display: inline-block;
-    // width: 300px;
     padding: 0px 20px;
     color: #0890c5;
-    /* Allow width to adjust based on content */
   }
 }
 
@@ -822,10 +795,8 @@
     font-size: 15px;
     text-align: center;
     display: inline-block;
-    // width: 300px;
     padding: 0px 20px;
     color: #0890c5;
-    /* Allow width to adjust based on content */
   }
 }
 
@@ -839,4 +810,60 @@
   display: flex;
   width: 35%;
   justify-content: space-between;
+}
+
+.assesment-card {
+  padding-bottom: 10px;
+  label {
+    margin: 0 !important;
+  }
+  input[type="checkbox"] {
+    margin-right: 16px;
+    width: 15px !important;
+    height: 15px !important;
+    position: relative;
+    top: 2px;
+  }
+}
+.nutritional-main {
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  input[type="checkbox"] {
+    margin-right: 16px;
+    width: 15px !important;
+    height: 15px !important;
+    position: relative;
+    top: 2px;
+  }
+}
+
+.assessment-label {
+  width: 100%;
+  border-bottom: 1px solid #cacaca;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.assessment-section-box {
+  border: 1px solid #cacaca;
+  border-radius: 7px;
+}
+.height-10 {
+  height: 10%;
+}
+.height-25 {
+  height: 25%;
+}
+.height-35 {
+  height: 35%;
+}
+.nutritional-header {
+  border-bottom: 1px solid #cacaca;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
 }

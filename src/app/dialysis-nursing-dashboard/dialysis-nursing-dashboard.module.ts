@@ -119,6 +119,9 @@ import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.gu
 import { HemodialysisFistulaGraftComponent } from './nurs-treatment-workarea/patient-documentation/hemodialysis-fistula-graft/hemodialysis-fistula-graft.component';
 import { TimePipe } from './administered-doses/time.pipe';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { ProgressNotePopupComponent } from './check-in/progress-note-popup/progress-note-popup.component';
+import { ProgressNoteComponent } from './check-in/progress-note-popup/progress-note/progress-note.component';
+import { PhysicianOrderComponent } from './check-in/progress-note-popup/physician-order/physician-order.component';
 
 const route: Routes = [
   {
@@ -211,6 +214,9 @@ const route: Routes = [
     HemoCatheterComponent,
     HemodialysisFistulaGraftComponent,
     TimePipe,
+    ProgressNotePopupComponent,
+    ProgressNoteComponent,
+    PhysicianOrderComponent,
   ],
   providers: [
     EmergencyService,

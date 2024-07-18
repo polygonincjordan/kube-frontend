@@ -1,0 +1,52 @@
+<div class="end-container">
+  <div class="scale-box-main">
+    <label class="box-label">Medication & Substances</label>
+    <div class="container-fluid">
+      <div class="row create-form-inputs">
+        <div class="scale-box">
+          <div class="scale-box-checkbox">
+            <input
+              type="checkbox"
+              id="noScaleAppicable"
+              [(ngModel)]="noMedication"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <label class="admitting-physician" for="noMedication"
+              >No medication & substance applicable</label
+            >
+          </div>
+          <div class="row m-0">
+              <div class="col-md-8 mt-3 p-0">
+                <div class="scale-box-table">
+                  <table class="table table-bordered past-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Event description</th>
+                        <th class="w-30" scope="col">Dose</th>
+                        <th class="w-15" scope="col" >EMAR View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of medicationList; let i = index">
+                        <td>{{ item.ScaleType }}</td>
+                        <td>{{ item.LastScore }}</td>
+                        <td>
+                          <a>View</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="chief-complain">
+                  <span class="text-area-label">Substances</span>
+                  <textarea class="form-control"></textarea>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

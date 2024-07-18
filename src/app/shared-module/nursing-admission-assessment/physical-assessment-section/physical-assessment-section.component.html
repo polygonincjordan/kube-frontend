@@ -1,0 +1,1301 @@
+<form [formGroup]="nursingAdmissionForm">
+  <div class="end-container">
+    <div class="sph-box">
+      <label class="box-label">Physical Assessment</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav w-100">
+              <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                <li
+                  *ngFor="let tab of tabList"
+                  class="d-flex m-0 align-items-center"
+                  (click)="assessmentTabSelect(tab)"
+                  [ngClass]="selectedTabName == tab ? 'active' : ''"
+                >
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">{{ tab }}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-content pl-2 mb-3" style="border-radius: 7px">
+            <div *ngIf="selectedTabName == 'Gastrontestinal'">
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">GENERAL</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GgRectalPain" />
+                  <label class="m-0">Rectal pain</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GgIndigestion" />
+                  <label class="m-0">Indigestion</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">BOWEL SOUNDS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GbAbsent" />
+                  <label class="m-0">Absent</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GbPresent" />
+                  <label class="m-0">Present</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GbHypoactive" />
+                  <label class="m-0">Hypoactive</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GbHyperactive" />
+                  <label class="m-0">Hyperactive</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">ABDOMEN</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GaSoft" />
+                  <label class="m-0">Soft</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GaDistendend" />
+                  <label class="m-0">Distendend</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GaFirm" />
+                  <label class="m-0">Firm</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GaTenderness" />
+                  <label class="m-0">Tenderness</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">ELIMINATION</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GeEnema" />
+                  <label class="m-0">Enema</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GeLaxatives" />
+                  <label class="m-0">Laxatives</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GeOstomyType" />
+                  <label class="m-0">Ostomy Type</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('GeOstomyType')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('GeOstomyType')"
+                    formControlName="GeOstomyTypeTxt"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GeOther" />
+                  <label class="m-0">Other</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('GeOther')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('GeOther')"
+                    formControlName="GeOtherTxt"
+                  />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Reproductive'">
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">MALE</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RmProstate" />
+                  <label class="m-0">Prostate problems</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RmLesions" />
+                  <label class="m-0">Lesions</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RmDischarge" />
+                  <label class="m-0">Discharge</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RmScrotal" />
+                  <label class="m-0">Scrotal pain/Swelling</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Descr.</label>
+                </div>
+                <div class="col-md-4 d-flex">
+                  <input
+                    class="form-control"
+                    formControlName="RmDescr"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">FEMALE</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RfPregnant" />
+                  <label class="m-0">Pregnant</label>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <label class="m-0 mr-2">LMP</label>
+                  <input
+                    class="form-control"
+                    formControlName="RfLmp"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RfDischarge" />
+                  <label class="m-0">Discharge</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RfLesions" />
+                  <label class="m-0">Lesions</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RfItching" />
+                  <label class="m-0">Itching</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RfPelvic" />
+                  <label class="m-0">Pelvic Pain</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Menarche Age</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    class="form-control"
+                    formControlName="RfMenarcheAge"
+                    style="height: 33px"
+                  />
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input
+                    class="top-0"
+                    type="checkbox"
+                    formControlName="RfNotReached1"
+                  />
+                  <label class="m-0">Not reached</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Menopause Age</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    class="form-control"
+                    formControlName="RfMenopauseAge"
+                    style="height: 33px"
+                  />
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <input
+                    class="top-0"
+                    type="checkbox"
+                    formControlName="RfNotReached2"
+                  />
+                  <label class="m-0">Not reached</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RfBirthCont" />
+                  <label class="m-0">Birth Control type Used</label>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                  <input
+                    class="form-control"
+                    formControlName="RfBirthContTxt"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">BREASTS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbTenderness" />
+                  <label class="m-0">Tenderness</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbDischarge" />
+                  <label class="m-0">Discharge</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbSwelling" />
+                  <label class="m-0">Swelling</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbProsthesis" />
+                  <label class="m-0">Prosthesis</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbLumps" />
+                  <label class="m-0">Lumps</label>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Genitourinary'">
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <input type="checkbox" formControlName="GPainful" />
+                  <label class="m-0">Painfil unination</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GIncontinence" />
+                  <label class="m-0">Incontinence</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GBurning" />
+                  <label class="m-0">Burning</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GHematuria" />
+                  <label class="m-0">Hematuria</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GOliguria" />
+                  <label class="m-0">Oliguria</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <input type="checkbox" formControlName="GPolyuria" />
+                  <label class="m-0">Polyuria</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GDribbling" />
+                  <label class="m-0">Dribbling</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GNocturia" />
+                  <label class="m-0">Nocturia</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GRetention" />
+                  <label class="m-0">Retention</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="GStraining" />
+                  <label class="m-0">Straining</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">Urine Color</label>
+                </div>
+                <div class="col-md-10 row m-0 p-0">
+                  <div
+                    class="col-md-2 d-flex"
+                    *ngFor="let option of urineColorOptions"
+                  >
+                    <input
+                      type="radio"
+                      [value]="option.value"
+                      formControlName="GUrineColour"
+                    />
+                    <label class="m-0">{{ option.label }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">Urine Clarity</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="GUrineClarity"
+                    value="0"
+                  />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="GUrineClarity"
+                    value="1"
+                  />
+                  <label class="m-0">Clear</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="GUrineClarity"
+                    value="2"
+                  />
+                  <label class="m-0">Slightly cloudy</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="GUrineClarity"
+                    value="3"
+                  />
+                  <label class="m-0">Cloudy</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="GUrineClarity"
+                    value="4"
+                  />
+                  <label class="m-0">Turbid</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <input type="checkbox" formControlName="GCatheterType" />
+                  <label class="m-0">Catheter type & size</label>
+                </div>
+                <div class="col-md-2">
+                  <input
+                    class="form-control"
+                    formControlName="GCatheterTypeTxt"
+                    [disabled]="isGeOstomyTypeTxtDisabled('GCatheterType')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('GCatheterType')"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Micturition</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="GMicturition">
+                    <ng-option
+                      *ngFor="let item of micturitionList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <input type="checkbox" formControlName="GOther" />
+                  <label class="m-0">Other</label>
+                </div>
+                <div class="col-md-2">
+                  <input
+                    class="form-control"
+                    formControlName="GOtherTxt"
+                    [disabled]="isGeOstomyTypeTxtDisabled('GOther')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('GOther')"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Skin/Integumentary'">
+              <div class="row mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Skin Color</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="SSkinColor">
+                    <ng-option
+                      *ngFor="let item of skinColorList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+                <div class="col-md-2">
+                  <input
+                    class="form-control"
+                    formControlName="SSkinColorTxt"
+                    [disabled]="isInputDisabled('SSkinColor', '7')"
+                    [readOnly]="isInputDisabled('SSkinColor', '7')"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Temperature</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="STemperature">
+                    <ng-option
+                      *ngFor="let item of temperatureList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Moisture</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="SMoisture">
+                    <ng-option
+                      *ngFor="let item of moistureList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Lesions</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="SLesions">
+                    <ng-option
+                      *ngFor="let item of lesionsList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+                <div class="col-md-2 text-right mt-auto mb-auto">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-2">
+                  <input
+                    class="form-control"
+                    formControlName="SLocation"
+                    [disabled]="isInputDisabled('SLesions', '1')"
+                    [readOnly]="isInputDisabled('SLesions', '1')"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Neurological'">
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">GENERAL</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NnHeadache" />
+                  <label class="m-0">Headache</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NnDizziness" />
+                  <label class="m-0">Dizziness</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-1">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NnNumbness" />
+                  <label class="m-0">Numbness</label>
+                </div>
+                <div class="col-md-2">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('NnNumbness')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('NnNumbness')"
+                    formControlName="NnNumbnessLoc"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-1">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NnTingling" />
+                  <label class="m-0">Tingling</label>
+                </div>
+                <div class="col-md-2">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('NnTingling')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('NnTingling')"
+                    formControlName="NnTinglingLoc"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-1">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NnParalysis" />
+                  <label class="m-0">Paralysis</label>
+                </div>
+                <div class="col-md-2">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('NnParalysis')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('NnParalysis')"
+                    formControlName="NnParalysisLoc"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NnTremors" />
+                  <label class="m-0">Tremors</label>
+                </div>
+                <div class="col-md-2">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('NnTremors')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('NnTremors')"
+                    formControlName="NnTremorsLoc"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">LEVEL OF CONSCIOUSNESS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NLevelConscious"
+                    value="0"
+                  />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NLevelConscious"
+                    value="1"
+                  />
+                  <label class="m-0">Alert</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NLevelConscious"
+                    value="2"
+                  />
+                  <label class="m-0">Lethargic</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NLevelConscious"
+                    value="3"
+                  />
+                  <label class="m-0">Stuporous</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NLevelConscious"
+                    value="4"
+                  />
+                  <label class="m-0">Unconsicious</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">ORIENTED TO</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NoPlace" />
+                  <label class="m-0">Place</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NoTime" />
+                  <label class="m-0">Time</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="NoPresent" />
+                  <label class="m-0">Present</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0">RESPONSIVENESS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NResponsiveness"
+                    value="0"
+                  />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NResponsiveness"
+                    value="1"
+                  />
+                  <label class="m-0">To verbal stimuli</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NResponsiveness"
+                    value="2"
+                  />
+                  <label class="m-0">To touch</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NResponsiveness"
+                    value="3"
+                  />
+                  <label class="m-0">To painful stimuli</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="NResponsiveness"
+                    value="4"
+                  />
+                  <label class="m-0">No response</label>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Cardiovascular'">
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">GENERAL</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CgChestPain" />
+                  <label class="m-0">Chest pain</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CgPalpitations" />
+                  <label class="m-0">Palpitations</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CgPacemaker" />
+                  <label class="m-0">Pacemaker</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CgPainCalves" />
+                  <label class="m-0">Pain in calvs</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">PULSE</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CpRegular" />
+                  <label class="m-0">Regular</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CpIrregular" />
+                  <label class="m-0">Irrengular</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CpStrong" />
+                  <label class="m-0">Strong</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CpWeak" />
+                  <label class="m-0">Weak</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">PEDAL PULSES</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="CPedalPulses"
+                    value="0"
+                  />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="CPedalPulses"
+                    value="1"
+                  />
+                  <label class="m-0">Felt</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="CPedalPulses"
+                    value="2"
+                  />
+                  <label class="m-0">Unevenly Felt</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="CPedalPulses"
+                    value="3"
+                  />
+                  <label class="m-0">Absent</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-1">
+                <div class="col-md-2">
+                  <label class="m-0">EDEMA</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CeYes" />
+                  <label class="m-0">Yes</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CePitting" />
+                  <label class="m-0">Pitting</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Location</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    class="form-control"
+                    formControlName="CeLocation"
+                    [disabled]="isGeOstomyTypeTxtDisabled('CePitting')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('CePitting')"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CeNo" />
+                  <label class="m-0">No</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="CeNonPitting" />
+                  <label class="m-0">Non-pitting</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">NAIL BEDS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="CNailBed" value="0" />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="CNailBed" value="1" />
+                  <label class="m-0">Pink</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="CNailBed" value="2" />
+                  <label class="m-0">Pele</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="CNailBed" value="3" />
+                  <label class="m-0">Cyanotic</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Capiliary Refill</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="CCapillaryRefill">
+                    <ng-option
+                      *ngFor="let item of capiliaryList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Ears/Nose/Throat'">
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">EARS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Hard of hearing</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="EeHardHearing">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Pain</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="EePain">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Drainage</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="EeDrainage">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Deaf</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="EeDeaf">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">NOSE</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EnEpistaxis" />
+                  <label class="m-0">Epistaxis</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EnCongestion" />
+                  <label class="m-0">Congestion</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EnDrainage" />
+                  <label class="m-0">Drainage</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <label class="m-0">Type</label>
+                </div>
+                <div class="col-md-3 d-flex">
+                  <input
+                    class="form-control"
+                    formControlName="EnType"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">THROAT/NECK</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EtDysphagia" />
+                  <label class="m-0">Dysphagia</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EtBleeding" />
+                  <label class="m-0">Bleeding</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EtSwollenGlands" />
+                  <label class="m-0">Swollen glands</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EtSwollenGums" />
+                  <label class="m-0">Swollen gums</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EtPain" />
+                  <label class="m-0">Pain</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-3">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="EtLesions" />
+                  <label class="m-0">Lesions</label>
+                </div>
+                <div class="col-md-4 d-flex">
+                  <label class="m-0 mr-3">Location</label>
+                  <input
+                    class="form-control"
+                    [disabled]="isGeOstomyTypeTxtDisabled('EtLesions')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('EtLesions')"
+                    formControlName="EtLocation"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Ophthalmology'">
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Glass eye</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="OGlassEye">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Redness</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="ORedness">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Pain</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="OPain">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Discharge</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="ODischarge">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">Blind</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="OBlind">
+                    <ng-option
+                      *ngFor="let item of earsNoseNickDropdownValue"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0">Comments</label>
+                </div>
+                <div class="col-md-5">
+                  <input
+                    class="form-control"
+                    formControlName="OComments"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Respiratory'">
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">Chest Appearance</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="RChestAppearance">
+                    <ng-option
+                      *ngFor="let item of chestAppearanceList"
+                      [value]="item.value"
+                      >{{ item.label }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">BREATH PATTERN</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbDyspneaRest" />
+                  <label class="m-0">Dyspnea at rest</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbDyspneaExertion" />
+                  <label class="m-0">Dyspnea on exertion</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RbNonLabored" />
+                  <label class="m-0">Non-labored</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">BREATH SOUNDS</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="RBbreathSounds"
+                    value="0"
+                  />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="RBbreathSounds"
+                    value="1"
+                  />
+                  <label class="m-0">Clear all lobes</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input
+                    type="radio"
+                    formControlName="RBbreathSounds"
+                    value="2"
+                  />
+                  <label class="m-0">Wheezes</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">Rhonchi</label>
+                </div>
+                <div class="col-md-2">
+                  <ng-select formControlName="RRhonchi">
+                    <ng-option></ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mb-4">
+                <div class="col-md-2">
+                  <label class="m-0">COUGH</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="RCough" value="0" />
+                  <label class="m-0">N/A</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="RCough" value="1" />
+                  <label class="m-0">Absent</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="RCough" value="2" />
+                  <label class="m-0">Productive</label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="radio" formControlName="RCough" value="3" />
+                  <label class="m-0">Non-Productive</label>
+                </div>
+              </div>
+              <div class="row m-0 mb-2 align-items-center">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-1">
+                  <label class="m-0">Color</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    formControlName="RColor"
+                    style="height: 33px"
+                  />
+                </div>
+                <div class="col-md-1">
+                  <label class="m-0">Amount</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    formControlName="RAmount"
+                    style="height: 33px"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RTracheostomy" />
+                  <label class="m-0">Tracheostomy / ET</label>
+                </div>
+                <div class="col-md-1">
+                  <label class="m-0">Tube size</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    formControlName="RTubeSize"
+                    style="height: 33px"
+                    [disabled]="isGeOstomyTypeTxtDisabled('RTracheostomy')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('RTracheostomy')"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2 d-flex">
+                  <input type="checkbox" formControlName="RO2" />
+                  <label class="m-0">02</label>
+                </div>
+                <div class="col-md-1">
+                  <label class="m-0">By</label>
+                </div>
+                <div class="col-md-3">
+                  <input
+                    class="form-control"
+                    formControlName="RBy"
+                    style="height: 33px"
+                    [disabled]="isGeOstomyTypeTxtDisabled('RO2')"
+                    [readOnly]="isGeOstomyTypeTxtDisabled('RO2')"
+                  />
+                </div>
+              </div>
+              <div class="row m-0 mb-2">
+                <div class="col-md-2">
+                  <label class="m-0"></label>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                  <label class="m-0">At</label>
+                </div>
+                <div class="col-md-2">
+                  <input
+                    type="time"
+                    class="form-control"
+                    style="height: 33px"
+                    formControlName="RAt"
+                    step="2"
+                    min="08:00:00"
+                    max="17:00:00"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

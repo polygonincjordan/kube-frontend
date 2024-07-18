@@ -16,7 +16,7 @@
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
-              Date
+              Date  <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDate()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
               Time  <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
@@ -37,7 +37,7 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
-              Status
+              Status <i class="fa fa-sort" aria-hidden="true" (click)="sortStatus()"></i>
             </th>
             <th scope="col" style="padding-left: 0px"  class="pl-2 w-7">
               Financial Category <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
@@ -46,7 +46,7 @@
               Assigned physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
             </th> -->
             <th scope="col">
-              Attending Doctor <i class="fa fa-sort" aria-hidden="true"></i>
+              Attending Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortDoctor()"></i>
             </th>
             <!-- <th scope="col">
               Assigned Nurse <i class="fa fa-sort" aria-hidden="true"></i>
@@ -73,7 +73,7 @@
             <td scope="row" class="border-top-none" style="width: 5%; padding-left: 0px; text-align: center" [title]="getTime(item.Bwizt)">
               {{ getTime(item.Bwizt) }}
             </td>
-            <td class="border-left" style="width: 3%" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+            <td class="border-left" style="width: 3%" >
               <span>
                 <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;" (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
               </span>
@@ -122,7 +122,7 @@
                 {{ item.assignedTime }}
               </div>
             </td> -->
-            <td style="width: 1%" class="border-left border-right" [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">
+            <td style="width: 1%" class="border-left border-right">
               <div style="display: flex; justify-content: end; line-height: 14px;align-items:end">
                 <!-- <div style="margin-left: 3px; margin-right: 3px">
                   <img src="assets/img/nur-emr-bottle.svg" style="width: 32px; cursor: pointer" title="Check Out"/>
@@ -130,19 +130,19 @@
                 <!-- <div style="margin-left: 3px; margin-right: 3px" (click)="assignMe(item)">
                   <img src="assets/img/nur-emr-user.svg" style="width: 32px; cursor: pointer" title="Assign to Me"/>
                 </div> -->
-                <!-- <div style="margin-left: 3px; margin-right: 3px">
-                  <img src="assets/img/nur-emr-plus.svg" style="width: 32px; cursor: pointer" title="Assign to Doctor"/>
-                </div> -->
+                <div style="margin-left: 3px; margin-right: 3px">
+                  <img src="assets/img/ceate-progress.png" (click)="openModalForProgressNotes(item)" style="width: 15px; cursor: pointer" title="Progress Note"/>
+                </div>
                 <div>
                   <img src="assets/img/information.jfif" style="width: 31px;
-                  height: 26px;;cursor: pointer;position: relative;
-                  bottom: 5px;" title="Visit Comments" (click)="openVisitComments(visitCommentsModal,item)" *ngIf="item.VisitComments != ''">
+                  height: 26px;;cursor: pointer;position: relative;"
+                   title="Visit Comments" (click)="openVisitComments(visitCommentsModal,item)" *ngIf="item.Comments != ''">
                   <img src="assets/img/information_grey.png" style="width: 23px;
                   height: 22px;
                   cursor: pointer;
                   position: relative;
                   bottom: 2px;
-                  margin-left: 7px;" title="No visit comment" *ngIf="item.VisitComments == ''">
+                  margin-left: 7px;" title="No visit comment" *ngIf="item.Comments == ''">
                   </div>
               </div>
             </td>
@@ -176,7 +176,6 @@
             <div class="col-md-12 mt-2">
               <textarea
               class="form-control"
-              placeholder="Write a subjective"
               [(ngModel)]="visitComments"
               [ngModelOptions]="{standalone: true}"
             ></textarea>
@@ -336,3 +335,4 @@
     </div>
   </div>
 </ng-template>
+<app-progress-note-popup #progressNotesKardexId></app-progress-note-popup>

@@ -588,7 +588,7 @@ export class BedComponent  {
     );
   }
   getErList(date?: any) {
-    this.emergencyService.Dialysisget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
+    this.emergencyService.DialysisIPSet(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
       this.ERlistData = [];
       if (_success.d.results.length > 0) {
         this.sendErPatientCount.emit(this.ERlistData.length);
@@ -731,8 +731,8 @@ export class BedComponent  {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.PatnrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.PatnrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -746,8 +746,8 @@ export class BedComponent  {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.PatnrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.PatnrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -830,8 +830,8 @@ export class BedComponent  {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.RoomidName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.RoomidName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -845,8 +845,8 @@ export class BedComponent  {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.RoomidName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.RoomidName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -863,8 +863,8 @@ export class BedComponent  {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -878,8 +878,8 @@ export class BedComponent  {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

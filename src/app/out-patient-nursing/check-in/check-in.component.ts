@@ -683,6 +683,39 @@ export class CheckInComponent implements OnInit, OnDestroy {
             // console.info('API Finish..');
           }
         });
+        // this.ePrescriptionService.loadData(link, false, false, false, false).subscribe({
+        //   next: (_success: any) => {
+        //     // Handle successful data retrieval
+        //     this.ERlistData = this.ERlistDataClone = [];
+        //     if (_success.body.d.results.length > 0) {
+        //       this.sendErPatientCount.emit(this.ERlistData.length);
+        //       _success.body.d.results.forEach((element) => {
+        //         if (element.StatusTxt != 'Checked Out') {
+        //           this.ERlistData.push(element);
+        //           this.sendErPatientCount.emit(this.ERlistData.length);
+        //         }
+        //       });
+        //       this.ERlistData.forEach((element, index) => {
+        //         if (element.TriageDate != null && element.TriageDate != '') {
+        //           this.getAssignedTime(this.getTime(element.TriageTime), this.getDate(element.TriageDate), index);
+        //         } else {
+        //           this.ERlistData[index]['assignedTime'] = '';
+        //         }
+        //       });
+        //       this.ERlistDataClone = this.ERlistData;
+        //       this.lastIndex = this.ERlistData.length - 1;
+        //       resolve(this.ERlistData);
+        //     }
+        //   },
+        //   error: (err: any) => {
+        //     // Handle errors if the request fails
+        //     console.error('Error fetching ExceptCheckedOut Data:', err);
+        //   },
+        //   complete: () => {
+        //     // Handle completion (optional), invoked when the observable completes
+        //     // console.info('API Finish..');
+        //   }
+        // });
       }
     });
   }
