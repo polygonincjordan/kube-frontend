@@ -23,7 +23,7 @@ export class ReservationComponent implements OnInit {
   public storageLocationList: any;
   public costCenterList:any;
   public tabs = [
-    // { id: 1, title: 'History', content: '' },
+    { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
   ];
   public movementTypes = [

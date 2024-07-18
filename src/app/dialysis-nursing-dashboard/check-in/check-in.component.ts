@@ -19,11 +19,12 @@ import { ErTriageComponent } from './er-triage/er-triage.component';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { catchError, of } from 'rxjs';
+import { catchError, of, Subscription } from 'rxjs';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { formatDate } from 'ngx-bootstrap/chronos';
+import { environment } from 'src/environments/environment';
 import { ProgressNotePopupComponent } from './progress-note-popup/progress-note-popup.component';
 @UntilDestroy()
 @Component({
@@ -83,7 +84,8 @@ export class CheckInComponent implements OnInit {
   encounterId: any;
   pdfUrl: any;
   selectedIconPdf: BsModalRef;
-
+  private refreshSubscription: Subscription;
+  refreshInterval:any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -134,7 +136,20 @@ export class CheckInComponent implements OnInit {
       this.falnr = params.falnr;
       this.lfdnr = params.lfdnr;
     });
+    this.refreshInterval = setInterval(() => {
+      this.getErList();
+    }, environment.DayCaseRefreshTime);
   }
+
+  ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
+
 
   assignMe(data: any) {
     let obj = {

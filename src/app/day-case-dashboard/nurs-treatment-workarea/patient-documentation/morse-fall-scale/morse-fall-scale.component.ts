@@ -29,12 +29,10 @@ export class MorseFallScaleComponent implements OnInit {
   morseFallScaleData;
   private actionTypeSubscription$: Subscription;
 
-  constructor(private fb: FormBuilder,private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService,private dataShareService:DataShareService) {
+  constructor(private fb: FormBuilder,private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService,private dataShareService:DataShareService,private storageService:StorageService) {
     // this.getDocData();
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-      if (data != null) {
-       console.log('data',data);
-       
+      if (data != null) {       
         if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
            this.getDocData();
         }
@@ -56,7 +54,7 @@ export class MorseFallScaleComponent implements OnInit {
   ngOnInit(): void {
     this.MorsefallForm = this.fb.group({
       HistoryFalls: new FormControl('A'),
-      SecondaryDiagnosis: new FormControl('A'),
+      SecondaryDiagnosis: new FormControl('A') ,
       AmbulatoryAid: new FormControl('A'),
       IvAccess: new FormControl('A'),
       Gait: new FormControl('A'),
@@ -65,12 +63,8 @@ export class MorseFallScaleComponent implements OnInit {
       AttendPhy: new FormControl(''),
     })
 
-    this.realized = JSON.parse(
-      localStorage.getItem('amc_dev_loggedInUserProfile')
-    ).Gpart;
-    this.realizedDescription = JSON.parse(
-      localStorage.getItem('amc_dev_loggedInUserProfile')
-    ).GpartName;
+    this.realized = this.storageService.getUserProfile().Gpart;
+    this.realizedDescription = this.storageService.getUserProfile().GpartName;
 
     this.MorsefallForm.controls['AttendPhy'].patchValue(this.realized);
 
@@ -100,15 +94,18 @@ export class MorseFallScaleComponent implements OnInit {
     });
 
 
-    this.totalScore = Object.keys(scores).reduce((acc, key) => acc + (scores[key][formValues[key]] || 0), 0);
+    this.totalScore = Object.keys(scores).reduce((acc, key) => acc + (scores[key][formValues[key]] || 0),0);
 
     if (this.totalScore <= 24) {
         this.description = 'Low risk. Basic nursing care.';
     } else if (this.totalScore < 45) {
         this.description = 'Moderate risk. Standard fall prevention indicators.';
-    } else {
+    } 
+    else if(!this.totalScore || this.totalScore == undefined){
+      this.totalScore = 0
+      this.description = 'Low risk. Basic nursing care.';
+    }else {
         this.description = 'High risk. High risk fall prevention indicators.';
     }
   }
-
 }

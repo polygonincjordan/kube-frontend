@@ -160,7 +160,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
     
     this.refreshInterval = setInterval(() => {
       this.getErList(this.todayDate);
-    },environment.refreshTime);
+    },environment.outPatientRefreshTime);
   }
   getAssignedTime(triagetime, triagedate, index) {
     let {

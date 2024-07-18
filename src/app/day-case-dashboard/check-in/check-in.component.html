@@ -38,9 +38,6 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Bed <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
-            </th>
-            <th scope="col" style="padding-left: 0px;">
               Dept. OU
             </th>
             <th scope="col" style="padding-left: 0px;">
@@ -59,16 +56,13 @@
               Attending physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Not executed physician orders
-            </th>
-            <th scope="col" style="padding-left: 0px;">
               Attachment
             </th>
             <th scope="col" style="padding-left: 0px;">
               Isolation
             </th>
             <th scope="col" style="padding-left: 0px">
-              Financial clearance status
+              Fin.Clearance Status
             </th>
             <!-- <th scope="col" style="text-align: center">Actions</th> -->
           </tr>
@@ -108,22 +102,14 @@
               {{ getTime(item.Bwizt) }}
             </td>
             <td style="padding-left: 0px" [title]="item.Zimmkub" class="border-top-none">{{ item.Zimmkub }}</td>
-            <td style="padding-left: 0px" [title]="item.Bettkub" class="border-top-none">{{ item.Bettkub }}</td>
             <td style="padding-left: 0px" [title]="item.Orgfa" class="border-top-none">{{ item.Orgfa }}</td>
             <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
-            <td style="padding-left: 0px" [title]="item.Zznmealstat" class="border-top-none">
-              <span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span>
-            </td>
+            <td style="padding-left: 0px" [title]="item.Zznmealstat === 'Red' ? 'No Active Diet' : 'Active Diet Exist'" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>
             <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ? item.BehArztName:'--'}}</td>
-
-            <td style="padding-left: 0px" [title]="item.PordneInd" class="border-top-none">{{ item.PordneInd }}</td>
-
-            <td style="padding-left: 0px" [title]="item.DokIcon" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
-
+            <td style="padding-left: 0px" [title]="item.DokIcon === 'Red' ? 'No Attached Documents':'Attached Documents Exist ' " class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
-
             <td style="padding-left: 0px" [title]="item.ZzfinClear" class="border-top-none">{{ item.ZzfinClear? item.ZzfinClear:'--' }}</td>
           </tr>
         </tbody>

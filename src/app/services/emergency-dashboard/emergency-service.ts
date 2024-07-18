@@ -1144,6 +1144,13 @@ export class EmergencyService {
     })
   }
 
+  getHistoryReservationLiat(json){
+    return this.http.get(this.url + `getHistoryReservationList?Sloc=${json.Sloc}&Matnr=${json.Matnr}&MoveType=${json.MoveType}&CostCtr=${json.CostCtr}`,{
+      withCredentials:true
+    })
+  }
+
+
   postHemoDialysisFistulaGraft(payload){
     return this.http.post(this.url + 'fistulaGraftSet', payload, {
       withCredentials: true
@@ -1182,6 +1189,13 @@ export class EmergencyService {
 
   getStorageLocation(){
     return this.http.get(this.url + 'getStoragelocationReservationList',{
+      withCredentials:true
+    })
+  }
+
+  
+  getunitList(){
+    return this.http.get(this.url + `getUnitReservationList`,{
       withCredentials:true
     })
   }

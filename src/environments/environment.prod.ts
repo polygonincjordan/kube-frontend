@@ -12,6 +12,8 @@ export const environment = {
   app_prefix: 'amc_prod_new_',
   client: 300,
   refreshTime :60000,
+  DayCaseRefreshTime:900000,
+  outPatientRefreshTime:300000,
   url: 'http://abdaliwebserver.ach.jo:6057/',
   widgetUrl: 'http://abdaliwebserver.ach.jo:6057/',
   eOrderAPIUrl: 'http://abdaliwebserver.ach.jo:6057/',
