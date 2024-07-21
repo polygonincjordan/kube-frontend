@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 import { ReservationListComponent } from './reservation-list/reservation-list.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActionType, FilterType } from '@services/interfaces/common.enum';
+import { ActionType, FilterType, WordType } from '@services/interfaces/common.enum';
+import { ConsumableService } from '@services/consumables/consumable.service';
+import { MaterialDetails, MaterialDetailsResult } from '@services/consumables/interfaces/consumables.interface';
+import { HistoryListComponent } from './history-list/history-list.component';
 
 @Component({
   selector: 'app-reservation',
@@ -13,6 +16,7 @@ import { ActionType, FilterType } from '@services/interfaces/common.enum';
 })
 export class ReservationComponent implements OnInit {
   @ViewChild(ReservationListComponent) reservationCom;
+  @ViewChild(HistoryListComponent) historyComponent;
   private actionTypeSubscription$: Subscription;
   public formDetailGroup: FormGroup;
   public selectedLocation: any;
@@ -22,6 +26,13 @@ export class ReservationComponent implements OnInit {
   public selectedType: string ;
   public storageLocationList: any;
   public costCenterList:any;
+  private searchSubject = new Subject<string>();
+  private materialType: string;
+  public wordType = WordType;
+  public materialList: Array<MaterialDetailsResult> = [];
+  public materialListCopy: Array<MaterialDetailsResult> = [];
+ public historyFilterForm:FormGroup
+
   public tabs = [
     { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
@@ -30,7 +41,7 @@ export class ReservationComponent implements OnInit {
     { value: '201', label: '201' },
     { value: '311', label: '311' }
   ];
-  constructor( private dataShareService: DataShareService,private emergencyService: EmergencyService, private formBuilder: FormBuilder) { 
+  constructor( private dataShareService: DataShareService,private emergencyService: EmergencyService, private formBuilder: FormBuilder, private consumableService: ConsumableService) { 
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
         this.isConsumableAction = data;
@@ -46,8 +57,10 @@ export class ReservationComponent implements OnInit {
 
   ngOnInit(): void {
     this.consumablesFrom();
+    this.historyForm();
     this.getStrogeLocation();
     this.getCostCenter();
+    this.getMaterialList();
     this.dataShareService.sendData('2');
   }
 
@@ -62,6 +75,18 @@ export class ReservationComponent implements OnInit {
       selectedLocation: [null, [Validators.required]],
       selectedCostCenter:[null,Validators.required]
     });
+  }
+
+  public historyForm(){
+    this.historyFilterForm = this.formBuilder.group({
+      ToDate:[],
+      FromDate:[],
+      moveType:[],
+      stoLocation:[],
+      cosCenter:[],
+      meCode:[],
+      userName:[]
+    })
   }
 
   getStrogeLocation(){
@@ -118,5 +143,30 @@ export class ReservationComponent implements OnInit {
   onReservationSaved() {
     this.formDetailGroup.reset();
     this.formDetailGroup.get('movementType').setValue(this.movementTypes[1].value)
+  }
+
+  public searchMaterial(event, type: string) {
+    this.materialType = type
+    this.searchSubject.next(event);
+  }
+
+  public getMaterialList() {
+    this.searchSubject.pipe(debounceTime(2000)).subscribe((term) => {
+      const fltVal = (this.materialType === this.wordType.MaterialCode$) ? 2 : 3;
+      if (term.length >= fltVal.valueOf()) {
+        this.consumableService.getMaterialDetails(term).subscribe({
+          next: (resp: MaterialDetails) => {
+            if (resp && resp.d.results) {
+              this.materialList = this.materialListCopy = resp.d.results;
+            }
+          }
+        });
+      }
+    });
+  }
+
+  applyFilter() {
+    const formValues = this.historyFilterForm.value;
+    this.historyComponent.getHistoryList(formValues);
   }
 }
