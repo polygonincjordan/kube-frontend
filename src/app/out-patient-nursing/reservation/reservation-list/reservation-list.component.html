@@ -8,9 +8,9 @@
         <tr>
           <th colspan="1" scope="col">
             <div class="d-flex align-items-center">
-              <div class="position-relative label-with-check">
+              <div class="position-relative label-with-check w-100">
                 <input type="checkbox" class="position-absolute" formControlName="isAllSelected"
-                  (change)="isAllchecked($event)" [checked]="reservationForm.value.isAllSelected">
+                  (change)="isAllchecked($event)" [checked]="reservationForm.value.isAllSelected" style="margin-top: 5px;margin-left: 2px;">
                 <span class="d-inline-block bg-white mr-2 align-bottom"></span>
               </div>
             </div>
@@ -36,9 +36,9 @@
             <tr>
               <td>
                 <div class="d-flex  align-items-center">
-                  <div class="position-relative label-with-check">
+                  <div class="position-relative label-with-check w-100">
                     <input type="checkbox" class="position-absolute" formControlName="isSelected"
-                      [checked]="product.value.isSelected" (change)="isSelectedItem()">
+                      [checked]="product.value.isSelected" (change)="isSelectedItem()" style="margin-top: 10px;margin-left: 4px;">
                     <span class="d-inline-block bg-white mr-2 align-bottom"></span>
                   </div>
                 </div>
@@ -47,7 +47,7 @@
                 <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Matnr"
                   (search)="searchMaterial($event.term, wordType.MaterialCode$, i)"
-                  [title]="product.get('Matnr').value?.Maktx">
+                  [title]="product.get('Matnr').value?.Maktx" (change)="setValueOfUnit($event,i)">
                   <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
                     {{item.Maktx}}</ng-option>
                 </ng-select>

@@ -1148,8 +1148,8 @@ export class EmergencyService {
     })
   }
 
-  getHistoryReservationLiat(json){
-    return this.http.get(this.url + `getHistoryReservationList?Sloc=${json.Sloc}&Matnr=${json.Matnr}&MoveType=${json.MoveType}&CostCtr=${json.CostCtr}&Erdat=${json.Erdat}&Erdat1=${json.Erdat1}`,{
+  getHistoryReservationLiat(){
+    return this.http.get(this.url + 'getHistoryReservationList',{
       withCredentials:true
     })
   }

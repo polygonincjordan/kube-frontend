@@ -52,6 +52,7 @@ export interface MaterialDetailsResult {
   Matnr: string;
   Maktx: string;
   Maktg: string;
+  Meins:string
 }
 
 export interface MaterialStockDetails {

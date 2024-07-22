@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { Subscription } from 'rxjs';
+import { from, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-history-list',
@@ -10,14 +10,17 @@ import { Subscription } from 'rxjs';
 })
 export class HistoryListComponent implements OnInit {
   historyList: any;
+  filteredHistoryList: any[] = [];
   private subscription: Subscription;
   payload: { CostCtr: any; MoveType: any; Matnr: any; Sloc: any; Erdat: string; Erdat1: string; };
+  itemDate: Date;
+  matchesDateRange: boolean;
   constructor(private emergencyService: EmergencyService) {}
 
   ngOnInit(): void {
-    this.getHistoryList('');
+    this.getHistoryList();
     this.subscription = this.emergencyService.formValues$.subscribe(formValues => {
-        this.getHistoryList(formValues);
+        this.getHistoryList();
     });
   }
 
@@ -27,28 +30,14 @@ export class HistoryListComponent implements OnInit {
     }
   }
 
-  getHistoryList(formValues: any){
-    this.payload = {
-        CostCtr:formValues?.cosCenter?.Kostl ? formValues?.cosCenter?.Kostl : '',
-        MoveType:formValues?.moveType ? formValues?.moveType : '' ,
-        Matnr:formValues.meCode?.Matnr ? formValues.meCode?.Matnr:'',
-        Sloc:formValues.stoLocation?.Lgort?formValues.stoLocation?.Lgort:'',
-        Erdat:`${new DatePipe('en-US').transform(
-          formValues.FromDate ?  formValues.FromDate : new Date().setDate(new Date().getDate()),
-          'yyyy-MM-dd'
-        )}T00:00:00`,
-        Erdat1:`${new DatePipe('en-US').transform(
-          formValues.ToDate ?  formValues.ToDate :new Date().setDate(new Date().getDate()),
-          'yyyy-MM-dd'
-        )}T00:00:00`,
-        
-      }
-    this.emergencyService.getHistoryReservationLiat(this.payload).subscribe({
+  getHistoryList(){
+    this.emergencyService.getHistoryReservationLiat().subscribe({
       next:(res:any)=>{
-        if(res){
-          this.historyList = res.d?.results
-        }else{
+        if (res) {
+          this.historyList = res.d?.results || [];
+        } else {
           this.historyList = [];
+          this.filteredHistoryList = [];
         }
       },error:(err:any)=>{
         console.log(err)
@@ -56,6 +45,25 @@ export class HistoryListComponent implements OnInit {
     })
   }
 
+  filterHistory(formValues){
+    this.filteredHistoryList = this.historyList.filter(item => {
+      const erdat = new Date(parseInt(item.Erdat.match(/\d+/)[0]));
+      const startDate = new Date(formValues.dateRange?.[0]);
+      const endDate = new Date(formValues.dateRange?.[1]);
+      return (!formValues.moveType || item.MoveType === formValues.moveType) &&
+             (!formValues.stoLocation || item.Sloc === formValues.stoLocation.Lgort) &&
+             (!formValues.cosCenter || item.CostCtr === formValues.cosCenter.Kostl) &&
+             (!formValues.meCode || item.Matnr === formValues.meCode.Matnr) &&
+             (!formValues.userName || item.Erusr === formValues.userName) &&
+             (!formValues.dateRange || (erdat >= startDate && erdat <= endDate));
+    });
+    if(this.filteredHistoryList?.length){
+     this.historyList = this.filteredHistoryList; 
+    }else{
+      this.historyList = [];
+    }
+  }
+  
 
   getDate(value) {
     if (value) {

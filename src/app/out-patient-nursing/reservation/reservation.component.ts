@@ -62,6 +62,11 @@ export class ReservationComponent implements OnInit {
     this.getCostCenter();
     this.getMaterialList();
     this.dataShareService.sendData('2');
+    this.historyFilterForm.valueChanges.subscribe((res)=>{
+      if(res){
+        this.historyComponent.getHistoryList();
+      }
+    })
   }
 
   public onLocationChange(event: any) {
@@ -79,8 +84,7 @@ export class ReservationComponent implements OnInit {
 
   public historyForm(){
     this.historyFilterForm = this.formBuilder.group({
-      ToDate:[],
-      FromDate:[],
+      dateRange:[],
       moveType:[],
       stoLocation:[],
       cosCenter:[],
@@ -167,6 +171,6 @@ export class ReservationComponent implements OnInit {
 
   applyFilter() {
     const formValues = this.historyFilterForm.value;
-    this.historyComponent.getHistoryList(formValues);
+    this.historyComponent.filterHistory(formValues);
   }
 }

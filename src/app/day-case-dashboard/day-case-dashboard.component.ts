@@ -25,6 +25,7 @@ import { PatientWithoutConsumableComponent } from './patient-without-consumable/
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithoutDocumentsComponent } from './patient-without-documents/patient-without-documents.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { NursTreatmentWorkareaComponent } from './nurs-treatment-workarea/nurs-treatment-workarea.component';
 
 @UntilDestroy()
 @Component({
@@ -41,7 +42,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(PatientAssignmentComponent) PatientAssignmentComponent;
   @ViewChild(PatientWithoutConsumableComponent) PatientWithoutConsumableComponent;
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
-
+  @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -874,9 +875,13 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       );
     }
     if (this.selectedModule == 'checkin' || this.selectedModule == 'erhistory' || this.selectedModule == 'LabResults' || this.selectedModule == 'AdministeredDoses') {
-      //this.selectModule('treatmentarea');
+      // this.selectModule('treatmentarea');
     } else if (this.selectedModule == 'dischargeorder') {
       this.selectModule('dischargeorder');
+    }
+
+    if(this.selectedModule == 'noConsumables'){
+     this.nursTreatmentWorkareaComponent?.tabChange("Consumables")
     }
 
     //this.emergencyService.tabPanelNavigation('OrderSet');

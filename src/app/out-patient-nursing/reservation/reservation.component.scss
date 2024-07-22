@@ -132,6 +132,10 @@
     }
   }
 
+  ::ng-deep bs-daterangepicker-container:has(> .daterangepicker){
+    left: -90px !important;
+}
+
   .apply-button{
     margin-left: 12px;
   }

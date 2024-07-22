@@ -176,7 +176,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     // } else {
     //   this.emergencyService.tabPanelNavigation('patientProfile');
     // }
-    this.tabChange('Documentation');
+    // this.tabChange('');
   }
 
   addItemForPhyOrder(element): void {
@@ -1033,6 +1033,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     // }
   }
   tabChange(tabName?) {
+    console.log("call");
+    
     if (tabName == 'ProgressNotes') {
       this.getProgressNotesData();
       this.emergencyService.tabPanelNavigation('ProgressNotes');

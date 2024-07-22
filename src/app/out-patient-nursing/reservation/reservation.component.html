@@ -42,73 +42,31 @@
                 </button>
             </div>
           </div>
-
-          <div lass="col-9" *ngIf="isConsumableAction == '1'">
+          
+          <div lass="col-10" *ngIf="isConsumableAction == '1'">
             <div class="progress-header">
               <form [formGroup]="historyFilterForm"> 
                 <div class="d-flex align-items-center justify-content-between">
-                  <div class="input-group">
-                    <input
-                    class="form-control"
-                    type="text"
-                    placeholder="From Date"
-                    [minDate]=""
-                    [maxDate]=""
-                    #dp="bsDatepicker"
-                    bsDatepicker
-                    formControlName="FromDate"
-                    [bsConfig]="{
-                      showWeekNumbers: false,
-                      dateInputFormat: 'DD.MM.YYYY'
-                    }"
-                    style="height: 33px;
-                    width: 120px;
-                    border-color: #ccc
-                    "
-                  />
-                  <div class="input-group-append">
-                    <span class="input-group-text" style="position: absolute; left: 90px; top: 2px; background: transparent; border: none;">
-                      <i class="fa fa-calendar" style="color: #007bff;"></i>
-                    </span>
+                  <div class="date-function" style="border-radius: 8px;position: relative;top: -10px;min-width: 21%;">
+                      <span class='pn-input-title z-indexlabel'>Date </span>
+                      <img src="assets/img/Calender.svg" alt="" style="position: relative;top: 37px;right: 6px;float: right;transform: translateY(-50%);" />
+                      <input #drp="bsDaterangepicker" bsDaterangepicker  formControlName="dateRange" [bsConfig]="{
+                        rangeInputFormat: 'DD.MM.YYYY',
+                        dateInputFormat: 'DD.MM.YYYY',
+                        containerClass: 'daterangepicker my-custom-daterangepicker',
+                        showWeekNumbers: false}" class="form-control" style="border-radius: 8px;"/>
+                  </div>  
+                  <div class="storage-box w-100">
+                    <ng-select class="ng-select-dropdown"[clearable]="true"  formControlName="meCode" [searchable]="true"  (search)="searchMaterial($event.term, wordType.MaterialCode$)" [placeholder]="'Material'">
+                      <ng-option *ngFor="let item of materialList" [title]="item.Matnr+' '+item.Maktx" [value]="item">{{item.Matnr}} -
+                        {{item.Maktx}}</ng-option>
+                    </ng-select>
                   </div>
-                    </div>
-                    <div class="input-group">
-                      <input
-                      class="form-control"
-                      type="text"
-                      placeholder="To Date"
-                      [minDate]=""
-                      [maxDate]=""
-                      #dp="bsDatepicker"
-                      bsDatepicker
-                      formControlName="ToDate"
-                      [bsConfig]="{
-                        showWeekNumbers: false,
-                        dateInputFormat: 'DD.MM.YYYY'
-                      }"
-                      style="height: 33px;
-                      width: 120px;
-                      border-color: #ccc;
-                      margin-left: 15px"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text" style="position: absolute; left: 106px; top: 2px; background: transparent; border: none;">
-                        <i class="fa fa-calendar" style="color: #007bff;"></i>
-                      </span>
-                    </div>
-                      </div>
                   <div class="storage-box w-100">
                     <ng-select class="ng-select-dropdown" formControlName="moveType" [placeholder]="'Movement type'" (change)="selectType($event)">
                       <ng-option *ngFor="let type of movementTypes" [value]="type.value">{{ type.label }}</ng-option>
                     </ng-select>
                   </div>
-
-                  <div class="storage-box w-100">
-                    <ng-select [searchable]="true"   formControlName="userName" placeholder="User name">
-                      <ng-option>test</ng-option>
-                    </ng-select>
-                  </div>
-
                   <div class="storage-box w-100">
                     <ng-select class="ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
                     formControlName="stoLocation">
@@ -117,19 +75,16 @@
                   </div>
 
                   <div class="storage-box w-100">
-                    <ng-select  [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
+                    <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
                     formControlName="cosCenter">
                       <ng-option *ngFor="let item of costCenterList" [value]="item">{{ item.Kostl }}</ng-option>
                     </ng-select>
                   </div>
-
-                  <div class="storage-box w-100">
-                    <ng-select class="ng-select-dropdown"[clearable]="true"  formControlName="meCode" [searchable]="true"  (search)="searchMaterial($event.term, wordType.MaterialCode$)" [placeholder]="'Material'">
-                  <ng-option *ngFor="let item of materialList" [title]="item.Matnr+' '+item.Maktx" [value]="item">{{item.Matnr}} -
-                    {{item.Maktx}}</ng-option>
-                  </ng-select>
-                   
-                  </div>
+                  <!-- <div class="storage-box w-100">
+                    <ng-select [searchable]="true"   formControlName="userName" placeholder="User name">
+                      <ng-option>test</ng-option>
+                    </ng-select>
+                  </div> -->
                   <div>
                     <button type="button" class="header-btn apply-button" (click)="applyFilter()">
                       <span>Apply</span>
