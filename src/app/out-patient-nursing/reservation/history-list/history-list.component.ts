@@ -50,7 +50,9 @@ export class HistoryListComponent implements OnInit {
         }else{
           this.historyList = [];
         }
-      },error:(err:any)=>{}
+      },error:(err:any)=>{
+        console.log(err)
+      }
     })
   }
 
