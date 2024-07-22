@@ -21,6 +21,8 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { DataShareService } from '@services/data-share.service';
 import { FilterType } from '@services/interfaces/common.enum';
 import { OutpatientNursingService } from '@services/outpatient-nursing.service';
+import { HistoryListComponent } from './reservation/history-list/history-list.component';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @Component({
   selector: 'app-out-patient-nursing',
@@ -33,6 +35,7 @@ export class OutPatientNursingComponent implements OnInit {
   @ViewChild(LabResultsComponent) LabResultsComponent;
   @ViewChild(PhysicianOrdersListComponent) PhysicianOrdersListComponent;
   @ViewChild(AdministeredDosesComponent) AdministeredDosesComponent;
+  @ViewChild(HistoryListComponent) historyListComponent;
   userConfiguration: any;
   clinicConfigDetail: any;
   @HostListener('document:click', ['$event'])
@@ -131,6 +134,7 @@ export class OutPatientNursingComponent implements OnInit {
     private modalService: BsModalService,
     private dataShareService: DataShareService,
     private outpatientNursingService: OutpatientNursingService,
+    private emergencyService: EmergencyService
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -558,7 +562,7 @@ export class OutPatientNursingComponent implements OnInit {
     } else if (this.selectedModule === 'AdministeredDoses') {
       this.AdministeredDosesComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }else if(this.selectedModule === 'reservation'){
-
+      this.emergencyService.callHistoryList("")
     }
     // Resetting filter form values
     this.filterForm.patchValue({
