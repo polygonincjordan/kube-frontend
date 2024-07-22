@@ -685,7 +685,7 @@ export class CheckInComponent implements OnInit {
         event.Physician.forEach((physicianValue) => {
           this.physicianValueArr.push(
             filterValue.filter((element) => {
-              if (element.PernrName === physicianValue.trimStart()) {
+              if (element.BehArztName === physicianValue.trimStart()) {
                 return element;
               }
             })
@@ -1195,6 +1195,39 @@ export class CheckInComponent implements OnInit {
         return 'circle';
       case 'Yellow':
         return 'triangle';
+      default:
+        return '';
+    }
+  }
+
+  getTooltipText(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Active Diet';
+      case 'Green':
+        return 'Active Diet Exist';
+      default:
+        return '';
+    }
+  }
+
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
+
+  getFinTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'Pending';
+      case 'Green':
+        return 'Completed';
       default:
         return '';
     }

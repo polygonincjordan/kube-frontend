@@ -275,6 +275,8 @@ export class OutPatientNursingComponent implements OnInit {
       defaultOpen: false,
       selectAllText: 'All',
       clearSearchFilter: true,
+      limitSelection: 10
+
     };
     this.dropdownSettingsForAttendPhy = {
       singleSelection: false,
@@ -295,6 +297,7 @@ export class OutPatientNursingComponent implements OnInit {
       allowSearchFilter: true,
       defaultOpen: false,
       selectAllText: 'All',
+      limitSelection: 10
     };
     this.dataForTriage();
     this.dataForStatus();
@@ -554,6 +557,8 @@ export class OutPatientNursingComponent implements OnInit {
       this.LabResultsComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     } else if (this.selectedModule === 'AdministeredDoses') {
       this.AdministeredDosesComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
+    }else if(this.selectedModule === 'reservation'){
+
     }
     // Resetting filter form values
     this.filterForm.patchValue({

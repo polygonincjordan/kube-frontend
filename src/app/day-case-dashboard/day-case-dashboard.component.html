@@ -466,19 +466,19 @@ font-size: 12px;
           " data-bs-toggle="tooltip" data-bs-placement="right" title="Discharge List" [ngClass]="erhistory ? '' : ''"
           (click)="selectModule('erhistory')" />
       </div>
-      <div style="height: 50px; margin-bottom: 6px">
+      <!-- <div style="height: 50px; margin-bottom: 6px">
         <img [src]="
             analysis
               ? 'assets/img/nur-emr-analysis-white.svg'
               : 'assets/img/nur-emr-analysis.svg'
           " data-bs-toggle="tooltip" data-bs-placement="right" title="Analysis" [ngClass]="analysis ? '' : ''"
           (click)="selectModule('analysis')" />
-      </div>
-      <div style="height: 50px; margin-bottom: 6px">
+      </div> -->
+      <!-- <div style="height: 50px; margin-bottom: 6px">
         <img [src]="erSetting ? 'assets/img/nur-emr-setting-white.svg' : 'assets/img/nur-emr-setting.svg'"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Assignment" class=""
           (click)="selectModule('erSetting')" />
-      </div>
+      </div> -->
     </div>
   </div>
   <app-check-in (sendErPatientCount)="collectErPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)"

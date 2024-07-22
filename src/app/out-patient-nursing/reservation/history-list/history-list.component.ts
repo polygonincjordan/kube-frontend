@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
@@ -8,20 +9,30 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 })
 export class HistoryListComponent implements OnInit {
   historyList: any;
+  payload: { CostCtr: any; MoveType: any; Matnr: any; Sloc: any; Erdat: string; Erdat1: string; };
   constructor(private emergencyService: EmergencyService) {}
 
   ngOnInit(): void {
-    this.getHistoryList();
+    this.getHistoryList('');
   }
 
-  getHistoryList(){
-    let payload = {
-      CostCtr:'',
-      MoveType:'',
-      Matnr:'',
-      Sloc:''
-    }
-    this.emergencyService.getHistoryReservationLiat(payload).subscribe({
+  getHistoryList(formValues: any){
+    this.payload = {
+        CostCtr:formValues?.cosCenter?.Kostl ? formValues?.cosCenter?.Kostl : '',
+        MoveType:formValues?.moveType ? formValues?.moveType : '' ,
+        Matnr:formValues.meCode?.Matnr ? formValues.meCode?.Matnr:'',
+        Sloc:formValues.stoLocation?.Lgort?formValues.stoLocation?.Lgort:'',
+        Erdat:`${new DatePipe('en-US').transform(
+          formValues.FromDate ?  formValues.FromDate[0] : new Date().setDate(new Date().getDate()),
+          'yyyy-MM-dd'
+        )}T00:00:00`,
+        Erdat1:`${new DatePipe('en-US').transform(
+          formValues.ToDate ?  formValues.ToDate[1]  :new Date().setDate(new Date().getDate()),
+          'yyyy-MM-dd'
+        )}T00:00:00`,
+        
+      }
+    this.emergencyService.getHistoryReservationLiat(this.payload).subscribe({
       next:(res:any)=>{
         if(res){
           this.historyList = res.d?.results
