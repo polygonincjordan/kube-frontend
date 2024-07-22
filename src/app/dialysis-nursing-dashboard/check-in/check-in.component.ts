@@ -546,7 +546,6 @@ export class CheckInComponent implements OnInit {
     };
     this.modalRefForRisk = this.modalService.show(template, config);
     this.selectedERList = data;
-    console.log('this.selectedERList',this.selectedERList);
     
     this.getRiskList(data);
     this.getRiskValues();
@@ -1159,7 +1158,7 @@ export class CheckInComponent implements OnInit {
   openVisitComments(template: TemplateRef<any>, data) {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-lg' };
     this.modalRef = this.modalService.show(template, config);
-    this.visitComments = data.VisitComments;
+    this.visitComments = data.Comments;
     this.modalRef.onHide.subscribe((reason: string | any) => {
     });
   }

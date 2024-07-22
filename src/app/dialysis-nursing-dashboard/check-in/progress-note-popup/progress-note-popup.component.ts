@@ -70,7 +70,7 @@ export class ProgressNotePopupComponent implements OnInit {
 
   ngOnInit() {}
   openProgressNotesModal(item){
-    this.erListSelectedData=item;
+    this.erListSelectedData=item;    
     this.emergencyService.tabPanelNavigation('ProgressNotes');
     const config: ModalOptions = { class: 'modal-dialog-centered allergy-modal-size' };
     this.modalRef = this.modalServiceForAllergy.show(this.progressNotesKardexModal, config);
@@ -183,6 +183,7 @@ getProgressNotesData() {
 }
 
 progressNotesFilterList(formFilter: any) {
+  
   this.admittedFrom = '';
   this.admittedTo = '';
   let profGroup = formFilter?.value?.SelectDropdown === null ? '' : formFilter?.value?.SelectDropdown;
@@ -194,8 +195,8 @@ progressNotesFilterList(formFilter: any) {
       this.admittedTo = '';
     }
     this.emergencyService.getProgressNotesDataSetWithFilter(
-      this.paramsObj.patientId,
-      this.caseid,
+      this.erListSelectedData.Patnr, // caseID
+      this.erListSelectedData.Falnr, //patientID
       this.admittedFrom,
       this.admittedTo,
       profGroup
@@ -221,6 +222,17 @@ occupationalGroupList() {
     },
     (_error: any) => {}
   );
+}
+closePopup(event){
+  this.modalRef.hide()
+}
+getDate(value) {
+  if (value) {
+    var str = value;
+    var num = parseInt(str.replace(/[^0-9]/g, ''));
+    var date = new Date(num);
+    return date;
+  }
 }
 
 }

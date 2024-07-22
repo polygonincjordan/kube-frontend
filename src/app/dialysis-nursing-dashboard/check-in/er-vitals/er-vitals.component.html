@@ -8,7 +8,7 @@
         align-items: center;">
         <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.PatnrName}}</span></li>
         <li style="padding: 17px">MRN : {{erListSelectedData.Patnr}}</li>
-        <li style="padding: 17px">Admission date :  {{erListSelectedData.admissionDate | date : "dd.MM.y"}} </li>
+        <li style="padding: 17px">Admission date :  {{getDate(erListSelectedData.Bwidt) | date : "dd.MM.y"}} </li>
          
         </ul>
         <li class="close-icon"><img src="assets/img/CloseTab.svg" class="img-size w-80" (click)="modalRef.hide()"> </li> 
@@ -101,7 +101,7 @@
     align-items: center;">
         <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.PatnrName}}</span></li>
         <li style="padding: 17px">MRN : {{erListSelectedData.Patnr}}</li>
-        <li style="padding: 17px">Admission date :  {{erListSelectedData.admissionDate | date : "dd.MM.y"}} </li>
+        <li style="padding: 17px">Admission date :  {{getDate(erListSelectedData.Bwidt) | date : "dd.MM.y"}} </li>
         
      
     </ul>

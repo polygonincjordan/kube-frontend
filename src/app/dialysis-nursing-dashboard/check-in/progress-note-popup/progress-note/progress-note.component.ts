@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -24,6 +24,7 @@ export class ProgressNoteComponent implements OnInit {
   @Input() erListSelectedData: any = new EventEmitter();
   @Input() ProgressNotesList: ProgressNotesListModel[];
   @Input() searchString: any;
+  @Output() closePopup:any =new EventEmitter();
   progressNoteForm: FormGroup;
   paramsObj: any = {};
   reloadPhyOrderList: boolean = false;
@@ -131,16 +132,20 @@ export class ProgressNoteComponent implements OnInit {
 
   onDateChange() {}
 
-  onTempleteSelect() {
+  onTempleteSelect() {    
     this.progressNoteForm.controls.Text.setValue(this.templteContent.N2Content);
   }
 
   createProgressNote() {
-    if (this.progressNoteForm.value.ProfGroup) {
+    if (this.progressNoteForm.value.ProfGroup) {      
       if (this.progressNoteForm.value.Text) {
         let createTime = this.progressNoteForm.value.ActionTime.split(':');
         this.progressNoteForm.value.ActionTime =
           'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
+
+          this.progressNoteForm.value.CaseId = this.erListSelectedData.Patnr
+          this.progressNoteForm.value.PatientId = this.erListSelectedData.falnr
+          this.progressNoteForm.value.DocumentOu = this.erListSelectedData.Treatmentou
 
         this.progressNoteForm.value.ActionDate =
           this.progressNoteForm.value.ActionDate.toISOString().split('.')[0];
@@ -151,6 +156,7 @@ export class ProgressNoteComponent implements OnInit {
               if (_success) {
                 this.initForm();
                 this.getProgressNotesData();
+                this.closePopup.emit(true)
                 this.templteContent = '';
                 this.emergencyService.successSwalModel(
                   'Progress note is created successfully'
