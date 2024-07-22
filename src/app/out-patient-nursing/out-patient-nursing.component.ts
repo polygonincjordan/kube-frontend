@@ -562,7 +562,7 @@ export class OutPatientNursingComponent implements OnInit {
     } else if (this.selectedModule === 'AdministeredDoses') {
       this.AdministeredDosesComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }else if(this.selectedModule === 'reservation'){
-      this.emergencyService.callHistoryList("")
+      this.emergencyService?.callHistoryList()
     }
     // Resetting filter form values
     this.filterForm.patchValue({

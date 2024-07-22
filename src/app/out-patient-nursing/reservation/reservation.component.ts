@@ -8,6 +8,7 @@ import { ActionType, FilterType, WordType } from '@services/interfaces/common.en
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { MaterialDetails, MaterialDetailsResult } from '@services/consumables/interfaces/consumables.interface';
 import { HistoryListComponent } from './history-list/history-list.component';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-reservation',
@@ -41,6 +42,8 @@ export class ReservationComponent implements OnInit {
     { value: '201', label: '201' },
     { value: '311', label: '311' }
   ];
+  todayPlaceholder: string;
+  private subscription: Subscription;
   constructor( private dataShareService: DataShareService,private emergencyService: EmergencyService, private formBuilder: FormBuilder, private consumableService: ConsumableService) { 
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
@@ -53,6 +56,7 @@ export class ReservationComponent implements OnInit {
       selectedLocation: new FormControl(null), // Initialize form control
       selectedCostCenter:new FormControl(null)
     });
+    this.todayPlaceholder = `${formatDate(new Date(), 'dd.MM.yyyy', 'en')} - ${formatDate(new Date(), 'dd.MM.yyyy', 'en')}`;
   }
 
   ngOnInit(): void {
@@ -67,6 +71,16 @@ export class ReservationComponent implements OnInit {
         this.historyComponent.getHistoryList();
       }
     })
+    this.subscription = this.emergencyService.formValues$.subscribe(formValues => {
+      this.historyFilterForm.reset();
+      this.historyComponent?.getHistoryList();
+  });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public onLocationChange(event: any) {

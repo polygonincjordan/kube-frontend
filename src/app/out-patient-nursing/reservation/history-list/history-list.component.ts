@@ -11,7 +11,6 @@ import { from, Subscription } from 'rxjs';
 export class HistoryListComponent implements OnInit {
   historyList: any;
   filteredHistoryList: any[] = [];
-  private subscription: Subscription;
   payload: { CostCtr: any; MoveType: any; Matnr: any; Sloc: any; Erdat: string; Erdat1: string; };
   itemDate: Date;
   matchesDateRange: boolean;
@@ -19,15 +18,6 @@ export class HistoryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getHistoryList();
-    this.subscription = this.emergencyService.formValues$.subscribe(formValues => {
-        this.getHistoryList();
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   getHistoryList(){

@@ -1154,8 +1154,8 @@ export class EmergencyService {
     })
   }
 
-  callHistoryList(values:any){
-    this.formValuesSubject.next(values);
+  callHistoryList(){
+    this.formValuesSubject.next(null);
   }
 
 

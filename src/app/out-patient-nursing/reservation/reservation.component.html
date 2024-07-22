@@ -54,7 +54,7 @@
                         rangeInputFormat: 'DD.MM.YYYY',
                         dateInputFormat: 'DD.MM.YYYY',
                         containerClass: 'daterangepicker my-custom-daterangepicker',
-                        showWeekNumbers: false}" class="form-control" style="border-radius: 8px;"/>
+                        showWeekNumbers: false}" class="form-control" style="border-radius: 8px;" [placeholder]="todayPlaceholder"/>
                   </div>  
                   <div class="storage-box w-100">
                     <ng-select class="ng-select-dropdown"[clearable]="true"  formControlName="meCode" [searchable]="true"  (search)="searchMaterial($event.term, wordType.MaterialCode$)" [placeholder]="'Material'">
