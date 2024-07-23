@@ -1,8 +1,12 @@
 <form [formGroup]="nursingAdmissionForm">
   <div class="end-container">
     <div class="sph-box">
-      <label class="box-label">Physical Assessment</label>
+      <label class="box-label">Physical Assessment (Review of Systems)</label>
       <div class="container-fluid">
+        <div class="row m-0 mb-4 ml-3">
+          <input type="checkbox" formControlName="disabledAllPhy" (change)="disabledAllValue()"/>
+          <label class="m-0">Cannot be Assessed</label>
+        </div>
         <div class="tab-navigation-part">
           <div class="tab-navigate">
             <div class="tab-nav w-100">
@@ -26,11 +30,11 @@
                   <label class="m-0">GENERAL</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GgRectalPain" />
+                  <input type="checkbox" formControlName="GgRectalPain" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Rectal pain</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GgIndigestion" />
+                  <input type="checkbox" formControlName="GgIndigestion" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Indigestion</label>
                 </div>
               </div>
@@ -39,19 +43,19 @@
                   <label class="m-0">BOWEL SOUNDS</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GbAbsent" />
+                  <input type="checkbox" formControlName="GbAbsent" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Absent</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GbPresent" />
+                  <input type="checkbox" formControlName="GbPresent" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Present</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GbHypoactive" />
+                  <input type="checkbox" formControlName="GbHypoactive" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Hypoactive</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GbHyperactive" />
+                  <input type="checkbox" formControlName="GbHyperactive" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Hyperactive</label>
                 </div>
               </div>
@@ -60,19 +64,19 @@
                   <label class="m-0">ABDOMEN</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GaSoft" />
+                  <input type="checkbox" formControlName="GaSoft" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Soft</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GaDistendend" />
+                  <input type="checkbox" formControlName="GaDistendend" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Distendend</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GaFirm" />
+                  <input type="checkbox" formControlName="GaFirm" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Firm</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GaTenderness" />
+                  <input type="checkbox" formControlName="GaTenderness" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Tenderness</label>
                 </div>
               </div>
@@ -81,11 +85,11 @@
                   <label class="m-0">ELIMINATION</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GeEnema" />
+                  <input type="checkbox" formControlName="GeEnema" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Enema</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GeLaxatives" />
+                  <input type="checkbox" formControlName="GeLaxatives" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Laxatives</label>
                 </div>
               </div>
@@ -94,7 +98,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GeOstomyType" />
+                  <input type="checkbox" formControlName="GeOstomyType" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Ostomy Type</label>
                 </div>
                 <div class="col-md-2 d-flex">
@@ -111,7 +115,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GeOther" />
+                  <input type="checkbox" formControlName="GeOther" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Other</label>
                 </div>
                 <div class="col-md-2 d-flex">
@@ -130,19 +134,19 @@
                   <label class="m-0">MALE</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RmProstate" />
+                  <input type="checkbox" formControlName="RmProstate" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Prostate problems</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RmLesions" />
+                  <input type="checkbox" formControlName="RmLesions" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Lesions</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RmDischarge" />
+                  <input type="checkbox" formControlName="RmDischarge" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Discharge</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RmScrotal" />
+                  <input type="checkbox" formControlName="RmScrotal" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Scrotal pain/Swelling</label>
                 </div>
               </div>
@@ -158,6 +162,7 @@
                     class="form-control"
                     formControlName="RmDescr"
                     style="height: 33px"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                 </div>
               </div>
@@ -166,7 +171,7 @@
                   <label class="m-0">FEMALE</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RfPregnant" />
+                  <input type="checkbox" formControlName="RfPregnant" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Pregnant</label>
                 </div>
                 <div class="col-md-2 d-flex align-items-center">
@@ -174,6 +179,7 @@
                   <input
                     class="form-control"
                     formControlName="RfLmp"
+                    [attr.disabled]="isDisabled() ? true : null"
                     style="height: 33px"
                   />
                 </div>
@@ -183,19 +189,19 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RfDischarge" />
+                  <input type="checkbox" formControlName="RfDischarge" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Discharge</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RfLesions" />
+                  <input type="checkbox" formControlName="RfLesions" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Lesions</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RfItching" />
+                  <input type="checkbox" formControlName="RfItching" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Itching</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RfPelvic" />
+                  <input type="checkbox" formControlName="RfPelvic" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Pelvic Pain</label>
                 </div>
               </div>
@@ -211,6 +217,7 @@
                     class="form-control"
                     formControlName="RfMenarcheAge"
                     style="height: 33px"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                 </div>
                 <div class="col-md-2 d-flex align-items-center">
@@ -218,6 +225,7 @@
                     class="top-0"
                     type="checkbox"
                     formControlName="RfNotReached1"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Not reached</label>
                 </div>
@@ -234,6 +242,7 @@
                     class="form-control"
                     formControlName="RfMenopauseAge"
                     style="height: 33px"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                 </div>
                 <div class="col-md-2 d-flex align-items-center">
@@ -241,6 +250,7 @@
                     class="top-0"
                     type="checkbox"
                     formControlName="RfNotReached2"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Not reached</label>
                 </div>
@@ -250,7 +260,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RfBirthCont" />
+                  <input type="checkbox" formControlName="RfBirthCont" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Birth Control type Used</label>
                 </div>
                 <div class="col-md-2"></div>
@@ -259,6 +269,7 @@
                     class="form-control"
                     formControlName="RfBirthContTxt"
                     style="height: 33px"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                 </div>
               </div>
@@ -267,23 +278,23 @@
                   <label class="m-0">BREASTS</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbTenderness" />
+                  <input type="checkbox" formControlName="RbTenderness" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Tenderness</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbDischarge" />
+                  <input type="checkbox" formControlName="RbDischarge" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Discharge</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbSwelling" />
+                  <input type="checkbox" formControlName="RbSwelling" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Swelling</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbProsthesis" />
+                  <input type="checkbox" formControlName="RbProsthesis" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Prosthesis</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbLumps" />
+                  <input type="checkbox" formControlName="RbLumps" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Lumps</label>
                 </div>
               </div>
@@ -291,45 +302,45 @@
             <div *ngIf="selectedTabName == 'Genitourinary'">
               <div class="row m-0 mb-2">
                 <div class="col-md-2">
-                  <input type="checkbox" formControlName="GPainful" />
+                  <input type="checkbox" formControlName="GPainful" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Painfil unination</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GIncontinence" />
+                  <input type="checkbox" formControlName="GIncontinence" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Incontinence</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GBurning" />
+                  <input type="checkbox" formControlName="GBurning" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Burning</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GHematuria" />
+                  <input type="checkbox" formControlName="GHematuria" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Hematuria</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GOliguria" />
+                  <input type="checkbox" formControlName="GOliguria" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Oliguria</label>
                 </div>
               </div>
               <div class="row m-0 mb-4">
                 <div class="col-md-2">
-                  <input type="checkbox" formControlName="GPolyuria" />
+                  <input type="checkbox" formControlName="GPolyuria" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Polyuria</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GDribbling" />
+                  <input type="checkbox" formControlName="GDribbling" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Dribbling</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GNocturia" />
+                  <input type="checkbox" formControlName="GNocturia" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Nocturia</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GRetention" />
+                  <input type="checkbox" formControlName="GRetention" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Retention</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="GStraining" />
+                  <input type="checkbox" formControlName="GStraining" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Straining</label>
                 </div>
               </div>
@@ -346,6 +357,7 @@
                       type="radio"
                       [value]="option.value"
                       formControlName="GUrineColour"
+                      [attr.disabled]="isDisabled() ? true : null"
                     />
                     <label class="m-0">{{ option.label }}</label>
                   </div>
@@ -360,6 +372,7 @@
                     type="radio"
                     formControlName="GUrineClarity"
                     value="0"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">N/A</label>
                 </div>
@@ -368,6 +381,7 @@
                     type="radio"
                     formControlName="GUrineClarity"
                     value="1"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Clear</label>
                 </div>
@@ -376,6 +390,7 @@
                     type="radio"
                     formControlName="GUrineClarity"
                     value="2"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Slightly cloudy</label>
                 </div>
@@ -384,6 +399,7 @@
                     type="radio"
                     formControlName="GUrineClarity"
                     value="3"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Cloudy</label>
                 </div>
@@ -392,13 +408,14 @@
                     type="radio"
                     formControlName="GUrineClarity"
                     value="4"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Turbid</label>
                 </div>
               </div>
               <div class="row m-0 mb-2">
                 <div class="col-md-2">
-                  <input type="checkbox" formControlName="GCatheterType" />
+                  <input type="checkbox" formControlName="GCatheterType" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Catheter type & size</label>
                 </div>
                 <div class="col-md-2">
@@ -416,7 +433,7 @@
                   <label class="m-0">Micturition</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="GMicturition">
+                  <ng-select formControlName="GMicturition" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of micturitionList"
                       [value]="item.value"
@@ -427,7 +444,7 @@
               </div>
               <div class="row m-0 mb-2">
                 <div class="col-md-2">
-                  <input type="checkbox" formControlName="GOther" />
+                  <input type="checkbox" formControlName="GOther" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Other</label>
                 </div>
                 <div class="col-md-2">
@@ -447,7 +464,7 @@
                   <label class="m-0">Skin Color</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="SSkinColor">
+                  <ng-select formControlName="SSkinColor" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of skinColorList"
                       [value]="item.value"
@@ -470,7 +487,7 @@
                   <label class="m-0">Temperature</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="STemperature">
+                  <ng-select formControlName="STemperature" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of temperatureList"
                       [value]="item.value"
@@ -484,7 +501,7 @@
                   <label class="m-0">Moisture</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="SMoisture">
+                  <ng-select formControlName="SMoisture" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of moistureList"
                       [value]="item.value"
@@ -498,7 +515,7 @@
                   <label class="m-0">Lesions</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="SLesions">
+                  <ng-select formControlName="SLesions" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of lesionsList"
                       [value]="item.value"
@@ -526,11 +543,11 @@
                   <label class="m-0">GENERAL</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NnHeadache" />
+                  <input type="checkbox" formControlName="NnHeadache" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Headache</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NnDizziness" />
+                  <input type="checkbox" formControlName="NnDizziness" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="m-0">Dizziness</label>
                 </div>
               </div>
@@ -539,7 +556,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NnNumbness" />
+                  <input type="checkbox" formControlName="NnNumbness" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Numbness</label>
                 </div>
                 <div class="col-md-2">
@@ -560,7 +577,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NnTingling" />
+                  <input type="checkbox" formControlName="NnTingling" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Tingling</label>
                 </div>
                 <div class="col-md-2">
@@ -581,7 +598,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NnParalysis" />
+                  <input type="checkbox" formControlName="NnParalysis" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Paralysis</label>
                 </div>
                 <div class="col-md-2">
@@ -602,7 +619,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NnTremors" />
+                  <input type="checkbox" formControlName="NnTremors" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Tremors</label>
                 </div>
                 <div class="col-md-2">
@@ -623,7 +640,7 @@
                   <label class="m-0">LEVEL OF CONSCIOUSNESS</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NLevelConscious"
                     value="0"
@@ -631,7 +648,7 @@
                   <label class="m-0">N/A</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NLevelConscious"
                     value="1"
@@ -639,7 +656,7 @@
                   <label class="m-0">Alert</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NLevelConscious"
                     value="2"
@@ -647,7 +664,7 @@
                   <label class="m-0">Lethargic</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NLevelConscious"
                     value="3"
@@ -655,7 +672,7 @@
                   <label class="m-0">Stuporous</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NLevelConscious"
                     value="4"
@@ -668,15 +685,15 @@
                   <label class="m-0">ORIENTED TO</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NoPlace" />
+                  <input type="checkbox" formControlName="NoPlace" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Place</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NoTime" />
+                  <input type="checkbox" formControlName="NoTime" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Time</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="NoPresent" />
+                  <input type="checkbox" formControlName="NoPresent" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Present</label>
                 </div>
               </div>
@@ -685,7 +702,7 @@
                   <label class="m-0">RESPONSIVENESS</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NResponsiveness"
                     value="0"
@@ -693,7 +710,7 @@
                   <label class="m-0">N/A</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NResponsiveness"
                     value="1"
@@ -701,7 +718,7 @@
                   <label class="m-0">To verbal stimuli</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NResponsiveness"
                     value="2"
@@ -709,7 +726,7 @@
                   <label class="m-0">To touch</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NResponsiveness"
                     value="3"
@@ -717,7 +734,7 @@
                   <label class="m-0">To painful stimuli</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="NResponsiveness"
                     value="4"
@@ -732,19 +749,19 @@
                   <label class="m-0">GENERAL</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CgChestPain" />
+                  <input type="checkbox" formControlName="CgChestPain" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Chest pain</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CgPalpitations" />
+                  <input type="checkbox" formControlName="CgPalpitations" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Palpitations</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CgPacemaker" />
+                  <input type="checkbox" formControlName="CgPacemaker" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="m-0">Pacemaker</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CgPainCalves" />
+                  <input type="checkbox" formControlName="CgPainCalves" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Pain in calvs</label>
                 </div>
               </div>
@@ -753,19 +770,19 @@
                   <label class="m-0">PULSE</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CpRegular" />
+                  <input type="checkbox" formControlName="CpRegular" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Regular</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CpIrregular" />
+                  <input type="checkbox" formControlName="CpIrregular" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Irrengular</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CpStrong" />
+                  <input type="checkbox" formControlName="CpStrong" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Strong</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CpWeak" />
+                  <input type="checkbox" formControlName="CpWeak" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Weak</label>
                 </div>
               </div>
@@ -774,7 +791,7 @@
                   <label class="m-0">PEDAL PULSES</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="CPedalPulses"
                     value="0"
@@ -782,7 +799,7 @@
                   <label class="m-0">N/A</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="CPedalPulses"
                     value="1"
@@ -790,7 +807,7 @@
                   <label class="m-0">Felt</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="CPedalPulses"
                     value="2"
@@ -798,7 +815,7 @@
                   <label class="m-0">Unevenly Felt</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     type="radio"
                     formControlName="CPedalPulses"
                     value="3"
@@ -811,11 +828,11 @@
                   <label class="m-0">EDEMA</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CeYes" />
+                  <input type="checkbox" formControlName="CeYes" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Yes</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CePitting" />
+                  <input type="checkbox" formControlName="CePitting" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Pitting</label>
                 </div>
                 <div class="col-md-2 d-flex">
@@ -836,11 +853,11 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CeNo" />
+                  <input type="checkbox" formControlName="CeNo" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="m-0">No</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="CeNonPitting" />
+                  <input type="checkbox" formControlName="CeNonPitting" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="m-0">Non-pitting</label>
                 </div>
               </div>
@@ -849,19 +866,19 @@
                   <label class="m-0">NAIL BEDS</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="CNailBed" value="0" />
+                  <input type="radio" formControlName="CNailBed" value="0" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="m-0">N/A</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="CNailBed" value="1" />
+                  <input type="radio" formControlName="CNailBed" [attr.disabled]="isDisabled() ? true : null" value="1" />
                   <label class="m-0">Pink</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="CNailBed" value="2" />
+                  <input type="radio" formControlName="CNailBed" [attr.disabled]="isDisabled() ? true : null" value="2" />
                   <label class="m-0">Pele</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="CNailBed" value="3" />
+                  <input type="radio" formControlName="CNailBed" [attr.disabled]="isDisabled() ? true : null" value="3" />
                   <label class="m-0">Cyanotic</label>
                 </div>
               </div>
@@ -873,7 +890,7 @@
                   <label class="m-0">Capiliary Refill</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="CCapillaryRefill">
+                  <ng-select formControlName="CCapillaryRefill" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of capiliaryList"
                       [value]="item.value"
@@ -892,7 +909,7 @@
                   <label class="m-0">Hard of hearing</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="EeHardHearing">
+                  <ng-select formControlName="EeHardHearing" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -909,7 +926,7 @@
                   <label class="m-0">Pain</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="EePain">
+                  <ng-select formControlName="EePain" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -926,7 +943,7 @@
                   <label class="m-0">Drainage</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="EeDrainage">
+                  <ng-select formControlName="EeDrainage" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -943,7 +960,7 @@
                   <label class="m-0">Deaf</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="EeDeaf">
+                  <ng-select formControlName="EeDeaf" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -957,15 +974,15 @@
                   <label class="m-0">NOSE</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EnEpistaxis" />
+                  <input type="checkbox" formControlName="EnEpistaxis" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Epistaxis</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EnCongestion" />
+                  <input type="checkbox" formControlName="EnCongestion" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Congestion</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EnDrainage" />
+                  <input type="checkbox" formControlName="EnDrainage" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="m-0">Drainage</label>
                 </div>
               </div>
@@ -977,7 +994,7 @@
                   <label class="m-0">Type</label>
                 </div>
                 <div class="col-md-3 d-flex">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     class="form-control"
                     formControlName="EnType"
                     style="height: 33px"
@@ -989,23 +1006,23 @@
                   <label class="m-0">THROAT/NECK</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EtDysphagia" />
+                  <input type="checkbox" formControlName="EtDysphagia" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Dysphagia</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EtBleeding" />
+                  <input type="checkbox" formControlName="EtBleeding" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Bleeding</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EtSwollenGlands" />
+                  <input type="checkbox" formControlName="EtSwollenGlands" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Swollen glands</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EtSwollenGums" />
+                  <input type="checkbox" formControlName="EtSwollenGums" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Swollen gums</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EtPain" />
+                  <input type="checkbox" formControlName="EtPain" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Pain</label>
                 </div>
               </div>
@@ -1014,7 +1031,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="EtLesions" />
+                  <input type="checkbox" formControlName="EtLesions" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Lesions</label>
                 </div>
                 <div class="col-md-4 d-flex">
@@ -1035,7 +1052,7 @@
                   <label class="m-0">Glass eye</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="OGlassEye">
+                  <ng-select formControlName="OGlassEye" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -1049,7 +1066,7 @@
                   <label class="m-0">Redness</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="ORedness">
+                  <ng-select formControlName="ORedness" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -1063,7 +1080,7 @@
                   <label class="m-0">Pain</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="OPain">
+                  <ng-select formControlName="OPain" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -1077,7 +1094,7 @@
                   <label class="m-0">Discharge</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="ODischarge">
+                  <ng-select formControlName="ODischarge" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -1091,7 +1108,7 @@
                   <label class="m-0">Blind</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="OBlind">
+                  <ng-select formControlName="OBlind" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of earsNoseNickDropdownValue"
                       [value]="item.value"
@@ -1106,7 +1123,7 @@
                 </div>
                 <div class="col-md-5">
                   <input
-                    class="form-control"
+                    class="form-control" [attr.disabled]="isDisabled() ? true : null"
                     formControlName="OComments"
                     style="height: 33px"
                   />
@@ -1119,7 +1136,7 @@
                   <label class="m-0">Chest Appearance</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="RChestAppearance">
+                  <ng-select formControlName="RChestAppearance" [readonly]="isDisabled()">
                     <ng-option
                       *ngFor="let item of chestAppearanceList"
                       [value]="item.value"
@@ -1133,15 +1150,15 @@
                   <label class="m-0">BREATH PATTERN</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbDyspneaRest" />
+                  <input type="checkbox" formControlName="RbDyspneaRest" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Dyspnea at rest</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbDyspneaExertion" />
+                  <input type="checkbox" formControlName="RbDyspneaExertion" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Dyspnea on exertion</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RbNonLabored" />
+                  <input type="checkbox" formControlName="RbNonLabored" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Non-labored</label>
                 </div>
               </div>
@@ -1154,6 +1171,7 @@
                     type="radio"
                     formControlName="RBbreathSounds"
                     value="0"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">N/A</label>
                 </div>
@@ -1161,7 +1179,7 @@
                   <input
                     type="radio"
                     formControlName="RBbreathSounds"
-                    value="1"
+                    value="1" [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Clear all lobes</label>
                 </div>
@@ -1169,7 +1187,7 @@
                   <input
                     type="radio"
                     formControlName="RBbreathSounds"
-                    value="2"
+                    value="2" [attr.disabled]="isDisabled() ? true : null"
                   />
                   <label class="m-0">Wheezes</label>
                 </div>
@@ -1179,8 +1197,8 @@
                   <label class="m-0">Rhonchi</label>
                 </div>
                 <div class="col-md-2">
-                  <ng-select formControlName="RRhonchi">
-                    <ng-option></ng-option>
+                  <ng-select formControlName="RRhonchi" [readonly]="isDisabled()">
+                    <ng-option *ngFor="let item of rhonchiList" [value]="item.value">{{ item.label }}</ng-option>
                   </ng-select>
                 </div>
               </div>
@@ -1189,19 +1207,19 @@
                   <label class="m-0">COUGH</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="RCough" value="0" />
+                  <input type="radio" formControlName="RCough" [attr.disabled]="isDisabled() ? true : null" value="0" />
                   <label class="m-0">N/A</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="RCough" value="1" />
+                  <input type="radio" formControlName="RCough" [attr.disabled]="isDisabled() ? true : null" value="1" />
                   <label class="m-0">Absent</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="RCough" value="2" />
+                  <input type="radio" formControlName="RCough" [attr.disabled]="isDisabled() ? true : null" value="2" />
                   <label class="m-0">Productive</label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="radio" formControlName="RCough" value="3" />
+                  <input type="radio" formControlName="RCough" [attr.disabled]="isDisabled() ? true : null" value="3" />
                   <label class="m-0">Non-Productive</label>
                 </div>
               </div>
@@ -1213,17 +1231,17 @@
                   <label class="m-0">Color</label>
                 </div>
                 <div class="col-md-3">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     class="form-control"
                     formControlName="RColor"
                     style="height: 33px"
                   />
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 text-right">
                   <label class="m-0">Amount</label>
                 </div>
                 <div class="col-md-3">
-                  <input
+                  <input [attr.disabled]="isDisabled() ? true : null"
                     class="form-control"
                     formControlName="RAmount"
                     style="height: 33px"
@@ -1235,7 +1253,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RTracheostomy" />
+                  <input type="checkbox" formControlName="RTracheostomy" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">Tracheostomy / ET</label>
                 </div>
                 <div class="col-md-1">
@@ -1256,7 +1274,7 @@
                   <label class="m-0"></label>
                 </div>
                 <div class="col-md-2 d-flex">
-                  <input type="checkbox" formControlName="RO2" />
+                  <input type="checkbox" formControlName="RO2" [attr.disabled]="isDisabled() ? true : null"/>
                   <label class="m-0">02</label>
                 </div>
                 <div class="col-md-1">
@@ -1289,6 +1307,7 @@
                     step="2"
                     min="08:00:00"
                     max="17:00:00"
+                    [attr.disabled]="isDisabled() ? true : null"
                   />
                 </div>
               </div>

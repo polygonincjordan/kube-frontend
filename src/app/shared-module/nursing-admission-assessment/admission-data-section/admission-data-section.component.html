@@ -3,7 +3,7 @@
     <label class="box-label">Admission Data</label>
     <div class="container-fluid">
       <div class="row create-form-inputs">
-        <div class="col-md-5 row m-0">
+        <div class="col-md-5 row m-0 align-items-center">
           <div class="col-md-5 p-0">
             <label>Referral Type</label>
           </div>
@@ -13,7 +13,7 @@
             </ng-select>
           </div>
         </div>
-        <div class="col-md-3 row m-0">
+        <div class="col-md-3 row m-0 align-items-center">
           <div class="col-md-3 text-right">
             <label>Date</label>
           </div>
@@ -22,12 +22,12 @@
               bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"/>
           </div>
         </div>
-        <div class="col-md-3 row m-0">
+        <div class="col-md-3 row m-0 align-items-center">
           <div class="col-md-3 text-right">
             <label>Time</label>
           </div>
           <div class="col-md-7">
-            <input type="time" class="form-control" style="height: 33px" formControlName="ATime" step="2" min="08:00:00" max="17:00:00" />
+            <input type="time" class="form-control" style="height: 33px" formControlName="ATime" />
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
           </ng-select>
         </div>
       </div> -->
-      <div class="row create-form-inputs">
+      <div class="row create-form-inputs align-items-center">
         <div class="col-md-2">
           <label>Admission Mode</label>
         </div>
@@ -64,7 +64,7 @@
           <input type="text" class="form-control" [disabled]="isInputDisabled('AAdmissionMode', '5')" [readOnly]="isInputDisabled('AAdmissionMode', '5')" formControlName="AAdmissionModeT" />
         </div>
       </div>
-      <div class="row create-form-inputs">
+      <div class="row create-form-inputs align-items-center">
         <div class="col-md-2">
           <label>Accompanied By</label>
         </div>
@@ -78,7 +78,7 @@
             formControlName="AAccompaniedByT" />
         </div>
       </div>
-      <div class="row create-form-inputs">
+      <div class="row create-form-inputs align-items-center">
         <div class="col-md-2">
           <label>Info. Obtained from</label>
         </div>
@@ -92,7 +92,7 @@
             formControlName="AInfoObtainedT" />
         </div>
       </div>
-      <div class="row create-form-inputs">
+      <div class="row create-form-inputs align-items-center">
         <div class="col-md-2">
           <label>Language Spoken</label>
         </div>
@@ -100,7 +100,7 @@
           <input type="text" class="form-control" formControlName="ALanguageSpoken" [disabled]="true" [readOnly]="true" />
         </div>
       </div>
-      <div class="row create-form-inputs">
+      <div class="row create-form-inputs align-items-center">
         <div class="col-md-2">
           <label>Schoole Grade</label>
         </div>
@@ -110,12 +110,12 @@
           </ng-select>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="AEducated" [readonly]="isInputDisabled('ASchoolGrade', '1')">
-            <ng-option *ngFor="let item of schoolGradeEduList">{{ item.label }}</ng-option>
+          <ng-select formControlName="AEducated" [readonly]="isInputDisabled('ASchoolGrade', '1')" >
+            <ng-option *ngFor="let item of schoolGradeEduList" [value]="item.value">{{ item.label }}</ng-option>
           </ng-select>
         </div>
       </div>
-      <div class="row create-form-inputs">
+      <div class="row create-form-inputs align-items-center">
         <div class="col-md-2">
           <label>Favourite Toy / Hobbies</label>
         </div>

@@ -1,5 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import {
+  accompaniedbyList,
+  admissionModeList,
+  infoObtainedList,
+  schoolGradeEduList,
+  schoolGradeList,
+} from '../dropdown-value';
 
 @Component({
   selector: 'app-admission-data-section',
@@ -9,116 +16,12 @@ import { FormGroup } from '@angular/forms';
 export class AdmissionDataSectionComponent implements OnInit {
   @Input() nursingAdmissionForm: FormGroup;
 
-  admissionModeList = [
-    {
-      label: 'Ambulatory',
-      value: '0',
-    },
-    {
-      label: 'Wheel Chair',
-      value: '1',
-    },
-    {
-      label: 'Stretcher',
-      value: '2',
-    },
-    {
-      label: 'Carried',
-      value: '3',
-    },
-    {
-      label: 'Cuddled',
-      value: '4',
-    },
-    {
-      label: 'Other',
-      value: '5',
-    },
-  ];
+  admissionModeList = admissionModeList;
+  accompaniedbyList = accompaniedbyList;
+  infoObtainedList = infoObtainedList;
+  schoolGradeList = schoolGradeList;
+  schoolGradeEduList = schoolGradeEduList;
 
-  accompaniedbyList = [
-    {
-      label: 'Spouse',
-      value: '0',
-    },
-    {
-      label: 'Relative',
-      value: '1',
-    },
-    {
-      label: 'Parents',
-      value: '2',
-    },
-    {
-      label: 'Guardian',
-      value: '3',
-    },
-    {
-      label: 'Police Officer',
-      value: '4',
-    },
-    {
-      label: 'Civil Defense',
-      value: '5',
-    },
-    {
-      label: 'Other',
-      value: '6',
-    },
-  ];
-
-  infoObtainedList = [
-    {
-      label: 'Patient',
-      value: '0',
-    },
-    {
-      label: 'Family',
-      value: '1',
-    },
-    {
-      label: 'Friends',
-      value: '2',
-    },
-    {
-      label: 'Other',
-      value: '3',
-    },
-  ];
-
-  schoolGradeList = [
-    {
-      label: 'Educated',
-      value: '0',
-    },
-    {
-      label: 'Did not attend a school',
-      value: '1',
-    },
-  ];
-
-  schoolGradeEduList = [
-    {
-      label: 'Primary',
-      value: '0',
-    },
-    {
-      label: 'Secondary',
-      value: '1',
-    },
-    {
-      label: 'Diploma',
-      value: '2',
-    },
-    {
-      label: 'University Degree',
-      value: '3',
-    },
-    {
-      label: 'Higher Education',
-      value: '4',
-    },
-  ];
   constructor() {}
 
   ngOnInit(): void {}

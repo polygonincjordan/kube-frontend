@@ -7,7 +7,7 @@
 
   <div class="end-container">
     <div class="scale-box-main">
-      <label class="box-label">Allergies & Vitals</label>
+      <label class="box-label">Allergies</label>
       <div class="container-fluid">
         <div class="tab-navigation-part p-0 mt-3">
           <div class="tab-navigate allergies-header">
@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <div>
+  <div style="display: none !important">
     <app-medication-substances-section></app-medication-substances-section>
   </div>
 
@@ -117,7 +117,7 @@
   </div>
 
   <div>
-    <app-vaccination-exposure-section></app-vaccination-exposure-section>
+    <app-vaccination-exposure-section [nursingAdmissionForm]="nursingAdmissionForm" (addTableRow)="addTableRow($event)"></app-vaccination-exposure-section>
   </div>
 
   <div class="end-container">

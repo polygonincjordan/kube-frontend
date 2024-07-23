@@ -137,30 +137,30 @@ export class CheckInComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getErList(this.todayDate).then((formValue: any) => {
-      if (formValue) {
-        formValue.forEach((ele: any) => {
-          this.financialCategory.push(ele?.ZzfinCat);
-          this.statusList.push(ele?.StatusTxt);
-          this.doctorList.push(ele?.Behpersname);
-        });
-        this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
-        this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
-        this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
-        const value = {
-          filterFinCategtoryList: this.financialCategory,
-          filterStatusList: this.statusList,
-          filterDoctorList: this.doctorList,
-        };
-        this.dataShareService.sendFilterType(FilterType.OpCheckIn$, true, value);
-      }
-    }).catch((error: any) => {
-      console.error('Error scale:', error);
-    });
+    // this.getErList(this.todayDate).then((formValue: any) => {
+    //   if (formValue) {
+    //     formValue.forEach((ele: any) => {
+    //       this.financialCategory.push(ele?.ZzfinCat);
+    //       this.statusList.push(ele?.StatusTxt);
+    //       this.doctorList.push(ele?.Behpersname);
+    //     });
+    //     this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
+    //     this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
+    //     this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
+    //     const value = {
+    //       filterFinCategtoryList: this.financialCategory,
+    //       filterStatusList: this.statusList,
+    //       filterDoctorList: this.doctorList,
+    //     };
+    //     this.dataShareService.sendFilterType(FilterType.OpCheckIn$, true, value);
+    //   }
+    // }).catch((error: any) => {
+    //   console.error('Error scale:', error);
+    // });
     
-    this.refreshInterval = setInterval(() => {
-      this.getErList(this.todayDate);
-    },environment.outPatientRefreshTime);
+    // this.refreshInterval = setInterval(() => {
+    //   this.getErList(this.todayDate);
+    // },environment.refreshTime);
   }
   getAssignedTime(triagetime, triagedate, index) {
     let {
@@ -728,26 +728,26 @@ export class CheckInComponent implements OnInit, OnDestroy {
   }
 
   getSelectedDates(dates) {
-    this.getErList(dates).then((formValue: any) => {
-      if (formValue) {
-        formValue.forEach((ele: any) => {
-          this.financialCategory.push(ele?.ZzfinCat);
-          this.statusList.push(ele?.StatusTxt);
-          this.doctorList.push(ele?.Behpersname);
-        });
-        this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
-        this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
-        this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
-        const value = {
-          filterFinCategtoryList: this.financialCategory,
-          filterStatusList: this.statusList,
-          filterDoctorList: this.doctorList,
-        };
-        this.dataShareService.sendFilterType(FilterType.OpCheckIn$, true, value);
-      }
-    }).catch((error: any) => {
-      console.error('Error scale:', error);
-    });
+    // this.getErList(dates).then((formValue: any) => {
+    //   if (formValue) {
+    //     formValue.forEach((ele: any) => {
+    //       this.financialCategory.push(ele?.ZzfinCat);
+    //       this.statusList.push(ele?.StatusTxt);
+    //       this.doctorList.push(ele?.Behpersname);
+    //     });
+    //     this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
+    //     this.statusList = Array.from(new Set(this.statusList.filter(category => category.trim() !== '')));
+    //     this.doctorList = Array.from(new Set(this.doctorList.filter(category => category.trim() !== '')));
+    //     const value = {
+    //       filterFinCategtoryList: this.financialCategory,
+    //       filterStatusList: this.statusList,
+    //       filterDoctorList: this.doctorList,
+    //     };
+    //     this.dataShareService.sendFilterType(FilterType.OpCheckIn$, true, value);
+    //   }
+    // }).catch((error: any) => {
+    //   console.error('Error scale:', error);
+    // });
   }
 
 
@@ -1050,7 +1050,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
     this.nurErAllergy.openModalForAllergy(template, data);
   }
   reload(event) {
-    this.getErList();
+    // this.getErList();
   }
   // er-vitals
   openModalVital(item) {

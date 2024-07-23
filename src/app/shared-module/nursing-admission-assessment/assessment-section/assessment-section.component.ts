@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { musculoskeletalList, notificationList, sleepRestList, useOfList } from '../dropdown-value';
 
 @Component({
   selector: 'app-assessment-section',
@@ -12,84 +13,11 @@ export class AssessmentSectionComponent implements OnInit {
   public isNutritionalRisk: boolean = false;
   public isSleepRest: boolean = false;
 
-  musculoskeletalList = [
-    {
-      label: 'Deformities',
-      value: '0',
-    },
-    {
-      label: 'Contractures',
-      value: '1',
-    },
-    {
-      label: 'Amputee',
-      value: '2',
-    },
-    {
-      label: 'Bedridden',
-      value: '3',
-    },
-    {
-      label: 'Musculoskeletal Pain',
-      value: '4',
-    },
-  ];
+  musculoskeletalList = musculoskeletalList;
+  useOfList = useOfList;
+  notificationList = notificationList;
+  sleepRestList = sleepRestList;
 
-  useOfList = [
-    {
-      label: 'Walker',
-      value: '0',
-    },
-    {
-      label: 'Wheel Chair',
-      value: '1',
-    },
-    {
-      label: 'Transfer Device',
-      value: '2',
-    },
-    {
-      label: 'Bathing Device',
-      value: '3',
-    },
-    {
-      label: 'Raised Device',
-      value: '4',
-    },
-    {
-      label: 'Others',
-      value: '5',
-    },
-  ];
-
-  notificationList = [
-    {
-      label: 'Yes',
-      value: '0',
-    },
-    {
-      label: 'No',
-      value: '1',
-    },
-  ];
-  sleepRestList = [
-    {
-      label: 'Crib',
-      value: '0',
-    },
-    {
-      label: 'Bed',
-      value: '1',
-    },
-    {
-      label: 'Sleep Alone',
-      value: '2',
-    },
-    {
-      label: 'Sleep with Parent or Sibling',
-      value: '3',
-    },
-  ];
   totalScore: number;
   constructor() {}
 
@@ -123,7 +51,7 @@ export class AssessmentSectionComponent implements OnInit {
       ? true
       : null;
   }
-  
+
   supervisionCheckboxDisabled(formControlName: string) {
     return this.nursingAdmissionForm.get(formControlName).value == false
       ? true
@@ -133,9 +61,9 @@ export class AssessmentSectionComponent implements OnInit {
   useOfAssessment() {
     this.nursingAdmissionForm.patchValue({
       FunAssEquipmentUseOf: false,
-      FunAssEquipmentUseOfTyp: "",
-      FunAssEquipmentUseOfTxt: "",
-    })
+      FunAssEquipmentUseOfTyp: '',
+      FunAssEquipmentUseOfTxt: '',
+    });
   }
 
   onCheckboxChange(
@@ -177,6 +105,6 @@ export class AssessmentSectionComponent implements OnInit {
       FunSelfNeedsHygiene: false,
       FunSelfNeedsToileting: false,
       FunSelfNeedsAmulation: false,
-    })
+    });
   }
 }
