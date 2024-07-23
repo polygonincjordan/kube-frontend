@@ -157,6 +157,14 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
+  setValueOfUnit(data:any,index:any){
+    if(data){
+      this.reservationForm.get('reservationToItem').get('results')['controls'][index].patchValue({
+        Meins:data.Meins,
+      });
+    }
+  }
+
   createPayload() {
     const plantValue = this.reservationForm.get('reservationToItem').get('results')['controls'][0].get('plant').value;
     const toItems = this.reservationForm.get('reservationToItem').get('results')['controls']
@@ -166,7 +174,7 @@ export class ReservationListComponent implements OnInit {
         StoreLoc: control.get('sloc').value,
         Batch: "0000000004",
         Quantity: control.get('Menge').value,
-        Unit: '',
+        Unit: control.get('Meins').value,
         ReqDate: `${new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd')}T00:00:00`,
         ShortText: "Testing"
       }));

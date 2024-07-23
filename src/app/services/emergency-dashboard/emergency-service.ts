@@ -17,6 +17,7 @@ import {
   tap,
   lastValueFrom,
   Subject,
+  BehaviorSubject,
 } from 'rxjs';
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
@@ -40,7 +41,8 @@ export class EmergencyService {
   public Consumables = false;
   public Services = false;
   public currentTab: Subject<string> = new Subject<string>();
-
+  private formValuesSubject = new BehaviorSubject<any>(null);
+  formValues$ = this.formValuesSubject.asObservable();
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
@@ -88,6 +90,8 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+
 
   getFavSet() {
     let headers = {
@@ -1144,10 +1148,14 @@ export class EmergencyService {
     })
   }
 
-  getHistoryReservationLiat(json){
-    return this.http.get(this.url + `getHistoryReservationList?Sloc=${json.Sloc}&Matnr=${json.Matnr}&MoveType=${json.MoveType}&CostCtr=${json.CostCtr}&Erdat=${json.Erdat}&Erdat1=${json.Erdat1}`,{
+  getHistoryReservationLiat(){
+    return this.http.get(this.url + 'getHistoryReservationList',{
       withCredentials:true
     })
+  }
+
+  callHistoryList(){
+    this.formValuesSubject.next(null);
   }
 
 
