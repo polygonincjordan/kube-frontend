@@ -66,11 +66,6 @@ export class ReservationComponent implements OnInit {
     this.getCostCenter();
     this.getMaterialList();
     this.dataShareService.sendData('2');
-    this.historyFilterForm.valueChanges.subscribe((res)=>{
-      if(res){
-        this.historyComponent.getHistoryList();
-      }
-    })
     this.subscription = this.emergencyService.formValues$.subscribe(formValues => {
       this.historyFilterForm.reset();
       this.historyComponent?.getHistoryList();
