@@ -224,7 +224,7 @@ occupationalGroupList() {
   );
 }
 closePopup(event){
-  this.modalRef.hide()
+  // this.modalRef.hide()
 }
 getDate(value) {
   if (value) {

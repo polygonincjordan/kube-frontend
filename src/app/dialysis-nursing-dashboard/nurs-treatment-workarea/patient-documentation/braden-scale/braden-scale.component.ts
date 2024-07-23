@@ -24,6 +24,7 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
   public dockeyValue: any = null;
 
   public currentDate: any;
+  public currentTime1 : any;
   public currentTime: any;
   public realized: any;
   public realizedDescription: any;
@@ -33,6 +34,7 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
+  
 
   public initialValueList: BradenScaleType[] = [
     { id: 1, keyId: '', text: '', value: '0', isDisable: false },
@@ -134,7 +136,12 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
     this.Frictionandshear = '0';
 
     this.currentDate = new Date();
-    this.currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+    // this.currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+    this.currentTime1 = new Date();
+    const hours = this.currentTime1.getHours().toString().padStart(2, '0');
+  const minutes = this.currentTime1.getMinutes().toString().padStart(2, '0');
+  const seconds = this.currentTime1.getSeconds().toString().padStart(2, '0');
+  this.currentTime =`${hours}:${minutes}:${seconds}`;
 
     this.totalProjectScore = 0;
     this.totalScoreDescription = "Not all questions are answered";
@@ -146,6 +153,11 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
 
     this.realizedDescription = this.storageService.getUserProfile().GpartName;
   }
+ 
+
+  
+ 
+   
 
 
   public selectSensoryPerceptionQuestion(event: any, number: any) {
@@ -172,6 +184,8 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
     this.Frictionandshear = number;
     this.totalScoreCalc();
   }
+
+  
 
   public totalScoreCalc() {
     this.totalProjectScore = parseInt(this.Sensoryperception);
