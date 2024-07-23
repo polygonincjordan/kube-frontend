@@ -396,26 +396,26 @@ export class ErHistoryComponent implements OnInit {
     }
     this.dayCaseDashboardService.getActualDeparturesList(json).subscribe(
       (_success: any) => {
-      // this.ERlistData = _success.d.results;
-      this.ERlistData = [];
+      this.ERlistData = _success.d.results;
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
-       _success.d.results.forEach(element => {
-        if (element.StatusTxt == 'Checked Out') {
-          this.ERlistData.push(element);
-          this.sendErPatientCount.emit( this.ERlistData.length);
-          //this.triagePriorityList(element);
-        }
-       });
-       this.ERlistData.forEach((element,index) => {
-        if (element.TriageDate != null && element.TriageDate != '') {
-        this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-        }
-        else{
-          this.ERlistData[index]['assignedTime'] = '';
-        } 
-      });
+      // this.ERlistData = [];
+      //  _success.d.results.forEach(element => {
+      //   if (element.StatusTxt == 'Checked Out') {
+      //     this.ERlistData.push(element);
+      //     this.sendErPatientCount.emit( this.ERlistData.length);
+      //     //this.triagePriorityList(element);
+      //   }
+      //  });
+      //  this.ERlistData.forEach((element,index) => {
+      //   if (element.TriageDate != null && element.TriageDate != '') {
+      //   this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
+      //   }
+      //   else{
+      //     this.ERlistData[index]['assignedTime'] = '';
+      //   } 
+      // });
       this.ERlistDataClone = this.ERlistData;
       this.lastIndex = this.ERlistData.length - 1;
 

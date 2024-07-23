@@ -47,6 +47,8 @@ export class CheckInComponent implements OnInit {
   @ViewChild('triageModal') triageModal: ErTriageComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
+
   isFormValidError: boolean = false;
   searchString: string = '';
   ERlistData: any[];
@@ -664,6 +666,7 @@ export class CheckInComponent implements OnInit {
             }
           });
           this.ERlistDataClone = this.ERlistData;
+          this.dataToParent.emit(this.ERlistDataClone); 
           this.lastIndex = this.ERlistData.length - 1;
         }
       },
@@ -698,7 +701,7 @@ export class CheckInComponent implements OnInit {
         event.Status.forEach((statusValue) => {
           this.statusValueArr.push(
             filterValue.filter((element) => {
-              if (element.StatusName == statusValue) {
+              if (element.AdmissionStatus == statusValue) {
                 return element;
               }
             })

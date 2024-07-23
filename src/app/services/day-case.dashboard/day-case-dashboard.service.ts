@@ -22,8 +22,8 @@ export class DayCaseDashboardService {
     });
   }
 
-  getPatientAdministration(fromDate?: any, toDate?: any) {
-    const urlWithParams = `${this.url}getPatientAdministration?fromDate=${fromDate}&toDate=${toDate}`;
+  getPatientAdministration(fromDate?: any, toDate?: any,deptcode?:any) {
+    const urlWithParams = `${this.url}getPatientAdministration?Deptcode=${deptcode}&fromDate=${fromDate}&toDate=${toDate}`;
     return this.http.get(urlWithParams, {
       withCredentials: true,
     });
@@ -84,6 +84,16 @@ export class DayCaseDashboardService {
 
   getNursingDischargeDocData(dockey: string): Observable<any> {
     return this.http.get(this.url + `getNursingDischargeDocData?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  getNoConsumablesSet(json) {
+    return this.http.get(this.url + 'getDayCaseNoConsumablesSet', {params: json, withCredentials: true })
+  }
+
+  getNotPhysicionOrderList(obj: any) {
+    return this.http.post(this.url + 'getDayCaseNotPhysicionOrder', obj,{
       withCredentials: true,
     });
   }
