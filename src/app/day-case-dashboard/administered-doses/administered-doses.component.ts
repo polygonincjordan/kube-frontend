@@ -173,7 +173,8 @@ export class AdministeredDosesComponent implements OnInit{
     date ?  date[1] : new Date().setDate(new Date().getDate()),
     'yyyy-MM-dd'
   )}T00:00:00`
-    this.dayCaseDashboardService.getPatientAdministration(fromDate,toDate).subscribe((res:any)=>{
+  const deptcode = '3'
+    this.dayCaseDashboardService.getPatientAdministration(fromDate,toDate,deptcode).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
    })
   }

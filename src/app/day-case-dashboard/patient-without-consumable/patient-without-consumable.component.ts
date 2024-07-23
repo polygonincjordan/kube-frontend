@@ -1,7 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithouConsumables } from '@services/consumables/interfaces/consumables.interface';
 import { DataShareService } from '@services/data-share.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { FilterType } from '@services/interfaces/common.enum';
 import { StorageService } from '@services/storage.service';
 
@@ -35,14 +37,27 @@ export class PatientWithoutConsumableComponent implements OnInit {
     private consumableService: ConsumableService,
     private storageService: StorageService,
     private dataShareService: DataShareService,
+    private dayCaseDashboardService:DayCaseDashboardService
   ) { }
 
   ngOnInit(): void {
-    this.getPatientWithoutConsumable();
+    this.getPatientWithoutConsumable("");
   }
 
-  public getPatientWithoutConsumable() {
-    this.consumableService.getNoConsumablesSet().subscribe({
+  public getPatientWithoutConsumable(date?) {
+    const json = {
+      Deptcode:'3',
+      Datege :`${new DatePipe('en-US').transform(
+        date ?  date[0] : new Date().setDate(new Date().getDate()),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+      Datele:`${new DatePipe('en-US').transform(
+        date ?  date[1]  :new Date().setDate(new Date().getDate()),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+      
+    };
+    this.dayCaseDashboardService.getNoConsumablesSet(json).subscribe({
       next: (resp: PatientWithouConsumables) => {
         if (resp && resp) {
           this.patientWithoutConsumableList = this.filteredPatients = resp.d.results;

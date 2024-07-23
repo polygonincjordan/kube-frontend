@@ -10,6 +10,7 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 import { StorageService } from '@services/storage.service';
 import { DatePipe } from '@angular/common';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @Component({
   selector: 'app-physician-orders-list',
@@ -79,6 +80,7 @@ export class PhysicianOrdersListComponent implements OnInit{
     private storageService:StorageService,
     private hospitalistService: HospitalistService,
     private _hospitallistService: HospitalistService,
+    private dayCaseDashboardService:DayCaseDashboardService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -593,8 +595,6 @@ export class PhysicianOrdersListComponent implements OnInit{
   }
   navTabBoxActiveValue: string = '02';
  getErList(date:any,event?:any) {
-  console.log(event);
-  
   let jsonObj = {
     // fromDate:`${new DatePipe('en-US').transform(
     //   date ?  date[0] : new Date().setDate(new Date().getDate()),
@@ -624,9 +624,9 @@ export class PhysicianOrdersListComponent implements OnInit{
       date ?  date[1]  :new Date().setDate(new Date().getDate()),
       'yyyy-MM-dd'
     )}T00:00:00`,
-    Deptou:event?.Deptou ? event.Deptou : '',
+    Deptcode:'3',
   }
-      this.hospitalistService.getNotPhysicionOrderList(jsonObj1).subscribe(
+      this.dayCaseDashboardService.getNotPhysicionOrderList(jsonObj1).subscribe(
         (_success: any) => {
           this.dataOnTableForPhyOrder = _success?.d?.results;
           this.dataToParent.emit(this.dataOnTableForPhyOrder);

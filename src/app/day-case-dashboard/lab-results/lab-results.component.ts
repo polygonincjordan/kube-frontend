@@ -595,7 +595,8 @@ export class LabResultsComponent implements OnInit{
         date ?  date[1]  :new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
       )}T00:00:00`,
-      Posstatus: event?.ItemStatus ? event.ItemStatus : ''
+      Posstatus: event?.ItemStatus ? event.ItemStatus : '',
+      Deptcode:'3'
     };
     this.emergencyService.getLabResults(json).subscribe(
       (_success: any) => {
