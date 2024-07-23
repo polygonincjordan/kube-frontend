@@ -3,7 +3,7 @@
   font-size: 15px;background: #e4edf5;
     padding: 10px;" *ngIf="ProgressNotesList">
     <div style="flex: 0 0 80%;">Daily Progress</div>
-    <div style="flex: 0 0 13%;">Occupational Group</div>
+    <div style="flex: 0 0 13%;"></div>
     <div>Action</div>
   </div>
   <div
@@ -14,15 +14,20 @@
       <div class="card-header d-flex align-items-center">
         <div class="date-name" style="flex: 0 0 80%;">
           <p class="m-0">
-            <span style="font-weight: bold;color: black;">{{ item.CreationUserName }}</span> {{ getDate(item.ActionDate) | date : "d.MM.y" }}/{{ parsePayloadFormateTime(item.ActionTime) }} - 
-            <span style="font-weight: bold;color: black;">{{ item.CategoryText }}</span>
+            <span class="d-flex align-items-center" style="color: gray;">{{ getDate(item.ActionDate) | date : "d.MM.y" }}/{{ parsePayloadFormateTime(item.ActionTime) }} - {{ item.CreationUserName }}
+
+              <div class="occupational" [ngStyle]="getImageBorderLogic(item)" >
+                <span>{{ item.ProfGroupName }}</span>
+              </div>
+            </span> 
+            <!-- <span style="font-weight: bold;color: black;">{{ item.CategoryText }}</span> -->
             <!-- <div class="ml-2 category-name">
               <span>{{ item.CategoryText }}</span>
             </div> -->
           </p>
         </div>
-        <div class="occupational" [ngStyle]="getImageBorderLogic(item)" style="flex: 0 0 10%;">
-          <span>{{ item.ProfGroupName }}</span>
+        <div class="" [ngStyle]="getImageBorderLogic(item)" style="flex: 0 0 10%;">
+          <span></span>
         </div>
         
         <div class="action-img ml-4">
