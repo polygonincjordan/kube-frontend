@@ -14,6 +14,7 @@ export class HistoryListComponent implements OnInit {
   payload: { CostCtr: any; MoveType: any; Matnr: any; Sloc: any; Erdat: string; Erdat1: string; };
   itemDate: Date;
   matchesDateRange: boolean;
+  historyCloneList: any;
   constructor(private emergencyService: EmergencyService) {}
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class HistoryListComponent implements OnInit {
       next:(res:any)=>{
         if (res) {
           this.historyList = res.d?.results || [];
+          this.historyCloneList = res.d?.results || [];
         } else {
           this.historyList = [];
           this.filteredHistoryList = [];
@@ -36,8 +38,9 @@ export class HistoryListComponent implements OnInit {
   }
 
   filterHistory(formValues){
-    this.filteredHistoryList = this.historyList.filter(item => {
+    this.filteredHistoryList = this.historyCloneList.filter(item => {
       const erdat = new Date(parseInt(item.Erdat.match(/\d+/)[0]));
+      // const erdat1 = new Date(parseInt(item.Erdat1.match(/\d+/)[0]));
       const startDate = new Date(formValues.dateRange?.[0]);
       const endDate = new Date(formValues.dateRange?.[1]);
       return (!formValues.moveType || item.MoveType === formValues.moveType) &&
