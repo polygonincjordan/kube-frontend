@@ -2789,6 +2789,11 @@ export class FeeListService {
           })
           .then((result) => {
             this.switchMode.name = 'history';
+            this.clearData();
+            this.loadFeesOrder();
+                if (this.feeServiceOrderData && this.feeServiceOrderData.length) {
+                  this.feeServiceOrderData[0].dataType == '';
+                }
             // this.spinner.hide();
             // this.loadFeesOrder();
           });

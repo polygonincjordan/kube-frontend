@@ -2,7 +2,7 @@
   <form action="" [formGroup]="formDetailGroup">
     <div class="tab-search-panel d-flex align-items-center justify-content-between">
       <div class="tab-set w-100 row ">
-        <tabset class="col-2">
+        <tabset class="col-3">
           <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="tabz.active = true"
             (selectTab)="changeTab(tabz)">
             {{tabz?.content}}
