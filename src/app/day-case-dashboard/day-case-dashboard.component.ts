@@ -43,6 +43,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(PatientWithoutConsumableComponent) PatientWithoutConsumableComponent;
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
+  getCheckInData: any;
+  getCheckInStatusFilterData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -187,7 +189,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
           this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
           this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
           this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
-
+          this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
         }
       }
     );
@@ -241,6 +243,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     this.countOfNavModules();
     this.getLabExtraction();
     this.receiveDataFromChild();
+    this.receiveDatatoCheckIn();
     this.getMedicationcount();
     this.countForPhysicianOrder();
     // this.getNoConsumablesSetCount();
@@ -465,6 +468,18 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  receiveDatatoCheckIn(data?: string){
+    if(data && data.length){
+      this.getCheckInData = data;
+      this.getCheckInStatusFilterData = this.getCheckInData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue?.AdmissionStatus)) {
+          accumulator.push(currentValue?.AdmissionStatus);
+        }
+        return accumulator;
+      }, []);
+    }
+  }
+
   receiveDataFromPhysicianOrdersChild(data?: string) {
     if (data && data.length) {
       this.labReceivedData = data;
@@ -534,7 +549,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     } else if (this.selectedModule === 'AdministeredDoses') {
       this.AdministeredDosesComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     } else if (this.selectedModule === 'noConsumables') {
-      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable();
+      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     } else if (this.selectedModule === 'PhysicianOrder') {
       this.PhysicianOrdersListComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }
@@ -786,6 +801,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     //  }
   }
   collectCheckInData(checkindata) {
+   console.log(checkindata,"checkindata");
+   
     this.navigateToTreatmentArea(checkindata);
   }
 
@@ -942,6 +959,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
+      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -954,6 +972,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
+      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
     }
 
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()-1));
@@ -967,6 +986,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
     this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
     this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
+    this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
   }
   changeDate(event) {
     this.updatedDate = event
@@ -984,6 +1004,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
+      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -996,6 +1017,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
+      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
+
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()+1));
     //this.ErHistoryComponent.getErList(this.currentDate);
