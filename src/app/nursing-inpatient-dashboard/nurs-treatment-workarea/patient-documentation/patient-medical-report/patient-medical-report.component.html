@@ -1,0 +1,101 @@
+<div class="medical-AddEdit-Form mt-2" [formGroup]="medReportForm">
+  <div class="checkbox-header">
+    <div class="diagnosis-checkbox">
+      <label class="m-0">Diagnosis</label>
+      <div class="d-flex">
+        <div class="form-check mr-2">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault1" formControlName="Diagnosis" name="Diagnosis" [value]=true/>
+          <label class="form-check-label" for="flexRadioDefault1">Yes</label>
+        </div>
+        <div class="form-check">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="Diagnosis" name="Diagnosis" [value]=false/>
+          <label class="form-check-label" for="flexRadioDefault2" >No</label>
+        </div>
+      </div>
+    </div>
+    <div class="diagnosis-checkbox">
+      <label class="m-0">Prefindings</label>
+      <div class="d-flex">
+        <div class="form-check mr-2">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault1" formControlName="Prefinding" name="Prefinding" [value]=true/>
+          <label class="form-check-label" for="flexRadioDefault1">Yes</label>
+        </div>
+        <div class="form-check">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="Prefinding" name="Prefinding" [value]=false/>
+          <label class="form-check-label" for="flexRadioDefault2">No</label>
+        </div>
+      </div>
+    </div>
+    <div class="diagnosis-checkbox">
+      <label class="m-0">Laboratory Results</label>
+      <div class="d-flex">
+        <div class="form-check mr-2">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault1" formControlName="LabResult" name="LabResult" [value]=true/>
+          <label class="form-check-label" for="flexRadioDefault1">Yes</label>
+        </div>
+        <div class="form-check">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="LabResult" name="LabResult" [value]=false/>
+          <label class="form-check-label" for="flexRadioDefault2">No</label>
+        </div>
+      </div>
+    </div>
+    <div class="diagnosis-checkbox">
+      <label class="m-0">Current Medication</label>
+      <div class="d-flex">
+        <div class="form-check mr-2">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault1" formControlName="CurrentMed" name="CurrentMed" [value]=true/>
+          <label class="form-check-label" for="flexRadioDefault1">Yes</label>
+        </div>
+        <div class="form-check">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="CurrentMed" name="CurrentMed" [value]=false/>
+          <label class="form-check-label" for="flexRadioDefault2">No</label>
+        </div>
+      </div>
+    </div>
+    <div class="diagnosis-checkbox">
+      <label class="m-0">Procedures</label>
+      <div class="d-flex">
+        <div class="form-check mr-2">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault1" formControlName="Procedures" name="Procedures" [value]=true/>
+          <label class="form-check-label" for="flexRadioDefault1">Yes</label>
+        </div>
+        <div class="form-check">
+          <input mdbRadio class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="Procedures" name="Procedures" [value]=false/>
+          <label class="form-check-label" for="flexRadioDefault2">No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="progress-document">
+    <div class="progress-header">
+      <img width="30" src="assets/img/info-document.png" />
+      <h6 class="font-weight-bold ml-3">Progress Documentation</h6>
+    </div>
+    <div class="progress-contant">
+      <div class="medical-value-list">
+        <label>Reason For Visit</label>
+        <textarea class="form-control" placeholder="" rows="2" formControlName="VisitReason"></textarea>
+      </div>
+      <div class="medical-value-list">
+        <label>Physical Examination</label>
+        <textarea class="form-control" placeholder="" rows="2" formControlName="PhysicalExam"></textarea>
+      </div>
+      <div class="medical-value-list">
+        <label>Investigations</label>
+        <textarea class="form-control" placeholder="" rows="2" formControlName="Investgation"></textarea>
+      </div>
+      <div class="medical-value-list">
+        <label>Patient's Current Condition/Status</label>
+        <textarea class="form-control" placeholder="" rows="2" formControlName="CurrendCondi"></textarea>
+      </div>
+      <div class="medical-value-list">
+        <label>Impression</label>
+        <textarea class="form-control" placeholder="" rows="2" formControlName="Impression"></textarea>
+      </div>
+      <div class="medical-value-list">
+        <label>Recommendations</label>
+        <textarea class="form-control" placeholder="" rows="2" formControlName="Recommendation"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
