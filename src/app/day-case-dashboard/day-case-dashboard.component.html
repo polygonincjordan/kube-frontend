@@ -48,9 +48,9 @@ float: right;" />
 </div>
 <!--  -->
 <div [ngClass]="
-(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc) ? 'checkin-header' : 'er-header'
+(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || reservation) ? 'checkin-header' : 'er-header'
 "
-  *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis|| noReleaseDoc">
+  *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis|| noReleaseDoc || reservation">
   <div *ngIf="checkin" class="col-md-4" style="font-size: 18px; font-weight: bold; padding: 0; padding-left: 20px;">
     {{ defaultSelectedDateRange[0] | date : "dd.MM.y" }}-{{ defaultSelectedDateRange[1] | date : "dd.MM.y" }}
     <span *ngIf="ErPatientCount">
@@ -59,7 +59,7 @@ float: right;" />
         *ngIf="ErPatientCount == 1">Patient</span>)
     </span>
   </div>
-  <div *ngIf="noReleaseDoc" class="col-md-4"
+  <div *ngIf="noReleaseDoc  && reservation" class="col-md-4"
     style="font-size: 18px; font-weight: bold; padding: 0; padding-left: 20px;">
     {{ day }} {{ currentDate | date : "dd.MM.y" }}
     <span *ngIf="ErPatientCount">
@@ -98,16 +98,36 @@ float: right;" />
       ({{ErHistoryPatientCount}} Patient)
     </span>
   </div>
-
-  <div class="col-md-5" style="text-align: center; font-size: 21px; font-weight: bold"
+  <div  *ngIf="reservation" class="d-flex w-100">
+    <div *ngIf="reservation" class="d-flex justify-content-center" style="text-align: center; font-size: 21px; font-weight: bold;width: 94%;margin-left: 95px;">
+      {{headerLabel.length ? headerLabel:''}}
+    </div>
+    <div class="" style="display: flex; justify-content: end; align-items: center;margin-right: 5px;">
+      <div style="
+          width: 90px;
+          color: black;
+          background-color: #f2f4f6;
+          border-radius: 15px;
+          padding: 4px;
+          font-size: 15px;
+          cursor: pointer;
+          text-align: center;
+        " (click)="refreshCheckIn()"
+        >
+        <i class="fa fa-refresh" aria-hidden="true" style="cursor: pointer"></i>
+        <span class="ml-1">Refresh</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5" style="text-align: center; font-size: 21px; font-weight: bold" *ngIf="!reservation"
     [ngStyle]="{'margin': erSetting ? 'auto' : 'unset'}">
     {{erSetting ? headerLabel.length ? headerLabel :"ER Nurse Assignment" : analysis ? headerLabel.length ? headerLabel
     :"Analysis Dashboard" : headerLabel.length ? headerLabel :"Day Case Dashboard"}}
   </div>
-  <div class="col-md-3" style="display: flex; justify-content: end; align-items: center"
+  <div class="col-md-3" style="display: flex; justify-content: end; align-items: center" *ngIf="!reservation"
     [ngStyle]="{'display': erSetting ? 'none' : 'flex'}">
     <i class="fa fa-filter" aria-hidden="true" [style]="{'visibility' : analysis ? 'hidden' : 'unset'}"
-      style="font-size: 20px; margin-right: 14px; cursor: pointer;" (click)="showFilterFn($event)"></i>
+      style="font-size: 20px; margin-right: 14px; cursor: pointer;" *ngIf="!reservation" (click)="showFilterFn($event)"></i>
     <span *ngIf="erhistory" style="
     display: inline-block;
     font-size: 19px;
@@ -479,10 +499,16 @@ font-size: 12px;
           data-bs-toggle="tooltip" data-bs-placement="right" title="Assignment" class=""
           (click)="selectModule('erSetting')" />
       </div> -->
+      <div style="height: 50px; margin-bottom: 6px">
+        <img [src]="reservation ? 'assets/img/reservation-normal.svg' : 'assets/img/reservation-white.svg'"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Reservation" width="45px" class=""
+          (click)="selectModule('reservation')" />
+      </div>
     </div>
   </div>
   <app-check-in (sendErPatientCount)="collectErPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)" *ngIf="checkin" (dataToParent)="receiveDatatoCheckIn($event)"></app-check-in>
+  <app-reservation style="width: calc(100% - 105px);background:#fbfcff" *ngIf="reservation"></app-reservation>
   <app-lab-results (sendErPatientCount)="collectErPatientCount($event)" (dataToParent)="receiveDataFromChild($event)"
     (redirectCheckInData)="collectCheckInData($event)" style="width: calc(100% - 60px)"
     *ngIf="LabResults"></app-lab-results>

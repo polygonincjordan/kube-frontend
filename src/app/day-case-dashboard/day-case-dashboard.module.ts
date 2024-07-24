@@ -105,6 +105,9 @@ import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-pla
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
 import { MorseFallScaleComponent } from './nurs-treatment-workarea/patient-documentation/morse-fall-scale/morse-fall-scale.component';
 import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admission-assessment/nursing-admission-assessment.module';
+import { HistoryListComponent } from './reservation/history-list/history-list.component';
+import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 const route: Routes = [
   {
@@ -184,7 +187,9 @@ const route: Routes = [
     PainAssessmentNurEmrComponent,
     EMarOrderNurseComponent,
     MorseFallScaleComponent,
-    
+    ReservationComponent,
+    ReservationListComponent,
+    HistoryListComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
