@@ -1,0 +1,49 @@
+<div class="search-functionalitypl-0 mt-2">
+
+  <div class="tab-search-panel pb-3 d-flex align-items-center justify-content-between">
+    <div class=" w-100 d-flex align-items-center">
+      <div class="search-functionality col-md-6 pl-0">
+        <img class="search-image" src="assets/img/pres-search-icon.svg" alt="search" />
+        <!-- <input type="text" formControlName="SearchData" placeholder="Search" class="form-control w-75"
+          (input)="searchForService($event)" id="searchFilter" /> -->
+        <input placeholder="Search..." class="form-control w-75" autocomplete="off" role="combobox"
+          aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
+            feeListService.searchFeeData(searchFeestring)
+          " (input)="feeListService.searchFeeData(searchFeestring)" [(ngModel)]="searchFeestring" />
+        <img class="reset-image" src="assets/img/close.png" alt="reset" width="24" height="24"
+          *ngIf="searchFeestring" (click)="clearSearch()" />
+      </div>
+    </div>
+    <div class="button-box d-flex align-items-center justify-content-between">
+      <button type="button" class="header-btn" (click)="create()">
+        <span class="btn-text">Create Order</span>
+      </button>
+      <button type="button" class="header-btn" (click)="cancel()">
+        <span class="btn-text">Cancel</span>
+      </button>
+      <button type="button" class="header-btn" (click)="refresh()">
+        <i aria-hidden="true" class="fa fa-refresh cursor-pointer"></i>
+        <span class="btn-text">Refresh</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+<div class="container-fluid">
+  <div class="service-sidewrap pb-0">
+    <div class="service-wrapper-main pb-0">
+      <div class="row">
+        <div class="col-4">
+          <app-services-list [customData]="feeListService.feeServiceSearchData"></app-services-list>
+        </div>
+        <div class="col-8">
+          <app-service-history *ngIf="feeListService.switchMode.name === 'history'"
+            [orderHistory]="feeListService.historyOrders"></app-service-history>
+
+          <app-create-fee-service *ngIf="feeListService.switchMode.name === 'history-data'"
+            [customData]="feeListService.feeServiceData"></app-create-fee-service>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

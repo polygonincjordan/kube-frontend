@@ -1,0 +1,57 @@
+<div class="service-form">
+  <div class="card">
+    <div class="card-header">
+      <h3>Create Fee Services Order</h3>
+    </div>
+    <div class="card-body">
+      <div class="card-content">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Service Description</th>
+              <th scope="col">Date</th>
+              <!-- <th scope="col">Time</th> -->
+              <!-- <th scope="col">Status</th> -->
+              <th scope="col">Comment</th>
+              <!-- <th scope="col">Created By</th> -->
+              <th scope="col">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>Action</div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="customData && customData.length">
+              <tr *ngFor="let element of customData">
+                <td>
+                  <input type="text" class="form-control" [(ngModel)]="element.Ktxt1" disabled="true" [title]="element.Ktxt1" />
+                </td>
+                <td>
+                  <input type="text" class="form-control" [value]="getDate(element.date)" disabled="true" [title]="getDate(element.date)"/>
+                </td>
+                <!-- <td>
+                  <input type="text" class="form-control" [(ngModel)]="element.time" disabled="true" [title]="element.time"/>
+                </td> -->
+                <!-- <td>
+                  <input type="text" class="form-control" [(ngModel)]="element.status" disabled="true" />
+                </td> -->
+                <td>
+                  <input type="text" class="form-control" placeholder="Comment" [(ngModel)]="element.note" [title]="element.note"/>
+                </td>
+                <!-- <td>
+                  <input type="text" class="form-control" [(ngModel)]="element.createdBy" disabled="true" />
+                </td> -->
+                <td class="align-middle border-0" >
+                  <div class="trash-icon" (click)="feeListService.onDeleteOrder(element)">
+                    <img src="./assets/img/Delete.svg">
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="card mt-2">
+    <div class="card-body p-0 medication-emer-table">
+      <accordion [closeOthers]="true">
+        <accordion-group #medication [isOpen]="isCollpseOpen">
+          <div accordion-heading class="collaspe-header">
+            Medication
+            <i class="fa" [ngClass]="{'fa-chevron-down': medication?.isOpen, 'fa-chevron-up': !medication?.isOpen}"></i>
+          </div>
+          <div class="laboratory-list-table">
+            <table class="table">
+              <thead class="thead-back-color">
+                <th class="white-space">Medication Name</th>
+                <th class="white-space">Dosage</th>
+                <th class="white-space">Duration</th>
+                <th class="white-space">Duration Unit</th>
+                <th class="white-space">Valid From</th>
+                <th class="white-space">Valid To</th>
+                <th class="white-space"></th>
+                <th class="white-space">Purpose</th>
+                <th class="white-space">Physician</th>
+                <th class="white-space">Status</th>
+                <th class="white-space"></th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of madicationList | filter: searchString;; let i = index;">
+                  <td class="white-space">{{ item.ResultDrugName }}</td>
+                  <td class="white-space">{{ item.Quan | customDecimal }} {{item?.Quanunit}} {{item?.Formatdescr}}</td>
+                  <td>{{ durationConvert(item.Pdur | customDecimal) }}</td>
+                  <td>{{ item.Durunittxt }}</td>
+                  <td>{{ getDate(item.Erdat) | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ parsePayloadFormateTime(item.Ertim) }}</td>
+                  <td>
+                    <ul class="d-flex m-0 prior-media">
+                      <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+                        <input type="checkbox" id="PRN" [checked]="item.Prn" disabled/>
+                        <span class="mr-2"></span>
+                        <label for="PRN" class="m-0 font-widht">PRN</label>
+                      </li>
+                      <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+                        <input type="checkbox" id="POM" disabled/>
+                        <span class="mr-2"></span>
+                        <label for="POM" class="m-0 font-widht">POM</label>
+                      </li>
+                    </ul>
+                  </td>
+                  <td><img class="width-25" src="assets/img/medication-emr.png" alt="" /></td>
+                  <td>{{ item.Resppersname }}</td>
+                  <td>
+                    <span class="table-action white-space">{{item.Statustext}}</span>
+                  </td>
+                  <td class="white-space">
+                    <img class="width-25 mr-2" src="assets/img/info-emr.svg" alt="" />
+                    <img class="width-25 mr-2" src="assets/img/add-emr.svg" alt="" />
+                    <img class="width-25 mr-2" src="assets/img/three-dot-emr.svg" alt="" />
+                    <img class="width-25" src="assets/img/red-info-emr.svg" alt="" />
+                     <!-- <div class="p-2 c-pointer Mp-hover" >
+              <img src="assets/img/exclamation-mark.png" alt="" height="20" title="" [popover]=" NotValidationData"
+                [popoverContext]="{item: item, index: item.Id} " triggers="mouseenter:mouseleave" placement="left">
+            </div>
+            <div class="p-2 c-pointer Mp-hover" >
+              <img src="assets/img/check-data.png" alt="" height="20" title="" [popover]="ValidationData"
+                [popoverContext]="{item: item, index: item.Id} " triggers="mouseenter:mouseleave" placement="left">
+            </div> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>

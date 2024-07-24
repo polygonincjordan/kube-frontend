@@ -11,26 +11,25 @@ export enum UserType {
   SeniorHospitalist = 'SeniorHospitalist',
   Community = 'Community',
   PartTime = 'PartTime',
-  DIYNurse = "DIYNurse",
-  DayCaseNurse="DCNurse"
+  DIYNurse = 'DIYNurse',
+  DayCaseNurse = 'DCNurse',
+  NursingInpatient = 'IPNurse',
 }
-
 
 export enum ActionType {
-  Add$ = "Add",
-  Save$ = "Save",
-  Remove$ = "Remove",
-  Update$ = "Update",
-  Copy$ = "Copy",
-  Reset$ = "Reset",
-  Cancel$ = "Cancel",
-  View$ = 'View'
+  Add$ = 'Add',
+  Save$ = 'Save',
+  Remove$ = 'Remove',
+  Update$ = 'Update',
+  Copy$ = 'Copy',
+  Reset$ = 'Reset',
+  Cancel$ = 'Cancel',
+  View$ = 'View',
 }
 
-
 export enum WordType {
-  MaterialCode$ = "MaterialCode",
-  MaterialName$ = "MaterialName",
+  MaterialCode$ = 'MaterialCode',
+  MaterialName$ = 'MaterialName',
   CreateNewFeeServiceOrder = 'CreateNewFeeServiceOrder',
   EditGGCS = 'EditGlosgowCommaScale',
   EditFPS = 'EditFacePainScale',
@@ -49,7 +48,6 @@ export enum WordType {
   CopyBS = 'CopyBradenScale',
   CopyEND = 'CopyEmergencyNursingDocument',
 }
-
 
 export enum FilterType {
   PatientWithNoConsumable$ = 'PatientWithNoConsumable',
@@ -72,7 +70,7 @@ export enum RedirectionType {
   MORSE$ = 'MORSE', // Morse Fall Scale
   DIALYSIS$ = 'DIALYSIS', // Dialysis Assessment
   HBCA$ = 'HBCA', // Hemo Catheter,
-  HBFG$ = 'HBFG' // Hemo Dialysis Fistula Graft
+  HBFG$ = 'HBFG', // Hemo Dialysis Fistula Graft
 }
 
 export enum AssessmentType {
@@ -81,5 +79,5 @@ export enum AssessmentType {
   NoProblemIdentifiedM$ = 'No Problem Idenfify',
   ProblemIdentifiedM$ = 'Problem Idenfify',
   NoEquipment$ = 'No Equipment',
-  UseOfEquipment$ = 'Use Of Equipment'
+  UseOfEquipment$ = 'Use Of Equipment',
 }

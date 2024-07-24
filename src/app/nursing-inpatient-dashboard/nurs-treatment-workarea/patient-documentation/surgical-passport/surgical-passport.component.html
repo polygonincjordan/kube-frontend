@@ -1,0 +1,440 @@
+<div class="glosgow">
+  <div class="glosgow-box">
+    <div class="row ml-0 mr-0 selection-section mt-4">
+      <div class="container-fluid mt-4 pl-0">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav">
+              <ul class="m-0 p-0 d-flex flex-wrap mb-2" style="border-bottom: 1px solid #d6d6d6">
+                <li class="d-flex m-0 align-items-center" (click)="switchTabs('SurgicalPassp')"
+                  [ngClass]="surgicalPassp ? 'active' : ''">
+                  <!-- <img src="./assets/img/grid-icon.svg" /> -->
+                  <p class="d-inline-block m-0 input-lable"
+                    [ngClass]="surgicalPassp ? 'tab-color-active' : 'tab-color'">
+                    SurgicalPassp
+                  </p>
+                </li>
+                <li (click)="switchTabs('Diagnosis')" class="d-flex m-0 align-items-center"
+                  [ngClass]="diagnosis ? 'active' : ''">
+                  <!-- <img src="./assets/img/grid-icon.svg" /> -->
+                  <p class="d-inline-block m-0 input-lable" [ngClass]="diagnosis ? 'tab-color-active' : 'tab-color'">
+                    Diagnosis
+                  </p>
+                </li>
+                <li (click)="switchTabs('Vitals')" class="d-flex m-0 align-items-center"
+                  [ngClass]="vitals ? 'active' : ''">
+                  <!-- <img src="./assets/img/grid-icon.svg" /> -->
+                  <p class="d-inline-block m-0 input-lable" [ngClass]="vitals ? 'tab-color-active' : 'tab-color'">
+                    Vitals
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-content">
+            <form  [formGroup]="formSurgicalPaasDetailGroup">
+            <div *ngIf="surgicalPassp">
+              <div class="row p-2">
+                <div class="col-md-3 box">
+                  <div class="row justify-content-around align-items-center" style="gap: 10px">
+                    <label class="input-lable">Id Band with currect name</label>
+                    <ng-select class="w-40" formControlName="bandWithName">
+                      <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-3 box">
+                  <div class="row justify-content-around align-items-center">
+                    <label class="input-lable">ID No</label>
+                    <ng-select class="w-40" formControlName="IdNo">
+                      <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-3 box">
+                  <div class="row align-items-center" style="gap: 80px">
+                    <label class="input-lable">General</label>
+                    <ng-select class="w-40" formControlName="general">
+                      <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-3 box">
+                  <div class="row align-items-center" style="gap: 80px">
+                    <label class="input-lable">Hight-risk</label>
+                    <ng-select class="w-40" formControlName="highRisk">
+                      <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label }}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2 p-2">
+                <p>Preparation</p>
+                <div class="p-box pl-3">
+                  <div class="row px-2">
+                    <div class="col-md-6 d-flex">
+                      <div class="row align-items-center w-35" style="gap: 16%">
+                        <label class="input-lable">Skin</label>
+                        <ng-select class="w-50" formControlName="skin">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label}}</ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="row w-35 align-items-center" style="gap: 16%">
+                        <label class="input-lable">Bowel</label>
+                        <ng-select class="w-50" formControlName="bowel">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label}}</ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="row w-35 align-items-center" style="gap: 18%">
+                        <label class="input-lable">Allergies</label>
+                        <ng-select class="w-50" formControlName="allergies">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-md-6 d-flex" style="gap: 4%">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="food" formControlName="food" />
+                        <label class="admitting-physician" for="food">Food</label>
+                      </div>
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="medication" formControlName="medication"/>
+                        <label class="admitting-physician" for="medication">Medication</label>
+                      </div>
+                      <div class="row" style="width: 65%">
+                        <input type="text" class="form-control" [disabled]="formSurgicalPaasDetailGroup.get('food').value !== true && formSurgicalPaasDetailGroup.get('medication').value !== true" 
+                        [readOnly]="formSurgicalPaasDetailGroup.get('food').value !== true && formSurgicalPaasDetailGroup.get('medication').value !== true"
+                        formControlName="medicationsTxt" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row px-2 mt-4">
+                    <div class="col-md-6 pl-0">
+                      <div class="d-flex">
+                        <div class="row justify-content-around align-items-center w-50" style="gap: 10px">
+                          <label class="input-lable">Prosthesis/Dentures</label>
+                          <ng-select class="w-40" formControlName="prosthesisDenture">
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label}}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="row justify-content-around align-items-center w-50" style="gap: 10px">
+                          <label class="input-lable">Removed</label>
+                          <ng-select class="w-40" formControlName="pRemove"
+                           [disabled]="formSurgicalPaasDetailGroup.get('prosthesisDenture').value !== '0'"
+                           [readonly]="formSurgicalPaasDetailGroup.get('prosthesisDenture').value !== '0'"
+                           >
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 pl-0">
+                      <div class="d-flex">
+                        <div class="row justify-content-around align-items-center w-50" style="gap: 10px">
+                          <label class="input-lable">Valuables/Nail polish</label>
+                          <ng-select class="w-40" formControlName="valuableNail">
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label }}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="row justify-content-around align-items-center w-50" style="gap: 10px">
+                          <label class="input-lable">Removed</label>
+                          <ng-select class="w-40" formControlName="vRemove" [disabled]="formSurgicalPaasDetailGroup.get('valuableNail').value !== '0'" [readonly]="formSurgicalPaasDetailGroup.get('valuableNail').value !== '0'">
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label}}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row px-2 mt-4">
+                    <div class="pl-0 d-flex" style="gap: 23px">
+                      <div class="d-flex vertical-box">
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">NPO</label>
+                          <ng-select class="w-43" formControlName="npo">
+                            <ng-option *ngFor="let item of npoDropList" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">Type of isolation</label>
+                          <ng-select class="w-43" formControlName="typeOfIsolation">
+                            <ng-option *ngFor="let item of typeOfIsolationDropList" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">Blood Arranged</label>
+                          <ng-select class="w-43" formControlName="bloodArranged">
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">Voided</label>
+                          <ng-select class="w-43" formControlName="voided">
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">Catheter</label>
+                          <ng-select class="w-43" formControlName="catheter">
+                            <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div class="d-flex vertical-box">
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">NGT</label>
+                          <ng-select class="w-43" formControlName="ngt">
+                            <ng-option *ngFor="let item of npoDropList" [value]="item.value">{{ item.label
+                              }}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable"><span  class="star">*</span>Time</label>
+                          <input type="time" class="form-control w-43 p-1" formControlName="itime" placeholder="HH:mm:ss" min="08:00:00"
+                            max="17:00:00" [ngClass]="formSurgicalPaasDetailGroup.get('itime').errors && isFormValidError ? 'ep-error-message': ''" />
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable">No of Unit</label>
+                          <input type="text" class="form-control w-43"  formControlName="NoOfunit" />
+                        </div>
+                        <div class="d-flex justify-content-between">
+                          <label class="input-lable"><span class="star">*</span>Time</label>
+                          <input type="time" class="form-control w-43 p-1" formControlName="VTime" placeholder="HH:mm:ss" min="08:00:00"
+                            max="17:00:00" [ngClass]="formSurgicalPaasDetailGroup.get('VTime').errors && isFormValidError ? 'ep-error-message': ''"/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row flex-column pr-3 mt-4" style="gap: 15px">
+                    <div>
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Pre-Medication Administered</label>
+                        <input type="text" class="form-control w-75" formControlName="PreMedicationAdministred"/>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Skin test</label>
+                        <input type="text" class="form-control w-75" formControlName="skinTest"/>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Full dose</label>
+                        <input type="text" class="form-control w-75" formControlName="fullDose"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row px-2 mt-4">
+                    <div class="d-flex vertical-box2">
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">OT clothes</label>
+                        <ng-select class="w-43" formControlName="OtClothes">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Finance Clearence</label>
+                        <ng-select class="w-43" formControlName="FinanceClearence">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="d-flex vertical-box2">
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Mode of Transportation</label>
+                        <ng-select class="w-43" formControlName="modeOfTrans">
+                          <ng-option *ngFor="let item of modeOfTransDropList" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Special instructions</label>
+                        <ng-select class="w-43" formControlName="specialInstruction">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="d-flex vertical-box2">
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Investigations Record Atteched</label>
+                        <ng-select class="w-43" formControlName="InvestigationsRecordAtteched">
+                          <ng-option *ngFor="let item of conmonDropOption" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Prosthesis/Implant</label>
+                        <ng-select class="w-43" formControlName="prosthesisImplant">
+                          <ng-option *ngFor="let item of prosthesisDropList" [value]="item.value">{{ item.label
+                            }}</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row px-2 mt-4">
+                    <div class="w-100">
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Comment</label>
+                        <input type="text" class="form-control w-75" formControlName="comments" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row flex-column px-2 mt-4" style="gap: 15px;">
+                    <div class="d-flex w-100" style="align-items: center">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="ward-check" formControlName="wardCheck"/>
+                        <label class="admitting-physician" for="ward-check">Ward check</label>
+                      </div>
+                      <div class="row w-100 d-flex align-items-center" style="gap: 4%">
+                        <label class="">Name of assigned staff</label>
+                        <input type="text" class="form-control " [disabled]="formSurgicalPaasDetailGroup.get('wardCheck').value !== true" 
+                        formControlName="nameOfAssignedStaff" [readOnly]="formSurgicalPaasDetailGroup.get('wardCheck').value !== true " style="width: 82%;" />
+                      </div>
+                    </div>
+                    <div class="d-flex w-100" style=" align-items: center">
+                      <div class="scale-box-checkbox">
+                        <input type="checkbox" id="orStaffC" formControlName="OrStaff"/>
+                        <label class="admitting-physician" for="orStaffC">OR staff</label>
+                      </div>
+                      <div class="row w-100 d-flex align-items-center" style="gap: 7.5%">
+                        <label class="">Name of OR staff</label>
+                        <input type="text" class="form-control" formControlName="NameOfOrStaff" [disabled]="formSurgicalPaasDetailGroup.get('OrStaff').value !== true"  [readOnly]="formSurgicalPaasDetailGroup.get('OrStaff').value !== true" style="width: 82%;" />
+                      </div>
+                    </div>
+                   
+                  </div>
+                  <div class="row px-2 mt-4">
+                    <div class="w-100">
+                      <div class="d-flex justify-content-between">
+                        <label class="input-lable">Comment</label>
+                        <input type="text" class="form-control w-75" formControlName="commentslast" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="diagnosis">
+          
+            <div class="d-flex mb-2 py-3" style="justify-content: space-between;
+              padding-right: 22px">
+              <div style="display: flex;
+              align-items: center;
+              gap: 10px;">
+                <input type="checkbox" style="width: 36px; 
+                height: 22px;" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)" formControlName="isDiagnosis" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+                <label class="admitting-physician" for="noDiagnosisApplicable">No Diagnosis Applicable</label>
+              </div>
+              <!-- <div>
+                <button class="create-diagnosis" 
+                (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button>
+              </div> -->
+              <div *ngIf="diagnosis" class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
+                <img src="assets/img/file1.svg"  title="Create & Import" class="img-size">
+              </div>
+
+            </div>
+            <div style="max-height: 296px;
+              overflow: auto;">
+              <table class="table table-bordered past-table">
+                <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                  <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Description </th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Administion Diag.</th>
+                    <th scope="col">Surgery Diag.</th>
+                    <th scope="col">Preop Diag.</th>
+                    <th scope="col">Discharge Diag.</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: #fbfcff;">
+                  <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                    <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                    <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                    <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DAdmission"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DSurgery"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DPreoperative"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                        [(ngModel)]="item.DDischarge"  [ngModelOptions]="{standalone: true}"></td>
+                    <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(i)"><img
+                        src="assets/img/Delete.svg" style="position: relative;
+                      top: 6px;" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        
+            </div>
+
+          
+              <div *ngIf="vitals">
+                
+                <div class="allergy-box d-flex justify-content-between py-3">
+                  <div class="allergy-checkbox-section d-flex align-items-center">
+                    <input type="checkbox"  id="noVitalSignsApplicable" (change)="handleCheckboxVitals($event)"  formControlName="isVitals" style="width: 24px;height: 20px;"
+                    [attr.disabled]="toVitalsArr?.length >0 ? true:null"  />
+                    <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No Vitals Signs Applicable</label>
+                  </div>
+                  <div *ngIf="vitals" class="secound-bar-vital-sign" (click)="openModalVital()">
+                    <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+                  </div>
+                </div>
+                <div style="max-height: 296px;
+                  overflow: auto;">
+                  <table class="table table-bordered past-table">
+                    <thead style="background-color: #e4edf5; color: black; ">
+                      <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Measured Value </th>
+                        <th scope="col">Normal Range</th>
+                        <th scope="col">Date/Time</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fbfcff;">
+                      <tr class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+                        <td style="    padding: 10px !important;
+                      width: 3%;text-align: center;" (click)="deleteVitalsFromTable(i)"><img
+                            src="assets/img/Delete.svg" /></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+           
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>
+<app-diagnosis-tab #diagnosisNotesKardexId (importEvent)="importDiagnosisData($event)"></app-diagnosis-tab>
