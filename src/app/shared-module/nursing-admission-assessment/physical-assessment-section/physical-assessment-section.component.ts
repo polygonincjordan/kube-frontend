@@ -1,5 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import {
+  capiliaryList,
+  chestAppearanceList,
+  earsNoseNickDropdownValue,
+  lesionsList,
+  micturitionList,
+  moistureList,
+  rhonchiList,
+  skinColorList,
+  temperatureList,
+  urineColorOptions,
+} from '../dropdown-value';
 
 @Component({
   selector: 'app-physical-assessment-section',
@@ -22,77 +34,16 @@ export class PhysicalAssessmentSectionComponent implements OnInit {
     'Respiratory',
   ];
 
-  urineColorOptions = [
-    { value: '0', label: 'N/A' },
-    { value: '1', label: 'Yellow' },
-    { value: '2', label: 'Pale' },
-    { value: '3', label: 'Amber' },
-    { value: '4', label: 'Orange' },
-    { value: '5', label: 'Red' },
-    { value: '6', label: 'Yellow-Brown' },
-    { value: '7', label: 'Green-Brown' },
-    { value: '8', label: 'Dark-Brown' },
-  ];
-
-  micturitionList = [
-    { value: '0', label: 'Normal' },
-    { value: '1', label: 'Increased' },
-    { value: '2', label: 'Decreased' },
-  ];
-  moistureList = [
-    { value: '0', label: 'Moist' },
-    { value: '1', label: 'Dry' },
-    { value: '2', label: 'Diaphoretic' },
-    { value: '3', label: 'Night Sweats' },
-  ];
-  temperatureList = [
-    { value: '0', label: 'Warm' },
-    { value: '1', label: 'Cool' },
-  ];
-  lesionsList = [
-    { value: '0', label: 'Present' },
-    { value: '1', label: 'Absent' },
-  ];
-  capiliaryList = [
-    { value: '0', label: '< = 3 seconds' },
-    { value: '1', label: '> 3 seconds' },
-  ];
-  skinColorList = [
-    { value: '0', label: 'Normal' },
-    { value: '1', label: 'Pale' },
-    { value: '2', label: 'Jaundice' },
-    { value: '3', label: 'Mottled' },
-    { value: '4', label: 'Flushed' },
-    { value: '5', label: 'Petechiae' },
-    { value: '6', label: 'Cyanotic' },
-    { value: '7', label: 'Others' },
-  ];
-
-  earsNoseNickDropdownValue = [
-    {
-      label: 'Right',
-      value: '0',
-    },
-    {
-      label: 'Left',
-      value: '1',
-    },
-    {
-      label: 'Both',
-      value: '2',
-    },
-  ];
-
-  chestAppearanceList = [
-    {
-      label: 'Symmetrical',
-      value: '0',
-    },
-    {
-      label: 'Asymmetrical',
-      value: '1',
-    },
-  ];
+  urineColorOptions = urineColorOptions;
+  micturitionList = micturitionList;
+  moistureList = moistureList;
+  temperatureList = temperatureList;
+  lesionsList = lesionsList;
+  capiliaryList = capiliaryList;
+  skinColorList = skinColorList;
+  earsNoseNickDropdownValue = earsNoseNickDropdownValue;
+  chestAppearanceList = chestAppearanceList;
+  rhonchiList = rhonchiList;
 
   constructor() {}
 
@@ -107,7 +58,148 @@ export class PhysicalAssessmentSectionComponent implements OnInit {
     return control ? control.value != value : false;
   }
 
-  isGeOstomyTypeTxtDisabled(formControlName: string): boolean {
+  isGeOstomyTypeTxtDisabled(formControlName?: string): boolean {
+    if (this.nursingAdmissionForm.get('disabledAllPhy').value) {
+      return true;
+    }
     return !this.nursingAdmissionForm.get(formControlName).value;
+  }
+
+  isDisabled(): boolean {
+    return this.nursingAdmissionForm.get('disabledAllPhy')?.value;
+  }
+
+  disabledAllValue() {
+    this.nursingAdmissionForm.patchValue({
+      GgRectalPain: false,
+      GgIndigestion: false,
+      GbAbsent: false,
+      GbPresent: false,
+      GbHypoactive: false,
+      GbHyperactive: false,
+      GaSoft: false,
+      GaDistendend: false,
+      GaFirm: false,
+      GaTenderness: false,
+      GeEnema: false,
+      GeLaxatives: false,
+      GeOstomyType: false,
+      GeOstomyTypeTxt: '',
+      GeOther: false,
+      GeOtherTxt: '',
+      RmProstate: false,
+      RmLesions: false,
+      RmDischarge: false,
+      RmScrotal: false,
+      RmDescr: '',
+      RfPregnant: false,
+      RfLmp: null,
+      RfDischarge: false,
+      RfLesions: false,
+      RfItching: false,
+      RfPelvic: false,
+      RfMenarcheAge: '',
+      RfNotReached1: false,
+      RfMenopauseAge: '',
+      RfNotReached2: false,
+      RfBirthCont: false,
+      RfBirthContTxt: '',
+      RbTenderness: false,
+      RbDischarge: false,
+      RbSwelling: false,
+      RbProsthesis: false,
+      RbLumps: false,
+      GPainful: false,
+      GIncontinence: false,
+      GBurning: false,
+      GHematuria: false,
+      GOliguria: false,
+      GDysuria: false, //
+      GPolyuria: false,
+      GDribbling: false,
+      GNocturia: false,
+      GRetention: false,
+      GStraining: false,
+      GUrineColour: '',
+      GUrineClarity: '',
+      GCatheterType: false,
+      GCatheterTypeTxt: '',
+      GMicturition: '',
+      GOther: false,
+      GOtherTxt: '',
+      SSkinColor: '',
+      SSkinColorTxt: '',
+      STemperature: '',
+      SMoisture: '',
+      SLesions: '',
+      SLocation: '',
+      NnHeadache: false,
+      NnDizziness: false,
+      NnNumbness: false,
+      NnNumbnessLoc: '',
+      NnTingling: false,
+      NnTinglingLoc: '',
+      NnParalysis: false,
+      NnParalysisLoc: '',
+      NnTremors: false,
+      NnTremorsLoc: '',
+      NLevelConscious: '',
+      NoPlace: false,
+      NoTime: false,
+      NoPresent: false,
+      NResponsiveness: '',
+      CgChestPain: false,
+      CgPalpitations: false,
+      CgPacemaker: false,
+      CgPainCalves: false,
+      CpRegular: false,
+      CpIrregular: false,
+      CpStrong: false,
+      CpWeak: false,
+      CPedalPulses: '',
+      CeYes: false,
+      CeNo: false,
+      CePitting: false,
+      CeNonPitting: false,
+      CeLocation: '',
+      CNailBed: '',
+      CCapillaryRefill: '',
+      EeHardHearing: '',
+      EePain: '',
+      EeDrainage: '',
+      EeDeaf: '',
+      EnEpistaxis: false,
+      EnCongestion: false,
+      EnDrainage: false,
+      EnType: '',
+      EtDysphagia: false,
+      EtBleeding: false,
+      EtSwollenGlands: false,
+      EtSwollenGums: false,
+      EtPain: false,
+      EtLesions: false,
+      EtLocation: '',
+      OGlassEye: '',
+      ORedness: '',
+      OPain: '',
+      ODischarge: '',
+      OBlind: '',
+      OComments: '',
+      RChestAppearance: '',
+      RbDyspneaRest: false,
+      RbDyspneaExertion: false,
+      RbNonLabored: false,
+      RBbreathSounds: '',
+      RRhonchi: '',
+      RCough: '',
+      RColor: '',
+      RAmount: '',
+      RTracheostomy: false,
+      RTubeSize: '',
+      RO2: false,
+      RBy: '',
+      ROtherTxt: '', //
+      RAt: '',
+    });
   }
 }

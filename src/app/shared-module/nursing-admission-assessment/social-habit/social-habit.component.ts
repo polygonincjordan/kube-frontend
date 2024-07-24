@@ -1,18 +1,31 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { debounceTime } from 'rxjs';
+import {
+  cigarettersList,
+  dailyList,
+  frequencyList,
+  frequencySocial,
+  otherHabitUnitList,
+} from '../dropdown-value';
 
 @Component({
   selector: 'app-social-habit',
   templateUrl: './social-habit.component.html',
-  styleUrls: ['./social-habit.component.scss']
+  styleUrls: ['./social-habit.component.scss'],
 })
 export class SocialHabitComponent implements OnInit {
-
   @ViewChild('addHabit', { static: true }) addHabit: TemplateRef<any>;
   @Output() saveHabitData = new EventEmitter<any>();
 
@@ -21,132 +34,12 @@ export class SocialHabitComponent implements OnInit {
   public modalRef: BsModalRef;
   public habitType: string;
 
-  cigarettersList = [
-    {
-      value: '1',
-      label: 'Cigarettes',
-    },
-    {
-      value: '2',
-      label: 'Cigars',
-    },
-    {
-      value: '3',
-      label: 'Pipe bowl',
-    },
-    {
-      value: '4',
-      label: 'Tabacco',
-    },
-    {
-      value: '5',
-      label: 'Water pipe',
-    },
-  ];
-  frequencyList = [
-    {
-      value: '1',
-      label: 'Once',
-    },
-    {
-      value: '2',
-      label: 'Twince',
-    },
-    {
-      value: '3',
-      label: 'Thrice',
-    },
-    {
-      value: '4',
-      label: 'Four times',
-    },
-    {
-      value: '5',
-      label: 'Five times',
-    },
-    {
-      value: '6',
-      label: 'Six times',
-    },
-    {
-      value: '7',
-      label: 'Seven times',
-    },
-  ];
-  dailyList = [
-    {
-      value: 'D',
-      label: 'Daily',
-    },
-    {
-      value: 'W',
-      label: 'Weekly',
-    },
-    {
-      value: 'M',
-      label: 'Monthly',
-    },
-    {
-      value: 'F',
-      label: 'Fortnight',
-    },
-    {
-      value: 'Y',
-      label: 'Yearly',
-    },
-    {
-      value: 'O',
-      label: 'Occasionally',
-    },
-    {
-      value: 'R',
-      label: 'Rarely',
-    },
-  ];
-  frequencySocial = [
-    {
-      value: 'SO',
-      label: 'Socially',
-    },
-    {
-      value: 'US',
-      label: 'Under Stress',
-    },
-  ];
+  cigarettersList = cigarettersList;
+  frequencyList = frequencyList;
+  dailyList = dailyList;
+  frequencySocial = frequencySocial;
+  otherHabitUnitList = otherHabitUnitList;
 
-  otherHabitUnitList = [
-    { code: 'TUB', description: 'Tube' },
-    { code: 'SYR', description: 'Syringe' },
-    { code: 'TAB', description: 'Tablet' },
-    { code: 'SCP', description: 'Scoop' },
-    { code: 'SET', description: 'Set' },
-    { code: 'SPN', description: 'Spoon' },
-    { code: 'STR', description: 'Strip' },
-    { code: 'PT', description: 'Pint, US liquid' },
-    { code: 'PUF', description: 'Puff' },
-    { code: 'PKT', description: 'PACKET' },
-    { code: 'PC', description: 'Piece' },
-    { code: 'PAA', description: 'Pair' },
-    { code: 'PAC', description: 'Pack' },
-    { code: 'L', description: 'Liter' },
-    { code: 'LB', description: 'Pound' },
-    { code: 'KG', description: 'Kilogram' },
-    { code: 'INH', description: 'inhalation' },
-    { code: 'INJ', description: 'Injection' },
-    { code: 'IU', description: 'International Unit' },
-    { code: 'G', description: 'Gram' },
-    { code: 'DZ', description: 'Dozen' },
-    { code: 'EA', description: 'each' },
-    { code: 'DOS', description: 'Dose' },
-    { code: 'AMP', description: 'Ampule' },
-    { code: 'BAG', description: 'Bag' },
-    { code: 'BAR', description: 'bar' },
-    { code: 'BOX', description: 'BOX' },
-    { code: 'BT', description: 'Bottle' },
-    { code: 'CAN', description: 'Canister' },
-    { code: 'CAP', description: 'CApsule' },
-    { code: 'CAR', description: 'Carton' }
-  ]
   selectedTableData: any;
   patientDetails: any;
   selectedSocialData: any;
@@ -157,9 +50,9 @@ export class SocialHabitComponent implements OnInit {
     private emergencyService: EmergencyService,
     private sharedService: SharedService,
     private storageService: StorageService
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   initForm() {
     this.habitForm = this.formBuilder.group({
@@ -179,15 +72,20 @@ export class SocialHabitComponent implements OnInit {
       quantity: [''],
       dUnits: '',
       dType: '',
-      Habitid: ''
+      Habitid: '',
     });
   }
 
-  openModalForAddHabit(habitType: string, selectedTableData: any, patientDetails: any, selectedSocialData: any) {
+  openModalForAddHabit(
+    habitType: string,
+    selectedTableData: any,
+    patientDetails: any,
+    selectedSocialData: any
+  ) {
     this.selectedTableData = selectedTableData;
     this.patientDetails = patientDetails;
     this.habitType = habitType;
-    this.selectedSocialData = selectedSocialData
+    this.selectedSocialData = selectedSocialData;
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl add-habit-size',
       ignoreBackdropClick: true,
@@ -242,8 +140,8 @@ export class SocialHabitComponent implements OnInit {
       this.clearAllValidators();
       let checkNoConsume = {
         isNoConsume: true,
-        habitType: this.habitType
-      }
+        habitType: this.habitType,
+      };
       this.saveHabitData.next(checkNoConsume);
       this.closeModel();
     }
@@ -294,7 +192,9 @@ export class SocialHabitComponent implements OnInit {
           this.saveHabitData.next('success');
         },
         (error) => {
-          this.sharedService.errorSwallModel(error?.error?.error?.message?.value);
+          this.sharedService.errorSwallModel(
+            error?.error?.error?.message?.value
+          );
         }
       );
     }
@@ -328,7 +228,9 @@ export class SocialHabitComponent implements OnInit {
           this.saveHabitData.next('success');
         },
         (error) => {
-          this.sharedService.errorSwallModel(error?.error?.error?.message?.value);
+          this.sharedService.errorSwallModel(
+            error?.error?.error?.message?.value
+          );
         }
       );
     }
@@ -362,7 +264,9 @@ export class SocialHabitComponent implements OnInit {
           this.saveHabitData.next('success');
         },
         (error) => {
-          this.sharedService.errorSwallModel(error?.error?.error?.message?.value);
+          this.sharedService.errorSwallModel(
+            error?.error?.error?.message?.value
+          );
         }
       );
     }
@@ -397,7 +301,9 @@ export class SocialHabitComponent implements OnInit {
           this.saveHabitData.next('success');
         },
         (error) => {
-          this.sharedService.errorSwallModel(error?.error?.error?.message?.value);
+          this.sharedService.errorSwallModel(
+            error?.error?.error?.message?.value
+          );
         }
       );
     }

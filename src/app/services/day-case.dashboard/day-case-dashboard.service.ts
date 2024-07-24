@@ -97,4 +97,30 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+
+  // Nursing Discharge Assessment Document
+  createNursingAdmissionDoc(json): Observable<any> {
+    return this.http.post(this.url + 'createNursingAdmission', json, {
+      withCredentials: true,
+    });
+  }
+
+  deleteNursingAdmissionDoc(json): Observable<any> {
+    return this.http.post(this.url + `deleteNursingAdmissionDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  nursingAdmissionLatestDoc(json: any) {
+    const url = `${this.url}getNursingAdmissionLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  getNursingAdmissionDocData(dockey: string): Observable<any> {
+    return this.http.get(this.url + `getNursingAdmissionDocData?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
 }

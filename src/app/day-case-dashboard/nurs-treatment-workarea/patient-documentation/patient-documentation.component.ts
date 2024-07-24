@@ -27,6 +27,7 @@ import { NursingCarePlansComponent } from 'src/app/shared-module/nursing-care-pl
 import { NursingDischargeSummaryComponent } from 'src/app/shared-module/nursing-discharge-summary/nursing-discharge-summary.component';
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { NursingAdmissionAssessmentComponent } from 'src/app/shared-module/nursing-admission-assessment/nursing-admission-assessment.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -42,6 +43,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
+  @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
@@ -1522,6 +1524,19 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openDischargeSummery) {
         let docStatus = '1';
         this.NursingDischargeComp.createNursingDischargeDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      // Nursing Admission Assessment Create API
+      if (this.openNurseAdmission) {
+        let docStatus = '1';
+        this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }

@@ -5,15 +5,18 @@
       <div class="row create-form-inputs">
         <div class="scale-box">
           <div class="scale-box-checkbox">
-            <input
-              type="checkbox"
-              id="noScaleAppicable"
-              [(ngModel)]="noMedication"
-              [ngModelOptions]="{ standalone: true }"
-            />
-            <label class="admitting-physician" for="noMedication"
-              >No medication & substance applicable</label
-            >
+            <div class="no-medication">
+              <input
+                type="checkbox"
+                id="noScaleAppicable"
+                [(ngModel)]="noMedication"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <label class="admitting-physician" for="noMedication"
+                >No medication & substance applicable</label
+              >
+            </div>
+            <img src="assets/img/file1.svg" title="Create Import" class="img-size">
           </div>
           <div class="row m-0">
               <div class="col-md-8 mt-3 p-0">

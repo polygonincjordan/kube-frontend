@@ -14,11 +14,15 @@ import { SharedService } from '@services/shared.service';
 import { SocialHabitComponent } from './social-habit/social-habit.component';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, of } from 'rxjs';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { StorageService } from '@services/storage.service';
+import { VaccinationExposureSectionComponent } from './vaccination-exposure-section/vaccination-exposure-section.component';
+import { CommanService } from '@services/comman.service';
+import { Subscription, catchError, of } from 'rxjs';
+import { DataShareService } from '@services/data-share.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @Component({
   selector: 'app-nursing-admission-assessment',
@@ -32,7 +36,12 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   @ViewChild('scalesNumericRating')
   scalesNumericRating: NumericRatingScalePopupComponent;
   @ViewChild('socialAddHabit') socialAddHabit: SocialHabitComponent;
+  @ViewChild(VaccinationExposureSectionComponent)
+  vaccinationComp: VaccinationExposureSectionComponent;
+
   public nursingAdmissionForm: FormGroup;
+  public TOMEDICATION: FormArray;
+  public TOINFECTION: FormArray;
 
   toAllergyArr: any = [];
   duplicates: any[];
@@ -47,6 +56,8 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   public selectedTableDetails: any;
   public maritalStatus: any;
   public patientDetails: Patient;
+  private subscription: Subscription;
+  private actionTypeSubscription$: Subscription;
 
   public scalesList: commonKeyValuePariExt3[] = [
     {
@@ -88,79 +99,79 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   public currentOccupationList = [
     {
       label: 'Full Time Employment',
-      value: '0'
+      value: '1',
     },
     {
       label: 'Part Time Employment',
-      value: '1'
+      value: '2',
     },
     {
       label: 'Self-employed',
-      value: '2'
+      value: '3',
     },
     {
       label: 'Multiple Jobs',
-      value: '3'
+      value: '4',
     },
     {
       label: 'Unemployed',
-      value: '4'
+      value: '5',
     },
     {
       label: 'Student',
-      value: '5'
+      value: '6',
     },
     {
       label: 'Retied',
-      value: '6'
+      value: '7',
     },
   ];
 
   occupationalOtherList = [
     {
       label: 'Yes',
-      value:'0',
+      value: '0',
     },
     {
       label: 'No',
-      value:'1',
-    }
-  ]
+      value: '1',
+    },
+  ];
 
   relationashipList = [
     {
       label: 'Parents',
-      value:'0',
+      value: '0',
     },
     {
       label: 'Father',
-      value:'1',
+      value: '1',
     },
     {
       label: 'Mother',
-      value:'2',
+      value: '2',
     },
     {
       label: 'Grandparents',
-      value:'3',
+      value: '3',
     },
     {
       label: 'Uncle/Aunt',
-      value:'4',
+      value: '4',
     },
     {
       label: 'Cousin',
-      value:'5',
+      value: '5',
     },
     {
       label: 'Brother/Sister',
-      value:'6',
+      value: '6',
     },
     {
       label: 'Other',
-      value:'7',
+      value: '7',
     },
-  ]
+  ];
 
   public socialHistoryList: commonKeyValuePariExt0[] = [
     {
@@ -214,23 +225,34 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     private datePipe: DatePipe,
     private _route: ActivatedRoute,
     private patientService: PatientService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private commanService: CommanService,
+    private dataShareService: DataShareService,
+    private dayCaseDashboard: DayCaseDashboardService
   ) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
-      this.encounterId = this.paramsObject.einri + this.paramsObject.falnr + this.paramsObject.lfdnr;
+      this.encounterId =
+        this.paramsObject.einri +
+        this.paramsObject.falnr +
+        this.paramsObject.lfdnr;
       this.getPatinetDetails(this.encounterId);
     });
   }
 
   public getPatinetDetails(encounterId) {
-    this.patientService.getDataPatient(encounterId).pipe(catchError(() => {
-      return of({} as Patient);
-    })).subscribe((patientData: Patient) => {
-      this.patientDetails = patientData;
-      this.maritalStatus = this.patientDetails.maritalStatus;
-      this.storageService.setPatientData(patientData);
-    });
+    this.patientService
+      .getDataPatient(encounterId)
+      .pipe(
+        catchError(() => {
+          return of({} as Patient);
+        })
+      )
+      .subscribe((patientData: Patient) => {
+        this.patientDetails = patientData;
+        this.maritalStatus = this.patientDetails.maritalStatus;
+        this.storageService.setPatientData(patientData);
+      });
   }
 
   ngOnInit(): void {
@@ -238,19 +260,21 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   }
 
   initForm() {
-    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss a');
+    console.log(currentTime);
+    
 
     this.nursingAdmissionForm = this.formBuilder.group({
       Dockey: '',
       Dtid: 'ZMED_NRADM',
-      Einri: '',
-      Patnr: '',
-      Falnr: '',
-      Lfdnr: '',
-      Orgdo: '',
-      AAdmittedWard: '',
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: this.storageService.patientData.deptOrgUnit,
+      AAdmittedWard: '2nd Floor-Zone C-IP',
       ADate: [new Date()],
-      ATime: currentTime,
+      ATime: "",
       ARoom: '',
       AReferralType: '',
       AAdmissionMode: '',
@@ -426,7 +450,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       RO2: false,
       RBy: '',
       ROtherTxt: '', //
-      RAt: '',
+      RAt: "",
       FunSelfNoProblem: false,
       FunSelfNeedsSuper: false,
       FunSelfNeedsFeeding: false,
@@ -476,9 +500,82 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       Since: '',
       NumberSpouse: '',
       HComments: '',
-      AttendPhy: '',
+      AttendPhy: this.storageService.getUserProfile().Gpart,
       DocStatus: '1',
+      TOMEDICATION: new FormArray([]),
+      TOINFECTION: new FormArray([]),
+      disabledAllPhy: false
     });
+
+    const currentTime1 = new Date();
+    const hours = currentTime1.getHours().toString().padStart(2, '0');
+    const minutes = currentTime1.getMinutes().toString().padStart(2, '0');
+    const seconds = currentTime1.getSeconds().toString().padStart(2, '0');
+    this.nursingAdmissionForm.get('ATime')?.setValue(`${hours}:${minutes}:${seconds}`);
+    this.nursingAdmissionForm.get('RAt')?.setValue(`${hours}:${minutes}:${seconds}`);
+    this.defaultAddRow();
+    this.defaultAddRowInfectious();
+  }
+
+  // Vaccination FormArray Details
+  addItemRow() {
+    this.TOMEDICATION = this.nursingAdmissionForm.get('TOMEDICATION') as FormArray;
+    this.TOMEDICATION.push(this.itemFormArrayFieldForMedication());
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
+
+  itemFormArrayFieldForMedication(): FormGroup {
+    return this.formBuilder.group({
+      Dockey: [''],
+      vaccination: [''],
+      othervaccination: [''],
+      status: [''],
+      date: [false],
+    });
+  }
+
+  defaultAddRow() {
+    for (let index = 0; index < 3; index++) {
+      this.addItemRow();
+    }
+  }
+
+  // Infectious FormArray Details
+  addItemRowInfectious() {
+    this.TOINFECTION = this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
+    this.TOINFECTION.push(this.itemFormArrayFieldForInfectious());
+  }
+
+  itemFormArrayFieldForInfectious(): FormGroup {
+    return this.formBuilder.group({
+      Dockey: [''],
+      InfectiousDiesease: [''],
+      Status: [''],
+      TypeIsolation: [''],
+    });
+  }
+
+  defaultAddRowInfectious() {
+    for (let index = 0; index < 3; index++) {
+      this.addItemRowInfectious();
+    }
+  }
+
+  addTableRow(event: any) {
+   if(event == 'Vaccination History') {
+    this.addItemRow();
+   } else {
+    this.addItemRowInfectious()
+   }
   }
 
   public deleteFromAllergy(item, index) {
@@ -499,7 +596,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         PsyAgitated: false,
         PsyCombative: false,
         PsyOther: false,
-      })
+      });
     }
   }
 
@@ -842,6 +939,75 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
           console.error('Error fetching Data:', err);
         },
       });
+  }
+
+  createNursingAdmissionDoc(dockey: any, actiontype?: string) {
+    return new Promise((resolve, reject) => {
+      let paylaod = this.nursingAdmissionForm.value;
+      paylaod.ADate = this.sanitizeSAPDateFormat(this.nursingAdmissionForm.value.ADate);
+      paylaod.ATime = this.parsePayloadFormateTime(this.nursingAdmissionForm.value.ATime);
+      paylaod.RAt = this.parsePayloadFormateTime(this.nursingAdmissionForm.value.RAt);
+      delete paylaod.disabledAllPhy
+      delete paylaod.TOMEDICATION
+      paylaod.TOALLERGIES = this.toAllergyArr;
+      paylaod.TOSCALE = this.scalesList.filter(item => item.LastScore);
+      paylaod.TOINFECTION = this.nursingAdmissionForm.value.TOINFECTION.filter(item => item.InfectiousDiesease);
+      paylaod.TOSCALE.forEach((element: any) =>{
+        if(element.LastScore){ 
+          element.Datetimee = this.formatDateToMilliseconds(element.Datetimee)
+        }
+      });
+      this.subscription = this.dayCaseDashboard
+      .createNursingDischargeDoc(paylaod)
+      .subscribe({
+        next: (data: any) => {},
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `PUT Error at Nursing care plan : ${err}`
+          );
+        },
+        complete: () => {
+          resolve(true);
+          if (actiontype === 'edit') {
+            this.sharedService.successSwallModel(
+              'Nursing discharge summary updated successfully'
+            );
+          } else {
+            this.sharedService.successSwallModel(
+              'Nursing discharge summary created successfully'
+            );
+          }
+        },
+      });
+    });
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
+  }
+
+  formatDateToMilliseconds(dateString: string): string {
+    const [datePart, timePart] = dateString.split('/');
+    const [day, month, year] = datePart.split('.').map(Number);
+    const [hours, minutes, seconds] = timePart.split(':').map(Number);
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+    const timeInMillis = date.getTime();
+    return `/Date${timeInMillis}/`;
+  }
+
+  parsePayloadFormateTime(data: string) {
+    if (data && data.length) {
+      const strArr: string[] = data.split(':');
+      if (data && data.length === 8) {
+        return `PT${strArr[0]}H${strArr[1]}M${strArr[2]}S`;
+      }
+    }
+    return null;
   }
 
   public noConsumeSocial(index?: number, item?, type?: string) {
