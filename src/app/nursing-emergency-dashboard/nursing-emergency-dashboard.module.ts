@@ -114,6 +114,9 @@ import { PainAssessmentNurEmrComponent } from './nurs-treatment-workarea/patient
 import { ImageEditorModule } from '../shared-module/image-editor/image-editor.module';
 import { PediatricEarlyWarningComponent } from './nurs-treatment-workarea/patient-documentation/pediatric-early-warning/pediatric-early-warning.component';
 import { NursingCarePlansComponent } from './nurs-treatment-workarea/patient-documentation/nursing-care-plans/nursing-care-plans.component';
+import { ReservationComponent } from './reservation/reservation.component';
+import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
+import { HistoryListComponent } from './reservation/history-list/history-list.component';
 
 const route: Routes = [
   {
@@ -205,6 +208,9 @@ const route: Routes = [
     PainAssessmentNurEmrComponent,
     PediatricEarlyWarningComponent,
     NursingCarePlansComponent,
+    ReservationComponent,
+    ReservationListComponent,
+    HistoryListComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
