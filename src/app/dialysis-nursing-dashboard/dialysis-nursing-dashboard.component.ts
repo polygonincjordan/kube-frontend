@@ -25,6 +25,7 @@ import { PatientWithoutConsumableComponent } from './patient-without-consumable/
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithoutDocumentsComponent } from './patient-without-documents/patient-without-documents.component';
 import { BedComponent } from './bed/bed.component';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 @UntilDestroy()
 
 @Component({
@@ -125,6 +126,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
   actionTypeSubscription$: Subscription;
   phyOrderRoomsList: any;
   updatedDate: any;
+  reservation: boolean = false;
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,
@@ -138,6 +140,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     private titleService: Title,
     private dataShareService: DataShareService,
     private consumableService: ConsumableService,
+    private emergencyService: EmergencyService
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -613,6 +616,8 @@ export class DialysisNursingDashboardComponent implements OnInit {
       // this.PhysicianOrdersListComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])
       this.updatedDate = [new Date(), new Date()]
+    }else if(this.selectedModule === 'reservation'){
+      this.emergencyService?.callHistoryList()
     }
     // Resetting filter form values
     this.filterForm.patchValue({
@@ -681,6 +686,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     }else if (module == 'bed') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = ""
@@ -698,6 +704,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.noConsumables = false;
       this.LabResults = false;
       this.noReleaseDoc = false;
+      this.reservation= false;
     }else if (module == 'treatmentarea') {
       this.treatmentarea = true;
       this.checkin = false;
@@ -712,6 +719,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'erhistory') {
       this.headerLabel = 'Dialysis History'
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
@@ -728,6 +736,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'erSetting') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -742,6 +751,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'dischargeorder') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -755,6 +765,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'analysis') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -769,6 +780,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'rxEmr') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -783,6 +795,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'noConsumables') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Patients Without Consumables';
@@ -799,6 +812,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'LabResults') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Lab Extraction';
@@ -815,6 +829,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.LabResults = true;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'PhysicianOrder') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Not Executed Physician Order'
@@ -833,6 +848,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.bed = false;
       this.form.controls['admittedFrom'].disable();
       this.form.controls['admittedTo'].disable();
+      this.reservation= false;
     } else if (module == 'AdministeredDoses') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Medication Administration'
@@ -849,6 +865,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.AdministeredDoses = true;
       this.noReleaseDoc = false;
       this.bed = false;
+      this.reservation= false;
     } else if (module == 'noReleaseDoc') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Not Released/Missed Documents '
@@ -865,6 +882,23 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.AdministeredDoses = false;
       this.noReleaseDoc = true;
       this.bed = false;
+      this.reservation= false;
+    }else if (module == 'reservation') {
+      this.headerLabel = 'Reservation'
+      this.treatmentarea = false;
+      this.checkin = false;
+      this.erhistory = false;
+      this.PhysicianOrder = false;
+      this.AdministeredDoses = false;
+      this.dischargeorder = false;
+      this.erSetting = false;
+      this.rxEmr = false;
+      this.analysis = false;
+      this.noConsumables = false;
+      this.LabResults = false;
+      this.noReleaseDoc = false;
+      this.bed = false;
+      this.reservation= true;
     }
     this.refreshFormGroup();
     this.closeAndRefresh();

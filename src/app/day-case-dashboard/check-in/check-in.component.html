@@ -64,6 +64,11 @@
             <th scope="col" style="padding-left: 0px">
               Fin.Clearance Status
             </th>
+            <th scope="col" style="padding-left: 0px">
+              DischargeType
+            </th><th scope="col" style="padding-left: 0px">
+              DischargeTime
+            </th>
             <!-- <th scope="col" style="text-align: center">Actions</th> -->
           </tr>
         </thead>
@@ -111,6 +116,8 @@
             <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
             <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
+            <td style="padding-left: 0px" [title]="item.DischargeType" class="border-top-none">{{ item.DischargeType }}</td>
+            <td style="padding-left: 0px" [title]="getTime(item.DischargeTime)" class="border-top-none">{{ getTime(item.Zimmkub) }}</td>
           </tr>
         </tbody>
       </table>
