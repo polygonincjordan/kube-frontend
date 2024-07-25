@@ -1,0 +1,8 @@
+<ng-container>
+    <ng-select class="d-grid" [typeahead]="searchTerm" (ngModelChange)="broadcastEvent($event)">
+      <ng-option *ngFor="let search of diagnosisSearchList" [value]="search">
+        {{ search.Dkey }}
+      </ng-option>
+    </ng-select>
+  </ng-container>
+  

@@ -13,7 +13,7 @@ import { UserConfigurationService } from '@services/e-kardex/user-configuration.
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [OutpatientNursingService, EPrescriptionService]
+  providers: [OutpatientNursingService, EPrescriptionService],
 })
 export class LoginComponent implements AfterViewInit {
   form: any = {
@@ -31,7 +31,7 @@ export class LoginComponent implements AfterViewInit {
     private outpatientNursingService: OutpatientNursingService,
     private eprescriptionService: EPrescriptionService,
     private userConfigService: UserConfigurationService
-  ) { }
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.storageService.isLoggedIn()) {
@@ -47,9 +47,15 @@ export class LoginComponent implements AfterViewInit {
         next: (data) => {
           if (data != null && data._body != null) {
             let successData = JSON.parse(data._body);
-            if (successData.d != null && successData.d.results != null && successData.d.results.length > 0) {
+            if (
+              successData.d != null &&
+              successData.d.results != null &&
+              successData.d.results.length > 0
+            ) {
               let profileResponse = successData.d.results[0];
-              this.storageService.setUserProfile(JSON.parse(data._body).d.results[0]);
+              this.storageService.setUserProfile(
+                JSON.parse(data._body).d.results[0]
+              );
               this.storageService.setLogin(true);
               this.storageService.setGpart(profileResponse.Gpart);
               this.storageService.setKubeRule(profileResponse.KubeRule.trim());
@@ -57,8 +63,7 @@ export class LoginComponent implements AfterViewInit {
               this.isLoginFailed = false;
               this.LoginSubscription.unsubscribe();
               this.reloadPage();
-            }
-            else {
+            } else {
               Swal.fire({
                 title: 'Login Failed',
                 text: 'Please contact support team.',
@@ -84,40 +89,58 @@ export class LoginComponent implements AfterViewInit {
   }
 
   reloadPage(): void {
-    const getKubeRule = this.storageService.getKubeRule()
-    if ((getKubeRule == UserType.Physician) || (getKubeRule == UserType.SeniorPhysician) || (getKubeRule == UserType.Community) || (getKubeRule == UserType.PartTime)) {
+    const getKubeRule = this.storageService.getKubeRule();
+    if (
+      getKubeRule == UserType.Physician ||
+      getKubeRule == UserType.SeniorPhysician ||
+      getKubeRule == UserType.Community ||
+      getKubeRule == UserType.PartTime
+    ) {
       this.router.navigate(['/emr'], {});
-    } else if ((getKubeRule == UserType.SeniorPhysician)) {
+    } else if (getKubeRule == UserType.SeniorPhysician) {
       this.router.navigate(['/point-of-sale'], {});
-    }
-    else if ((getKubeRule == UserType.FloorHospitalist) || (getKubeRule == UserType.SeniorHospitalist) || (getKubeRule == UserType.SeniorPhysician) || (getKubeRule == UserType.PartTime)) {
+    } else if (
+      getKubeRule == UserType.FloorHospitalist ||
+      getKubeRule == UserType.SeniorHospitalist ||
+      getKubeRule == UserType.SeniorPhysician ||
+      getKubeRule == UserType.PartTime
+    ) {
       this.router.navigate(['/e-hospitalist'], {});
-    }
-    else if ((getKubeRule == UserType.ERHospitalist) || (getKubeRule == UserType.SeniorHospitalist) || (getKubeRule == UserType.SeniorPhysician) || (getKubeRule == UserType.PartTime)) {
+    } else if (
+      getKubeRule == UserType.ERHospitalist ||
+      getKubeRule == UserType.SeniorHospitalist ||
+      getKubeRule == UserType.SeniorPhysician ||
+      getKubeRule == UserType.PartTime
+    ) {
       this.router.navigate(['/emergencydashboard'], {});
-    }
-    else if ((getKubeRule == UserType.SeniorPhysician) || (getKubeRule == UserType.SeniorHospitalist) || (getKubeRule == UserType.Physician) || (getKubeRule == UserType.ERHospitalist) || (getKubeRule == UserType.PartTime) || (getKubeRule == UserType.FloorHospitalist)) {
+    } else if (
+      getKubeRule == UserType.SeniorPhysician ||
+      getKubeRule == UserType.SeniorHospitalist ||
+      getKubeRule == UserType.Physician ||
+      getKubeRule == UserType.ERHospitalist ||
+      getKubeRule == UserType.PartTime ||
+      getKubeRule == UserType.FloorHospitalist
+    ) {
       this.router.navigate(['/orders-dashboard'], {});
-    }
-    else if ((getKubeRule == UserType.ERNurse)) {
+    } else if (getKubeRule == UserType.ERNurse) {
       this.router.navigate(['/nursing-emergncy-dashboard'], {});
-    }
-    else if ((getKubeRule == UserType.DayCaseNurse)) {
+    } else if (getKubeRule == UserType.DayCaseNurse) {
       this.router.navigate(['/day-case-dashboard'], {});
-    }
-    else if ((getKubeRule == UserType.FloorNurse)) {
+    } else if (getKubeRule == UserType.NursingInpatient) {
+      this.router.navigate(['/nursing-inpatient-dashboard'], {});
+    } else if (getKubeRule == UserType.FloorNurse) {
       this.router.navigate(['/in-patient-nurse-dashboard'], {});
-    }
-    else if ((getKubeRule == UserType.DIYNurse)) {
+    } else if (getKubeRule == UserType.DIYNurse) {
       this.router.navigate(['/dialysis-nursing-dashboard'], {});
-    }
-    else if ((getKubeRule == UserType.opnurse)) {
+    } else if (getKubeRule == UserType.opnurse) {
       const getUserName = JSON.parse(localStorage.getItem('UserName'));
-      this.outpatientNursingService.clinicConfigGet(getUserName).then((result) => {
-        if (result) {
-          this.router.navigateByUrl('/out-patient-nursing', {});
-        }
-      })
+      this.outpatientNursingService
+        .clinicConfigGet(getUserName)
+        .then((result) => {
+          if (result) {
+            this.router.navigateByUrl('/out-patient-nursing', {});
+          }
+        });
     }
   }
 }

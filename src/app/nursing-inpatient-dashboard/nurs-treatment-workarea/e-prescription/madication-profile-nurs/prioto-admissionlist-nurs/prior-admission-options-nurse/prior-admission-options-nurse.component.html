@@ -1,0 +1,100 @@
+<div class="w-100">
+    <div class="w-100 btn-history-group d-flex ml-2 mt-4 justify-content-between
+      media-width">
+      <form class="">
+        <ul class="d-flex py-2 px-3 m-0 prior-media">
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <!-- <input type="checkbox" name="Medication"
+              (change)="ePrescriptionService.prioradmission('Status',
+              $event)" id="Active"> -->
+              <input type="checkbox"
+              (change)="ePrescriptionService.prioradmission('Active',
+              $event)" id="Active">
+            <span class="mr-2"></span>
+            <label for="Active" class="m-0 font-widht font-prior">Active</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <!-- <input
+              type="checkbox" name="Medication"
+              (change)="ePrescriptionService.prioradmission('Status',
+              $event)" id="Suspended"> -->
+              <input
+              type="checkbox"
+              (change)="ePrescriptionService.prioradmission('Suspended',
+              $event)" id="Suspended">
+            <span class="mr-2"></span>
+            <label for="Suspended" class="m-0 font-widht font-prior">Suspended</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <!-- <input type="checkbox" name="Medication"
+              (change)="ePrescriptionService.prioradmission('Status',
+              $event)" id="Ended"> -->
+              <input type="checkbox"
+              (change)="ePrescriptionService.prioradmission('Ended',
+              $event)" id="Ended">
+            <span class="mr-2"></span>
+            <label for="Ended" class="m-0 font-widht font-prior">Ended</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <!-- <input type="checkbox" name="Medication"
+              (change)="ePrescriptionService.prioradmission('Status',
+              $event)" id="Cancelled"> -->
+              <input type="checkbox"
+              (change)="ePrescriptionService.prioradmission('Cancelled',
+              $event)" id="Cancelled">
+            <span class="mr-2"></span>
+            <label for="Cancelled" class="m-0 font-widht font-prior">Cancelled</label>
+          </li>
+        </ul>
+      </form>
+      <div class=" d-flex col justify-content-end sort-media">
+        <ul class="d-flex py-2 px-3 m-0 prior-media">
+          <li class="d-flex align-items-center m-0 mr-3 ">
+            <label for="Sorting" class="m-0 font-widht font-prior" >Sorting</label>
+          </li>
+          <li class="d-flex img-margin align-items-center m-0 mr-3 "
+            [ngClass]="ePrescriptionService.MedicationdFilterData.Sorting ===
+            'asc'? 'ma-background': ''">
+            <img src="assets/img/uparrow.png" alt="" height="23" class="c-pointer
+              img-height background-color"
+              (click)="ePrescriptionService.prioradmission('Sorting', $event)"
+              id="asc">
+          </li>
+          <li class="d-flex img-margin align-items-center m-0 mr-3 "
+            [ngClass]="ePrescriptionService.MedicationdFilterData.Sorting ===
+            'desc'? 'ma-background': ''">
+            <img src="assets/img/downarrow.png" alt="" height="23"
+              class="c-pointer img-height background-color"
+              (click)="ePrescriptionService.prioradmission('Sorting', $event)"
+              id="desc">
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 sort-margin">
+            <input type="radio" name="MedicationProfile"
+              (change)="ePrescriptionService.prioradmission('MedicationSorting',
+              $event)" id="Descrlt">
+            <span class="mr-2"></span>
+            <label for="Descrlt" class="m-0 font-widht font-prior">Medication name</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 sort-margin">
+            <input type="radio" name="MedicationProfile"
+              (change)="ePrescriptionService.prioradmission('MedicationSorting',
+              $event)" id="StartD">
+            <span class="mr-2"></span>
+            <label for="StartD" class="m-0 font-widht font-prior">Order Date</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 sort-margin">
+            <input type="radio" name="MedicationProfile"
+              (change)="ePrescriptionService.prioradmission('MedicationSorting',
+              $event)" id="EmpRespNm">
+            <span class="mr-2"></span>
+            <label for="Physician/Hospitalist" class="m-0 font-widht font-prior">Physician/Hospitalist</label>
+          </li>
+        </ul>
+        <div class="search-functionality search-media col-md-4 ml-3 pl-0 ">
+          <input type="text" placeholder="Search" class="form-control"
+            [(ngModel)]="addministrationService.searchMedicationProfile">
+        </div>
+      </div>
+    </div>
+  </div>
+  

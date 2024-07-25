@@ -1,0 +1,201 @@
+.chief-complain {
+  textarea {
+    height: 100px;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: 1px solid #0056b0;
+  }
+
+  span.text-area-label {
+    position: relative !important;
+    cursor: text;
+    font-size: 12px;
+    opacity: 1;
+    top: 0.6em;
+    left: 20px;
+    z-index: 3;
+    line-height: 0.2 !important;
+    font-weight: bold;
+    color: #0890c5;
+    background: #fff;
+    padding: 0 10px;
+  }
+
+  .z-indexlabel {
+    z-index: 999;
+  }
+}
+
+.triage-circle {
+  top: 0 !important;
+  margin-left: 10px;
+}
+
+.allergy-header-title {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.checkbox-margin {
+  padding: 4px 10px 4px 10px;
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  height: 35px;
+}
+
+.prior-media {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+
+  li {
+    margin-right: 30px; // Spacing between radio buttons
+    display: flex;
+    align-items: center;
+    padding: 4px 10px 4px 10px;
+    border: 1px solid #cacaca;
+    border-radius: 6px;
+    height: 35px;
+
+    input[type='radio'] {
+      margin-right: 5px; // Spacing between radio button and label
+      cursor: pointer;
+
+      label {
+        cursor: pointer;
+      }
+    }
+
+    .triage-circle {
+      display: inline-block;
+      width: 30px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      color: white;
+      font-weight: bold;
+      position: absolute;
+      margin: 2px 0px;
+    }
+  }
+}
+
+label {
+  margin: 0 !important;
+}
+
+.tab-navigation-part {
+  background: none !important;
+  padding: 10px 25px !important;
+  border-bottom: 2px solid #cacaca;
+}
+
+.tab-navigation-part .tab-navigate .tab-nav {
+  padding: 10px 5px 0 !important;
+  border-bottom: none !important;
+}
+
+.secound-bar-vital-sign {
+  display: flex;
+  // padding: 15px;
+  align-items: baseline;
+}
+
+.secound-bar-vital-sign .arrows img {
+  width: 70px;
+}
+
+.secound-bar-vital-sign ul.list-simple li {
+  background: #e4edf5;
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+.secound-bar-vital-sign ul.list-simple li img {
+  width: 30px;
+  padding: 3px;
+}
+
+.secound-bar-vital-sign ul.list-simple li.icon-pdf {
+  padding: 3px 5px;
+}
+
+.icon-pdf {
+  padding: 3px 5px;
+  border-radius: 7px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.create-form-inputs {
+  label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.admitting-physician {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tab-navigate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.past-med-input {
+  td {
+    padding: 10px !important;
+    width: 15%;
+  }
+}
+
+.psychological-main {
+  input {
+    width: 15px;
+    height: 22px;
+  }
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+  border-color: none !important;
+}
+
+.arrival-header {
+  padding: 5px 13px;
+  background: #f6f9fb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  label {
+    font-size: 16px;
+  }
+}
+
+.table-er-traige {
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 9 !important;
+    background-color: #e4edf5;
+    color: black;
+  }
+
+  tbody tr td {
+    padding: 10px !important;
+  }
+}
+
+.ped-10 {
+  padding: 10px !important;
+}
+
+.allergy-header-ul {
+  width: 10% !important;
+}

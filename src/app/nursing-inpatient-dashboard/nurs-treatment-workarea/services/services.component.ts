@@ -1,0 +1,54 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DataShareService } from '@services/data-share.service';
+import { FeeListService } from '@services/fee-service/fee-list.service';
+import { FeeList } from '@services/fee-service/interface/fee-list.interface';
+import { ActionType, WordType } from '@services/interfaces/common.enum';
+
+@Component({
+  selector: 'app-services',
+  templateUrl: './services.component.html',
+  styleUrls: ['./services.component.scss'],
+})
+export class ServicesComponent implements OnInit {
+  public searchFeestring: any;
+  public feeDetailsList: Array<any> = [];
+  public filteredFeeDetailsList: Array<FeeList> = [];
+
+  private paramsValue: any;
+
+
+  constructor(
+    private dataShareService: DataShareService,
+    public feeListService: FeeListService,
+    private route: ActivatedRoute,
+  ) {
+
+    this.route.queryParams.subscribe((params) => {
+      this.paramsValue = params;
+    });
+
+  }
+
+  ngOnInit(): void {
+    this.feeListService.onNavigationClick('Fees')
+  }
+
+  public clearSearch() {
+    this.searchFeestring = '';
+    this.feeListService.searchFeeData('')
+    // Add any additional logic you need here
+  }
+
+  public create() {
+    this.dataShareService.sendActionType(ActionType.Save$, true, WordType.CreateNewFeeServiceOrder);
+  }
+
+  public cancel() {
+    this.feeListService.onCancelOrder();
+  }
+
+  public refresh() {
+    this.feeListService.loadeOrderData();
+  }
+}

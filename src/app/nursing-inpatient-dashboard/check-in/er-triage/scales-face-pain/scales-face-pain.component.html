@@ -1,0 +1,101 @@
+<ng-template #scalesFacePainModal>
+  <div>
+    <div class="allergy-header">
+      <div class="allergy-header-title">
+        <span>Face pain scale</span>
+      </div>
+      <div class="allergy-header-details">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon">
+            <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer" (click)="closeFacePainModel()"/>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="main-glosgow">
+    <div class="radio-section pb-3">
+      <div class="row m-0">
+        <div class="col-md-2">
+            <div class="d-flex justify-content-center">
+                <img class="cursor-pointer" src="assets/img/1-happy-face.png" for="face1" (click)="selectRadio('face1', 0, 'No hurt')">
+            </div>
+            <div class="d-flex justify-content-center"  (click)="setFacePainValue(0, 'No hurt')">
+                <input class="cursor-pointer" type="radio" name="painface" id="face1" checked value="0" [(ngModel)]="totalScore" [disabled]="dockeyValue"/>
+                <label class="ml-2" for="face1">No hurt</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="d-flex justify-content-center" (click)="selectRadio('face2', 2, 'Hurts little bit')">
+                <img class="cursor-pointer" src="assets/img/2-face-pain.png" >
+            </div>
+            <div class="d-flex justify-content-center" (click)="setFacePainValue(2, 'Hurts little bit')">
+                <input class="cursor-pointer" type="radio" name="painface" id="face2" value="2" [(ngModel)]="totalScore" [disabled]="dockeyValue"/>
+                <label class="ml-2" for="face2">Hurts little bit</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="d-flex justify-content-center" (click)="selectRadio('face3', 4, 'Hurts little more')">
+                <img class="cursor-pointer" src="assets/img/3-face-pain.png" >
+            </div>
+            <div class="d-flex justify-content-center" (click)="setFacePainValue(4, 'Hurts little more')">
+                <input class="cursor-pointer" type="radio" name="painface" id="face3" value="4" [(ngModel)]="totalScore" [disabled]="dockeyValue"/>
+                <label class="ml-2" for="face3">Hurts little more</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="d-flex justify-content-center" (click)="selectRadio('face4', 6, 'Hurts even more')">
+                <img class="cursor-pointer" src="assets/img/4-face-pain.png" >
+            </div>
+            <div class="d-flex justify-content-center" (click)="setFacePainValue(6, 'Hurts even more')">
+                <input class="cursor-pointer" type="radio" name="painface" id="face4" value="6" [(ngModel)]="totalScore" [disabled]="dockeyValue"/>
+                <label class="ml-2" for="face4">Hurts even more</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="d-flex justify-content-center">
+                <img class="cursor-pointer" src="assets/img/5-face-pain.png" (click)="selectRadio('face5', 8, 'Hurts while a lot')">
+            </div>
+            <div class="d-flex justify-content-center" (click)="setFacePainValue(8, 'Hurts while a lot')">
+                <input class="cursor-pointer" type="radio" name="painface" id="face5" value="8" [(ngModel)]="totalScore" [disabled]="dockeyValue"/>
+                <label class="ml-2" for="face5">Hurts whole alot</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="d-flex justify-content-center">
+                <img class="cursor-pointer" src="assets/img/6-face-pain.png" (click)="selectRadio('face6', 10, 'Hurts worst')" >
+            </div>
+            <div class="d-flex justify-content-center" (click)="setFacePainValue(10, 'Hurts worst')">
+                <input class="cursor-pointer" type="radio" name="painface" id="face6" value="10" [(ngModel)]="totalScore" [disabled]="dockeyValue"/>
+                <label class="ml-2" for="face6">Hurts worst</label>
+            </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="scale-result">
+      <h4 class="mb-4">Scale Result</h4>
+      <div class="row m-0">
+        <div class="col-md-3">
+          <div class="mb-2 d-flex align-items-center">
+            <label class="mr-3">Total Score</label>
+            <input class="form-control w-50" [(ngModel)]="totalScore" disabled/>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-2 d-flex justify-content-between">
+            <input placeholder="Deep coma or brain death" class="form-control" [(ngModel)]="facePainDescription" disabled/>
+          </div>
+        </div>
+      </div>
+      <div class="comment-input d-flex mt-4 align-items-center">
+        <label>Comments</label>
+        <textarea class="form-control" [(ngModel)]="comment" [disabled]="dockeyValue"></textarea>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4" style="text-align: end" *ngIf="!dockeyValue">
+      <button class="triage-model-btn" (click)="closeFacePainModel()">Cancel</button>
+      <button class="triage-model-btn" (click)="createFacePain()">Save</button>
+    </div>
+  </div>
+</ng-template>
