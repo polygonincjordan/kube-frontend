@@ -121,10 +121,6 @@ export class IoChartsComponent implements OnInit {
         })
       ),
     });
-    this.setCurrentDateTime();
-    console.log('tableForm', this.inputForm);
-
-    // this.addRow(0); // Initial row
   }
 
   inputrowName(i) {
@@ -134,8 +130,6 @@ export class IoChartsComponent implements OnInit {
     return this.outputForm.controls.rows['value'][i];
   }
 
-  setCurrentDateTime() {}
-
   get inputrows(): FormArray {
     return this.inputForm.get('rows') as FormArray;
   }
@@ -144,21 +138,17 @@ export class IoChartsComponent implements OnInit {
   }
 
   onSelectType(event, template: TemplateRef<any>) {
-    console.log(event);
-    const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-diagnosis',
-    };
-    this.modalRefForSave = this.modalService.show(template, config);
-    // this.openModalForSaveDiagnosis()
+    if (event.includes('+')) {
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered modal-diagnosis',
+      };
+      this.modalRefForSave = this.modalService.show(template, config);
+    }
   }
 
-  // openModalForSaveDiagnosis(template: TemplateRef<any>) {
-  //   // this.selectDiagnosisList = [];
-  // }
   saveModal() {}
 
   addinputRowAfter(index: number) {
-    console.log('inputrows', this.inputrows, index);
     const category = this.inputrows.value[index].category;
     const type = this.inputrows.value[index].type;
     const newRow = this.fb.group({
@@ -188,8 +178,12 @@ export class IoChartsComponent implements OnInit {
 
     this.outputrows.insert(index + 1, newRow);
   }
-  outputdeleteRow(i) {}
-  inputdeleteRow(i) {}
+  outputdeleteRow(i) {
+    this.outputrows.removeAt(i);
+  }
+  inputdeleteRow(i) {
+    this.inputrows.removeAt(i);
+  }
 
   viewRecord(text: string) {
     this.recordViewText = text;
