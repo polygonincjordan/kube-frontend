@@ -108,6 +108,8 @@ import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admis
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { IoChartsComponent } from './nurs-treatment-workarea/io-charts/io-charts.component';
+import { RecordViewComponent } from './nurs-treatment-workarea/io-charts/record-view/record-view.component';
 
 const route: Routes = [
   {
@@ -190,6 +192,8 @@ const route: Routes = [
     ReservationComponent,
     ReservationListComponent,
     HistoryListComponent,
+    IoChartsComponent,
+    RecordViewComponent,
   ],
   providers: [
     EmergencyService,

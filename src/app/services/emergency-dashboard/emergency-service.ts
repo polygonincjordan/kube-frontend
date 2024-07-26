@@ -36,6 +36,7 @@ export class EmergencyService {
   public cpoe: boolean = true;
   public ePrescription: boolean = true;
   public orderdetails: boolean = false;
+  public IOCharts: boolean = false;
   public lab = false;
   public rad = false;
   public Consumables = false;
@@ -91,8 +92,6 @@ export class EmergencyService {
     });
   }
 
-
-
   getFavSet() {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
@@ -124,11 +123,11 @@ export class EmergencyService {
 
   getErCheckList(data) {
     let header = {
-      repeat: 'true'
-    }
+      repeat: 'true',
+    };
     return this.http.post(this.url + 'emergencyListCheckInSet', data, {
       withCredentials: true,
-      headers:header
+      headers: header,
     });
   }
 
@@ -191,19 +190,29 @@ export class EmergencyService {
   getPrintLabel() {
     return this.http.get(this.url + 'nursingLabListPrintSet', {
       withCredentials: true,
-    })
+    });
   }
 
-  getReceviceCart(dateFrom?: any, dateTo?: any, timeFrom?: any, timeTo?: any, nurseUnit?: any) {
-    return this.http.get(this.url + `getSentCartRecesive?FromDt=${dateFrom}&ToDt=${dateTo}&FromTm=${timeFrom}&ToTm=${timeTo}&Nursingou=${nurseUnit}`, {
-      withCredentials: true,
-    })
+  getReceviceCart(
+    dateFrom?: any,
+    dateTo?: any,
+    timeFrom?: any,
+    timeTo?: any,
+    nurseUnit?: any
+  ) {
+    return this.http.get(
+      this.url +
+        `getSentCartRecesive?FromDt=${dateFrom}&ToDt=${dateTo}&FromTm=${timeFrom}&ToTm=${timeTo}&Nursingou=${nurseUnit}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   addReceviceCart(json) {
     return this.http.post(this.url + 'addReceiveCart', json, {
       withCredentials: true,
-    })
+    });
   }
 
   getLabSampleCollectedPrint(Vkgid: any) {
@@ -273,25 +282,38 @@ export class EmergencyService {
   }
 
   dialysisTAget(Bwidtge: any, Bwidtle: any) {
-    return this.http.get(this.url + `dialysisTAget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `dialysisTAget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   dialysisTAgetHis(Bwidtge: any, Bwidtle: any) {
-    return this.http.get(this.url + `dialysisTAgetHis?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}&status=${70}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url +
+        `dialysisTAgetHis?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}&status=${70}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   Dialysisget(Bwidtge: any, Bwidtle: any) {
-    return this.http.get(this.url + `Dialysisget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `Dialysisget?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   DialysisIPSet(Bwidtge: any, Bwidtle: any) {
-    return this.http.get(this.url + `DialysisIPSet?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `DialysisIPSet?Bwidtge=${Bwidtge}&Bwidtle=${Bwidtle}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   getAllergyReactionValues() {
@@ -310,9 +332,12 @@ export class EmergencyService {
     });
   }
   getAssignedRoom(fData: any, tDate: any) {
-    return this.http.get(this.url + `getAssignedRoom?Fdate=${fData}&Tdate=${tDate}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `getAssignedRoom?Fdate=${fData}&Tdate=${tDate}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   getEmployeeId(empid: any) {
     return this.http.get(this.url + `getEmployeeId?empid=${empid}`, {
@@ -373,9 +398,13 @@ export class EmergencyService {
   }
 
   getEduAssesLatestDocSet(json): Observable<any> {
-    return this.http.post(this.url + 'admission/getEduAssesLatestDocSet', json, {
-      withCredentials: true,
-    });
+    return this.http.post(
+      this.url + 'admission/getEduAssesLatestDocSet',
+      json,
+      {
+        withCredentials: true,
+      }
+    );
   }
   getPhyAssessment(json): Observable<any> {
     return this.http.post(this.url + 'getPhyAssessment', json, {
@@ -450,10 +479,14 @@ export class EmergencyService {
     });
   }
   //Dialysis patient search
-  DialysisPatientSearch(json){
-    return this.http.get(this.url + `DialysisPatientSearchSet?Patnr=${json.Patnr}&Vname=${json.Vname}&Nname=${json.Nname}&Telnr=${json.Telnr}`,{
-      withCredentials: true
-    })
+  DialysisPatientSearch(json) {
+    return this.http.get(
+      this.url +
+        `DialysisPatientSearchSet?Patnr=${json.Patnr}&Vname=${json.Vname}&Nname=${json.Nname}&Telnr=${json.Telnr}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   // analysis
   getAnalysisDetails(json) {
@@ -463,14 +496,22 @@ export class EmergencyService {
   }
   // analysis (getTraigeColorPatientNo)
   getTriagePatientNo(json) {
-    return this.http.get(this.url + `getTriagePatientNo?fromDate=${json.fromDate}&toDate=${json.toDate}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url +
+        `getTriagePatientNo?fromDate=${json.fromDate}&toDate=${json.toDate}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   getElepsedTime(json) {
-    return this.http.get(this.url + `getElepsedTime?fromDate=${json.fromDate}&toDate=${json.toDate}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url +
+        `getElepsedTime?fromDate=${json.fromDate}&toDate=${json.toDate}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   //phy order
@@ -479,7 +520,7 @@ export class EmergencyService {
       title: successMsg,
       icon: 'success',
       confirmButtonText: 'OK',
-      customClass: 'swal-class'
+      customClass: 'swal-class',
     });
   }
 
@@ -488,62 +529,81 @@ export class EmergencyService {
       title: successMsg,
       icon: 'error',
       confirmButtonText: 'OK',
-      customClass: 'swal-class'
+      customClass: 'swal-class',
     });
   }
 
   phyOrderForm() {
     this.formDetailGroup = new FormGroup({
-      'SearchData': new FormControl(''),
-      'DateRange': new FormControl([new Date(), new Date()]),
-      'SelectDropdown': new FormControl(),
+      SearchData: new FormControl(''),
+      DateRange: new FormControl([new Date(), new Date()]),
+      SelectDropdown: new FormControl(),
     });
   }
 
   private phyOrderSetDataSubject$ = new ReplaySubject<any>(1);
   public phyOrderSetData$ = this.phyOrderSetDataSubject$.asObservable();
 
+  // tabPanelNavigation(tabName: any) {
+  //   // localStorage.setItem('tabName', tabName); // comment which issue in redirection of of tab consulable and documentation
+  //   if (tabName && tabName === 'OrderSet') {
+  //     this.OrderSet = true; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //   } else if (tabName && tabName === 'CPOE') {
+  //     this.OrderSet = false; this.cpoe = true; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //   } else if (tabName && tabName === 'ePrescription') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = true; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //   } else if (tabName && tabName === 'orderdetails') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = true; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //   } else if (tabName && tabName === 'PhysicianOrders') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = true; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //   } else if (tabName && tabName === 'ProgressNotes') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = true; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //   } else if (tabName && tabName === 'Diagnosis') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = true; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //     // this.loadDischargePanelData();
+  //   } else if (tabName && tabName === 'Documentation') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = true; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //     // this.loadEmarPanelData();
+  //   } else if (tabName && tabName === 'Lab') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = true; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //     // this.loadEmarPanelData();
+  //   } else if (tabName && tabName === 'Rad') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = true; this.patientProfile = false; this.Consumables = false; this.Services = false;
+  //     // this.loadEmarPanelData();
+  //   } else if (tabName && tabName === 'patientProfile') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = true; this.Consumables = false; this.Services = false;
+  //     // this.loadEmarPanelData();
+  //   } else if (tabName && tabName === 'Consumables') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = true; this.Services = false;
+  //     // this.loadEmarPanelData();
+  //   } else if (tabName && tabName === 'Services') {
+  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = true;
+  //     // this.loadEmarPanelData();
+  //   }
 
-
+  // }
   tabPanelNavigation(tabName: any) {
-    // localStorage.setItem('tabName', tabName); // comment which issue in redirection of of tab consulable and documentation
-    if (tabName && tabName === 'OrderSet') {
-      this.OrderSet = true; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-    } else if (tabName && tabName === 'CPOE') {
-      this.OrderSet = false; this.cpoe = true; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-    } else if (tabName && tabName === 'ePrescription') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = true; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-    } else if (tabName && tabName === 'orderdetails') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = true; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-    } else if (tabName && tabName === 'PhysicianOrders') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = true; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-    } else if (tabName && tabName === 'ProgressNotes') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = true; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-    } else if (tabName && tabName === 'Diagnosis') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = true; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-      // this.loadDischargePanelData();
-    } else if (tabName && tabName === 'Documentation') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = true; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-      // this.loadEmarPanelData();
-    } else if (tabName && tabName === 'Lab') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = true; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-      // this.loadEmarPanelData();
-    } else if (tabName && tabName === 'Rad') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = true; this.patientProfile = false; this.Consumables = false; this.Services = false;
-      // this.loadEmarPanelData();
-    } else if (tabName && tabName === 'patientProfile') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = true; this.Consumables = false; this.Services = false;
-      // this.loadEmarPanelData();
-    } else if (tabName && tabName === 'Consumables') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = true; this.Services = false;
-      // this.loadEmarPanelData();
-    } else if (tabName && tabName === 'Services') {
-      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = true;
-      // this.loadEmarPanelData();
-    }
+    const tabs = [
+      'OrderSet',
+      'CPOE',
+      'ePrescription',
+      'orderdetails',
+      'PhysicianOrders',
+      'ProgressNotes',
+      'Diagnosis',
+      'Documentation',
+      'Lab',
+      'Rad',
+      'patientProfile',
+      'Consumables',
+      'Services',
+      'IOCharts',
+    ];
 
+    tabs.forEach((tab) => {
+      this[tab] = tabName === tab;
+    });
   }
-
 
   private phyOrderlistDataSubject$ = new ReplaySubject<any>(1);
   public phyOrderlistData$ = this.phyOrderlistDataSubject$.asObservable();
@@ -569,9 +629,9 @@ export class EmergencyService {
     return results;
   }
 
-
   private progressNotesSetDataSubject$ = new ReplaySubject<any>(1);
-  public progressNotesSetData$ = this.progressNotesSetDataSubject$.asObservable();
+  public progressNotesSetData$ =
+    this.progressNotesSetDataSubject$.asObservable();
 
   async getProgressNotesSetData(patientId: string, caseid: string) {
     await lastValueFrom(this.getProgressNotes(patientId, caseid));
@@ -618,9 +678,9 @@ export class EmergencyService {
     return results;
   }
 
-
   private progressNotesTempSetDataSubject$ = new ReplaySubject<any>(1);
-  public progressNoteTempSetData$ = this.progressNotesTempSetDataSubject$.asObservable();
+  public progressNoteTempSetData$ =
+    this.progressNotesTempSetDataSubject$.asObservable();
 
   async getNotesTemplateSetData(patientId: string, caseid: string) {
     await lastValueFrom(this.getNotesTemplateList(patientId, caseid));
@@ -644,13 +704,34 @@ export class EmergencyService {
   }
 
   private progressNotesSetDataSubjectWithFilter$ = new ReplaySubject<any>(1);
-  public progressNoteSetDataWithFilter$ = this.progressNotesSetDataSubjectWithFilter$.asObservable();
+  public progressNoteSetDataWithFilter$ =
+    this.progressNotesSetDataSubjectWithFilter$.asObservable();
 
-  async getProgressNotesDataSetWithFilter(patientId: string, caseid: string, dateFrom: any, dateTo: any, progroup: string) {
-    await lastValueFrom(this.getProgressNotesListWithFilter(patientId, caseid, dateFrom, dateTo, progroup));
+  async getProgressNotesDataSetWithFilter(
+    patientId: string,
+    caseid: string,
+    dateFrom: any,
+    dateTo: any,
+    progroup: string
+  ) {
+    await lastValueFrom(
+      this.getProgressNotesListWithFilter(
+        patientId,
+        caseid,
+        dateFrom,
+        dateTo,
+        progroup
+      )
+    );
   }
 
-  getProgressNotesListWithFilter(patientId: string, caseid: string, dateFrom: any, dateTo: any, progroup: string) {
+  getProgressNotesListWithFilter(
+    patientId: string,
+    caseid: string,
+    dateFrom: any,
+    dateTo: any,
+    progroup: string
+  ) {
     const url = `${environment.eKardexApiUrl}/admission/getProgressNote?patientId=${patientId}&caseid=${caseid}&admdatefrom=${dateFrom}&admdateto=${dateTo}&progroup=${progroup}`;
 
     return this.http.get(url, { withCredentials: true }).pipe(
@@ -673,17 +754,40 @@ export class EmergencyService {
   }
 
   private phyOrderlistDataSubjectWithFilter$ = new ReplaySubject<any>(1);
-  public phyOrderlistDataWithFilter$ = this.phyOrderlistDataSubjectWithFilter$.asObservable();
+  public phyOrderlistDataWithFilter$ =
+    this.phyOrderlistDataSubjectWithFilter$.asObservable();
 
-  async getPhyOrderSetDataSetWithFilter(institutionid: string, caseid: string, dateFrom: any, dateTo: any, progroup: string) {
-    await lastValueFrom(this.getPhyOrderListWithFilter(institutionid, caseid, dateFrom, dateTo, progroup));
+  async getPhyOrderSetDataSetWithFilter(
+    institutionid: string,
+    caseid: string,
+    dateFrom: any,
+    dateTo: any,
+    progroup: string
+  ) {
+    await lastValueFrom(
+      this.getPhyOrderListWithFilter(
+        institutionid,
+        caseid,
+        dateFrom,
+        dateTo,
+        progroup
+      )
+    );
   }
 
-  getPhyOrderListWithFilter(institutionid: string, caseid: string, dateFrom: any, dateTo: any, progroup: string) {
+  getPhyOrderListWithFilter(
+    institutionid: string,
+    caseid: string,
+    dateFrom: any,
+    dateTo: any,
+    progroup: string
+  ) {
     const url = `${environment.eKardexApiUrl}/admission/getPhyOrderSet?institutionid=${institutionid}&caseid=${caseid}&admdatefrom=${dateFrom}&admdateto=${dateTo}&progroup=${progroup}`;
 
     return this.http.get(url, { withCredentials: true }).pipe(
-      map((data: any) => this.processPhyOrderSetDataWithFilter(data?.d.results)),
+      map((data: any) =>
+        this.processPhyOrderSetDataWithFilter(data?.d.results)
+      ),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
         return throwError(error);
@@ -699,11 +803,9 @@ export class EmergencyService {
   private templateSetDataSubject$ = new ReplaySubject<any>(1);
   public templateSetData$ = this.templateSetDataSubject$.asObservable();
 
-
   async getTemplateSetDataSet() {
     await lastValueFrom(this.getTemplateSet());
   }
-
 
   getTemplateSet() {
     const url = `${environment.eKardexApiUrl}/admission/getTemplateSet`;
@@ -726,13 +828,13 @@ export class EmergencyService {
   public savetemplateSetData$ = this.savetemplateSetDataSubject$.asObservable();
 
   async saveTemplateData(templateData: TemplateModel) {
-
     const url = `${environment.eKardexApiUrl}/admission/saveTemplateSet`;
 
-    const saveTemplateData$ = this.http.post(url, templateData, { withCredentials: true })
+    const saveTemplateData$ = this.http
+      .post(url, templateData, { withCredentials: true })
       .pipe(
         tap((data: any) => {
-          this.processSaveTemplateSetData(data?.d.results)
+          this.processSaveTemplateSetData(data?.d.results);
         }),
         catchError((error: HttpErrorResponse) => {
           console.error(error);
@@ -765,7 +867,6 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
-
 
   getDate(value) {
     if (value) {
@@ -836,9 +937,13 @@ export class EmergencyService {
 
   // When click on traige icon first this API call
   getTriageLatestDocumentSet(json) {
-    return this.http.get(this.url + `getTriageLatestDocumentSet?patnr=${json.Patnr}&einri=${json.Einri}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url +
+        `getTriageLatestDocumentSet?patnr=${json.Patnr}&einri=${json.Einri}&falnr=${json.Falnr}&lfdnr=${json.Lfdbw}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   // When click on traige icon first this API call
@@ -850,9 +955,12 @@ export class EmergencyService {
 
   // When click on traige icon first this API call
   getTriageDataIfStatusDraft(json) {
-    return this.http.get(this.url + `getTriageDataStatusDraft?Dockey=${json.Dockey}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `getTriageDataStatusDraft?Dockey=${json.Dockey}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   getTriageDataIfStatusDraftForDetails(json) {
@@ -955,14 +1063,20 @@ export class EmergencyService {
     });
   }
   getPediatricWarningScoreDetail(json): Observable<any> {
-    return this.http.get(this.url + `getPediatricEarlyWarningScore?Dockey=${json}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `getPediatricEarlyWarningScore?Dockey=${json}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   getSurgicalPassPortDetail(json): Observable<any> {
-    return this.http.get(this.url + `getSurgicalPassPortDetail?Dockey=${json}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url + `getSurgicalPassPortDetail?Dockey=${json}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   getSurgicalPasportDoc(json): Observable<any> {
     return this.http.post(this.url + 'getSurgicalPassportDoc', json, {
@@ -1004,7 +1118,6 @@ export class EmergencyService {
     });
   }
 
-
   // nursing emergancy face pain post API
   createBradenData(json) {
     return this.http.post(this.url + 'postBradenScaleSet', json, {
@@ -1024,20 +1137,26 @@ export class EmergencyService {
     });
   }
 
-
   getStoragelocationList(data: any) {
-    return this.http.get(`${environment.eKardexApiUrl}/getStoragelocationList?searchstring=${data}`, { withCredentials: true })
+    return this.http.get(
+      `${environment.eKardexApiUrl}/getStoragelocationList?searchstring=${data}`,
+      { withCredentials: true }
+    );
   }
 
   getLatestDocSet(json) {
-    return this.http.get(this.url + `LatestDocSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
-      withCredentials: true,
-    });
+    return this.http.get(
+      this.url +
+        `LatestDocSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
-  getDailysisSet(json){
+  getDailysisSet(json) {
     return this.http.get(this.url + `DailysisSet?Dockey=${json.Dockey}`, {
-      withCredentials:true
+      withCredentials: true,
     });
   }
 
@@ -1059,10 +1178,13 @@ export class EmergencyService {
     });
   }
 
-  deletePainAssessmentDoc(json): Observable<any> {    
-    return this.http.delete(this.url + `deletePainAssessmentDoc?Dockey=${json}`, {
-      withCredentials: true,
-    });
+  deletePainAssessmentDoc(json): Observable<any> {
+    return this.http.delete(
+      this.url + `deletePainAssessmentDoc?Dockey=${json}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   getPainAssessmentPDF(dockey: string) {
@@ -1070,151 +1192,164 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
-  postDailysisSet(json){
+  postDailysisSet(json) {
     return this.http.post(this.url + 'DailysisSet', json, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  deleteDialysisDoc(Dockey){
+  deleteDialysisDoc(Dockey) {
     return this.http.delete(this.url + `DailysisSet?Dockey=${Dockey}`, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  releaseDialysisDoc(json){
+  releaseDialysisDoc(json) {
     return this.http.post(this.url + 'DailysisSet', json, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  getDiaAssessReleasedPdf(json){
-    return this.http.post(this.url + `DialysisgetPDF`, json,{
-      withCredentials: true
-    })
+  getDiaAssessReleasedPdf(json) {
+    return this.http.post(this.url + `DialysisgetPDF`, json, {
+      withCredentials: true,
+    });
   }
 
-  postMFSSet(payload){
+  postMFSSet(payload) {
     return this.http.post(this.url + 'MFSSet', payload, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  createNewMFSSet(payload){
+  createNewMFSSet(payload) {
     return this.http.put(this.url + 'MFSSet', payload, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  getLatestMFSSet(json){
-    return this.http.get(this.url + `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`, {
-      withCredentials: true
-    })
+  getLatestMFSSet(json) {
+    return this.http.get(
+      this.url +
+        `LatestMFSSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
-  getMFSDoc(dockey){
+  getMFSDoc(dockey) {
     return this.http.get(this.url + `MFSSet?Dockey=${dockey}`, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  getLatestHemoCatheter(json){
-    return this.http.get(this.url + `LatestHemoCatheter?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
-      withCredentials: true
-    })
+  getLatestHemoCatheter(json) {
+    return this.http.get(
+      this.url +
+        `LatestHemoCatheter?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
-  postHemoCatheterSet(payload){
+  postHemoCatheterSet(payload) {
     return this.http.post(this.url + 'HemoCatheter', payload, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  ReleaseHemoCatheterSet(payload){
+  ReleaseHemoCatheterSet(payload) {
     return this.http.post(this.url + 'HemoCatheterSet', payload, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  getHemoCatheterDoc(dockey){
+  getHemoCatheterDoc(dockey) {
     return this.http.get(this.url + `HemoCatheter?Dockey=${dockey}`, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  getLatestHemoDialysisFistulaGraft(json){
-    return this.http.get(this.url + `LatestFistulaGraftSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
-      withCredentials: true
-    })
+  getLatestHemoDialysisFistulaGraft(json) {
+    return this.http.get(
+      this.url +
+        `LatestFistulaGraftSet?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
-  getHistoryReservationLiat(){
-    return this.http.get(this.url + 'getHistoryReservationList',{
-      withCredentials:true
-    })
+  getHistoryReservationLiat() {
+    return this.http.get(this.url + 'getHistoryReservationList', {
+      withCredentials: true,
+    });
   }
 
-  callHistoryList(){
+  callHistoryList() {
     this.formValuesSubject.next(null);
   }
 
-
-  postHemoDialysisFistulaGraft(payload){
+  postHemoDialysisFistulaGraft(payload) {
     return this.http.post(this.url + 'fistulaGraftSet', payload, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  getHemoDialysisFistulaGraftDoc(dockey){
+  getHemoDialysisFistulaGraftDoc(dockey) {
     return this.http.get(this.url + `getfistulaGraftSet?Dockey=${dockey}`, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  releaseHemoDialysisFistiulaGraft(payload){
+  releaseHemoDialysisFistiulaGraft(payload) {
     return this.http.post(this.url + 'fistulaGraftSet', payload, {
-      withCredentials: true
-    })
+      withCredentials: true,
+    });
   }
 
-  deleteHemoDialysisFistulaGraftDoc(Dockey){
-    return this.http.delete(this.url + `deleteFistulaGraftSet?Dockey=${Dockey}`, {
-      withCredentials: true
-    })
+  deleteHemoDialysisFistulaGraftDoc(Dockey) {
+    return this.http.delete(
+      this.url + `deleteFistulaGraftSet?Dockey=${Dockey}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
-  getHemoDialysisFistulaGraftPDF(dockey){
-    return this.http.get(this.url + `getFistulaGraftDocPDF?Dockey=${dockey}`,{
-      withCredentials: true
-    })
+  getHemoDialysisFistulaGraftPDF(dockey) {
+    return this.http.get(this.url + `getFistulaGraftDocPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
   }
 
-  createReservation(payload:any){
-    return this.http.post(this.url + 'saveReservationSet',payload,{
-      withCredentials:true
-    })
+  createReservation(payload: any) {
+    return this.http.post(this.url + 'saveReservationSet', payload, {
+      withCredentials: true,
+    });
   }
 
-  getStorageLocation(){
-    return this.http.get(this.url + 'getStoragelocationReservationList',{
-      withCredentials:true
-    })
+  getStorageLocation() {
+    return this.http.get(this.url + 'getStoragelocationReservationList', {
+      withCredentials: true,
+    });
   }
 
-  
-  getunitList(){
-    return this.http.get(this.url + `getUnitReservationList`,{
-      withCredentials:true
-    })
+  getunitList() {
+    return this.http.get(this.url + `getUnitReservationList`, {
+      withCredentials: true,
+    });
   }
 
-  getCostcenter(){
-    return this.http.get(this.url + 'getCostCenterReservationList',{
-      withCredentials:true
-    })
+  getCostcenter() {
+    return this.http.get(this.url + 'getCostCenterReservationList', {
+      withCredentials: true,
+    });
   }
 
-  createAssessment(data:any) {
+  createAssessment(data: any) {
     console.log(data);
 
     // return new Promise((resolve, reject) => {
@@ -1435,6 +1570,4 @@ export class EmergencyService {
     //   });
     // });
   }
-
-
 }

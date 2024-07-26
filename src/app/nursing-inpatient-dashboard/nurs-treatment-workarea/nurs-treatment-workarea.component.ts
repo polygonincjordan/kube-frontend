@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -20,10 +29,9 @@ import swal from 'sweetalert2';
 @Component({
   selector: 'app-nurs-treatment-workarea',
   templateUrl: './nurs-treatment-workarea.component.html',
-  styleUrls: ['./nurs-treatment-workarea.component.scss']
+  styleUrls: ['./nurs-treatment-workarea.component.scss'],
 })
 export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
-
   // @ViewChild(DocumentationComponent) documentationComp:DocumentationComponent;
   @Output() redirectTreatmentPatientData = new EventEmitter<any>();
   showPatients = false;
@@ -34,7 +42,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   medicationform: FormGroup;
   radform: FormGroup;
   labform: FormGroup;
-  servicesform: FormGroup
+  servicesform: FormGroup;
   phyOrderitems: FormArray;
   medicationItems: FormArray;
   radItems: FormArray;
@@ -69,10 +77,15 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   treatmentPatientData: any;
   lfdnr: any;
   checkCounterPatient: any = {
-    isEnCounterCheck: true, isPatientCheck: false
+    isEnCounterCheck: true,
+    isPatientCheck: false,
   };
   dosageUnitListOrderSet: any;
-  public priorityArray: any = [{ Desc: "Regular", Value: "010" }, { Desc: "High", Value: "020" }, { Desc: "STAT", Value: "030" }];
+  public priorityArray: any = [
+    { Desc: 'Regular', Value: '010' },
+    { Desc: 'High', Value: '020' },
+    { Desc: 'STAT', Value: '030' },
+  ];
   localizationListOrderSet: any;
   allSubtitlesSets: any;
   selectedStid: any;
@@ -95,13 +108,21 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   firstIndex: number;
   actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
-  constructor(public emergencyService: EmergencyService, public cpoeService: CpoeService, private formBuilder: FormBuilder, private _dataServices: EEmrService, public sidebarService: SidebarService,
+  constructor(
+    public emergencyService: EmergencyService,
+    public cpoeService: CpoeService,
+    private formBuilder: FormBuilder,
+    private _dataServices: EEmrService,
+    public sidebarService: SidebarService,
     private dataShareService: DataShareService,
     public ePrescriptionService: EPrescriptionService,
     private hospitalistService: HospitalistService,
     public eOrderService: eOrderService,
     public addministrationService: AddministrationService,
-    private route: ActivatedRoute, private el: ElementRef, private modalService: BsModalService) {
+    private route: ActivatedRoute,
+    private el: ElementRef,
+    private modalService: BsModalService
+  ) {
     this.phyOrderform = this.formBuilder.group({
       phyOrderitems: new FormArray([]),
     });
@@ -145,12 +166,14 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
 
     // this.phyOrderTableList();
     // this.occupationalGroupList();
-    this.myTag = this.el.nativeElement.querySelector("div");
-    this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
-      if (data != null) {
-        this.isConsumableAction = data;
+    this.myTag = this.el.nativeElement.querySelector('div');
+    this.actionTypeSubscription$ = this.dataShareService.data$.subscribe(
+      (data) => {
+        if (data != null) {
+          this.isConsumableAction = data;
+        }
       }
-    });
+    );
   }
   ngOnDestroy(): void {
     if (this.actionTypeSubscription$) {
@@ -184,7 +207,9 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     this.phyOrderitems.push(this.createPhyOrderRecords(element));
   }
   addItemForMedication(element): void {
-    this.medicationItems = this.medicationform.get('medicationItems') as FormArray;
+    this.medicationItems = this.medicationform.get(
+      'medicationItems'
+    ) as FormArray;
     this.medicationItems.push(this.createMedicationRecords(element));
     this.disableInputsOfMed();
   }
@@ -202,26 +227,35 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   }
   updatePRN(event, index) {
     if (event) {
-      this.medicationform.get('medicationItems')['controls'].at(index).get('Prncond').enable();
+      this.medicationform
+        .get('medicationItems')
+        ['controls'].at(index)
+        .get('Prncond')
+        .enable();
     } else {
-      this.medicationform.get('medicationItems')['controls'].at(index).get('Prncond').disable();
+      this.medicationform
+        .get('medicationItems')
+        ['controls'].at(index)
+        .get('Prncond')
+        .disable();
     }
   }
   disableInputsOfMed() {
-    (<FormArray>this.medicationform.get('medicationItems'))
-      .controls
-      .forEach((control, index) => {
+    (<FormArray>this.medicationform.get('medicationItems')).controls.forEach(
+      (control, index) => {
         control['controls']['Drugname'].disable();
         control['controls']['FormulaText'].disable();
-        this.updatePRN(control['controls']['Prn'].value, index)
-      })
+        this.updatePRN(control['controls']['Prn'].value, index);
+      }
+    );
   }
   resetTags() {
     const phyOrderitems = this.phyOrderform.controls.phyOrderitems as FormArray;
     while (0 !== phyOrderitems.length) {
       phyOrderitems.removeAt(0);
     }
-    const medicationItems = this.medicationform.controls.medicationItems as FormArray;
+    const medicationItems = this.medicationform.controls
+      .medicationItems as FormArray;
     while (0 !== medicationItems.length) {
       medicationItems.removeAt(0);
     }
@@ -250,9 +284,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       Seqno: [element.Seqno],
       ZphysOrder: [element.ZphysOrder],
       ProfGroup: [element.ProfGroup],
-      Stid: [element.Stid]
-    }
-    );
+      Stid: [element.Stid],
+    });
   }
   createMedicationRecords(element): FormGroup {
     return this.formBuilder.group({
@@ -297,7 +330,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       LocalizationText: [element.LocalizationText],
       AddInfo: [element.AddInfo],
       Stid: [element.Stid],
-      Seqno: [element.Seqno]
+      Seqno: [element.Seqno],
     });
   }
   createLabRecords(element): FormGroup {
@@ -317,7 +350,6 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       AddInfo: [element.AddInfo],
       Stid: [element.Stid],
       Seqno: [element.Seqno],
-
     });
   }
   createServicesRecords(element): FormGroup {
@@ -328,9 +360,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       ServiceText: [element.ServiceText],
       Subcategory: [element.Subcategory],
       Service: [element.Service],
-      Stid: [element.Stid]
-    }
-    );
+      Stid: [element.Stid],
+    });
   }
   showhidePatients() {
     this.showPatients = !this.showPatients;
@@ -344,36 +375,35 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     this.selectedData = item;
     this.getOrderSetDataBySubtitles = [];
     this.subtitlesListByOrderSet(item);
-    this.getOrderSetData.forEach(element => {
+    this.getOrderSetData.forEach((element) => {
       if (element.Id == this.selectedData.Id) {
-        element["isSelect"] = true;
+        element['isSelect'] = true;
       } else {
-        element["isSelect"] = false;
+        element['isSelect'] = false;
       }
     });
-    this.getFavSetData.forEach(element => {
-      element["isSelect"] = false;
+    this.getFavSetData.forEach((element) => {
+      element['isSelect'] = false;
     });
-
   }
   setRecordsForms(data) {
     this.resetTags();
-    console.log("med", this.medicationItems);
+    console.log('med', this.medicationItems);
 
-    data.ToPhyOrd.results.forEach(element => {
+    data.ToPhyOrd.results.forEach((element) => {
       this.addItemForPhyOrder(element);
     });
-    data.ToMedOrd.results.forEach(element => {
+    data.ToMedOrd.results.forEach((element) => {
       this.addItemForMedication(element);
       this.dosageUnitListForOrderSets(element);
     });
-    data.ToRad.results.forEach(element => {
+    data.ToRad.results.forEach((element) => {
       this.addItemForRad(element);
     });
-    data.ToLab.results.forEach(element => {
+    data.ToLab.results.forEach((element) => {
       this.addItemForLab(element);
     });
-    data.ToServices.results.forEach(element => {
+    data.ToServices.results.forEach((element) => {
       this.addItemForServices(element);
     });
   }
@@ -383,7 +413,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         if (_success) {
           // _success = JSON.parse(_success._body);
           this.treatmentPatientData = _success.d.results;
-          this.treatmentPatientData.forEach(element => {
+          this.treatmentPatientData.forEach((element) => {
             if (element.Statu == '20') {
               element['StatusText'] = 'Planned';
             } else if (element.Statu == '30') {
@@ -402,22 +432,22 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           });
         }
       },
-      (_error: any) => { }
+      (_error: any) => {}
     );
   }
   getOrderSet() {
     const json = {
       falnr: this.caseid,
-      einri: this.institutionid
-    }
+      einri: this.institutionid,
+    };
     this.emergencyService.getOrderSet(json).subscribe(
       (_success: any) => {
         if (_success) {
           // _success = JSON.parse(_success._body);
 
           this.getOrderSetData = _success.d.results;
-          this.getOrderSetData.forEach(element => {
-            element["isSelect"] = false;
+          this.getOrderSetData.forEach((element) => {
+            element['isSelect'] = false;
           });
           //  if (this.getOrderSetData.length >0) {
           //   this.selectedData = this.getOrderSetData[0];
@@ -425,7 +455,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           //  }
         }
       },
-      (_error: any) => { }
+      (_error: any) => {}
     );
   }
   getFavSet() {
@@ -435,8 +465,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           // _success = JSON.parse(_success._body);
 
           this.getFavSetData = _success.d.results;
-          this.getFavSetData.forEach(element => {
-            element["isSelect"] = false;
+          this.getFavSetData.forEach((element) => {
+            element['isSelect'] = false;
           });
           //  if (this.getFavSetData.length >0) {
           //   this.selectedData = this.getOrderSetData[0];
@@ -444,31 +474,32 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           //  }
         }
       },
-      (_error: any) => { }
+      (_error: any) => {}
     );
   }
   showLocalizationTextForRad(data, event, index) {
-    let selectedLocalValue = data.find(d => d.Dialo === event)
+    let selectedLocalValue = data.find((d) => d.Dialo === event);
     this.radItems.controls[index].patchValue({
-      LocalizationText: selectedLocalValue.Dialotext
-    })
+      LocalizationText: selectedLocalValue.Dialotext,
+    });
   }
   showLocalizationTextForLab(data, event, index) {
-    let selectedLocalValue = data.find(d => d.Dialo === event)
+    let selectedLocalValue = data.find((d) => d.Dialo === event);
     this.labItems.controls[index].patchValue({
-      LocalizationText: selectedLocalValue.Dialotext
-    })
+      LocalizationText: selectedLocalValue.Dialotext,
+    });
   }
   subtitlesListByOrderSet(data) {
-    this.ePrescriptionService.getData(`e-prescription/OrderSetSubtitleSet?Id='${data.Id}'`).subscribe((resp: any) => {
-      this.allSubtitlesSets = resp.body.d.results;
-      this.allSubtitlesSets.forEach(element => {
-        element['isSelect'] = false;
-        this.getOrderSetBySubtitles(element);
+    this.ePrescriptionService
+      .getData(`e-prescription/OrderSetSubtitleSet?Id='${data.Id}'`)
+      .subscribe((resp: any) => {
+        this.allSubtitlesSets = resp.body.d.results;
+        this.allSubtitlesSets.forEach((element) => {
+          element['isSelect'] = false;
+          this.getOrderSetBySubtitles(element);
+        });
+        this.changeSubtitle(this.allSubtitlesSets[0], 0);
       });
-      this.changeSubtitle(this.allSubtitlesSets[0], 0)
-    });
-
   }
   changeSubtitle(item: any, index: number) {
     if (!item.isSelect) {
@@ -499,7 +530,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       collapseFiveShow.classList.remove('show');
       this.showAccor();
     }
-    this.allSubtitlesSets.forEach(element => {
+    this.allSubtitlesSets.forEach((element) => {
       if (item.Stid == element.Stid) {
         if (element['isSelect']) {
           element['isSelect'] = false;
@@ -510,7 +541,6 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         element['isSelect'] = false;
       }
     });
-
   }
   actionOnSubtitle(item, i) {
     // if (!item.Autoselect) {
@@ -518,18 +548,16 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     //    .controls
     //    .forEach((control,index) => {
     //      control['controls']['isChecked'].setValue(false);
-
     //    })
     // }else{
     //  this.selectSet(this.selectedData);
     // }
-
   }
   getOrderSetBySubtitles(data) {
     const json = {
       Id: data.Id,
-      Stid: data.Stid
-    }
+      Stid: data.Stid,
+    };
     this.emergencyService.getOrderSetBySubtitles(json).subscribe(
       (_success: any) => {
         if (_success) {
@@ -540,12 +568,15 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
             this.getOrderSetDataBySubtitles = _success.d.results;
           }
 
-          this.getOrderSetDataBySubtitles.forEach(element => {
-            element["isSelect"] = false;
+          this.getOrderSetDataBySubtitles.forEach((element) => {
+            element['isSelect'] = false;
           });
 
-          if (this.allSubtitlesSets.length == this.getOrderSetDataBySubtitles.length) {
-            this.getOrderSetDataBySubtitles.forEach(data => {
+          if (
+            this.allSubtitlesSets.length ==
+            this.getOrderSetDataBySubtitles.length
+          ) {
+            this.getOrderSetDataBySubtitles.forEach((data) => {
               data.ToPhyOrd.results.forEach((element) => {
                 this.addItemForPhyOrder(element);
               });
@@ -571,34 +602,33 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           //  }
         }
       },
-      (_error: any) => { }
+      (_error: any) => {}
     );
   }
 
   createOrderSet() {
-    const json =
-    {
-      "Id": this.selectedData.Id,
-      "Einri": this.institutionid,
-      "Falnr": this.paramsObj.caseid,
-      "Lfdnr": this.lfdnr,
-      "Patnr": this.paramsObj.patientId,
-      "PhyOrd": {
-        "results": this.phyOrderitemsArr
+    const json = {
+      Id: this.selectedData.Id,
+      Einri: this.institutionid,
+      Falnr: this.paramsObj.caseid,
+      Lfdnr: this.lfdnr,
+      Patnr: this.paramsObj.patientId,
+      PhyOrd: {
+        results: this.phyOrderitemsArr,
       },
-      "MedOrd": {
-        "results": this.medicationItemsArr
+      MedOrd: {
+        results: this.medicationItemsArr,
       },
-      "Services": {
-        "results": this.servicesItemsArr
+      Services: {
+        results: this.servicesItemsArr,
       },
-      "Lab": {
-        "results": this.labItemsArr
+      Lab: {
+        results: this.labItemsArr,
       },
-      "Rad": {
-        "results": this.radItemsArr
-      }
-    }
+      Rad: {
+        results: this.radItemsArr,
+      },
+    };
     this.emergencyService.createOrderSet(json).subscribe(
       (_success: any) => {
         if (_success) {
@@ -608,16 +638,16 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
             cancelButtonColor: '#84898c',
             confirmButtonText: 'OK',
             customClass: 'myalertpopup',
-            icon: 'success'
+            icon: 'success',
           });
           this.resetTags();
           this.showSelected = false;
           this.getOrderSetDataBySubtitles = [];
-          this.getFavSetData.forEach(element => {
-            element["isSelect"] = false;
+          this.getFavSetData.forEach((element) => {
+            element['isSelect'] = false;
           });
-          this.getOrderSetData.forEach(element => {
-            element["isSelect"] = false;
+          this.getOrderSetData.forEach((element) => {
+            element['isSelect'] = false;
           });
         }
       },
@@ -628,45 +658,45 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
-          icon: 'error'
+          icon: 'error',
         });
       }
     );
   }
   checkForSubtitles() {
-    if (this.allSubtitlesSets.find(e => e.Autoselect === true)) {
-      this.allSubtitlesSets.forEach(e1 => {
+    if (this.allSubtitlesSets.find((e) => e.Autoselect === true)) {
+      this.allSubtitlesSets.forEach((e1) => {
         if (e1.Autoselect) {
           if (this.medicationItems != undefined) {
-            this.medicationItems.value.filter(element => {
+            this.medicationItems.value.filter((element) => {
               if (e1.Stid === element.Stid) {
                 this.medicationItemsArr.push(element);
               }
             });
           }
           if (this.phyOrderitems != undefined) {
-            this.phyOrderitems.value.filter(element => {
+            this.phyOrderitems.value.filter((element) => {
               if (e1.Stid === element.Stid) {
                 this.phyOrderitemsArr.push(element);
               }
             });
           }
           if (this.radItems != undefined) {
-            this.radItems.value.filter(element => {
+            this.radItems.value.filter((element) => {
               if (e1.Stid === element.Stid) {
                 this.radItemsArr.push(element);
               }
             });
           }
           if (this.labItems != undefined) {
-            this.labItems.value.filter(element => {
+            this.labItems.value.filter((element) => {
               if (e1.Stid === element.Stid) {
                 this.labItemsArr.push(element);
               }
             });
           }
           if (this.servicesItems != undefined) {
-            this.servicesItems.value.filter(element => {
+            this.servicesItems.value.filter((element) => {
               if (e1.Stid === element.Stid) {
                 this.servicesItemsArr.push(element);
               }
@@ -682,7 +712,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
-        icon: 'error'
+        icon: 'error',
       });
     }
   }
@@ -753,39 +783,38 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       (_success: any) => {
         this.occupationalGroupData = _success.d.results;
         // this.phyOrderform1.controls.occupationalGroup.setValue(this.occupationalGroupData[2].Group);
-
       },
-      (_error: any) => { }
+      (_error: any) => {}
     );
   }
   selectFavSet(data) {
-    const collapseOneShow = document.getElementById('collapseOne')
+    const collapseOneShow = document.getElementById('collapseOne');
     collapseOneShow.classList.add('show');
-    const collapseTwoShow = document.getElementById('collapseTwo')
+    const collapseTwoShow = document.getElementById('collapseTwo');
     collapseTwoShow.classList.add('show');
-    const collapseThreeShow = document.getElementById('collapseThree')
+    const collapseThreeShow = document.getElementById('collapseThree');
     collapseThreeShow.classList.add('show');
-    const collapseFourShow = document.getElementById('collapseFour')
+    const collapseFourShow = document.getElementById('collapseFour');
     collapseFourShow.classList.add('show');
-    const collapseFiveShow = document.getElementById('collapseFive')
+    const collapseFiveShow = document.getElementById('collapseFive');
     collapseFiveShow.classList.add('show');
     this.getOrderSetByFavId(data);
     this.selectedFavData = data;
-    this.getFavSetData.forEach(element => {
+    this.getFavSetData.forEach((element) => {
       if (element.Id == this.selectedFavData.Id) {
-        element["isSelect"] = true;
+        element['isSelect'] = true;
       } else {
-        element["isSelect"] = false;
+        element['isSelect'] = false;
       }
     });
-    this.getOrderSetData.forEach(element => {
-      element["isSelect"] = false;
+    this.getOrderSetData.forEach((element) => {
+      element['isSelect'] = false;
     });
   }
   getOrderSetByFavId(data) {
     const json = {
-      Id: data.Id
-    }
+      Id: data.Id,
+    };
     this.emergencyService.getOrderSetByFavId(json).subscribe(
       (_success: any) => {
         if (_success) {
@@ -800,36 +829,48 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           //  }
         }
       },
-      (_error: any) => { }
+      (_error: any) => {}
     );
   }
   dosageUnitListForOrderSets(item) {
-    this.ePrescriptionService.loadData(`e-prescription/DurgUnitlist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Lfdnr=${this.ePrescriptionService.parameters.lfdnr}&Drugid=${item.Drugid}`, false, false, false, false).subscribe((resp: any) => {
-      this.dosageUnitListOrderSet = resp.body.d.results;
-    });
+    this.ePrescriptionService
+      .loadData(
+        `e-prescription/DurgUnitlist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Lfdnr=${this.ePrescriptionService.parameters.lfdnr}&Drugid=${item.Drugid}`,
+        false,
+        false,
+        false,
+        false
+      )
+      .subscribe((resp: any) => {
+        this.dosageUnitListOrderSet = resp.body.d.results;
+      });
   }
   localizationForOrderSets() {
-    this.ePrescriptionService.getData(`e-prescription/LocalizationSet`).subscribe((resp: any) => {
-      this.localizationListOrderSet = resp.body.d.results;
-    });
+    this.ePrescriptionService
+      .getData(`e-prescription/LocalizationSet`)
+      .subscribe((resp: any) => {
+        this.localizationListOrderSet = resp.body.d.results;
+      });
   }
   onlyNumberKey(event) {
-    let charCode = (event.query) ? event.query : event.keyCode;
+    let charCode = event.query ? event.query : event.keyCode;
     console.log(charCode);
-    if (charCode > 31
-      && (charCode < 48 || charCode > 57))
-      return false;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
 
     return true;
   }
   SearchOrderSets() {
     this.getOrderSetData = this.getOrderSetData.filter((item: any) => {
-      return item.Name.toLowerCase().includes(this.searchOrderSets.toLowerCase());
+      return item.Name.toLowerCase().includes(
+        this.searchOrderSets.toLowerCase()
+      );
     });
     this.getFavSetData = this.getFavSetData.filter((item: any) => {
-      return item.Name.toLowerCase().includes(this.searchOrderSets.toLowerCase());
+      return item.Name.toLowerCase().includes(
+        this.searchOrderSets.toLowerCase()
+      );
     });
-    if (this.searchOrderSets == "") {
+    if (this.searchOrderSets == '') {
       this.getOrderSet();
       this.getFavSet();
     }
@@ -842,23 +883,42 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     this.formDetails = data;
     this.indexformDetails = index;
     if (this.formDetails['controls']['medicationItems']) {
-      this.selectedAddInfo = this.medicationform.get('medicationItems')['controls'].at(this.indexformDetails).get('Descr').value;
+      this.selectedAddInfo = this.medicationform
+        .get('medicationItems')
+        ['controls'].at(this.indexformDetails)
+        .get('Descr').value;
     } else if (this.formDetails['controls']['radItems']) {
-      this.selectedAddInfo = this.radform.get('radItems')['controls'].at(this.indexformDetails).get('AddInfo').value;
+      this.selectedAddInfo = this.radform
+        .get('radItems')
+        ['controls'].at(this.indexformDetails)
+        .get('AddInfo').value;
     } else if (this.formDetails['controls']['labItems']) {
-      this.selectedAddInfo = this.labform.get('labItems')['controls'].at(this.indexformDetails).get('AddInfo').value;
+      this.selectedAddInfo = this.labform
+        .get('labItems')
+        ['controls'].at(this.indexformDetails)
+        .get('AddInfo').value;
     }
   }
   saveAddinfo() {
     this.modalRef.hide();
     if (this.formDetails['controls']['medicationItems']) {
-      this.medicationform.get('medicationItems')['controls'].at(this.indexformDetails).get('Descr').setValue(this.selectedAddInfo);
-    }
-    else if (this.formDetails['controls']['radItems']) {
-      this.radform.get('radItems')['controls'].at(this.indexformDetails).get('AddInfo').setValue(this.selectedAddInfo);
-    }
-    else if (this.formDetails['controls']['labItems']) {
-      this.labform.get('labItems')['controls'].at(this.indexformDetails).get('AddInfo').setValue(this.selectedAddInfo);
+      this.medicationform
+        .get('medicationItems')
+        ['controls'].at(this.indexformDetails)
+        .get('Descr')
+        .setValue(this.selectedAddInfo);
+    } else if (this.formDetails['controls']['radItems']) {
+      this.radform
+        .get('radItems')
+        ['controls'].at(this.indexformDetails)
+        .get('AddInfo')
+        .setValue(this.selectedAddInfo);
+    } else if (this.formDetails['controls']['labItems']) {
+      this.labform
+        .get('labItems')
+        ['controls'].at(this.indexformDetails)
+        .get('AddInfo')
+        .setValue(this.selectedAddInfo);
     }
   }
   //phy order
@@ -887,7 +947,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       admittedFrom,
       admittedTo,
       wardNo,
-      ""
+      ''
     );
 
     this.hospitalistService.inHospitalistData$
@@ -932,21 +992,21 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
 
     window.open(
       'admit-process?patnr=' +
-      data.Mrn +
-      '&falnr=' +
-      data.CaseNumber +
-      '&einri=' +
-      data.Institute +
-      '&lfdnr=' +
-      data.Lfdnr +
-      '&admittedFrom=' +
-      admittedFrom +
-      '&admittedTo=' +
-      admittedTo +
-      '&wardNo=' +
-      wardNo +
-      '&activeValue=' +
-      this.navTabBoxActiveValue,
+        data.Mrn +
+        '&falnr=' +
+        data.CaseNumber +
+        '&einri=' +
+        data.Institute +
+        '&lfdnr=' +
+        data.Lfdnr +
+        '&admittedFrom=' +
+        admittedFrom +
+        '&admittedTo=' +
+        admittedTo +
+        '&wardNo=' +
+        wardNo +
+        '&activeValue=' +
+        this.navTabBoxActiveValue,
       '_self'
     );
   }
@@ -958,8 +1018,30 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       formFilter.value.SelectDropdown === null
         ? ''
         : formFilter.value.SelectDropdown;
-    this.admittedFrom = formFilter?.value?.DateRange?.length === 0 ? '' : formFilter?.value?.DateRange[0].getFullYear() + '-' + String(formFilter?.value?.DateRange[0].getMonth() + 1).padStart(2, '0') + '-' + String(formFilter?.value?.DateRange[0].getDate()).padStart(2, '0') + 'T00:00:00';
-    this.admittedTo = formFilter?.value?.DateRange?.length === 0 ? '' : formFilter?.value?.DateRange[1].getFullYear() + '-' + String(formFilter?.value?.DateRange[1].getMonth() + 1).padStart(2, '0') + '-' + String(formFilter?.value?.DateRange[1].getDate()).padStart(2, '0') + 'T00:00:00';
+    this.admittedFrom =
+      formFilter?.value?.DateRange?.length === 0
+        ? ''
+        : formFilter?.value?.DateRange[0].getFullYear() +
+          '-' +
+          String(formFilter?.value?.DateRange[0].getMonth() + 1).padStart(
+            2,
+            '0'
+          ) +
+          '-' +
+          String(formFilter?.value?.DateRange[0].getDate()).padStart(2, '0') +
+          'T00:00:00';
+    this.admittedTo =
+      formFilter?.value?.DateRange?.length === 0
+        ? ''
+        : formFilter?.value?.DateRange[1].getFullYear() +
+          '-' +
+          String(formFilter?.value?.DateRange[1].getMonth() + 1).padStart(
+            2,
+            '0'
+          ) +
+          '-' +
+          String(formFilter?.value?.DateRange[1].getDate()).padStart(2, '0') +
+          'T00:00:00';
     if (this.admittedFrom == this.admittedTo) {
       this.admittedFrom = '';
       this.admittedTo = '';
@@ -1005,9 +1087,34 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   progressNotesFilterList(formFilter: any) {
     this.admittedFrom = '';
     this.admittedTo = '';
-    let profGroup = formFilter?.value?.SelectDropdown === null ? '' : formFilter?.value?.SelectDropdown;
-    this.admittedFrom = formFilter?.value?.DateRange?.length === 0 ? '' : formFilter?.value?.DateRange[0].getFullYear() + '-' + String(formFilter?.value?.DateRange[0].getMonth() + 1).padStart(2, '0') + '-' + String(formFilter?.value?.DateRange[0].getDate()).padStart(2, '0') + 'T00:00:00';
-    this.admittedTo = formFilter?.value?.DateRange?.length === 0 ? '' : formFilter?.value?.DateRange[1].getFullYear() + '-' + String(formFilter?.value?.DateRange[1].getMonth() + 1).padStart(2, '0') + '-' + String(formFilter?.value?.DateRange[1].getDate()).padStart(2, '0') + 'T00:00:00';
+    let profGroup =
+      formFilter?.value?.SelectDropdown === null
+        ? ''
+        : formFilter?.value?.SelectDropdown;
+    this.admittedFrom =
+      formFilter?.value?.DateRange?.length === 0
+        ? ''
+        : formFilter?.value?.DateRange[0].getFullYear() +
+          '-' +
+          String(formFilter?.value?.DateRange[0].getMonth() + 1).padStart(
+            2,
+            '0'
+          ) +
+          '-' +
+          String(formFilter?.value?.DateRange[0].getDate()).padStart(2, '0') +
+          'T00:00:00';
+    this.admittedTo =
+      formFilter?.value?.DateRange?.length === 0
+        ? ''
+        : formFilter?.value?.DateRange[1].getFullYear() +
+          '-' +
+          String(formFilter?.value?.DateRange[1].getMonth() + 1).padStart(
+            2,
+            '0'
+          ) +
+          '-' +
+          String(formFilter?.value?.DateRange[1].getDate()).padStart(2, '0') +
+          'T00:00:00';
     // if (this.admittedFrom || this.admittedTo || profGroup) {
     if (this.admittedFrom == this.admittedTo) {
       this.admittedFrom = '';
@@ -1033,8 +1140,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     // }
   }
   tabChange(tabName?) {
-    console.log("call");
-    
+    console.log('call');
+
     if (tabName == 'ProgressNotes') {
       this.getProgressNotesData();
       this.emergencyService.tabPanelNavigation('ProgressNotes');
@@ -1066,6 +1173,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       this.emergencyService.tabPanelNavigation('patientProfile');
     } else if (tabName == 'Consumables') {
       this.emergencyService.tabPanelNavigation('Consumables');
+    } else if (tabName == 'IOCharts') {
+      this.emergencyService.tabPanelNavigation('IOCharts');
     } else if (tabName == 'Services') {
       this.emergencyService.tabPanelNavigation('Services');
     }
@@ -1075,10 +1184,10 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   }
 
   refreshPatientData(data) {
-    this.cpoeService.constants.falnr = data.Falnr
-    this.cpoeService.constants.patnr = data.Patnr
-    this.cpoeService.constants.lfdnr = data.Lfdnr
-    this.cpoeService.constants.einri = data.Einri
+    this.cpoeService.constants.falnr = data.Falnr;
+    this.cpoeService.constants.patnr = data.Patnr;
+    this.cpoeService.constants.lfdnr = data.Lfdnr;
+    this.cpoeService.constants.einri = data.Einri;
     this.ePrescriptionService.parameters.falnr = data.Falnr;
     this.ePrescriptionService.parameters.patnr = data.Patnr;
     this.ePrescriptionService.parameters.lfdnr = data.Lfdnr;
@@ -1133,7 +1242,6 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       const collapseFiveShow = document.getElementById('collapseFive');
       this.PhyAccor = collapseFiveShow.classList.value;
     }, 500);
-
   }
   openModuleLabChart() {
     this.route.queryParams.subscribe((params) => {
@@ -1143,19 +1251,19 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       this.FALNR = params.falnr;
     });
     window.open(
-      environment.labChartUrl + 'patnr=' +
-      this.PATNR +
-      '&falnr=' +
-      this.FALNR +
-      '&einri=' +
-      this.EINRI +
-      '&lfdnr=' +
-      this.LFDBW +
-      '&appl=LABCHART',
+      environment.labChartUrl +
+        'patnr=' +
+        this.PATNR +
+        '&falnr=' +
+        this.FALNR +
+        '&einri=' +
+        this.EINRI +
+        '&lfdnr=' +
+        this.LFDBW +
+        '&appl=LABCHART',
       '_blank'
     );
   }
-
 
   openModuleRad() {
     this.route.queryParams.subscribe((params) => {
@@ -1169,5 +1277,4 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       '_blank'
     );
   }
-
 }
