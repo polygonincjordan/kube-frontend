@@ -1,0 +1,377 @@
+<div class="d-flex flex-row align-items-center justify-content-between">
+  <div class="d-flex flex-row align-items-center">
+    <div class="search-input col-md-4 ml-3 pl-0">
+      <img src="assets/img/pres-search-icon.svg" alt="" />
+      <input
+        type="text"
+        placeholder="Search"
+        class="form-control w-100"
+        id="searchFilter"
+      />
+    </div>
+    <ng-select appendTo="body" placeholder="Select Category" class="mr-2">
+      <ng-option value="1">Oral</ng-option>
+      <ng-option value="2">Enteral (G)</ng-option>
+      <ng-option value="3">Parenteral</ng-option>
+      <ng-option value="4">IV Fluids</ng-option>
+      <ng-option value="5">Blood Products</ng-option>
+      <ng-option value="6">Other</ng-option>
+    </ng-select>
+    <ng-select appendTo="body" placeholder="Select Type" class="mr-2">
+      <ng-option value="1">Food</ng-option>
+      <ng-option value="2">Medications</ng-option>
+      <ng-option value="3">Fluids</ng-option>
+      <ng-option value="4">Food</ng-option>
+      <ng-option value="5">Feeding Formula</ng-option>
+      <ng-option value="6">Total Parenteral Nutrition</ng-option>
+      <ng-option value="7">D5W</ng-option>
+      <ng-option value="8">GS0.9%</ng-option>
+      <ng-option value="9">Saline 0.45%</ng-option>
+      <ng-option value="10">Platelets</ng-option>
+      <ng-option value="11">FFP</ng-option>
+      <ng-option value="12">Biscuits</ng-option>
+      <ng-option value="13">Chips</ng-option>
+      <ng-option value="14">Soup</ng-option>
+    </ng-select>
+    <ng-select appendTo="body" placeholder="Select Entered By">
+      <ng-option value="1">Saja Oweis</ng-option>
+      <ng-option value="1">Saja Oweis</ng-option>
+      <ng-option value="1">Saja Oweis</ng-option>
+      <ng-option value="1">Saja Oweis</ng-option>
+      <ng-option value="1">Saja Oweis</ng-option>
+      <ng-option value="1">Saja Oweis</ng-option>
+      <ng-option value="1">Saja Oweis</ng-option>
+    </ng-select>
+  </div>
+  <div class="d-flex flex-row align-items-center">
+    <div class="date-function mr-2">
+      <img src="assets/img/Calender.svg" alt="" />
+      <input
+        #drp="bsDaterangepicker"
+        bsDaterangepicker
+        [bsConfig]="{
+          rangeInputFormat: 'DD.MM.YYYY',
+          dateInputFormat: 'DD.MM.YYYY',
+          containerClass: 'daterangepicker',
+          showWeekNumbers: false
+        }"
+        class="form-control"
+        style="border-radius: 10px"
+      />
+    </div>
+    <div class="header-time mr-2" style="position: relative">
+      <span
+        style="
+          position: relative;
+          top: 33px;
+          left: -7px;
+          float: right;
+          margin-top: -26px;
+          font-size: 18px;
+        "
+      >
+        <img src="assets/img/Time.svg" alt="" />
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        aria-label="24hr format"
+        [ngxTimepicker]="fullTimee"
+        style="border-radius: 10px !important"
+        [format]="24"
+      />
+      <ngx-material-timepicker
+        #fullTimee
+        style="z-index: 9999 !important; position: relative !important"
+      ></ngx-material-timepicker>
+    </div>
+    <ng-select appendTo="body" placeholder="Select Time Option">
+      <ng-option value="1">12 Hours</ng-option>
+      <ng-option value="1">7AM - 7PM</ng-option>
+      <ng-option value="1">7PM - 7AM</ng-option>
+      <ng-option value="1">8 Hours</ng-option>
+      <ng-option value="1">7AM - 3PM</ng-option>
+      <ng-option value="1">3PM - 11PM</ng-option>
+      <ng-option value="1">11PM - 7AM</ng-option>
+    </ng-select>
+  </div>
+</div>
+<div
+  class="d-flex flex-row align-items-center justify-content-between child-section w-100 f-16 p-2 mb-2"
+>
+  <div class="d-flex flex-row w-100 p-2">
+    <div class="font-weight-bold f-16 w-40">Intake Record View Details</div>
+  </div>
+  <!-- <div class="d-flex flex-row w-100 justify-content-end">
+    <div class="date-function mr-2">
+      <img src="assets/img/Calender.svg" alt="" />
+      <input
+        #drp="bsDaterangepicker"
+        bsDaterangepicker
+        [bsConfig]="{
+          rangeInputFormat: 'DD.MM.YYYY',
+          dateInputFormat: 'DD.MM.YYYY',
+          containerClass: 'daterangepicker',
+          showWeekNumbers: false
+        }"
+        class="form-control"
+        style="border-radius: 10px"
+      />
+    </div>
+    <div class="header-time" style="position: relative">
+      <span
+        style="
+          position: relative;
+          top: 33px;
+          left: -7px;
+          float: right;
+          margin-top: -18px;
+          font-size: 18px;
+        "
+      >
+        <img src="assets/img/Time.svg" alt="" />
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        aria-label="24hr format"
+        [ngxTimepicker]="fullTimer"
+        style="border-radius: 10px !important"
+        [format]="24"
+      />
+      <ngx-material-timepicker
+        #fullTimer
+        style="z-index: 9999 !important; position: relative !important"
+      ></ngx-material-timepicker>
+    </div>
+  </div> -->
+</div>
+
+<table class="table table-bordered border-separate">
+  <thead class="thead">
+    <tr>
+      <th>Category</th>
+      <th>Type</th>
+      <th>
+        11-7-2024 <br />
+        10:15 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        10:22 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        11:22 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        01:30 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        06:17 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        06:17 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        06:17 AM
+      </th>
+      <th>
+        11-7-2024 <br />
+        06:17 AM
+      </th>
+    </tr>
+  </thead>
+  <tbody class="tbody">
+    <tr>
+      <td rowspan="4">Oral</td>
+      <td>Food</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Medications</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Fluids</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Food</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>150 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Enteral (G)</td>
+      <td>Feeding Formula</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Parenteral</td>
+      <td>Total Parenteral Nutrition (TPN)</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td rowspan="3">IV Fluids</td>
+      <td>D5W</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>GS0.9%</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Saline 0.45%</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td rowspan="2">Blood Products</td>
+      <td>Platelets</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>FFP</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td rowspan="3">Other</td>
+      <td>Biscuits</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Chips</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr>
+      <td>Soup</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+      <td>500 mL</td>
+      <td>--</td>
+      <td>--</td>
+    </tr>
+    <tr class="total-volume">
+      <th colspan="2">Entry Total Volume</th>
+      <td>1230 mL</td>
+      <td>2500 mL</td>
+      <td>1800 mL</td>
+      <td>2300 mL</td>
+      <td>1250 mL</td>
+      <td>1150 mL</td>
+      <td>1800 mL</td>
+      <td>2300 mL</td>
+    </tr>
+    <tr>
+      <th colspan="2">Entered By</th>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+      <td>Saja Oweis</td>
+    </tr>
+    <tr class="total-intake">
+      <th colspan="2">Grand Total Intake</th>
+      <td colspan="8">7340 mL</td>
+    </tr>
+  </tbody>
+</table>
