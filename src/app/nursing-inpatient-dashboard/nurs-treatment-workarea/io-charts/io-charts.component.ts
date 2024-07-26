@@ -149,7 +149,6 @@ export class IoChartsComponent implements OnInit {
   saveModal() {}
 
   addinputRowAfter(index: number) {
-    console.log('inputrows', this.inputrows, index);
     const category = this.inputrows.value[index].category;
     const type = this.inputrows.value[index].type;
     const newRow = this.fb.group({
