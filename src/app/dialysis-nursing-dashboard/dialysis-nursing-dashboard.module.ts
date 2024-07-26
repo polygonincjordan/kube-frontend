@@ -122,6 +122,9 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { ProgressNotePopupComponent } from './check-in/progress-note-popup/progress-note-popup.component';
 import { ProgressNoteComponent } from './check-in/progress-note-popup/progress-note/progress-note.component';
 import { PhysicianOrderComponent } from './check-in/progress-note-popup/physician-order/physician-order.component';
+import { HistoryListComponent } from './reservation/history-list/history-list.component';
+import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 const route: Routes = [
   {
@@ -217,6 +220,9 @@ const route: Routes = [
     ProgressNotePopupComponent,
     ProgressNoteComponent,
     PhysicianOrderComponent,
+    ReservationComponent,
+    ReservationListComponent,
+    HistoryListComponent,
   ],
   providers: [
     EmergencyService,

@@ -796,7 +796,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = true;
       this.reservation= false;
     }else if (module == 'reservation') {
-       this.headerLabel = 'Reservation'
+      this.headerLabel = 'Reservation'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;

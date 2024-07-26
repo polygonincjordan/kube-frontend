@@ -1,0 +1,40 @@
+<div class="order-templete-main mt-3">
+    <div class="consumable-histry-table">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th colspan="1" scope="col">Reservation #</th>
+            <th colspan="1" scope="col">Material</th>
+            <th colspan="1" scope="col">Storage Loc.</th>
+            <th colspan="1" scope="col">Cost Center</th>
+            <th colspan="1" scope="col">Quantity</th>
+            <th colspan="1" scope="col">Request Date</th>
+            <th colspan="1" scope="col">Unit of Entry (UnE)</th>
+            <th colspan="1" scope="col">User Name</th>
+            </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff;">
+          <tr style="font-weight: 600" *ngFor="let item of historyList">
+            <td colspan="1">{{item.Rsnum}}</td>
+            <td colspan="1" [title]="item.Matnr+ ' ' + item.Maktx">{{item.Matnr + ' ' + item.Maktx}}</td>
+            <td colspan="1">{{item.Sloc}}</td>
+            <td colspan="1">{{item.CostCtr}}</td>
+            <td colspan="1">{{item.Bdmng}}</td>
+            <td colspan="1">{{getDate(item.Erdat)| date : "dd.MM.y" }}</td>
+            <td colspan="1">{{item.Meins}}</td>
+            <td colspan="1">{{item.Erusr}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="8"  *ngIf="historyList?.length == 0">
+              <div class="pagination-container text-center p-3">
+                No Record Found!
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  
