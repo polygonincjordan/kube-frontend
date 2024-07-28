@@ -24,8 +24,9 @@
             <th scope="col" style="width: 14%;">Attending Physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
             <th scope="col" style="padding-left: 0px;">Diagnosis</th>
             <th scope="col" style="padding-left: 0px;">Financial Clearance</th>
-            <th>Discharge Type</th>
-            <th>Depart.on</th>
+            <th scope="col" style="padding-left: 0px;">Discharge Type</th>
+            <th scope="col" style="padding-left: 0px;">Discharge Time</th>
+            <th scope="col" style="padding-left: 0px;">Depart.on</th>
           </tr>
         </thead>
         &nbsp;
@@ -35,7 +36,7 @@
               top: 3px;"></td> -->
             <td class="border-top-none" scope="row" style="width: 16%;cursor: pointer;" (click)="redirectToTreatByName(item)">{{item.Pnamec1}}</td>
             <td class="border-top-none" style="width: 5%;padding-left: 0px;">{{item.Patnr}}</td>
-            <td></td>
+            <td class="border-top-none" style="padding-left: 0px;">{{item.Falnr}}</td>
             <!-- <td style="width: 6%;padding-left: 0px;">F-40Y</td> -->
             <td class="border-top-none" style="width: 1%;padding-left: 0px;">{{getDate(item.Bwidt)| date : "dd.MM.y"}}</td>
             <td class="border-top-none" scope="row" style="width: 5%;padding-left: 0px;text-align: center;">{{getTime(item.Bwizt)}}</td>
@@ -70,9 +71,9 @@
               overflow: hidden;
               white-space: nowrap;cursor: pointer;" [title]="item.Diagnose" (click)="showDiagnosis(item)">{{item.Diagnose}}</td>
               <td class="border-top-none" style="width: 10%;">{{item.ZzfinClear}}</td>
+              <td class="border-top-none" style="width: 10%;">{{item.DischargeType}}</td>
+              <td class="border-top-none" style="width: 10%;">{{item.DischargeTime}}</td>
               <td class="border-top-none" style="width: 10%;"></td>
-              <td class="border-top-none" style="width: 10%;"></td>
-
         </tbody>
       </table>
       <div

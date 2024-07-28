@@ -18,8 +18,8 @@
         <table class="table checkin-table custom-table-striped table-responsive-sm" *ngIf="tablelistshow">
           <thead>
             <tr class="checkin-table-header">
-              <th scope="col" style="padding-left: 0px;">Patient (Gender, Age)</th>
-              <th scope="col" style="padding-left: 11px;">MRN</th>
+              <th scope="col" style="padding-left: 11px;">Patient Name</th>
+              <th scope="col" style="padding-left: 0px;">MRN</th>
               <th scope="col" style="padding-left: 0px;">Case #</th>
               <th scope="col">DOB</th>
               <th scope="col" style="padding-left: 0px;">Room</th>
@@ -31,10 +31,10 @@
           <tbody>
             <tr *ngFor="let item of missedMedPatientList | filter: searchString; let i = index" (click)="openRightside(item)">
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Patname">
-                {{item?.Patname}} ({{item?.Gender}}, {{item?.Age}})
+                {{item?.Patname}}
               </td>
               <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">{{item?.Patnr}}</td>
-              <td class="border-top-none" style="padding-left: 1px;" [title]="item.CaseNumber">{{item?.CaseNumber}}</td>
+              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Falnr">{{item?.Falnr}}</td>
               <td class="border-top-none patient" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
                 {{ getDate(item.PatientDob) | date : 'dd.MM.y' }}
               </td>
@@ -48,7 +48,7 @@
                 {{ item?.Diagnosis }}
               </td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.AttendingPhysician">
-                {{ item?.AttendingPhysician }}
+                {{ item?.AttendingDoctorName }}
               </td>
             </tr>
           </tbody>
@@ -67,10 +67,10 @@
           <tbody>
             <tr *ngFor="let item of missedMedPatientList | filter: searchString; let i = index" (click)="openRightside(item)">
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Patname">
-                {{item?.Patname}} ({{item?.Gender}}, {{item?.Age}})
+                {{item?.Patname}}
               </td>
               <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">{{item?.Patnr}}</td>
-              <td class="border-top-none" style="padding-left: 1px;" [title]="item.CaseNumber">{{item?.CaseNumber}}</td>
+              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Falnr">{{item?.Falnr}}</td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
                 {{ getDate(item.PatientDob) | date : 'dd.MM.y' }}
               </td>

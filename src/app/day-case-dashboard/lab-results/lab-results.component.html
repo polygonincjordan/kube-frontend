@@ -8,12 +8,12 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr class="checkin-table-header">
-            <th scope="col" style="padding-left: 0px;">Patient Name</th>
+            <th scope="col" style="padding-left: 11px;">Patient Name</th>
             <th scope="col" style="padding-left: 0px;">MRN</th>
             <th scope="col" style="padding-left: 0px;">Case #</th>
             <th scope="col" style="padding-left: 0px;">Room</th>
             <th scope="col" style="padding-left: 0px;">Order Description</th>
-            <th scope="col" style="padding-left: 11px;">
+            <th scope="col" style="padding-left: 0px;">
               Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
@@ -31,14 +31,14 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-            <td class="border-top-none" style="padding-left: 1px;">
+            <td scope="row" class="border-top-none" style="padding-left: 11px;">
               {{ item.Patient }}
             </td>
             <td scope="row" class="border-top-none" style="padding-left: 1px;">
               {{ item.Patnr }}
             </td>
             <td scope="row" class="border-top-none">
-              {{ item.CaseNumber }}
+              {{ item.Falnr }}
             </td>
             <td scope="row" class="border-top-none">
               {{ item.Zimmr }} {{ item.Bett }}

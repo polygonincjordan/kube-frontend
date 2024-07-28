@@ -18,10 +18,10 @@
                 [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
-            <th scope="col" (click)="sortTable('CaseNumber')">
+            <th scope="col" (click)="sortTable('Falnr')">
               Case #
               <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'CaseNumber', 'fa-sort-up': sortColumn === 'CaseNumber' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'CaseNumber' && sortDirection === 'desc'}"
+                [ngClass]="{'fa-sort': sortColumn !== 'Falnr', 'fa-sort-up': sortColumn === 'Falnr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Falnr' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
             <th scope="col" (click)="sortTable('RoomidText')">
@@ -70,8 +70,8 @@
             <td [title]="item.Patient" class="border-top-none">
               {{ item.Patient }}
             </td>
-            <td [title]="item.CaseNumber" class="border-top-none">
-              {{ item.CaseNumber }}
+            <td [title]="item.Falnr" class="border-top-none">
+              {{ item.Falnr }}
             </td>
             <td [title]="item.RoomidText" class="border-top-none">
               {{ item.RoomidText }}

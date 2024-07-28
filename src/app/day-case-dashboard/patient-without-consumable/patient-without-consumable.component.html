@@ -9,8 +9,8 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr>
-            <th scope="col" (click)="sortTable('PatientName')">
-              Patient Name (Gender, Age)
+            <th scope="col" (click)="sortTable('PatientName')" style="padding-left: 11px;">
+              Patient Name
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'PatientName', 'fa-sort-up': sortColumn === 'PatientName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PatientName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
@@ -21,10 +21,10 @@
                 [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
-            <th scope="col" (click)="sortTable('CaseNumber')">
+            <th scope="col" (click)="sortTable('Falnr')">
               Case #
               <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'CaseNumber', 'fa-sort-up': sortColumn === 'CaseNumber' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'CaseNumber' && sortDirection === 'desc'}"
+                [ngClass]="{'fa-sort': sortColumn !== 'Falnr', 'fa-sort-up': sortColumn === 'Falnr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Falnr' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
             <th scope="col" (click)="sortTable('RoomidText')">
@@ -50,11 +50,11 @@
         <tbody>
           <tr *ngFor="let item of patientWithoutConsumableList | filter:searchString ; let i = index"
             (click)="redirectToTreatByName(item)">
-            <td [title]="item.PatientName + ' (' + item.Gender + ', ' + item.Age + ')' " class="border-top-none">
-              {{ item.PatientName }} ({{ item.Gender }}, {{ item.Age }})
+            <td [title]="item.PatientName" class="border-top-none" style="padding-left: 11px;">
+              {{ item.PatientName }}
             </td>
             <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}</td>
-            <td [title]="item.CaseNumber" class="border-top-none">{{ item.CaseNumber }}</td>
+            <td [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td [title]="item.RoomidText" class="border-top-none">{{ item.RoomidText }}</td>
             <td [title]="item.FinancecategoryName" class="border-top-none">{{ item.FinancecategoryName }}</td>
             <td [title]="item.AttendingPhysicianName" class="border-top-none">{{ item.AttendingPhysicianName }}</td>

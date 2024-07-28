@@ -8,13 +8,13 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr class="checkin-table-header">
-            <th scope="col" style="padding-left: 11px;">Patient Name (Gender, Age)</th>
+            <th scope="col" style="padding-left: 11px;">Patient Name</th>
             <th scope="col" style="padding-left: 0px;">MRN</th>
             <th scope="col" style="padding-left: 0px;">Case #</th>
             <th scope="col" style="padding-left: 0px;">Room <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortRoom()"></i></th>
             <th scope="col" style="padding-left: 0px;">Physician Order Text</th>
             <th scope="col" style="padding-left: 0px;">Order Status</th>
-            <th scope="col" style="padding-left: 0px;">Created by</th>
+            <th scope="col" style="padding-left: 0px;">Created by <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortCreatedBy()"></i></th>
             <th scope="col" style="padding-left: 0px;width: 9% " >
               Created On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortOnCreatedOnPhyOrder()"></i>
             </th>
@@ -24,9 +24,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of dataOnTableForPhyOrder | filter:searchString; let i = index">
-            <td class="border-top-none" style="padding-left: 1px;">{{ item.Patname }} ({{ item.Gender }}, {{ item.Age }})</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ item.PatientName }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Patnr }}</td>
-            <td class="border-top-none" style="padding-left: 1px;">{{ item.CaseNumber }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ item.Falnr }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.RoomidText }}</td>
             <td class="border-top-none" style="padding-left: 1px;" [title]="item.OrderShortText">{{ item.OrderShortText }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Status }}</td>
