@@ -3,24 +3,33 @@
     <div class="container-fluid check-in-table">
       <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
         <img src="assets/img/pres-search-icon.svg" alt="" />
-        <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100"
-          (input)="filterPatients()" (keyup.enter)="filterPatients()" />
+        <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" (input)="filterPatients()" (keyup.enter)="filterPatients()" />
       </div>
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr>
-            <th scope="col" (click)="sortTable('Patient')">
-              MRN
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
             <th scope="col" (click)="sortTable('PatientName')">
               Patient Name <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'PatientName', 'fa-sort-up': sortColumn === 'PatientName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PatientName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
-
+            <th scope="col" (click)="sortTable('Patient')">
+              MRN <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
+            <th scope="col" (click)="sortTable('Falnr')">
+              Case #
+              <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'Falnr', 'fa-sort-up': sortColumn === 'Falnr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Falnr' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
+            <th scope="col" (click)="sortTable('RoomidText')">
+              Room
+              <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'RoomidText', 'fa-sort-up': sortColumn === 'RoomidText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'RoomidText' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
             <th scope="col" (click)="sortTable('Date')">
               Date
               <i class="fa"
@@ -31,24 +40,6 @@
               Time
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'Time', 'fa-sort-up': sortColumn === 'Time' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Time' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-            <th scope="col" (click)="sortTable('RoomidText')">
-              Room
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'RoomidText', 'fa-sort-up': sortColumn === 'RoomidText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'RoomidText' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-            <th scope="col" (click)="sortTable('StatusText')">
-              Status
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'StatusText', 'fa-sort-up': sortColumn === 'StatusText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'StatusText' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-            <th scope="col" (click)="sortTable('NurseName')">
-              Assigned Nurse
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'NurseName', 'fa-sort-up': sortColumn === 'NurseName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'NurseName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
             <th scope="col">
@@ -72,11 +63,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of noReleasedMissedDocumentsList | filter:searchString ; let i = index">
-            <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}
-            </td>
-            <td scope="row" [ngClass]="" [title]="item.PatientName" class="border-top-none">
+          <tr *ngFor="let item of noReleasedMissedDocumentsList | filter:searchString; let i = index">
+            <td scope="row" [title]="item.PatientName" class="border-top-none">
               {{ item.PatientName }}
+            </td>
+            <td [title]="item.Patient" class="border-top-none">
+              {{ item.Patient }}
+            </td>
+            <td [title]="item.Falnr" class="border-top-none">
+              {{ item.Falnr }}
+            </td>
+            <td [title]="item.RoomidText" class="border-top-none">
+              {{ item.RoomidText }}
             </td>
             <td class="border-top-none" [title]="getDate(item.Date) | date : 'dd.MM.y'">
               {{ getDate(item.Date) | date : "dd.MM.y" }}
@@ -84,24 +82,12 @@
             <td scope="row" class="border-top-none" [title]="getTime(item.Time)">
               {{ getTime(item.Time) }}
             </td>
-            <td [title]="item.RoomidText" class="border-top-none">
-              {{ item.RoomidText }}
-            </td>
-            <td [title]="item.StatusText" class="border-top-none">
-              <!-- [ngClass]="[item.StatusText == 'Physician Start' ? 'status-physician-start': '', item.StatusText == 'Called' ? 'status-called' : '']" -->
-              <span>
-                {{ item.StatusText }}
-              </span>
-            </td>
-            <td [title]="item.NurseName" class="border-top-none">
-              {{ item.NurseName }}
-            </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.EmergencyNursingStatus == ''"
                 (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" title="Draft"
                 *ngIf="item.EmergencyNursingStatus == 'IA'"
-                (click)="redirectToDocuments(item,RedirectionType.TRASM$, ActionType.Update$)" />
+                (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.Update$)" />
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 24px; color: red;" title="View PDF"
                 *ngIf="item.EmergencyNursingStatus  == 'FR'"
                 (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.View$)"></i>
@@ -110,7 +96,7 @@
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.NrsScaleStatus == ''"
                 (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.NrsScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item,RedirectionType.NMRTSC$, ActionType.Update$)" title="Draft" />
+                (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.NrsScaleStatus  == 'FR'"
                 (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.View$)" />
             </td>
@@ -118,7 +104,7 @@
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.GlasgowScaleStatus == '' "
                 (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.GlasgowScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item,RedirectionType.COMMA$, ActionType.Update$)" title="Draft" />
+                (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.GlasgowScaleStatus  == 'FR'"
                 (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.View$)" />
             </td>
@@ -126,7 +112,7 @@
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.BradenScaleStatus == '' "
                 (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.BradenScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item,RedirectionType.BRADEN$, ActionType.Update$)" title="Draft" />
+                (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.BradenScaleStatus  == 'FR'"
                 (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.View$)" />
             </td>
@@ -134,7 +120,7 @@
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.EducationAssessStatus == '' "
                 (click)="redirectToDocuments(item, RedirectionType.EDUAS$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" title="Draft"
-                (click)="redirectToDocuments(item,RedirectionType.EDUAS$, ActionType.Update$)"
+                (click)="redirectToDocuments(item, RedirectionType.EDUAS$, ActionType.Update$)"
                 *ngIf="item.EducationAssessStatus == 'IA'" />
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 24px; color: red;" title="View PDF"
                 (click)="redirectToDocuments(item, RedirectionType.EDUAS$, ActionType.View$)"
@@ -144,7 +130,7 @@
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.FacePainScaleStatus == '' "
                 (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.FacePainScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item,RedirectionType.FAC$, ActionType.Update$)" title="Draft" />
+                (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.FacePainScaleStatus  == 'FR'"
                 (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.View$)" />
             </td>
@@ -157,8 +143,6 @@
     </div>
   </div>
 </div>
-
-
 
 <ng-template #releasepdfmodal>
   <div class="modal-body">

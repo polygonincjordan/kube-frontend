@@ -191,13 +191,13 @@ ul { margin: 0px; padding: 0; list-style: none;}
     width: 67%;
     display: inline-block;
 }
-.box-appretite ul li span.select-boxes select.form-select {
-    background: #fff;
-    border: 1px solid #bebebe;
-    width: 100%;
-    display: inline-block;
-    height: 30px;
-    padding: 0 5px;
+.box-appretite ul li span.select-boxes select.new-slect-box-personal {
+  background: #fff;
+  border: 1px solid #bebebe;
+  width: 100%;
+  display: inline-block;
+  height: 30px;
+  padding: 0 5px;
 }
 span.box-simple-input input {
     width: 100%;
@@ -234,7 +234,7 @@ span.box-simple-textarea textarea {
     display: inline-block;
     width: 22%;
 }
-.box-appretite ul li span.select-boxes select.form-select:focus-visible, span.box-simple-input input:focus-visible {
+.box-appretite ul li span.select-boxes select.new-slect-box-personal:focus-visible, span.box-simple-input input:focus-visible {
     outline: none;
 }
 .last-colum .check-box input {
