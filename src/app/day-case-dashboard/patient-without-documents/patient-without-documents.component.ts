@@ -85,7 +85,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
     this.consumableService.getMissedDocsSet(json).subscribe({
       next: (resp: any) => {
         if (resp && resp) {
-          this.noReleasedMissedDocumentsList = this.filterNoReleaseMissDoc = resp.d.results;
+          this.noReleasedMissedDocumentsList = this.filterNoReleaseMissDoc = resp?.d?.results;
           this.noReleasedMissedDocumentsList.forEach((ele: any) => {
             this.financialCategory.push(ele?.FinancecategoryName);
             this.statusList.push(ele?.StatusText);

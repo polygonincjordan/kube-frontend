@@ -25,14 +25,14 @@
         <tbody>
           <tr *ngFor="let item of dataOnTableForPhyOrder | filter:searchString; let i = index">
             <td class="border-top-none" style="padding-left: 1px;">{{ item.PatientName }}</td>
-            <td class="border-top-none" style="padding-left: 1px;">{{ item.Patnr }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ item.Patient }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Falnr }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.RoomidText }}</td>
             <td class="border-top-none" style="padding-left: 1px;" [title]="item.OrderShortText">{{ item.OrderShortText }}</td>
-            <td class="border-top-none" style="padding-left: 1px;">{{ item.Status }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ item.StatusText }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Erusr }}</td>
-            <td class="border-top-none" style="padding-left: 1px;">{{ getDate(item.Erdat) | date : "dd.MM.yyyy" }}</td>
-            <td class="border-top-none" style="padding-left: 1px;">{{ getTime(item.Ertim) }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ getDate(item.Date) | date : "dd.MM.yyyy" }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ getTime(item.Time) }}</td>
             <td style="text-align: center">
               <div class="dropdown">
                 <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer"

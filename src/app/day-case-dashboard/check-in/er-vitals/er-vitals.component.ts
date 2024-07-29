@@ -38,6 +38,7 @@ export class ErVitalsComponent implements OnInit {
   selectedRowIndex: any;
   stickyHead = true;
   searchString = '';
+  isEditAndDeleteAble: boolean = false;
   constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private formBuilder: FormBuilder, private storageService: StorageService) {
     this.maintainvitalform = this.formBuilder.group({
       maintainVitalFormitems: new FormArray([]),
@@ -285,7 +286,10 @@ export class ErVitalsComponent implements OnInit {
      
     ];
   }
-  openModalForErVital(checkinitem) {
+  openModalForErVital(checkinitem,tab?) {
+    if(tab==="erHistory"){
+      this.isEditAndDeleteAble=true
+    }
     this.erListSelectedData = checkinitem;
     const config: ModalOptions = { class: 'modal-dialog-centered er-vital-modal' };
     this.modalRef = this.modalService.show(this.erVitalsModal, config);
