@@ -81,21 +81,40 @@ export class AssessmentSectionComponent implements OnInit {
         controls[checkbox].setValue(false, { emitEvent: false });
       });
       this.nursingAdmissionForm.patchValue({
-        [`${group}Score`]: scoreValue,
+        [`${group}Score`]: `${scoreValue} ${this.getScoreLabel(scoreValue)}`,
       });
     } else {
       this.nursingAdmissionForm.patchValue({
-        [`${group}Score`]: 0,
+        [`${group}Score`]: `0 Absent` ,
       });
     }
     this.calculateTotalScore();
   }
 
+  getScoreLabel(score) {
+    if(score == 0) {
+      return "Absent"
+    } else if(score == 1) {
+      return 'Mild'
+    } else if(score == 2) {
+      return 'Moderate'
+    } else if(score == 3) {
+      return 'Severe'
+    }
+  }
+
   calculateTotalScore(): void {
-    const totalScore =
-      this.nursingAdmissionForm.get('ImpairedNutritionalScore').value +
-      this.nursingAdmissionForm.get('SeverityDiseaseScore').value;
-    this.nursingAdmissionForm.patchValue({ TotalScore: totalScore });
+    const impairedNutritionalScore = this.parseScore(this.nursingAdmissionForm.get('ImpairedNutritionalScore').value);
+    const severityDiseaseScore = this.parseScore(this.nursingAdmissionForm.get('SeverityDiseaseScore').value);
+    const totalScore = impairedNutritionalScore + severityDiseaseScore;
+    this.nursingAdmissionForm.patchValue({
+      TotalScore: totalScore,
+    })
+  }
+
+  parseScore(scoreString: string): number {
+    const scoreParts = scoreString.split(' ');
+    return scoreParts.length > 0 ? parseInt(scoreParts[0], 10) : 0;
   }
 
   selfCaringUncheck() {

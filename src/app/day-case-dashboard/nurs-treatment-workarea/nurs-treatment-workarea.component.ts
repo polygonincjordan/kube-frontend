@@ -159,24 +159,24 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.getOrderSet();
-    // this.getFavSet();
-    // this.occupationalGroupList();
-    // //this.getProgressNotesData();
-    // this.getPatientData();
-    // this.localizationForOrderSets();
-    // this.addministrationService.loadFrequencylist();
-    // this.addministrationService.loadDurationUnit();
-    // this.addministrationService.loadRouteDropdownList();
-    // this.addministrationService.loadDropdownList();
-    // if (localStorage.getItem('tabName') == "Documentation" && this.paramsObj.redirectFor == 'Documentation') {
-    //   this.emergencyService.tabPanelNavigation('Documentation');
-    // } else if (localStorage.getItem('tabName') == "Consumables" && this.paramsObj.redirectFor == 'Consumables') {
-    //   this.emergencyService.tabPanelNavigation('Consumables');
-    // } else {
-    //   this.emergencyService.tabPanelNavigation('patientProfile');
-    // }
-    // this.tabChange('');
+    this.getOrderSet();
+    this.getFavSet();
+    this.occupationalGroupList();
+    //this.getProgressNotesData();
+    this.getPatientData();
+    this.localizationForOrderSets();
+    this.addministrationService.loadFrequencylist();
+    this.addministrationService.loadDurationUnit();
+    this.addministrationService.loadRouteDropdownList();
+    this.addministrationService.loadDropdownList();
+    if (localStorage.getItem('tabName') == "Documentation" && this.paramsObj.redirectFor == 'Documentation') {
+      this.emergencyService.tabPanelNavigation('Documentation');
+    } else if (localStorage.getItem('tabName') == "Consumables" && this.paramsObj.redirectFor == 'Consumables') {
+      this.emergencyService.tabPanelNavigation('Consumables');
+    } else {
+      this.emergencyService.tabPanelNavigation('patientProfile');
+    }
+    this.tabChange('');
   }
 
   addItemForPhyOrder(element): void {
