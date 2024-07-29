@@ -456,7 +456,7 @@ export class ErHistoryComponent implements OnInit {
   }
   openModalVital(item){
     item["admissionDate"] = this.getDate(item.Datum);
-    this.erVitalsModal.openModalForErVital(item);
+    this.erVitalsModal.openModalForErVital(item,"erHistory");
   }
   public openModalForTriage(
     template: TemplateRef<any>,
