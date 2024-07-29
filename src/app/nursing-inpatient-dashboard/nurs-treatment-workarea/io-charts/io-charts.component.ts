@@ -56,9 +56,9 @@ export class IoChartsComponent implements OnInit {
       'Other',
       '+ Add New Type',
     ],
-    Other: ['Enter Free Text'],
+    Other: [''],
   };
-  outCategories = ['Urine', 'Stool', 'Emesis (vomit)', 'Drainage', 'other'];
+  outCategories = ['Urine', 'Stool', 'Emesis (Vomit)', 'Drainage', 'Other'];
   modalRefForSave: BsModalRef;
   constructor(private fb: FormBuilder, public modalService: BsModalService) {}
 
@@ -96,7 +96,7 @@ export class IoChartsComponent implements OnInit {
             type: [type, Validators.required],
             volume: ['', Validators.required],
             uom: ['mL'],
-            remarks: [''],
+            remarks: ['', Validators.required],
             action: ['plus'],
             // lastRecord: [''],
           });
@@ -114,7 +114,7 @@ export class IoChartsComponent implements OnInit {
             type: ['', Validators.required],
             volume: ['', Validators.required],
             uom: ['mL'],
-            remarks: [''],
+            remarks: ['', Validators.required],
             action: ['plus'],
             // lastRecord: [''],
           });
@@ -155,8 +155,8 @@ export class IoChartsComponent implements OnInit {
       category: [category, Validators.required],
       type: [type, Validators.required],
       volume: ['', Validators.required],
-      uom: ['--'],
-      remarks: [''],
+      uom: ['mL'],
+      remarks: ['', Validators.required],
       action: ['minus'],
       // lastRecord: [''],
     });
@@ -170,8 +170,8 @@ export class IoChartsComponent implements OnInit {
       category: [category, Validators.required],
       type: [type, Validators.required],
       volume: ['', Validators.required],
-      uom: ['--'],
-      remarks: [''],
+      uom: ['mL'],
+      remarks: ['', Validators.required],
       action: ['minus'],
       // lastRecord: [''],
     });
@@ -188,5 +188,14 @@ export class IoChartsComponent implements OnInit {
   viewRecord(text: string) {
     this.recordViewText = text;
     this.recordView = !this.recordView;
+  }
+
+  outputSubmit() {
+    console.log('outputSubmit', this.outputForm.value);
+    this.outputForm.markAllAsTouched();
+  }
+  inputSubmit() {
+    console.log('inputSubmit', this.inputForm.value);
+    this.inputForm.markAllAsTouched();
   }
 }

@@ -21,7 +21,12 @@
       </button>
     </div>
   </div>
-  <form [formGroup]="inputForm" class="w-100" *ngIf="newInputRecord">
+  <form
+    [formGroup]="inputForm"
+    class="w-100"
+    *ngIf="newInputRecord"
+    (ngSubmit)="inputSubmit()"
+  >
     <div
       class="d-flex flex-row align-items-center justify-content-between child-section w-100 f-16 p-2 mb-2"
     >
@@ -39,10 +44,22 @@
               containerClass: 'datepicker',
               showWeekNumbers: false
             }"
+            [ngClass]="{
+              'is-invalid':
+                inputForm.get('date').invalid && inputForm.get('date').touched
+            }"
             formControlName="date"
             class="form-control"
             style="border-radius: 10px"
           />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              inputForm.get('date').invalid && inputForm.get('date').touched
+            "
+          >
+            Date is required
+          </div>
         </div>
         <div class="header-time" style="position: relative">
           <span
@@ -63,6 +80,10 @@
             aria-label="24hr format"
             [ngxTimepicker]="fullTime"
             formControlName="time"
+            [ngClass]="{
+              'is-invalid':
+                inputForm.get('time').invalid && inputForm.get('time').touched
+            }"
             style="border-radius: 10px !important"
             [format]="24"
           />
@@ -70,6 +91,14 @@
             #fullTime
             style="z-index: 9999 !important; position: relative !important"
           ></ngx-material-timepicker>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              inputForm.get('time').invalid && inputForm.get('time').touched
+            "
+          >
+            Time is required
+          </div>
         </div>
       </div>
     </div>
@@ -103,6 +132,9 @@
               placeholder="Choose From The List"
               formControlName="type"
               (change)="onSelectType($event, saveTypeModal)"
+              [ngClass]="{
+                'is-invalid': row.get('type').invalid && row.get('type').touched
+              }"
               *ngIf="
                 inputrowName(i).category != 'Parenteral' &&
                 inputrowName(i).category != 'Other'
@@ -117,11 +149,21 @@
             <input
               type="text"
               class="form-control"
+              [ngClass]="{
+                'is-invalid': row.get('type').invalid && row.get('type').touched
+              }"
               formControlName="type"
+              placeholder="Enter Free Text"
               *ngIf="inputrowName(i).category === 'Other'"
             />
             <div *ngIf="inputrowName(i).category === 'Parenteral'">
               {{ inputrowName(i).type }}
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="row.get('type').invalid && row.get('type').touched"
+            >
+              Type is required
             </div>
           </td>
           <td>
@@ -129,7 +171,17 @@
               formControlName="volume"
               class="form-control"
               placeholder="enter volume"
+              [ngClass]="{
+                'is-invalid':
+                  row.get('volume').invalid && row.get('volume').touched
+              }"
             />
+            <div
+              class="invalid-feedback"
+              *ngIf="row.get('volume').invalid && row.get('volume').touched"
+            >
+              Valid volume is required
+            </div>
           </td>
           <td>{{ inputrowName(i).uom }}</td>
           <td>
@@ -137,7 +189,17 @@
               formControlName="remarks"
               class="form-control"
               placeholder="enter remarks"
+              [ngClass]="{
+                'is-invalid':
+                  row.get('remarks').invalid && row.get('remarks').touched
+              }"
             />
+            <div
+              class="invalid-feedback"
+              *ngIf="row.get('remarks').invalid && row.get('remarks').touched"
+            >
+              Valid remarks is required
+            </div>
           </td>
           <td>
             <!-- <button
@@ -174,7 +236,7 @@
     </table>
     <div class="d-flex flex-row align-items-center justify-content-end">
       <button class="btn btn-cancel">Cancel</button>
-      <button class="btn btn-save">Save</button>
+      <button class="btn btn-save" type="submit">Save</button>
     </div>
   </form>
   <div
@@ -199,7 +261,12 @@
       </button>
     </div>
   </div>
-  <form [formGroup]="outputForm" class="w-100" *ngIf="newOutputRecord">
+  <form
+    [formGroup]="outputForm"
+    class="w-100"
+    *ngIf="newOutputRecord"
+    (ngSubmit)="outputSubmit()"
+  >
     <div
       class="d-flex flex-row align-items-center justify-content-between child-section w-100 f-16 p-2 my-2"
     >
@@ -212,6 +279,10 @@
           <input
             #drp="bsDatepicker"
             bsDatepicker
+            [ngClass]="{
+              'is-invalid':
+                outputForm.get('date').invalid && outputForm.get('date').touched
+            }"
             [bsConfig]="{
               dateInputFormat: 'DD.MM.YYYY',
               containerClass: 'datepicker',
@@ -221,6 +292,14 @@
             class="form-control"
             style="border-radius: 10px"
           />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              outputForm.get('date').invalid && outputForm.get('date').touched
+            "
+          >
+            Date is required
+          </div>
         </div>
         <div class="header-time" style="position: relative">
           <span
@@ -241,6 +320,10 @@
             aria-label="24hr format"
             [ngxTimepicker]="fullTime"
             formControlName="time"
+            [ngClass]="{
+              'is-invalid':
+                outputForm.get('time').invalid && outputForm.get('time').touched
+            }"
             style="border-radius: 10px !important"
             [format]="24"
           />
@@ -248,6 +331,14 @@
             #fullTime
             style="z-index: 9999 !important; position: relative !important"
           ></ngx-material-timepicker>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              outputForm.get('time').invalid && outputForm.get('time').touched
+            "
+          >
+            Time is required
+          </div>
         </div>
       </div>
     </div>
@@ -280,24 +371,53 @@
               appendTo="body"
               placeholder="Choose From The List"
               formControlName="type"
+              [ngClass]="{
+                'is-invalid': row.get('type').invalid && row.get('type').touched
+              }"
             >
               <ng-option value="1">Foley’s Catheter</ng-option>
             </ng-select>
+            <div
+              class="invalid-feedback"
+              *ngIf="row.get('type').invalid && row.get('type').touched"
+            >
+              Type is required
+            </div>
           </td>
           <td>
             <input
               formControlName="volume"
+              [ngClass]="{
+                'is-invalid': row.get('type').invalid && row.get('type').touched
+              }"
               class="form-control"
               placeholder="enter volume"
+              required
             />
+            <div
+              class="invalid-feedback"
+              *ngIf="row.get('volume').invalid && row.get('volume').touched"
+            >
+              Valid volume is required
+            </div>
           </td>
           <td>{{ outputrowName(i).uom }}</td>
           <td>
             <input
               formControlName="remarks"
               class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  row.get('remarks').invalid && row.get('remarks').touched
+              }"
               placeholder="enter remarks"
             />
+            <div
+              class="invalid-feedback"
+              *ngIf="row.get('remarks').invalid && row.get('remarks').touched"
+            >
+              Valid remarks is required
+            </div>
           </td>
           <td>
             <div
@@ -327,7 +447,7 @@
     </table>
     <div class="d-flex flex-row align-items-center justify-content-end">
       <button class="btn btn-cancel">Cancel</button>
-      <button class="btn btn-save">Save</button>
+      <button class="btn btn-save" type="submit">Save</button>
     </div>
   </form>
   <div
