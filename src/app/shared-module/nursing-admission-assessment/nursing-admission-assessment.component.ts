@@ -500,7 +500,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       Since: '',
       NumberSpouse: '',
       HComments: '',
-      AttendPhy: this.storageService.getUserProfile().Gpart,
+      AttendPhy: this.storageService.getUserProfile()?.Gpart,
       DocStatus: '1',
       TOMEDICATION: new FormArray([]),
       TOINFECTION: new FormArray([]),
