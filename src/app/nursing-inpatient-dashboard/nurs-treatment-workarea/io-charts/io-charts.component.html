@@ -235,7 +235,9 @@
       </tbody>
     </table>
     <div class="d-flex flex-row align-items-center justify-content-end">
-      <button class="btn btn-cancel">Cancel</button>
+      <button class="btn btn-cancel" type="button" (click)="inputFormCancel()">
+        Cancel
+      </button>
       <button class="btn btn-save" type="submit">Save</button>
     </div>
   </form>
@@ -388,7 +390,8 @@
             <input
               formControlName="volume"
               [ngClass]="{
-                'is-invalid': row.get('type').invalid && row.get('type').touched
+                'is-invalid':
+                  row.get('volume').invalid && row.get('volume').touched
               }"
               class="form-control"
               placeholder="enter volume"
@@ -446,7 +449,9 @@
       </tbody>
     </table>
     <div class="d-flex flex-row align-items-center justify-content-end">
-      <button class="btn btn-cancel">Cancel</button>
+      <button class="btn btn-cancel" type="button" (click)="outputFormCancel()">
+        Cancel
+      </button>
       <button class="btn btn-save" type="submit">Save</button>
     </div>
   </form>
