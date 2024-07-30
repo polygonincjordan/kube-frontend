@@ -628,9 +628,12 @@ export class PhysicianOrdersListComponent implements OnInit{
   }
       this.dayCaseDashboardService.getNotPhysicionOrderList(jsonObj1).subscribe(
         (_success: any) => {
-          this.dataOnTableForPhyOrder = _success?.d?.results;
-          this.dataToParent.emit(this.dataOnTableForPhyOrder);
-        })
+          if(_success){
+            this.dataOnTableForPhyOrder = _success?.d?.results;
+              this.dataToParent.emit(this.dataOnTableForPhyOrder);
+              this.sendErPatientCount.emit(this.dataOnTableForPhyOrder.length);
+            }
+        },(error)=>{})
   }
   
 

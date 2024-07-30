@@ -91,12 +91,23 @@ float: right;" />
 
     <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
                   font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingDate()"></i>
-    <span *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
-      ({{ErHistoryPatientCount}} Patients)
-    </span>
-    <span *ngIf="ErHistoryPatientCount == 1">
-      ({{ErHistoryPatientCount}} Patient)
-    </span>
+    <div *ngIf="erhistory">
+      <span *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
+        ({{ErHistoryPatientCount}} Patients)
+      </span>
+      <span *ngIf="ErHistoryPatientCount == 1">
+        ({{ErHistoryPatientCount}} Patient)
+      </span>
+    </div>
+   <div *ngIf="PhysicianOrder">
+     <span *ngIf="ErPatientCount == 0 || ErPatientCount > 1">
+       ({{ErPatientCount}} Patients)
+     </span>
+     <span *ngIf="ErPatientCount == 1">
+       ({{ErPatientCount}} Patient)
+     </span>
+
+   </div>
   </div>
   <div  *ngIf="reservation" class="d-flex w-100">
     <div *ngIf="reservation" class="d-flex justify-content-center" style="text-align: center; font-size: 21px; font-weight: bold;width: 94%;margin-left: 95px;">
@@ -325,16 +336,6 @@ font-size: 12px;
             {{ item }}
           </option>
         </select>
-        <p style="margin: auto; margin-top: 5px">Visit Status</p>
-        <select class="custom-select" id="inputGroupSelect01" formControlName="patientStatus">
-          <option selected value="">Choose status</option>
-          <option value="Admitted">Admitted</option>
-          <option value="New Admissions">New Admissions</option>
-          <option value="Planned discharge">Planned Discharge</option>
-          <option value="Recently discharged">
-            Recently Discharged
-          </option>
-        </select>
         <!-- <p style="margin: auto; margin-top: 5px">Physician</p>
         <select class="custom-select" id="inputGroupSelect02" formControlName="Physician" >
           <option selected value="">Choose Physician</option>
@@ -342,8 +343,8 @@ font-size: 12px;
             {{ item }}
           </option>
         </select> -->
-        <p style="margin: auto; margin-top: 5px">Physician</p>
-        <ng-select class="" id="inputGroupSelect01" placeholder="Choose Physician" formControlName="Physician"
+        <p style="margin: auto; margin-top: 5px">Created by</p>
+        <ng-select class="" id="inputGroupSelect01" placeholder="Choose Created by" formControlName="Physician"
           [multiple]="true">
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
           <ng-option [value]="item.NamString" *ngFor="let item of assignUsersList">
