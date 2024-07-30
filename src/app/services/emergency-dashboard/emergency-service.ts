@@ -33,7 +33,7 @@ export class EmergencyService {
   public Documentation: boolean = false;
   public patientProfile: boolean = false;
   public OrderSet: boolean = false;
-  public cpoe: boolean = true;
+  public cpoe: boolean = false;
   public ePrescription: boolean = true;
   public orderdetails: boolean = false;
   public IOCharts: boolean = false;
@@ -544,66 +544,66 @@ export class EmergencyService {
   private phyOrderSetDataSubject$ = new ReplaySubject<any>(1);
   public phyOrderSetData$ = this.phyOrderSetDataSubject$.asObservable();
 
-  // tabPanelNavigation(tabName: any) {
-  //   // localStorage.setItem('tabName', tabName); // comment which issue in redirection of of tab consulable and documentation
-  //   if (tabName && tabName === 'OrderSet') {
-  //     this.OrderSet = true; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //   } else if (tabName && tabName === 'CPOE') {
-  //     this.OrderSet = false; this.cpoe = true; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //   } else if (tabName && tabName === 'ePrescription') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = true; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //   } else if (tabName && tabName === 'orderdetails') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = true; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //   } else if (tabName && tabName === 'PhysicianOrders') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = true; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //   } else if (tabName && tabName === 'ProgressNotes') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = true; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //   } else if (tabName && tabName === 'Diagnosis') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = true; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //     // this.loadDischargePanelData();
-  //   } else if (tabName && tabName === 'Documentation') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = true; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //     // this.loadEmarPanelData();
-  //   } else if (tabName && tabName === 'Lab') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = true; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //     // this.loadEmarPanelData();
-  //   } else if (tabName && tabName === 'Rad') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = true; this.patientProfile = false; this.Consumables = false; this.Services = false;
-  //     // this.loadEmarPanelData();
-  //   } else if (tabName && tabName === 'patientProfile') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = true; this.Consumables = false; this.Services = false;
-  //     // this.loadEmarPanelData();
-  //   } else if (tabName && tabName === 'Consumables') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = true; this.Services = false;
-  //     // this.loadEmarPanelData();
-  //   } else if (tabName && tabName === 'Services') {
-  //     this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = true;
-  //     // this.loadEmarPanelData();
-  //   }
-
-  // }
   tabPanelNavigation(tabName: any) {
-    const tabs = [
-      'OrderSet',
-      'CPOE',
-      'ePrescription',
-      'orderdetails',
-      'PhysicianOrders',
-      'ProgressNotes',
-      'Diagnosis',
-      'Documentation',
-      'Lab',
-      'Rad',
-      'patientProfile',
-      'Consumables',
-      'Services',
-      'IOCharts',
-    ];
+    // localStorage.setItem('tabName', tabName); // comment which issue in redirection of of tab consulable and documentation
+    if (tabName && tabName === 'OrderSet') {
+      this.OrderSet = true; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+    } else if (tabName && tabName === 'CPOE') {
+      this.OrderSet = false; this.cpoe = true; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+    } else if (tabName && tabName === 'ePrescription') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = true; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+    } else if (tabName && tabName === 'orderdetails') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = true; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+    } else if (tabName && tabName === 'PhysicianOrders') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = true; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+    } else if (tabName && tabName === 'ProgressNotes') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = true; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+    } else if (tabName && tabName === 'Diagnosis') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = true; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+      // this.loadDischargePanelData();
+    } else if (tabName && tabName === 'Documentation') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = true; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+      // this.loadEmarPanelData();
+    } else if (tabName && tabName === 'Lab') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = true; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = false;
+      // this.loadEmarPanelData();
+    } else if (tabName && tabName === 'Rad') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = true; this.patientProfile = false; this.Consumables = false; this.Services = false;
+      // this.loadEmarPanelData();
+    } else if (tabName && tabName === 'patientProfile') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = true; this.Consumables = false; this.Services = false;
+      // this.loadEmarPanelData();
+    } else if (tabName && tabName === 'Consumables') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = true; this.Services = false;
+      // this.loadEmarPanelData();
+    } else if (tabName && tabName === 'Services') {
+      this.OrderSet = false; this.cpoe = false; this.ePrescription = false; this.orderdetails = false; this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.lab = false; this.rad = false; this.patientProfile = false; this.Consumables = false; this.Services = true;
+      // this.loadEmarPanelData();
+    }
 
-    tabs.forEach((tab) => {
-      this[tab] = tabName === tab;
-    });
   }
+  // tabPanelNavigation(tabName: any) {
+  //   const tabs = [
+  //     'OrderSet',
+  //     'CPOE',
+  //     'ePrescription',
+  //     'orderdetails',
+  //     'PhysicianOrders',
+  //     'ProgressNotes',
+  //     'Diagnosis',
+  //     'Documentation',
+  //     'Lab',
+  //     'Rad',
+  //     'patientProfile',
+  //     'Consumables',
+  //     'Services',
+  //     'IOCharts',
+  //   ];
+
+  //   tabs.forEach((tab) => {
+  //     this[tab] = tabName === tab;
+  //   });
+  // }
 
   private phyOrderlistDataSubject$ = new ReplaySubject<any>(1);
   public phyOrderlistData$ = this.phyOrderlistDataSubject$.asObservable();
