@@ -33,14 +33,8 @@
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Erusr }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ getDate(item.Date) | date : "dd.MM.yyyy" }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ getTime(item.Time) }}</td>
-            <td style="text-align: center">
-              <div class="dropdown">
-                <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer"
-                  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item c-pointer" (click)="openModalForPhyOrder(phyordertemplate, item, 'execute')">Execute</a>
-                </div>
-              </div>
+            <td style="display:flex;justify-content: center;align-items: center;">
+              <button type="button" class="header-btn" (click)="openModalForPhyOrder(phyordertemplate, item, 'execute')"><span>Execute</span></button>
             </td>
           </tr>
         </tbody>

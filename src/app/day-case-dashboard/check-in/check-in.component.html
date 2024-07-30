@@ -15,15 +15,15 @@
               MRN
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
+            <th scope="col" style="padding-left: 0px;">
+              Case#
+            </th>
             <th scope="col">Risk</th>
             <th scope="col" style="padding-left: 0px;" >
               Allergy
             </th>
             <th scope="col" style="padding-left: 0px;">
               Vital
-            </th>
-            <th scope="col" style="padding-left: 0px;">
-              Case#
             </th>
             <th scope="col" style="padding-left: 0px;">
              Admission Status
@@ -75,6 +75,7 @@
               {{ item.Pnamec }},({{ item.Gschle }}, {{ item.Agepat }})
             </td>
             <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
+            <td style="padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td class="border-left" style="width: 3%"
               [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
               <span>
@@ -91,7 +92,6 @@
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
             </td>
-            <td style="padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td style="padding-left: 0px" [title]="item.AdmissionStatus" class="border-top-none">{{ item.AdmissionStatus }}</td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
               [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
