@@ -120,3 +120,15 @@ tr td {
 .form-control::placeholder {
   font-size: 12px !important;
 }
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+::ng-deep .is-invalid .ng-select-container {
+  border-color: red !important;
+}
+
+.invalid-feedback {
+  display: block;
+}

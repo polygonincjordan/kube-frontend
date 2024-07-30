@@ -1,4 +1,9 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
@@ -56,11 +61,15 @@ export class IoChartsComponent implements OnInit {
       'Other',
       '+ Add New Type',
     ],
-    Other: ['Enter Free Text'],
+    Other: [''],
   };
-  outCategories = ['Urine', 'Stool', 'Emesis (vomit)', 'Drainage', 'other'];
+  outCategories = ['Urine', 'Stool', 'Emesis (Vomit)', 'Drainage', 'Other'];
   modalRefForSave: BsModalRef;
-  constructor(private fb: FormBuilder, public modalService: BsModalService) {}
+  constructor(
+    private fb: FormBuilder,
+    public modalService: BsModalService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     const now = new Date();
@@ -90,7 +99,10 @@ export class IoChartsComponent implements OnInit {
       time: [currentTime],
       rows: this.fb.array(
         this.inCategories.map((category, index) => {
-          const type = this.inTypes[category][0];
+          const type =
+            this.inTypes[category].length === 1
+              ? this.inTypes[category][0]
+              : '';
           return this.fb.group({
             category: [category, Validators.required],
             type: [type, Validators.required],
@@ -149,13 +161,21 @@ export class IoChartsComponent implements OnInit {
   saveModal() {}
 
   addinputRowAfter(index: number) {
+    if (this.inputrows.controls[index].status === 'INVALID') {
+      this.inputrows.controls[index]['controls']['type'].markAsTouched();
+      this.inputrows.controls[index]['controls']['type'].markAsDirty();
+      this.inputrows.controls[index]['controls']['volume'].markAsTouched();
+      this.inputrows.controls[index]['controls']['volume'].markAsDirty();
+      this.cdr.detectChanges();
+      return;
+    }
     const category = this.inputrows.value[index].category;
     const type = this.inputrows.value[index].type;
     const newRow = this.fb.group({
       category: [category, Validators.required],
       type: [type, Validators.required],
       volume: ['', Validators.required],
-      uom: ['--'],
+      uom: ['mL'],
       remarks: [''],
       action: ['minus'],
       // lastRecord: [''],
@@ -170,7 +190,7 @@ export class IoChartsComponent implements OnInit {
       category: [category, Validators.required],
       type: [type, Validators.required],
       volume: ['', Validators.required],
-      uom: ['--'],
+      uom: ['mL'],
       remarks: [''],
       action: ['minus'],
       // lastRecord: [''],
@@ -188,5 +208,14 @@ export class IoChartsComponent implements OnInit {
   viewRecord(text: string) {
     this.recordViewText = text;
     this.recordView = !this.recordView;
+  }
+
+  outputSubmit() {
+    console.log('outputSubmit', this.outputForm.value);
+    this.outputForm.markAllAsTouched();
+  }
+  inputSubmit() {
+    console.log('inputSubmit', this.inputForm.value);
+    this.inputForm.markAllAsTouched();
   }
 }
