@@ -117,7 +117,7 @@
                     >
                       <tr [formGroupName]="i">
                         <td>
-                          <ng-select formControlName="InfectiousDiesease">
+                          <ng-select formControlName="InfectiousDiesease" [appendTo]="'body'" >
                             <ng-option
                               *ngFor="let item of InfactiousDrodownList"
                               [value]="item.value"
@@ -126,16 +126,16 @@
                           </ng-select>
                         </td>
                         <td>
-                          <ng-select formControlName="Status">
-                            <ng-option *ngFor="let item of statusList">{{
-                              item
+                          <ng-select formControlName="Status" [appendTo]="'body'">
+                            <ng-option *ngFor="let item of statusList" [value]="item.value">{{
+                              item.label
                             }}</ng-option>
                           </ng-select>
                         </td>
                         <td>
-                          <ng-select formControlName="TypeIsolation">
-                            <ng-option *ngFor="let item of IsolationList">{{
-                              item
+                          <ng-select formControlName="TypeIsolation" [appendTo]="'body'">
+                            <ng-option *ngFor="let item of IsolationList" [value]="item.value">{{
+                              item.label
                             }}</ng-option>
                           </ng-select>
                         </td>

@@ -214,7 +214,7 @@ ul {
   display: inline-block;
 }
 
-.box-appretite ul li span.select-boxes select.form-select {
+.box-appretite ul li span.select-boxes select.new-slect-box-personal {
   background: #fff;
   border: 1px solid #bebebe;
   width: 100%;
@@ -222,6 +222,8 @@ ul {
   height: 30px;
   padding: 0 5px;
 }
+
+
 
 span.box-simple-input input {
   width: 100%;
@@ -262,7 +264,7 @@ span.box-simple-textarea textarea {
   width: 22%;
 }
 
-.box-appretite ul li span.select-boxes select.form-select:focus-visible,
+.box-appretite ul li span.select-boxes select.new-slect-box-personal:focus-visible,
 span.box-simple-input input:focus-visible {
   outline: none;
 }

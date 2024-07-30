@@ -137,3 +137,10 @@ span.pn-input-title{
     display: flex;   
     scroll-behavior: smooth;
 } 
+
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6; /* Reduce opacity to indicate it's disabled */
+    cursor: not-allowed;
+  }

@@ -22,7 +22,7 @@ export class VaccinationExposureSectionComponent implements OnInit {
   IsolationList = IsolationList;
   statusList = statusList;
   vaccinationDrodownList = vaccinationDrodownList;
-  InfactiousDrodownList = InfactiousDrodownList;
+  InfactiousDrodownList:any[] = InfactiousDrodownList;
 
   vaccinationList: any = [
     {

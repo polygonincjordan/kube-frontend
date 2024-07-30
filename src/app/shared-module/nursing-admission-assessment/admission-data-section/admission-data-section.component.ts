@@ -44,7 +44,7 @@ export class AdmissionDataSectionComponent implements OnInit {
   }
 
   isInputDisabled(formControlName: string, value: string): boolean {
-    const control = this.nursingAdmissionForm.get(formControlName);
+    const control = this.nursingAdmissionForm?.get(formControlName);
     return control ? control.value != value : false;
   }
 

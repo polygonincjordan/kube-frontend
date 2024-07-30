@@ -33,7 +33,7 @@ export class EmergencyService {
   public Documentation: boolean = false;
   public patientProfile: boolean = false;
   public OrderSet: boolean = false;
-  public cpoe: boolean = true;
+  public cpoe: boolean = false;
   public ePrescription: boolean = true;
   public orderdetails: boolean = false;
   public IOCharts: boolean = false;
@@ -547,6 +547,7 @@ export class EmergencyService {
   tabPanelNavigation(tabName: any) {
     // localStorage.setItem('tabName', tabName); // comment which issue in redirection of of tab consulable and documentation
     if (tabName && tabName === 'OrderSet') {
+
       this.OrderSet = true;
       this.cpoe = false;
       this.ePrescription = false;
@@ -766,6 +767,28 @@ export class EmergencyService {
       // this.loadEmarPanelData();
     }
   }
+  // tabPanelNavigation(tabName: any) {
+  //   const tabs = [
+  //     'OrderSet',
+  //     'CPOE',
+  //     'ePrescription',
+  //     'orderdetails',
+  //     'PhysicianOrders',
+  //     'ProgressNotes',
+  //     'Diagnosis',
+  //     'Documentation',
+  //     'Lab',
+  //     'Rad',
+  //     'patientProfile',
+  //     'Consumables',
+  //     'Services',
+  //     'IOCharts',
+  //   ];
+
+  //   tabs.forEach((tab) => {
+  //     this[tab] = tabName === tab;
+  //   });
+  // }
 
   private phyOrderlistDataSubject$ = new ReplaySubject<any>(1);
   public phyOrderlistData$ = this.phyOrderlistDataSubject$.asObservable();

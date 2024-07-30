@@ -11,22 +11,22 @@
             <!-- <th scope="col"></th> -->
             <th scope="col">Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center;">MRN <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i></th>
-            <!-- <th scope="col" style="padding-left: 0px;">Sex & Age</th> -->
+            <th scope="col" style="padding-left: 0px;">Case#</th>
             <th scope="col" style="padding-left: 0px;text-align: center;">Date <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center;min-width:50px">Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDate()"></i></th>
             <th scope="col">Risk</th>
             <th scope="col" style="padding-left: 0px;text-align: center">Allergy</th>
-            <th scope="col" style="padding-left: 0px;text-align: center;width:5%">Triage <i class="fa fa-sort" aria-hidden="true" (click)="sortTriage()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center;">Vitals</th>
            
             <th scope="col" style="padding-left: 0px;text-align: center">Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i></th>
-            <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
+            <th scope="col" style="padding-left: 0px;text-align: center">Admission Status</th>
             <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i></th>
             <th scope="col" style="width: 14%;">Attending Physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i></th>
             <th scope="col" style="padding-left: 0px;">Diagnosis</th>
             <th scope="col" style="padding-left: 0px;">Financial Clearance</th>
-            <th>Discharge Type</th>
-            <th>Depart.on</th>
+            <th scope="col" style="padding-left: 0px;">Discharge Type</th>
+            <th scope="col" style="padding-left: 0px;">Discharge Time</th>
+            <th scope="col" style="padding-left: 0px;">Depart.on</th>
           </tr>
         </thead>
         &nbsp;
@@ -36,15 +36,12 @@
               top: 3px;"></td> -->
             <td class="border-top-none" scope="row" style="width: 16%;cursor: pointer;" (click)="redirectToTreatByName(item)">{{item.Pnamec1}}</td>
             <td class="border-top-none" style="width: 5%;padding-left: 0px;">{{item.Patnr}}</td>
+            <td class="border-top-none" style="padding-left: 0px;">{{item.Falnr}}</td>
             <!-- <td style="width: 6%;padding-left: 0px;">F-40Y</td> -->
             <td class="border-top-none" style="width: 1%;padding-left: 0px;">{{getDate(item.Bwidt)| date : "dd.MM.y"}}</td>
             <td class="border-top-none" scope="row" style="width: 5%;padding-left: 0px;text-align: center;">{{getTime(item.Bwizt)}}</td>
             <td class="border-top-none"  style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;" [title]="item.RiskInformation" (click)="openModalForRisk(riskModal,item)"></td>
             <td style="padding-left: 0px;text-align: center; "><img src="assets/img/Allergy.svg" style="width: 23px;" [title]="item.Allergies" (click)="openModalForAllergy(allergyModal,item)"></td>
-            <td style="padding-left: 0px;width:4%;text-align: center;">
-              <span [style.background-color]="item?.TriageColor" class="triage-circle" title="Triage">{{item?.TriagePriorityCode}}</span>
-              <img src="assets/img/er-triage.png" style="width: 30px;" *ngIf="!item?.TriagePriorityCode" title="No Triage">
-              </td>
             <td class="border-top-none" scope="row" style="padding-left: 0px;text-align: center;"><img src="assets/img/er-vital.png" style="width: 23px;" (click)="openModalVital(item)" title="Vitals"></td>
            
             <td class="border-top-none" style="width: 7%;">
@@ -74,9 +71,9 @@
               overflow: hidden;
               white-space: nowrap;cursor: pointer;" [title]="item.Diagnose" (click)="showDiagnosis(item)">{{item.Diagnose}}</td>
               <td class="border-top-none" style="width: 10%;">{{item.ZzfinClear}}</td>
+              <td class="border-top-none" style="width: 10%;">{{item.DischargeType}}</td>
+              <td class="border-top-none" style="width: 10%;">{{item.DischargeTime}}</td>
               <td class="border-top-none" style="width: 10%;"></td>
-              <td class="border-top-none" style="width: 10%;"></td>
-
         </tbody>
       </table>
       <div
@@ -253,7 +250,7 @@
         <th scope="col">Short Description</th>
         <th scope="col">Risk Description</th>
         <th scope="col">Reported On</th>
-        <th scope="col">Action</th>
+        <!-- <th scope="col">Action</th> -->
       </tr>
     </thead>
     <tbody style="background-color: #fbfcff;">
@@ -302,11 +299,11 @@
       />
         <!-- <input type="text" class="form-control" formControlName="Repdt"> -->
       </td>
-      <td style="padding-left: 2px;
+      <!-- <td style="padding-left: 2px;
         padding-right: 2px;
         width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(riskList[i])" title="Edit"><img src="assets/img/Delete.svg" (click)="confirmationForRiskDelete('D',riskList[i])" style="margin-left: 11px;" title="Delete">
         
-      </td>
+      </td> -->
       </tr>
       </ng-container>
       </ng-container>
@@ -426,7 +423,7 @@
         <th scope="col">Severity</th>
         <th scope="col">Allergy type</th>
         <th scope="col">Comments</th>
-        <th scope="col">Action</th>
+        <!-- <th scope="col">Action</th> -->
       </tr>
     </thead>
     <tbody style="background: #fbfcff;">
@@ -494,11 +491,11 @@
         <td style="padding-left: 2px;
         padding-right: 2px;
         width: 15%;pointer-events: none;"><input type="text" class="form-control" formControlName="AdCommentLt" style="font-size: 15px;"></td>
-        <td style="padding-left: 2px;
+        <!-- <td style="padding-left: 2px;
         padding-right: 2px;
         width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromTable(allergyList[i])" title="Edit"><img src="assets/img/Delete.svg" (click)="confirmationForAllergyDelete(deleteAllergyModal,'D',allergyList[i])" style="margin-left: 11px;" title="Delete">
         
-      </td>
+      </td> -->
       </tr>
      </ng-container>
      </ng-container>

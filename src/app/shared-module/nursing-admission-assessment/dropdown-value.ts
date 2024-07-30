@@ -272,6 +272,10 @@ export const rhonchiList = [
     label: 'Left',
     value: '1',
   },
+  {
+    label: 'Both',
+    value: '2',
+  },
 ];
 
 // Social Habit
@@ -423,7 +427,7 @@ export const IsolationList = [
 ];
 
 export const statusList = [
-  { lavel: 'Yes', value: '0' },
+  { label: 'Yes', value: '0' },
   { label: 'No', value: '1' },
 ];
 
