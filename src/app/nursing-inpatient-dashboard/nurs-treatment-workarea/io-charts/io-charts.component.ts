@@ -267,11 +267,11 @@ export class IoChartsComponent implements OnInit {
   outputSubmit() {
     console.log('outputSubmit', this.outputForm.value);
     this.outputForm.markAllAsTouched();
-    this.outputFormCancel();
+    // this.outputFormCancel();
   }
   inputSubmit() {
     console.log('inputSubmit', this.inputForm.value);
     this.inputForm.markAllAsTouched();
-    this.inputFormCancel();
+    // this.inputFormCancel();
   }
 }
