@@ -11,7 +11,7 @@
             <!-- <th scope="col"></th> -->
             <th scope="col">Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center;">MRN <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i></th>
-            <th scope="col" style="padding-left: 0px;">Case#</th>
+            <th scope="col"style="padding-left: 0px;text-align: center;">Case#</th>
             <th scope="col" style="padding-left: 0px;text-align: center;">Date <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center;min-width:50px">Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDate()"></i></th>
             <th scope="col">Risk</th>
@@ -26,7 +26,6 @@
             <th scope="col" style="padding-left: 0px;">Financial Clearance</th>
             <th scope="col" style="padding-left: 0px;">Discharge Type</th>
             <th scope="col" style="padding-left: 0px;">Discharge Time</th>
-            <th scope="col" style="padding-left: 0px;">Depart.on</th>
           </tr>
         </thead>
         &nbsp;
@@ -72,8 +71,8 @@
               white-space: nowrap;cursor: pointer;" [title]="item.Diagnose" (click)="showDiagnosis(item)">{{item.Diagnose}}</td>
               <td class="border-top-none" style="width: 10%;">{{item.ZzfinClear}}</td>
               <td class="border-top-none" style="width: 10%;">{{item.DischargeType}}</td>
-              <td class="border-top-none" style="width: 10%;">{{item.DischargeTime}}</td>
-              <td class="border-top-none" style="width: 10%;"></td>
+              <td class="border-top-none" style="width: 10%;">{{getTime(item.DischargeTime)}}</td>
+              
         </tbody>
       </table>
       <div

@@ -46,6 +46,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   getCheckInData: any;
   getCheckInStatusFilterData: any;
+  singleformgroupData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -80,6 +81,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   filterFormPatientWithNoConsumable: FormGroup
   missedMedPatientList: any[] = [];
   formDetailGroup: any;
+  singleData:any
   dateFrom: Date;
   dateTo: Date;
   getWards: WardList[];
@@ -149,6 +151,9 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       DateRange: [[new Date(), new Date()]],
       SelectDropdown: [''],
     });
+    this.singleData = this.formBuilder.group({
+      fromDate:[new Date()]
+    })
     this.form = this.formBuilder.group({
       admittedFrom: [''],
       admittedTo: [''],
@@ -174,7 +179,6 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     };
     this.formSubscription = this.formDetailGroup.valueChanges.subscribe(
       (data: any) => {
-        this.formgroupData.SearchData = data.SearchData;
         if (data.DateRange !== '') {
           this.formgroupData.DateRange = data.DateRange;
         }
@@ -188,7 +192,6 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
           data.DateRange !== null
         ) {
           //this.loadMAREventData(this.formgroupData.DateRange);
-          this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
           this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
           this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
           this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
@@ -196,6 +199,12 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.formSubscription = this.singleData.valueChanges.subscribe((data)=>{
+      this.singleformgroupData = data;
+      if(data.fromDate){
+        this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+      }
+    })
     this.filterForm = this.formBuilder.group({
       Physician: [''],
       Status: [''],
@@ -546,7 +555,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     if (this.selectedModule === 'checkin') {
       this.CheckInComponent.getErList(new Date());
     } else if (this.selectedModule === 'erhistory') {
-      this.ErHistoryComponent.getErList(this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
+      this.ErHistoryComponent.getErList(this.singleData.get("fromDate").patchValue(new Date()));
     } else if (this.selectedModule === 'LabResults') {
       this.LabResultsComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     } else if (this.selectedModule === 'AdministeredDoses') {
@@ -987,7 +996,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() - 1))), new Date(date2.setDate((date2.getDate() - 1)))]);
-      this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
       this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
@@ -1000,7 +1009,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       date1 = new Date(date1.setDate(date1.getDate() - diffDays));
       date2 = new Date(date2.setDate(date2.getDate() - diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
-      this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
       this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
@@ -1014,7 +1023,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   onTodayEventData() {
     console.log("Upcomming");
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-    this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+    // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
     this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
     this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
     this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
@@ -1032,7 +1041,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() + 1))), new Date(date2.setDate((date2.getDate() + 1)))]);
-      this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getErList(this.formgroupData.DateRange);
       this.LabResultsComponent?.getErList("", this.formgroupData.DateRange);
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
@@ -1045,7 +1054,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       date1 = new Date(date1.setDate(date1.getDate() + diffDays));
       date2 = new Date(date2.setDate(date2.getDate() + diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
-      this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+      // this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
       this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
@@ -1054,6 +1063,26 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()+1));
     //this.ErHistoryComponent.getErList(this.currentDate);
+  }
+
+  previoussingleData(): void {
+    if(this.singleData.get('fromDate').value){
+      const currentDate = this.singleData.get('fromDate').value;
+      const previousDate = new Date(currentDate);
+      previousDate.setDate(previousDate.getDate() - 1);
+      this.singleData.patchValue({ fromDate: previousDate });
+      // this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+    }
+  }
+
+  upcomingsingleData(): void {
+    if(this.singleData.get('fromDate').value){
+      const currentDate = this.singleData.get('fromDate').value;
+      const nextDate = new Date(currentDate);
+      nextDate.setDate(nextDate.getDate() + 1);
+      this.singleData.patchValue({ fromDate: nextDate });
+      // this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+    }
   }
 
   openPatientSearch() {
