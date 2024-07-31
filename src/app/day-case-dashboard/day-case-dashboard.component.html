@@ -69,7 +69,7 @@ float: right;" />
     </span>
   </div>
 
-  <div class="col-md-4" *ngIf="erhistory || LabResults || PhysicianOrder || AdministeredDoses || analysis || noConsumables" style="font-size: 15px;
+  <div class="col-md-4" *ngIf="LabResults || PhysicianOrder || AdministeredDoses || analysis || noConsumables" style="font-size: 15px;
   font-weight: bold;padding: 0;text-align: center;display: flex;position: relative;
       left: 33px;align-items: baseline;gap:10px"><i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px;
       font-size: 18px;cursor: pointer;" (click)="previousDate()"></i>
@@ -80,7 +80,7 @@ float: right;" />
       display: flex;
       position: relative;">
         <!-- <img src="assets/img/date-icon.svg" alt=""> -->
-        <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+        <input  #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
           'DD.MM.YYYY', containerClass: 'daterangepickerdata ', showWeekNumbers:
           false}" class="form-control" formControlName="DateRange" (bsValueChange)="changeDate($event)" />
         <p class="m-0 d-flex h-100 align-items-center" (click)="onTodayEventData()" style="padding: 8px 30px;
@@ -108,6 +108,51 @@ float: right;" />
      </span>
 
    </div>
+  </div>
+
+  <!-- new date -->
+  <div class="col-md-4" *ngIf="erhistory">
+    <div class="singleData">
+      <i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 0px;
+      font-size: 18px;cursor: pointer;" (click)="previoussingleData()"></i>
+    <form [formGroup]="singleData">
+      <div class="date-function" style="background: #dee5ea;
+      padding: 2px;
+      border-radius: 8px;
+      display: flex;
+      position: relative;">
+          <input class="form-control"  formControlName="fromDate" type="text" placeholder="From Date" #dp="bsDatepicker" bsDatepicker 
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+          style="height: 33px;
+          "
+        />
+        <!-- <img src="assets/img/date-icon.svg" alt=""> -->
+      </div>
+    </form>
+
+    <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 0px;
+                  font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingsingleData()"></i>
+    <div *ngIf="erhistory">
+      <span style="white-space: nowrap;" *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
+        ({{ErHistoryPatientCount}} Patients)
+      </span>
+      <span style="white-space: nowrap;" *ngIf="ErHistoryPatientCount == 1">
+        ({{ErHistoryPatientCount}} Patient)
+      </span>
+    </div>
+   <div *ngIf="PhysicianOrder">
+     <span style="white-space: nowrap;" *ngIf="ErPatientCount == 0 || ErPatientCount > 1">
+       ({{ErPatientCount}} Patients)
+     </span>
+     <span style="white-space: nowrap;" *ngIf="ErPatientCount == 1">
+       ({{ErPatientCount}} Patient)
+     </span>
+
+   </div>
+    </div>
   </div>
   <div  *ngIf="reservation" class="d-flex w-100">
     <div *ngIf="reservation" class="d-flex justify-content-center" style="text-align: center; font-size: 21px; font-weight: bold;width: 94%;margin-left: 95px;">

@@ -128,11 +128,10 @@ export class ErHistoryComponent implements OnInit {
    }
   
   ngOnInit() {
-   console.log(this.storageService.lastPassedDate);
    if (this.storageService.lastPassedDate != undefined) {
-    this.getErList(this.storageService.lastPassedDate);
+    // this.getErList(this.storageService.lastPassedDate);
    }else{
-    this.getErList([new Date(),new Date()]);
+    this.getErList([new Date()]);
    }
     this.dataForTriage();
   }
@@ -335,7 +334,9 @@ export class ErHistoryComponent implements OnInit {
       this.getAllergyTypeValues();
   }
   getSelectedDates(dates){
-   this.getErList(dates);
+  //   console.log("call selected","dates");
+    
+  //  this.getErList(dates);
   }
   getDate(value) {
     if (value) {
@@ -383,14 +384,8 @@ export class ErHistoryComponent implements OnInit {
     this.currentDatePassed = date;
     this.storageService.setLastPassedData(date);
     const json = {
-      //  fromDate:'2022-10-11T00:00:00',
-      // toDate:'2023-10-22T00:00:00',
       fromDate:`${new DatePipe('en-US').transform(
-        date ?  date[0] : new Date().setDate(new Date().getDate()),
-        'yyyy-MM-dd'
-      )}T00:00:00`,
-      toDate:`${new DatePipe('en-US').transform(
-        date ?  date[1]  :new Date().setDate(new Date().getDate()),
+        date ?  date : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
       )}T00:00:00`,
     }
@@ -400,23 +395,8 @@ export class ErHistoryComponent implements OnInit {
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
-      // this.ERlistData = [];
-      //  _success.d.results.forEach(element => {
-      //   if (element.StatusTxt == 'Checked Out') {
-      //     this.ERlistData.push(element);
-      //     this.sendErPatientCount.emit( this.ERlistData.length);
-      //     //this.triagePriorityList(element);
-      //   }
-      //  });
-      //  this.ERlistData.forEach((element,index) => {
-      //   if (element.TriageDate != null && element.TriageDate != '') {
-      //   this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-      //   }
-      //   else{
-      //     this.ERlistData[index]['assignedTime'] = '';
-      //   } 
-      // });
       this.ERlistDataClone = this.ERlistData;
+      this.sendErPatientCount.emit( this.ERlistData.length);
       this.lastIndex = this.ERlistData.length - 1;
 
       },
