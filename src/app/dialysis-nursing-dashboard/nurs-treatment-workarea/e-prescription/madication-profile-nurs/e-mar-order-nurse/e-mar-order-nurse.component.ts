@@ -102,10 +102,13 @@ export class EMarOrderNurseComponent {
       this.allEventData = events.sort((a, b) => a.ParsedDate < b.ParsedDate ? -1 : 1);
       this.startDate = this.allEventData.reduce(function (a, b) { return a.ParsedDate < b.ParsedDate ? a : b; }).ParsedDate;
       this.endDate = this.allEventData.reduce(function (a, b) { return a.ParsedDate > b.ParsedDate ? a : b; }).ParsedDate;
+      console.log('this.startDate',this.startDate);
+      console.log('this.endDate',this.endDate);
+      
       this.isMultidate = this.startDate !== this.endDate;
       this.currentDate = this.startDate;
     }
-    this.setCurrentDateData();
+    // this.setCurrentDateData();
   }
 
   setHours() {

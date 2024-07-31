@@ -54,6 +54,8 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   initForm() {
+    console.log('this._storageService?.patientData',this._storageService?.patientData);
+    
     this.progressNoteForm = this.formBuider.group({
       PatientId: [this.paramsObj.patientId],
       CaseId: [this.paramsObj.caseid],
@@ -167,6 +169,8 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   copyProgressNotesEvent(event: any) {
+    console.log('event',event);
+    
     this.progressNoteForm.patchValue({
       PatientId: event.PatientId,
       CaseId: event.CaseId,

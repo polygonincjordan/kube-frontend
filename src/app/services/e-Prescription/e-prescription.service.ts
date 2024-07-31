@@ -179,6 +179,8 @@ export class EPrescriptionService implements OnDestroy {
           this.runRefresh = true;
           if (resp.body && resp.body.d && resp.body.d.results) {
             this.prescriptionList = { ...this.prescriptionList, eventData: resp.body.d.results };
+            console.log(' this.prescriptionList', this.prescriptionList);
+            
           }
         },
         error: (error: any) => {

@@ -1030,6 +1030,8 @@ export class DialysisNursingDashboardComponent implements OnInit {
         })
       )
       .subscribe((patientData: Patient) => {
+        console.log('patientData',patientData);
+        
         this.isLoading = false;
         this.patient = patientData;
         localStorage.setItem('initOrg', patientData.deptOrgUnit)
