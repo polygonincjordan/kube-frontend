@@ -40,6 +40,8 @@ export class PatientService {
 
   getDataPatient(encounterId): Observable<Patient> {
     const url = this.getUrlPatient(encounterId);
+    console.log('url11',url);
+    
     return this.http.get(url, { withCredentials: true }).pipe(
       map((data: any) => this.processData(data)),
       retry(2),

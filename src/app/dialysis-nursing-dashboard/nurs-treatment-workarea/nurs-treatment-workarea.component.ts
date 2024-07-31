@@ -168,7 +168,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     this.getFavSet();
     this.occupationalGroupList();
     //this.getProgressNotesData();
-    this.getPatientData();
+    // this.getPatientData();
     this.localizationForOrderSets();
     this.addministrationService.loadFrequencylist();
     this.addministrationService.loadDurationUnit();
