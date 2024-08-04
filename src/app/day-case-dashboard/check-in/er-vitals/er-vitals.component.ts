@@ -447,7 +447,7 @@ export class ErVitalsComponent implements OnInit {
           // }
           this.addItemForVital(element);
         });
-        this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo);
+        this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData?.Orgpf);
         this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
         this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
         this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
@@ -567,7 +567,7 @@ export class ErVitalsComponent implements OnInit {
       "Lfdnr": this.erListSelectedData.Lfdbw,
       "Orgfa": "",
       "Orgpf": "",
-      "Orgdo": this.maintainVitalBarForm.controls.Orgdo.value,
+      "Orgdo": this.erListSelectedData?.Orgpf,
       "Mitarb": this.storageService.getGpart(),
       "Origin": "",
       "Odate": createDate,
@@ -628,7 +628,7 @@ export class ErVitalsComponent implements OnInit {
     // }else{
     //   this.maintainVitalBarForm.controls.Orgdo.setValue('');
     // }
-    this.maintainVitalBarForm.controls.Orgdo.setValue('EMEMDAMC');
+    this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData?.Orgpf);
     this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));

@@ -1600,60 +1600,55 @@ export class ErHistoryComponent implements OnInit {
       this.redirectToTreatment(json);
       console.log('storageService',this.storageService.checkinPatientData);
     }
-    filterListData(event){
-      // this.ERlistData = this.ERlistData.filter(el =>{      
-      //  if (event.Triage != '' && el.TriagePriorityCode.includes(event.Triage)) {
-      //    return el;
-      //  }
-      //  if (event.Physician != '' && el.Behpersname.includes(event.Physician)) {
-      //   return el;
-      // }
-      // if (event.Status != '' && el.StatusTxt.includes(event.Status)) {
-      //   return el;
-      // }
-      // //   if ((el.TriagePriorityCode.includes(event.Triage)) || (el.Behpersname.includes(event.Physician)) || (el.StatusTxt.includes(event.Status))) {
-      // //    return el;
-      // //  }
-      // })
-      this.triageValueArr = [];
-      this.physicianValueArr = []; 
-      this.statusValueArr = [];
-      if (event.Physician || event.Status || event.FCategory) {
-        // if(event.Physician) event.Physician = event.Physician.trimStart();
-        let filterValue = this.ERlistDataClone;
-      if(event.Physician && event.Physician?.length) {
-        event.Physician.forEach(physicianValue => {
-        this.physicianValueArr.push(filterValue.filter((element:any) => {
-          if(element.Behpersname === physicianValue.trimStart()){
-            return element;
-          }
+  //   filterListData(event){
+  //     this.physicianValueArr = []; 
+  //     this.statusValueArr = [];
+  //     if (event.Physician || event.FCategory) {
+  //       // if(event.Physician) event.Physician = event.Physician.trimStart();
+  //       let filterValue = this.ERlistDataClone;
+  //     if(event.Physician && event.Physician?.length) {
+  //       event.Physician.forEach(physicianValue => {
+  //       this.physicianValueArr.push(filterValue.filter((element:any) => {
+  //         if(element.BehArztName === physicianValue.trimStart()){
+  //           return element;
+  //         }
         
-        }))
-        });
-        filterValue = this.physicianValueArr.flat();
-      }
-      if(event.FCategory && event.FCategory?.length){
-        if(event.FCategory == 'Self Payer'){
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat === 'Self Payer'){
-              return element;
-            }
-          }) 
-        }else{
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat !== 'Self Payer'){
-              return element;
-            }
-          }) 
-        }
+  //       }))
+  //       });
+  //       filterValue = this.physicianValueArr.flat();
+  //     }
+  //     if(event.FCategory && event.FCategory?.length){
+  //       if(event.FCategory == 'Self Payer'){
+  //         filterValue = filterValue.filter((element:any) =>{
+  //           if(element.KostrName === 'Self Payer'){
+  //             return element;
+  //           }
+  //         }) 
+  //       }else{
+  //         filterValue = filterValue.filter((element:any) =>{
+  //           if(element.KostrName !== 'Self Payer'){
+  //             return element;
+  //           }
+  //         }) 
+  //       }
        
-      }
-        this.ERlistData = filterValue;
-        this.sendErPatientCount.emit( this.ERlistData.length);
-      } else {
-        this.ERlistData = this.ERlistDataClone;
-        this.sendErPatientCount.emit( this.ERlistData.length);
-      }
+  //     }
+  //       this.ERlistData = filterValue;
+  //       this.sendErPatientCount.emit( this.ERlistData.length);
+  //     } else {
+  //       this.ERlistData = this.ERlistDataClone;
+  //       this.sendErPatientCount.emit( this.ERlistData.length);
+  //     }
+  // }
+
+  filterListData(event) {
+    const { FCategory, Physician, Status } = event;
+      this.ERlistData = this.ERlistDataClone.filter((item:any) => {
+      const matchesKostrName = !FCategory || item?.KostrName.includes(FCategory);
+      const matchesBehArztName = !Physician || item?.BehArztName.includes(Physician);
+      return matchesKostrName && matchesBehArztName;
+    });
+    this.sendErPatientCount.emit( this.ERlistData.length);
   }
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){

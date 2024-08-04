@@ -73,6 +73,7 @@ export class PhysicianOrdersListComponent implements OnInit{
   oldDate: any;
   printUrl: any;
   dataOnTableForPhyOrder = [];
+  dataOnTableForPhyOrderClone=[]
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -630,6 +631,7 @@ export class PhysicianOrdersListComponent implements OnInit{
         (_success: any) => {
           if(_success){
             this.dataOnTableForPhyOrder = _success?.d?.results;
+            this.dataOnTableForPhyOrderClone = _success?.d?.results;
               this.dataToParent.emit(this.dataOnTableForPhyOrder);
               this.sendErPatientCount.emit(this.dataOnTableForPhyOrder.length);
             }
@@ -643,30 +645,14 @@ export class PhysicianOrdersListComponent implements OnInit{
    }
 
   filterPhysicianOrders(event) { 
-    const { wardNo, patientStatus, Physician } = event;
-    const filterFunction = (item) => {
-      let passWardFilter = true;
-      let passStatusFilter = true;
-      let passPhysicianFilter = true;
-      if (wardNo && item.RoomidText !== wardNo) {
-        passWardFilter = false;
-      }
-      if (patientStatus && item.Status !== patientStatus) {
-        passStatusFilter = false;
-      }
-      if (Physician && item.Erusr !== Physician) {
-        passPhysicianFilter = false;
-      }
-
-      if (patientStatus === "Recently discharged") {
-        passStatusFilter = item.Status === "Released";
-      }
-      return passWardFilter && passStatusFilter && passPhysicianFilter;
-      
-    };
-    const filteredList = this.dataOnTableForPhyOrder.filter(filterFunction);
-    this.dataOnTableForPhyOrder = filteredList;
-  }
+    const { wardNo, Physician } = event;
+    this.dataOnTableForPhyOrder = this.dataOnTableForPhyOrderClone.filter((item: any) => {
+        const matchesPhysician = Physician.length === 0 || Physician.includes(item.PhysicianName);
+        const matchesWardNo = !wardNo || item.RoomidText === wardNo;
+        
+        return matchesPhysician && matchesWardNo;
+    });
+   }
   
   
 
