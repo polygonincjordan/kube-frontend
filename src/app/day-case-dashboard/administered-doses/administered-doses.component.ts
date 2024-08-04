@@ -98,6 +98,7 @@ export class AdministeredDosesComponent implements OnInit{
   cartPopUpDetail: any;
   drugArray:any;
   checkValue:boolean = true;
+  missedMedPatientListClone: any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -176,7 +177,22 @@ export class AdministeredDosesComponent implements OnInit{
   const deptcode = '3'
     this.dayCaseDashboardService.getPatientAdministration(fromDate,toDate,deptcode).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
+      this.missedMedPatientListClone = res.d.results;
+      this.dataToParent.emit(this.missedMedPatientList);
+      this.sendErPatientCount.emit(this.missedMedPatientList.length)
    })
+  }
+
+  filterAdministeredDosesList(event:any){
+    const { Physician, wardNo, patientStatus } = event;
+    this.missedMedPatientList = this.missedMedPatientListClone.filter((item) => {
+      const matchesPhysician = Physician ? item.AttendingDoctorName.toLowerCase().includes(Physician.toLowerCase()) : true;
+      const matchesWardNo = wardNo ? item.RoomidText.toLowerCase().includes(wardNo.toLowerCase()) : true;
+      const matchesPatientStatus = patientStatus ? item.VisitStatus.toLowerCase().includes(patientStatus.toLowerCase()) : true;
+
+      return matchesPhysician && matchesWardNo && matchesPatientStatus;
+    });
+    this.sendErPatientCount.emit(this.missedMedPatientList.length)
   }
 
 

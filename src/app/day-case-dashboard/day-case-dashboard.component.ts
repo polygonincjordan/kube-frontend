@@ -47,6 +47,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   getCheckInData: any;
   getCheckInStatusFilterData: any;
   singleformgroupData: any;
+  administeredDosesData: any;
+  administeredDosesRoomsList: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -503,6 +505,26 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       }, []);
     }
   }
+
+
+  receiveDataFromAdministeredDoses(data?: string){
+    if (data && data.length) {
+      this.administeredDosesData = data;
+      this.administeredDosesRoomsList = this.administeredDosesData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.RoomidText)) {
+          accumulator.push(currentValue.RoomidText);
+        }
+        return accumulator;
+      }, []);
+
+      this.filterBehpersonList = this.administeredDosesData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.AttendingDoctorName)) {
+          accumulator.push(currentValue.AttendingDoctorName);
+        }
+        return accumulator;
+      }, []);
+    }
+  }
   dataForStatus() {
     this.allStatus = [
       {
@@ -538,7 +560,9 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.PatientWithoutConsumableComponent?.filterListData(this.filterFormPatientWithNoConsumable.value);
     } else if (this.selectedModule == 'noReleaseDoc') {
       this.PatientWithoutDocumentsComponent?.filterListData(this.filterFormPatientWithNoConsumable.value);
-    } else {
+    }else if(this.selectedModule == 'AdministeredDoses'){
+      this.AdministeredDosesComponent?.filterAdministeredDosesList(this.AdministeredDosesform.value)
+    } else if(this.selectedModule == 'PhysicianOrder'){
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
     this.showfilter = false;

@@ -428,7 +428,7 @@ font-size: 12px;
         <p style="margin: auto; margin-top: 5px">Rooms</p>
         <select class="custom-select" id="inputGroupSelect01" formControlName="wardNo">
           <option selected value="">Choose Room</option>
-          <option [value]="item" *ngFor="let item of phyOrderRoomsList">
+          <option [value]="item" *ngFor="let item of administeredDosesRoomsList">
             {{ item }}
           </option>
         </select>
@@ -561,7 +561,7 @@ font-size: 12px;
   <app-physician-orders-list (sendErPatientCount)="collectErPatientCount($event)"
     (dataToParent)="receiveDataFromPhysicianOrdersChild($event)" (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)" *ngIf="PhysicianOrder"></app-physician-orders-list>
-  <app-administered-doses *ngIf="AdministeredDoses" style="width: calc(100% - 60px);"></app-administered-doses>
+  <app-administered-doses *ngIf="AdministeredDoses" style="width: calc(100% - 60px);"  (dataToParent)="receiveDataFromAdministeredDoses($event)"></app-administered-doses>
   <app-nurs-treatment-workarea style="width: calc(100% - 90px);" *ngIf="treatmentarea"
     (redirectTreatmentPatientData)="collectTreatmentPatientData($event)"></app-nurs-treatment-workarea>
   <app-er-history style="width: calc(100% - 78px);" *ngIf="erhistory" (redirectCheckInData)="collectCheckInData($event)"
