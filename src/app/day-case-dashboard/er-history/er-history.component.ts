@@ -86,6 +86,7 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
+  editDeleteDisable: boolean= false;
   constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private dayCaseDashboardService:DayCaseDashboardService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -295,15 +296,21 @@ export class ErHistoryComponent implements OnInit {
     template: TemplateRef<any>,
     data: any
   ) {
+    
+    
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl risk-modal-size' };
       this.modalRefForRisk = this.modalService.show(template,config);
       this.selectedERList = data;
+      if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
+        this.editDeleteDisable = true;
+      }
       this.getRiskList(data);
       this.getRiskValues();
       this.isRiskUpdate = false;
       this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.resetRiskForm();
+         this.editDeleteDisable = false;
         }
       });
 
@@ -315,12 +322,16 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl allergy-modal-size' };
       this.modalRefForAllergy = this.modalService.show(template,config);
       this.selectedERList = data;
+      if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
+        this.editDeleteDisable = true;
+      }
       this.userProfile = this.storageService.getUserProfile();
       this.updateAllergyForm.enable();
       this.isCheckboxesDisabled = false;
       this.modalRefForAllergy.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.resetAllergyForm();
+         this.editDeleteDisable = false;
         }
       });
       this.getCancelReasons();

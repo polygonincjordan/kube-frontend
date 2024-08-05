@@ -647,7 +647,7 @@ export class PhysicianOrdersListComponent implements OnInit{
   filterPhysicianOrders(event) { 
     const { wardNo, Physician } = event;
     this.dataOnTableForPhyOrder = this.dataOnTableForPhyOrderClone.filter((item: any) => {
-        const matchesPhysician = Physician.length === 0 || Physician.includes(item.PhysicianName);
+        const matchesPhysician = Physician.length === 0 || Physician.includes(item.Erusr);
         const matchesWardNo = !wardNo || item.RoomidText === wardNo;
         
         return matchesPhysician && matchesWardNo;

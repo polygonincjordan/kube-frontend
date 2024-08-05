@@ -249,7 +249,7 @@
         <th scope="col">Short Description</th>
         <th scope="col">Risk Description</th>
         <th scope="col">Reported On</th>
-        <!-- <th scope="col">Action</th> -->
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody style="background-color: #fbfcff;">
@@ -298,11 +298,13 @@
       />
         <!-- <input type="text" class="form-control" formControlName="Repdt"> -->
       </td>
-      <!-- <td style="padding-left: 2px;
+      <td style="padding-left: 2px;
         padding-right: 2px;
-        width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(riskList[i])" title="Edit"><img src="assets/img/Delete.svg" (click)="confirmationForRiskDelete('D',riskList[i])" style="margin-left: 11px;" title="Delete">
+        width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(riskList[i])" title="Edit"  [style.pointer-events]="editDeleteDisable ? 'none' : 'auto'" 
+       [style.opacity]="editDeleteDisable ? 0.5 : 1"><img src="assets/img/Delete.svg" (click)="confirmationForRiskDelete('D',riskList[i])" style="margin-left: 11px;" title="Delete"  [style.pointer-events]="editDeleteDisable ? 'none' : 'auto'" 
+       [style.opacity]="editDeleteDisable ? 0.5 : 1">
         
-      </td> -->
+      </td>
       </tr>
       </ng-container>
       </ng-container>
@@ -422,7 +424,7 @@
         <th scope="col">Severity</th>
         <th scope="col">Allergy type</th>
         <th scope="col">Comments</th>
-        <!-- <th scope="col">Action</th> -->
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody style="background: #fbfcff;">
@@ -490,11 +492,13 @@
         <td style="padding-left: 2px;
         padding-right: 2px;
         width: 15%;pointer-events: none;"><input type="text" class="form-control" formControlName="AdCommentLt" style="font-size: 15px;"></td>
-        <!-- <td style="padding-left: 2px;
+        <td style="padding-left: 2px;
         padding-right: 2px;
-        width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromTable(allergyList[i])" title="Edit"><img src="assets/img/Delete.svg" (click)="confirmationForAllergyDelete(deleteAllergyModal,'D',allergyList[i])" style="margin-left: 11px;" title="Delete">
+        width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromTable(allergyList[i])" title="Edit" [style.pointer-events]="editDeleteDisable ? 'none' : 'auto'" 
+       [style.opacity]="editDeleteDisable ? 0.5 : 1"><img src="assets/img/Delete.svg" (click)="confirmationForAllergyDelete(deleteAllergyModal,'D',allergyList[i])" style="margin-left: 11px;" title="Delete"  [style.pointer-events]="editDeleteDisable ? 'none' : 'auto'" 
+       [style.opacity]="editDeleteDisable ? 0.5 : 1">
         
-      </td> -->
+      </td>
       </tr>
      </ng-container>
      </ng-container>
