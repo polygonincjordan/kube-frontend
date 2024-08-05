@@ -20,7 +20,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() sendErNoDocumentCount = new EventEmitter<any>();
-
+  @Output() dataToParent = new EventEmitter<any>();
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
   // @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
 
@@ -66,20 +66,20 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataShareService.sendFilterType(null);
-    this.getPatientWithoutDocuments([new Date() , new Date()]);
+    this.getPatientWithoutDocuments(new Date());
   }
 
   public getPatientWithoutDocuments(date? :any) {
-    const json = {
+   const json = {
       Deptcode:'3',
-      Datege :`${new DatePipe('en-US').transform(
-        date ?  date[0] : new Date().setDate(new Date().getDate()),
+      Datege:`${new DatePipe('en-US').transform(
+        date ?  date : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
       )}T00:00:00`,
-      Datele:`${new DatePipe('en-US').transform(
-        date ?  date[1]  :new Date().setDate(new Date().getDate()),
-        'yyyy-MM-dd'
-      )}T00:00:00`,
+      // Datele:`${new DatePipe('en-US').transform(
+      //   date ?  date[1]  :new Date().setDate(new Date().getDate()),
+      //   'yyyy-MM-dd'
+      // )}T00:00:00`,
       
     };
     this.consumableService.getMissedDocsSet(json).subscribe({
@@ -97,6 +97,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoDocuments$, true, value);
           this.sendErNoDocumentCount.emit(this.noReleasedMissedDocumentsList.length);
+          this.dataToParent.emit(this.noReleasedMissedDocumentsList);
         }
       }
     });

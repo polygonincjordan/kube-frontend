@@ -17,6 +17,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() sendFilterOption = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
 
   public patientWithoutConsumableList:any = [];
   public filteredPatients: Array<PatientWithouConsumables> = [];
@@ -75,6 +76,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoConsumable$, true, value);
           this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+          this.dataToParent.emit(this.patientWithoutConsumableList);
         }
       }
     });
@@ -160,10 +162,14 @@ export class PatientWithoutConsumableComponent implements OnInit {
   public filterListData(event) {
    const statusFilter = event.Status;
    const fCategoryFilter = event.FCategory;
+   const room = event.Rooms
+   const Physician = event.Physician
    this.patientWithoutConsumableList = this.patientWithoutConsumableListClone.filter((item) => {
         const statusMatch = statusFilter ? item.StatusText.includes(statusFilter) : true;
+        const physicianMatch = Physician ? item.PhysicianName.includes(Physician) : true;
+        const roomMatch = room && room.length > 0 ? room.includes(item.RoomidText) : true;
         const fCategoryMatch = fCategoryFilter && fCategoryFilter.length > 0 ? fCategoryFilter.includes(item.FinancecategoryName) : true;
-        return statusMatch && fCategoryMatch;
+        return statusMatch && fCategoryMatch && roomMatch && physicianMatch;
     });
   this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
   }

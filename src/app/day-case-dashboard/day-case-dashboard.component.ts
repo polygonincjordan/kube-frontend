@@ -205,6 +205,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.singleformgroupData = data;
       if(data.fromDate){
         this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+         this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.singleformgroupData.fromDate)
+
       }
     })
     this.filterForm = this.formBuilder.group({
@@ -220,6 +222,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     this.filterFormPatientWithNoConsumable = this.formBuilder.group({
       Status: [''],
       FCategory: [''],
+      Rooms:[''],
+      Physician:['']
     });
 
     this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
@@ -473,8 +477,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       }, []);
 
       this.filterBehpersonList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
-        if (!accumulator.includes(currentValue.Behperson)) {
-          accumulator.push(currentValue.Behperson);
+        if (!accumulator.includes(currentValue.Erusr)) {
+          accumulator.push(currentValue.Erusr);
         }
         return accumulator;
       }, []);
@@ -495,6 +499,26 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   }
 
   receiveDataFromPhysicianOrdersChild(data?: string) {
+        if (data && data.length) {
+      this.labReceivedData = data;
+      this.phyOrderRoomsList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.RoomidText)) {
+          accumulator.push(currentValue.RoomidText);
+        }
+        return accumulator;
+      }, []);
+
+      this.assignUsersList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.Erusr)) {
+          accumulator.push(currentValue.Erusr);
+        }
+        return accumulator;
+      }, []);
+    }
+  }
+
+
+  receiveDataFromPatientWithoutDocumentChild(data?: string){
     if (data && data.length) {
       this.labReceivedData = data;
       this.phyOrderRoomsList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
@@ -503,7 +527,35 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
         }
         return accumulator;
       }, []);
+
+      this.allStatus = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.StatusText)) {
+          accumulator.push(currentValue.StatusText);
+        }
+        return accumulator;
+      }, []);
     }
+  }
+
+  receiveDataFromPatientWithoutConsumableChild(data?: string){
+    if (data && data.length) {
+      this.labReceivedData = data;
+    this.filterBehpersonList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+      if (!accumulator.includes(currentValue.PhysicianName)) {
+        accumulator.push(currentValue.PhysicianName);
+      }
+      return accumulator;
+    }, []);
+
+    this.phyOrderRoomsList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+      if (!accumulator.includes(currentValue.RoomidText)) {
+        accumulator.push(currentValue.RoomidText);
+      }
+      return accumulator;
+    }, []);
+
+    
+  }
   }
 
 
@@ -595,6 +647,9 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.updatedDate = [new Date(), new Date()]
     }else if(this.selectedModule === 'reservation'){
       this.emergencyService?.callHistoryList()
+    }else if(this.selectedModule === "noReleaseDoc"){
+      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(new Date())
+
     }
     // Resetting filter form values
     this.filterForm.patchValue({
@@ -626,6 +681,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     this.filterFormPatientWithNoConsumable.patchValue({
       Status: '',
       FCategory: '',
+      Rooms:'',
+      Physician:''
     });
     this.closeAndRefresh();
   }
@@ -813,7 +870,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = false;
       this.reservation= false;
     } else if (module == 'noReleaseDoc') {
-      this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
+      this.singleData.get("fromDate").patchValue(new Date());
       this.headerLabel = 'Not Released/Missed Documents '
       this.treatmentarea = false;
       this.checkin = false;
@@ -1025,6 +1082,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
+      
     } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
@@ -1038,6 +1096,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
+      
     }
 
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()-1));
@@ -1083,7 +1142,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange)
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(this.formgroupData.DateRange)
-
+     
     }
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()+1));
     //this.ErHistoryComponent.getErList(this.currentDate);
