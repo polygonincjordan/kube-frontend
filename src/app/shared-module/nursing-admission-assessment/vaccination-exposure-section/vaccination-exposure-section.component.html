@@ -17,7 +17,7 @@
               </li>
             </ul>
             <div>
-              <img src="./assets/img/grid-icon.svg" (click)="addRow()" />
+              <img style="height: 25px;" src="./assets/img/add.png" (click)="addRow()" />
             </div>
           </div>
         </div>
@@ -27,16 +27,16 @@
             <div *ngIf="selectedTabName == 'Vaccination History'">
               <div class="scale-box-table">
                 <h4 class="p-2" style="border-bottom: 1px solid #cacaca;">Vaccinated</h4>
-                <div class="row m-0">
-                  <div class="col-md-2 d-flex align-items-center ">
+                <div class="row m-0 p-2">
+                  <div class="col-md-1 d-flex align-items-center ">
                       <input type="radio" formControlName="Vaccinated" value="0" />
                       <label class="m-0 ml-2">Yes</label>
                   </div>
-                  <div class="col-md-2 d-flex align-items-center">
+                  <div class="col-md-1 d-flex align-items-center">
                       <input type="radio" formControlName="Vaccinated" value="1" />
                       <label class="m-0 ml-2">No</label>
                   </div>
-                  <div class="col-md-2 d-flex align-items-center">
+                  <div class="col-md-1 d-flex align-items-center">
                       <input type="radio" formControlName="Vaccinated" value="2" />
                       <label class="m-0 ml-2">Unknown</label>
                   </div>
@@ -93,8 +93,8 @@
               </div>
             </div>
             <div *ngIf="selectedTabName == 'Exposure to Infectious Diseases'">
-              <div class="row m-0">
-                <label>Patient has expirienced in the last 2 weeks</label>
+              <div class="row m-0 p-2">
+                <label class="m-0">Patient has expirienced in the last 2 weeks</label>
               </div>
               <div class="scale-box-table">
                 <table class="table table-bordered past-table">

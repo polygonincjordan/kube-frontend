@@ -106,7 +106,7 @@ export class DayCaseDashboardService {
   }
 
   deleteNursingAdmissionDoc(json): Observable<any> {
-    return this.http.post(this.url + `deleteNursingAdmissionDoc?Dockey=${json}`, {
+    return this.http.delete(this.url + `deleteNursingAdmissionDoc?Dockey=${json}`, {
       withCredentials: true,
     });
   }

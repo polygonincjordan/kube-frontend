@@ -98,8 +98,8 @@
                   <tr *ngFor="let item of scalesList; let i = index">
                     <td>{{ item.ScaleType }}</td>
                     <td>{{ item.LastScore }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.Datetimee }}</td>
+                    <td>{{ item.ScoreDesc }}</td>
+                    <td>{{ item.Datetimee | date:'dd.MM.yyyy HH:mm:ss' }}</td>
                     <td>
                       <a (click)="openGlosgowComaModel(item)">Create</a>
                     </td>
@@ -299,6 +299,7 @@
                   >
                     <input
                       type="checkbox"
+                      [formControlName]="item.controlname"
                       [id]="item.label"
                       [attr.disabled]="
                         nursingAdmissionForm.get('PsyNoProblem').value

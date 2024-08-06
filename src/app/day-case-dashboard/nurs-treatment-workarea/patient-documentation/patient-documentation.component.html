@@ -85,6 +85,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Admission Assessment'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseNursingAdmissionDoc()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
@@ -253,9 +258,9 @@
               </div>
               <div class="col-md-3">{{latestNurAdmissionList[0]?.PhyNm || '-'}}</div>
               <div class="col-md-1">
-                <img src="assets/img/document-html.png" width="15px" height="15px"
+                <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
                   (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.BRADEN$)"
-                  *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
+                  *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" /> -->
               </div>
             </div>
 

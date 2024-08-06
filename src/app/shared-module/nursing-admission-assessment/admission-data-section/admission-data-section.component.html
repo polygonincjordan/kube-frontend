@@ -105,7 +105,7 @@
           <label>Schoole Grade</label>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="ASchoolGrade" (change)="selectSchool($event)">
+          <ng-select  (change)="selectSchool($event)">
             <ng-option *ngFor="let item of schoolGradeList" [value]="item.value">{{ item.label }}</ng-option>
           </ng-select>
         </div>

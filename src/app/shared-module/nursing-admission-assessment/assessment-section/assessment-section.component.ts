@@ -66,6 +66,13 @@ export class AssessmentSectionComponent implements OnInit {
     });
   }
 
+  checkUseOfCheck() {
+    this.nursingAdmissionForm.patchValue({
+      FunAssEquipmentUseOfTyp: '',
+      FunAssEquipmentUseOfTxt: ''
+    })
+  }
+
   onCheckboxChange(
     group: string,
     index: number,
@@ -85,7 +92,7 @@ export class AssessmentSectionComponent implements OnInit {
       });
     } else {
       this.nursingAdmissionForm.patchValue({
-        [`${group}Score`]: `0 Absent` ,
+        [`${group}Score`]: '' ,
       });
     }
     this.calculateTotalScore();
@@ -108,13 +115,27 @@ export class AssessmentSectionComponent implements OnInit {
     const severityDiseaseScore = this.parseScore(this.nursingAdmissionForm.get('SeverityDiseaseScore').value);
     const totalScore = impairedNutritionalScore + severityDiseaseScore;
     this.nursingAdmissionForm.patchValue({
-      TotalScore: totalScore,
+      TotalScore: `${totalScore} ${this.getTotalScoreLabel(totalScore)}`,
     })
   }
 
+  getTotalScoreLabel(score) {
+    if(score == 0 || score == 1) {
+      return "Low"
+    } else if(score == 2) {
+      return 'Moderate'
+    } else if(score > 2) {
+      return 'High'
+    }
+  }
+
   parseScore(scoreString: string): number {
-    const scoreParts = scoreString.split(' ');
-    return scoreParts.length > 0 ? parseInt(scoreParts[0], 10) : 0;
+    if(scoreString) {
+      const scoreParts = scoreString.split(' ');
+      return scoreParts.length > 0 ? parseInt(scoreParts[0], 10) : 0;
+    } else {
+      return 0
+    }
   }
 
   selfCaringUncheck() {

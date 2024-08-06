@@ -2026,4 +2026,28 @@ onSelectSurgeon(value){
     }
   });
    }
+
+   getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
+  }
+
+  getFinTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'Pending';
+      case 'Green':
+        return 'Completed';
+      default:
+        return '';
+    }
+  }
 }
