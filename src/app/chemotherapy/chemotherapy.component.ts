@@ -82,6 +82,7 @@ export class ChemotherapyComponent {
     this.HeightWeightBody();
     this.diagnosisFavoriteDetails();
     this.ChemoHistoryevnt();
+    
     this.Protocalsubscription = this.chemotherapyService.ProtocalType.subscribe((resp: any) => {
       if (resp && resp.data) {
         if (resp.data.TOCHEMO && resp.data.TOCHEMO.results && resp.data.TOCHEMO.results.length) {
@@ -100,6 +101,16 @@ export class ChemotherapyComponent {
           this.isExpanded.PreChemo = true;
         }
       }
+      // this.ePrescriptionService.loadData(`e-prescription/ProtoHeadersearched?ProtoDesc=${resp.ProtoDesc}`, false, false, false, false).subscribe((resp: any) => {
+      //   if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
+      //     this.chemoarrer.controls[0].patchValue({
+      //       monitParam: resp.body.d.results[0].MonitParam.toLowerCase(),
+      //       Notes: resp.body.d.results[0].Notes.toLowerCase(),
+      //       Comments: resp.body.d.results[0].Comments.toLowerCase(),
+      //       ProtoId: resp.body.d.results[0].ProtoId,
+      //     });
+      //   }
+      // });
       if (resp.data && resp.data.TOCYCLE && resp.data.TOCYCLE.results && resp.data.TOCYCLE.results.length) {
         this.tocycle = resp.data.TOCYCLE.results.slice().reverse();
         this.cyclenumberNxtProtoId(resp.data);
@@ -108,16 +119,7 @@ export class ChemotherapyComponent {
       this.chemoarrer.controls[0].patchValue({
         CycleId : filesdata,
       })
-      this.ePrescriptionService.loadData(`e-prescription/ProtoHeadersearched?ProtoDesc=${resp.ProtoDesc}`, false, false, false, false).subscribe((resp: any) => {
-        if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
-          this.chemoarrer.controls[0].patchValue({
-            monitParam: resp.body.d.results[0].MonitParam.toLowerCase(),
-            Notes: resp.body.d.results[0].Notes.toLowerCase(),
-            Comments: resp.body.d.results[0].Comments.toLowerCase(),
-            ProtoId: resp.body.d.results[0].ProtoId,
-          });
-        }
-      });
+      
     });
 
     this.Protocalsubscription = this.chemoarrer.valueChanges.subscribe((data) => {
@@ -331,7 +333,17 @@ export class ChemotherapyComponent {
         icon: 'error',
       })
     } else {
-      this.chemotherapyService.protocalDetails(data.value);
+      this.ePrescriptionService.loadData(`e-prescription/ProtoHeadersearched?ProtoDesc=${data.value?.ProtoDesc}`, false, false, false, false).subscribe((resp: any) => {
+        if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
+          this.chemoarrer.controls[0].patchValue({
+            monitParam: resp.body.d.results[0].MonitParam.toLowerCase(),
+            Notes: resp.body.d.results[0].Notes.toLowerCase(),
+            Comments: resp.body.d.results[0].Comments.toLowerCase(),
+            ProtoId: resp.body.d.results[0].ProtoId,
+          });
+          this.chemotherapyService.protocalDetails(resp.body.d.results[0]);
+        }
+      });
     }
   }
 
