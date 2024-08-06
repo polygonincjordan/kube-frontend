@@ -9,15 +9,16 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr>
+            
+            <th scope="col" (click)="sortTable('PatientName')">
+              Patient Name <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'PatientName', 'fa-sort-up': sortColumn === 'PatientName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PatientName' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
             <th scope="col" (click)="sortTable('Patient')">
               MRN
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-            <th scope="col" (click)="sortTable('PatientName')">
-              Patient Name <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'PatientName', 'fa-sort-up': sortColumn === 'PatientName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PatientName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
 
@@ -57,22 +58,22 @@
                 [ngClass]="{'fa-sort': sortColumn !== 'PhysicianName', 'fa-sort-up': sortColumn === 'PhysicianName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PhysicianName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
-            <th scope="col" (click)="sortTable('NurseName')">
+            <!-- <th scope="col" (click)="sortTable('NurseName')">
               Attending Nurse
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'NurseName', 'fa-sort-up': sortColumn === 'NurseName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'NurseName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
-            </th>
+            </th> -->
           </tr>
         </thead>
         &nbsp;
         <tbody>
           <tr *ngFor="let item of patientWithoutConsumableList | filter:searchString ; let i = index"
             (click)="redirectToTreatByName(item)">
-            <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}
-            </td>
             <td scope="row" [ngClass]="" [title]="item.PatientName" class="border-top-none">
               {{ item.PatientName }}
+            </td>
+            <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}
             </td>
             <td class="border-top-none" [title]="getDate(item.Date) | date : 'dd.MM.y'">
               {{ getDate(item.Date) | date : "dd.MM.y" }}
@@ -95,9 +96,9 @@
             <td [title]="item.PhysicianName" class="border-top-none">
               {{ item.PhysicianName }}
             </td>
-            <td [title]="item.NurseName" class="border-top-none">
+            <!-- <td [title]="item.NurseName" class="border-top-none">
               {{ item.NurseName }}
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>

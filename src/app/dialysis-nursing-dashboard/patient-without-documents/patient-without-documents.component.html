@@ -99,7 +99,7 @@
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.ScaMorseStatus == 'IA'"
                 (click)="redirectToDocuments(item,RedirectionType.MORSE$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.ScaMorseStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.MORSE$, ActionType.View$)" title="View PDF" />
+                (click)="redirectToDocuments(item, RedirectionType.MORSE$, ActionType.View$)" title="View Doc" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ZmedDialyStatus == '' "
@@ -116,7 +116,7 @@
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.ScaBradenStatus == 'IA'"
                 (click)="redirectToDocuments(item,RedirectionType.BRADEN$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.ScaBradenStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.View$)" title="View PDF" />
+                (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.View$)" title="View Doc" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ZmedHbcaStatus == '' "

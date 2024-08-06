@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -11,6 +11,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { CpoeService } from '@services/emergency-dashboard/cpoe.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { eOrderService } from '@services/eorder.service';
+import { SessionStorageService } from '@services/session-storage.service';
 import { SidebarService } from '@services/sidebar.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of, Subscription } from 'rxjs';
@@ -97,6 +98,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   isConsumableAction: string = '1';
   constructor(public emergencyService: EmergencyService, public cpoeService: CpoeService, private formBuilder: FormBuilder, private _dataServices: EEmrService, public sidebarService: SidebarService,
     private dataShareService: DataShareService,
+    private sessionStorage:SessionStorageService,
     public ePrescriptionService: EPrescriptionService,
     private hospitalistService: HospitalistService,
     public eOrderService: eOrderService,
@@ -157,7 +159,13 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       this.ngOnInit();
     })
   }
+
+  @HostListener('window:beforeunload', ['$event'])
+  removeSpecificKeyFromSessionStorage(event: Event): void {
+    this.sessionStorage.removeItem(this.paramsObj.patientId);
+  }
   ngOnDestroy(): void {
+    this.sessionStorage.removeItem(this.paramsObj.patientId);
     if (this.actionTypeSubscription$) {
       this.actionTypeSubscription$.unsubscribe();
     }

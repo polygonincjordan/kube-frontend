@@ -8,12 +8,7 @@
         <table class="table checkin-table custom-table-striped">
           <thead>
             <tr class="checkin-table-header">
-              <th scope="col" style="padding-left: 11px;">
-                Created On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Created At <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
-              </th>
+             
               <th scope="col" style="padding-left: 0px; ">
                 Patient Name
               </th>
@@ -36,6 +31,12 @@
               <th scope="col" style="padding-left: 0px;">
                 Created by
               </th>
+              <th scope="col" style="padding-left: 11px;">
+                Created On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
+              </th>
+              <th scope="col" style="padding-left: 0px; ">
+                Created At <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
+              </th>
               <th scope="col">
                 Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPhysician()"></i>
               </th>
@@ -47,14 +48,11 @@
           &nbsp;
           <tbody>
             <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-              <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" [ngClass]="" class="border-top-none" (click)="redirectToTreatByName(item)">
-                {{ getDate(item.Datum) | date : "dd.MM.y" }}
-              </td>
-              <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
-              <td class="border-top-none" style="padding-left: 1px;">
+             
+              <td class="border-top-none" [title]="item.Patient" style="padding-left: 1px;">
                 {{ item.Patient }}
               </td>
-              <td scope="row" class="border-top-none" style="padding-left: 1px;">
+              <td scope="row" class="border-top-none" [title]="item.Patnr" style="padding-left: 1px;">
                 {{ item.Patnr }}
               </td>
               <td scope="row" class="border-top-none">
@@ -72,6 +70,10 @@
               <td class="border-top-none" style="padding-left: 1px;">
                 {{ item.Lststatus }}
               </td>
+              <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" [ngClass]="" class="border-top-none" (click)="redirectToTreatByName(item)">
+                {{ getDate(item.Datum) | date : "dd.MM.y" }}
+              </td>
+              <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
               <td class="border-top-none" style="padding-left: 1px;">
                 {{ item.Erusr }}
               </td>

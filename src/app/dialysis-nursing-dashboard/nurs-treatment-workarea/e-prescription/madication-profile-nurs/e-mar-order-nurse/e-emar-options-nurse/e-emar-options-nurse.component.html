@@ -2,7 +2,7 @@
     <div class="tab-search-panel d-flex align-items-center">
       <div class="date-function mr-4 col-md-2" style="min-width: 281px;">
         <img src="assets/img/date-icon.svg" alt="">
-        <input #drp="bsDaterangepicker" bsDaterangepicker
+        <input #drp="bsDaterangepicker" bsDaterangepicker (bsValueChange)="(changeDatee($event))"
           [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
           'DD.MM.YYYY', containerClass: 'daterangepickerdata', showWeekNumbers:
           false}" class="form-control font-bsDaterangepicker" formControlName="DateRange"/>

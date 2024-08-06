@@ -11,6 +11,7 @@ import { ERDiagnosisComponent } from './diagnosis/diagnosis.component';
 import { DatePipe } from '@angular/common';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { formatDate } from 'ngx-bootstrap/chronos';
+import { SessionStorageService } from '@services/session-storage.service';
 
 @Component({
   selector: 'app-er-history',
@@ -88,7 +89,7 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
-  constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService) {
+  constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private sessionStorage:SessionStorageService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
     });
@@ -1605,17 +1606,35 @@ export class ErHistoryComponent implements OnInit {
       // })
       this.diagnosisNotesKardex.openModalForDiagnosisKardex(data);
     }
-    redirectToTreatByName(data){
+    // redirectToTreatByName(data){
+    //   const json = {
+    //     Patnr:data.Patnr,
+    //     Einri:data.Einri,
+    //     Falnr:data.Falnr,
+    //     Lfdnr:data.Lfdbw
+    //   }
+    //   this.storageService.setCheckinData(data);
+    //   localStorage.setItem('checkindata',JSON.stringify(data));
+    //   this.redirectToTreatment(json);
+    //   console.log('storageService',this.storageService.checkinPatientData);
+    // }
+    redirectToTreatByName(data) {
+      console.log('21212121212121',data);
+      
       const json = {
-        Patnr:data.Patnr,
-        Einri:data.Einri,
-        Falnr:data.Falnr,
-        Lfdnr:data.Lfdbw
-      }
+        Patnr: data.Patnr,
+        Einri: data.Einri,
+        Falnr: data.Falnr,
+        Lfdnr: data.Lfdnr,
+        redirectFor: '',
+        doctype: '',
+        action: ''
+      };
       this.storageService.setCheckinData(data);
-      localStorage.setItem('checkindata',JSON.stringify(data));
+      localStorage.setItem('checkindata', JSON.stringify(data));
+      localStorage.setItem('tabName', 'patientProfile');
+      this.sessionStorage.setItem(data.Patnr,JSON.stringify(data))
       this.redirectToTreatment(json);
-      console.log('storageService',this.storageService.checkinPatientData);
     }
     filterListData(event){
       // this.ERlistData = this.ERlistData.filter(el =>{

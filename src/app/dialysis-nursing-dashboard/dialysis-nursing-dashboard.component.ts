@@ -689,7 +689,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.reservation= false;
     }else if (module == 'bed') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-      this.headerLabel = ""
+      this.headerLabel = "Inpatient Dialysis Clinical Orders"
       this.currentDate = new Date();
       this.checkin = false;
       this.bed = true;
