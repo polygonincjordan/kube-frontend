@@ -221,7 +221,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
       MvVaccine: '',
       MvBatch: '',
       MvAntiD: '',
-      MvLotNo: '',
+      MvLotNo: null,
       MvDate: new Date(),
       EnvironmentalSafety: '',
       EnvironmentalAss: '',

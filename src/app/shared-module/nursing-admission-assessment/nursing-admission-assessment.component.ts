@@ -23,6 +23,7 @@ import { CommanService } from '@services/comman.service';
 import { Subscription, catchError, of } from 'rxjs';
 import { DataShareService } from '@services/data-share.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { ActionType } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-nursing-admission-assessment',
@@ -59,11 +60,11 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
 
-  public scalesList: commonKeyValuePariExt3[] = [
+  public scalesList: any[] = [
     {
       ScaleType: 'Glasgow Coma Scale',
       LastScore: '',
-      description: '',
+      ScoreDesc: '',
       Datetimee: '',
       value: '1',
       Dockey: '',
@@ -71,7 +72,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     {
       ScaleType: 'Face pain scale',
       LastScore: '',
-      description: '',
+      ScoreDesc: '',
       Datetimee: '',
       value: '2',
       Dockey: '',
@@ -79,7 +80,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     {
       ScaleType: 'Numeric rating scale(more than 8 years)',
       LastScore: '',
-      description: '',
+      ScoreDesc: '',
       Datetimee: '',
       value: '3',
       Dockey: '',
@@ -218,6 +219,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   noScaleAppicable: any;
   paramsObject: any;
   encounterId: any;
+  docKey: any;
   constructor(
     private sharedService: SharedService,
     private formBuilder: FormBuilder,
@@ -238,6 +240,351 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         this.paramsObject.lfdnr;
       this.getPatinetDetails(this.encounterId);
     });
+    this.initForm();
+
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getNursingAdmissionDocDetails(data.value.docKey);
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getNursingAdmissionDocDetails(data.value.docKey);
+          }
+        }
+      }
+    );
+  }
+
+  getNursingAdmissionDocDetails(docKey?) {
+    this.subscription = this.dayCaseDashboard
+      .getNursingAdmissionDocData(docKey)
+      .subscribe({
+        next: (data: any) => {
+          this.nursingAdmissionForm.patchValue({
+            Dockey: data.d.results[0]?.Dockey,
+            Dtid: data.d.results[0]?.Dtid,
+            Einri: data.d.results[0]?.Einri,
+            Patnr: data.d.results[0]?.Patnr,
+            Falnr: data.d.results[0]?.Falnr,
+            Lfdnr: data.d.results[0]?.Lfdnr,
+            Orgdo: data.d.results[0]?.Orgdo,
+            AAdmittedWard: data.d.results[0]?.AAdmittedWard,
+            ADate: [data.d.results[0]?.ADate],
+            ATime: data.d.results[0]?.ATime,
+            ARoom: data.d.results[0]?.ARoom,
+            AReferralType: data.d.results[0]?.AReferralType,
+            AAdmissionMode: data.d.results[0]?.AAdmissionMode,
+            AAdmissionModeT: data.d.results[0]?.AAdmissionModeT,
+            AAccompaniedBy: data.d.results[0]?.AAccompaniedBy,
+            AAccompaniedByT: data.d.results[0]?.AAccompaniedByT,
+            AInfoObtained: data.d.results[0]?.AInfoObtained,
+            AInfoObtainedT: data.d.results[0]?.AInfoObtainedT,
+            ALanguageSpoken: data.d.results[0]?.ALanguageSpoken,
+            // ASchoolGrade: data.d.results[0]?.ASchoolGrade,
+            AEducated: data.d.results[0]?.AEducated,
+            AFavouriteToy: data.d.results[0]?.AFavouriteToy,
+            AReasonVisit: data.d.results[0]?.AReasonVisit,
+            AChiefComplaint: data.d.results[0]?.AChiefComplaint,
+            Substances: data.d.results[0]?.Substances,
+            Vaccinated: data.d.results[0]?.Vaccinated,
+            InfectionStatus: data.d.results[0]?.InfectionStatus,
+            PsyNoProblem: data.d.results[0]?.PsyNoProblem,
+            PsyAnxious: data.d.results[0]?.PsyAnxious,
+            PsyUncooperative: data.d.results[0]?.PsyUncooperative,
+            PsyDepressed: data.d.results[0]?.PsyDepressed,
+            PsyAngry: data.d.results[0]?.PsyAngry,
+            PsyAgitated: data.d.results[0]?.PsyAgitated,
+            PsyCombative: data.d.results[0]?.PsyCombative,
+            PsyOther: data.d.results[0]?.PsyOther,
+            PsyComments: data.d.results[0]?.PsyComments,
+            OccOccupationalStatus: data.d.results[0]?.OccOccupationalStatus,
+            OccOccupationalStatusTxt: data.d.results[0]?.OccOccupationalStatusTxt,
+            OccJobNature: data.d.results[0]?.OccJobNature,
+            OccHealthProblems: data.d.results[0]?.OccHealthProblems,
+            OccHealthProblemsTxt: data.d.results[0]?.OccHealthProblemsTxt,
+            OccHealthInjury: data.d.results[0]?.OccHealthInjury,
+            OccHealthInjuryTxt: data.d.results[0]?.OccHealthInjuryTxt,
+            OccJob: data.d.results[0]?.OccJob,
+            OccJobTxt: data.d.results[0]?.OccJobTxt,
+            OccDailyNeeds: data.d.results[0]?.OccDailyNeeds,
+            OccDailyNeedsTxt: data.d.results[0]?.OccDailyNeedsTxt,
+            OccSpouseWork: data.d.results[0]?.OccSpouseWork,
+            OccSpouseWorkTxt: data.d.results[0]?.OccSpouseWorkTxt,
+            OccComments: data.d.results[0]?.OccComments,
+            EcoLiving: data.d.results[0]?.EcoLiving,
+            EcoNoPeople: data.d.results[0]?.EcoNoPeople,
+            EcoRelationship: data.d.results[0]?.EcoRelationship,
+            EcoRelationshipTxt: data.d.results[0]?.EcoRelationshipTxt,
+            EcoPhone: data.d.results[0]?.EcoPhone,
+            EcoFatherJob: data.d.results[0]?.EcoFatherJob,
+            EcoInsurance: data.d.results[0]?.EcoInsurance,
+            GgRectalPain: data.d.results[0]?.GgRectalPain,
+            GgIndigestion: data.d.results[0]?.GgIndigestion,
+            GbAbsent: data.d.results[0]?.GbAbsent,
+            GbPresent: data.d.results[0]?.GbPresent,
+            GbHypoactive: data.d.results[0]?.GbHypoactive,
+            GbHyperactive: data.d.results[0]?.GbHyperactive,
+            GaSoft: data.d.results[0]?.GaSoft,
+            GaDistendend: data.d.results[0]?.GaDistendend,
+            GaFirm: data.d.results[0]?.GaFirm,
+            GaTenderness: data.d.results[0]?.GaTenderness,
+            GeEnema: data.d.results[0]?.GeEnema,
+            GeLaxatives: data.d.results[0]?.GeLaxatives,
+            GeOstomyType: data.d.results[0]?.GeOstomyType,
+            GeOstomyTypeTxt: data.d.results[0]?.GeOstomyTypeTxt,
+            GeOther: data.d.results[0]?.GeOther,
+            GeOtherTxt: data.d.results[0]?.GeOtherTxt,
+            RmProstate: data.d.results[0]?.RmProstate,
+            RmLesions: data.d.results[0]?.RmLesions,
+            RmDischarge: data.d.results[0]?.RmDischarge,
+            RmScrotal: data.d.results[0]?.RmScrotal,
+            RmDescr: data.d.results[0]?.RmDescr,
+            RfPregnant: data.d.results[0]?.RfPregnant,
+            RfLmp: data.d.results[0]?.RfLmp,
+            RfDischarge: data.d.results[0]?.RfDischarge,
+            RfLesions: data.d.results[0]?.RfLesions,
+            RfItching: data.d.results[0]?.RfItching,
+            RfPelvic: data.d.results[0]?.RfPelvic,
+            RfMenarcheAge: data.d.results[0]?.RfMenarcheAge,
+            RfNotReached1: data.d.results[0]?.RfNotReached1,
+            RfMenopauseAge: data.d.results[0]?.RfMenopauseAge,
+            RfNotReached2: data.d.results[0]?.RfNotReached2,
+            RfBirthCont: data.d.results[0]?.RfBirthCont,
+            RfBirthContTxt: data.d.results[0]?.RfBirthContTxt,
+            RbTenderness: data.d.results[0]?.RbTenderness,
+            RbDischarge: data.d.results[0]?.RbDischarge,
+            RbSwelling: data.d.results[0]?.RbSwelling,
+            RbProsthesis: data.d.results[0]?.RbProsthesis,
+            RbLumps: data.d.results[0]?.RbLumps,
+            GPainful: data.d.results[0]?.GPainful,
+            GIncontinence: data.d.results[0]?.GIncontinence,
+            GBurning: data.d.results[0]?.GBurning,
+            GHematuria: data.d.results[0]?.GHematuria,
+            GOliguria: data.d.results[0]?.GOliguria,
+            GDysuria: data.d.results[0]?.GDysuria, //
+            GPolyuria: data.d.results[0]?.GPolyuria,
+            GDribbling: data.d.results[0]?.GDribbling,
+            GNocturia: data.d.results[0]?.GNocturia,
+            GRetention: data.d.results[0]?.GRetention,
+            GStraining: data.d.results[0]?.GStraining,
+            GUrineColour: data.d.results[0]?.GUrineColour,
+            GUrineClarity: data.d.results[0]?.GUrineClarity,
+            GCatheterType: data.d.results[0]?.GCatheterType,
+            GCatheterTypeTxt: data.d.results[0]?.GCatheterTypeTxt,
+            GMicturition: data.d.results[0]?.GMicturition,
+            GOther: data.d.results[0]?.GOther,
+            GOtherTxt: data.d.results[0]?.GOtherTxt,
+            SSkinColor: data.d.results[0]?.SSkinColor,
+            SSkinColorTxt: data.d.results[0]?.SSkinColorTxt,
+            STemperature: data.d.results[0]?.STemperature,
+            SMoisture: data.d.results[0]?.SMoisture,
+            SLesions: data.d.results[0]?.SLesions,
+            SLocation: data.d.results[0]?.SLocation,
+            NnHeadache: data.d.results[0]?.NnHeadache,
+            NnDizziness: data.d.results[0]?.NnDizziness,
+            NnNumbness: data.d.results[0]?.NnNumbness,
+            NnNumbnessLoc: data.d.results[0]?.NnNumbnessLoc,
+            NnTingling: data.d.results[0]?.NnTingling,
+            NnTinglingLoc: data.d.results[0]?.NnTinglingLoc,
+            NnParalysis: data.d.results[0]?.NnParalysis,
+            NnParalysisLoc: data.d.results[0]?.NnParalysisLoc,
+            NnTremors: data.d.results[0]?.NnTremors,
+            NnTremorsLoc: data.d.results[0]?.NnTremorsLoc,
+            NLevelConscious: data.d.results[0]?.NLevelConscious,
+            NoPlace: data.d.results[0]?.NoPlace,
+            NoTime: data.d.results[0]?.NoTime,
+            NoPresent: data.d.results[0]?.NoPresent,
+            NResponsiveness: data.d.results[0]?.NResponsiveness,
+            CgChestPain: data.d.results[0]?.CgChestPain,
+            CgPalpitations: data.d.results[0]?.CgPalpitations,
+
+            CgPainCalves: data.d.results[0]?.CgPainCalves,
+            CpRegular: data.d.results[0]?.CpRegular,
+            CpIrregular: data.d.results[0]?.CpIrregular,
+            CpStrong: data.d.results[0]?.CpStrong,
+            CpWeak: data.d.results[0]?.CpWeak,
+            CPedalPulses: data.d.results[0]?.CPedalPulses,
+            CeYes: data.d.results[0]?.CeYes,
+            CeNo: data.d.results[0]?.CeNo,
+            CePitting: data.d.results[0]?.CePitting,
+            CeNonPitting: data.d.results[0]?.CeNonPitting,
+            CeLocation: data.d.results[0]?.CeLocation,
+            CNailBed: data.d.results[0]?.CNailBed,
+            CCapillaryRefill: data.d.results[0]?.CCapillaryRefill,
+            EeHardHearing: data.d.results[0]?.EeHardHearing,
+            EePain: data.d.results[0]?.EePain,
+            EeDrainage: data.d.results[0]?.EeDrainage,
+            EeDeaf: data.d.results[0]?.EeDeaf,
+            EnEpistaxis: data.d.results[0]?.EnEpistaxis,
+            EnCongestion: data.d.results[0]?.EnCongestion,
+            EnDrainage: data.d.results[0]?.EnDrainage,
+            EnType: data.d.results[0]?.EnType,
+            EtDysphagia: data.d.results[0]?.EtDysphagia,
+            EtBleeding: data.d.results[0]?.EtBleeding,
+            EtSwollenGlands: data.d.results[0]?.EtSwollenGlands,
+            EtSwollenGums: data.d.results[0]?.EtSwollenGums,
+            EtPain: data.d.results[0]?.EtPain,
+            EtLesions: data.d.results[0]?.EtLesions,
+            EtLocation: data.d.results[0]?.EtLocation,
+            OGlassEye: data.d.results[0]?.OGlassEye,
+            ORedness: data.d.results[0]?.ORedness,
+            OPain: data.d.results[0]?.OPain,
+            ODischarge: data.d.results[0]?.ODischarge,
+            OBlind: data.d.results[0]?.OBlind,
+            OComments: data.d.results[0]?.OComments,
+            RChestAppearance: data.d.results[0]?.RChestAppearance,
+            RbDyspneaRest: data.d.results[0]?.RbDyspneaRest,
+            RbDyspneaExertion: data.d.results[0]?.RbDyspneaExertion,
+            RbNonLabored: data.d.results[0]?.RbNonLabored,
+            RBbreathSounds: data.d.results[0]?.RBbreathSounds,
+            RRhonchi: data.d.results[0]?.RRhonchi,
+            RCough: data.d.results[0]?.RCough,
+            RColor: data.d.results[0]?.RColor,
+            RAmount: data.d.results[0]?.RAmount,
+            RTracheostomy: data.d.results[0]?.RTracheostomy,
+            RTubeSize: data.d.results[0]?.RTubeSize,
+            RO2: data.d.results[0]?.RO2,
+            RBy: data.d.results[0]?.RBy,
+            ROtherTxt: data.d.results[0]?.ROtherTxt,
+            RAt: data.d.results[0]?.RAt,
+            FunSelfNoProblem: data.d.results[0]?.FunSelfNoProblem,
+            FunSelfNeedsSuper: data.d.results[0]?.FunSelfNeedsSuper,
+            FunSelfNeedsFeeding: data.d.results[0]?.FunSelfNeedsFeeding,
+            FunSelfNeedsHygiene: data.d.results[0]?.FunSelfNeedsHygiene,
+            FunSelfNeedsToileting: data.d.results[0]?.FunSelfNeedsToileting,
+            FunSelfNeedsAmulation: data.d.results[0]?.FunSelfNeedsAmulation,
+            FunMusNoProblem: data.d.results[0]?.FunMusNoProblem,
+            FunMusProblemIdentified: data.d.results[0]?.FunMusProblemIdentified,
+            FunMusProblems: data.d.results[0]?.FunMusProblems,
+            FunAssEquipmentNone: data.d.results[0]?.FunAssEquipmentNone,
+            FunAssEquipmentUseOf: data.d.results[0]?.FunAssEquipmentUseOf,
+            FunAssEquipmentUseOfTyp: data.d.results[0]?.FunAssEquipmentUseOfTyp,
+            FunAssEquipmentUseOfTxt: data.d.results[0]?.FunAssEquipmentUseOfTxt,
+            FunDrNotification: data.d.results[0]?.FunDrNotification,
+            FunNotified: data.d.results[0]?.FunNotified,
+            ImpairedNutritional0: data.d.results[0]?.ImpairedNutritional0,
+            ImpairedNutritional1: data.d.results[0]?.ImpairedNutritional1,
+            ImpairedNutritional2: data.d.results[0]?.ImpairedNutritional2,
+            ImpairedNutritional3: data.d.results[0]?.ImpairedNutritional3,
+            ImpairedNutritionalScore: data.d.results[0]?.ImpairedNutritionalScore,
+            SeverityDisease0: data.d.results[0]?.SeverityDisease0,
+            SeverityDisease1: data.d.results[0]?.SeverityDisease1,
+            SeverityDisease2: data.d.results[0]?.SeverityDisease2,
+            SeverityDisease3: data.d.results[0]?.SeverityDisease3,
+            SeverityDiseaseScore: data.d.results[0]?.SeverityDiseaseScore,
+            TotalScore: data.d.results[0]?.TotalScore,
+            AgeAdjustedScore: data.d.results[0]?.AgeAdjustedScore,
+            PhysicianInformed: data.d.results[0]?.PhysicianInformed,
+            NamePhysician: data.d.results[0]?.NamePhysician,
+            PComments: data.d.results[0]?.PComments,
+            SSleepRest: data.d.results[0]?.SSleepRest,
+            SSleepTime: data.d.results[0]?.SSleepTime,
+            SNumberHours: data.d.results[0]?.SNumberHours,
+            SComments: data.d.results[0]?.SComments,
+            OIdBand: data.d.results[0]?.OIdBand,
+            OBathroom: data.d.results[0]?.OBathroom,
+            OBatchCallLight: data.d.results[0]?.OBatchCallLight,
+            ONurseCall: data.d.results[0]?.ONurseCall,
+            OMealTimes: data.d.results[0]?.OMealTimes,
+            OVisitingHours: data.d.results[0]?.OVisitingHours,
+            OTvControl: data.d.results[0]?.OTvControl,
+            ONonSmokingPolicy: data.d.results[0]?.ONonSmokingPolicy,
+            OEqual: data.d.results[0]?.OEqual,
+            OTelephone: data.d.results[0]?.OTelephone,
+            OFallRiskScore: data.d.results[0]?.OFallRiskScore,
+            MaritalStatus: data.d.results[0]?.MaritalStatus,
+            Since: data.d.results[0]?.Since,
+            NumberSpouse: data.d.results[0]?.NumberSpouse,
+            HComments: data.d.results[0]?.HComments,
+            AttendPhy: data.d.results[0]?.AttendPhy,
+            DocStatus: data.d.results[0]?.DocStatus
+          });
+          this.nursingAdmissionForm.patchValue({
+            ADate: this.parseDate(data.d.results[0].ADate),
+            ATime: this.parseTime(data.d.results[0].ATime),
+          });
+          this.toAllergyArr = data.d.results[0].TOALLERGIES.results;
+          if(data?.d?.results[0].TOSOCIAL.results.length) {
+            let checkAlcoholData = data?.d?.results[0].TOSOCIAL.results.find(res => res.Type == 'Alcohol');
+            if (checkAlcoholData) {
+              this.socialHistoryList[0].DateFrom = checkAlcoholData.DateFrom;
+              this.socialHistoryList[0].Status = checkAlcoholData.Status;
+              this.socialHistoryList[0].Quantity = checkAlcoholData.Quantity;
+              this.socialHistoryList[0].Duration = checkAlcoholData.Duration;
+              this.socialHistoryList[0].Habitid = checkAlcoholData.Habitid;
+            }
+            let checkDrugsData = data?.d?.results[0].TOSOCIAL.results.find(res => res?.Type?.split('/')[0].trim() === 'Drug');
+            if (checkDrugsData) {
+              this.socialHistoryList[1].DateFrom = checkDrugsData.DateFrom;
+              this.socialHistoryList[1].Status = checkDrugsData.Status;
+              this.socialHistoryList[1].Quantity = checkDrugsData.Quantity;
+              this.socialHistoryList[1].Duration = checkDrugsData.Duration;
+              this.socialHistoryList[1].Habitid = checkDrugsData.Habitid;
+            }
+            let checkTobaccoData = data?.d?.results[0].TOSOCIAL.results.find(res => res?.Type?.split('/')[0].trim() === 'Tobacco');
+            if (checkTobaccoData) {
+              this.socialHistoryList[2].DateFrom = checkTobaccoData.DateFrom;
+              this.socialHistoryList[2].Status = checkTobaccoData.Status;
+              this.socialHistoryList[2].Quantity = checkTobaccoData.Quantity;
+              this.socialHistoryList[2].Duration = checkTobaccoData.Duration;
+              this.socialHistoryList[2].Habitid = checkTobaccoData.Habitid;
+            }
+            let checkOtherData = data?.d?.results[0].TOSOCIAL.results.find(res => res?.Type?.split('/')[0].trim() === 'Other');
+            if (checkOtherData) {
+              this.socialHistoryList[3].DateFrom = checkOtherData.DateFrom;
+              this.socialHistoryList[3].Status = checkOtherData.Status;
+              this.socialHistoryList[3].Quantity = checkOtherData.Quantity;
+              this.socialHistoryList[3].Duration = checkOtherData.Duration;
+              this.socialHistoryList[3].Habitid = checkOtherData.Habitid;
+            }
+          }
+          if(data?.d?.results[0].TOSCALE.results.length) {
+            data?.d?.results[0].TOSCALE.results.forEach((element) => {
+              this.scalesList.forEach((res: any) => {
+                if (element.ScaleType == res.ScaleType && element.LastScore) {
+                  res.Datetimee = this.parseDate(element.Datetimee),
+                    res.Dockey = element.Dockey,
+                    res.ScoreDesc = element.ScoreDesc,
+                    res.LastScore = element.LastScore,
+                    res.ScaleType = element.ScaleType
+                }
+              })
+            })
+          }
+          this.bindDataToFormArray(data?.d?.results[0].TOINFECTION.results)
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nursing care plans: ${err}`
+          );
+        },
+      });
+  }
+
+  bindDataToFormArray(data: any[]): void {
+    if(data.length) {
+      this.items.clear(); // Clear the existing form array
+  
+      data.forEach(item => {
+        this.items.push(this.formBuilder.group({
+          Dockey: [item.Dockey],
+          InfectiousDiesease: [item.InfectiousDiesease],
+          Status: [item.Status],
+          TypeIsolation: [item.TypeIsolation]
+        }));
+      });
+    }
+  }
+
+  get items(): FormArray {
+    return this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
   }
 
   public getPatinetDetails(encounterId) {
@@ -256,14 +603,11 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initForm();
+    
   }
 
   initForm() {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss a');
-    console.log(currentTime);
-    
-
     this.nursingAdmissionForm = this.formBuilder.group({
       Dockey: '',
       Dtid: 'ZMED_NRADM',
@@ -272,7 +616,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
       Orgdo: this.storageService.patientData.deptOrgUnit,
-      AAdmittedWard: '2nd Floor-Zone C-IP',
+      AAdmittedWard: '',
       ADate: [new Date()],
       ATime: "",
       ARoom: '',
@@ -284,7 +628,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       AInfoObtained: '',
       AInfoObtainedT: '',
       ALanguageSpoken: 'English',
-      ASchoolGrade: '',
+      // ASchoolGrade: '',
       AEducated: '',
       AFavouriteToy: '',
       AReasonVisit: '',
@@ -648,32 +992,23 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
 
   public glasgowValue(event) {
     this.scalesList[0].LastScore = event?.totalScore.toString();
-    this.scalesList[0].description = event?.description;
+    this.scalesList[0].ScoreDesc = event?.ScoreDesc;
     this.scalesList[0].Dockey = event?.dockey;
-    this.scalesList[0].Datetimee = `${new DatePipe('en-US').transform(
-      event?.date,
-      'dd.MM.yyyy'
-    )}/${event?.time}`;
+    this.scalesList[0].Datetimee = event?.date;
   }
 
   public facePainValue(event) {
     this.scalesList[1].LastScore = event?.totalScore;
-    this.scalesList[1].description = event?.description;
+    this.scalesList[1].ScoreDesc = event?.ScoreDesc;
     this.scalesList[1].Dockey = event?.dockey;
-    this.scalesList[1].Datetimee = `${new DatePipe('en-US').transform(
-      event?.date,
-      'dd.MM.yyyy'
-    )}/${event?.time}`;
+    this.scalesList[1].Datetimee = event?.date;
   }
 
   public numericValue(event) {
     this.scalesList[2].LastScore = event?.totalScore;
-    this.scalesList[2].description = event?.description;
+    this.scalesList[2].ScoreDesc = event?.ScoreDesc;
     this.scalesList[2].Dockey = event?.dockey;
-    this.scalesList[2].Datetimee = `${new DatePipe('en-US').transform(
-      event?.date,
-      'dd.MM.yyyy'
-    )}/${event?.time}`;
+    this.scalesList[2].Datetimee = event?.date;
   }
 
   public openGlosgowComaModel(item: any) {
@@ -814,11 +1149,11 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         NoConsumptionKnown: '',
       },
     };
-    this.emergencyService.saveAlcoholWithDrink(payload).subscribe(() => {
+    this.emergencyService.saveAlcoholWithDrink(payload).subscribe((res: any) => {
       this.sharedService.successSwallModel(
         'Alcohol habit with no drink saved successfully.'
       );
-      this.getSocialHistoryHabitList();
+      this.getSocialHistoryHabitList(res?.d?.Habitid);
     });
   }
 
@@ -835,11 +1170,11 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         NoConsumptionKnown: '',
       },
     };
-    this.emergencyService.saveTabaccoHabit(payload).subscribe(() => {
+    this.emergencyService.saveTabaccoHabit(payload).subscribe((res: any) => {
       this.sharedService.successSwallModel(
         'Tobacco habit with no smoke saved successfully.'
       );
-      this.getSocialHistoryHabitList();
+      this.getSocialHistoryHabitList(res?.d?.Habitid);
     });
   }
 
@@ -856,11 +1191,11 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         NoConsumptionKnown: '',
       },
     };
-    this.emergencyService.saveDrugsHabit(payload).subscribe(() => {
+    this.emergencyService.saveDrugsHabit(payload).subscribe((res: any) => {
       this.sharedService.successSwallModel(
         'Drugs habit with no drugs saved successfully.'
       );
-      this.getSocialHistoryHabitList();
+      this.getSocialHistoryHabitList(res?.d?.Habitid);
     });
   }
 
@@ -877,16 +1212,16 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         NoConsumptionKnown: '',
       },
     };
-    this.emergencyService.saveOtherHabit(payload).subscribe(() => {
+    this.emergencyService.saveOtherHabit(payload).subscribe((res: any) => {
       this.sharedService.successSwallModel(
         'Other habit with not consumes saved successfully.'
       );
-      this.getSocialHistoryHabitList();
+      this.getSocialHistoryHabitList(res?.d?.Habitid);
     });
   }
 
   // social history habit list API for table
-  public getSocialHistoryHabitList() {
+  public getSocialHistoryHabitList(Habitid?: any) {
     this.emergencyService
       .getSocialHabitList(this.paramsObject.patnr)
       .subscribe({
@@ -894,7 +1229,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
           // Handle successful data retrieval
           this.socialHabitList = data?.d?.results;
           let checkAlcoholData = data?.d?.results.find(
-            (res) => res.Type == 'Alcohol'
+            (res) => res.Type == 'Alcohol' && res.Habitid == Habitid
           );
           if (checkAlcoholData) {
             this.socialHistoryList[0].DateFrom = checkAlcoholData.DateFrom;
@@ -904,7 +1239,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
             this.socialHistoryList[0].Habitid = checkAlcoholData.Habitid;
           }
           let checkDrugsData = data?.d?.results.find(
-            (res) => res.Type.split('/')[0].trim() === 'Drug'
+            (res) => res.Type.split('/')[0].trim() === 'Drug' && res.Habitid == Habitid
           );
           if (checkDrugsData) {
             this.socialHistoryList[1].DateFrom = checkDrugsData.DateFrom;
@@ -914,7 +1249,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
             this.socialHistoryList[1].Habitid = checkDrugsData.Habitid;
           }
           let checkTobaccoData = data?.d?.results.find(
-            (res) => res.Type.split('/')[0].trim() === 'Tobacco'
+            (res) => res.Type.split('/')[0].trim() === 'Tobacco' && res.Habitid == Habitid
           );
           if (checkTobaccoData) {
             this.socialHistoryList[2].DateFrom = checkTobaccoData.DateFrom;
@@ -924,7 +1259,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
             this.socialHistoryList[2].Habitid = checkTobaccoData.Habitid;
           }
           let checkOtherData = data?.d?.results.find(
-            (res) => res.Type.split('/')[0].trim() === 'Other'
+            (res) => res.Type.split('/')[0].trim() === 'Other' && res.Habitid == Habitid
           );
           if (checkOtherData) {
             this.socialHistoryList[3].DateFrom = checkOtherData.DateFrom;
@@ -941,24 +1276,35 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       });
   }
 
-  createNursingAdmissionDoc(dockey: any, actiontype?: string) {
+  createNursingAdmissionDoc(docStatus: any, actiontype?: string) {
     return new Promise((resolve, reject) => {
+      this.nursingAdmissionForm.value.DocStatus = docStatus;
       let paylaod = this.nursingAdmissionForm.value;
       paylaod.ADate = this.sanitizeSAPDateFormat(this.nursingAdmissionForm.value.ADate);
       paylaod.ATime = this.parsePayloadFormateTime(this.nursingAdmissionForm.value.ATime);
-      paylaod.RAt = this.parsePayloadFormateTime(this.nursingAdmissionForm.value.RAt);
       delete paylaod.disabledAllPhy
       delete paylaod.TOMEDICATION
       paylaod.TOALLERGIES = this.toAllergyArr;
-      paylaod.TOSCALE = this.scalesList.filter(item => item.LastScore);
-      paylaod.TOINFECTION = this.nursingAdmissionForm.value.TOINFECTION.filter(item => item.InfectiousDiesease);
-      paylaod.TOSCALE.forEach((element: any) =>{
-        if(element.LastScore){ 
-          element.Datetimee = this.formatDateToMilliseconds(element.Datetimee)
+      paylaod.TOSCALE = this.scalesList.filter((res) => {
+        delete res.value;
+        if(res.LastScore) {
+          if(res.Datetimee) res.Datetimee = this.sanitizeSAPDateFormat(res.Datetimee)
+          return res;
         }
       });
+      let updatedList = this.socialHistoryList.map(item => {
+        const { Status, value, label, Quantity, DateFrom, Habitid, ...rest } = item;
+        if (item.Status) {
+          return { ...rest, Description: Status, ConsumptionQty: Quantity, Dockey: '', Year: null };
+        }
+      });
+      updatedList = updatedList.filter(item => item !== undefined);
+      paylaod.TOSOCIAL = updatedList;
+      paylaod.TOINFECTION = this.nursingAdmissionForm.value.TOINFECTION.filter(item => item.InfectiousDiesease);
+      console.log(paylaod, "---")
+      // return 
       this.subscription = this.dayCaseDashboard
-      .createNursingDischargeDoc(paylaod)
+      .createNursingAdmissionDoc(paylaod)
       .subscribe({
         next: (data: any) => {},
         error: (err: any) => {
@@ -992,6 +1338,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   }
 
   formatDateToMilliseconds(dateString: string): string {
+    console.log(dateString, "--")
     const [datePart, timePart] = dateString.split('/');
     const [day, month, year] = datePart.split('.').map(Number);
     const [hours, minutes, seconds] = timePart.split(':').map(Number);
@@ -1075,5 +1422,13 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     // Construct the formatted time string
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
     return null;
+  }
+
+  parseDate(date: string) {
+    if (date) {
+      if(new Date(new Date(+(date.replace('/Date(', '').replace(')/', ''))).toLocaleDateString("en-US"))) {
+        return new Date(new Date(+(date.replace('/Date(', '').replace(')/', ''))).toLocaleDateString("en-US"));
+      }
+    }
   }
 }

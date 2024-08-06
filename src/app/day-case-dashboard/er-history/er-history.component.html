@@ -69,7 +69,7 @@
               text-overflow: ellipsis;
               overflow: hidden;
               white-space: nowrap;cursor: pointer;" [title]="item.Diagnose" (click)="showDiagnosis(item)">{{item.Diagnose}}</td>
-              <td class="border-top-none" style="width: 10%;">{{item.ZzfinClear}}</td>
+              <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
               <td class="border-top-none" style="width: 10%;">{{item.DischargeType}}</td>
               <td class="border-top-none" style="width: 10%;">{{getTime(item.DischargeTime)}}</td>
               
