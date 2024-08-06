@@ -812,6 +812,7 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openAssessment) {
       this.DialysisAssessment.ngOnDestroy();
       this.refreshDialysisAssessment();
+      this.redirecTreatment();
     }
     if (this.openEducationAssessment) {
       this.educationAssessmentComp.ngOnDestroy();
@@ -820,7 +821,19 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openEmergencyNursingDoc) {
       this.EmergencyNursingDocumentComp.ngOnDestroy();
     }
-
+    if(this.openMorseFallScale){
+      this.morseFallScaleC.ngOnDestroy();
+      this.redirecTreatment();
+    }
+    if(this.openHemoCatheter){
+      this.hemoCatheterC.ngOnDestroy();
+      this.redirecTreatment();
+    }
+    if(this.openHemoDialysisFistulaGraft){
+      this.hemoDialysisFistulaGraftC.ngOnDestroy();
+      this.redirecTreatment();
+    }
+   
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getTriageLatestDocuments();
@@ -877,7 +890,7 @@ export class PatientDocumentationComponent implements OnInit {
     localStorage.setItem('tabName',"Documenatation")
 
     // Redirect to the new URL
-    // window.location.href = newUrl;
+    window.location.href = newUrl;
   }
 
   

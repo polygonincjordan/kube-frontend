@@ -143,6 +143,9 @@ export class HemodialysisFistulaGraftComponent implements OnInit {
     this.daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
   }
 
+  ngOnDestroy(): void {
+  }
+
   parseTime(data: string) {    
     if (data && data.length) {
       const strArr: string[] = data.split('');

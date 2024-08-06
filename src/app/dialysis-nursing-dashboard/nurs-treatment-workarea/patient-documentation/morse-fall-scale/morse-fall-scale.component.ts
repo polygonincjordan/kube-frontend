@@ -71,6 +71,8 @@ export class MorseFallScaleComponent implements OnInit {
     this.calculateTotal();
     
   }
+  ngOnDestroy(): void {
+  }
 
   getFormData(){
     return this.MorsefallForm.value;

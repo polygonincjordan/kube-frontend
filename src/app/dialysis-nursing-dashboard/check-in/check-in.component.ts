@@ -26,6 +26,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { formatDate } from 'ngx-bootstrap/chronos';
 import { environment } from 'src/environments/environment';
 import { ProgressNotePopupComponent } from './progress-note-popup/progress-note-popup.component';
+import { SessionStorageService } from '@services/session-storage.service';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -93,6 +94,7 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
+    private sessionStorage:SessionStorageService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -1149,6 +1151,7 @@ export class CheckInComponent implements OnInit {
     this.storageService.setCheckinData(data);
     localStorage.setItem('checkindata', JSON.stringify(data));
     localStorage.setItem('tabName', 'patientProfile');
+    this.sessionStorage.setItem(data.Patnr,JSON.stringify(data))
     this.redirectToTreatment(json);
   }
   redirectToTreatment(data) {

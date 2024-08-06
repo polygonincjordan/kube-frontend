@@ -10,6 +10,7 @@ import {
 } from '@services/admission/interfaces/template-model';
 import { EEmrService } from '@services/e-emr.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { SessionStorageService } from '@services/session-storage.service';
 import { StorageService } from '@services/storage.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
@@ -31,13 +32,15 @@ export class ProgressNotesComponent implements OnInit {
   templateList: ProgressNotesTemplateModel[];
   templteContent: any;
   userProfileDetail: any;
+  fromUser:any = {}
   constructor(
     private formBuider: FormBuilder,
     public emergencyService: EmergencyService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
     private _dataServices: EEmrService,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private sessionStorage:SessionStorageService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObj.patientId = params.patnr;
@@ -55,6 +58,13 @@ export class ProgressNotesComponent implements OnInit {
 
   initForm() {
     console.log('this._storageService?.patientData',this._storageService?.patientData);
+    let data = JSON.parse(this.sessionStorage.getItem(this.paramsObj.patientId))
+    console.log('data',data);
+    this.fromUser = data
+    console.log(' this.fromUser', this.fromUser);
+    this.sessionStorage.removeItem(this.paramsObj.patientId)
+    
+    
     
     this.progressNoteForm = this.formBuider.group({
       PatientId: [this.paramsObj.patientId],
@@ -63,7 +73,9 @@ export class ProgressNotesComponent implements OnInit {
       ProfGroup: [this.userProfileDetail.ProfGroup],
       ActionDate: [new Date()],
       ActionTime: [new Date().getHours() + ':' + new Date().getMinutes()],
-      DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
+      // DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
+      // DocumentOu: [this.fromUser?.Treatmentou ? this.fromUser?.Treatmentou : this._storageService?.patientData?.deptOrgUnit],
+      DocumentOu: ['F2DTUAMC'],
       Text: ['', [Validators.required]],
       Category: [],
       EmployeeResp: ['9000000000'],
@@ -131,6 +143,8 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   createProgressNote() {
+    console.log('this.progressNoteForm.value',this.progressNoteForm.value);
+    
     if (this.progressNoteForm.value.ProfGroup) {
       if (this.progressNoteForm.value.Text) {
         let createTime = this.progressNoteForm.value.ActionTime.split(':');

@@ -33,6 +33,10 @@ onSelect(selecteddata: any) {
     this.ePrescriptionService.prioradmissiondata(item)
 });
 }
+changeDatee(event){
+  console.log("=-=-=--=-=-=",event);
+  this.ePrescriptionService.loadMAREventData(event)
+}
 filteredData = this.data;
 searchTerm = '';
 filterItems(data) {
