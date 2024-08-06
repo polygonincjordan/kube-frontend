@@ -45,7 +45,7 @@ export class InPatientConfigurationService {
     private route: ActivatedRoute
   ) {
     this.route.queryParams.subscribe((params) => {
-      // this.getListOfAllPatientVisitDataSet()
+      this.getListOfAllPatientVisitDataSet()
     })
   }
 
