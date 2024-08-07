@@ -293,6 +293,8 @@ export class HeaderComponent implements OnInit {
       (_success: any) => {
         if (_success) {
           const url = new URL(_success?.d?.Url);
+          console.log('url',url);
+          
 
           const params = new URLSearchParams(url.search);
           const patnr = params.get('patnr');

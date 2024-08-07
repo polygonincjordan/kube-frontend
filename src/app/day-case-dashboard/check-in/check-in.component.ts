@@ -1023,8 +1023,6 @@ export class CheckInComponent implements OnInit {
         // Handle getTriageLatestDocumentSet response
         const latestDocumentData = latestDocumentResponse.d.results[0];
         // Handle triage popup open based on condition
-        console.log('latestDocumentData', latestDocumentData);
-        console.log('triageListData', triageListData);
         // Do whatever processing you need with the responses here
         if (latestDocumentData === undefined) {
           this.triageModal.openModalForMain(data, '', triageListData);
@@ -1076,6 +1074,7 @@ export class CheckInComponent implements OnInit {
       Einri: data.Einri,
       Falnr: data.Falnr,
       Lfdnr: data.Lfdbw,
+      Treatmentou: data.Orgpf,
       redirectFor: '',
       doctype: '',
       action: ''

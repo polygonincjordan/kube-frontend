@@ -101,7 +101,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
   falnr: any;
   admittedFrom = "";
   lfdnr: any;
-  ErHistoryPatientCount: any;
+  ErHistoryPatientCount: any=0;
   labReceivedData: any;
   filterStatusList: any[];
   dropdownSettings = {}
@@ -670,6 +670,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this.defaultSelectedDateRange.push(new Date())
     this.getCurrentDate();
     if (module == 'checkin') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = ""
       this.currentDate = new Date();
@@ -688,6 +689,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.bed = false;
       this.reservation= false;
     }else if (module == 'bed') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = "Inpatient Dialysis Clinical Orders"
       this.currentDate = new Date();
@@ -797,6 +799,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.bed = false;
       this.reservation= false;
     } else if (module == 'noConsumables') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Patients Without Consumables';
       this.treatmentarea = false;
@@ -814,6 +817,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.bed = false;
       this.reservation= false;
     } else if (module == 'LabResults') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Lab Extraction';
       this.treatmentarea = false;
@@ -831,6 +835,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.bed = false;
       this.reservation= false;
     } else if (module == 'PhysicianOrder') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Not Executed Physician Order'
       this.treatmentarea = false;
@@ -850,6 +855,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.form.controls['admittedTo'].disable();
       this.reservation= false;
     } else if (module == 'AdministeredDoses') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Medication Administration'
       this.treatmentarea = false;
@@ -867,6 +873,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
       this.bed = false;
       this.reservation= false;
     } else if (module == 'noReleaseDoc') {
+      this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.headerLabel = 'Not Released/Missed Documents '
       this.treatmentarea = false;
@@ -949,7 +956,9 @@ export class DialysisNursingDashboardComponent implements OnInit {
   navigateToTreatmentArea(checkindata) {
     // changes the route without moving from the current view or
     // triggering a navigation event,
+    console.log('checkindata',checkindata);
     if (checkindata.Lfdbw) {
+      
       this._router.navigate([], {
         relativeTo: this._route,
         queryParams: {
@@ -999,6 +1008,8 @@ export class DialysisNursingDashboardComponent implements OnInit {
         checkindata.action +
         '&doctype=' +
         checkindata.doctype +
+        '&tretmentOU=' +
+        checkindata.Treatmentou +
         '&nav=Treatmentarea',
         '_blank'
       );
@@ -1118,7 +1129,11 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this.updatedDate = event
     this.BedComponent?.getErList(event);
     this.CheckInComponent?.getErList(event);
+    this.LabResultsComponent?.getErList(event)
+    this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(event)
     this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(event);
+    this.AdministeredDosesComponent?.getMedicationAdministrationlist(event);
+    this.PhysicianOrdersListComponent?.getErList(event)
   }
 
 

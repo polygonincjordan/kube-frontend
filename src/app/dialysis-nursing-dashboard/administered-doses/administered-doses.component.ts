@@ -172,6 +172,7 @@ value: any;
       this.missedMedPatientList = res.d.results;
       this.filteredPatients=res.d.results;
       this.dataToParent.emit(this.missedMedPatientList);
+      this.sendErPatientCount.emit(this.missedMedPatientList?.length)
    })
   }
 
