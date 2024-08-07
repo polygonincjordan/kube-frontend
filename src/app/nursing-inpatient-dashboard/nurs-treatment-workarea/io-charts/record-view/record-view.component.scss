@@ -24,20 +24,20 @@
   font-size: 16px;
 }
 
-.date-function {
-  border-radius: 8px;
-  position: relative;
-  top: -10px;
-  min-width: 21%;
+// .date-function {
+//   border-radius: 8px;
+//   position: relative;
+//   top: -10px;
+//   min-width: 21%;
 
-  img {
-    position: relative;
-    top: 37px;
-    right: 6px;
-    float: right;
-    transform: translateY(-50%);
-  }
-}
+//   img {
+//     position: relative;
+//     top: 37px;
+//     right: 6px;
+//     float: right;
+//     transform: translateY(-50%);
+//   }
+// }
 .date-function {
   border-radius: 8px;
   position: relative;
@@ -55,6 +55,11 @@
 
 ::ng-deep .record-view .ng-select-container {
   border-radius: 10px !important;
+}
+
+.table {
+  z-index: 1;
+  margin-left: 11px;
 }
 
 thead {
@@ -93,6 +98,13 @@ tr td {
   right: -11px;
 }
 
+.category-arrow {
+  left: -24px;
+  right: unset;
+  z-index: 2;
+  top: 0;
+}
+
 .img-collapse {
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -108,4 +120,19 @@ tr td {
 
 .collapse.show {
   display: table-row;
+}
+
+.value-color {
+  color: #0056b0;
+  font-weight: bold;
+  background-color: #fbfcff !important;
+}
+
+.nonvalue-color {
+  background-color: #f7f7f7 !important;
+}
+
+::ng-deep .ng-option-disabled {
+  color: black !important;
+  font-weight: bold !important;
 }

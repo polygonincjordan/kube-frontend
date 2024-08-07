@@ -131,7 +131,9 @@
               appendTo="body"
               placeholder="Choose From The List"
               formControlName="type"
-              (change)="onSelectType($event, saveTypeModal)"
+              (change)="
+                onSelectType($event, saveTypeModal, i, inputrowName(i).category)
+              "
               [ngClass]="{
                 'is-invalid': row.get('type').invalid && row.get('type').touched
               }"
@@ -161,7 +163,11 @@
             </div>
             <div
               class="invalid-feedback"
-              *ngIf="row.get('type').invalid && row.get('type').touched"
+              *ngIf="
+                row.get('type').invalid &&
+                row.get('type').touched &&
+                inputrowName(i).category !== 'Parenteral'
+              "
             >
               Type is required
             </div>
@@ -170,7 +176,7 @@
             <input
               formControlName="volume"
               class="form-control"
-              placeholder="enter volume"
+              placeholder="Enter Volume"
               [ngClass]="{
                 'is-invalid':
                   row.get('volume').invalid && row.get('volume').touched
@@ -180,7 +186,7 @@
               class="invalid-feedback"
               *ngIf="row.get('volume').invalid && row.get('volume').touched"
             >
-              Valid volume is required
+              Numeric Value is required
             </div>
           </td>
           <td>{{ inputrowName(i).uom }}</td>
@@ -188,7 +194,7 @@
             <input
               formControlName="remarks"
               class="form-control"
-              placeholder="enter remarks"
+              placeholder="Enter Remarks"
               [ngClass]="{
                 'is-invalid':
                   row.get('remarks').invalid && row.get('remarks').touched
@@ -373,11 +379,12 @@
               appendTo="body"
               placeholder="Choose From The List"
               formControlName="type"
+              (change)="outputTypeChange($event, i)"
               [ngClass]="{
                 'is-invalid': row.get('type').invalid && row.get('type').touched
               }"
             >
-              <ng-option value="1">Foley’s Catheter</ng-option>
+              <ng-option value="Foley’s Catheter">Foley’s Catheter</ng-option>
             </ng-select>
             <div
               class="invalid-feedback"
@@ -388,20 +395,20 @@
           </td>
           <td>
             <input
+              type="number"
               formControlName="volume"
               [ngClass]="{
                 'is-invalid':
                   row.get('volume').invalid && row.get('volume').touched
               }"
               class="form-control"
-              placeholder="enter volume"
-              required
+              placeholder="Enter Volume"
             />
             <div
               class="invalid-feedback"
               *ngIf="row.get('volume').invalid && row.get('volume').touched"
             >
-              Valid volume is required
+              Numeric Value is required
             </div>
           </td>
           <td>{{ outputrowName(i).uom }}</td>
@@ -413,7 +420,7 @@
                 'is-invalid':
                   row.get('remarks').invalid && row.get('remarks').touched
               }"
-              placeholder="enter remarks"
+              placeholder="Enter Remarks"
             />
             <div
               class="invalid-feedback"
@@ -467,7 +474,7 @@
 </div>
 <app-record-view
   *ngIf="recordView"
-  [recordViewText]="recordViewText"
+  [recordViewData]="recordViewData"
 ></app-record-view>
 
 <ng-template #saveTypeModal>
@@ -478,7 +485,7 @@
     </div>
     <div class="my-2">
       <div class="label-type" for="">Type</div>
-      <input type="text" class="form-control" />
+      <input type="text" class="form-control" [(ngModel)]="customType" />
     </div>
     <div
       class="footer d-flex flex-row align-items-center justify-content-between"
