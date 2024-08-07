@@ -45,6 +45,7 @@ export class ProgressNotesComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.paramsObj.patientId = params.patnr;
       this.paramsObj.caseid = params.falnr;
+      this.paramsObj.tretmentOU = params.tretmentOU;
     });
   }
 
@@ -57,14 +58,6 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   initForm() {
-    console.log('this._storageService?.patientData',this._storageService?.patientData);
-    let data = JSON.parse(this.sessionStorage.getItem(this.paramsObj.patientId))
-    console.log('data',data);
-    this.fromUser = data
-    console.log(' this.fromUser', this.fromUser);
-    this.sessionStorage.removeItem(this.paramsObj.patientId)
-    
-    
     
     this.progressNoteForm = this.formBuider.group({
       PatientId: [this.paramsObj.patientId],
@@ -75,7 +68,7 @@ export class ProgressNotesComponent implements OnInit {
       ActionTime: [new Date().getHours() + ':' + new Date().getMinutes()],
       // DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
       // DocumentOu: [this.fromUser?.Treatmentou ? this.fromUser?.Treatmentou : this._storageService?.patientData?.deptOrgUnit],
-      DocumentOu: ['F2DTUAMC'],
+      DocumentOu: [this.paramsObj.tretmentOU],
       Text: ['', [Validators.required]],
       Category: [],
       EmployeeResp: ['9000000000'],

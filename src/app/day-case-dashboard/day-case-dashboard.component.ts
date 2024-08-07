@@ -1009,6 +1009,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
         checkindata.action +
         '&doctype=' +
         checkindata.doctype +
+        '&tretmentOU=' +
+        checkindata.Treatmentou +
         '&nav=Treatmentarea',
         '_blank'
       );

@@ -619,11 +619,10 @@ export class CheckInComponent implements OnInit {
     );
   }
 
-  getErList(date?: any) {
+  getErList(date?: any) {    
     this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
       this.ERlistData = [];
       if (_success.d.results.length > 0) {
-        this.sendErPatientCount.emit(this.ERlistData.length);
         _success.d.results.forEach((element) => {
           if (element.StatusName != 'Checked Out') {
             this.ERlistData.push(element);
@@ -644,6 +643,8 @@ export class CheckInComponent implements OnInit {
         this.ERlistDataClone = this.ERlistData;
         this.lastIndex = this.ERlistData.length - 1;
       }
+      this.sendErPatientCount.emit(this.ERlistData.length);
+
     }, (_error: any) => { });
   }
 
@@ -1138,12 +1139,13 @@ export class CheckInComponent implements OnInit {
     item['admissionDate'] = this.getDate(item.Datum);
     this.erVitalsModal.openModalForErVital(item);
   }
-  redirectToTreatByName(data) {
+  redirectToTreatByName(data) {    
     const json = {
       Patnr: data.Patnr,
       Einri: data.Einri,
       Falnr: data.Falnr,
       Lfdnr: data.Lfdnr,
+      Treatmentou: data.Treatmentou,
       redirectFor: '',
       doctype: '',
       action: ''
@@ -1151,7 +1153,7 @@ export class CheckInComponent implements OnInit {
     this.storageService.setCheckinData(data);
     localStorage.setItem('checkindata', JSON.stringify(data));
     localStorage.setItem('tabName', 'patientProfile');
-    this.sessionStorage.setItem(data.Patnr,JSON.stringify(data))
+    // this.sessionStorage.setItem(data.Patnr,JSON.stringify(data))
     this.redirectToTreatment(json);
   }
   redirectToTreatment(data) {

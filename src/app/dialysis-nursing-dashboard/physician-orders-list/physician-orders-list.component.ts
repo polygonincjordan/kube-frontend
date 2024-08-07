@@ -593,8 +593,6 @@ export class PhysicianOrdersListComponent implements OnInit{
   }
   navTabBoxActiveValue: string = '02';
  getErList(date:any,event?:any) {
-  console.log(event);
-
   let jsonObj = {
     // fromDate:`${new DatePipe('en-US').transform(
     //   date ?  date[0] : new Date().setDate(new Date().getDate()),
@@ -631,6 +629,7 @@ export class PhysicianOrdersListComponent implements OnInit{
         (_success: any) => {
           this.dataOnTableForPhyOrder = _success?.d?.results;
           this.dataToParent.emit(this.dataOnTableForPhyOrder);
+          this.sendErPatientCount.emit(this.dataOnTableForPhyOrder.length)
         })
   }
 
