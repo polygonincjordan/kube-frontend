@@ -16,9 +16,14 @@ export class IoChartsComponent implements OnInit {
   newInputRecord = false;
   newOutputRecord = false;
   recordView = false;
-  recordViewText = '';
+  recordViewData: any = {
+    data: '',
+    title: '',
+  };
   inputForm: FormGroup;
   outputForm: FormGroup;
+  pushCategory = '';
+  customType = '';
   inCategories = [
     'Oral',
     'Enteral (GI)',
@@ -37,27 +42,38 @@ export class IoChartsComponent implements OnInit {
       '+ Add New Type',
     ],
     'Enteral (GI)': [
-      'Fluids',
-      'Food',
-      'Medications',
-      'Supplements',
+      'Water',
+      'Smashed Food',
+      'Feeding Formula',
+      'Other',
       'Other',
       '+ Add New Type',
     ],
     Parenteral: ['Total Parenteral Nutrition(TPN)'],
     'IV Fluids': [
-      'Fluids',
-      'Food',
+      'NS 0.9%',
+      'Saline 0.45%',
+      'D5W',
+      'GS 0.9%',
+      'GS 0.45%',
+      'Saline 3%',
+      'LR',
+      'Line Flush',
+      'Bolus',
+      'Hemodialysis',
+      'Peritoneal Dialysis',
       'Medications',
-      'Supplements',
+      'Electrolytes',
+      'Albumin',
       'Other',
       '+ Add New Type',
     ],
     'Blood Products': [
-      'Fluids',
-      'Food',
-      'Medications',
-      'Supplements',
+      'Whole Blood',
+      'PRBCs',
+      'FFP',
+      'Platelets',
+      'Cryoprecipitate',
       'Other',
       '+ Add New Type',
     ],
@@ -67,6 +83,7 @@ export class IoChartsComponent implements OnInit {
   modalRefForSave: BsModalRef;
   currentDate: any;
   currentTime: any;
+  selectedIndex = 0;
   constructor(
     private fb: FormBuilder,
     public modalService: BsModalService,
@@ -88,16 +105,6 @@ export class IoChartsComponent implements OnInit {
     const currentTime = `${hours}:${minutes}`;
     this.currentTime = currentTime;
 
-    // Initialize the form with current date and time
-    // this.inputForm = this.fb.group({
-    //   date: [currentDate],
-    //   time: [currentTime],
-    // });
-    // this.outputForm = this.fb.group({
-    //   date: [currentDate],
-    //   time: [currentTime],
-    // });
-
     this.createOutputForm();
     this.createInputForm();
   }
@@ -116,21 +123,44 @@ export class IoChartsComponent implements OnInit {
     return this.outputForm.get('rows') as FormArray;
   }
 
-  onSelectType(event, template: TemplateRef<any>) {
+  onSelectType(event, template: TemplateRef<any>, index, category: any) {
     if (event.includes('+')) {
       const config: ModalOptions = {
         class: 'modal-dialog-centered modal-diagnosis',
       };
+      this.pushCategory = category;
+      this.selectedIndex = index;
       this.modalRefForSave = this.modalService.show(template, config);
+    } else {
+      this.inputTypeChange(event, index);
     }
   }
 
-  saveModal() {}
+  saveModal() {
+    if (this.customType != '') {
+      this.inTypes[this.pushCategory].splice(
+        this.inTypes[this.pushCategory].length - 1,
+        0,
+        this.customType
+      );
+      this.inputForm.controls.rows['controls'][this.selectedIndex]['controls'][
+        'type'
+      ].setValue(this.customType);
+      this.modalRefForSave.hide();
+    }
+  }
 
   addinputRowAfter(index: number) {
-    console.log(this.inputrows);
-
-    if (this.inputrows.controls[index].status === 'INVALID') {
+    if (
+      this.inputrows.controls[index]['controls']['type'].value === null ||
+      this.inputrows.controls[index]['controls']['volume'].value == ''
+    ) {
+      this.inputrows.controls[index]['controls']['type'].setErrors({
+        required: true,
+      });
+      this.inputrows.controls[index]['controls']['volume'].setErrors({
+        required: true,
+      });
       this.inputrows.controls[index]['controls']['type'].markAsTouched();
       this.inputrows.controls[index]['controls']['type'].markAsDirty();
       this.inputrows.controls[index]['controls']['volume'].markAsTouched();
@@ -151,21 +181,28 @@ export class IoChartsComponent implements OnInit {
     }
     const category = this.inputrows.value[index].category;
     const type =
-      this.inTypes[category].length === 1 ? this.inTypes[category][0] : '';
+      this.inTypes[category].length === 1 ? this.inTypes[category][0] : null;
     const newRow = this.fb.group({
       category: [category, Validators.required],
       type: [type, Validators.required],
-      volume: ['', Validators.required],
+      volume: [null, Validators.required],
       uom: ['mL'],
       remarks: [''],
       action: ['minus'],
-      // lastRecord: [''],
     });
-
     this.inputrows.insert(index + 1, newRow);
   }
   addoutputRowAfter(index: number) {
-    if (this.outputrows.controls[index].status === 'INVALID') {
+    if (
+      this.outputrows.controls[index]['controls']['type'].value === null ||
+      this.outputrows.controls[index]['controls']['volume'].value == ''
+    ) {
+      this.outputrows.controls[index]['controls']['type'].setErrors({
+        required: true,
+      });
+      this.outputrows.controls[index]['controls']['volume'].setErrors({
+        required: true,
+      });
       this.outputrows.controls[index]['controls']['type'].markAsTouched();
       this.outputrows.controls[index]['controls']['type'].markAsDirty();
       this.outputrows.controls[index]['controls']['volume'].markAsTouched();
@@ -185,15 +222,14 @@ export class IoChartsComponent implements OnInit {
       return;
     }
     const category = this.outputrows.value[index].category;
-    const type = this.outputrows.value[index].type;
+    // const type = this.outputrows.value[index].type;
     const newRow = this.fb.group({
       category: [category, Validators.required],
-      type: [type, Validators.required],
-      volume: ['', Validators.required],
+      type: [null, Validators.required],
+      volume: [null, Validators.required],
       uom: ['mL'],
       remarks: [''],
       action: ['minus'],
-      // lastRecord: [''],
     });
     this.outputrows.insert(index + 1, newRow);
   }
@@ -201,8 +237,33 @@ export class IoChartsComponent implements OnInit {
   outputdeleteRow(i) {
     this.outputrows.removeAt(i);
   }
+
   inputdeleteRow(i) {
     this.inputrows.removeAt(i);
+  }
+
+  outputTypeChange(event, i) {
+    const volumeControl = (this.outputForm.get('rows') as FormArray)
+      .at(i)
+      .get('volume');
+    if (event) {
+      volumeControl?.setValidators(Validators.required);
+    } else {
+      volumeControl?.clearValidators();
+    }
+    volumeControl?.updateValueAndValidity();
+  }
+
+  inputTypeChange(event, i) {
+    const volumeControl = (this.inputForm.get('rows') as FormArray)
+      .at(i)
+      .get('volume');
+    if (event) {
+      volumeControl?.setValidators(Validators.required);
+    } else {
+      volumeControl?.clearValidators();
+    }
+    volumeControl?.updateValueAndValidity();
   }
 
   outputFormCancel() {
@@ -223,12 +284,11 @@ export class IoChartsComponent implements OnInit {
           // const type = this.outTypes[category][0];
           return this.fb.group({
             category: [category, Validators.required],
-            type: ['', Validators.required],
-            volume: ['', Validators.required],
+            type: [null],
+            volume: [null],
             uom: ['mL'],
             remarks: [''],
             action: ['plus'],
-            // lastRecord: [''],
           });
         })
       ),
@@ -244,15 +304,14 @@ export class IoChartsComponent implements OnInit {
           const type =
             this.inTypes[category].length === 1
               ? this.inTypes[category][0]
-              : '';
+              : null;
           return this.fb.group({
             category: [category, Validators.required],
-            type: [type, Validators.required],
-            volume: ['', Validators.required],
+            type: [type],
+            volume: [null],
             uom: ['mL'],
             remarks: [''],
             action: ['plus'],
-            // lastRecord: [''],
           });
         })
       ),
@@ -260,18 +319,83 @@ export class IoChartsComponent implements OnInit {
   }
 
   viewRecord(text: string) {
-    this.recordViewText = text;
-    this.recordView = !this.recordView;
+    // this.recordViewText = text;
+    this.recordView = !this.recordView && this.recordViewData;
+  }
+
+  mergeDataByCategory(tableData) {
+    const mergedData = [];
+    tableData.forEach((entry) => {
+      const existingEntry = mergedData.find(
+        (item) => item.category === entry.category
+      );
+      if (existingEntry) {
+        existingEntry.subRows.push(...entry.subRows);
+      } else {
+        mergedData.push({
+          category: entry.category,
+          date: entry.date,
+          time: entry.time,
+          enteredBy: entry.enteredBy,
+          subRows: [...entry.subRows],
+        });
+      }
+    });
+    return mergedData;
   }
 
   outputSubmit() {
-    console.log('outputSubmit', this.outputForm.value);
-    this.outputForm.markAllAsTouched();
+    if (this.outputForm.invalid) {
+      this.outputForm.markAllAsTouched();
+    } else {
+      const json = this.outputForm.value;
+      const tableData = this.convertJsonToTableData(json);
+      const mergedData = this.mergeDataByCategory(tableData);
+      console.log('json', json);
+      console.log('tableData', tableData);
+      console.log('mergedData', mergedData);
+      this.recordViewData.data = mergedData;
+      this.recordViewData.title = 'Output';
+      this.recordView = true;
+    }
     // this.outputFormCancel();
   }
+
   inputSubmit() {
-    console.log('inputSubmit', this.inputForm.value);
-    this.inputForm.markAllAsTouched();
-    // this.inputFormCancel();
+    if (this.inputForm.invalid) {
+      this.inputForm.markAllAsTouched();
+    } else {
+      const json = this.inputForm.value;
+      const tableData = this.convertJsonToTableData(json);
+      const mergedData = this.mergeDataByCategory(tableData);
+      console.log('json', json);
+      console.log('tableData', tableData);
+      console.log('mergedData', mergedData);
+      this.recordViewData.data = mergedData;
+      this.recordViewData.title = 'Intake';
+      this.recordView = true;
+    }
+  }
+
+  convertJsonToTableData(jsonData) {
+    return jsonData.rows
+      .map((row) => {
+        return {
+          category: row.category,
+          date: jsonData.date, // Use appropriate date conversion here
+          time: jsonData.time, // Use appropriate time conversion here
+          enteredBy: 'Saja Oweisy',
+          subRows:
+            row.type !== null
+              ? [
+                  {
+                    type: row.type,
+                    value: `${row.volume || '0'} ${row.uom || 'mL'}`,
+                  },
+                ]
+              : [],
+        };
+      })
+      .filter((entry) => entry.subRows.length > 0); // Filter out entries with empty subRows
   }
 }

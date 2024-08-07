@@ -6,335 +6,348 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./record-view.component.scss'],
 })
 export class RecordViewComponent implements OnInit {
-  @Input() recordViewText: string;
-  constructor() {}
+  @Input() recordViewData: any = null;
 
-  ngOnInit(): void {
-    console.log('recordViewText', this.recordViewText);
-  }
-
-  isCollapsed: { [key: string]: boolean } = {
-    or1: true,
-    // Add more keys as needed for each collapsible section
-  };
-
-  // toggleCollapse(key: string) {
-  //   this.isCollapsed[key] = !this.isCollapsed[key];
-  // }
-  tableData: any[] = [
+  tableData = [
     {
       category: 'Oral',
-      type: 'Food',
-      values: [
-        '500 mL',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-      ],
-      isCollapsed: false,
+      date: '01-08-2024',
+      time: '17:38',
+      enteredBy: 'Saja Oweis',
       subRows: [
         {
-          // category: '',
-          type: 'Medications',
-          values: [
-            '150 mL',
-            '--',
-            '--',
-            '150 mL',
-            '--',
-            '150 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
-        },
-        {
-          // category: '',
-          type: 'Fluids',
-          values: [
-            '150 mL',
-            '--',
-            '--',
-            '150 mL',
-            '--',
-            '150 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
-        },
-        {
-          // category: '',
           type: 'Food',
-          values: [
-            '150 mL',
-            '--',
-            '--',
-            '150 mL',
-            '--',
-            '150 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
+          value: '100 mL',
+        },
+        {
+          type: 'Medications',
+          value: '250 mL',
         },
       ],
     },
     {
       category: 'Enteral (G)',
-      type: 'Feeding Formula',
-      values: [
-        '500 mL',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
+      date: '02-08-2024',
+      time: '09:15',
+      enteredBy: 'Saja Oweis',
+      subRows: [
+        {
+          type: 'Feeding Formula',
+          value: '500 mL',
+        },
       ],
     },
     {
       category: 'Parenteral',
-      type: 'Total Parenteral Nutrition (TPN)',
-      values: [
-        '500 mL',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
+      date: '03-08-2024',
+      time: '14:22',
+      enteredBy: 'Fare',
+      subRows: [
+        {
+          type: 'Total Parenteral Nutrition (TPN)',
+          value: '250 mL',
+        },
       ],
     },
     {
       category: 'IV Fluids',
-      type: 'D5W',
-      values: [
-        '500 mL',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-      ],
-      isCollapsed: false,
+      date: '04-08-2024',
+      time: '11:45',
+      enteredBy: 'Fare',
       subRows: [
         {
-          category: '',
-          type: 'GS0.9%',
-          values: [
-            '500 mL',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
-        },
-        {
-          category: '',
-          type: 'Saline 0.45%',
-          values: [
-            '500 mL',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
+          type: 'D5W',
+          value: '300 mL',
         },
       ],
     },
     {
       category: 'Blood Products',
-      type: 'Platelets',
-      values: [
-        '500 mL',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-      ],
-      isCollapsed: false,
+      date: '05-08-2024',
+      time: '16:30',
+      enteredBy: 'Saja Oweis',
       subRows: [
         {
-          category: '',
-          type: 'FFP',
-          values: [
-            '500 mL',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
+          type: 'Platelets',
+          value: '200 mL',
         },
       ],
     },
     {
       category: 'Other',
-      type: 'Biscuits',
-      values: [
-        '500 mL',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '500 mL',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-        '--',
-      ],
-      isCollapsed: false,
+      date: '06-08-2024',
+      time: '08:50',
+      enteredBy: 'Saja Oweis',
       subRows: [
         {
-          category: '',
-          type: 'Chips',
-          values: [
-            '500 mL',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
-        },
-        {
-          category: '',
-          type: 'Soup',
-          values: [
-            '500 mL',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '500 mL',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-            '--',
-          ],
+          type: 'Biscuits',
+          value: '500 mL',
         },
       ],
     },
   ];
 
-  dates = [
-    '11-7-2024 10:15 AM',
-    '11-7-2024 10:22 AM',
-    '11-7-2024 11:22 AM',
-    '11-7-2024 01:30 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
-    '11-7-2024 06:17 AM',
+  Types = [
+    'Fluids',
+    'Food',
+    'Medications',
+    'Supplements',
+    'Water',
+    'Smashed Food',
+    'Feeding Formula',
+    'Total Parenteral Nutrition(TPN)',
+    'NS 0.9%',
+    'Saline 0.45%',
+    'D5W',
+    'GS 0.9%',
+    'GS 0.45%',
+    'Saline 3%',
+    'LR',
+    'Line Flush',
+    'Bolus',
+    'Hemodialysis',
+    'Peritoneal Dialysis',
+    'Medications',
+    'Electrolytes',
+    'Albumin',
+    'Whole Blood',
+    'PRBCs',
+    'FFP',
+    'Platelets',
+    'Cryoprecipitate',
+    'other',
   ];
 
-  totals = [
-    '1230 mL',
-    '2500 mL',
-    '1800 mL',
-    '2300 mL',
-    '1250 mL',
-    '1150 mL',
-    '1800 mL',
-    '2300 mL',
-    '1800 mL',
-    '2300 mL',
-    '1800 mL',
-    '2300 mL',
-  ];
+  dates = [];
+  totals = [];
+  enteredBy = [];
+  searchText = '';
+  selectedCategory: string = null;
+  selectedType: string = null;
+  selectedEnteredBy: string = null;
+  selectedDateRange: [Date, Date] = [null, null];
+  startTime: string = null;
+  endTime: string = null;
+  selectedTimeOption: string = null;
+  filteredTableData: any[] = [];
+  grandTotal = '';
+  individualTotals: { [key: string]: string } = {};
+  individualEnteredBy: { [key: string]: string } = {};
+  constructor() {}
 
-  enteredBy = [
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-    'Saja Oweis',
-  ];
+  ngOnInit(): void {
+    if (!this.recordViewData.title) {
+      this.tableData = [];
+    }
+    this.tableData =
+      this.tableData.length === 0 ? this.tableData : this.recordViewData.data;
+    if (this.tableData.length > 0) {
+      this.tableData.forEach((item) => {
+        item.subRows.forEach((subitem) => {
+          if (subitem.type && !this.Types.includes(subitem.type)) {
+            this.Types.push(subitem.type);
+          }
+        });
+      });
+    }
+    this.filteredTableData = [...this.tableData];
+    this.dates = this.extractDates(this.filteredTableData);
+    this.calculateTotalsAndEnteredBy();
+  }
 
-  grandTotal = '7340 mL';
+  isCollapsed: { [key: string]: boolean } = {
+    or1: true,
+  };
+
   toggleCollapse(row) {
     row.isCollapsed = !row.isCollapsed;
+  }
+
+  onDateRangeChange(selectedRange: any) {
+    try {
+      if (selectedRange && selectedRange.length === 2) {
+        selectedRange[0].setHours(0, 0, 0, 0);
+        selectedRange[1].setHours(0, 0, 0, 0);
+        this.selectedDateRange = selectedRange;
+      }
+    } catch (error) {}
+  }
+
+  applyFilter() {
+    try {
+      const [startDate, endDate] = this.selectedDateRange.map((date) =>
+        new Date(date).getTime()
+      );
+
+      this.filteredTableData = this.tableData.filter((row) => {
+        const [day, month, year] = row.date.split('.').map(Number);
+        const date = new Date(year, month - 1, day);
+        const timestamp = date.getTime();
+
+        // Date range filter
+        const matchesDate =
+          (!this.selectedDateRange[0] && !this.selectedDateRange[1]) ||
+          (timestamp >= startDate && timestamp <= endDate);
+
+        // Category filter
+        const matchesCategory =
+          !this.selectedCategory || row.category === this.selectedCategory;
+
+        // Type filter
+        const matchesType =
+          !this.selectedType ||
+          row.subRows.some((subRow) => subRow.type === this.selectedType);
+
+        // Entered By filter
+        const matchesEnteredBy =
+          !this.selectedEnteredBy || row.enteredBy === this.selectedEnteredBy;
+        console.log(matchesType, matchesEnteredBy, this.selectedType);
+
+        // Search text filter
+        const matchesSearchText =
+          !this.searchText ||
+          row.subRows.some((subRow) =>
+            subRow.type.toLowerCase().includes(this.searchText.toLowerCase())
+          ) ||
+          row.category.toLowerCase().includes(this.searchText.toLowerCase());
+
+        const timeMatch =
+          (!this.startTime && !this.endTime) ||
+          (this.timeToMinutes(row.time) >= this.timeToMinutes(this.startTime) &&
+            this.timeToMinutes(row.time) <= this.timeToMinutes(this.endTime));
+
+        // Time range filter
+        const matchesTimeRange =
+          !this.selectedTimeOption ||
+          this.isTimeInOption(row.time, this.selectedTimeOption);
+
+        return (
+          matchesCategory &&
+          timeMatch &&
+          matchesDate &&
+          matchesTimeRange &&
+          matchesType &&
+          matchesEnteredBy &&
+          matchesSearchText
+        );
+      });
+      setTimeout(() => {
+        this.dates = this.extractDates(this.filteredTableData);
+        this.calculateTotalsAndEnteredBy();
+      }, 10);
+    } catch (error) {
+      console.error('Error applying filter:', error);
+    }
+  }
+
+  isTimeInOption(time: string, option: string): any {
+    const [hours, minutes] = time.split(':').map(Number);
+    const timeMinutes = hours * 60 + minutes;
+
+    // debugger;
+    switch (option) {
+      case '7AM - 7PM':
+        return (
+          timeMinutes >= this.timeToMinutes('07:00') &&
+          timeMinutes < this.timeToMinutes('19:00')
+        );
+      case '7PM - 7AM':
+        return (
+          timeMinutes >= this.timeToMinutes('19:00') ||
+          timeMinutes < this.timeToMinutes('07:00')
+        );
+      case '7AM - 3PM':
+        return (
+          timeMinutes >= this.timeToMinutes('07:00') &&
+          timeMinutes < this.timeToMinutes('15:00')
+        );
+      case '3PM - 11PM':
+        return (
+          timeMinutes >= this.timeToMinutes('15:00') &&
+          timeMinutes < this.timeToMinutes('23:00')
+        );
+      case '11PM - 7AM':
+        return (
+          timeMinutes >= this.timeToMinutes('23:00') ||
+          timeMinutes < this.timeToMinutes('07:00')
+        );
+      default:
+        return true;
+    }
+  }
+
+  timeToMinutes(time: string): number {
+    try {
+      const [hours, minutes] = time?.split(':').map(Number);
+      return hours * 60 + minutes;
+    } catch (error) {}
+  }
+
+  extractDates(data: any[]): string[] {
+    const dateSet = new Set<string>();
+    data.forEach((item) => {
+      dateSet.add(item.date + '  ' + this.convertTo12HourFormat(item.time));
+    });
+    return Array.from(dateSet);
+  }
+
+  convertTo12HourFormat(time: string): string {
+    try {
+      const [hours, minutes] = time?.split(':').map(Number);
+      const period = hours >= 12 ? 'PM' : 'AM';
+      const adjustedHours = hours % 12 || 12; // Convert 0 hours to 12 for AM and handle 12 PM correctly
+      const formattedMinutes = minutes.toString().padStart(2, '0');
+      return `${adjustedHours}:${formattedMinutes} ${period}`;
+    } catch (error) {}
+  }
+
+  getEntryForDate(entries, subRow, date) {
+    try {
+      let value = '--';
+      const entryTime =
+        entries.date + '  ' + this.convertTo12HourFormat(entries.time);
+      if (entryTime === date) {
+        value = subRow.value;
+      } else {
+        value = '--';
+      }
+      return value;
+    } catch (error) {}
+  }
+
+  calculateTotalsAndEnteredBy() {
+    const totalVolumes = {};
+    this.filteredTableData.forEach((category) => {
+      category.subRows.forEach((subRow) => {
+        // subRow.forEach((entry) => {
+        const entryTime =
+          category.date + '  ' + this.convertTo12HourFormat(category.time);
+        if (!totalVolumes[entryTime]) {
+          totalVolumes[entryTime] = 0;
+        }
+        if (subRow.value !== '--') {
+          totalVolumes[entryTime] += parseInt(subRow.value);
+        }
+        // });
+      });
+    });
+
+    let grandTotal = 0;
+    this.dates.forEach((date) => {
+      this.individualTotals[date] = totalVolumes[date]
+        ? `${totalVolumes[date]} mL`
+        : '--';
+      if (totalVolumes[date]) {
+        grandTotal += totalVolumes[date];
+      }
+    });
+
+    this.grandTotal = `${grandTotal} mL`;
+
+    this.filteredTableData.forEach((category) => {
+      const entryTime =
+        category.date + '  ' + this.convertTo12HourFormat(category.time);
+      this.individualEnteredBy[entryTime] = category.enteredBy;
+    });
   }
 }
