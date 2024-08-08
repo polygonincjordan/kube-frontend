@@ -4,7 +4,9 @@
   >
     <div class="d-flex flex-row w-100">
       <div class="font-weight-bold w-40">Intake Record:</div>
-      <div class="font-weight-bold w-60">Total Intake: 3850 mL</div>
+      <div class="font-weight-bold w-60">
+        Total Intake: {{ intakeBalance }} mL
+      </div>
     </div>
     <div class="d-flex flex-row w-100 justify-content-end">
       <button
@@ -174,13 +176,16 @@
           </td>
           <td>
             <input
+              type="number"
               formControlName="volume"
               class="form-control"
+              min="0"
               placeholder="Enter Volume"
               [ngClass]="{
                 'is-invalid':
                   row.get('volume').invalid && row.get('volume').touched
               }"
+              (change)="inputVolumeChange($event, i)"
             />
             <div
               class="invalid-feedback"
@@ -252,7 +257,9 @@
   >
     <div class="d-flex flex-row w-100">
       <div class="font-weight-bold w-40">Output Record:</div>
-      <div class="font-weight-bold w-60">Total Output: 2100 mL</div>
+      <div class="font-weight-bold w-60">
+        Total Output: {{ outputBalance }} mL
+      </div>
     </div>
     <div class="d-flex flex-row w-100 justify-content-end">
       <button
@@ -383,9 +390,24 @@
               [ngClass]="{
                 'is-invalid': row.get('type').invalid && row.get('type').touched
               }"
+              *ngIf="outputrowName(i).category !== 'Other'"
             >
-              <ng-option value="Foley’s Catheter">Foley’s Catheter</ng-option>
+              <ng-option
+                [value]="item"
+                *ngFor="let item of outTypes[outputrowName(i).category]"
+                >{{ item }}</ng-option
+              >
             </ng-select>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid': row.get('type').invalid && row.get('type').touched
+              }"
+              formControlName="type"
+              placeholder="Enter Free Text"
+              *ngIf="outputrowName(i).category === 'Other'"
+            />
             <div
               class="invalid-feedback"
               *ngIf="row.get('type').invalid && row.get('type').touched"
@@ -397,12 +419,14 @@
             <input
               type="number"
               formControlName="volume"
+              min="0"
               [ngClass]="{
                 'is-invalid':
                   row.get('volume').invalid && row.get('volume').touched
               }"
               class="form-control"
               placeholder="Enter Volume"
+              (change)="outputVolumeChange($event, i)"
             />
             <div
               class="invalid-feedback"
@@ -467,7 +491,10 @@
   >
     <div class="font-weight-bold w-20">Net Balance:</div>
     <div class="font-weight-bold w-60">
-      <span class="number">(+)1750</span>
+      <span class="number"
+        >{{ netBalance >= 0 ? "(+)" : "(-)" }} &nbsp;
+        {{ netBalance ?? 0 }} &nbsp;</span
+      >
       mL
     </div>
   </div>
@@ -475,6 +502,7 @@
 <app-record-view
   *ngIf="recordView"
   [recordViewData]="recordViewData"
+  (backevent)="backEvent($event)"
 ></app-record-view>
 
 <ng-template #saveTypeModal>
