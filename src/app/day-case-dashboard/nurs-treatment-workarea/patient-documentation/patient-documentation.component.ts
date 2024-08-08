@@ -1761,6 +1761,19 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // Nursing Admission Assessment Copy API
+      if (this.openNurseAdmission) {
+        let docStatus = '3';
+        this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
       if(this.openMorseFallScale){
         const formData = {
           ...this.morseFallScaleC.getFormData(),
