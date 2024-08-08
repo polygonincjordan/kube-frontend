@@ -3,7 +3,7 @@
     <label class="box-label">Admission Data</label>
     <div class="container-fluid">
       <div class="row create-form-inputs">
-        <div class="col-md-5 row m-0 align-items-center">
+        <!-- <div class="col-md-5 row m-0 align-items-center">
           <div class="col-md-5 p-0">
             <label>Referral Type</label>
           </div>
@@ -12,7 +12,7 @@
               <ng-option>Test</ng-option>
             </ng-select>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-3 row m-0 align-items-center">
           <div class="col-md-3 text-right">
             <label>Date</label>
@@ -105,12 +105,12 @@
           <label>Schoole Grade</label>
         </div>
         <div class="col-md-3">
-          <ng-select  (change)="selectSchool($event)">
+          <ng-select formControlName="AEducated" (change)="selectSchool($event)">
             <ng-option *ngFor="let item of schoolGradeList" [value]="item.value">{{ item.label }}</ng-option>
           </ng-select>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="AEducated" [readonly]="isInputDisabled('ASchoolGrade', '1')" >
+          <ng-select [readonly]="isInputDisabled('AEducated', '0')" >
             <ng-option *ngFor="let item of schoolGradeEduList" [value]="item.value">{{ item.label }}</ng-option>
           </ng-select>
         </div>

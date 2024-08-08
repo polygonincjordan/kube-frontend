@@ -52,6 +52,10 @@
               &:nth-child(3) {
                 width: 110px;
               }
+
+              &:nth-child(5) {
+                white-space: nowrap;
+              }
             }
           }
         }
