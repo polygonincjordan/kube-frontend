@@ -1,5 +1,10 @@
 <div class="d-flex flex-row align-items-center justify-content-between">
-  <div class="d-flex flex-row align-items-center">
+  <button type="button" (click)="back()" class="btn btn-primary mr-2">
+    <div class="d-flex flex-row align-items-center">
+      <i class="fa fa-chevron-left"></i> &nbsp; back
+    </div>
+  </button>
+  <div class="d-flex flex-row align-items-center w-40">
     <div class="search-input col-md-4 pl-0">
       <img src="assets/img/pres-search-icon.svg" alt="" />
       <input
@@ -8,52 +13,10 @@
         class="form-control w-100"
         id="searchFilter"
         [(ngModel)]="searchText"
-        (ngModelChange)="applyFilter()"
       />
     </div>
-    <div class="w-30">
-      <ng-select
-        appendTo="body"
-        placeholder="Select Category"
-        class="mr-2 record-view"
-        [(ngModel)]="selectedCategory"
-        (change)="applyFilter()"
-      >
-        <ng-option value="Oral">Oral</ng-option>
-        <ng-option value="Enteral (GI)">Enteral (GI)</ng-option>
-        <ng-option value="Parenteral">Parenteral</ng-option>
-        <ng-option value="IV Fluids">IV Fluids</ng-option>
-        <ng-option value="Blood Products">Blood Products</ng-option>
-        <ng-option value="Other">Other</ng-option>
-      </ng-select>
-    </div>
-    <div class="w-30">
-      <ng-select
-        appendTo="body"
-        placeholder="Select Type"
-        class="mr-2 record-view"
-        [(ngModel)]="selectedType"
-        (change)="applyFilter()"
-      >
-        <ng-option *ngFor="let item of Types" [value]="item">{{
-          item
-        }}</ng-option>
-      </ng-select>
-    </div>
-    <div class="w-30">
-      <ng-select
-        appendTo="body"
-        placeholder="Select Entered By"
-        class="record-view"
-        [(ngModel)]="selectedEnteredBy"
-        (change)="applyFilter()"
-      >
-        <ng-option value="Saja Oweis">Saja Oweis</ng-option>
-        <ng-option value="Fare">Fare</ng-option>
-      </ng-select>
-    </div>
   </div>
-  <div class="d-flex flex-row align-items-center justify-content-end">
+  <div class="d-flex flex-row align-items-center justify-content-end w-50">
     <div class="date-function w-35 mr-2">
       <img src="assets/img/Calender.svg" alt="" />
       <input
@@ -68,7 +31,7 @@
         class="form-control"
         style="border-radius: 10px"
         [(ngModel)]="selectedDateRange"
-        (bsValueChange)="onDateRangeChange($event); applyFilter()"
+        (ngModelChange)="onDateRangeChange($event)"
       />
     </div>
     <div class="d-flex flex-row w-35 align-items-center">
@@ -93,7 +56,6 @@
           [(ngModel)]="startTime"
           placeholder="Start-Time"
           style="border-radius: 10px !important"
-          (ngModelChange)="applyFilter()"
           [format]="24"
         />
         <ngx-material-timepicker
@@ -121,7 +83,6 @@
           aria-label="24hr format"
           [ngxTimepicker]="endTimetemp"
           [(ngModel)]="endTime"
-          (ngModelChange)="applyFilter()"
           placeholder="End-Time"
           style="border-radius: 10px !important"
           [format]="24"
@@ -132,13 +93,12 @@
         ></ngx-material-timepicker>
       </div>
     </div>
-    <div class="w-15 ml-2">
+    <div class="w-25 ml-2">
       <ng-select
         appendTo="body"
         placeholder="Select Time Option"
         class="record-view"
         [(ngModel)]="selectedTimeOption"
-        (change)="applyFilter()"
       >
         <ng-option disabled="true">12 Hours</ng-option>
         <ng-option value="7AM - 7PM">7AM - 7PM</ng-option>
@@ -151,6 +111,50 @@
     </div>
   </div>
 </div>
+<div class="d-flex flex-row mb-2 align-items-center justify-content-end">
+  <div class="w-30"></div>
+  <div class="w-15">
+    <ng-select
+      appendTo="body"
+      placeholder="Select Category"
+      class="mr-2 record-view"
+      [(ngModel)]="selectedCategory"
+    >
+      <ng-option value="Oral">Oral</ng-option>
+      <ng-option value="Enteral (GI)">Enteral (GI)</ng-option>
+      <ng-option value="Parenteral">Parenteral</ng-option>
+      <ng-option value="IV Fluids">IV Fluids</ng-option>
+      <ng-option value="Blood Products">Blood Products</ng-option>
+      <ng-option value="Other">Other</ng-option>
+    </ng-select>
+  </div>
+  <div class="w-15">
+    <ng-select
+      appendTo="body"
+      placeholder="Select Type"
+      class="mr-2 record-view"
+      [(ngModel)]="selectedType"
+    >
+      <ng-option *ngFor="let item of Types" [value]="item">{{
+        item
+      }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="w-15">
+    <ng-select
+      appendTo="body"
+      placeholder="Select Entered By"
+      class="record-view"
+      [(ngModel)]="selectedEnteredBy"
+    >
+      <ng-option value="Saja Oweis">Saja Oweis</ng-option>
+      <ng-option value="Fare">Fare</ng-option>
+    </ng-select>
+  </div>
+  <button type="button" (click)="applyFilter()" class="btn btn-primary ml-2">
+    Apply
+  </button>
+</div>
 <div
   class="d-flex flex-row align-items-center justify-content-between child-section w-100 f-16 p-2 mb-2"
 >
@@ -160,10 +164,13 @@
     </div>
   </div>
 </div>
-<div class="table-responsive" *ngIf="filteredTableData.length > 0">
+<div
+  [ngClass]="filteredTableData.length > 2 ? 'table-responsive' : 'w-100'"
+  *ngIf="filteredTableData.length > 0"
+>
   <table
     class="table table-bordered border-separate record-view"
-    style="min-width: 1300px"
+    style="min-width: 1350px"
   >
     <thead class="thead">
       <tr>

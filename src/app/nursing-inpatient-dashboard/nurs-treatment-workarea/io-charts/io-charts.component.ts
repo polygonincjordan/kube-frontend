@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-io-charts',
@@ -16,6 +17,9 @@ export class IoChartsComponent implements OnInit {
   newInputRecord = false;
   newOutputRecord = false;
   recordView = false;
+  netBalance = 0;
+  intakeBalance = 0;
+  outputBalance = 0;
   recordViewData: any = {
     data: '',
     title: '',
@@ -78,6 +82,34 @@ export class IoChartsComponent implements OnInit {
       '+ Add New Type',
     ],
     Other: [''],
+  };
+  outTypes = {
+    Urine: [
+      'Void',
+      'Urinal',
+      'Condom',
+      "Foley's Catheter",
+      'Suprapubic',
+      'Catheter',
+      'Other',
+    ],
+    Stool: ['Void', 'Bedpan', 'Colostomy', 'Diaper', 'Other'],
+    'Emesis (Vomit)': ['Oral', 'NGT', 'OGT', 'PEGT', 'Other'],
+    Drainage: [
+      'Chest',
+      'Tube',
+      'Biliary',
+      'CSF',
+      'Peritoneal Dialysis',
+      'Hemodialysis',
+      'Redi-Vac',
+      'Pigtail',
+      'Surgical',
+      'Bleeding',
+      'Suction',
+      'Abdominal',
+      'Other',
+    ],
   };
   outCategories = ['Urine', 'Stool', 'Emesis (Vomit)', 'Drainage', 'Other'];
   modalRefForSave: BsModalRef;
@@ -266,6 +298,31 @@ export class IoChartsComponent implements OnInit {
     volumeControl?.updateValueAndValidity();
   }
 
+  inputVolumeChange(event, i) {
+    console.log(event);
+    const typeControl = (this.inputForm.get('rows') as FormArray)
+      .at(i)
+      .get('type');
+    if (event) {
+      typeControl?.setValidators(Validators.required);
+    } else {
+      typeControl?.clearValidators();
+    }
+    typeControl?.updateValueAndValidity();
+  }
+  outputVolumeChange(event, i) {
+    console.log(event);
+    const typeControl = (this.outputForm.get('rows') as FormArray)
+      .at(i)
+      .get('type');
+    if (event) {
+      typeControl?.setValidators(Validators.required);
+    } else {
+      typeControl?.clearValidators();
+    }
+    typeControl?.updateValueAndValidity();
+  }
+
   outputFormCancel() {
     this.outputForm.reset();
     this.createOutputForm();
@@ -273,6 +330,10 @@ export class IoChartsComponent implements OnInit {
   inputFormCancel() {
     this.inputForm.reset();
     this.createInputForm();
+  }
+
+  backEvent(event: any) {
+    this.recordView = false;
   }
 
   createOutputForm() {
@@ -349,16 +410,20 @@ export class IoChartsComponent implements OnInit {
       this.outputForm.markAllAsTouched();
     } else {
       const json = this.outputForm.value;
-      const tableData = this.convertJsonToTableData(json);
-      const mergedData = this.mergeDataByCategory(tableData);
-      console.log('json', json);
-      console.log('tableData', tableData);
-      console.log('mergedData', mergedData);
-      this.recordViewData.data = mergedData;
-      this.recordViewData.title = 'Output';
-      this.recordView = true;
+      const hasValue = json.rows.some((item) => item.volume > 0);
+      json.rows.forEach((item) => (this.outputBalance += item.volume));
+      if (hasValue) {
+        const tableData = this.convertJsonToTableData(json);
+        const mergedData = this.mergeDataByCategory(tableData);
+        this.recordViewData.data = mergedData;
+        this.recordViewData.title = 'Output';
+        this.netBalance = this.intakeBalance - this.outputBalance;
+        this.outputFormCancel();
+        Swal.fire('Data Saved Successfully!');
+      } else {
+        Swal.fire('No Data To be Saved');
+      }
     }
-    // this.outputFormCancel();
   }
 
   inputSubmit() {
@@ -366,14 +431,20 @@ export class IoChartsComponent implements OnInit {
       this.inputForm.markAllAsTouched();
     } else {
       const json = this.inputForm.value;
-      const tableData = this.convertJsonToTableData(json);
-      const mergedData = this.mergeDataByCategory(tableData);
-      console.log('json', json);
-      console.log('tableData', tableData);
-      console.log('mergedData', mergedData);
-      this.recordViewData.data = mergedData;
-      this.recordViewData.title = 'Intake';
-      this.recordView = true;
+      json.rows.forEach((item) => (this.intakeBalance += item.volume));
+      const hasValue = json.rows.some((item) => item.volume > 0);
+      if (hasValue) {
+        const tableData = this.convertJsonToTableData(json);
+        const mergedData = this.mergeDataByCategory(tableData);
+        this.recordViewData.data = mergedData;
+        this.recordViewData.title = 'Intake';
+        this.netBalance = this.intakeBalance - this.outputBalance;
+        this.inputFormCancel();
+        Swal.fire('Data Saved Successfully!');
+      } else {
+        Swal.fire('No Data To be Saved');
+      }
+      // this.recordView = true;
     }
   }
 
@@ -386,7 +457,7 @@ export class IoChartsComponent implements OnInit {
           time: jsonData.time, // Use appropriate time conversion here
           enteredBy: 'Saja Oweisy',
           subRows:
-            row.type !== null
+            row.type !== null && row.volume > 0
               ? [
                   {
                     type: row.type,

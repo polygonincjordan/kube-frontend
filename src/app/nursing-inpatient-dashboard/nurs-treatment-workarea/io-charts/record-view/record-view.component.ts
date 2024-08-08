@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-record-view',
@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RecordViewComponent implements OnInit {
   @Input() recordViewData: any = null;
+  @Output() backevent = new EventEmitter();
 
   tableData = [
     {
@@ -150,6 +151,7 @@ export class RecordViewComponent implements OnInit {
         });
       });
     }
+    this.onDateRangeChange([new Date(), new Date()]);
     this.filteredTableData = [...this.tableData];
     this.dates = this.extractDates(this.filteredTableData);
     this.calculateTotalsAndEnteredBy();
@@ -163,8 +165,14 @@ export class RecordViewComponent implements OnInit {
     row.isCollapsed = !row.isCollapsed;
   }
 
+  back() {
+    this.backevent.emit();
+  }
+
   onDateRangeChange(selectedRange: any) {
     try {
+      console.log('selectedRange', selectedRange);
+
       if (selectedRange && selectedRange.length === 2) {
         selectedRange[0].setHours(0, 0, 0, 0);
         selectedRange[1].setHours(0, 0, 0, 0);
