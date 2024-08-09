@@ -13,7 +13,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 export class GlosGowCommaScalePopupComponent implements OnInit {
 
   @ViewChild('scalesGlosgowModal', { static: true }) scalesGlosgowModal: TemplateRef<any>;
-  @Output() glasgowValue = new EventEmitter<any>();
+  @Output() scaleStoreValue = new EventEmitter<any>();
 
   modalRef: BsModalRef;
   eyeOpeningScore: any = 'C';
@@ -257,7 +257,7 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
         Patnr: this.storageService.patnr,
         Falnr: this.storageService.falnr,
         Lfdnr: this.storageService.lfdnr,
-        Orgdo: 'EMEMDAMC',
+        Orgdo: localStorage.getItem('initOrg'),
         EyeOpeningResponse: this.eyeOpeningLabel,
         MotorResponse: this.moterScoreLabel,
         VerbalResponse: this.verbalScoreLabel,
@@ -276,13 +276,25 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
           description: this.totalScoreDescription,
           dockey: _success?.d.Dockey,
           time: currentTime,
-          date: new Date()
+          date: this.dateConvertToString(new Date())
         }
-        this.glasgowValue.next(formValue);
+        this.scaleStoreValue.next(formValue);
         this.closeGlosgowModel();
       },
       (_error: any) => { }
     );
+  }
+
+  dateConvertToString(date: Date) {
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    let year = date.getFullYear();
+
+    let hours = String(date.getHours()).padStart(2, '0');
+    let minutes = String(date.getMinutes()).padStart(2, '0');
+    let seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${day}.${month}.${year}/${hours}:${minutes}:${seconds}`;
   }
 
 }

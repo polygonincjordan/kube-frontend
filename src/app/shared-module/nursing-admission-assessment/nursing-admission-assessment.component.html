@@ -91,7 +91,7 @@
                     <th scope="col">Measured Value</th>
                     <th scope="col">Normal Range</th>
                     <th scope="col">Date/Time</th>
-                    <th scope="col" colspan="2">Action</th>
+                    <th scope="col" colspan="3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -99,12 +99,15 @@
                     <td>{{ item.ScaleType }}</td>
                     <td>{{ item.LastScore }}</td>
                     <td>{{ item.ScoreDesc }}</td>
-                    <td>{{ item.Datetimee | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+                    <td>{{ item.Datetimee }}</td>
                     <td>
-                      <a (click)="openGlosgowComaModel(item)">Create</a>
+                      <a (click)="openScaleModel(item)">Create</a>
                     </td>
                     <td>
                       <a (click)="viewGlosgowModel(item)">View</a>
+                    </td>
+                    <td>
+                      <img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer ml-1" (click)="removeScale(i)" />
                     </td>
                   </tr>
                 </tbody>
@@ -644,7 +647,7 @@
   (importEvent)="importAllergyData($event)"
 ></app-physician-allergy>
 
-<app-glos-gow-comma-scale-popup
+<!-- <app-glos-gow-comma-scale-popup
   #scalesGlosgow
   (glasgowValue)="glasgowValue($event)"
 ></app-glos-gow-comma-scale-popup>
@@ -655,8 +658,8 @@
 <app-numeric-rating-scale-popup
   #scalesNumericRating
   (numericValue)="numericValue($event)"
-></app-numeric-rating-scale-popup>
-<app-social-habit
-  #socialAddHabit
-  (saveHabitData)="saveHabitData($event)"
-></app-social-habit>
+></app-numeric-rating-scale-popup> -->
+<app-social-habit #socialAddHabit (saveHabitData)="saveHabitData($event)"></app-social-habit>
+<app-glos-gow-comma-scale-popup #scalesGlosgow (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-scale-popup>
+<app-morse-fall-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-scale>
+<app-braden-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-scale>

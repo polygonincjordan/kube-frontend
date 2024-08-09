@@ -154,7 +154,7 @@
                 [ngClass]="isEducationAssement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('isEducationAssement',educationAssList[0])">
                 <div class="col-md-4">Education Assessment : {{educationAssList[0]?.Zversion ?
-                  dockVer(educationAssList[0]?.Zversion) : ''}} :</div>
+                  dockVer(educationAssList[0]?.Zversion) : ''}}</div>
                 <div class="col-md-2 status-color">{{educationAssList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(educationAssList[0]?.DocTime)}}">
                   {{getDate(educationAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -251,7 +251,8 @@
             <div
               [ngClass]="isNursingAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="font-weight: bold;" (click)="selectAssessment('isNursingAdmission',latestNurAdmissionList[0])">
-              <div class="col-md-4"> Nursing Admission Assessment :</div>
+              <div class="col-md-4"> Nursing Admission Assessment {{latestNurAdmissionList?.Zversion ?
+                dockVer(latestNurAdmissionList?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{latestNurAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(latestNurAdmissionList[0]?.DocTime)}}">
                 {{getDate(latestNurAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
