@@ -821,8 +821,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     if (!this.asc) {
       this.asc = true;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Erdat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Erdat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Date.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Date.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -836,8 +836,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     } else {
       this.asc = false;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Erdat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Erdat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Date.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Date.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -854,8 +854,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     if (!this.asc) {
       this.asc = true;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Ertim.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Ertim.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Time.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Time.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -867,8 +867,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     } else {
       this.asc = false;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Ertim.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Ertim.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Time.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Time.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

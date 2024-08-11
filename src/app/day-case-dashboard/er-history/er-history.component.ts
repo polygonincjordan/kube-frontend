@@ -86,7 +86,7 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
-  editDeleteDisable: boolean= false;
+  editDeleteDisable: boolean= true;
   constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private dayCaseDashboardService:DayCaseDashboardService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -301,16 +301,16 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl risk-modal-size' };
       this.modalRefForRisk = this.modalService.show(template,config);
       this.selectedERList = data;
-      if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
-        this.editDeleteDisable = true;
-      }
+      // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
+      //   this.editDeleteDisable = true;
+      // }
       this.getRiskList(data);
       this.getRiskValues();
       this.isRiskUpdate = false;
       this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.resetRiskForm();
-         this.editDeleteDisable = false;
+        //  this.editDeleteDisable = false;
         }
       });
 
@@ -322,16 +322,16 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl allergy-modal-size' };
       this.modalRefForAllergy = this.modalService.show(template,config);
       this.selectedERList = data;
-      if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
-        this.editDeleteDisable = true;
-      }
+      // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
+      //   this.editDeleteDisable = true;
+      // }
       this.userProfile = this.storageService.getUserProfile();
       this.updateAllergyForm.enable();
       this.isCheckboxesDisabled = false;
       this.modalRefForAllergy.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.resetAllergyForm();
-         this.editDeleteDisable = false;
+        //  this.editDeleteDisable = false;
         }
       });
       this.getCancelReasons();
@@ -1714,8 +1714,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwidt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwidt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1729,8 +1729,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwidt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwidt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1749,8 +1749,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Datum.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Datum.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1764,8 +1764,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Datum.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Datum.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1783,8 +1783,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec1.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec1.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1798,8 +1798,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec1.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec1.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1816,8 +1816,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1831,8 +1831,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1883,8 +1883,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1898,8 +1898,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1916,8 +1916,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1931,8 +1931,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
