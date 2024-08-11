@@ -736,8 +736,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -751,8 +751,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -769,8 +769,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -784,8 +784,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -802,8 +802,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -817,8 +817,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -868,8 +868,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -883,8 +883,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -901,8 +901,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -916,8 +916,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

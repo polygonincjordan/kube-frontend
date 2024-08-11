@@ -288,7 +288,7 @@ export class ErVitalsComponent implements OnInit {
   }
   openModalForErVital(checkinitem,tab?) {
     this.erListSelectedData = checkinitem;
-    if(tab==="erHistory" &&  this.erListSelectedData?.AdmissionStatus === "Actual Discharge"){
+    if(tab==="erHistory"){
       this.isEditAndDeleteAble=true
     }
     const config: ModalOptions = { class: 'modal-dialog-centered er-vital-modal' };
