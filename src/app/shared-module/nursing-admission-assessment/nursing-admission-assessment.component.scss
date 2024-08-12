@@ -50,10 +50,6 @@
         ng-select {
           width: 100%;
         }
-
-        input.form-control {
-          height: 33px;
-        }
       }
 
       .col-md-10 {
@@ -541,7 +537,7 @@
             tr {
               td {
                 padding: 10px !important;
-                width: 15%;
+                width: 25%;
 
                 &:nth-child(5) {
                   width: 3%;

@@ -15,6 +15,8 @@ import { PhysicalAssessmentSectionComponent } from './physical-assessment-sectio
 import { MedicationSubstancesSectionComponent } from './medication-substances-section/medication-substances-section.component';
 import { VaccinationExposureSectionComponent } from './vaccination-exposure-section/vaccination-exposure-section.component';
 import { AdmissionDataSectionComponent } from './admission-data-section/admission-data-section.component';
+import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
+import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { AdmissionDataSectionComponent } from './admission-data-section/admissio
     PhysicalAssessmentSectionComponent,
     MedicationSubstancesSectionComponent,
     VaccinationExposureSectionComponent,
-    AdmissionDataSectionComponent
+    AdmissionDataSectionComponent,
+    MorseFallScaleComponent,
+    BradenScaleComponent
   ],
   exports: [NursingAdmissionAssessmentComponent],
   imports: [

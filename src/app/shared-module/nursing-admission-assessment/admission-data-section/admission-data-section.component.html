@@ -2,35 +2,6 @@
   <form [formGroup]="nursingAdmissionForm">
     <label class="box-label">Admission Data</label>
     <div class="container-fluid">
-      <div class="row create-form-inputs">
-        <!-- <div class="col-md-5 row m-0 align-items-center">
-          <div class="col-md-5 p-0">
-            <label>Referral Type</label>
-          </div>
-          <div class="col-md-7 p-0">
-            <ng-select formControlName="AReferralType">
-              <ng-option>Test</ng-option>
-            </ng-select>
-          </div>
-        </div> -->
-        <div class="col-md-3 row m-0 align-items-center">
-          <div class="col-md-3 text-right">
-            <label>Date</label>
-          </div>
-          <div class="col-md-7">
-            <input class="form-control" formControlName="ADate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]="" #dp="bsDatepicker"
-              bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"/>
-          </div>
-        </div>
-        <div class="col-md-3 row m-0 align-items-center">
-          <div class="col-md-3 text-right">
-            <label>Time</label>
-          </div>
-          <div class="col-md-7">
-            <input type="time" class="form-control" style="height: 33px" formControlName="ATime" />
-          </div>
-        </div>
-      </div>
       <!-- <div class="row create-form-inputs">
         <div class="col-md-2">
           <label>Room</label>
@@ -98,6 +69,25 @@
         </div>
         <div class="col-md-3">
           <input type="text" class="form-control" formControlName="ALanguageSpoken" [disabled]="true" [readOnly]="true" />
+        </div>
+        <div class="col-md-7 row create-form-inputs">
+          <div class="col-md-5 row m-0 align-items-center">
+            <div class="col-md-5 text-right">
+              <label>Date</label>
+            </div>
+            <div class="col-md-7">
+              <input class="form-control" formControlName="ADate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"/>
+            </div>
+          </div>
+          <div class="col-md-5 row m-0 align-items-center">
+            <div class="col-md-3 text-right">
+              <label>Time</label>
+            </div>
+            <div class="col-md-8">
+              <input type="time" class="form-control" style="height: 33px" formControlName="ATime" />
+            </div>
+          </div>
         </div>
       </div>
       <div class="row create-form-inputs align-items-center">

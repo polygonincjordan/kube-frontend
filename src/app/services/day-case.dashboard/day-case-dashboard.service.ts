@@ -44,7 +44,7 @@ export class DayCaseDashboardService {
   }
 
   deleteNursingCarePlan(json): Observable<any> {
-    return this.http.post(this.url + `deleteNursingCarePlan?Dockey=${json}`, {
+    return this.http.delete(this.url + `deleteNursingCarePlan?Dockey=${json}`, {
       withCredentials: true,
     });
   }
@@ -70,7 +70,7 @@ export class DayCaseDashboardService {
   }
 
   deleteNursingDischargeDoc(json): Observable<any> {
-    return this.http.post(this.url + `deleteNursingDischargeDoc?Dockey=${json}`, {
+    return this.http.delete(this.url + `deleteNursingDischargeDoc?Dockey=${json}`, {
       withCredentials: true,
     });
   }

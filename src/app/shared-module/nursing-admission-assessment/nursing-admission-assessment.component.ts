@@ -24,6 +24,8 @@ import { Subscription, catchError, of } from 'rxjs';
 import { DataShareService } from '@services/data-share.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { ActionType } from '@services/interfaces/common.enum';
+import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
+import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 
 @Component({
   selector: 'app-nursing-admission-assessment',
@@ -33,6 +35,8 @@ import { ActionType } from '@services/interfaces/common.enum';
 export class NursingAdmissionAssessmentComponent implements OnInit {
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
   @ViewChild('scalesGlosgow') scalesGlosgow: GlosGowCommaScalePopupComponent;
+  @ViewChild('morseFallScale') morseFallScale: MorseFallScaleComponent;
+  @ViewChild('bradenScaleTemp') bradenScaleTemp: BradenScaleComponent;
   @ViewChild('scalesFacePain') scalesFacePain: FacePainScalePopupComponent;
   @ViewChild('scalesNumericRating')
   scalesNumericRating: NumericRatingScalePopupComponent;
@@ -70,7 +74,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       Dockey: '',
     },
     {
-      ScaleType: 'Face pain scale',
+      ScaleType: 'Morse Fall Scale (MFS)',
       LastScore: '',
       ScoreDesc: '',
       Datetimee: '',
@@ -78,7 +82,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       Dockey: '',
     },
     {
-      ScaleType: 'Numeric rating scale(more than 8 years)',
+      ScaleType: 'Braden scale for predicting pressure ulcers',
       LastScore: '',
       ScoreDesc: '',
       Datetimee: '',
@@ -548,7 +552,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
             data?.d?.results[0].TOSCALE.results.forEach((element) => {
               this.scalesList.forEach((res: any) => {
                 if (element.ScaleType == res.ScaleType && element.LastScore) {
-                  res.Datetimee = this.parseDate(element.Datetimee),
+                  res.Datetimee = element.Datetimee,
                     res.Dockey = element.Dockey,
                     res.ScoreDesc = element.ScoreDesc,
                     res.LastScore = element.LastScore,
@@ -990,33 +994,59 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
     });
   }
 
-  public glasgowValue(event) {
-    this.scalesList[0].LastScore = event?.totalScore.toString();
-    this.scalesList[0].ScoreDesc = event?.ScoreDesc;
-    this.scalesList[0].Dockey = event?.dockey;
-    this.scalesList[0].Datetimee = event?.date;
+  // public glasgowValue(event) {
+  //   this.scalesList[0].LastScore = event?.totalScore.toString();
+  //   this.scalesList[0].ScoreDesc = event?.ScoreDesc;
+  //   this.scalesList[0].Dockey = event?.dockey;
+  //   this.scalesList[0].Datetimee = event?.date;
+  // }
+
+  // public facePainValue(event) {
+  //   this.scalesList[1].LastScore = event?.totalScore;
+  //   this.scalesList[1].ScoreDesc = event?.ScoreDesc;
+  //   this.scalesList[1].Dockey = event?.dockey;
+  //   this.scalesList[1].Datetimee = event?.date;
+  // }
+
+  // public numericValue(event) {
+  //   this.scalesList[2].LastScore = event?.totalScore;
+  //   this.scalesList[2].ScoreDesc = event?.ScoreDesc;
+  //   this.scalesList[2].Dockey = event?.dockey;
+  //   this.scalesList[2].Datetimee = event?.date;
+  // }
+
+  public scaleStoreInTable(event: any, scaleType: string) {
+    if(scaleType == 'morseFall') {
+      this.scalesList[1].LastScore = event?.totalScore;
+      this.scalesList[1].ScoreDesc = event?.description;
+      this.scalesList[1].Dockey = event?.dockey;
+      this.scalesList[1].Datetimee = event?.date;
+    } else if (scaleType == 'braden') {
+      this.scalesList[2].LastScore = event?.totalScore;
+      this.scalesList[2].ScoreDesc = event?.description;
+      this.scalesList[2].Dockey = event?.dockey;
+      this.scalesList[2].Datetimee = event?.date;
+    } else if (scaleType == 'glosgow') {
+      this.scalesList[0].LastScore = event?.totalScore;
+      this.scalesList[0].ScoreDesc = event?.description;
+      this.scalesList[0].Dockey = event?.dockey;
+      this.scalesList[0].Datetimee = event?.date;
+    }
   }
 
-  public facePainValue(event) {
-    this.scalesList[1].LastScore = event?.totalScore;
-    this.scalesList[1].ScoreDesc = event?.ScoreDesc;
-    this.scalesList[1].Dockey = event?.dockey;
-    this.scalesList[1].Datetimee = event?.date;
+  removeScale(index: number) {
+    this.scalesList[index].LastScore = "";
+    this.scalesList[index].ScoreDesc = "";
+    this.scalesList[index].Dockey = "";
+    this.scalesList[index].Datetimee = "";
   }
 
-  public numericValue(event) {
-    this.scalesList[2].LastScore = event?.totalScore;
-    this.scalesList[2].ScoreDesc = event?.ScoreDesc;
-    this.scalesList[2].Dockey = event?.dockey;
-    this.scalesList[2].Datetimee = event?.date;
-  }
-
-  public openGlosgowComaModel(item: any) {
+  public openScaleModel(item: any) {
     if (this.noScaleAppicable) return;
     if (item.Dockey) {
       this.scalesEditConfirmationMsg(item);
     } else {
-      this.openModalScale(item);
+      this.openSelectedModalScale(item);
     }
   }
 
@@ -1030,18 +1060,18 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
-        this.openModalScale(item);
+        this.openSelectedModalScale(item);
       }
     });
   }
 
-  openModalScale(item) {
+  openSelectedModalScale(item) {
     if (item.value == '1') {
       this.scalesGlosgow.openModalForGlosgow('');
     } else if (item.value == '2') {
-      this.scalesFacePain.openModalForFacePain('');
+      this.morseFallScale.openMorseFallScaleModal('');
     } else if (item.value == '3') {
-      this.scalesNumericRating.openModalForNumericRating('');
+      this.bradenScaleTemp.openBradenScaleModal('');
     }
   }
 
@@ -1285,10 +1315,10 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       delete paylaod.disabledAllPhy
       delete paylaod.TOMEDICATION
       paylaod.TOALLERGIES = this.toAllergyArr;
-      paylaod.TOSCALE = this.scalesList.filter((res) => {
+      paylaod.TOSCALE = this.scalesList.filter((res: any) => {
         delete res.value;
+        res.LastScore = res?.LastScore.toString();
         if(res.LastScore) {
-          if(res.Datetimee) res.Datetimee = this.sanitizeSAPDateFormat(res.Datetimee)
           return res;
         }
       });
@@ -1301,8 +1331,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       updatedList = updatedList.filter(item => item !== undefined);
       paylaod.TOSOCIAL = updatedList;
       paylaod.TOINFECTION = this.nursingAdmissionForm.value.TOINFECTION.filter(item => item.InfectiousDiesease);
-      console.log(paylaod, "---")
-      // return 
+
       this.subscription = this.dayCaseDashboard
       .createNursingAdmissionDoc(paylaod)
       .subscribe({
@@ -1310,18 +1339,18 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
           this.sharedService.waringSwallModel(
-            `PUT Error at Nursing care plan : ${err}`
+            `PUT Error at Nursing admission document : ${err}`
           );
         },
         complete: () => {
           resolve(true);
           if (actiontype === 'edit') {
             this.sharedService.successSwallModel(
-              'Nursing discharge summary updated successfully'
+              'Nursing admission document updated successfully'
             );
           } else {
             this.sharedService.successSwallModel(
-              'Nursing discharge summary created successfully'
+              'Nursing admission document created successfully'
             );
           }
         },

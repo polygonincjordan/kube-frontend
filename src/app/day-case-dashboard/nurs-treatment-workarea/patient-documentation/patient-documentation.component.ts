@@ -102,7 +102,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestNurCarePlanList = [];
   latestNurDischargeSummeryList = [];
   latestMorseFallScaleList = [];
-  latestNurAdmissionList = [];
+  latestNurAdmissionList: any = [];
   latestNurAssessment = [];
   latestPediatricsAdmissionList = [];
   latestFallRiskAssessmentList = [];
@@ -1227,13 +1227,13 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+          this.deleteNursingDischarge(this.selectedDocData.Dockey);
         }
       } else if (action == 'release') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseNursingCarePlanDoc();
+          this.directReleaseNursingDischargePlanDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -1381,6 +1381,34 @@ export class PatientDocumentationComponent implements OnInit {
           },
           complete: () => {
             this.sharedService.successSwallModel('Nursing care plan released successfully');
+            this.refresh();
+          }
+        });
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(
+          `POST Error at Nurse Endorsment : ${err}`
+        );
+      }
+    });
+  }
+
+  directReleaseNursingDischargePlanDoc() {
+    this.subscription = this.dayCaseDashboardService
+    .getNursingDischargeDocData(this.selectedDocData.Dockey).subscribe({
+      next: (data: any) => {
+        let paylaod = data.d.results[0];
+        delete paylaod.__metadata
+        paylaod.DocStatus = '2'; 
+        this.subscription = this.dayCaseDashboardService.createNursingDischargeDoc({ d: paylaod }).subscribe({
+          next: (data: any) => {},
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+          },
+          complete: () => {
+            this.sharedService.successSwallModel('Nursing discharge summery released successfully');
             this.refresh();
           }
         });
@@ -1835,7 +1863,6 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     } else if(this.openNurseAdmission) {
-      debugger
       this.NursingAdmissionComp.createNursingAdmissionDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
@@ -2315,6 +2342,42 @@ export class PatientDocumentationComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteNursingCarePlan(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
+   // Delete Nursing Care Plan Document
+   async deleteNursingDischarge(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteNursingDischargeDoc(docKey)).subscribe(
           (_success: any) => {
             Swal.fire({
               text: "Document is deleted successfully",
