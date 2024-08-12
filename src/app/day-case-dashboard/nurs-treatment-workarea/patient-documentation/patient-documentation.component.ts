@@ -995,13 +995,13 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
       } else if (action == 'release') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.releaseEducationAss();
-        } else {
-          this.sharedService.waringSwallModel(`The document is already released`);
         }
       } else if (action == 'copy') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.openEducationAssessment = true;;
           let valueObj = {
             type: WordType.CopyEA,
@@ -1010,10 +1010,19 @@ export class PatientDocumentationComponent implements OnInit {
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
+        // this.openEducationAssessment = true;
+        // this.educationAssessmentComp.saveAndReleaseEducation(false);
+        // this.educationAssessmentComp.ngOnInit();
+        // this.createAndReleaseMed();
         this.openEducationAssessment = true;
-        this.educationAssessmentComp.saveAndReleaseEducation(false);
-        this.educationAssessmentComp.ngOnInit();
-        this.createAndReleaseMed();
+        this.educationAssessmentComp.saveAndReleaseEducation('4').then((formValue: any)=>{
+          if(formValue){
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating education assessment:', error);
+        });
       }
     }
     // nurse endorsement
@@ -1101,7 +1110,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
+          console.error('Error creating surgical passport document:', error);
         });;
       }
     }
@@ -1585,7 +1594,16 @@ export class PatientDocumentationComponent implements OnInit {
   saveDoc() {
     if (this.actionType == 'create') {
       if (this.openEducationAssessment) {
-        this.createEducationAss(false);
+        this.educationAssessmentComp.saveEducationFormValue('1').then((res: any) => {
+          this.refresh();
+        }, (_error: any) => {
+          Swal.fire({
+            text: `Education assessment has error, contact your administrator`,
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+        });
       }
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
@@ -1689,7 +1707,16 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openEducationAssessment) {
-        this.updateEducationAss(false);
+        this.educationAssessmentComp.saveEducationFormValue('1').then((res: any) => {
+          this.refresh();
+        }, (_error: any) => {
+          Swal.fire({
+            text: `Education assessment has error, contact your administrator`,
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+        });
       }
      
       if (this.openSurgicsalPassport) {
@@ -1753,7 +1780,16 @@ export class PatientDocumentationComponent implements OnInit {
       }
       
       if (this.openEducationAssessment) {
-        this.createEducationAss(false);
+        this.educationAssessmentComp.saveEducationFormValue('3', 'copy').then((res: any) => {
+          this.refresh();
+        }, (_error: any) => {
+          Swal.fire({
+            text: `Education assessment has error, contact your administrator`,
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+        });
       }
       
       if (this.openSurgicsalPassport) {
@@ -1834,7 +1870,23 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.medReport) {
       this.releaseMed();
     } else if (this.isEducationAssement) {
-      this.createEducationAss(true);
+      this.educationAssessmentComp.saveEducationFormValue('2').then((res: any) => {
+        Swal.fire({
+          text: "Education assessment is created successfully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        this.refresh();
+        this.refresh();
+      }, (_error: any) => {
+        Swal.fire({
+          text: `Education assessment has error, contact your administrator`,
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+      });
     } else if (this.openSurgicsalPassport) {
       this.SurgicalPassComp.createSurgicalPassDoc('2','edit').then((formValue: any) => {
         if (formValue) {
@@ -2134,23 +2186,23 @@ export class PatientDocumentationComponent implements OnInit {
 
 
   async createEducationAss(type) {
-    (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
-      Swal.fire({
-        text: "Education assessment is created successfully",
-        icon: 'success',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
-      })
-      this.educationAssessmentComp.resetAll();
-      this.refresh();
-    }, (_error: any) => {
-      Swal.fire({
-        text: `Education assessment has error, contact your administrator`,
-        icon: 'warning',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
-      })
-    });
+    // (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
+    //   Swal.fire({
+    //     text: "Education assessment is created successfully",
+    //     icon: 'success',
+    //     confirmButtonText: 'Ok',
+    //     customClass: 'myalertpopup'
+    //   })
+    //   this.educationAssessmentComp.resetAll();
+    //   this.refresh();
+    // }, (_error: any) => {
+    //   Swal.fire({
+    //     text: `Education assessment has error, contact your administrator`,
+    //     icon: 'warning',
+    //     confirmButtonText: 'Ok',
+    //     customClass: 'myalertpopup'
+    //   })
+    // });
   }
 
   async deleteEducationAss() {
@@ -2437,31 +2489,49 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   async updateEducationAss(type) {
-    (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
-      Swal.fire({
-        text: "Document is updated successfully",
-        icon: 'success',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
-      })
-      this.educationAssessmentComp.resetAll();
-      this.refresh();
-    }, (_error: any) => { });
+    // (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
+    //   Swal.fire({
+    //     text: "Document is updated successfully",
+    //     icon: 'success',
+    //     confirmButtonText: 'Ok',
+    //     customClass: 'myalertpopup'
+    //   })
+    //   this.educationAssessmentComp.resetAll();
+    //   this.refresh();
+    // }, (_error: any) => { });
   }
 
   releaseEducationAss() {
-    this.admissionService.getDocuEducationDetails(this.educationAssList[0].Dockey).subscribe((res: any) => {
-      let d: any = {
-        d: res?.d?.results[0],
-      };
-      d.d.DocStatus = '2';
-      this.admissionService.saveEducationData(d).subscribe(
-        (result) => {
-          this.refresh();
-        }
-      );
-    })
+    this.directReleaseEducationAssesment();
   }
+  directReleaseEducationAssesment() {
+    this.subscription = this.admissionService
+    .getDocuEducationDetails(this.selectedDocData.Dockey).subscribe({
+      next: (data: any) => {
+        let paylaod = data.d.results[0];
+        delete paylaod.__metadata
+        paylaod.DocStatus = '2'; 
+        this.subscription = this.admissionService.saveEducationData({ d: paylaod }).subscribe({
+          next: (data: any) => {},
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+          },
+          complete: () => {
+            this.sharedService.successSwallModel('Admission assessment document released successfully');
+            this.refresh();
+          }
+        });
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(
+          `POST Error at Nurse Endorsment : ${err}`
+        );
+      }
+    });
+  }
+
   releaseNurseEndorsment() {
     this.emergencyService.getNurseEndDetail(this.nurseEndorsementList[0].Dockey).subscribe((res: any) => {
       let d: any = {
@@ -2527,6 +2597,19 @@ export class PatientDocumentationComponent implements OnInit {
   // Copy + Release Nursing Admission Document
   copyDirectReleaseNursingAdmissionDoc() {
     this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing admission document:', error);
+    });
+  }
+
+  // Copy + Release Nursing Admission Document
+  copyDirectReleaseEducationAssessment() {
+    // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
+    this.educationAssessmentComp.saveEducationFormValue('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }

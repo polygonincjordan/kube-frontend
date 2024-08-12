@@ -55,7 +55,7 @@
               Save
             </button>
           </div>
-          <div class="header-btn" *ngIf="actionType == 'create'">
+          <div class="header-btn" *ngIf="actionType == 'create' && selectedDocName != 'Education Assement' ">
             <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
               Release
             </button>
@@ -90,6 +90,11 @@
               Release
             </button>
           </div>
+          <!-- <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Education Assement'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseEducationAssessment()">
+              Release
+            </button>
+          </div> -->
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
