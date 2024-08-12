@@ -17,7 +17,7 @@
       </button>
       <button
         class="btn btn-primary view-details"
-        (click)="viewRecord('inputRecord')"
+        (click)="viewRecord('Intake')"
       >
         View Details
       </button>
@@ -270,7 +270,7 @@
       </button>
       <button
         class="btn btn-primary view-details"
-        (click)="viewRecord('outputRecord')"
+        (click)="viewRecord('Output')"
       >
         View Details
       </button>
@@ -386,7 +386,14 @@
               appendTo="body"
               placeholder="Choose From The List"
               formControlName="type"
-              (change)="outputTypeChange($event, i)"
+              (change)="
+                onoutputSelectType(
+                  $event,
+                  saveTypeModal,
+                  i,
+                  outputrowName(i).category
+                )
+              "
               [ngClass]="{
                 'is-invalid': row.get('type').invalid && row.get('type').touched
               }"
@@ -491,9 +498,9 @@
   >
     <div class="font-weight-bold w-20">Net Balance:</div>
     <div class="font-weight-bold w-60">
-      <span class="number"
-        >{{ netBalance >= 0 ? "(+)" : "(-)" }} &nbsp;
-        {{ netBalance ?? 0 }} &nbsp;</span
+      <span [ngClass]="netBalance < 0 ? 'minus-number' : 'plus-number'"
+        >{{ netBalance > 0 ? "(+)" : netBalance < 0 ? "(-)" : "" }} &nbsp;
+        {{ netBalance < 0 ? -netBalance : netBalance }} &nbsp;</span
       >
       mL
     </div>
@@ -518,10 +525,15 @@
     <div
       class="footer d-flex flex-row align-items-center justify-content-between"
     >
-      <button class="btn btn-cancel w-45" (click)="modalRefForSave.hide()">
+      <button
+        class="btn btn-cancel w-45"
+        (click)="saveModal('cancel'); modalRefForSave.hide()"
+      >
         Cancel
       </button>
-      <button (click)="saveModal()" class="btn btn-save w-45">Save</button>
+      <button (click)="saveModal('save')" class="btn btn-save w-45">
+        Save
+      </button>
     </div>
   </div>
 </ng-template>

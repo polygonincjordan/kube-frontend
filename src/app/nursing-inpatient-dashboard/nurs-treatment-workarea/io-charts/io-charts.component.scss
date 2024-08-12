@@ -18,10 +18,16 @@
   background-color: #f3f9ff;
 }
 
-.number {
+.plus-number {
   color: #01601b;
   font-weight: bold;
   background: #01601b08;
+  padding: 5px;
+}
+.minus-number {
+  color: #dc3545;
+  font-weight: bold;
+  background: #60030108;
   padding: 5px;
 }
 
@@ -128,6 +134,11 @@ tr td {
 
 ::ng-deep .is-invalid .ng-select-container {
   border-color: red !important;
+}
+
+::ng-deep .ng-placeholder {
+  font-size: 10px !important;
+  font-style: italic !important;
 }
 
 .invalid-feedback {

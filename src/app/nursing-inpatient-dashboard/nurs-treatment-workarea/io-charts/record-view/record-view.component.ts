@@ -1,11 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+declare var $: any;
 @Component({
   selector: 'app-record-view',
   templateUrl: './record-view.component.html',
   styleUrls: ['./record-view.component.scss'],
 })
-export class RecordViewComponent implements OnInit {
+export class RecordViewComponent implements OnInit, AfterViewChecked {
   @Input() recordViewData: any = null;
   @Output() backevent = new EventEmitter();
 
@@ -19,10 +27,12 @@ export class RecordViewComponent implements OnInit {
         {
           type: 'Food',
           value: '100 mL',
+          remarks: 'kevin',
         },
         {
           type: 'Medications',
           value: '250 mL',
+          remarks: 'kevin',
         },
       ],
     },
@@ -142,6 +152,8 @@ export class RecordViewComponent implements OnInit {
     }
     this.tableData =
       this.tableData.length === 0 ? this.tableData : this.recordViewData.data;
+    // console.log(this.tableData);
+
     if (this.tableData.length > 0) {
       this.tableData.forEach((item) => {
         item.subRows.forEach((subitem) => {
@@ -155,6 +167,13 @@ export class RecordViewComponent implements OnInit {
     this.filteredTableData = [...this.tableData];
     this.dates = this.extractDates(this.filteredTableData);
     this.calculateTotalsAndEnteredBy();
+  }
+
+  ngAfterViewChecked() {
+    // Initialize Bootstrap tooltips
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
   }
 
   isCollapsed: { [key: string]: boolean } = {
@@ -171,8 +190,6 @@ export class RecordViewComponent implements OnInit {
 
   onDateRangeChange(selectedRange: any) {
     try {
-      console.log('selectedRange', selectedRange);
-
       if (selectedRange && selectedRange.length === 2) {
         selectedRange[0].setHours(0, 0, 0, 0);
         selectedRange[1].setHours(0, 0, 0, 0);
@@ -209,7 +226,6 @@ export class RecordViewComponent implements OnInit {
         // Entered By filter
         const matchesEnteredBy =
           !this.selectedEnteredBy || row.enteredBy === this.selectedEnteredBy;
-        console.log(matchesType, matchesEnteredBy, this.selectedType);
 
         // Search text filter
         const matchesSearchText =
@@ -241,18 +257,39 @@ export class RecordViewComponent implements OnInit {
       });
       setTimeout(() => {
         this.dates = this.extractDates(this.filteredTableData);
+        // this.filterTableDataByType();
         this.calculateTotalsAndEnteredBy();
       }, 10);
-    } catch (error) {
-      console.error('Error applying filter:', error);
-    }
+    } catch (error) {}
+  }
+
+  filterTableDataByType() {
+    const tableData = this.filteredTableData
+      .map((item) => {
+        // Filter subRows by the searchType
+        const filteredSubRows = item.subRows.filter((subRow) =>
+          subRow.type.includes(this.searchText)
+        );
+
+        // If there are matches, return a new object with the required structure
+        if (filteredSubRows.length > 0) {
+          return {
+            category: item.category,
+            date: item.date,
+            time: item.time,
+            enteredBy: item.enteredBy,
+            subRows: filteredSubRows, // Only include the matching subRows
+          };
+        }
+        return null; // If no matches, return null
+      })
+      .filter((item) => item !== null); // Filter out null values
+    this.filteredTableData = tableData;
   }
 
   isTimeInOption(time: string, option: string): any {
     const [hours, minutes] = time.split(':').map(Number);
     const timeMinutes = hours * 60 + minutes;
-
-    // debugger;
     switch (option) {
       case '7AM - 7PM':
         return (
@@ -323,11 +360,26 @@ export class RecordViewComponent implements OnInit {
     } catch (error) {}
   }
 
+  getEntryTotal(entries, date) {
+    try {
+      let total = 0;
+      const entryTime =
+        entries.date + '  ' + this.convertTo12HourFormat(entries.time);
+      if (entryTime === date) {
+        console.log(entryTime, entries);
+        entries.subRows.forEach((sub) => {
+          const value = Number(sub.value.split(' ')[0]);
+          total += value;
+        });
+      }
+      return total;
+    } catch (error) {}
+  }
+
   calculateTotalsAndEnteredBy() {
     const totalVolumes = {};
     this.filteredTableData.forEach((category) => {
       category.subRows.forEach((subRow) => {
-        // subRow.forEach((entry) => {
         const entryTime =
           category.date + '  ' + this.convertTo12HourFormat(category.time);
         if (!totalVolumes[entryTime]) {
@@ -336,10 +388,8 @@ export class RecordViewComponent implements OnInit {
         if (subRow.value !== '--') {
           totalVolumes[entryTime] += parseInt(subRow.value);
         }
-        // });
       });
     });
-
     let grandTotal = 0;
     this.dates.forEach((date) => {
       this.individualTotals[date] = totalVolumes[date]
@@ -349,9 +399,7 @@ export class RecordViewComponent implements OnInit {
         grandTotal += totalVolumes[date];
       }
     });
-
     this.grandTotal = `${grandTotal} mL`;
-
     this.filteredTableData.forEach((category) => {
       const entryTime =
         category.date + '  ' + this.convertTo12HourFormat(category.time);

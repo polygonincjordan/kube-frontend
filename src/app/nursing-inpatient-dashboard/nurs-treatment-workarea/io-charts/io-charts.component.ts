@@ -26,6 +26,7 @@ export class IoChartsComponent implements OnInit {
   };
   inputForm: FormGroup;
   outputForm: FormGroup;
+  modalForm: FormGroup;
   pushCategory = '';
   customType = '';
   inCategories = [
@@ -37,20 +38,11 @@ export class IoChartsComponent implements OnInit {
     'Other',
   ];
   inTypes = {
-    Oral: [
-      'Fluids',
-      'Food',
-      'Medications',
-      'Supplements',
-      'Other',
-      '+ Add New Type',
-    ],
+    Oral: ['Fluids', 'Food', 'Medications', 'Supplements', '+ Add New Type'],
     'Enteral (GI)': [
       'Water',
       'Smashed Food',
       'Feeding Formula',
-      'Other',
-      'Other',
       '+ Add New Type',
     ],
     Parenteral: ['Total Parenteral Nutrition(TPN)'],
@@ -69,7 +61,6 @@ export class IoChartsComponent implements OnInit {
       'Medications',
       'Electrolytes',
       'Albumin',
-      'Other',
       '+ Add New Type',
     ],
     'Blood Products': [
@@ -78,7 +69,6 @@ export class IoChartsComponent implements OnInit {
       'FFP',
       'Platelets',
       'Cryoprecipitate',
-      'Other',
       '+ Add New Type',
     ],
     Other: [''],
@@ -91,10 +81,10 @@ export class IoChartsComponent implements OnInit {
       "Foley's Catheter",
       'Suprapubic',
       'Catheter',
-      'Other',
+      '+ Add New Type',
     ],
-    Stool: ['Void', 'Bedpan', 'Colostomy', 'Diaper', 'Other'],
-    'Emesis (Vomit)': ['Oral', 'NGT', 'OGT', 'PEGT', 'Other'],
+    Stool: ['Void', 'Bedpan', 'Colostomy', 'Diaper', '+ Add New Type'],
+    'Emesis (Vomit)': ['Oral', 'NGT', 'OGT', 'PEGT', '+ Add New Type'],
     Drainage: [
       'Chest',
       'Tube',
@@ -108,7 +98,7 @@ export class IoChartsComponent implements OnInit {
       'Bleeding',
       'Suction',
       'Abdominal',
-      'Other',
+      '+ Add New Type',
     ],
   };
   outCategories = ['Urine', 'Stool', 'Emesis (Vomit)', 'Drainage', 'Other'];
@@ -160,6 +150,7 @@ export class IoChartsComponent implements OnInit {
       const config: ModalOptions = {
         class: 'modal-dialog-centered modal-diagnosis',
       };
+      this.modalForm = this.inputForm;
       this.pushCategory = category;
       this.selectedIndex = index;
       this.modalRefForSave = this.modalService.show(template, config);
@@ -167,18 +158,41 @@ export class IoChartsComponent implements OnInit {
       this.inputTypeChange(event, index);
     }
   }
+  onoutputSelectType(event, template: TemplateRef<any>, index, category: any) {
+    if (event.includes('+')) {
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered modal-diagnosis',
+      };
+      this.modalForm = this.outputForm;
+      this.pushCategory = category;
+      this.selectedIndex = index;
+      this.modalRefForSave = this.modalService.show(template, config);
+    } else {
+      this.outputTypeChange(event, index);
+    }
+  }
 
-  saveModal() {
-    if (this.customType != '') {
-      this.inTypes[this.pushCategory].splice(
-        this.inTypes[this.pushCategory].length - 1,
+  saveModal(type) {
+    if (type == 'save' && this.customType != '') {
+      let types;
+      if (this.modalForm === this.inputForm) {
+        types = this.inTypes;
+      } else {
+        types = this.outTypes;
+      }
+      types[this.pushCategory].splice(
+        types[this.pushCategory].length - 1,
         0,
         this.customType
       );
-      this.inputForm.controls.rows['controls'][this.selectedIndex]['controls'][
+      this.modalForm.controls.rows['controls'][this.selectedIndex]['controls'][
         'type'
       ].setValue(this.customType);
       this.modalRefForSave.hide();
+    } else {
+      this.modalForm.controls.rows['controls'][this.selectedIndex]['controls'][
+        'type'
+      ].setValue(null);
     }
   }
 
@@ -380,7 +394,7 @@ export class IoChartsComponent implements OnInit {
   }
 
   viewRecord(text: string) {
-    // this.recordViewText = text;
+    this.recordViewData.title = text;
     this.recordView = !this.recordView && this.recordViewData;
   }
 
@@ -431,6 +445,8 @@ export class IoChartsComponent implements OnInit {
       this.inputForm.markAllAsTouched();
     } else {
       const json = this.inputForm.value;
+      console.log('json', json);
+
       json.rows.forEach((item) => (this.intakeBalance += item.volume));
       const hasValue = json.rows.some((item) => item.volume > 0);
       if (hasValue) {
@@ -462,6 +478,7 @@ export class IoChartsComponent implements OnInit {
                   {
                     type: row.type,
                     value: `${row.volume || '0'} ${row.uom || 'mL'}`,
+                    remarks: row.remarks,
                   },
                 ]
               : [],
