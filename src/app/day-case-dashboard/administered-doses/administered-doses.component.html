@@ -30,16 +30,16 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of missedMedPatientList | filter: searchString; let i = index" (click)="openRightside(item)">
-              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Patname">
-                {{item?.Patname}}
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.PatientName">
+                {{item?.PatientName}}
               </td>
               <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">{{item?.Patnr}}</td>
               <td class="border-top-none" style="padding-left: 1px;" [title]="item.Falnr">{{item?.Falnr}}</td>
               <td class="border-top-none patient" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
                 {{ getDate(item.PatientDob) | date : 'dd.MM.y' }}
               </td>
-              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.RoomidText || item.BedidText">
-                {{ item?.RoomidText }} {{item?.BedidText}}
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.RoomidText">
+                {{ item?.RoomidText }}
               </td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Allergies">
                 {{ item?.Allergies }}

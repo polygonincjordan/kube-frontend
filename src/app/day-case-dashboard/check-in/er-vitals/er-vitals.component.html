@@ -29,10 +29,10 @@
         </div>
         <ul class="list-simple">
         <li (click)="EditVitalList()" [class.disabled]="isEditAndDeleteAble" [attr.disabled]="isEditAndDeleteAble"><img class="img-size" src="assets/img/Examinations.svg">Change Examination</li>
-        <li (click)="confirmationForDelete(deleteVitalSignModal)"><img class="img-size" src="assets/img/CancelExamination.svg" >Cancel Examination</li>
+        <li (click)="confirmationForDelete(deleteVitalSignModal)"[class.disabled]="isEditAndDeleteAble" [attr.disabled]="isEditAndDeleteAble"><img class="img-size" src="assets/img/CancelExamination.svg" >Cancel Examination</li>
         <!-- <li><img class="img-size" src="assets/img/changeexamination.svg">Examinations</li> -->
         <li class="icon-pdf"><img class="img-size" src="assets/img/graph.svg" title="Charts"> </li>
-        <li class="icon-pdf"><img class="img-size" src="assets/img/file1.svg" style="width: 23px;" (click)="CreateVitalList()" title="Create"> </li>
+        <li class="icon-pdf"><img class="img-size" src="assets/img/file1.svg" style="width: 23px;" (click)="CreateVitalList()" [class.disabled]="isEditAndDeleteAble" [attr.disabled]="isEditAndDeleteAble" title="Create"> </li>
         </ul>
         </div>
 
