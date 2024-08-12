@@ -13,6 +13,7 @@
         class="form-control w-100"
         id="searchFilter"
         [(ngModel)]="searchText"
+        (input)="applyFilter()"
       />
     </div>
   </div>
@@ -201,9 +202,21 @@
             </div>
           </td>
           <ng-container *ngIf="row.isCollapsed">
-            <td>{{ row.subRows[0].type }}</td>
-            <td *ngFor="let date of dates">
-              {{ getEntryForDate(row, row.subRows[0], date) }}
+            <td></td>
+            <td
+              *ngFor="let date of dates"
+              class="text-left"
+              [ngClass]="
+                getEntryTotal(row, date) === 0
+                  ? 'nonvalue-color'
+                  : 'value-color'
+              "
+            >
+              {{
+                getEntryTotal(row, date) === 0
+                  ? "--"
+                  : getEntryTotal(row, date) + " mL"
+              }}
             </td>
           </ng-container>
           <!-- Placeholder cell to align with the collapsed rows -->
@@ -213,9 +226,20 @@
         <!-- SubRows: Show only if not collapsed, otherwise show summary row -->
         <ng-container *ngIf="!row.isCollapsed">
           <tr *ngFor="let subRow of row.subRows">
-            <td>{{ subRow.type }}</td>
+            <td>
+              {{ subRow.type }}
+              <i
+                *ngIf="subRow.remarks"
+                class="fa fa-info-circle"
+                data-toggle="tooltip"
+                data-placement="top"
+                [attr.title]="subRow.remarks"
+              >
+              </i>
+            </td>
             <td
               *ngFor="let date of dates"
+              class="text-left"
               [ngClass]="
                 getEntryForDate(row, subRow, date) === '--'
                   ? 'nonvalue-color'
@@ -241,17 +265,21 @@
       <!-- Total Volume Row -->
       <tr class="total-volume">
         <th colspan="2">Entry Total Volume</th>
-        <td *ngFor="let date of dates">{{ individualTotals[date] }}</td>
+        <td *ngFor="let date of dates" class="text-left">
+          {{ individualTotals[date] }}
+        </td>
       </tr>
       <!-- Entered By Row -->
       <tr>
         <th colspan="2">Entered By</th>
-        <td *ngFor="let date of dates">{{ individualEnteredBy[date] }}</td>
+        <td *ngFor="let date of dates" class="text-left">
+          {{ individualEnteredBy[date] }}
+        </td>
       </tr>
       <!-- Grand Total Intake Row -->
       <tr class="total-intake">
         <th colspan="2">Grand Total Intake</th>
-        <td>{{ grandTotal }}</td>
+        <td class="text-left">{{ grandTotal }}</td>
         <td *ngIf="dates.length > 1" [attr.colspan]="dates.length"></td>
       </tr>
     </tbody>
