@@ -147,11 +147,11 @@ export class RecordViewComponent implements OnInit, AfterViewChecked {
   constructor() {}
 
   ngOnInit(): void {
-    if (!this.recordViewData.title) {
-      this.tableData = [];
-    }
-    this.tableData =
-      this.tableData.length === 0 ? this.tableData : this.recordViewData.data;
+    // if (!this.recordViewData.title) {
+    //   this.tableData = [];
+    // }
+    // this.tableData =
+    //   this.tableData.length === 0 ? this.tableData : this.recordViewData.data;
     // console.log(this.tableData);
 
     if (this.tableData.length > 0) {
@@ -366,7 +366,6 @@ export class RecordViewComponent implements OnInit, AfterViewChecked {
       const entryTime =
         entries.date + '  ' + this.convertTo12HourFormat(entries.time);
       if (entryTime === date) {
-        console.log(entryTime, entries);
         entries.subRows.forEach((sub) => {
           const value = Number(sub.value.split(' ')[0]);
           total += value;

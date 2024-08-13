@@ -177,7 +177,7 @@
       <tr>
         <th width="10%">Category</th>
         <th width="10%">Type</th>
-        <th *ngFor="let date of dates">{{ date }}</th>
+        <th class="text-left" *ngFor="let date of dates">{{ date }}</th>
       </tr>
     </thead>
     <tbody class="tbody">
@@ -228,14 +228,6 @@
           <tr *ngFor="let subRow of row.subRows">
             <td>
               {{ subRow.type }}
-              <i
-                *ngIf="subRow.remarks"
-                class="fa fa-info-circle"
-                data-toggle="tooltip"
-                data-placement="top"
-                [attr.title]="subRow.remarks"
-              >
-              </i>
             </td>
             <td
               *ngFor="let date of dates"
@@ -247,6 +239,16 @@
               "
             >
               {{ getEntryForDate(row, subRow, date) }}
+              <i
+                *ngIf="
+                  subRow.remarks && getEntryForDate(row, subRow, date) !== '--'
+                "
+                class="fa fa-info-circle"
+                data-toggle="tooltip"
+                data-placement="top"
+                [attr.title]="subRow.remarks"
+              >
+              </i>
             </td>
           </tr>
         </ng-container>
@@ -264,14 +266,14 @@
 
       <!-- Total Volume Row -->
       <tr class="total-volume">
-        <th colspan="2">Entry Total Volume</th>
+        <th colspan="2" class="text-left">Entry Total Volume</th>
         <td *ngFor="let date of dates" class="text-left">
           {{ individualTotals[date] }}
         </td>
       </tr>
       <!-- Entered By Row -->
       <tr>
-        <th colspan="2">Entered By</th>
+        <th colspan="2" class="text-left">Entered By</th>
         <td *ngFor="let date of dates" class="text-left">
           {{ individualEnteredBy[date] }}
         </td>
@@ -279,8 +281,8 @@
       <!-- Grand Total Intake Row -->
       <tr class="total-intake">
         <th colspan="2">Grand Total Intake</th>
-        <td class="text-left">{{ grandTotal }}</td>
-        <td *ngIf="dates.length > 1" [attr.colspan]="dates.length"></td>
+        <td [attr.colspan]="dates.length">{{ grandTotal }}</td>
+        <!-- <td *ngIf="dates.length > 1" [attr.colspan]="dates.length"></td> -->
       </tr>
     </tbody>
   </table>
