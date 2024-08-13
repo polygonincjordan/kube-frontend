@@ -70,7 +70,11 @@ export enum RedirectionType {
   MORSE$ = 'MORSE', // Morse Fall Scale
   DIALYSIS$ = 'DIALYSIS', // Dialysis Assessment
   HBCA$ = 'HBCA', // Hemo Catheter,
-  HBFG$ = 'HBFG', // Hemo Dialysis Fistula Graft
+  HBFG$ = 'HBFG', // Hemo Dialysis Fistula Graft,
+  NAA$='NAA',//Nursing Admission Assessment
+  SRGPP$="SRGPP",//Surgical Passport
+  NURDS$="NURDS",//Nursing Discharge Summary
+  NCP$="NCP"//, Nursing Care Plan (
 }
 
 export enum AssessmentType {

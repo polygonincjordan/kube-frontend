@@ -47,6 +47,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   public selectedIconPdf: BsModalRef;
   public documentUrl: SafeResourceUrl | null = null;
 
+
   constructor(
     private consumableService: ConsumableService,
     private storageService: StorageService,
@@ -162,6 +163,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   }
 
   public redirectToDocuments(data: any, type: string, action: string) {
+      
     const json = {
       Patnr: data.Patient,
       Einri: data.Einri,
@@ -192,12 +194,21 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
         case RedirectionType.FAC$:
           this.getReleasedPdf('HTML', data.FacePainScaleDoknr);
           break;
-        case RedirectionType.TRASM$:
-          this.getReleasedPdf('PDF', data.EmergencyNursingDoknr);
+        case RedirectionType.NAA$:
+          this.getReleasedPdf('PDF', data.ZmedNradmDoknr);
           break;
+        case RedirectionType.SRGPP$:
+          this.getReleasedPdf('PDF', data.ZmedSrgppDoknr);
+        break;
         case RedirectionType.EDUAS$:
           this.getReleasedPdf('PDF', data.EducationAssessDoknr);
-          break;
+        break;
+        case RedirectionType.MORSE$:
+          this.getReleasedPdf('HTML', data.ScaMorseDoknr);
+        break;
+        case RedirectionType.NCP$:
+          this.getReleasedPdf('PDF', data.ZmedNcpDoknr);
+        break;
         default:
           // Handle other cases if needed
           break;

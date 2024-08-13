@@ -335,8 +335,8 @@ export class PatientDocumentationComponent implements OnInit {
   getSurgicalPass(){
     this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
-        this.surgicalPassportList = _success.d.results        
-      },
+        this.surgicalPassportList = _success.d.results[0]  
+        },
       error: (err: any) => {
         // Handle errors if the request fails
         console.error('Error  Data:', err);
@@ -362,7 +362,7 @@ export class PatientDocumentationComponent implements OnInit {
   getNursingDischargeDocDeatils(){
     this.dayCaseDashboardService.nursingDischargeLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
-        this.latestNurDischargeSummeryList = _success.d.results        
+        this.latestNurDischargeSummeryList = _success.d.results[0]        
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -559,6 +559,38 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.MORSE$) {
       this.getPatientProfileData(this.latestMorseFallScaleData);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.SRGPP$) {
+      this.selectAssessment('isSurgicalPassport',this.surgicalPassportList)
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.SRGPP$) {
+      this.selectAssessment('isSurgicalPassport', this.surgicalPassportList)
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.SRGPP$) {
+      this.getPatientProfileData(this.surgicalPassportList);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NURDS$) {
+      this.selectAssessment('isNursingDischarge',this.latestNurDischargeSummeryList)
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NURDS$) {
+      this.selectAssessment('isNursingDischarge', this.latestNurDischargeSummeryList)
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NURDS$) {
+      this.getPatientProfileData(this.latestNurDischargeSummeryList);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NCP$) {
+      this.selectAssessment('isNursingCarePlan',this.latestNurCarePlanList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NCP$) {
+      this.selectAssessment('isNursingCarePlan', this.latestNurCarePlanList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NCP$) {
+      this.getPatientProfileData(this.latestNurCarePlanList[0]);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NAA$) {
+      this.selectAssessment('isNursingAdmission',this.latestNurAdmissionList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NAA$) {
+      this.selectAssessment('isNursingAdmission', this.latestNurAdmissionList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NAA$) {
+      this.getPatientProfileData(this.latestNurAdmissionList[0]);
     }
 
   }

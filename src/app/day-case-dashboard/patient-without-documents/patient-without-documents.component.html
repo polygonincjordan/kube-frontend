@@ -43,22 +43,23 @@
                 aria-hidden="true"></i>
             </th>
             <th scope="col">
-              TRASM
+              Admission Ass.
             </th>
-            <th scope="col">
-              NRS SCA
-            </th>
-            <th scope="col">
-              Glasgow
-            </th>
+            <th scope="col">Surg. Pass</th>
             <th scope="col">
               Braden
+            </th>
+            <th scope="col">
+              MFS
             </th>
             <th scope="col">
               Educ. Ass.
             </th>
             <th scope="col">
-              Face
+              Discharge Summary
+            </th>
+            <th scope="col">
+              NCP
             </th>
           </tr>
         </thead>
@@ -83,30 +84,22 @@
               {{ getTime(item.Time) }}
             </td>
             <td [title]="item.NurseName" class="border-top-none">
-              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.EmergencyNursingStatus == ''"
-                (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.Add$)" />
+              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ZmedNradmStatus == ''"
+                (click)="redirectToDocuments(item, RedirectionType.NAA$, ActionType.Add$)" />
               <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" title="Draft"
-                *ngIf="item.EmergencyNursingStatus == 'IA'"
-                (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.Update$)" />
+                *ngIf="item.ZmedNradmStatus == 'IA'"
+                (click)="redirectToDocuments(item, RedirectionType.NAA$, ActionType.Update$)" />
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 24px; color: red;" title="View PDF"
-                *ngIf="item.EmergencyNursingStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.TRASM$, ActionType.View$)"></i>
+                *ngIf="item.ZmedNradmStatus  == 'FR'"
+                (click)="redirectToDocuments(item, RedirectionType.NAA$, ActionType.View$)"></i>
             </td>
             <td [title]="item.NurseName" class="border-top-none">
-              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.NrsScaleStatus == ''"
-                (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.Add$)" />
-              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.NrsScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.Update$)" title="Draft" />
-              <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.NrsScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.NMRTSC$, ActionType.View$)" />
-            </td>
-            <td [title]="item.NurseName" class="border-top-none">
-              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.GlasgowScaleStatus == '' "
-                (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.Add$)" />
-              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.GlasgowScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.Update$)" title="Draft" />
-              <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.GlasgowScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.COMMA$, ActionType.View$)" />
+              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ZmedSrgppStatus == ''"
+                (click)="redirectToDocuments(item, RedirectionType.SRGPP$, ActionType.Add$)" />
+              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.ZmedSrgppStatus == 'IA'"
+                (click)="redirectToDocuments(item, RedirectionType.SRGPP$, ActionType.Update$)" title="Draft" />
+              <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.ZmedSrgppStatus  == 'FR'"
+                (click)="redirectToDocuments(item, RedirectionType.SRGPP$, ActionType.View$)" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.BradenScaleStatus == '' "
@@ -115,6 +108,14 @@
                 (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.Update$)" title="Draft" />
               <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.BradenScaleStatus  == 'FR'"
                 (click)="redirectToDocuments(item, RedirectionType.BRADEN$, ActionType.View$)" />
+            </td>
+            <td [title]="item.NurseName" class="border-top-none">
+              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ScaMorseStatus == '' "
+                (click)="redirectToDocuments(item, RedirectionType.MORSE$, ActionType.Add$)" />
+              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.ScaMorseStatus == 'IA'"
+                (click)="redirectToDocuments(item, RedirectionType.MORSE$, ActionType.Update$)" title="Draft" />
+              <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.ScaMorseStatus  == 'FR'"
+                (click)="redirectToDocuments(item, RedirectionType.MORSE$, ActionType.View$)" />
             </td>
             <td [title]="item.NurseName" class="border-top-none">
               <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.EducationAssessStatus == '' "
@@ -127,12 +128,24 @@
                 *ngIf="item.EducationAssessStatus  == 'FR'"></i>
             </td>
             <td [title]="item.NurseName" class="border-top-none">
-              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.FacePainScaleStatus == '' "
-                (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.Add$)" />
-              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" *ngIf="item.FacePainScaleStatus == 'IA'"
-                (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.Update$)" title="Draft" />
-              <img src="assets/img/document-html.svg" alt="edit" *ngIf="item.FacePainScaleStatus  == 'FR'"
-                (click)="redirectToDocuments(item, RedirectionType.FAC$, ActionType.View$)" />
+              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ZmedNrdisStatus == '' "
+                (click)="redirectToDocuments(item, RedirectionType.NURDS$, ActionType.Add$)" />
+              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" title="Draft"
+                (click)="redirectToDocuments(item, RedirectionType.NURDS$, ActionType.Update$)"
+                *ngIf="item.ZmedNrdisStatus == 'IA'" />
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 24px; color: red;" title="View PDF"
+                (click)="redirectToDocuments(item, RedirectionType.NURDS$, ActionType.View$)"
+                *ngIf="item.ZmedNrdisStatus  == 'FR'"></i>
+            </td>
+            <td [title]="item.NurseName" class="border-top-none">
+              <img src="assets/img/na.svg" alt="NA" title="Not Available" *ngIf="item.ZmedNcpStatus == '' "
+                (click)="redirectToDocuments(item, RedirectionType.NCP$, ActionType.Add$)" />
+              <img src="assets/img/edit-document-svgrepo-com.svg" alt="edit" title="Draft"
+                (click)="redirectToDocuments(item, RedirectionType.NCP$, ActionType.Update$)"
+                *ngIf="item.ZmedNcpStatus == 'IA'" />
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 24px; color: red;" title="View PDF"
+                (click)="redirectToDocuments(item, RedirectionType.NCP$, ActionType.View$)"
+                *ngIf="item.ZmedNcpStatus  == 'FR'"></i>
             </td>
           </tr>
         </tbody>
