@@ -114,7 +114,6 @@ export class IoChartsComponent implements OnInit {
 
   ngOnInit(): void {
     const now = new Date();
-
     // Set current date
     const day = now.getDate().toString().padStart(2, '0');
     const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
@@ -126,7 +125,6 @@ export class IoChartsComponent implements OnInit {
     const minutes = now.getMinutes().toString().padStart(2, '0');
     const currentTime = `${hours}:${minutes}`;
     this.currentTime = currentTime;
-
     this.createOutputForm();
     this.createInputForm();
   }
@@ -324,6 +322,7 @@ export class IoChartsComponent implements OnInit {
     }
     typeControl?.updateValueAndValidity();
   }
+
   outputVolumeChange(event, i) {
     console.log(event);
     const typeControl = (this.outputForm.get('rows') as FormArray)
@@ -338,12 +337,61 @@ export class IoChartsComponent implements OnInit {
   }
 
   outputFormCancel() {
-    this.outputForm.reset();
-    this.createOutputForm();
+    const hasValue = this.outputForm.value.rows.some(
+      (item) => item.volume > 0 || item.type != null
+    );
+    if (hasValue) {
+      Swal.fire({
+        text: 'Unsaved Data will be Lost, are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.outputForm.reset();
+          this.createOutputForm();
+          this.newOutputRecord = false;
+        }
+      });
+    } else {
+      this.outputForm.reset();
+      this.createOutputForm();
+      this.newOutputRecord = false;
+    }
   }
   inputFormCancel() {
-    this.inputForm.reset();
-    this.createInputForm();
+    const hasValue = this.inputForm.value.rows.some(
+      (item) =>
+        item.volume > 0 ||
+        (item.category != 'Parenteral' &&
+          item.type != '' &&
+          item.type != null) ||
+        (item.category == 'Parenteral' && item.volume > 0)
+    );
+    if (hasValue) {
+      Swal.fire({
+        text: 'Unsaved Data will be Lost, are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup',
+      }).then((result) => {
+        console.log(result);
+
+        if (result.isConfirmed) {
+          this.inputForm.reset();
+          this.createInputForm();
+          this.newInputRecord = false;
+        }
+      });
+    } else {
+      this.inputForm.reset();
+      this.createInputForm();
+      this.newInputRecord = false;
+    }
   }
 
   backEvent(event: any) {
@@ -432,10 +480,21 @@ export class IoChartsComponent implements OnInit {
         this.recordViewData.data = mergedData;
         this.recordViewData.title = 'Output';
         this.netBalance = this.intakeBalance - this.outputBalance;
-        this.outputFormCancel();
-        Swal.fire('Data Saved Successfully!');
+        this.outputForm.reset();
+        this.createOutputForm();
+        Swal.fire({
+          text: 'Data Saved Successfully!',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
       } else {
-        Swal.fire('No Data To be Saved');
+        Swal.fire({
+          text: 'No Data To be Saved!',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
       }
     }
   }
@@ -455,10 +514,21 @@ export class IoChartsComponent implements OnInit {
         this.recordViewData.data = mergedData;
         this.recordViewData.title = 'Intake';
         this.netBalance = this.intakeBalance - this.outputBalance;
-        this.inputFormCancel();
-        Swal.fire('Data Saved Successfully!');
+        this.inputForm.reset();
+        this.createInputForm();
+        Swal.fire({
+          text: 'Data Saved Successfully!',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
       } else {
-        Swal.fire('No Data To be Saved');
+        Swal.fire({
+          text: 'No Data To be Saved!',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
       }
       // this.recordView = true;
     }
