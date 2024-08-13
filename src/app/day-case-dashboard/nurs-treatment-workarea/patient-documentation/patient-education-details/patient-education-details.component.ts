@@ -465,7 +465,7 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
 
   }
 
-  async saveAndReleaseEducation(type) {
+  async saveAndReleaseEducation(dockStatus) {
     this.AttendPhy =
       this.patientService?.HeaderConfigurationData?.participant?.individual.id;
 
@@ -497,8 +497,10 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.educationForm.value.TOITEM = saveEducation;
-    if (type) this.educationForm.value.DocStatus = '2';
-    else this.educationForm.value.DocStatus = '1';
+    this.educationForm.value.DocStatus = dockStatus;
+
+    // if (type) this.educationForm.value.DocStatus = DocStatus;
+    // else this.educationForm.value.DocStatus = '1';
 
     if (this.AttendPhy) {
       this.educationForm.value.AttendPhy = this.AttendPhy
@@ -513,12 +515,12 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.admissionService.saveEducationData(d).subscribe((res: any) => {
-      res.d.DocStatus = '2';
-      this.admissionService.saveEducationData(res).subscribe((res) => {
+    // this.admissionService.saveEducationData(d).subscribe((res: any) => {
+      // res.d.DocStatus = '2';
+      this.admissionService.saveEducationData(d).subscribe((res) => {
         this.reloadTableList.next(true);
       });
-    })
+    // })
 
   }
 
