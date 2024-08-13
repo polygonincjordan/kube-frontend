@@ -147,12 +147,12 @@ export class RecordViewComponent implements OnInit, AfterViewChecked {
   constructor() {}
 
   ngOnInit(): void {
-    // if (!this.recordViewData.title) {
-    //   this.tableData = [];
-    // }
-    // this.tableData =
-    //   this.tableData.length === 0 ? this.tableData : this.recordViewData.data;
-    // console.log(this.tableData);
+    if (!this.recordViewData.title) {
+      this.tableData = [];
+    }
+    this.tableData =
+      this.tableData.length === 0 ? this.tableData : this.recordViewData.data;
+    console.log(this.tableData);
 
     if (this.tableData.length > 0) {
       this.tableData.forEach((item) => {
