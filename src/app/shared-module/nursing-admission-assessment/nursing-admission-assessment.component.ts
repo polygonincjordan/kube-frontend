@@ -619,7 +619,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       Patnr: this.paramsObject.patnr,
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
-      Orgdo: this.storageService.patientData.deptOrgUnit,
+      Orgdo: this.storageService?.patientData?.deptOrgUnit,
       AAdmittedWard: '',
       ADate: [new Date()],
       ATime: "",
@@ -1331,7 +1331,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       updatedList = updatedList.filter(item => item !== undefined);
       paylaod.TOSOCIAL = updatedList;
       paylaod.TOINFECTION = this.nursingAdmissionForm.value.TOINFECTION.filter(item => item.InfectiousDiesease);
-
+      paylaod.Orgdo = this.storageService?.patientData?.deptOrgUnit;
       this.subscription = this.dayCaseDashboard
       .createNursingAdmissionDoc(paylaod)
       .subscribe({

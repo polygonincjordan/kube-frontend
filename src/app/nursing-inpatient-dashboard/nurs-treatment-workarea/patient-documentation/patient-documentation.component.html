@@ -80,7 +80,7 @@
               Release
             </button>
           </div>
-          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Dicharge Summary'">
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Discharge Summary'">
             <button type="button" class="action-doc" (click)="copyDirectReleaseNursingDischargeDoc()">
               Release
             </button>
@@ -180,11 +180,11 @@
                 </div>
               </div>
 
-              <!--  Nursing Dicharge Summary -->
+              <!--  Nursing Discharge Summary -->
               <div
                 [ngClass]="isNursingDischarge ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('isNursingDischarge',latestNurDischargeSummeryList[0])">
-                <div class="col-md-4"> Nursing Dicharge Summary {{latestNurDischargeSummeryList[0]?.Zversion ?
+                <div class="col-md-4"> Nursing Discharge Summary {{latestNurDischargeSummeryList[0]?.Zversion ?
                   dockVer(latestNurDischargeSummeryList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNurDischargeSummeryList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNurDischargeSummeryList[0]?.DocTime)}}">

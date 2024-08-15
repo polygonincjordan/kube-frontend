@@ -98,7 +98,7 @@ export class PatientProfileComponent implements OnInit, OnChanges {
     this.getPatientCaseStepperData();
     this.getPatientTableList('', '', this.storageService.falnr);
     if(this.administrationService.durationUnitList) {
-      this.durationUnit = this.patientCaseDetails?.Pduru !== null && this.patientCaseDetails?.Pduru !== "" ? this.administrationService?.durationUnitList.find(d => d.Unit == this.patientCaseDetails?.Pduru).Text : "";
+      this.durationUnit = this.patientCaseDetails?.Pduru !== null && this.patientCaseDetails?.Pduru !== "" ? this.administrationService?.durationUnitList.find(d => d.Unit == this.patientCaseDetails?.Pduru)?.Text : "";
     }
   }
 

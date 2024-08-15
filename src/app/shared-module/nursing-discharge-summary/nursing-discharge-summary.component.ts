@@ -86,6 +86,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
     private dataShareService: DataShareService,
     private datePipe: DatePipe,
   ) {
+    this.initForm();
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       if (this.paramsObject.lfdnr) {
@@ -170,7 +171,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initForm();
+    
   }
 
   getDiagnosisData(event: any) {
@@ -186,7 +187,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
       Patnr: this.paramsObject.patnr,
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
-      Orgdo: this.storageService.patientData.deptOrgUnit,
+      Orgdo: this.storageService?.patientData?.deptOrgUnit,
       DpMedicalFollow: '',
       DpDevices: '',
       DpAmbulance: '',
@@ -261,7 +262,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
       );
 
       this.nursingDischargeForm.value.TODIAGNOSES = this.diagnosisList;
-
+      this.nursingDischargeForm.value.Orgdo = this.storageService?.patientData?.deptOrgUnit;
       this.nursingDischargeForm.value.MvLotNo = this.nursingDischargeForm.value.MvLotNo ? this.nursingDischargeForm.value.MvLotNo : undefined
       let paylaod = {
         d: this.nursingDischargeForm.value,

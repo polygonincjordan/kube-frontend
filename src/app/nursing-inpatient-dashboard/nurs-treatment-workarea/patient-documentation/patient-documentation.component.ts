@@ -560,9 +560,9 @@ export class PatientDocumentationComponent implements OnInit {
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
-      'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assement' },
+      'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
-      'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Dicharge Summary' },
+      'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
       'isBradenScale': { isBradenScale: true, selectedDocName: 'Braden Scale' },
       'isNursingAdmission': { isNursingAdmission: true, selectedDocName: 'Nursing Admission Assessment' },
       'isNursingAssessment': { isNursingAssessment: true, selectedDocName: 'Nursing Assessment' },

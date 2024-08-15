@@ -80,7 +80,7 @@ export class NursingCarePlansComponent implements OnInit {
       this.storageService.setPatnr(this.paramsObject.patnr);
       this.getPatinetDetails(this.encounterId);
     });
-
+    this.initForm();
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
       (data) => {
         if (data != null) {
@@ -132,12 +132,12 @@ export class NursingCarePlansComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initForm();
   }
 
   createNursingCarePlan(status: string, actiontype?: string) {
     return new Promise((resolve, reject) => {
       this.nursingCarePlanForm.value.DocStatus = status;
+      this.nursingCarePlanForm.value.Orgdo = this.storageService?.patientData?.deptOrgUnit
       if(actiontype == 'copy') {
         // this.nursingCarePlanForm.value.Dockey = '';
       }
@@ -188,7 +188,7 @@ export class NursingCarePlansComponent implements OnInit {
       Patnr: this.paramsObject.patnr,
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
-      Orgdo: this.storageService.patientData.deptOrgUnit,
+      Orgdo: this.storageService?.patientData?.deptOrgUnit,
       NpImbalanced: false,
       NpActual: false,
       NpPotential: false,
