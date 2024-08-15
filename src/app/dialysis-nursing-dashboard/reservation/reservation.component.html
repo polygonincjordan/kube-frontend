@@ -43,11 +43,11 @@
             </div>
           </div>
           
-          <div lass="col-10" *ngIf="isConsumableAction == '1'">
+          <div class="col-10" *ngIf="isConsumableAction == '1'">
             <div class="progress-header">
               <form [formGroup]="historyFilterForm"> 
                 <div class="d-flex align-items-center justify-content-between">
-                  <div class="date-function" style="border-radius: 8px;position: relative;top: -10px;min-width: 21%;">
+                  <div class="date-function" style="border-radius: 8px;position: relative;top: -10px;min-width: 18%;">
                       <span class='pn-input-title z-indexlabel'>Date </span>
                       <img src="assets/img/Calender.svg" alt="" style="position: relative;top: 37px;right: 6px;float: right;transform: translateY(-50%);" />
                       <input #drp="bsDaterangepicker" bsDaterangepicker  formControlName="dateRange" [bsConfig]="{
@@ -85,10 +85,11 @@
                       <ng-option>test</ng-option>
                     </ng-select>
                   </div> -->
-                  <div>
+                  <div class="d-flex" style="gap: 10px;">
                     <button type="button" class="header-btn apply-button" (click)="applyFilter()">
                       <span>Apply</span>
                     </button>
+                    <img src="assets/img/reload-icon.svg" (click)="onRefresh()" alt="">
                   </div>
                  </div>
               </form>
