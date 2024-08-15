@@ -44,42 +44,65 @@ export class DialysisAssessmentComponent implements OnInit {
     private _route: ActivatedRoute,
     private patientDocService: PatientDocumentationService
   ) {
-    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
-      (data) => {
-        if (data != null) {
-          if (
-            data.type == ActionType.Update$ &&
-            data.isAllow == true &&
-            data.value
-          ) {
-            if (
-              data.value.type == WordType.EditGGCS &&
-              data.value.docKey != ''
-            ) {
-              this.dockeyValue = data.value.docKey ? data.value.docKey : null;
-              if (this.dockeyValue) {
-                // this.getFacePainDetail(data.value.docKey);
-              }
-            }
-          }
-          if (
-            data.type == ActionType.Copy$ &&
-            data.isAllow == true &&
-            data.value
-          ) {
-            if (
-              data.value.type == WordType.CopyFPS &&
-              data.value.docKey != ''
-            ) {
-              this.dockeyValue = data.value.docKey ? data.value.docKey : null;
-              if (this.dockeyValue) {
-                // this.getFacePainDetail(data.value.docKey);
-              }
-            }
-          }
+    // this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+    //   (data) => {
+    //     console.log('data',data);
+        
+    //     if (data != null) {
+    //       if (
+    //         data.type == ActionType.Update$ &&
+    //         data.isAllow == true &&
+    //         data.value
+    //       ) {
+    //         if (
+    //           data.value.type == WordType.EditGGCS &&
+    //           data.value.docKey != ''
+    //         ) {
+    //           this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+    //           if (this.dockeyValue) {
+    //             // this.getFacePainDetail(data.value.docKey);
+    //           }
+    //         }
+    //       }
+    //       if (
+    //         data.type == ActionType.Copy$ &&
+    //         data.isAllow == true &&
+    //         data.value
+    //       ) {
+    //         if (
+    //           data.value.type == WordType.CopyFPS &&
+    //           data.value.docKey != ''
+    //         ) {
+    //           this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+    //           if (this.dockeyValue) {
+    //             // this.getFacePainDetail(data.value.docKey);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // );
+
+    this._route.queryParams.subscribe((params) => {
+      this.einri = params.einri;
+      this.patnr = params.patnr;
+      this.falnr = params.falnr;
+      this.lfdnr = params.lfdnr;
+    });
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+      console.log('data',data);
+      
+      if (data != null) {       
+        if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
+          this.latestDocData = data.value.docKey
+          this.LatestDocSet();
+        }
+        if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
+          this.latestDocData = data.value.docKey
+          this.LatestDocSet();
         }
       }
-    );
+    });
   }
 
   ngOnInit(): void {
@@ -90,13 +113,7 @@ export class DialysisAssessmentComponent implements OnInit {
     this.patientDocService.isPatchValueForPostDialysis = true;
     this.patientDocService.isPatchValueForPreDialysis = true;
 
-    this._route.queryParams.subscribe((params) => {
-      this.einri = params.einri;
-      this.patnr = params.patnr;
-      this.falnr = params.falnr;
-      this.lfdnr = params.lfdnr;
-    });
-    this.LatestDocSet();
+    
   }
 
   LatestDocSet() {

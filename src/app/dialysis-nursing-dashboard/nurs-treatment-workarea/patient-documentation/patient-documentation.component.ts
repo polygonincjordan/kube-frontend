@@ -807,12 +807,12 @@ export class PatientDocumentationComponent implements OnInit {
     }
     if (this.openBradenScale) {
       this.BradenScaleComp.ngOnDestroy();
-      this.redirecTreatment();
+      // this.redirecTreatment();
     }
     if (this.openAssessment) {
       this.DialysisAssessment.ngOnDestroy();
-      this.refreshDialysisAssessment();
-      this.redirecTreatment();
+      // this.refreshDialysisAssessment();
+      // this.redirecTreatment();
     }
     if (this.openEducationAssessment) {
       this.educationAssessmentComp.ngOnDestroy();
@@ -823,15 +823,15 @@ export class PatientDocumentationComponent implements OnInit {
     }
     if(this.openMorseFallScale){
       this.morseFallScaleC.ngOnDestroy();
-      this.redirecTreatment();
+      // this.redirecTreatment();
     }
     if(this.openHemoCatheter){
       this.hemoCatheterC.ngOnDestroy();
-      this.redirecTreatment();
+      // this.redirecTreatment();
     }
     if(this.openHemoDialysisFistulaGraft){
       this.hemoDialysisFistulaGraftC.ngOnDestroy();
-      this.redirecTreatment();
+      // this.redirecTreatment();
     }
    
     this.getLatestAssessment();
@@ -840,7 +840,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getMedLatestAssessment();
     this.getEducationAssessment();
     this.getPatientProfile();
-    this.fetchLatestDetails();
+    // this.fetchLatestDetails();
     this.LatestDocSet();
     this.LatestMFSSet();
     this.LatestHemoCatheter();
@@ -867,6 +867,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openMorseFallScale = false;
     this.openHemoCatheter = false;
     this.openHemoDialysisFistulaGraft = false;
+    this.openAssessment = false
 
     this.searchString = '';
     this.dateRange = '';
@@ -1139,8 +1140,21 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.assessment) {
       if (action == 'create') {
         this.openAssessment = true;
-      }else if(action == 'edit' && this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released") {
-        this.openAssessment = true;
+        this.dataShareService.sendActionType(ActionType.Add$, false, {});
+      }else if(action == 'edit' ) {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }else if(this.selectedDocData?.StatusTxt == 'Draft' && this.selectedDocData?.StatusTxt != "Released"){
+
+          this.openAssessment = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
       }else if (action == 'release' && this.selectedDocData?.StatusTxt == 'Draft') { 
         const json = {
           Dockey: this.latestDocData?.Dockey,
@@ -1177,6 +1191,11 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.errorSwallModel(error?.error?.error.message.value)
         }) 
       }else if (action == 'copy' && this.selectedDocData?.StatusTxt == "Released") {
+        let valueObj = {
+          type: WordType.CopyEA,
+          docKey: this.selectedDocData.Dockey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj)
         this.openAssessment = true;
       }else if (action == 'delete' && this.selectedDocData?.StatusTxt == 'Draft'){
         Swal.fire({
@@ -1692,6 +1711,7 @@ export class PatientDocumentationComponent implements OnInit {
     }
   }
   releaseFromForm() {
+    
     if (this.phyAssess) {
       // this.release();
     } else if (this.medReport) {
