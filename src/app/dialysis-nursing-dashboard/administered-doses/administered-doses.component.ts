@@ -139,8 +139,8 @@ value: any;
     this.cartForm = this.formBuilder.group({
       FromDt: [new Date()],
       ToDt: [new Date()],
-      FromTm: [currentTime],
-      ToTm: [currentTime],
+      FromTm: ['00:00'],
+      ToTm: ['23:59'],
       Nursingou: ['F2DTUAMC']
     })
   }
