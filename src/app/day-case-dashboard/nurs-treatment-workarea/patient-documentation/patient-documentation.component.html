@@ -80,7 +80,7 @@
               Release
             </button>
           </div>
-          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Dicharge Summary'">
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Discharge Summary'">
             <button type="button" class="action-doc" (click)="copyDirectReleaseNursingDischargeDoc()">
               Release
             </button>
@@ -90,7 +90,7 @@
               Release
             </button>
           </div>
-          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Education Assement'">
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Education Assessment'">
             <button type="button" class="action-doc" (click)="copyDirectReleaseEducationAssessment()">
               Release
             </button>
@@ -190,11 +190,11 @@
                 </div>
               </div>
 
-              <!--  Nursing Dicharge Summary -->
+              <!--  Nursing Discharge Summary -->
               <div
                 [ngClass]="isNursingDischarge ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('isNursingDischarge',latestNurDischargeSummeryList[0])">
-                <div class="col-md-4"> Nursing Dicharge Summary {{latestNurDischargeSummeryList[0]?.Zversion ?
+                <div class="col-md-4"> Nursing Discharge Summary {{latestNurDischargeSummeryList[0]?.Zversion ?
                   dockVer(latestNurDischargeSummeryList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNurDischargeSummeryList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNurDischargeSummeryList[0]?.DocTime)}}">
@@ -256,17 +256,17 @@
             <div
               [ngClass]="isNursingAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="font-weight: bold;" (click)="selectAssessment('isNursingAdmission',latestNurAdmissionList[0])">
-              <div class="col-md-4"> Nursing Admission Assessment {{latestNurAdmissionList?.Zversion ?
-                dockVer(latestNurAdmissionList?.Zversion) : ''}} :</div>
+              <div class="col-md-4"> Nursing Admission Assessment {{latestNurAdmissionList[0]?.Zversion ?
+                dockVer(latestNurAdmissionList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{latestNurAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(latestNurAdmissionList[0]?.DocTime)}}">
                 {{getDate(latestNurAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
               </div>
               <div class="col-md-3">{{latestNurAdmissionList[0]?.PhyNm || '-'}}</div>
               <div class="col-md-1">
-                <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
-                  (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.BRADEN$)"
-                  *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" /> -->
+                <img src="assets/img/document-html.png" width="15px" height="15px"
+                  (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.NAA$)"
+                  *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
               </div>
             </div>
 
@@ -410,23 +410,19 @@
         </div>
       </div>
     </div>
+
     <!-- Edit / Create / Release Mode  -->
-    <!-- <app-er-physician [hidden]="!openPhyAssess" [docDetails]="phyDocList"
-      [latestDocs]="latestDocList"></app-er-physician> -->
     <app-patient-medical-report [hidden]="!openMedReport" [docDetails]="medDocList"></app-patient-medical-report>
-    <!-- [docDetails]="educationAssList" -->
-    <app-patient-education-details *ngIf="openEducationAssessment"
-      (reloadTableList)="reloadDoc($event)"></app-patient-education-details>
-
-      <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
-     
-
+    <app-patient-education-details *ngIf="openEducationAssessment" (reloadTableList)="reloadDoc($event)"></app-patient-education-details>
+    <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
     <app-nursing-discharge-summary *ngIf="openDischargeSummery" ></app-nursing-discharge-summary>
     <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
     <app-nursing-admission-assessment *ngIf="openNurseAdmission"></app-nursing-admission-assessment>
+    <app-patient-diagnoisi-history #patientDiagnosisHistory (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)" (onAttachmentClose)="onOpenAttachment($event)"></app-patient-diagnoisi-history>
+
     <ng-template #releasepdfmodal>
       <div class="modal-body">
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
@@ -621,7 +617,3 @@
         </div>
       </div>
     </ng-template>
-
-    <app-patient-diagnoisi-history #patientDiagnosisHistory
-      (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)"
-      (onAttachmentClose)="onOpenAttachment($event)"></app-patient-diagnoisi-history>

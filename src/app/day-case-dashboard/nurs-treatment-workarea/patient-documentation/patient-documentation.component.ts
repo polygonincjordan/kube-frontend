@@ -220,12 +220,11 @@ export class PatientDocumentationComponent implements OnInit {
     });
     // this.getLatestAssessment();
     // this.getEducationAssessment();
-    // this.getPatientProfile();
-    this.getLatestAssessmentPA();
-    this.getTriageLatestDocuments();
-    this.getPhyAssessment();
-    this.getMedLatestAssessment();
-    this.fetchLatestDetails();
+    this.getPatientProfile();
+    // this.getLatestAssessmentPA(); not using this document
+    // this.getTriageLatestDocuments(); not using this document
+    // this.getPhyAssessment(); not using this document
+    // this.getMedLatestAssessment(); 
     this.getNurseEndorsement()
     this.getSurgicalPass()
     this.getPediatricWarningScore();
@@ -233,6 +232,11 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingDischargeDocDeatils();
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
+    // this.fetchLatestDetails();
+
+    if(this.paramsObject.action && this.paramsObject.doctype) {
+      this.checkForRedirectionAction();
+    }
   }
 
   LatestMFSSet(){
@@ -255,11 +259,6 @@ export class PatientDocumentationComponent implements OnInit {
   getLatestAssessmentPA() {
     this.emergencyService.getLatestDocForPA(this.apiJson).subscribe({
       next: (_success: any) => {
-        // Handle successful data retrieval
-        // this.latestGlasgowComaScaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_COMA');
-        // this.latestFacePainScaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_FAC');
-        // this.latestNumericratingscaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_NMRTSC');
-        // this.latestBridentScaleList = _success.d.results.filter((ele) => ele.Dtid == 'SCA_BRADEN');
         if(_success?.d?.results) {
           this.painAssessmentLaestDoc = _success.d.results;
         }
@@ -335,7 +334,7 @@ export class PatientDocumentationComponent implements OnInit {
   getSurgicalPass(){
     this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
-        this.surgicalPassportList = _success.d.results[0]  
+        this.surgicalPassportList = _success.d.results
         },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -362,7 +361,7 @@ export class PatientDocumentationComponent implements OnInit {
   getNursingDischargeDocDeatils(){
     this.dayCaseDashboardService.nursingDischargeLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
-        this.latestNurDischargeSummeryList = _success.d.results[0]        
+        this.latestNurDischargeSummeryList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -560,21 +559,21 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.MORSE$) {
       this.getPatientProfileData(this.latestMorseFallScaleData);
     }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.SRGPP$) {
-      this.selectAssessment('isSurgicalPassport',this.surgicalPassportList)
+      this.selectAssessment('isSurgicalPassport',this.surgicalPassportList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.SRGPP$) {
-      this.selectAssessment('isSurgicalPassport', this.surgicalPassportList)
+      this.selectAssessment('isSurgicalPassport', this.surgicalPassportList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.SRGPP$) {
-      this.getPatientProfileData(this.surgicalPassportList);
+      this.getPatientProfileData(this.surgicalPassportList[0]);
     }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NURDS$) {
-      this.selectAssessment('isNursingDischarge',this.latestNurDischargeSummeryList)
+      this.selectAssessment('isNursingDischarge',this.latestNurDischargeSummeryList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NURDS$) {
-      this.selectAssessment('isNursingDischarge', this.latestNurDischargeSummeryList)
+      this.selectAssessment('isNursingDischarge', this.latestNurDischargeSummeryList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NURDS$) {
-      this.getPatientProfileData(this.latestNurDischargeSummeryList);
+      this.getPatientProfileData(this.latestNurDischargeSummeryList[0]);
     }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NCP$) {
       this.selectAssessment('isNursingCarePlan',this.latestNurCarePlanList[0])
       this.openDocument('create');
@@ -608,9 +607,9 @@ export class PatientDocumentationComponent implements OnInit {
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
-      'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assement' },
+      'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
-      'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Dicharge Summary' },
+      'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
       'isBradenScale': { isBradenScale: true, selectedDocName: 'Braden Scale' },
       'isNursingAdmission': { isNursingAdmission: true, selectedDocName: 'Nursing Admission Assessment' },
       'isNursingAssessment': { isNursingAssessment: true, selectedDocName: 'Nursing Assessment' },
@@ -932,39 +931,7 @@ export class PatientDocumentationComponent implements OnInit {
   refresh() {
     this.asc = true;
     this.desc = false;
-    if (this.openBradenScale) {
-      this.BradenScaleComp.ngOnDestroy();
-    }
-    if (this.openEducationAssessment) {
-      this.educationAssessmentComp.ngOnDestroy();
-    }
-    if (this.openSurgicsalPassport) {
-      this.SurgicalPassComp.ngOnDestroy();
-    }
-    if (this.openNursingCarePlans) {
-      this.NursingCarePlansComp.ngOnDestroy();
-    }
-    if (this.openDischargeSummery) {
-      this.NursingDischargeComp.ngOnDestroy();
-    }
-    if (this.openNurseAdmission) {
-      this.NursingAdmissionComp.ngOnDestroy();
-    }
-    this.getPatientProfile();
-    this.getLatestAssessment();
-    this.getPhyAssessment();
-    this.getTriageLatestDocuments();
-    this.getMedLatestAssessment();
-    this.getEducationAssessment();
-    this.getNurseEndorsement()
-    this.getPediatricWarningScore();
-    this.getSurgicalPass();
-    this.getLatestAssessmentPA();
-    this.getPediatricWarningScore();
-    this.getNursingPlanCareDocDetails();
-    this.getNursingDischargeDocDeatils();
-    this.getNursingAdmissionLatestDoc()
-    this.LatestMFSSet();
+
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -997,12 +964,50 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNursingCarePlan = false;
     this.isNursingDischarge = false;
     this.openMorseFallScale = false;
+    this.isEducationAssement = false;
+    this.attachments = false;
+    this.morsefallScale = false;
+
     this.latestMorseFallScaleData = null;
     this.searchString = '';
     this.dateRange = '';
     this.documentType = undefined;
     this.patientProfileDocumet = this.documentTypeFilterValue;
     this.medDocList = [];
+
+    if (this.openBradenScale) {
+      this.BradenScaleComp?.ngOnDestroy();
+    }
+    if (this.openEducationAssessment) {
+      this.educationAssessmentComp?.ngOnDestroy();
+    }
+    if (this.openSurgicsalPassport) {
+      this.SurgicalPassComp?.ngOnDestroy();
+    }
+    if (this.openNursingCarePlans) {
+      this.NursingCarePlansComp?.ngOnDestroy();
+    }
+    if (this.openDischargeSummery) {
+      this.NursingDischargeComp?.ngOnDestroy();
+    }
+    if (this.openNurseAdmission) {
+      this.NursingAdmissionComp?.ngOnDestroy();
+    }
+    this.getPatientProfile();
+    this.getLatestAssessment();
+    // this.getPhyAssessment();
+    // this.getTriageLatestDocuments();
+    this.getMedLatestAssessment();
+    this.getEducationAssessment();
+    this.getNurseEndorsement()
+    this.getPediatricWarningScore();
+    this.getSurgicalPass();
+    // this.getLatestAssessmentPA();
+    this.getPediatricWarningScore();
+    this.getNursingPlanCareDocDetails();
+    this.getNursingDischargeDocDeatils();
+    this.getNursingAdmissionLatestDoc()
+    this.LatestMFSSet();
   }
 
   openDocument(action) {
@@ -2065,13 +2070,13 @@ export class PatientDocumentationComponent implements OnInit {
         if (_success?.d?.results.length > 0) {
           this.medlatestDocList = _success?.d?.results;
           if (this.actionType == 'createandrelease' && this.medReport) {
-            this.medComp.ngOnInit();
+            this.medComp?.ngOnInit();
             this.releaseMed();
           }
           this.getMedReportData();
         }
         if (this.actionType == 'createandrelease') {
-          this.phyComp.ngOnInit();
+          this.phyComp?.ngOnInit();
           this.release();
         }
       },
