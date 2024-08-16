@@ -26,7 +26,7 @@
   <Form style="display: none;" *ngIf="this.checkCounterPatient.isEnCounterCheck" class="diagnosis-form mt-1"
     [formGroup]="diagnosisForm">
     <ng-container formArrayName="diagnosisFormList"
-      *ngFor=" let item of diagnosisForm.get('diagnosisFormList')['controls']; let i = index">
+      *ngFor=" let item of diagnosisForm?.get('diagnosisFormList')['controls']; let i = index">
       <div *ngIf="!item.value.CancelInd" class="diagnosis-list mt-1">
         <div [formGroupName]="i">
           <div class="d-flex justify-content-between">

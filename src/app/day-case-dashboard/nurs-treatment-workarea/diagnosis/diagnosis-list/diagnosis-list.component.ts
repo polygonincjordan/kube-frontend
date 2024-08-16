@@ -71,13 +71,13 @@ export class DiagnosisListComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
+    this.initForm();
   }
 
   ngOnInit(): void {
-    this.initForm();
     this.diagnosisCodeList();
     this.diagnosisFavoriteDetails();
-    this.diagnosisFormDetails();
+    // this.diagnosisFormDetails();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -125,6 +125,7 @@ export class DiagnosisListComponent implements OnInit {
     this.diagnosisForm = this.formBuilder.group({
       diagnosisFormList: new FormArray([]),
     });
+    this.diagnosisFormDetails();
   }
 
   diagnosisFormDetails() {
@@ -133,7 +134,9 @@ export class DiagnosisListComponent implements OnInit {
   }
 
   addItem(): void {
-    this.diagnosisFormList = this.diagnosisForm.get('diagnosisFormList') as FormArray;
+    console.log(this.diagnosisForm);
+    
+    this.diagnosisFormList = this.diagnosisForm?.get('diagnosisFormList') as FormArray;
     this.diagnosisFormList.push(this.creatDiagnosisFormData());
     this.demoArrayForm = this.diagnosisFormList.value;
   }

@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 export class DayCaseDashboardService {
   url = environment.url;
 
+  public isRedirectToSelectedDoc = true;
+
   constructor(private http: HttpClient) {}
 
   getDayCaseErCheckList(data) {

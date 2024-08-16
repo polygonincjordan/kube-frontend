@@ -6,6 +6,7 @@ import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithouConsumables } from '@services/consumables/interfaces/consumables.interface';
 import { NoReleasedMissedDocuments } from '@services/consumables/interfaces/no-documents.inteface';
 import { DataShareService } from '@services/data-share.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { ActionType, FilterType, RedirectionType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
@@ -56,6 +57,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
+    private dayCaseDashboardService: DayCaseDashboardService
   ) {
     this.RedirectionType = RedirectionType;
     this.ActionType = ActionType;
@@ -163,7 +165,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   }
 
   public redirectToDocuments(data: any, type: string, action: string) {
-      
+    this.dayCaseDashboardService.isRedirectToSelectedDoc = true;
     const json = {
       Patnr: data.Patient,
       Einri: data.Einri,
