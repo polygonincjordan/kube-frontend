@@ -86,7 +86,6 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
     private dataShareService: DataShareService,
     private datePipe: DatePipe,
   ) {
-    this.initForm();
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       if (this.paramsObject.lfdnr) {
@@ -95,6 +94,7 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
           this.paramsObject.falnr +
           this.paramsObject.lfdnr;
       }
+      this.initForm();
       this.storageService.setEinri(this.paramsObject.einri);
       this.storageService.setFalnr(this.paramsObject.falnr);
       this.storageService.setLfdnr(this.paramsObject.lfdnr);
