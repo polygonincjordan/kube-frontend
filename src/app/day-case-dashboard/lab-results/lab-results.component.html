@@ -8,7 +8,7 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr class="checkin-table-header">
-            <th scope="col" style="padding-left: 11px;">Patient Name</th>
+            <th scope="col" style="padding-left: 11px;">Patient Name <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatientName()"></i></th>
             <th scope="col" style="padding-left: 0px;">MRN</th>
             <th scope="col" style="padding-left: 0px;">Case #</th>
             <th scope="col" style="padding-left: 0px;">Room</th>
@@ -17,14 +17,14 @@
               Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
+              Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDesiredAt()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">Order Status</th>
             <th scope="col" style="padding-left: 0px;">Service Status</th>
-            <th scope="col" style="padding-left: 0px;">Order #</th>
+            <th scope="col" style="padding-left: 0px;">Order # <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortOrder()"></i></th>
             <th scope="col" style="padding-left: 0px;">Created by</th>
             <th scope="col">
-              Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPhysician()"></i>
+              Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTimeSince()"></i>
             </th>
             <th scope="col">Actions</th>
           </tr>

@@ -756,6 +756,40 @@ export class LabResultsComponent implements OnInit{
       });
     }
   }
+
+  sortPatientName(){
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
   sortPhysician() {
     if (!this.asc) {
       this.asc = true;

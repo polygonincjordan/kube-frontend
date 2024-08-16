@@ -14,6 +14,7 @@ export const environment = {
   refreshTime :60000,
   DayCaseRefreshTime:900000,
   outPatientRefreshTime:300000,
+  emergencyRefreshTime:30000,
   url: 'http://abdaliwebserver.ach.jo:6057/',
   widgetUrl: 'http://abdaliwebserver.ach.jo:6057/',
   eOrderAPIUrl: 'http://abdaliwebserver.ach.jo:6057/',
