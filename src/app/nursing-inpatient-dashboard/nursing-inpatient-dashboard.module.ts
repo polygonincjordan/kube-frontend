@@ -110,6 +110,10 @@ import { ReservationListComponent } from './reservation/reservation-list/reserva
 import { ReservationComponent } from './reservation/reservation.component';
 import { IoChartsComponent } from './nurs-treatment-workarea/io-charts/io-charts.component';
 import { RecordViewComponent } from './nurs-treatment-workarea/io-charts/record-view/record-view.component';
+import { DietMealOrderComponent } from './nurs-treatment-workarea/diet-meal-order/diet-meal-order.component';
+import { PatientsDietMealComponent } from './nurs-treatment-workarea/diet-meal-order/patients-diet-meal/patients-diet-meal.component';
+import { CompanionMealOrderingComponent } from './nurs-treatment-workarea/diet-meal-order/companion-meal-ordering/companion-meal-ordering.component';
+import { DislikePreferenceComponent } from './nurs-treatment-workarea/diet-meal-order/dislike-preference/dislike-preference.component';
 
 const route: Routes = [
   {
@@ -194,6 +198,10 @@ const route: Routes = [
     HistoryListComponent,
     IoChartsComponent,
     RecordViewComponent,
+    DietMealOrderComponent,
+    PatientsDietMealComponent,
+    CompanionMealOrderingComponent,
+    DislikePreferenceComponent,
   ],
   providers: [
     EmergencyService,

@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div
         class="row position-relative"
-        style="font-weight: bold; padding: 4px"
+        style="font-weight: bold; padding: 4px; justify-content: space-around"
       >
         <div
           class="col-sm-1.5 tab-default"
@@ -200,6 +200,28 @@
             *ngIf="this.emergencyService.IOCharts"
           />
           I & O Chart
+        </div>
+        <div
+          class="col-sm-1.5 ml-2"
+          [ngClass]="
+            this.emergencyService.DietMealOrdering
+              ? 'tab-change'
+              : 'tab-default'
+          "
+          style="cursor: pointer"
+          (click)="tabChange('DietMealOrdering')"
+        >
+          <img
+            src="assets/img/diet-meal.svg"
+            class="tab-img"
+            *ngIf="!this.emergencyService.DietMealOrdering"
+          />
+          <img
+            src="assets/img/diet-meal-active.svg"
+            class="tab-img"
+            *ngIf="this.emergencyService.DietMealOrdering"
+          />
+          Diet Meal Ordering
         </div>
         <span style="margin-left: auto">
           <!-- <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
@@ -1817,6 +1839,9 @@
       </ng-container>
       <ng-container *ngIf="this.emergencyService.IOCharts">
         <app-io-charts></app-io-charts>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.DietMealOrdering">
+        <app-diet-meal-order></app-diet-meal-order>
       </ng-container>
     </div>
     <div
