@@ -141,7 +141,7 @@ export class CheckInComponent implements OnInit {
     this.getErList();
     this.refreshInterval = setInterval(() => {
       this.getErList();
-    }, environment.refreshTime);
+    }, environment.emergencyRefreshTime);
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
       this.einri = params.einri;
