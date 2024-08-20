@@ -724,7 +724,7 @@ export class LabResultsComponent implements OnInit{
     }
   }
  
-  sortPatient1() {
+  sortDesiredAt() {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
@@ -757,7 +757,7 @@ export class LabResultsComponent implements OnInit{
       });
     }
   }
-  sortPhysician() {
+  sortTimeSince() {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
@@ -824,6 +824,75 @@ export class LabResultsComponent implements OnInit{
       });
     }
   }
+
+  sortPatientName(){
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
+  sortOrder(){
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Prgnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Prgnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Prgnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Prgnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
   sortRoom() {
     if (!this.asc) {
       this.asc = true;

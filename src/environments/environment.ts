@@ -14,6 +14,7 @@ export const environment = {
   refreshTime :60000,
   DayCaseRefreshTime:900000,
   outPatientRefreshTime:300000,
+  emergencyRefreshTime:30000,
   url: 'http://localhost:6052/',
   widgetUrl: 'http://localhost:6052/',
   eOrderAPIUrl: 'http://localhost:6052/',

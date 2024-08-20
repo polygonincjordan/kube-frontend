@@ -233,10 +233,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
     // this.fetchLatestDetails();
-
-    if(this.paramsObject.action && this.paramsObject.doctype) {
-      this.checkForRedirectionAction();
-    }
   }
 
   LatestMFSSet(){
@@ -276,6 +272,9 @@ export class PatientDocumentationComponent implements OnInit {
       next: (_success: any) => {
         if(_success?.d?.results) {
           this.latestNurAdmissionList = _success.d.results;
+        }
+        if(this.dayCaseDashboardService.isRedirectToSelectedDoc) {
+          this.checkForRedirectionAction();
         }
       },
       error: (err: any) => {
@@ -591,7 +590,7 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NAA$) {
       this.getPatientProfileData(this.latestNurAdmissionList[0]);
     }
-
+    this.dayCaseDashboardService.isRedirectToSelectedDoc = false;
   }
 
   openPastHistory(template: TemplateRef<any>) {
@@ -753,38 +752,38 @@ export class PatientDocumentationComponent implements OnInit {
     }, {});
   }
   async create() {
-    (await this.phyComp.createPhyDoc()).subscribe((res: any) => {
+    (await this.phyComp?.createPhyDoc()).subscribe((res: any) => {
       Swal.fire({
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
       })
-      this.phyComp.resetAll();
+      this.phyComp?.resetAll();
       this.refresh();
     }, (_error: any) => { });
   }
   async update() {
-    (await this.phyComp.updatePhyDoc()).subscribe((res: any) => {
+    (await this.phyComp?.updatePhyDoc()).subscribe((res: any) => {
       Swal.fire({
         text: "Document is updated successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
       })
-      this.phyComp.resetAll();
+      this.phyComp?.resetAll();
       this.refresh();
     }, (_error: any) => { });
   }
   async release() {
-    (await this.phyComp.releasePhyDoc()).subscribe((res: any) => {
+    (await this.phyComp?.releasePhyDoc()).subscribe((res: any) => {
       Swal.fire({
         text: "Document is released successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
       })
-      this.phyComp.resetAll();
+      this.phyComp?.resetAll();
       this.refresh();
     }, (_error: any) => { });
   }
@@ -800,7 +799,7 @@ export class PatientDocumentationComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
 
-        (await this.phyComp.deletePhyAssessment()).subscribe(
+        (await this.phyComp?.deletePhyAssessment()).subscribe(
           (_success: any) => {
             Swal.fire({
               text: "Document is deleted successfully",
@@ -808,7 +807,7 @@ export class PatientDocumentationComponent implements OnInit {
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
             })
-            this.phyComp.resetAll();
+            this.phyComp?.resetAll();
             this.refresh();
           },
           (_error: any) => { }
@@ -817,20 +816,20 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
   async createCopy() {
-    (await this.phyComp.copyPhyDoc()).subscribe((res: any) => {
+    (await this.phyComp?.copyPhyDoc()).subscribe((res: any) => {
       Swal.fire({
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
       })
-      this.phyComp.resetAll();
+      this.phyComp?.resetAll();
       this.refresh();
     }, (_error: any) => { });
   }
   async createAndRelease() {
-    (await this.phyComp.createPhyDoc()).subscribe((res: any) => {
-      this.phyComp.resetAll();
+    (await this.phyComp?.createPhyDoc()).subscribe((res: any) => {
+      this.phyComp?.resetAll();
       this.refresh();
     }, (_error: any) => { });
   }
@@ -2204,7 +2203,7 @@ export class PatientDocumentationComponent implements OnInit {
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
       })
-      this.phyComp.resetAll();
+      this.phyComp?.resetAll();
       this.refresh();
     }, (_error: any) => { });
   }

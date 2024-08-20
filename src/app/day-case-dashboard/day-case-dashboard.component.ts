@@ -628,6 +628,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   }
 
   refreshCheckIn() {
+    this.singleData?.patchValue({fromDate: new Date()});
     if (this.selectedModule === 'checkin') {
       this.CheckInComponent.getErList(new Date());
     } else if (this.selectedModule === 'erhistory') {
