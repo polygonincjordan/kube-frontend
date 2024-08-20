@@ -49,10 +49,10 @@ export class AdmissionDataSectionComponent implements OnInit {
   }
 
   selectSchool(event: any) {
-    if (event != '1') {
-      this.nursingAdmissionForm.patchValue({
-        AEducated: '',
-      });
-    }
+    // if (event != '1') {
+    //   this.nursingAdmissionForm.patchValue({
+    //     AEducated: '',
+    //   });
+    // }
   }
 }
