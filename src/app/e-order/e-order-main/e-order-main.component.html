@@ -19,13 +19,13 @@
       eOrderService.configurationoptionBackup.Surgery ||
       eOrderService.configurationoptionBackup.Daycaseord
     ">
-    <div class="row" *ngIf="eOrderService.navigationTab != 'OrderSet' && eOrderService.navigationTab != 'Surgery' && eOrderService.navigationTab != 'Consultation' && eOrderService.navigationTab != 'Admission'"  >
+    <div class="row" *ngIf="eOrderService.navigationTab != 'OrderSet' && eOrderService.navigationTab != 'Surgery' && eOrderService.navigationTab != 'Consultation' && eOrderService.navigationTab != 'Admission' && eOrderService.navigationTab !== 'Ordprofile'"  >
       <div class="col-md-7">
         <div class="e-order-sidewrap pb-0">
           <div class="e-order-wrapper-main pb-0">
             <div class="clinic-order h-100" *ngIf="
                 eOrderService.navigationTab === 'Clinical' &&
-                eOrderService.configurationoptionBackup.Clinicord
+                eOrderService.configurationoptionBackup.Clinicord && eOrderService.navigationTab !== 'Ordprofile'
               ">
               <div class="e-order-search">
                 <div class="row">
@@ -316,7 +316,7 @@
       </div>
       <div class="col-md-5">
         <div class="e-order-sidewrap e-order-sidewrap-data">
-          <div class="e-order-wrapper-main h-auto active-order-panel" *ngIf="eOrderService.navigationTab !== 'Fees'">
+          <div class="e-order-wrapper-main h-auto active-order-panel" *ngIf="eOrderService.navigationTab !== 'Fees' && eOrderService.navigationTab !== 'Ordprofile'" >
             <div class="Clinical-Main h-100">
               <div class="e-order-history"
                 *ngIf="eOrderService.switchVal.name === 'history' && eOrderService.navigationTab !== 'Fees'">
@@ -410,7 +410,7 @@
           </div>
           <div class="e-order-history-btn" *ngIf="
               eOrderService.switchVal.name === 'history' &&
-              eOrderService.navigationTab !== 'Fees'
+              eOrderService.navigationTab !== 'Fees' && eOrderService.navigationTab !== 'Ordprofile'
             ">
             <div class="btn-group-end text-right">
               <button type="button" class="btn btn-secondary rounded-sm ml-2"
@@ -1843,6 +1843,10 @@
     </div>
     <div *ngIf="eOrderService.navigationTab === 'Admission'">
       <app-admission-e-order></app-admission-e-order>
+    </div>
+    <div *ngIf="eOrderService.navigationTab === 'Ordprofile'">
+      <!-- <app-admission-e-order></app-admission-e-order> -->
+       <app-order-profile></app-order-profile>
     </div>
   </div>
   <ng-template #saveTemplate>

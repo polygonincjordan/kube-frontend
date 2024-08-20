@@ -330,7 +330,7 @@ export class eOrderService {
           if (data && data.d) {
             this.configurationoption = data.d;
             this.configurationoptionBackup = JSON.parse(JSON.stringify(data.d));
-            this.configurationoptionBackup.Clinicord ? this.navigationTab = 'Clinical' : this.configurationoptionBackup.Medicat ? this.navigationTab = 'Medications' : this.configurationoptionBackup.Doctfees ? this.navigationTab = 'Fees' : ''
+            this.configurationoptionBackup.Ordprofile ? this.navigationTab = 'Ordprofile' : this.configurationoptionBackup.Medicat ? this.navigationTab = 'Medications' : this.configurationoptionBackup.Doctfees ? this.navigationTab = 'Fees' : ''
             if (this.configurationoptionBackup.Clinicord) {
               this.loadClinicalOrder();
             }

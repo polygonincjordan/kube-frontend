@@ -40,6 +40,10 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SurgeryEOrderComponent } from './e-order-main/surgery-e-order/surgery-e-order.component';
 import { ConsultationOrderComponent } from './e-order-main/consultation-order/consultation-order.component';
 import { AdmissionEOrderComponent } from './e-order-main/admission-e-order/admission-e-order.component';
+import { OrderProfileComponent } from './e-order-main/order-profile/order-profile.component';
+import { LaboratoryTableListComponent } from './e-order-main/order-profile/laboratory-table-list/laboratory-table-list.component';
+import { RadiologyTableListComponent } from './e-order-main/order-profile/radiology-table-list/radiology-table-list.component';
+import { SurgeryTableListComponent } from './e-order-main/order-profile/surgery-table-list/surgery-table-list.component';
 
 export const eOrderRoutes: Routes = [
   { path: '**', component: EOrderComponent },
@@ -64,6 +68,10 @@ export const eOrderRoutes: Routes = [
     SurgeryEOrderComponent,
     ConsultationOrderComponent,
     AdmissionEOrderComponent,
+    OrderProfileComponent,
+    LaboratoryTableListComponent,
+    RadiologyTableListComponent,
+    SurgeryTableListComponent,
   ],
   imports: [
     CommonModule,
