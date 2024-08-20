@@ -1,0 +1,425 @@
+
+<div class="patient-profile-main">
+    <div class="patient-tab row justify-content-between">
+      <div class="w-50" style="overflow: auto;">
+        <ul class="d-flex m-0 prior-media">
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" id="laboratory" [(ngModel)]="isLaboratory" />
+            <span class="mr-2"></span>
+            <label for="laboratory" class="m-0 font-widht">Laboratory</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" id="radiology"  [(ngModel)]="isRadiology"/>
+            <span class="mr-2"></span>
+            <label for="radiology" class="m-0 font-widht">Radiology</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" id="medication"  [(ngModel)]="isMedication"/>
+            <span class="mr-2"></span>
+            <label for="medication" class="m-0 font-widht">Medication</label>
+          </li>
+          <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" id="medication"  [(ngModel)]="isSurgery"/>
+            <span class="mr-2"></span>
+            <label for="surgery" class="m-0 font-widht">Surgery</label>
+          </li>
+        </ul>
+      </div>
+      <div class="w-45">
+        <div class="d-flex align-items-center">
+          <div class="search-functionality pl-0 col-md-5">
+            <img src="assets/img/pres-search-icon.svg" alt="" />
+            <input type="text" placeholder="Search" (input)="onSearchChange($event)" [(ngModel)]="searchString" class="form-control w-100" id="searchFilter" />
+          </div>
+          <div class="date-function">
+            <img src="assets/img/Calender.svg" alt="" />
+            <input #drp="bsDaterangepicker" bsDaterangepicker (bsValueChange)="dateFilter($event)" [(ngModel)]="datRange" [bsConfig]="{ rangeInputFormat: 'DD.MM.YYYY', dateInputFormat: 'DD.MM.YYYY',
+                containerClass: 'daterangepicker', showWeekNumbers: false }" class="form-control" style="border-radius: 8px" />
+          </div>
+          <img class="ml-2 mr-2 cursor-pointer" src="assets/img/DocRefresh.svg" (click)="resetAllFilter()"/>
+          <img src="assets/img/setting.png" />
+          <img src="assets/img/save_icon_card_order.png" class="ml-2 mr-2 cursor-pointer" style="width:45px" (click)="getPatientByMrn()" title="MRN Level"/>
+        </div>
+      </div>
+    </div>
+    <div class="patient-list-main card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="table-list" [ngClass]="{ expanded: isExpanded }">
+            <div class="card">
+              <div class="card-body p-1">
+                
+                <app-laboratory-table-list  *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [laboratoryList]="laboratoryList"></app-laboratory-table-list>
+                <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()"></app-radiology-table-list>
+                <div class="card mt-2" *ngIf="isMedication || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)">
+                  <div class="card-body p-0 medication-emer-table">
+                    <accordion [closeOthers]="true">
+                      <accordion-group #medication [isOpen]="isCollpseOpen">
+                        <div accordion-heading class="collaspe-header">
+                          Medication
+                          <i class="fa" [ngClass]="{'fa-chevron-down': medication?.isOpen, 'fa-chevron-up': !medication?.isOpen}"></i>
+                        </div>
+                        <div class="laboratory-list-table" [ngStyle]="showPatients && {'width':'140vh'}">
+                          <table class="table" [ngClass]="{ 'table-medication': !isExpanded }">
+                            <thead class="thead-back-color">
+                              <th class="">Medication Name</th>
+                              <th class="white-space">Dosage</th>
+                              <th class="white-space">Duration</th>
+                              <th class="white-space">Valid From</th>
+                              <th class="white-space">Valid To</th>
+                              <th class="white-space"></th>
+                              <th class="white-space">Purpose</th>
+                              <th class="white-space">Physician</th>
+                              <th class="white-space">Status</th>
+                              <th class="white-space"></th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of madicationList; let i = index;">
+                                <td class="">{{ item.ResultDrugName }}</td>
+                                <td class="white-space">{{ getQuanValue(item.Quan) }} {{item?.Quanunit}} {{item?.Formatdescr}}</td>
+                                <td>{{ durationConvert(item.Pdur | customDecimal) }} {{ item.Durunittxt }}</td>
+                                <td>{{ getDate(item.Erdat) | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ parsePayloadFormateTime(item.Ertim) }}</td>
+                                <td>
+                                  <ul class="d-flex m-0 prior-media">
+                                    <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+                                      <input type="checkbox" id="PRN" [checked]="item.Prn" disabled/>
+                                      <span class="mr-2"></span>
+                                      <label for="PRN" class="m-0 font-widht">PRN</label>
+                                    </li>
+                                    <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+                                      <input type="checkbox" id="POM" disabled/>
+                                      <span class="mr-2"></span>
+                                      <label for="POM" class="m-0 font-widht">POM</label>
+                                    </li>
+                                  </ul>
+                                </td>
+                                <td><img class="width-25" src="assets/img/medication-emr.png" alt="" /></td>
+                                <td>{{ item.Resppersname }}</td>
+                                <td>
+                                  <span class="table-action white-space">{{item.Statustext}}</span>
+                                </td>
+                                <td class="white-space">
+                                  <img class="width-25 mr-2" src="assets/img/info-emr.svg" alt="" (click)="openRealsePDFModal(item, additionalInfo)"/>
+                                  <img class="width-25 mr-2" src="assets/img/add-emr.svg" alt="" (click)="openMoDetailPanel(i, item, orderMedication)"/>
+                                  <img class="width-25 mr-2" src="assets/img/three-dot-emr.svg" alt="" />
+                                  <img class="width-25" src="assets/img/red-info-emr.svg" alt="" />
+                             
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </accordion-group>
+                    </accordion>
+                  </div>
+                </div>
+                <app-surgery-table-list *ngIf="isSurgery || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [surgeryList]="surgeryList" (reloadTableData)="resetAllFilter()"></app-surgery-table-list>
+              </div>
+            </div>
+          </div>
+          <div [ngClass]="isExpanded ? 'toggle' : 'toggle-left'" (click)="handleSidebarToggle()">
+            <img width="30" title="Visits & Admissions Timeline" src="assets/img/collpse-user-icon.png" class="ng-star-inserted"/>
+          </div>
+          <div class="card visita-timeline" *ngIf="!isExpanded" [ngClass]="{ 'overFlow-hidden': isExpanded }">
+            <div class="card-header p-0">
+              <label class="collaspe-header">Visits & Admissions Timeline</label>
+            </div>
+            <div class="card-body p-0">
+              <div class="visit-timeline-list" *ngFor="let patient of patientCaseList">
+                <div class="d-flex align-items-center" (click)="getPatientTableList('', '', patient.Case)">
+                  <div class="wrapper w-30">
+                    <img class="image--cover" [ngStyle]="getImageBorderLogic(patient)" [src]="getImageLogic(patient)" *ngIf="showItem(patient)"/>
+                  </div>
+                  <div class="visit-details ml-1">
+                    <p class="m-0">{{(patient.CaseType === "1" && "IP") || (patient.CaseType === "2" && "OP") || (patient.CaseType === "3" && "DC")}}-{{patient.DeptUnitName}}</p>
+                    <span>{{patient.PersonName ? patient.PersonName : '--'}}</span><br />
+                    <span>{{getDate(patient.StartDate) | date: 'dd/MM/yyyy'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #additionalInfo>
+    <div class="additional-input additional-input p-3">
+      <label for="additionalInfo w-100">Additional Information</label>
+      <textarea type="text" [value]="isDefaultComment" #additionalInfo
+        class="w-100"></textarea>
+    </div>
+    <div class="button-group d-flex justify-content-end p-3">
+      <button (click)="modalRef.hide()" class="d-flex align-items-center"><img
+          src="assets/img/cancel-icon.svg" class="mr-1">Cancle</button>
+    </div>
+  </ng-template>
+  
+  <ng-template #NotValidationData let-item="item" let-index="index">
+    <div [formGroup]="item" class="p-3">
+      <div>Not Validated</div>
+    </div>
+  </ng-template>
+  
+  <ng-template #ValidationData let-item="item" let-index="index">
+    <div [formGroup]="item" class="p-3">
+      <div class="d-flex align-items-center gap-data mb-1">
+        <div>
+          <label class="p-0 m-0 mr-2 mb-1">Validated on </label>
+          <input type="text" class="form-control event-font font-weight-bold" formControlName="ValidationDate" [bsConfig]="{withTimepicker:
+            true,showWeekNumbers:false,
+            dateInputFormat:
+            'DD.MM.YYYY'}" bsDatepicker readonly>
+        </div>
+        <div>
+          <label class="p-0 m-0 mr-2 mb-1">Validated at </label>
+          <input type="text" class="form-control event-font font-weight-bold" formControlName="ValidationTime" [bsConfig]="{withTimepicker:
+            true,showWeekNumbers:false,
+            dateInputFormat:
+            'HH:mm:ss'}" bsDatepicker readonly>
+        </div>
+        <div>
+          <label class="p-0 m-0 mr-2 mb-1">Validated by</label>
+          <input type="text" class="form-control event-font font-weight-bold" formControlName="ValidationNm" readonly>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-data mb-1">
+  
+        <!-- <div>
+          <label class="p-0 m-0 mr-2 mb-1">Physician</label>
+          <input type="text" class="form-control event-font font-weight-bold" formControlName="ValidationNm" readonly>
+        </div> -->
+      </div>
+    </div>
+  </ng-template>
+  
+  
+  <ng-template #orderMedication>
+    <div class="d-flex justify-content-center align-items-center mt-2">
+      Medication Name - <p class="font-weight-bold p-0 m-0">{{patientCaseDetails?.ResultDrugName}}</p>
+    </div>
+      <div class="modeta-border">
+        <div class="d-flex textbaseline m-3">
+          <form action="" class="ma-border w-100">
+            <ul class="d-flex ma-borderbottom">
+              <li class="px-4 py-2 m-0 font-weight-bold
+                c-pointer"
+                (click)="onClickTabChange(
+                'Medicationdata')"
+                [ngClass]="tabmodetail === 'Medicationdata' ?
+                'active':''">Medication
+                Details</li>
+              <li class="px-4 py-2 m-0 font-weight-bold
+                c-pointer"
+                (click)="onClickTabChange(
+                'Eventdata')"
+                [ngClass]="tabmodetail === 'Eventdata' ?
+                'active':''">Events
+              </li>
+            </ul>
+            <div class="ma-tab-content">
+              <ng-container *ngIf="tabmodetail ===
+                'Medicationdata'">
+                <!-- <medication-tabs
+                  [medicationdetailsdate]="{item: configurationData,
+                  userData:
+                  this.addministrationService.medicationAdministrative}"
+                  (medication)="this.addministrationService.medicationAdministrative=
+                  $event">
+                </medication-tabs> -->
+                <form action="" [formGroup]="medicationForm">
+  
+                  <div class="d-flex w-100 mt-5 mb-5 ml-3 mr-2">
+                    <table class="tableborder w-25 h-25 mx-3">
+                      <tr>
+                        <th colspan="3" class="text-center p-1">vaildity</th>
+                      </tr>
+                      <tr>
+                        <td class="medication-color font-weight-bold border-0 p-1">vaild form</td>
+                        <td class="p-1 border-0 text-center font-weight-bold">{{patientCaseDetails?.StartD
+                          | date: "dd.MM.YYYY"}}</td>
+                        <td class="p-1 border-0 text-center font-weight-bold">{{parseTime(patientCaseDetails?.StartD)}}</td>
+                      </tr>
+                      <tr class="row-bgcolor">
+                        <td class="medication-color font-weight-bold p-1 border-0">Duration</td>
+                        <td class="p-1 border-0 text-center font-weight-bold">{{patientCaseDetails?.Pdur}}</td>
+                        <td class="p-1 border-0 text-center font-weight-bold">{{this.durationUnit}}</td>
+                      </tr>
+                      <tr>
+                        <td class="medication-color font-weight-bold p-1 border-0">vaild To</td>
+                        <td class="p-1 border-0 text-center font-weight-bold">{{patientCaseDetails?.EndD
+                          | date: "dd.MM.YYYY"}}</td>
+                        <td class="p-1 border-0 text-center font-weight-bold">{{parseTime(patientCaseDetails?.EndD)}}</td>
+                      </tr>
+                    </table>
+                
+                    <table class="tableborder w-30 h-25 mx-3"
+                      *ngIf="administrationService.medicationAdministrative">
+                      <tr>
+                        <th colspan="3" class="text-center p-1">Administrative Data</th>
+                      </tr>
+                      <tr>
+                        <td class="medication-color font-weight-bold border-0 p-1">Employee
+                          Responsible</td>
+                        <td class="p-1 border-0 font-weight-bold ">
+                          <ng-select class="border-0 selectbordernone"
+                            formControlName="EmpResp">
+                            <ng-option class="border-0"
+                              *ngFor=" let employeeresponsibal of
+                              administrationService.AdminiEmployeeresponsible"
+                              [value]="employeeresponsibal.Moresp1">
+                              {{ employeeresponsibal.Moresp1name }}
+                            </ng-option>
+                          </ng-select>
+                        </td>
+                      </tr>
+                      <tr class="row-bgcolor">
+                        <td class="medication-color font-weight-bold p-1 border-0">Order.Department</td>
+                        <td class="p-1 border-0 font-weight-bold">
+                          {{medicationForm.value.OrderDepartment}}</td>
+                      </tr>
+                      <tr>
+                        <td class="medication-color font-weight-bold p-1 border-0">Ordering To</td>
+                        <td class="p-1 border-0 font-weight-bold">
+                          <ng-select class="border-0 selectbordernone"
+                            formControlName="OrderingTo">
+                            <ng-option
+                              *ngFor=" let administrativeOrdering of
+                              administrationService.AdminiOrderingList"
+                              [value]="administrativeOrdering.Orgid">
+                              {{ administrativeOrdering.Orgna}}
+                            </ng-option>
+                          </ng-select>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="form-btn text-right p-3 bg-color-me mt-2 rounded-bottom"></div>
+                </form>
+                
+              </ng-container>
+              <ng-container *ngIf="tabmodetail ===
+                'Eventdata'">
+                <div class="event-overflow-ordermedi">
+                  <ul class="d-flex ml-2 mb-1">
+                    <li class="w-32 d-flex align-items-center">
+                      <span for="" class="w-21 pr-1">Order Department</span>
+                      <input type="text" class="form-control" class="form-control w-55
+                        Medica-font-size"
+                        [disabled]="true"
+                        value="{{this.administrationService.medicationAdministrative.OrderDepartment}}">
+                    </li>
+                    <li class="w-32 d-flex align-items-center">
+                      <span for="" class="w-21 pr-1">Ordering To</span>
+                      <input type="text" class="form-control w-55 Medica-font-size"
+                        [disabled]="true"
+                        value="{{this.administrationService.medicationAdministrative.OrderingTo}}">
+                    </li>
+                  </ul>
+                  <div class="p-5">
+                    <table class="text-align-center">
+                      <thead class="z-index-1 sticky-top bg-white">
+                        <tr class="text-center w-100 ml-5 mb-3">
+                          <!-- <td class=" border-0 p-0 py-2">
+                            <input type="checkbox">
+                          </td> -->
+                          <table class="w-100">
+                            <tr class=" badge-secondary">
+                              <td class="w-18 border-0 p-0 py-2">Planned Date & Time</td>
+                              <td class="w-10 border-0 p-0 py-2">Dosage</td>
+                              <td class="w-8 border-0 p-0 py-2">Unit</td>
+                              <td class="w-8 border-0 p-0 py-2">Status</td>
+                              <td class="w-18 border-0 p-0 py-2">Status Date & Time</td>
+                              <td class="w-8 border-0 p-0 py-2">Change By</td>
+                              <td class="w-8 border-0 p-0 py-2">Dosage adm</td>
+                              <td class="w-8 border-0 p-0 py-2">Unit</td>
+                              <td class="w-12 border-0 p-0 py-2">ADM comments</td>
+                            </tr>
+                          </table>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class=" ml-5 mt-2" *ngFor="let item of orderEventMedication
+                          | eventfilter:
+                          this.ePrescriptionService.Sortingevent
+                          :'Pbdad' ;
+                          let i=
+                          index">
+                          <!-- <td class=" border-0 p-1">
+                            <input type="checkbox" [checked]="item.value.isSelected"
+                              (change)="selectCheckBox(i, $event); Createeventdata()">
+                          </td> -->
+                          <table>
+                            <tr>
+                              <td class="w-18 border-0 p-1">
+                                <tr>
+                                  <td class=" border-0 w-5 p-1">
+                                    <input type="text" class="form-control Medica-font-size"
+                                      [value]="getDate(item.Pbdad) | date: 'dd/MM/yyyy'" readonly>
+                  
+                                  </td>
+                                  <td class=" border-0 w-3 pr-2 p-1">
+                                    <input type="text" class="form-control Medica-font-size"
+                                      [value]="parsePayloadFormateTime(item.Pbtad)" readonly>
+                                  </td>
+                                </tr>
+                              </td>
+                              <td class="w-10 border-0 p-1">
+                                <input type="textbox" class="form-control Medica-font-size"
+                                  [value]="item.Dose" [readOnly]="!item.Editdata"
+                                  appDigitDecimaNumber>
+                              </td>
+                              <td class="w-8 border-0 p-1">
+                                <input type="text" class="form-control Medica-font-size"
+                                  [value]="item.Unit" readonly>
+                              </td>
+                              <td class="w-8 border-0 p-1">
+                                <input type="text" class="form-control Medica-font-size"
+                                  [value]="item.Evdescr" readonly>
+                              </td>
+                              <td class="w-18 border-0 p-1">
+                                <tr>
+                                  <td class=" border-0 w-5 p-1">
+                                    <input type="text" class="form-control Medica-font-size"
+                                      [value]="getDate(item.EvstaDate) | date:'dd/MM/yyyy'" readonly>
+                                  </td>
+                                  <td class=" border-0 w-3 p-1">
+                                    <input type="text" class="form-control Medica-font-size"
+                                      [value]="parsePayloadFormateTime(item.EvstaTime)" readonly>
+                                  </td>
+                                </tr>
+                              </td>
+                              <td class="w-8 border-0 p-1">
+                                <input type="text" class="form-control Medica-font-size"
+                                  [value]="item.Upusr" readonly>
+                              </td>
+                              <td class="w-8 border-0 p-1">
+                                <input type="text" class="form-control Medica-font-size"
+                                  [value]="item.DoseAdm" readonly>
+                              </td>
+                              <td class="w-8 border-0 p-1">
+                                <input type="text" class="form-control Medica-font-size"
+                                  [value]="item.UnitAdm" readonly>
+                              </td>
+                              <td class="w-12 border-0 p-1">
+                                <input type="text" class="form-control Medica-font-size"
+                                  [value]="item.Admcomment" readonly>
+                              </td>
+                            </tr>
+                          </table>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </form>
+          <img src="assets/img/close.svg" height="20"
+            (click)="closeModetail()"
+            class="iconsminds-cursor-click mr-3 ml-2
+            c-pointer">
+        </div>
+      </div>
+    </ng-template>

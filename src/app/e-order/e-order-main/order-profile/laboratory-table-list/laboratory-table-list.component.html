@@ -1,0 +1,183 @@
+<div class="card">
+    <div class="card-body p-0">
+      <accordion [closeOthers]="true">
+        <accordion-group #laboratory [isOpen]="isCollpseOpen">
+          <div class="collaspe-header" accordion-heading>
+            Laboratory
+            <i class="fa" [ngClass]="{'fa-chevron-down': laboratory?.isOpen, 'fa-chevron-up': !laboratory?.isOpen}"></i>
+          </div>
+          <div class="laboratory-list-table">
+            <table class="table medication-radiology-table">
+              <thead class="thead-back-color">
+                <th *ngFor="let item of columnList" [ngStyle]="{'text-align': item == 'Action' ? 'center' : '' }">{{ item }}</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of laboratoryList | filter: searchString; let i = index">
+                  <td class="white-space" [title]="item.Leitxt">{{ item.Leitxt }}</td>
+                  <td>{{ item.Trtoe }}</td>
+                  <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                  <td>
+                    <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
+                  </td>
+                  <td style="text-align: center;">
+                    <img *ngIf="item.Pdf" (click)="getPdf(item)" class="width-25 cursor-pointer" src="assets/img/emergency-pdf.png" alt="" />
+                  </td>
+                  <td>
+                    <img width="35px" class="mr-2 cursor-pointer" src="assets/img/information.jfif" (click)="getLabService(item, labServiceModal)"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+
+  <ng-template #labpdfmodal>
+    <div class="modal-body">
+      <div class="row">
+        <iframe [src]="pdfUrl" width="1000" height="500"> </iframe>
+      </div>
+      <div class="mt-2" style="text-align: center">
+        <button
+          class="btn btn-primary"
+          (click)="closePdfModal()"
+          style="background-color: #0082c8; border: #0082c8"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #labServiceModal>
+    <td colspan="16" class="p-0 border-0">
+      <div class="collapsable-div">
+        <div class="d-flex textbaseline">
+          <div action="" class="ma-border w-100 mr-2">
+            <div class="ma-tab-content">
+              <div class="d-flex justify-content-between pb-1 pt-2" style="border-bottom: 2px solid rgb(223, 221, 221) !important;">
+                <h6 class="font-weight-bold ml-3">Order Details</h6>
+                <h6 class="font-weight-bold">{{laboratoryDetails.PatientName}}</h6>
+                <div class="mr-3">
+                  <img width="25px" title="Re-Order" class="mr-2 cursor-pointer" src="assets/img/lab-col.png" (click)="createLabData(laboratoryDetails)" />
+                  <img width="20px" (click)="openModuleLabChart(laboratoryDetails)" title="Lab Chart" class="mr-2 cursor-pointer" src="assets/img/lab.png" />
+                  <img width="25px" class="mr-2 cursor-pointer" src="assets/img/close.png" (click)="modalRef.hide()"/>
+                </div>
+              </div>
+              <div class="p-2 order-details-table">
+                <table class="w-100">
+                  <tr class="main_row">
+                    <th class="text-center border-0 pl-1">
+                      <input type="checkbox" [(ngModel)]="laboratoryDetails.masterSelected" (change)="selectAll(laboratoryDetails)"/>
+                    </th>
+                    <th class="text-center top-bottom-border border-0 border-start">Service Description & Units</th>
+                    <th class="text-center top-bottom-border border-0">Status</th>
+                    <th class="text-center top-bottom-border border-0">Refrence Range</th>
+                    <th class="text-center top-bottom-border border-0">Result</th>
+                    <th class="text-center top-bottom-border border-0 border-end">Date</th>
+                    <th class="text-center border-0" style="border: 1px solid !important" colspan="4">Previous Result & Date</th>
+                  </tr>
+                  <tbody>
+                    <tr class="mb-3" style="line-height: 10px" *ngFor="let details of laboratoryDetails.orderDetailsCollspe;" >
+                      <td class="pt-1 py-1 pl-0 border-0 px-1">
+                        <input
+                        *ngIf="details.ReorderFlag"
+                          type="checkbox"
+                          [(ngModel)]="details.isSelected"
+                          class="h-30"
+                          (change)="checkSelect(laboratoryDetails)"
+                        />
+                      </td>
+                      <td class="w-25 border-0 p-0 py-1">
+                        <input
+                          [value]="details.Ltext"
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="details.Ltext"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="details.Status"
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="details.Status"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="details.ReferanceRange"
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="details.ReferanceRange"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="details.Result"
+                          class="form-control h-30 font-weight-bold"
+                          [ngClass]="{'abnormal-class': details.Abnormalflag}"
+                          readonly
+                          [title]="details.Result"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="
+                            getDate(details.Datetime) | date : 'dd.MM.yyyy HH:mm'
+                          "
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="getDate(details.Datetime) | date : 'dd.MM.yyyy HH:mm'"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="details.Result1"
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="details.Result1"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="
+                            getDate(details.Datetime1) | date : 'dd.MM.yyyy HH:mm'
+                          "
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="getDate(details.Datetime1) | date : 'dd.MM.yyyy HH:mm'"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="details.Result2"
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="details.Result2"
+                        />
+                      </td>
+                      <td class="py-1 border-0 p-0 px-1">
+                        <input
+                          [value]="
+                            getDate(details.Datetime2) | date : 'dd.MM.yyyy HH:mm'
+                          "
+                          class="form-control h-30 font-weight-bold"
+                          readonly
+                          [title]="getDate(details.Datetime2) | date : 'dd.MM.yyyy HH:mm'"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <div class="d-flex mt-3 badge-secondary p-2 ma-radius"></div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </td>
+  </ng-template>

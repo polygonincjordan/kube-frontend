@@ -229,6 +229,12 @@ export class DialysisNursingDashboardComponent implements OnInit {
             this.allStatus = data.value.filterStatusList.map(status => ({ Status: status }));
           }
         }
+        if (data.type == FilterType.OpCheckIn$ && data.isAllow == true && data.value) {
+          if (data.value?.filterStatusList) {
+            this.allStatus = [];
+            this.allStatus = data.value.filterStatusList.map(status => ({ Status: status }));
+          }
+        }
       }
     });
 
