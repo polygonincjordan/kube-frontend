@@ -639,7 +639,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 
   .head {
     title {
-      padding: 4px 2px !important;
+      padding: 5px 6px !important;
     }
   }
 
@@ -729,5 +729,45 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   .border-between {
     background-color: #808080;
     height: 2px;
+  }
+}
+
+.document-detail-list {
+  height: calc(100vh - 499px);
+  overflow: auto;
+}
+.width-83 {
+  width: 83% !important;
+}
+
+.witdh-16 {
+  width: 16% !important;
+}
+.document-list {
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+  cursor: pointer;
+
+ 
+}
+.white-space {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.color-43aee7 {
+  color: #43aee7;
+}
+
+.in-line {
+  display: flex;
+  align-items: center;
+  span {
+    color: #cacaca;
+    font-size: 14px;
+    padding-right: 3px;
   }
 }

@@ -23,6 +23,7 @@ import { SoapFormComponent } from './soap-form/soap-form.component';
 import { VerticalArrowIndicatorComponent } from './vertical-arrow-indicator/vertical-arrow-indicator.component';
 import { VisitFormComponent } from './visit-form/visit-form.component';
 import { VitalsCardListComponent } from './vitals-card-list/vitals-card-list.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
@@ -73,6 +74,7 @@ export const eKardexRoutes: Routes = [
     NgSelectModule,
     Ng2SearchPipeModule,
     NgxMaterialTimepickerModule,
+    NgxExtendedPdfViewerModule
   ],
   providers: [
     eOrderService,
