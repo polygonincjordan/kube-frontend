@@ -98,9 +98,22 @@ export class DiagnosesComponent implements OnInit {
   isInPatientSoap: boolean=false;
   soapPdf: any;
   active: boolean = false;
+
+  patientProfileDocumet:  { [key: string]: any[] } = {};
+  currentVisitDocumet: any = [];
+  paramsObject:any
+  documentTypeFilterValue: any[] = [];
+  filterDate: any = '';
+  releaseDocumentImage: any;
+  pdfUrl: Blob;
+  pdfTemplateRef: any;
+  pdfUrlType: string;
+  htmlData: any;
+  
   constructor(
     private sanitizer: DomSanitizer,
     private modalServiceForAllergy: BsModalService,
+    public bsModalService: BsModalService,
     private modalService: NgbModal,
     private userConfigurationService: UserConfigurationService,
     private inPatientConfigurationService: InPatientConfigurationService,
@@ -114,6 +127,10 @@ export class DiagnosesComponent implements OnInit {
     this.createAttachmentForm= this.formBuilder.group({
       attachmentType: [''],
       attachmentFile: [''],
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
     });
   }
 
@@ -129,11 +146,173 @@ export class DiagnosesComponent implements OnInit {
       this.getPatientCaseStepperData();
       this.getAttachmentsList();
     })
+
+    this.admissionService.educationDateFilter.subscribe((res: any) => {
+      if (res) {
+        let day = res.getDate();
+        let month = res.getMonth() + 1;
+        let year = res.getFullYear();
+        this.filterDate = `${year}-${month}-${day}T00:00:00`;
+        this.getCurrentVisitDetails('1');
+        this.getCurrentVisitDetails('2');
+      } else {
+        this.filterDate = '';
+        this.getCurrentVisitDetails('1');
+        this.getCurrentVisitDetails('2');
+      }
+    });
+
+
+    
+    this.admissionService.documentTypeDrop.subscribe((res: any) => {
+      if (res.documentType || res.dateRange) {
+        let filterValue = this.documentTypeFilterValue;
+        if (res.documentType) {
+          filterValue = filterValue.filter((element) => {
+            if (res.documentType == element.Dtid) {
+              return element;
+            }
+          });
+        }
+
+        // if (res.dateRange) {
+        //   this.filterFromDate = res.dateRange[0];
+        //   this.filterToDate = res.dateRange[1];
+        //   filterValue=filterValue.filter(item =>{
+        //     let itemDate = new Date(this.dateFormate(this.getDate(item.Dodat)));
+        //     let fromDate = new Date(this.filterFromDate);
+        //     let toDate = new Date(this.filterToDate);
+        //     return itemDate >= fromDate && itemDate <= toDate;
+        //   })
+        // }
+        // this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
+      } else {
+        this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+        console.log('1111', this.patientProfileDocumet);
+        
+      }
+    });
+
+
   }
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+
+
+  getCurrentVisitDetails(type: string) {
+    this.admissionService
+      .getDicumentDetails(
+        this.paramsObject.einri,
+        type,
+        this.paramsObject.patnr,
+        this.filterDate,
+        this.paramsObject.falnr
+      )
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((data: any) => {
+        if (type == '2') {
+          this.currentVisitDocumet = data?.d.results;
+        } else {
+          // this.patientProfileDocumet = data?.d.results;
+          this.documentTypeFilterValue = data?.d.results;
+          
+          this.patientProfileDocumet = this.groupBy(data?.d?.results, 'Dodat');
+          console.log('222',this.patientProfileDocumet);
+          this.documentTypeFilterValue.forEach((element) => {
+            let checkPatinet = this.admissionService.documentTypeFilter.find(
+              (el) => el.Dtid === element.Dtid
+            );
+            if (!checkPatinet) {
+              this.admissionService.documentTypeFilter.push({
+                Dtid: element.Dtid,
+                DtidText: element.DtidText,
+              });
+            }
+          });
+        }
+      });
+  }
+
+  groupBy(array: any[], key: string): any {
+    return array.reduce((result, currentValue) => {
+      (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+      return result;
+    }, {});
+  }
+
+  getDate(value) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
+    }
+  }
+
+  dockVer(value) {
+    return `(v${parseInt(value)})`;
+  }
+  pdfUrlConvertToBlob(pdfValue) {
+    let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
+    let file = new Blob([byteArray], { type: "application/pdf" });
+    this.pdfUrl = file;
+  }
+
+  getnewReleasedPdf(item, template: TemplateRef<any>) {
+    this.releaseDocumentImage = ''
+      this.admissionService
+        .getPatientProfilePDF(item.Dockey)
+        .subscribe((_success: any) => {
+          if(item.AttMimeType == 'PDF') {
+            this.pdfUrlConvertToBlob(_success.d.AttachmentData);
+            const config: ModalOptions = {
+              class: 'modal-dialog-centered modal-xl pdfmodal-size',
+            };
+            this.pdfTemplateRef = this.bsModalService.show(template, config);
+            this.pdfUrlType = 'pdf';
+          } else if(item.AttMimeType == 'url') {
+            window.open(_success.d.Url);
+          } else if(item.AttMimeType == 'image/bmp') {
+            const config: ModalOptions = {
+              class: 'modal-dialog-centered modal-xl pdfmodal-size',
+            };
+            this.pdfTemplateRef = this.bsModalService.show(template, config);
+            this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
+            this.pdfUrlType = 'image';
+          } else if(item.AttMimeType == 'HTML') {
+            const config: ModalOptions = {
+              class: 'modal-dialog-centered modal-xl pdfmodal-size',
+            };
+            this.pdfTemplateRef = this.bsModalService.show(template, config);
+            this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
+            this.pdfUrlType = 'html';
+          }
+        });
+  }
+
+  closePdfModal() {
+    this.pdfTemplateRef.hide();
+  }
+  onReleaseNewHistoryData(releaseId: any, item) {
+    // this.seletcedCurrentDoc = item;
+    this.inPatientVisitData = {} as InPatientDataResult;
+    this.patientVisitRecord = {} as PatientVisitDataResult;
+    this.admissionService
+      .getReleaseHistoryData(releaseId, this.paramsObject.einri)
+      .subscribe((data) => {
+        if (data && data.length) {
+          this.diagnosisHistory.showPopup(data);
+        }
+      });
   }
 
   getDataByUserConfig() {

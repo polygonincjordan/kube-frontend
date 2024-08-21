@@ -97,12 +97,12 @@
 
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth ||
       InOutPatientViewValue.showIn">
-      <div class="inner_box" style="max-height: 40vh; overflow: auto">
+      <div class="inner_box" style="overflow: auto">
         <div class="main_bg main_diagnoses_table" style="min-height: 36.76vh;
           overflow: auto">
           <!-- end---------------------- -->
           <div class="head">
-            <title clas="patient-title">In-Patient Documents</title>
+            <title clas="patient-title">Petient Order Profile</title>
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
               <span (click)="openEnlarge(Inpatient, 'Inpatient')"><img src=""
@@ -139,7 +139,7 @@
             </div>
           </div>
           <ng-container *ngIf="!noDatafoundInPatient && !isError">
-            <div *ngFor="
+            <!-- <div *ngFor="
               let paitentData of inPatientVisitDataSourceWithoutDocument | slice
               : 0 : 5
               " class="detail_row"
@@ -160,10 +160,47 @@
                 paitentData.Released ? "Released" : "Draft"
                 }}</span>
               <select class="" name="" id="" *ngIf="paitentData.Dokvr != '00'"></select>
-              <!-- <div class="mw-15" style="min-width: 15px"></div> -->
             </div>
           </div>
+            </div> -->
+
+
+            <div class="document-detail-list">
+              <div class="row  m-0" *ngFor="let item of patientProfileDocumet | keyvalue; let i = index">
+                <!-- <div class="witdh-16 pl-2 mt-3">
+                  <strong class="list-doc-date" [title]="getDate(item.key) | date: 'dd-MM-y'">{{ getDate(item.key) | date: "dd-MM-y" || '-' }}</strong>
+                </div> -->
+               
+                <div class="w-100 mt-1   ml-1 document-list mr-0 ml-0 align-items-center row m-0 p-2" *ngFor="let member of item.value; let i = index" [ngClass]="i > 0 ? 'mt-1':''">
+                  <div class="col-md-4 pl-0">
+                    <strong class="" [title]="member.Dktxt">{{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</strong>
+                  </div>
+                  <div class="col-md-2 pl-0">
+                    <strong class="color-43aee7" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</strong>
+                  </div>
+                  <div class="col-md-2 p-0">
+                    <strong class="in-line" [title]="getDate(member.Dodat) | date: 'dd-MM-y'"><span *ngIf="member.Dodat">|</span> {{ getDate(member.Dodat) | date: "dd-MM-y" }}</strong>
+                  </div>
+                  <div class="col-md-3 pl-0">
+                    <strong class="in-line" [title]="member.MitarbName"><span *ngIf="member.MitarbName">|</span> {{ member.MitarbName }}</strong>
+                  </div>
+                  <div class="col-md-1 pl-0 d-flex align-items-center" (click)="$event.preventDefault()">
+                    <div class="col-md-6 p-0 mr-2" *ngIf="member.NodocText !='N/A'">
+                      <img width="25" src="assets/img/rad-patient-image.png" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'image/bmp' || member.AttMimeType === 'url'" />
+                      <i aria-hidden="true" (click)="getnewReleasedPdf(member, labpdfmodal)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="member.AttMimeType === 'PDF'"></i>
+                      <img src="assets/img/document-html.png" width="15px" height="15px" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'HTML'" />
+                    </div>
+                      <div class="col-md-6 p-0">
+                        <div class="d-flex" style="width: 100%;"
+                        (click)="onReleaseNewHistoryData(member.Dockey, member)">
+                        <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
           </ng-container>
           <app-no-data-found *ngIf="noDatafoundInPatient"></app-no-data-found>
           <app-error-placeholder *ngIf="isError"></app-error-placeholder>
@@ -177,6 +214,39 @@
     <app-stepper [listItem]="patientCaseSetDataSource"></app-stepper>
   </div>
 </div>
+<ng-template #labpdfmodal>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer
+        *ngIf="pdfUrlType == 'pdf'"
+        [src]="pdfUrl"
+        height="80vh"
+        [backgroundColor]="'#525659'"
+        [zoom]="'80'"
+        [sidebarVisible]="true"
+        [showOpenFileButton]="false"
+        [showBookmarkButton]="false"
+        >
+      </ngx-extended-pdf-viewer>
+    <div class="row" >
+      <!-- <iframe [src]="pdfUrl" width="2000" height="600"> </iframe> -->
+    </div>
+    <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
+      <img [src]="releaseDocumentImage" style="height: 70vh;" />
+    </div>
+    <div class="w-100" *ngIf="pdfUrlType == 'html'">
+      <div [innerHTML]="htmlData"></div>
+    </div>
+    <div class="mt-2" style="text-align: center">
+      <button
+        class="btn btn-primary"
+        (click)="closePdfModal()"
+        style="background-color: #0082c8; border: #0082c8"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
 
 <!-- first patient documents modal---------------- -->
 <ng-template #Outcontent let-modal>

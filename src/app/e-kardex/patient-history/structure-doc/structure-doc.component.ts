@@ -31,10 +31,12 @@ export class StructureDocComponent implements OnInit {
   getPhyDocForm:FormGroup;
   getNursDocForm:FormGroup;
   getAttachDocForm:FormGroup;
+  getCVISAttachDocForm:FormGroup;
   getSpecialDocForm:FormGroup;
   createDocForm:FormGroup;
   createNursDocForm:FormGroup;
   createAttachmentForm:FormGroup;
+  createCVISAttachmentForm:FormGroup;
   vitalSignsForm:FormGroup
   ZdocNr='';
   phyAssessmentList: any;
@@ -96,6 +98,13 @@ export class StructureDocComponent implements OnInit {
         docStatus:[''],
         docPhysician: [''],
       });
+      this.getCVISAttachDocForm = this.formBuilder.group({
+        docName: ['CVIS Attachments'],
+        docDate: [''],
+        docTime: [''],
+        docStatus:[''],
+        docPhysician: [''],
+      });
       this.getSpecialDocForm = this.formBuilder.group({
         docName: ['Special Notes'],
         docDate: [''],
@@ -126,6 +135,9 @@ export class StructureDocComponent implements OnInit {
       });
       this.createAttachmentForm= this.formBuilder.group({
         attachmentType: [null, Validators.required],
+      attachmentFile: [null, Validators.required],
+      });
+      this.createCVISAttachmentForm= this.formBuilder.group({
       attachmentFile: [null, Validators.required],
       });
       this.vitalSignsForm = this.formBuilder.group({
@@ -1225,6 +1237,7 @@ export class StructureDocComponent implements OnInit {
     template: TemplateRef<any>,
   ) {
     this.createAttachmentForm.reset();
+    this.createCVISAttachmentForm.reset();
     this.removeFile();
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
       this.modalRef = this.modalServiceForAllergy.show(template,config);
@@ -1239,6 +1252,10 @@ export class StructureDocComponent implements OnInit {
   resetAttachment(_error?: any, p0?: string){
     this.modalRef.hide();
     this.createAttachmentForm.reset();
+  }
+  resetCVISAttachment(_error?: any, p0?: string){
+    this.modalRef.hide();
+    this.createCVISAttachmentForm.reset();
   }
 
   handleFileChange(event){
@@ -1308,6 +1325,46 @@ uploadDocument(template) {
         (_success: any) => {
           this.resetAttachment();
           this.createAttachmentForm.reset();
+          Swal.fire({
+            title: 'Created Successfully',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          }).then(() => {
+            this.file = null;
+            this.filename = '';
+            this.mimetype = '';
+            this.base64Value = '';
+            this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+            this.userconfig.getListOfPatientVisitDataSet()
+          });
+        },
+        (_error: any) => {
+          this.showErrorPopup("", _error.error.error.message.value, "Error")
+        }
+        );
+      }
+  }
+  createCVISAttachmentDoc(){
+    this.createCVISAttachmentForm.markAllAsTouched();    
+    if(this.createCVISAttachmentForm.valid){
+      const json = {
+        "DocNr": "",
+        "Version": "",
+        "Dtid": "ZMED_CVIS",
+        "Einri": this.storageService.einri,
+        "Patnr": this.storageService.patnr,
+        "Falnr": this.storageService.falnr,
+        "Orgdo": this.storageService.patientData.deptOrgUnit,
+        "AttendPhy": this.storageService.getUserProfile().Gpart,
+        "DocType": "",
+        "FileName": this.filename,
+        "Mimetype": this.mimetype,
+        "AttachmentDataStr":this.base64Value
+      }
+      this.patientHistoryService.createAttachmentDoc(json).subscribe(
+        (_success: any) => {
+          this.resetCVISAttachment();
+          this.createCVISAttachmentForm.reset();
           Swal.fire({
             title: 'Created Successfully',
             icon: 'success',

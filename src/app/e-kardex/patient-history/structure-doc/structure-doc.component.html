@@ -227,6 +227,8 @@
           </span>
         </div>
       </div>
+
+
       <div style="display: flex;align-items: center;"
         [formGroup]="getAttachDocForm">
         <div class="align-middle border-0 w-21 p-1">
@@ -325,6 +327,119 @@
           </span>
         </div>
       </div>
+
+
+
+      <div style="display: flex;align-items: center;"
+        [formGroup]="getCVISAttachDocForm">
+        <div class="align-middle border-0 w-21 p-1">
+          <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+            <span class="input-title z-indexlabel" style="color:black">Document
+              Name</span>
+            <span class="input-text-field d-inline-block align-top
+            w-100" (dblclick)="getNursDocPdf()">
+              <input type="text" class="form-control"
+                formControlName="docName" />
+            </span>
+          </span>
+        </div>
+        <div class="align-middle border-0 w-14 p-1"
+          style="width: 16% !important;">
+          <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+            <span class="input-title z-indexlabel"
+              style="color:black">Date</span>
+            <span class="input-text-field d-inline-block align-top
+            w-100">
+              <input type="text" class="form-control"
+                formControlName="docDate" />
+            </span>
+          </span>
+        </div>
+        <div class="align-middle border-0 w-10 p-1">
+          <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+            <span class="input-title z-indexlabel"
+              style="color:black">Time</span>
+            <span class="input-text-field d-inline-block align-top
+            w-100">
+              <input type="text" class="form-control"
+                formControlName="docTime" />
+            </span>
+          </span>
+        </div>
+        <div class="align-middle border-0 w-14 p-1">
+          <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+            <span class="input-title z-indexlabel"
+              style="color:black">Status</span>
+            <span class="input-text-field d-inline-block align-top
+            w-100">
+              <input type="text" class="form-control"
+                formControlName="docStatus" />
+            </span>
+          </span>
+        </div>
+        <div class="align-middle border-0 w-15 p-1"
+          style="width: 20% !important;">
+          <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+            <span class="input-title z-indexlabel"
+              style="color:black">Physician</span>
+            <span class="input-text-field d-inline-block align-top
+            w-100">
+              <input type="text" class="form-control"
+                formControlName="docPhysician" />
+            </span>
+          </span>
+        </div>
+        <div style="display: flex;align-items: center;">
+          <span class="enable-structdoc-icon">
+            <!-- <i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 21px;" data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="Create" (click)="openModalForCreateNursing(createNursingDoc,'create')"></i> -->
+            <img src="assets/img/structadd.svg" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Create"
+              (click)="openModalForAttachment(cvisAttachmentmodal)">
+          </span>
+          <span
+            [ngClass]="enableReleaseNurs ? 'enable-structdoc-icon' : 'disable-structdoc-icon'">
+            <img src="assets/img/strucdoc.svg" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Release">
+          </span>
+          <span
+            [ngClass]="enableEditNurs ? 'enable-structdoc-icon' : 'disable-structdoc-icon'">
+            <!-- <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 21px;" data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="Edit" (click)="openModalForCreateNursing(createNursingDoc,'update')"></i> -->
+            <img src="assets/img/strucedit.svg" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Edit" />
+
+          </span>
+          <span
+            [ngClass]="enableDeleteNurs ? 'enable-structdoc-icon' : 'disable-structdoc-icon'"
+            style="background: #fff9f9;">
+            <!-- <i class="fa fa-trash" aria-hidden="true" style="font-size: 21px;" data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="Delete" (click)="confirmDeleteNursAssessmentDoc()"></i> -->
+            <img src="assets/img/Delete.svg" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Delete" />
+          </span>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
       <div style="display: flex;align-items: center;"
         [formGroup]="getSpecialDocForm">
         <div class="align-middle border-0 w-21 p-1">
@@ -896,6 +1011,69 @@
             <div class="btns-save-cancel">
               <button class="btn-save me-1" (click)="createAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
               <button class="btn-save" (click)="resetAttachment()">
+                Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #cvisAttachmentmodal>
+  <div class="modal-body">
+    <div class="main-white-boxes">
+      <div class="attachment-main-new">
+        <h4 class="top-head-h4">Attachments</h4>
+      </div>
+      <form [formGroup]="createCVISAttachmentForm"
+        >
+        <!-- <div class="attachment-main-new">
+          <div class="attachment">
+            <span> Attachment Type</span>
+            <ng-select placeholder="Search" formControlName="attachmentType"
+              style="font-size: 12px; width: 65%;" [ngClass]="{'error-border': createAttachmentForm.get('attachmentType')?.hasError('required') && (createAttachmentForm.get('attachmentType')?.touched || createAttachmentForm.get('attachmentType')?.dirty)}">
+              <ng-option *ngFor="let item of attachmentList" [value]="item.Id">
+                {{ item.Descr }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div> -->
+        <div class="attachment-main-new upload-box">
+          <span class="top-head-new"> Upload Attachment</span>
+          <div class="d-flex"
+            style="align-items: center;justify-content: space-between;">
+            <div class="attachment position-relative">
+              <input type="file" id="docpicker" style="display: none;"
+                formControlName="attachmentFile"
+                accept="image/png, image/gif, image/jpeg, application/pdf"
+                (change)="handleFileChange($event)" >
+              <label id="myfile" class="w-100 pl-2 m-0" >
+                <label for="docpicker" class="choose-filebut"
+                  *ngIf="!this.file"
+                  [ngClass]="{'error-border': createCVISAttachmentForm.get('attachmentFile')?.hasError('required') && (createCVISAttachmentForm.get('attachmentFile')?.touched || createCVISAttachmentForm.get('attachmentFile')?.dirty)}">
+                  Choose file
+                </label>
+                <div
+                  class="choose-filename d-flex justify-content-between align-items-center"
+                  *ngIf="this.file">
+                  <div title="{{filename}}">{{filename}}</div>
+                  <img src="./assets/img/close.png" title="remove"
+                    class="cursor-pointer" *ngIf="this.file"
+                    (click)="removeFile(); createCVISAttachmentForm.get('attachmentFile').markAsTouched()"  height="13" />
+                </div>
+              </label>
+              <div class="attachment-btn d-flex position-absolute" >
+                <button class="border-0 px-1 fs-6"
+                  (click)="onFileSelected(documentUrlpdf)" title="view"
+                  *ngIf="this.file"><img style="filter: grayscale(1);"
+                    src="./assets/img/eye-icon.svg" /></button>
+              </div>
+            </div>
+
+            <div class="btns-save-cancel">
+              <button class="btn-save me-1" (click)="createCVISAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
+              <button class="btn-save" (click)="resetCVISAttachment()">
                 Cancel</button>
             </div>
           </div>
