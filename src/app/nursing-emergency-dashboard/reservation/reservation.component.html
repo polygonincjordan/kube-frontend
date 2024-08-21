@@ -17,8 +17,8 @@
                 </ng-select>
               </div>
               <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '311'">
-                <label class="location-label" for="storage-location">Storage Location</label>
-                <ng-select class="ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
+                <label class="location-label" for="storage-location">Requesting Storage Location</label>
+                <ng-select class="ng-select-dropdown" [placeholder]="'Requesting Storage Location'" [clearable]="true" [searchable]="true"
                   formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
                   <ng-option *ngFor="let item of storageLocationList" [value]="item">{{ item.Lgort }}</ng-option>
                 </ng-select>
