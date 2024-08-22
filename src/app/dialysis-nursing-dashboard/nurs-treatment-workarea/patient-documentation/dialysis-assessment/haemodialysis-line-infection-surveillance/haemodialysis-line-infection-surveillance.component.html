@@ -160,7 +160,7 @@
           </div>
           <div class="score-input d-flex flex-column">
             <label for="" class="mb-4">Score</label>
-            <input type="text" name="Redness" id="Redness" formControlName="RednessScore" readonly>
+            <input type="text" name="Redness" [ngClass]="{'disable': haemodialysisLineMonitoring.get('Redness').value == 1}"  id="Redness" formControlName="RednessScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
@@ -176,7 +176,7 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="Swelling" id="Swelling" formControlName="SwellingScore" readonly>
+            <input type="text" name="Swelling" id="Swelling"  [ngClass]="{'disable': haemodialysisLineMonitoring.get('Swelling').value == 1}" formControlName="SwellingScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
@@ -192,7 +192,7 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="Exuade" id="Exuade" readonly formControlName="ExuadeScore" readonly>
+            <input type="text" name="Exuade" id="Exuade" readonly  [ngClass]="{'disable': haemodialysisLineMonitoring.get('Exuade').value == 1}" formControlName="ExuadeScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
@@ -208,19 +208,19 @@
             </div>
           </div>
           <div class="score-input">
-            <input type="text" name="PusScore" id="PusScore" formControlName="PusScore" readonly>
+            <input type="text" name="PusScore" id="PusScore"  [ngClass]="{'disable': haemodialysisLineMonitoring.get('Pus').value == 1}" formControlName="PusScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3">
           <label for="" class="common-label m-0">Total Score</label>
           <div class="score-input">
-            <input type="text" name="Total" id="Total" formControlName="TotalScore" readonly>
+            <input type="text" name="Total" id="Total" [ngClass]="{'disable': haemodialysisLineMonitoring.get('TotalScore').value == 0}" formControlName="TotalScore" readonly>
           </div>
         </div>
         <div class="d-flex my-3 w-100">
           <label for="" class="common-label m-0">Plan</label>
           <div class="score-input w-100">
-            <input type="text" class="w-100" name="Plann" id="Plann" formControlName="Plann" readonly>
+            <input type="text" class="w-100" name="Plann" [ngClass]="{'disable': haemodialysisLineMonitoring.get('TotalScore').value == 0}" id="Plann" formControlName="Plann" readonly>
           </div>
         </div>
       </div>

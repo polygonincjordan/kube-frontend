@@ -23,11 +23,19 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
     this.subscription.unsubscribe(); 
   }
   
+  // this.haemodialysisLineMonitoring.get('Pus').valueChanges.subscribe(value => {
+  //   if (value === 4) {
+  //     this.haemodialysisLineMonitoring.get('PusScore').setValue(4);
+  //   } else {
+  //     this.haemodialysisLineMonitoring.get('PusScore').setValue('');
+  //   }
+  // });
+
   if(this.patientDocService.isPatchValueForHaemodialysisLineMonitoring){
     this.initializeFormData()
     
     this.subscription = this.patientDocService.formDataBehaviorSubject.subscribe((resp)=>{
-      if(Object.keys(resp).length){
+      if(Object.keys(resp).length){        
         this.haemodialysisLineMonitoring.patchValue(resp);
       }
     })
@@ -39,13 +47,13 @@ export class HaemodialysisLineInfectionSurveillanceComponent implements OnInit {
     this.haemodialysisLineMonitoring.patchValue({
       HaemodialysisLine: '',
       OtherTxt: '',
-      Redness: '',
+      Redness: '1',
       RednessScore: '',
-      Swelling: '',
+      Swelling: '1',
       SwellingScore: '',
-      Exuade: '',
+      Exuade: '1',
       ExuadeScore: '',
-      Pus: '',
+      Pus: '1',
       PusScore: '',
       TotalScore: '',
       Plann: '',

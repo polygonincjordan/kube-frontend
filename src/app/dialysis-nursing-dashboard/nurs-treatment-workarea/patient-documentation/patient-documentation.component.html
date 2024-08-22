@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale && !openHemoCatheter && !openHemoDialysisFistulaGraft">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openAssessment && !openMorseFallScale && !openHemoCatheter && !openHemoDialysisFistulaGraft && !openNurseAdmission">
         <div class="search-functionality col-md-3 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter || openHemoDialysisFistulaGraft 
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openAssessment || openHemoCatheter || openHemoDialysisFistulaGraft || openNurseAdmission
         "
         style="justify-content: space-between;">
         <div>
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale "
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -95,7 +95,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale && !openHemoCatheter && !openHemoDialysisFistulaGraft">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openAssessment && !openMorseFallScale && !openHemoCatheter && !openHemoDialysisFistulaGraft && !openNurseAdmission">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -166,6 +166,25 @@
                     *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                 </div>
               </div>
+
+              <!-- Nursing Admission Assessment -->
+
+              <div
+              [ngClass]="isNursingAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isNursingAdmission',latestNurAdmissionList[0])">
+              <div class="col-md-4"> Nursing Admission Assessment {{latestNurAdmissionList[0]?.Zversion ?
+                dockVer(latestNurAdmissionList[0]?.Zversion) : ''}} :</div>
+              <div class="col-md-2 status-color">{{latestNurAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestNurAdmissionList[0]?.DocTime)}}">
+                {{getDate(latestNurAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestNurAdmissionList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <img src="assets/img/document-html.png" width="15px" height="15px"
+                  (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.NAA$)"
+                  *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
+              </div>
+            </div>
 
               <!--Hemo Catheter -->
               <div class="box-col d-flex mt-2 docs-event"
@@ -250,6 +269,7 @@
       <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
       <app-hemo-catheter *ngIf="openHemoCatheter"></app-hemo-catheter>
       <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
+      <app-nursing-admission-assessment *ngIf="openNurseAdmission"></app-nursing-admission-assessment>
       <app-hemodialysis-fistula-graft *ngIf="openHemoDialysisFistulaGraft"></app-hemodialysis-fistula-graft>
     </div>
 

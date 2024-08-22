@@ -20,18 +20,20 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService, private fb:FormBuilder) {
     this.haemodialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'];
+    
     this.haemodialysisArr = this.patientDocService.dialysisAssecementForm;
     if(this.subscription){
       this.subscription.unsubscribe();
     }
     
+    this.initializeFormData()
     if (this.patientDocService.isPatchValueForHaemodialysisMonitoring) {
-      this.initializeFormData()
 
       this.subscription =
         this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
           if (Object.keys(resp).length > 0) {
             this.isGenerateDefaultForm = false;
+            
             this.haemodialysisMonitoring.patchValue(resp);
 
             const TOMONITOR = resp?.TOMONITOR.results;
@@ -69,9 +71,9 @@ export class HaemodialysisMonitoringComponent implements OnInit {
 
   initializeFormData(){
     this.haemodialysisMonitoring.patchValue({
-      ChronicDone: false,
-      AcuteDone: false,
-      InternationalDone: false,
+      ChronicDone: '0',
+      AcuteDone: '0',
+      InternationalDone: '0',
     })
   }
 

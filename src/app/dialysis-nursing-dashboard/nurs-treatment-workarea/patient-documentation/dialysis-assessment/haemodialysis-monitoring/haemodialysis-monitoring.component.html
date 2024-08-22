@@ -16,12 +16,12 @@
             <th>UFR</th>
             <th>TFR</th>
             <th>DFR</th>
-            <th>Systolic B...</th>
-            <th>Diastolic...</th>
+            <th>Systolic Blood Pressure</th>
+            <th>Diastolic Blood Pressure</th>
             <th>Pulse Rate</th>
-            <th>Replace...</th>
+            <th>Replacement Fluid</th>
             <th>Fluid Type</th>
-            <th>Medications...</th>
+            <th>Medications Administered</th>
             <th style="width: 15%;">Comments</th>
             <th>Delete</th>
           </tr>
@@ -85,52 +85,53 @@
         </tbody>
       </table>
     </div>
-    <div class="selectors mt-4" [formGroup]="haemodialysisMonitoring">
-      <div class="container-fluid p-0">
-        <label class="tag-line" title="Select Yes on the type of Dialiysis done will add the charges">Select Yes on the type of Dialiysis done will add the charges</label>
-        <div class="row mt-3">
-          <div class="col-4">
-            <div class="common-selector position-relative">
-              <div class="d-flex align-items-center ">
-                <label for="" class="label-heading mr-3">Haemodialysis Chorosic Done?</label>
-                <div class="d-flex align-items-center mr-3">
-                  <input type="radio" value="1" formControlName="ChronicDone">
-                  <label class="mx-2" for="yesOption">Yes</label>
-                </div>
-                <div class="d-flex align-items-center mr-3">
-                  <input type="radio" value="0" formControlName="ChronicDone">
-                  <label class="mx-2" for="noOption">No</label>
-                </div>
+  </form>
+  <form class="selectors mt-4" [formGroup]="haemodialysisMonitoring">
+    <div class="container-fluid p-0">
+      <label class="tag-line" title="Select Yes on the type of Dialiysis done will add the charges">Select Yes on the type of Dialiysis done will add the charges</label>
+      <div class="row mt-3">
+        <div class="col-4">
+          <div class="common-selector position-relative">
+            <div class="d-flex align-items-center ">
+              <label for="" class="label-heading mr-3">Haemodialysis Chorosic Done?</label>
+              <div class="d-flex align-items-center mr-3">
+                <input type="radio" value="1" formControlName="ChronicDone">
+                <label class="mx-2" for="yesOption">Yes</label>
+              </div>
+              <div class="d-flex align-items-center mr-3">
+                <input type="radio" value="0" formControlName="ChronicDone">
+                <label class="mx-2" for="noOption">No</label>
               </div>
             </div>
           </div>
-          <div class="col-4">
-            <div class="common-selector position-relative">
-              <div class="d-flex align-items-center">
-                <label for="" class="label-heading mr-3">Haemodialysis Acute Done?</label>
-                <div class="d-flex align-items-center  mr-3">
-                  <input type="radio" value="1" formControlName="AcuteDone">
-                  <label class="mx-2" for="yesOption">Yes</label>
-                </div>
-                <div class="d-flex align-items-center  mr-3">
-                  <input type="radio" value="0" formControlName="AcuteDone">
-                  <label class="mx-2" for="noOption">No</label>
-                </div>
+        </div>
+        <div class="col-4">
+          <div class="common-selector position-relative">
+            <div class="d-flex align-items-center">
+              <label for="" class="label-heading mr-3">Haemodialysis Acute Done?</label>
+              <div class="d-flex align-items-center  mr-3">
+              
+                <input type="radio" value="1" formControlName="AcuteDone">
+                <label class="mx-2" for="yesOption">Yes</label>
+              </div>
+              <div class="d-flex align-items-center  mr-3">
+                <input type="radio" value="0" formControlName="AcuteDone">
+                <label class="mx-2" for="noOption">No</label>
               </div>
             </div>
           </div>
-          <div class="col-4">
-            <div class="common-selector position-relative">
-              <div class="d-flex align-items-center mr-2">
-                <label for="" class="label-heading mr-3">Haemodialysis International Done?</label>
-                <div class="d-flex align-items-center  mr-3">
-                  <input type="radio" value="1" formControlName="InternationalDone">
-                  <label class="mx-2" for="yesOption">Yes</label>
-                </div>
-                <div class="d-flex align-items-center  mr-3">
-                  <input type="radio" value="0" formControlName="InternationalDone">
-                  <label class="mx-2" for="noOption">No</label>
-                </div>
+        </div>
+        <div class="col-4">
+          <div class="common-selector position-relative">
+            <div class="d-flex align-items-center mr-2">
+              <label for="" class="label-heading mr-3">Haemodialysis International Done?</label>
+              <div class="d-flex align-items-center  mr-3">
+                <input type="radio" value="1" formControlName="InternationalDone">
+                <label class="mx-2" for="yesOption">Yes</label>
+              </div>
+              <div class="d-flex align-items-center  mr-3">
+                <input type="radio" value="0" formControlName="InternationalDone">
+                <label class="mx-2" for="noOption">No</label>
               </div>
             </div>
           </div>

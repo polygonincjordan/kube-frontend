@@ -125,6 +125,8 @@ import { PhysicianOrderComponent } from './check-in/progress-note-popup/physicia
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admission-assessment/nursing-admission-assessment.module';
+
 
 const route: Routes = [
   {
@@ -265,6 +267,7 @@ const route: Routes = [
     NgbCollapseModule,
     PopoverModule,
     NgxExtendedPdfViewerModule,
+    NursingAdmissionAssessmentModule
   ],
 })
 export class DialysisNursingDashboardModule {}
