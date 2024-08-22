@@ -1,6 +1,6 @@
 <div class="nursing-admission-main">
   <div>
-    <app-admission-data-section
+    <app-admission-data-section [isFormValidError]="isFormValidError"
       [nursingAdmissionForm]="nursingAdmissionForm"
     ></app-admission-data-section>
   </div>
@@ -627,7 +627,7 @@
     </div>
   </div>
   <div>
-    <app-assessment-section
+    <app-assessment-section [isFormValidError]="isFormValidError"
       [nursingAdmissionForm]="nursingAdmissionForm"
     ></app-assessment-section>
   </div>
