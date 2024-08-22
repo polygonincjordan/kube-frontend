@@ -17,17 +17,27 @@
                 </ng-select>
               </div>
               <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '311'">
-                <label class="location-label" for="storage-location">Storage Location</label>
-                <ng-select class="ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
+                <label class="location-label" for="storage-location">Requesting Storage Location</label>
+                <ng-select class="ng-select-dropdown" [placeholder]="'Req Storage Location'" [clearable]="true" [searchable]="true"
                   formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
-                  <ng-option *ngFor="let item of storageLocationList" [value]="item">{{ item.Lgort }}</ng-option>
+                  <ng-option *ngFor="let item of storageLocationList" [value]="item">
+                    <span [title]="item.Lgort + ' ' + item.Lgobe">
+                      <!-- {{ item.Lgort }}&nbsp;&nbsp;{{ item.Lgobe }} -->
+                      {{ item.Lgort }}
+                    </span>
+                  </ng-option>
                 </ng-select>
               </div>
               <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '201'">
                 <label class="location-label" for="Cost-Center">Cost Center</label>
                 <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
                   formControlName="selectedCostCenter" [(ngModel)]="selectedCostCenter" (change)="onLocationChange($event)">
-                  <ng-option *ngFor="let item of costCenterList" [value]="item">{{ item.Kostl }}</ng-option>
+                  <ng-option *ngFor="let item of costCenterList" [value]="item">
+                    <span [title]="item.Kostl + ' ' + item.Ltext">
+                      <!-- {{ item.Kostl }}&nbsp;&nbsp;{{item.Ltext}} -->
+                      {{ item.Kostl }} 
+                    </span>
+                  </ng-option>
                 </ng-select>
               </div>
             </div>
