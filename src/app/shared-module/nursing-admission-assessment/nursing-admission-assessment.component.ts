@@ -14,7 +14,7 @@ import { SharedService } from '@services/shared.service';
 import { SocialHabitComponent } from './social-habit/social-habit.component';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { StorageService } from '@services/storage.service';
@@ -224,6 +224,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   paramsObject: any;
   encounterId: any;
   docKey: any;
+  isFormValidError: boolean = false;
   constructor(
     private sharedService: SharedService,
     private formBuilder: FormBuilder,
@@ -636,7 +637,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       AEducated: '',
       AFavouriteToy: '',
       AReasonVisit: '',
-      AChiefComplaint: '',
+      AChiefComplaint: ['', Validators.required],
       Substances: '',
       Vaccinated: '',
       InfectionStatus: '',
@@ -818,13 +819,13 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       ImpairedNutritional1: false,
       ImpairedNutritional2: false,
       ImpairedNutritional3: false,
-      ImpairedNutritionalScore: '',
+      ImpairedNutritionalScore: ['', Validators.required],
       SeverityDisease0: false,
       SeverityDisease1: false,
       SeverityDisease2: false,
       SeverityDisease3: false,
-      SeverityDiseaseScore: '',
-      TotalScore: '',
+      SeverityDiseaseScore: ['', Validators.required],
+      TotalScore: ['', Validators.required],
       AgeAdjustedScore: '',
       PhysicianInformed: '',
       NamePhysician: '',
@@ -1308,6 +1309,18 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
 
   createNursingAdmissionDoc(docStatus: any, actiontype?: string) {
     return new Promise((resolve, reject) => {
+      this.isFormValidError = true;
+      if(this.nursingAdmissionForm.invalid) {
+        if(!this.nursingAdmissionForm.value.ImpairedNutritionalScore || !this.nursingAdmissionForm.value.SeverityDiseaseScore) {
+          Swal.fire({
+            html: `Please add the <strong>Total Score</strong> in the <strong>Nutritional Risk Screening</strong> tab.`,
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup',
+          })
+        }
+        return;
+      }
       this.nursingAdmissionForm.value.DocStatus = docStatus;
       let paylaod = this.nursingAdmissionForm.value;
       paylaod.ADate = this.sanitizeSAPDateFormat(this.nursingAdmissionForm.value.ADate);

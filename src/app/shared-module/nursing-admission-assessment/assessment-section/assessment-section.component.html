@@ -423,6 +423,7 @@
                     class="form-control w-30"
                     [disabled]="true"
                     [readOnly]="true"
+                    [ngClass]="nursingAdmissionForm.get('ImpairedNutritionalScore').errors && isFormValidError ? 'ep-error-message': ''"
                   />
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
@@ -432,6 +433,7 @@
                     class="form-control w-30"
                     [disabled]="true"
                     [readOnly]="true"
+                    [ngClass]="nursingAdmissionForm.get('SeverityDiseaseScore').errors && isFormValidError ? 'ep-error-message': ''"
                   />
                 </div>
               </div>
@@ -447,6 +449,7 @@
                       [disabled]="true"
                       [readOnly]="true"
                       formControlName="TotalScore"
+                      [ngClass]="nursingAdmissionForm.get('TotalScore').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                   <div class="col-md-4 d-flex align-items-center">
