@@ -28,6 +28,7 @@
                   class="w-50"
                   formControlName="TypeDwellingTxt"
                   [readonly]="!isEnableSelection"
+                  [ngClass]="{'disable':!isEnableSelection}" 
                 />
               </div>
             </div>
@@ -116,6 +117,7 @@
                   class="custom-input w-50 mx-3"
                   formControlName="ChOtherTxt"
                   [readonly]="!this.patientDocService.isChOtherChecked"
+                  [ngClass]="{'disable':!this.patientDocService.isChOtherChecked}" 
                 />
               </div>
             </div>
@@ -205,6 +207,7 @@
                   class="custom-input w-50 mx-3"
                   formControlName="PdOtherTxt"
                   [readonly]="!this.patientDocService.isPdOtherChecked"
+                  [ngClass]="{'disable':!this.patientDocService.isPdOtherChecked}"
                 />
               </div>
             </div>
@@ -278,6 +281,7 @@
                   class="custom-input w-50 mx-3"
                   formControlName="StOtherTxt"
                   [readonly]="!this.patientDocService.isStOtherChecked"
+                  [ngClass]="{'disable':!this.patientDocService.isStOtherChecked}"
                 />
               </div>
             </div>
@@ -291,7 +295,7 @@
                 <label class="text-nowrap heading-title m-0">Home Check</label>
                 <div class="d-flex align-items-center">
                   <input type="checkbox" formControlName="HoPlumbing" />
-                  <label class="m-0 mx-2">Plumbing/sniks working</label>
+                  <label class="m-0 mx-2">Plumbing/sinks working</label>
                 </div>
               </div>
             </div>
@@ -372,6 +376,7 @@
                   class="custom-input w-50 mx-3"
                   formControlName="HoOtherTxt"
                   [readonly]="!this.patientDocService.isHoOtherChecked"
+                  [ngClass]="{'disable':!this.patientDocService.isHoOtherChecked}"
                 />
               </div>
             </div>
@@ -452,6 +457,7 @@
                   formControlName="WaOtherTxt"
                   class="custom-input w-50 mx-3"
                   [readonly]="!this.patientDocService.isWaOtherChecked"
+                  [ngClass]="{'disable':!this.patientDocService.isWaOtherChecked}"
                 />
               </div>
             </div>
@@ -496,6 +502,7 @@
                   formControlName="GaOtherTxt"
                   class="custom-input w-50 mx-3"
                   [readonly]="!this.patientDocService.isGaOtherChecked"
+                  [ngClass]="{'disable':!this.patientDocService.isGaOtherChecked}"
                 />
               </div>
             </div>

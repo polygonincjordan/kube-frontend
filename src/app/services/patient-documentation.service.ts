@@ -140,9 +140,9 @@ export class PatientDocumentationService {
 
     // Haemodialysis-Monitoring
     haemodialysisMonitoring: new FormGroup({
-      ChronicDone: new FormControl(''),
-      AcuteDone: new FormControl(''),
-      InternationalDone: new FormControl(''),
+      ChronicDone: new FormControl('0'),
+      AcuteDone: new FormControl('0'),
+      InternationalDone: new FormControl('0'),
     }),
 
     // post-dialysis-monitoring
@@ -387,7 +387,7 @@ export class PatientDocumentationService {
 
     let plann;
 
-    if (total === 0 || total === 1) {
+    if (total === 1) {
       plann = 'Exit Site infection likely';
     } else if (total === 2 || total === 3) {
       plann =
@@ -397,7 +397,7 @@ export class PatientDocumentationService {
         'Exit site infection likely – Swab Site and consider empiric antibiotic X 2 weeks. Review swab report in 48 hours & modify antibiotic therapy accordingly.';
     }
 
-    this.dialysisAssecementForm.controls['haemodialysisLineMonitoring'].get('TotalScore').patchValue(total.toString());
+    this.dialysisAssecementForm.controls['haemodialysisLineMonitoring'].get('TotalScore').patchValue(total == 0 ? '' : total.toString());
     this.dialysisAssecementForm.controls['haemodialysisLineMonitoring'].get('Plann').patchValue(plann);
   }
 }

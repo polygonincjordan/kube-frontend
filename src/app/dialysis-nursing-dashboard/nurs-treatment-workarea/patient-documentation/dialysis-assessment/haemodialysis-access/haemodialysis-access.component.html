@@ -53,7 +53,7 @@
               <label for="" class="m-0" >Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="HaSOtherTxt" [readonly]="!this.patientDocService.isHaSOtherChecked">
+              <input type="text" class="w-100" formControlName="HaSOtherTxt"  [ngClass]="{'disable':!this.patientDocService.isHaSOtherChecked}" [readonly]="!this.patientDocService.isHaSOtherChecked">
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@
               <label for="" class="m-0">Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="HaAOtherTxt"  [readonly]="!this.patientDocService.isHaAOtherChecked">
+              <input type="text" class="w-100" formControlName="HaAOtherTxt" [ngClass]="{'disable':!this.patientDocService.isHaAOtherChecked}" [readonly]="!this.patientDocService.isHaAOtherChecked">
             </div>
           </div>
         </div>
@@ -254,7 +254,7 @@
               <label for="" class="m-0">Other</label>
             </div>
             <div class="ml-4 w-100">
-              <input type="text" class="w-100" formControlName="DiOtherTxt" [readonly]="!this.patientDocService.isDiOtherChecked">
+              <input type="text" class="w-100" formControlName="DiOtherTxt" [ngClass]="{'disable':!this.patientDocService.isDiOtherChecked}" [readonly]="!this.patientDocService.isDiOtherChecked">
             </div>
           </div>
         </div>
