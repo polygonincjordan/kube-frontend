@@ -2531,7 +2531,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     });
   }
 
-  public updateTriageStatus(): void {
+  public updateTriageStatus() {
     let payload = {
       Dockey: this.triageForm.value.Dockey,
       Dokst: "FR",
@@ -2550,13 +2550,13 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       Patnr: this.paramsObject.patnr,
       Referredby: "",
       Released: false,
-      TriageColor: this.triagePriorities.filter((item) => item.value == this.triageForm.value.TriagePriority)[0].backgroundColor,
-      TriagePriorityCode: this.triagePriorities.filter((item) => item.value == this.triageForm.value.TriagePriority)[0].value,
-      TriagePriorityText: this.triagePriorities.filter((item) => item.value == this.triageForm.value.TriagePriority)[0].label,
+      TriageColor: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriageColor,
+      TriagePriorityCode: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriagePriorityCode,
+      TriagePriorityText: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].label,
       Zimmr: "",
       Mode: true,
     }
-    this.subscription = this.emergencyService.saveTriage(payload).subscribe({
+    this.emergencyService.saveTriage(payload).subscribe({
       next: (data: any) => {
         // Handle successful data retrieval
       },
