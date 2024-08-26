@@ -224,7 +224,7 @@ export class EmergencyService {
   }
 
   assignToMe(json) {
-    const urlWithParams = `${this.url}              `;
+    const urlWithParams = `${this.url}assignToMe`;
     return this.http.post(urlWithParams, json, {
       withCredentials: true,
     });

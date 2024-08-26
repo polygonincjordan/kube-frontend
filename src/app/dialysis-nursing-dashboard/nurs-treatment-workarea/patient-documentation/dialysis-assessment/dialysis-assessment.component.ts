@@ -90,9 +90,13 @@ export class DialysisAssessmentComponent implements OnInit {
       this.lfdnr = params.lfdnr;
     });
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-      console.log('data',data);
-      
+      console.log('data',data);      
       if (data != null) {       
+        if (data.type == ActionType.Add$ && data.isAllow == true ) {
+          console.log('add');
+          this.patientDocService.formDataBehaviorSubject.next([]);
+          this.patientDocService.initialForm()
+        }
         if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
           this.latestDocData = data.value.docKey
           this.LatestDocSet();

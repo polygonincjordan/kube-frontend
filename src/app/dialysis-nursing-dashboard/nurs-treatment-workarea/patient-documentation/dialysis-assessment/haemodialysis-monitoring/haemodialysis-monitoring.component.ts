@@ -12,14 +12,17 @@ import swal from 'sweetalert2';
 })
 export class HaemodialysisMonitoringComponent implements OnInit {
   private subscription: Subscription;
-  haemodialysisMonitoring: FormGroup<any>;
+  haemodialysisMonitoring: any;
   haemodialysisArr : FormGroup;
   hemolineinfection: any;
   checkedIndexes: Array<number> = [];
   isGenerateDefaultForm: boolean = true;
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService, private fb:FormBuilder) {
-    this.haemodialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'];
+    if( this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring']){
+      this.haemodialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['haemodialysisMonitoring'];
+
+    }
     
     this.haemodialysisArr = this.patientDocService.dialysisAssecementForm;
     if(this.subscription){
