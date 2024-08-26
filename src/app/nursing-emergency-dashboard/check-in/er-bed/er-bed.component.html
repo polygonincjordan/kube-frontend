@@ -4,11 +4,15 @@
       <div class="emergency-beds-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Emergency Beds</h5>
         <div class="emergency-beds-header-right-buttons">
-          <button type="button" class="user-button">
-            <img src="assets/img/collpse-user-icon.png" style="position: relative;
-          right: 4px;width: 41px;" (click)="SaveBedForPatient()">
+          <button type="button" class="user-button"  title="Unassign Room to the Patient">
+            <img src="assets/img/de-assigned-user.svg" style="position: relative;
+          right: 4px;width: 33px;border-radius: 16px;" (click)="SaveBedForPatient()">
           </button>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeErBed()">
+          <button type="button" class="user-button" title="Assign Room to the Patient">
+            <img src="assets/img/collpse-user-icon.png" style="position: relative;
+          right: 4px;width: 34px;" (click)="SaveBedForPatient()">
+          </button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Close" (click)="closeErBed()">
             <img src="assets/img/CloseTab.svg">
           </button>
         </div>

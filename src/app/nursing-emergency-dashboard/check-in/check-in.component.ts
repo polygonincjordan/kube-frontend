@@ -88,12 +88,15 @@ export class CheckInComponent implements OnInit {
   encounterId: any;
   pdfUrl: any;
   selectedIconPdf: BsModalRef;
+  modalRefForLab:BsModalRef;
+  activelabLabelData:any
   modalRefForTriage: BsModalRef;
   selectedPatientDetails: any;
   selectedRowOfAllTriage: any;
   selectedDocumentDetails: any;
   private refreshSubscription: Subscription;
   refreshInterval:any;
+  printUrl: any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -669,6 +672,7 @@ export class CheckInComponent implements OnInit {
           this.ERlistDataClone = this.ERlistData;
           this.lastIndex = this.ERlistData.length - 1;
         }
+        this.getPrintUrl()
       },
       (_error: any) => { }
     );
@@ -1016,6 +1020,51 @@ export class CheckInComponent implements OnInit {
 
   openModalForAllergy(template, data) {
     this.nurErAllergy.openModalForAllergy(template, data);
+  }
+
+  public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLab = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLab.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+  closeLabModal(){
+    this.modalRefForLab?.hide();
+  }
+
+  getPrintUrl(){
+    this.emergencyService.getPrintLabel().subscribe((res:any)=>{
+      this.printUrl = res.d.results[0].Url 
+   })
+  }
+  printLabel(){
+    console.log('=-=-=-=-=-click',this.printUrl,'--',this.activelabLabelData.Vkgid);
+    
+    if(this.activelabLabelData.Vkgid){
+      this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res:any)=>{
+        if(res){
+          this.closeLabModal()
+        }
+      },
+      (_error: any) => {
+        // Swal.fire({
+        //   text: 'something went worng.',
+        //   icon: 'error',
+        //   confirmButtonText: 'Ok',
+        //   customClass: 'myalertpopup'
+        // })
+      
+      }
+    ); 
+      this.closeLabModal();
+    }
+    
   }
 
   openModalForTriage(template, data) {
