@@ -12,11 +12,14 @@ import { Subscription } from 'rxjs';
 })
 export class PeritonealComponent implements OnInit {
   isEnableSelection: boolean;
-  peritonealForm: FormGroup<any>;
+  peritonealForm: any;
   subscription: Subscription;
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, protected patientDocService: PatientDocumentationService) {
-    this.peritonealForm = this.patientDocService.dialysisAssecementForm.controls['peritonealForm']
+    if(this.patientDocService.dialysisAssecementForm.controls['peritonealForm']){
+      this.peritonealForm = this.patientDocService.dialysisAssecementForm.controls['peritonealForm'] 
+
+    }
 
     if(this.subscription){
       this.subscription.unsubscribe();

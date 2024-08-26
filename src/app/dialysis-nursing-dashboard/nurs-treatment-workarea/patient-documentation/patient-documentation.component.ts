@@ -889,6 +889,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestHemoCatheter();
     this.LatestHemoDialysisFistulaGraft();
     this.getNursingAdmissionLatestDoc()
+    this.patientDocService.initialForm()
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -1213,7 +1214,7 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.assessment) {
       if (action == 'create') {
         this.openAssessment = true;
-        this.dataShareService.sendActionType(ActionType.Add$, false, {});
+        this.dataShareService.sendActionType(ActionType.Add$, true, {});
       }else if(action == 'edit' ) {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
@@ -1234,6 +1235,7 @@ export class PatientDocumentationComponent implements OnInit {
         };
 
         this.emergencyService.getDailysisSet(json).subscribe((data:any)=>{
+          
           if(data.d.results[0]){
             const payload = {
               ...data.d.results[0],
@@ -2445,6 +2447,34 @@ export class PatientDocumentationComponent implements OnInit {
     return payload;
 }
 
+// cleanPayload(payload: any) {
+//   const keysToRemove = ['HaAOther','DiOther','AcCentral','AcWindowUnit','FanCeiling','FanStanding','FanWindow','HeatingElectric','HeatingGas','HeatingSolar'
+//     ,'ChOther','PdSmoke', 'PdPhone','PdFire','PdOther','StIndoors','StOutdoors','StEnclosedWFloor','StEnclosedWoFloor','StAdequate'
+//     ,'StInadequate','StAreaHeated','StOther', 'HoPlumbing' ,'HoEnclosed','HoAdequate' ,'HoCleanlinessAd','HoCleanlinessNeed','HoPetsInside','PPostWeight',
+//     'HoPetsOutside','HoAbsent','HoDoor', 'HoWindows', 'HoOther','WaCity','WaWell','WaSpring','WaCistern','WaOther', 'GaCity','GaSepticTank',
+//      'GaGarbage','GaOther','DryWeight','PostWeight','NewDryWeight','Height'
+//   ];
+  
+//   keysToRemove.forEach(key => {
+//     if (payload[key] === "" || payload[key] === null) {
+//       delete payload[key];
+//     }
+//   });
+// console.log('newclean-payload,',payload);
+
+//   return payload;
+// }
+cleanPayload(payload: any) {
+  Object.keys(payload).forEach(key => {
+    if (payload[key] === "" || payload[key] === null) {
+      delete payload[key];
+    }
+  });
+
+  console.log('newclean-payload,', payload);
+  return payload;
+}
+
   postOpenAssessment(docStatus:string,action:string){
     
     const toMonitor =
@@ -2504,9 +2534,14 @@ export class PatientDocumentationComponent implements OnInit {
         dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
       ),
       TOMONITOR: toMonitor,
-    };       
+    }; 
+    
+    console.log('payload',payload);
 
-    this.emergencyService.postDailysisSet(this.replaceNullWithEmptyString(payload)).subscribe(
+
+    let newCleanPayload = this.replaceNullWithEmptyString(payload)
+
+    this.emergencyService.postDailysisSet(this.cleanPayload(newCleanPayload)).subscribe(
       (resp) => {
         Swal.fire({
           text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : action == 'copy' ? 'Created' : 'Released' } successfully`,
