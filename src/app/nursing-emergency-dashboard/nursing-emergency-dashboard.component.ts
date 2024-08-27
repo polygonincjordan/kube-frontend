@@ -674,6 +674,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = false;
       this.reservation= false;
     } else if (module == 'erSetting') {
+      this.headerLabel = 'ER Nurse Assignment'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;
@@ -695,12 +696,15 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       this.AdministeredDoses = false;
       this.erSetting = false;
       this.dischargeorder = true;
+      this.analysis = false;
       this.rxEmr = false;
       this.noConsumables = false;
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation= false;
     } else if (module == 'analysis') {
+      this.headerLabel = 'Analysis Dashboard';
+      this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;
