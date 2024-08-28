@@ -947,6 +947,39 @@ export class CheckInComponent implements OnInit {
       });
     }
   }
+  sortStatus() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.StatusTxt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.StatusTxt.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.StatusTxt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.StatusTxt.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
   sortWaitTime() {
     if (!this.asc) {
       this.asc = true;
