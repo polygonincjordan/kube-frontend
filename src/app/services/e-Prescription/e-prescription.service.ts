@@ -63,7 +63,7 @@ export class EPrescriptionService implements OnDestroy {
       'DateRange': new FormControl([new Date(), new Date()]),
       'SelectDropdown': new FormControl(),
     });
-
+    
     this.formSubscription = this.formDetailGroup.valueChanges.subscribe((data: any) => {
       this.formgroupData.SearchData = data.SearchData
       if (data.DateRange !== '') { this.formgroupData.DateRange = data.DateRange };
@@ -152,6 +152,8 @@ export class EPrescriptionService implements OnDestroy {
         if (resp.body && resp.body.d && resp.body.d.results) {
           this.prescriptionList.medicationData = resp.body.d.results;
           this.emardata = resp.body.d.results
+          console.log(this.emardata,"emardata");
+          
         }
       },
       error: (error: any) => {
@@ -177,6 +179,8 @@ export class EPrescriptionService implements OnDestroy {
       this.loadData('EmarEventSet', filters, false, false, false, additionalData).subscribe({
         next: (resp: any) => {
           this.runRefresh = true;
+          console.log(resp,"eventData");
+          
           if (resp.body && resp.body.d && resp.body.d.results) {
             this.prescriptionList = { ...this.prescriptionList, eventData: resp.body.d.results };
             console.log(' this.prescriptionList', this.prescriptionList);

@@ -125,6 +125,8 @@ import { PhysicianOrderComponent } from './check-in/progress-note-popup/physicia
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
+import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
 
 const route: Routes = [
   {
@@ -223,6 +225,8 @@ const route: Routes = [
     ReservationComponent,
     ReservationListComponent,
     HistoryListComponent,
+    EmarWitnessComponent,
+    DrugEventsAdminComponent
   ],
   providers: [
     EmergencyService,

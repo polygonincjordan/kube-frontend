@@ -44,8 +44,7 @@
         <ng-container *ngIf="configurationData && configurationData.length">
           <div class="row mt-2" *ngFor="let element of
               configurationData | filterOrderNurseStatus: ePrescriptionService.selectedItems | filter :
-              ePrescriptionService.formgroupData.SearchData  ">
-              <!-- {{configurationData}} -->
+              ePrescriptionService.formgroupData.SearchData">
             <div class="col-md-4">
               <div class="order-data-part">
                 <div class="row">
@@ -114,10 +113,10 @@
       </button>
     </div>
   </div>
-  <!--
-      <ng-template #hourPopover let-item>
+  
+      <!-- <ng-template #hourPopover let-item>
         {{item | json}}
         <div class="abc"></div>
-      </ng-template> -->
-  <!-- <app-drug-events-admin #drugEvents></app-drug-events-admin> -->
+      </ng-template>  -->
+   <app-drug-events-admin #drugEvents></app-drug-events-admin>
   

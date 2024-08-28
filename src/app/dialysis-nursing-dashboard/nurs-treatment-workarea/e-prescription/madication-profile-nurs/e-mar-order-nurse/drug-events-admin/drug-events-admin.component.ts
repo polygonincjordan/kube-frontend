@@ -638,4 +638,4 @@ export class DrugEventsAdminComponent implements OnInit {
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
     });
   }
-  }
+}

@@ -336,7 +336,6 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
       // Subscribe using an object to define handlers
       this.subscription = this.emergencyService.copyBradenScaleSet(payload).subscribe({
         next: (data: any) => {
-          debugger
           // Handle successful data retrieval
           // resolve(formValue); // Resolve the promise with formValue
         },

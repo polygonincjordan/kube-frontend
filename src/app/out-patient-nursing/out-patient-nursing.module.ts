@@ -78,6 +78,7 @@ import { OutpatientNursingService } from '@services/outpatient-nursing.service';
 import { ReservationComponent } from './reservation/reservation.component';
 import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
+import { EmarWitnessComponent } from './e-prescription/e-mar/e-mar-order-history/drug-events-admin/emar-witness/emar-witness.component';
 
 const route: Routes = [
   {
@@ -138,7 +139,7 @@ const route: Routes = [
     ReservationComponent,
     ReservationListComponent,
     HistoryListComponent,
-
+    EmarWitnessComponent
   ],
   providers: [EmergencyService, FeeListService,OutpatientNursingService, EPrescriptionService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService, DataShareService],
   imports: [
@@ -155,7 +156,7 @@ const route: Routes = [
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     NgbModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
   ],
 
 

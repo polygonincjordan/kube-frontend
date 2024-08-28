@@ -267,7 +267,6 @@ export class ErTriageComponent implements OnInit {
   statusDraftDocDetails(documentStatus) {
     this.emergencyService.getTriageDataIfStatusDraft(documentStatus).subscribe((res: any) => {
       console.log(res?.d?.results[0].TriagePriority,"++++");
-      debugger
       if(res?.d?.results[0].TriagePriority){
         this.isTriagePrioritySelected = true
       }

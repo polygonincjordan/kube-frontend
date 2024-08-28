@@ -237,7 +237,12 @@ export class EMarOrderHistoryComponent {
     return data ? new Date(this.datePipe.transform(data.replace(/[^0-9]/g, '').replace(/\//g, ""), 'yyyy-MM-dd')) : null;
   }
   // drug events
-  openModalForDrugEvent(){
-    this.drugEvents.openModalForDrugsEvents();
-    }
+  openModalForDrugEvent(item: any, data: any) {
+    // if(item.Events.Descr === 'Ended'){
+    //   this.showErrorPopup(null, 'Order has been Ended', 'Error')
+    // }
+    // else{
+    this.drugEvents.openModalForDrugsEvents(item, data)
+    // }
+  }
 }
