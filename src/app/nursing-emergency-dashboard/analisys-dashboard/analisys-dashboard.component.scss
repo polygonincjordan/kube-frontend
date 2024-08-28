@@ -74,3 +74,26 @@ table.table.table-patient tbody tr:after{
     left: 0;
     background: #f7f8fc;
 }
+.triage-circle {
+  display: inline-block;
+  width: 26px;
+  height: 23px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 12px;
+  color: white;
+  font-weight: bold;
+  // position: absolute;
+  // margin: 2px 0px;
+}
+
+.triage-circle {
+  top: 0 !important;
+  margin-left: 10px;
+}
+.box-registration .col-one{
+  display: flex;
+  align-items: center;
+  width: 60%;
+  justify-content: space-between;
+}

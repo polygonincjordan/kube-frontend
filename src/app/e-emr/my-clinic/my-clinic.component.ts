@@ -833,8 +833,6 @@ export class MyClinicComponent implements OnInit {
       });
   }
   exportToExcel(nameofFile: string = 'my-clinic', fileExtention: string = 'xlsx'): void {
-    debugger
-    console.log(this.dataOnTable, 'datatable')
     const eventArray = this.dataOnTable;
     const mappedEvents = eventArray.map(event => {
       return {
