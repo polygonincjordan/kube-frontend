@@ -35,7 +35,7 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
-              Status
+              Status <i class="fa fa-sort" aria-hidden="true" (click)="sortStatus()"></i>
             </th>
             <th scope="col" style="padding-left: 0px">
               Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
@@ -121,13 +121,13 @@
                   <img src="assets/img/nur-emr-bottle.svg" style="width: 32px; cursor: pointer" title="Check Out"/>
                 </div> -->
                 <div style="margin-left: 3px; margin-right: 3px">
-                  <img src="assets/img/nurse-call.webp" style="width: 27px; cursor: pointer" title="Change status to called"/>
+                  <img src="assets/img/nurse-call.webp" style="width: 27px; cursor: pointer" title="Call Patient"/>
                 </div>
                 <div style="margin-left: 3px; margin-right: 3px" (click)="assignMe(item)">
                   <img src="assets/img/nur-emr-user.svg" style="width: 32px; cursor: pointer" title="Assign to Me" />
                 </div>
                 <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
-                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
+                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>
                 </div>
                 <div>
                   <img src="assets/img/information.jfif" style="width: 31px;
@@ -407,7 +407,7 @@
   <div>
     <div class="allergy-header">
       <div style="font-size: 23px; font-weight: bold">
-        <span>Printing Label</span>
+        <span>Print Patient Label</span>
       </div>
     </div>
   </div>
