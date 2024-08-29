@@ -35,7 +35,7 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
-              Status
+              Status <i class="fa fa-sort" aria-hidden="true" (click)="sortStatus()"></i>
             </th>
             <th scope="col" style="padding-left: 0px">
               Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
@@ -120,22 +120,25 @@
                 <!-- <div style="margin-left: 3px; margin-right: 3px">
                   <img src="assets/img/nur-emr-bottle.svg" style="width: 32px; cursor: pointer" title="Check Out"/>
                 </div> -->
+                <div style="margin-left: 3px; margin-right: 3px">
+                  <img src="assets/img/nurse-call.webp" style="width: 27px; cursor: pointer" title="Call Patient"/>
+                </div>
                 <div style="margin-left: 3px; margin-right: 3px" (click)="assignMe(item)">
                   <img src="assets/img/nur-emr-user.svg" style="width: 32px; cursor: pointer" title="Assign to Me" />
                 </div>
-                <!-- <div style="margin-left: 3px; margin-right: 3px">
-                  <img src="assets/img/nur-emr-plus.svg" style="width: 32px; cursor: pointer" title="Assign to Doctor"/>
-                </div> -->
+                <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
+                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>
+                </div>
                 <div>
                   <img src="assets/img/information.jfif" style="width: 31px;
                   height: 26px;;cursor: pointer;position: relative;
                   bottom: 5px;" title="Visit Comments" (click)="openVisitComments(visitCommentsModal,item)"
                     *ngIf="item.VisitComments != ''">
-                  <img src="assets/img/information_grey.png" style="width: 23px;
-                  height: 22px;
+                  <img src="assets/img/information_grey.png" style="width: 24px;
+                  height: 24px;
                   cursor: pointer;
                   position: relative;
-                  bottom: 2px;
+                  bottom: 3px;
                   margin-left: 7px;" title="No visit comment" *ngIf="item.VisitComments == ''">
                 </div>
               </div>
@@ -396,6 +399,25 @@
                  font-weight: 700;
                  border-radius: 24px;" (click)="closeTriageModal()">Cancel</button>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #labPrintLabel>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Print Patient Label</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <p>Are you sure you want to print label for "{{activelabLabelData?.Patient}}" with MRN {{activelabLabelData?.Patnr}}</p>
+  </div>
+  <div class="modal-footer">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="printLabel()">Print</button>
+      <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
     </div>
   </div>
 </ng-template>

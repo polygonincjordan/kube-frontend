@@ -12,11 +12,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./pre-dialysis-assessment.component.scss']
 })
 export class PreDialysisAssessmentComponent implements OnInit {
-  predialysis: FormGroup<any>;
+  predialysis: any;
   private subscription: Subscription;
 
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService,private datePipe:DatePipe) {
-    this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
+    if(this.patientDocService.dialysisAssecementForm.controls['preDialysis']){
+      this.predialysis = this.patientDocService.dialysisAssecementForm.controls['preDialysis'];
+    }
+    
 
     if(this.subscription){
       this.subscription.unsubscribe();

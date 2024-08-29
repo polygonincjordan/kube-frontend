@@ -13,9 +13,12 @@ import { Subscription } from 'rxjs';
 })
 export class PostDialysisEvaluationComponent implements OnInit {
   private subscription: Subscription;
-  postDialysisMonitoring: FormGroup<any>;
+  postDialysisMonitoring: any;
   constructor(private sharedService: SharedService, private emergencyService: EmergencyService, private patientDocService: PatientDocumentationService,private datePipe: DatePipe) {
-    this.postDialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'];
+    if(this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring']){
+      this.postDialysisMonitoring = this.patientDocService.dialysisAssecementForm.controls['postDialysisMonitoring'];
+
+    }
 
     if(this.subscription){
       this.subscription.unsubscribe();

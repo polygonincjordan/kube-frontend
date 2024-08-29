@@ -216,3 +216,17 @@ table {
 .modal .modal-content{
   background-color: transparent !important;
 }
+.modal-body{
+  p{
+    margin: 0px;
+      font-size: 15px;
+      padding: 20px;
+      font-weight: bold;
+      color: black;
+  }
+}
+
+.modal-footer {
+  border: none;
+  padding: 1rem !important;
+}

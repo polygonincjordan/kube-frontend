@@ -11,7 +11,7 @@ import { UserConfigurationService } from '@services/e-kardex/user-configuration.
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Observable, ReplaySubject, filter, forkJoin } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, filter, forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PatientDiagnoisiHistoryComponent } from './patient-diagnoisi-history/patient-diagnoisi-history.component';
 import { PatientMedicalReportComponent } from './patient-medical-report/patient-medical-report.component';
@@ -32,6 +32,9 @@ import { environment } from 'src/environments/environment';
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 import { HemoCatheterComponent } from './hemo-catheter/hemo-catheter.component';
 import { HemodialysisFistulaGraftComponent } from './hemodialysis-fistula-graft/hemodialysis-fistula-graft.component';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { NursingAdmissionAssessmentComponent } from 'src/app/shared-module/nursing-admission-assessment/nursing-admission-assessment.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -52,6 +55,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
   @ViewChild(HemoCatheterComponent) hemoCatheterC: HemoCatheterComponent;
   @ViewChild(HemodialysisFistulaGraftComponent) hemoDialysisFistulaGraftC: HemodialysisFistulaGraftComponent;
+  @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -70,6 +74,7 @@ export class PatientDocumentationComponent implements OnInit {
   bradenscale = false;
   assessment = false;
   morsefallScale = false;
+  isNursingAdmission = false
   hemoCatheter = false;
   hemoDialysisFistulaGraft = false;
   numericratingscale = false;
@@ -84,6 +89,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestFacePainScaleList = [];
   latestBridentScaleList = [];
   educationAssList = [];
+  latestNurAdmissionList: any = [];
   documentTypeFilter = []
   createDate: any;
   searchString: any = '';
@@ -96,6 +102,7 @@ export class PatientDocumentationComponent implements OnInit {
   openGlasgowComaScale = false;
   openFacePainScale = false;
   openNumericRatingScale = false;
+  openNurseAdmission: boolean = false;
   openBradenScale = false;
   openAssessment = false;
   openMorseFallScale = false;
@@ -143,7 +150,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   latestDocData: any;
   DocStatus: any;
-
+  public RedirectionType: any;
   latestMorseFallScaleData: any;
   latestHemoCatheterData: any;
   latestHemoDialysisFistulaGraftData: any;
@@ -163,8 +170,11 @@ export class PatientDocumentationComponent implements OnInit {
     private dataShareService: DataShareService,
     private sharedService: SharedService,
     private patientDocService: PatientDocumentationService,
-    private dataService: DataService
+    private dataService: DataService,
+    private dayCaseDashboardService:DayCaseDashboardService,
+    private datePipe:DatePipe
   ) {
+    this.RedirectionType = RedirectionType;
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -198,6 +208,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestMFSSet();
     this.LatestHemoCatheter();
     this.LatestHemoDialysisFistulaGraft();
+    this.getNursingAdmissionLatestDoc()
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -236,6 +247,23 @@ export class PatientDocumentationComponent implements OnInit {
     }, (error)=>{
       console.error(error);
     })
+  }
+  getNursingAdmissionLatestDoc() {
+    this.dayCaseDashboardService.nursingAdmissionLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        if(_success?.d?.results) {
+          this.latestNurAdmissionList = _success.d.results;
+        }
+        if(this.dayCaseDashboardService.isRedirectToSelectedDoc) {
+          this.checkForRedirectionAction();
+        }
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
   }
 
   LatestHemoCatheter(){
@@ -484,6 +512,16 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.HBFG$) {
       this.getPatientProfileData(this.latestHemoDialysisFistulaGraftData);
     } 
+
+    else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NAA$) {
+      this.selectAssessment('isNursingAdmission',this.latestNurAdmissionList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NAA$) {
+      this.selectAssessment('isNursingAdmission', this.latestNurAdmissionList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NAA$) {
+      this.getPatientProfileData(this.latestNurAdmissionList[0]);
+    }
   }
 
   openPastHistory(template: TemplateRef<any>) {
@@ -504,6 +542,7 @@ export class PatientDocumentationComponent implements OnInit {
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
+      'isNursingAdmission': { isNursingAdmission: true, selectedDocName: 'Nursing Admission Assessment' },
       'bradenscale': { bradenscale: true, selectedDocName: 'Braden Scale' },
       'numericratingscale': { numericratingscale: true, selectedDocName: 'Numeric rating scale(more than 8 years)' },
       'emergencynursingdoc': { emergencynursingdoc: true, selectedDocName: 'Emergency Nursing Document' },
@@ -521,6 +560,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.attachments = false;
     this.educationAssessment = false;
     this.glasgowcomascale = false;
+    this.isNursingAdmission = false;
     this.facepainscale = false;
     this.numericratingscale = false;
     this.bradenscale = false;
@@ -833,6 +873,9 @@ export class PatientDocumentationComponent implements OnInit {
       this.hemoDialysisFistulaGraftC.ngOnDestroy();
       // this.redirecTreatment();
     }
+    if (this.openNurseAdmission) {
+      this.NursingAdmissionComp?.ngOnDestroy();
+    }
    
     this.getLatestAssessment();
     this.getPhyAssessment();
@@ -845,6 +888,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestMFSSet();
     this.LatestHemoCatheter();
     this.LatestHemoDialysisFistulaGraft();
+    this.getNursingAdmissionLatestDoc()
+    this.patientDocService.initialForm()
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -868,6 +913,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openHemoCatheter = false;
     this.openHemoDialysisFistulaGraft = false;
     this.openAssessment = false
+    this.isNursingAdmission = false;
+    this.openNurseAdmission = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -902,10 +949,37 @@ export class PatientDocumentationComponent implements OnInit {
     this.ngOnInit();
     this.emergencyService.tabPanelNavigation("Documentation");
   }
+  private subscription: Subscription;
+  directReleaseNursingAdmissionDoc() {
+    this.subscription = this.dayCaseDashboardService
+    .getNursingAdmissionDocData(this.selectedDocData.Dockey).subscribe({
+      next: (data: any) => {
+        let paylaod = data.d.results[0];
+        delete paylaod.__metadata
+        paylaod.DocStatus = '2'; 
+        this.subscription = this.dayCaseDashboardService.createNursingAdmissionDoc({ d: paylaod }).subscribe({
+          next: (data: any) => {},
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+          },
+          complete: () => {
+            this.sharedService.successSwallModel('Nursing admission document released successfully');
+            this.refresh();
+          }
+        });
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(
+          `POST Error at Nurse Endorsment : ${err}`
+        );
+      }
+    });
+  }
 
   openDocument(action) {
     this.actionType = action;
-    
     // education assessment...
     if (this.educationAssessment) {
       if (action == 'create') {
@@ -1140,7 +1214,7 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.assessment) {
       if (action == 'create') {
         this.openAssessment = true;
-        this.dataShareService.sendActionType(ActionType.Add$, false, {});
+        this.dataShareService.sendActionType(ActionType.Add$, true, {});
       }else if(action == 'edit' ) {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
@@ -1161,6 +1235,7 @@ export class PatientDocumentationComponent implements OnInit {
         };
 
         this.emergencyService.getDailysisSet(json).subscribe((data:any)=>{
+          
           if(data.d.results[0]){
             const payload = {
               ...data.d.results[0],
@@ -1382,6 +1457,59 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
     }
+
+    //  nursing admission assesment
+
+    else if (this.isNursingAdmission) {
+      if (action == 'create') {
+        this.openNurseAdmission = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNurseAdmission = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingAdmissionDoc(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseNursingAdmissionDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNurseAdmission = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNurseAdmission = true;
+        this.NursingAdmissionComp.createNursingAdmissionDoc('4').then((formValue)=>{
+          if(formValue){
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Nursing discharge summary:', error);
+        });
+      }
+    
+    }
   }
 
   public openModalForAttachment() {
@@ -1557,6 +1685,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openNurseAdmission) {
+        let docStatus = '1';
+        this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
       if (this.openAssessment) {
         this.postOpenAssessment('1', this.actionType);
       }
@@ -1623,6 +1762,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying numeric rating Scale:', error);
         });
       }
+        // Nursing Admission Assessment Edit API
+      if (this.openNurseAdmission) {
+        let docStatus = '1';
+        this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
       if (this.openEducationAssessment) {
         this.updateEducationAss(false);
       }
@@ -1654,6 +1805,18 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error copy Face pain scale:', error);
         });
+      }
+       // Nursing Admission Assessment Copy API
+       if (this.openNurseAdmission) {
+        let docStatus = '3';
+        this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => { 
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
       }
       if (this.openNumericRatingScale) {
         this.NumericRatingScaleComp.copyNumericRight().then((formValue: any) => {
@@ -1749,6 +1912,16 @@ export class PatientDocumentationComponent implements OnInit {
         this.postHemoDialysisFistulaGraft('5', this.actionType);
       }
     }
+    else if(this.openNurseAdmission) {
+      this.NursingAdmissionComp.createNursingAdmissionDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
   }
   
 
@@ -1761,9 +1934,22 @@ export class PatientDocumentationComponent implements OnInit {
     }
   }
 
-  convertTimeToPTFormat(time: string): string {
+  convertTimeToPTFormat(time: string): string {    
     if(time.toString().includes('PT')){
      return time
+    }else{
+      const [hours, minutes] = time.split(':');
+      return `PT${hours}H${minutes}M00S`;
+    }
+    
+  }
+  convertTimeToPTFormatForDialysis(time:string):string{
+    if(time == null){
+      let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+      const [hours, minutes] = currentTime?.split(':');
+      return `PT${hours}H${minutes}M00S`;
+    }else if(time.toString().includes('PT')){
+      return time
     }else{
       const [hours, minutes] = time.split(':');
       return `PT${hours}H${minutes}M00S`;
@@ -1845,6 +2031,15 @@ export class PatientDocumentationComponent implements OnInit {
 
   getPatientProfileData(item) {
     if (item.AttMimeType == undefined) {
+      item.AttMimeType = 'HTML';
+    }
+    this.getReleasedPdf(item);
+  }
+
+  getScaleDetails(item, docType?) {
+    if (docType === RedirectionType.TRASM$) {
+      item.AttMimeType = 'PDF';
+    } else {
       item.AttMimeType = 'HTML';
     }
     this.getReleasedPdf(item);
@@ -2209,6 +2404,77 @@ export class PatientDocumentationComponent implements OnInit {
     })
   }
 
+  async deleteNursingAdmissionDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteNursingAdmissionDoc(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+ replaceNullWithEmptyString(payload) {
+    for (const key in payload) {
+        if (payload[key] === null) {
+            payload[key] = "";
+        }
+    }
+    return payload;
+}
+
+// cleanPayload(payload: any) {
+//   const keysToRemove = ['HaAOther','DiOther','AcCentral','AcWindowUnit','FanCeiling','FanStanding','FanWindow','HeatingElectric','HeatingGas','HeatingSolar'
+//     ,'ChOther','PdSmoke', 'PdPhone','PdFire','PdOther','StIndoors','StOutdoors','StEnclosedWFloor','StEnclosedWoFloor','StAdequate'
+//     ,'StInadequate','StAreaHeated','StOther', 'HoPlumbing' ,'HoEnclosed','HoAdequate' ,'HoCleanlinessAd','HoCleanlinessNeed','HoPetsInside','PPostWeight',
+//     'HoPetsOutside','HoAbsent','HoDoor', 'HoWindows', 'HoOther','WaCity','WaWell','WaSpring','WaCistern','WaOther', 'GaCity','GaSepticTank',
+//      'GaGarbage','GaOther','DryWeight','PostWeight','NewDryWeight','Height'
+//   ];
+  
+//   keysToRemove.forEach(key => {
+//     if (payload[key] === "" || payload[key] === null) {
+//       delete payload[key];
+//     }
+//   });
+// console.log('newclean-payload,',payload);
+
+//   return payload;
+// }
+cleanPayload(payload: any) {
+  Object.keys(payload).forEach(key => {
+    if (payload[key] === "" || payload[key] === null) {
+      delete payload[key];
+    }
+  });
+
+  console.log('newclean-payload,', payload);
+  return payload;
+}
+
   postOpenAssessment(docStatus:string,action:string){
     
     const toMonitor =
@@ -2248,10 +2514,10 @@ export class PatientDocumentationComponent implements OnInit {
       DialysisFDate: this.formatDate(
         dAssessmentForm.controls['preDialysis'].get('DialysisFDate').value
       ),
-      TreatmentTime: this.convertTimeToPTFormat(
+      TreatmentTime: this.convertTimeToPTFormatForDialysis(
         dAssessmentForm.controls['preDialysis'].get('TreatmentTime').value
       ),
-      DialysisFTime: this.convertTimeToPTFormat(
+      DialysisFTime: this.convertTimeToPTFormatForDialysis(
         dAssessmentForm.controls['preDialysis'].get('DialysisFTime').value
       ),
       PTreatmentDate: this.formatDate(
@@ -2259,18 +2525,23 @@ export class PatientDocumentationComponent implements OnInit {
           'PTreatmentDate'
         ).value
       ),
-      PTreatmentTime: this.convertTimeToPTFormat(
+      PTreatmentTime: this.convertTimeToPTFormatForDialysis(
         dAssessmentForm.controls['postDialysisMonitoring'].get(
           'PTreatmentTime'
         ).value
       ),
-      PrescribedTime: this.convertTimeToPTFormat(
+      PrescribedTime: this.convertTimeToPTFormatForDialysis(
         dAssessmentForm.controls['preDialysis'].get('PrescribedTime').value
       ),
       TOMONITOR: toMonitor,
-    };    
+    }; 
+    
+    console.log('payload',payload);
 
-    this.emergencyService.postDailysisSet(payload).subscribe(
+
+    let newCleanPayload = this.replaceNullWithEmptyString(payload)
+
+    this.emergencyService.postDailysisSet(this.cleanPayload(newCleanPayload)).subscribe(
       (resp) => {
         Swal.fire({
           text: `Document is ${ action == 'create' ? 'Created' : action == 'edit' ? 'Updated' : action == 'copy' ? 'Created' : 'Released' } successfully`,

@@ -1033,8 +1033,8 @@ export class FeeListService {
               obj.pricewithUnit = obj.Price.concat(' ' + obj.Unit);
             });
             this.feeServiceSearchData = success.d.results;
-            this.spinner.hide();
           }
+          this.spinner.hide();
         },
         (_error: any) => {
           this.spinner.hide();

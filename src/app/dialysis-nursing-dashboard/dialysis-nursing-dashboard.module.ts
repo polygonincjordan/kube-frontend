@@ -127,6 +127,8 @@ import { ReservationListComponent } from './reservation/reservation-list/reserva
 import { ReservationComponent } from './reservation/reservation.component';
 import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
 import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
+import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admission-assessment/nursing-admission-assessment.module';
+
 
 const route: Routes = [
   {
@@ -269,6 +271,7 @@ const route: Routes = [
     NgbCollapseModule,
     PopoverModule,
     NgxExtendedPdfViewerModule,
+    NursingAdmissionAssessmentModule
   ],
 })
 export class DialysisNursingDashboardModule {}
