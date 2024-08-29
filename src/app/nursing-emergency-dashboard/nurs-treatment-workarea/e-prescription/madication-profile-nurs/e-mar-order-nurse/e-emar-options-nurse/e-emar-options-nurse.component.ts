@@ -21,6 +21,7 @@ export class EEmarOptionsNurseComponent implements OnInit {
     ];
     this.selectedItems = [this.data[0]];
     this.ePrescriptionService.prioradmissiondata(this.selectedItems[0])
+    this.onSelect([{ item_id: 1, item_text: 'Active' }])
     this.settings = {
       singleSelection: false,
       idField: 'item_id',
