@@ -11,12 +11,15 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./haemodialysis-access.component.scss']
 })
 export class HaemodialysisAccessComponent implements OnInit {
-hemodialysis: FormGroup<any>;
+hemodialysis: any;
 private subscription: Subscription;
 isEnableSelection: boolean = false;
 
 constructor(private sharedService: SharedService, private emergencyService: EmergencyService, public patientDocService: PatientDocumentationService) {
-  this.hemodialysis = this.patientDocService.dialysisAssecementForm.controls['hemodialysis'];
+  if(this.patientDocService.dialysisAssecementForm.controls['hemodialysis']){
+    this.hemodialysis = this.patientDocService.dialysisAssecementForm.controls['hemodialysis'];
+
+  }
 
   if(this.subscription){
     this.subscription.unsubscribe();
@@ -53,7 +56,7 @@ constructor(private sharedService: SharedService, private emergencyService: Emer
       HaATransLumbar: false,
       HaAPd: false,
       HaAOther: '',
-      HaAOtherTxt: '',
+      // HaAOtherTxt: '',
       FistulaLocation: null,
       AvRightForearm: false,
       AvRightUpperarm: false,

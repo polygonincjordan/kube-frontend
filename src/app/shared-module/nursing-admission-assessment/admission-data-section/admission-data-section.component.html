@@ -125,7 +125,7 @@
     <div>
       <div class="chief-complain mt-3 ml-2 mb-3 mr-3">
         <span class="text-area-label">Chief Complaint</span>
-        <textarea class="form-control" formControlName="AChiefComplaint"></textarea>
+        <textarea class="form-control" formControlName="AChiefComplaint" [ngClass]="nursingAdmissionForm.get('AChiefComplaint').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
       </div>
     </div>
   </form>

@@ -118,7 +118,8 @@
                 [ngClass]="emergencynursingdoc ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;"
                 (click)="selectAssessment('emergencynursingdoc',latestEmergencyNursingDocList[0])">
-                <div class="col-md-4">Emergency Nursing Document :</div>
+                <div class="col-md-4">Emergency Nursing Document : {{latestEmergencyNursingDocList[0]?.Zversion ?
+                  dockVer(latestEmergencyNursingDocList[0]?.Zversion) : ''}}</div>
                 <div class="col-md-2 status-color">{{latestEmergencyNursingDocList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestEmergencyNursingDocList[0]?.DocTime)}}">
                   {{getDate(latestEmergencyNursingDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}

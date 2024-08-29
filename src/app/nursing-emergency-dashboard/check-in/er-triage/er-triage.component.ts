@@ -266,7 +266,6 @@ export class ErTriageComponent implements OnInit {
   // if traige list status is Draft then call this API
   statusDraftDocDetails(documentStatus) {
     this.emergencyService.getTriageDataIfStatusDraft(documentStatus).subscribe((res: any) => {
-      console.log(res?.d?.results[0].TriagePriority,"++++");
       if(res?.d?.results[0].TriagePriority){
         this.isTriagePrioritySelected = true
       }

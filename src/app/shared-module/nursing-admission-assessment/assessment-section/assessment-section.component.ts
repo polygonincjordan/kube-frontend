@@ -9,6 +9,7 @@ import { musculoskeletalList, notificationList, sleepRestList, useOfList } from 
 })
 export class AssessmentSectionComponent implements OnInit {
   @Input() nursingAdmissionForm: FormGroup;
+  @Input() isFormValidError: boolean
   public isFunctionalAssessemnt: boolean = true;
   public isNutritionalRisk: boolean = false;
   public isSleepRest: boolean = false;
