@@ -68,7 +68,7 @@ import { ScalesGlosgowComaComponent } from './check-in/er-triage/scales-glosgow-
 import { ScalesFacePainComponent } from './check-in/er-triage/scales-face-pain/scales-face-pain.component';
 import { ServicesComponent } from './nurs-treatment-workarea/services/services.component';
 import { ServicesListComponent } from './nurs-treatment-workarea/services/services-list/services-list.component';
-import { EMarWitnessComponent } from './administered-doses/administered-does-event/e-mar-witness/e-mar-witness.component';
+// import { EMarWitnessComponent } from './administered-doses/administered-does-event/e-mar-witness/e-mar-witness.component';
 import { ScalesNumericRatingComponent } from './check-in/er-triage/scales-numeric-rating/scales-numeric-rating.component';
 import { CreateFeeServiceComponent } from './nurs-treatment-workarea/services/services-list/create-fee-service/create-fee-service.component';
 import { ServiceHistoryComponent } from './nurs-treatment-workarea/services/services-list/service-history/service-history.component';
@@ -108,6 +108,9 @@ import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admis
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
+import { EMarWitnessComponent } from './administered-doses/administered-does-event/e-mar-witness/e-mar-witness.component';
+import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
 
 const route: Routes = [
   {
@@ -160,6 +163,7 @@ const route: Routes = [
     ServicesComponent,
     ServicesListComponent,
     EMarWitnessComponent,
+    EmarWitnessComponent,
     ScalesNumericRatingComponent,
     CreateFeeServiceComponent,
     ServiceHistoryComponent,
@@ -190,6 +194,7 @@ const route: Routes = [
     ReservationComponent,
     ReservationListComponent,
     HistoryListComponent,
+    DrugEventsAdminComponent,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

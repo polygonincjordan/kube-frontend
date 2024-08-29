@@ -3,6 +3,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { EPrescriptionService, MedicationData, HistoryTime, PrescriptionList, MedicationEventData, MedicationEventFilter, MedicationdFilterData } from '@services/e-Prescription/e-prescription.service';
 // import { DrugEventsAdminComponent } from './drug-events-admin/drug-events-admin.component';
 import swal from 'sweetalert2';
+import { DrugEventsAdminComponent } from './drug-events-admin/drug-events-admin.component';
 
 @Component({
   selector: 'app-e-mar-order-nurse',
@@ -35,10 +36,11 @@ export class EMarOrderNurseComponent {
 
   popoverIsVisible: boolean = false
   @Input() set filterDatadata(data: MedicationdFilterData) {
+    console.log(data,"Data");
     this.filterConfigdata = data;
     // this.filterEventsdata();
   }
-  // @ViewChild('drugEvents') drugEvents: DrugEventsAdminComponent;
+  @ViewChild('drugEvents') drugEvents: DrugEventsAdminComponent;
   @Input() set medicationData(data: PrescriptionList) {
     this.processData(data.medicationData, data.eventData);
   }
@@ -63,7 +65,7 @@ export class EMarOrderNurseComponent {
   //     this.configurationData = scheduleList
   //   }
   // }
-
+ 
 
   processData(data: MedicationData[], events: MedicationEventData[]) {
     if (data && data.length) {
@@ -118,8 +120,6 @@ export class EMarOrderNurseComponent {
   setCurrentDateData() {
     this.setHours();
     this.configurationData = JSON.parse(JSON.stringify(this.allMedicationData));
-
-
     this.setEventDataBasedOnDate();
   }
 
@@ -270,7 +270,7 @@ export class EMarOrderNurseComponent {
     //   this.showErrorPopup(null, 'Order has been Ended', 'Error')
     // }
     // else{
-    // this.drugEvents.openModalForDrugsEvents(item, data)
+    this.drugEvents.openModalForDrugsEvents(item, data)
     // }
   }
 

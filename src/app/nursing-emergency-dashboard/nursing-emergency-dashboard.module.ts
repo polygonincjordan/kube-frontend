@@ -117,6 +117,8 @@ import { NursingCarePlansComponent } from './nurs-treatment-workarea/patient-doc
 import { ReservationComponent } from './reservation/reservation.component';
 import { ReservationListComponent } from './reservation/reservation-list/reservation-list.component';
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
+import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
+import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
 
 const route: Routes = [
   {
@@ -211,6 +213,8 @@ const route: Routes = [
     ReservationComponent,
     ReservationListComponent,
     HistoryListComponent,
+    EmarWitnessComponent,
+    DrugEventsAdminComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

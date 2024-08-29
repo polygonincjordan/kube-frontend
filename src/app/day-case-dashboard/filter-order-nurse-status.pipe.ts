@@ -1,10 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @Pipe({
   name: 'filterOrderNurseStatus'
 })
 export class FilterOrderNurseStatusPipe implements PipeTransform {
-
+  constructor(public ePrescriptionService:EPrescriptionService){}
   transform(value: any[], orderStatus: any[]): any[] {
     let data = [];
     orderStatus.forEach((element: any) => {

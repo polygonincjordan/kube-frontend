@@ -21,9 +21,9 @@
                 <ng-select class="ng-select-dropdown" [placeholder]="'Req Storage Location'" [clearable]="true" [searchable]="true"
                   formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
                   <ng-option *ngFor="let item of storageLocationList" [value]="item">
-                    <span [title]="item.Lgort + ' ' + item.Lgobe">
-                      <!-- {{ item.Lgort }}&nbsp;&nbsp;{{ item.Lgobe }} -->
-                      {{ item.Lgort }}
+                    <span [title]="item.Lgort + '-' + item.Lgobe">
+                      {{ item.Lgort }} - {{ item.Lgobe }}
+                      
                     </span>
                   </ng-option>
                 </ng-select>
@@ -33,9 +33,8 @@
                 <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
                   formControlName="selectedCostCenter" [(ngModel)]="selectedCostCenter" (change)="onLocationChange($event)">
                   <ng-option *ngFor="let item of costCenterList" [value]="item">
-                    <span [title]="item.Kostl + ' ' + item.Ltext">
-                      <!-- {{ item.Kostl }}&nbsp;&nbsp;{{item.Ltext}} -->
-                      {{ item.Kostl }} 
+                    <span [title]="item.Kostl + '-' + item.Ltext">
+                      {{ item.Kostl }} - {{item.Ltext}}
                     </span>
                   </ng-option>
                 </ng-select>
@@ -108,6 +107,6 @@
       </form>
   </div>
   <ng-container>
-    <app-history-list *ngIf="isConsumableAction == '1'"></app-history-list>
+    <app-history-list [storageLocationList]="storageLocationList" [costCenterList]="costCenterList" *ngIf="isConsumableAction == '1'"></app-history-list>
     <app-reservation-list [selectedType]="selectedType"  (reservationSaved)="onReservationSaved()" [storageLocationList]="storageLocationList" *ngIf="isConsumableAction == '2'"></app-reservation-list>
   </ng-container>

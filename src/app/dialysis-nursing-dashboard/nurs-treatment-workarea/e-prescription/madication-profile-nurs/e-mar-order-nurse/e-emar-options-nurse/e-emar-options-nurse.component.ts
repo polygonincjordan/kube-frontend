@@ -19,6 +19,8 @@ export class EEmarOptionsNurseComponent implements OnInit {
       { item_id: 3, item_text: 'Ended' },
       { item_id: 4, item_text: 'Cancelled' },
     ];
+    this.selectedItems = [this.data[0]];
+    this.ePrescriptionService.prioradmissiondata(this.selectedItems[0])
     this.settings = {
       singleSelection: false,
       idField: 'item_id',
@@ -29,6 +31,7 @@ export class EEmarOptionsNurseComponent implements OnInit {
     };
 }
 onSelect(selecteddata: any) {
+  this.ePrescriptionService.selectedItems = selecteddata
   selecteddata.forEach((item) => {
     this.ePrescriptionService.prioradmissiondata(item)
 });

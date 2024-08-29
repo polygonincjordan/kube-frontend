@@ -27,7 +27,7 @@
       <form action=""  #overLineForm="ngForm">
         <label class="form-group m-0 has-float-label">
           <ng-select [items]="data" [addTag]="addTagFn" [hideSelected]="true"
-            [multiple]="true"  placeholder="Orders' Statuses" value="data" [(ngModel)]="ePrescriptionService.selectedItems"
+            [multiple]="true"  placeholder="Orders' Statuses" value="data" [(ngModel)]="selectedItems"
             [ngModelOptions]="{standalone: true}" (ngModelChange)="onSelect($event)" bindLabel="item_text" required ngModel #tags2="ngModel" name="tags2">
           </ng-select>
         </label>
