@@ -71,10 +71,6 @@ export class ReservationComponent implements OnInit {
       this.historyComponent?.getHistoryList();
   });
   }
-  onRefresh(){
-    this.historyFilterForm.reset();
-    this.historyComponent?.getHistoryList();
-  }
 
   ngOnDestroy(): void {
     if (this.subscription) {

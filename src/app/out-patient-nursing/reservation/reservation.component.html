@@ -1,112 +1,118 @@
 <div class="search-functionalitypl-0 mt-2">
-    <form [formGroup]="formDetailGroup" >
-     <div class=" tab-search-panel row align-items-center">
-          <div [ngClass]="isConsumableAction == '1' ? 'col-2' : 'col-3'">
-            <tabset>
-              <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="changeTab(tabz)">
-                {{ tabz?.content }}
-              </tab>
-            </tabset>
-          </div>
-          <div class="col-7" *ngIf="isConsumableAction != '1'">
-            <div class="w-100 d-flex">
-              <div class="storage-box w-100 d-flex align-items-center">
-                <label class="location-label" for="movement type ">Movement type </label>
-                <ng-select class="ng-select-dropdown"  formControlName="movementType"  [placeholder]="'Movement type'" (change)="selectType($event)">
-                  <ng-option *ngFor="let type of movementTypes" [value]="type.value">{{ type.label }}</ng-option>
-                </ng-select>
-              </div>
-              <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '311'">
-                <label class="location-label" for="storage-location">Requesting Storage Location</label>
-                <ng-select class="ng-select-dropdown" [placeholder]="'Req Storage Location'" [clearable]="true" [searchable]="true"
-                  formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
-                  <ng-option *ngFor="let item of storageLocationList" [value]="item">
-                    <span [title]="item.Lgort + '-' + item.Lgobe">
-                      {{ item.Lgort }} - {{ item.Lgobe }}
-                      
-                    </span>
-                  </ng-option>
-                </ng-select>
-              </div>
-              <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '201'">
-                <label class="location-label" for="Cost-Center">Cost Center</label>
-                <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
-                  formControlName="selectedCostCenter" [(ngModel)]="selectedCostCenter" (change)="onLocationChange($event)">
-                  <ng-option *ngFor="let item of costCenterList" [value]="item">
-                    <span [title]="item.Kostl + '-' + item.Ltext">
-                      {{ item.Kostl }} - {{item.Ltext}}
-                    </span>
-                  </ng-option>
-                </ng-select>
-              </div>
+  <form [formGroup]="formDetailGroup" >
+   <div class=" tab-search-panel row align-items-center">
+        <div [ngClass]="isConsumableAction == '1' ? 'col-2' : 'col-3'" class="colum-style">
+          <tabset>
+            <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="changeTab(tabz)">
+              {{ tabz?.content }}
+            </tab>
+          </tabset>
+        </div>
+        <div class="col-7" *ngIf="isConsumableAction != '1'">
+          <div class="w-100 d-flex">
+            <div class="storage-box w-100 d-flex align-items-center">
+              <label class="location-label" for="movement type ">Movement type </label>
+              <ng-select class="ng-select-dropdown"  formControlName="movementType"  [placeholder]="'Movement type'" (change)="selectType($event)">
+                <ng-option *ngFor="let type of movementTypes" [value]="type.value">{{ type.label }}</ng-option>
+              </ng-select>
             </div>
-          </div>
-          <div class="col-2" *ngIf="isConsumableAction != '1'">
-            <div class="d-flex justify-content-end">
-             <button type="button" class="header-btn" (click)="resetForm()" >
-                  <span>Cancel</span>
-                </button>
-                <button type="submit" class="header-btn" (click)="createReservationSet()">
-                  <span>Post</span>
-                </button>
+            <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '311'">
+              <label class="location-label" for="storage-location">Requesting Storage Location</label>
+              <ng-select class="ng-select-dropdown" [placeholder]="'Req Storage Location'" [clearable]="true" [searchable]="true"
+                formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
+                <ng-option *ngFor="let item of storageLocationList" [value]="item">
+                  <span [title]="item.Lgort + '-' + item.Lgobe">
+                    {{ item.Lgort }} - {{ item.Lgobe }}
+                    
+                  </span>
+                </ng-option>
+              </ng-select>
             </div>
-          </div>
-          
-          <div lass="col-10" *ngIf="isConsumableAction == '1'">
-            <div class="progress-header">
-              <form [formGroup]="historyFilterForm"> 
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="date-function" style="border-radius: 8px;position: relative;top: -10px;min-width: 21%;">
-                      <span class='pn-input-title z-indexlabel'>Date </span>
-                      <img src="assets/img/Calender.svg" alt="" style="position: relative;top: 37px;right: 6px;float: right;transform: translateY(-50%);" />
-                      <input #drp="bsDaterangepicker" bsDaterangepicker  formControlName="dateRange" [bsConfig]="{
-                        rangeInputFormat: 'DD.MM.YYYY',
-                        dateInputFormat: 'DD.MM.YYYY',
-                        containerClass: 'daterangepicker my-custom-daterangepicker',
-                        showWeekNumbers: false}" class="form-control" style="border-radius: 8px;" [placeholder]="todayPlaceholder"/>
-                  </div>  
-                  <div class="storage-box w-100">
-                    <ng-select class="ng-select-dropdown"[clearable]="true"  formControlName="meCode" [searchable]="true"  (search)="searchMaterial($event.term, wordType.MaterialCode$)" [placeholder]="'Material'">
-                      <ng-option *ngFor="let item of materialList" [title]="item.Matnr+' '+item.Maktx" [value]="item">{{item.Matnr}} -
-                        {{item.Maktx}}</ng-option>
-                    </ng-select>
-                  </div>
-                  <div class="storage-box w-100">
-                    <ng-select class="ng-select-dropdown" formControlName="moveType" [placeholder]="'Movement type'" (change)="selectType($event)">
-                      <ng-option *ngFor="let type of movementTypes" [value]="type.value">{{ type.label }}</ng-option>
-                    </ng-select>
-                  </div>
-                  <div class="storage-box w-100">
-                    <ng-select class="ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
-                    formControlName="stoLocation">
-                      <ng-option *ngFor="let item of storageLocationList" [value]="item">{{ item.Lgort }}</ng-option>
-                    </ng-select>
-                  </div>
-
-                  <div class="storage-box w-100">
-                    <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
-                    formControlName="cosCenter">
-                      <ng-option *ngFor="let item of costCenterList" [value]="item">{{ item.Kostl }}</ng-option>
-                    </ng-select>
-                  </div>
-                  <!-- <div class="storage-box w-100">
-                    <ng-select [searchable]="true"   formControlName="userName" placeholder="User name">
-                      <ng-option>test</ng-option>
-                    </ng-select>
-                  </div> -->
-                  <div>
-                    <button type="button" class="header-btn apply-button" (click)="applyFilter()">
-                      <span>Apply</span>
-                    </button>
-                  </div>
-                 </div>
-              </form>
+            <div class="storage-box w-100 d-flex align-items-center" *ngIf="selectedType == '201'">
+              <label class="location-label" for="Cost-Center">Cost Center</label>
+              <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
+                formControlName="selectedCostCenter" [(ngModel)]="selectedCostCenter" (change)="onLocationChange($event)">
+                <ng-option *ngFor="let item of costCenterList" [value]="item">
+                  <span [title]="item.Kostl + '-' + item.Ltext">
+                    {{ item.Kostl }} - {{item.Ltext}}
+                  </span>
+                </ng-option>
+              </ng-select>
             </div>
           </div>
         </div>
-      </form>
-  </div>
-  <ng-container>
-    <app-history-list [storageLocationList]="storageLocationList" [costCenterList]="costCenterList" *ngIf="isConsumableAction == '1'"></app-history-list>
-    <app-reservation-list [selectedType]="selectedType"  (reservationSaved)="onReservationSaved()" [storageLocationList]="storageLocationList" *ngIf="isConsumableAction == '2'"></app-reservation-list>
-  </ng-container>
+        <div class="col-2" *ngIf="isConsumableAction != '1'">
+          <div class="d-flex justify-content-end">
+           <button type="button" class="header-btn" (click)="resetForm()" >
+                <span>Cancel</span>
+              </button>
+              <button type="submit" class="header-btn" (click)="createReservationSet()">
+                <span>Post</span>
+              </button>
+          </div>
+        </div>
+        <div class="col-10 p-0" *ngIf="isConsumableAction == '1'">
+          <div class="progress-header">
+            <form [formGroup]="historyFilterForm"> 
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="storage-box">
+                  <div class="date-function" style="border-radius: 8px;position: relative;top: -10px;min-width: 21%;">
+                    <span class='pn-input-title z-indexlabel'>Date </span>
+                    <img src="assets/img/Calender.svg" alt="" style="position: relative;top: 37px;right: 6px;float: right;transform: translateY(-50%);" />
+                    <input #drp="bsDaterangepicker" bsDaterangepicker  formControlName="dateRange" [bsConfig]="{
+                      rangeInputFormat: 'DD.MM.YYYY',
+                      dateInputFormat: 'DD.MM.YYYY',
+                      containerClass: 'daterangepicker my-custom-daterangepicker',
+                      showWeekNumbers: false}" class="form-control" style="border-radius: 8px;" [placeholder]="todayPlaceholder"/>
+                </div>  
+                </div>
+                
+                <div class="storage-box">
+                  <ng-select class="ng-select-dropdown"[clearable]="true"  formControlName="meCode" [searchable]="true"  (search)="searchMaterial($event.term, wordType.MaterialCode$)" [placeholder]="'Material'">
+                    <ng-option *ngFor="let item of materialList" [title]="item.Matnr+' '+item.Maktx" [value]="item">{{item.Matnr}} -
+                      {{item.Maktx}}</ng-option>
+                  </ng-select>
+                </div>
+                <div class="storage-box">
+                  <ng-select class="ng-select-dropdown" formControlName="moveType" [placeholder]="'Movement type'" (change)="selectType($event)">
+                    <ng-option *ngFor="let type of movementTypes" [value]="type.value">{{ type.label }}</ng-option>
+                  </ng-select>
+                </div>
+                <div class="storage-box">
+                  <ng-select class="ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
+                  formControlName="stoLocation">
+                    <ng-option *ngFor="let item of storageLocationList" [value]="item"> <span [title]="item.Lgort + '-' + item.Lgobe">
+                      {{ item.Lgort }} - {{ item.Lgobe }}  
+                    </span></ng-option>
+                  </ng-select>
+                </div>
+
+                <div class="storage-box">
+                  <ng-select class="ng-select-dropdown" [placeholder]="'Cost Center'" [clearable]="true" [searchable]="true"
+                  formControlName="cosCenter">
+                    <ng-option *ngFor="let item of costCenterList" [value]="item"> <span [title]="item.Kostl + '-' + item.Ltext">
+                      {{ item.Kostl }} - {{item.Ltext}}
+                    </span></ng-option>
+                  </ng-select>
+                </div>
+                <!-- <div class="storage-box w-100">
+                  <ng-select [searchable]="true"   formControlName="userName" placeholder="User name">
+                    <ng-option>test</ng-option>
+                  </ng-select>
+                </div> -->
+                <div>
+                  <button type="button" class="header-btn apply-button" (click)="applyFilter()">
+                    <span>Apply</span>
+                  </button>
+                </div>
+               </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
+</div>
+<ng-container>
+  <app-history-list [storageLocationList]="storageLocationList" [costCenterList]="costCenterList" *ngIf="isConsumableAction == '1'"></app-history-list>
+  <app-reservation-list [selectedType]="selectedType"  (reservationSaved)="onReservationSaved()" [storageLocationList]="storageLocationList" *ngIf="isConsumableAction == '2'"></app-reservation-list>
+</ng-container>
