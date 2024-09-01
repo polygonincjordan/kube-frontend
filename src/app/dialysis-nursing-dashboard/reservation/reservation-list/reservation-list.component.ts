@@ -29,7 +29,7 @@ export class ReservationListComponent implements OnInit {
   private searchSubject = new Subject<string>();
   private materialType: string;
   private actionTypeSubscription$: Subscription;
-  private defaultRecords: Number = 10;
+  private defaultRecords: Number = 5;
   public userconfig: UserConfig;
   public periodParameterMonthSelectValue: any;
   public wordType = WordType
