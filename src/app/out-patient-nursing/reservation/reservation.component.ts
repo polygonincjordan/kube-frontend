@@ -32,8 +32,8 @@ export class ReservationComponent implements OnInit {
   public wordType = WordType;
   public materialList: Array<MaterialDetailsResult> = [];
   public materialListCopy: Array<MaterialDetailsResult> = [];
- public historyFilterForm:FormGroup
-
+  public historyFilterForm:FormGroup
+  public today: any = new Date();
   public tabs = [
     { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
@@ -58,7 +58,7 @@ export class ReservationComponent implements OnInit {
     });
     this.todayPlaceholder = `${formatDate(new Date(), 'dd.MM.yyyy', 'en')} - ${formatDate(new Date(), 'dd.MM.yyyy', 'en')}`;
   }
-
+  
   ngOnInit(): void {
     this.consumablesFrom();
     this.historyForm();
@@ -69,7 +69,9 @@ export class ReservationComponent implements OnInit {
     this.subscription = this.emergencyService.formValues$.subscribe(formValues => {
       this.historyFilterForm.reset();
       this.historyComponent?.getHistoryList();
-  });
+      this.historyFilterForm.get('dateRange').setValue([this.today, this.today]);
+    });
+    this.historyFilterForm.get('dateRange').setValue([this.today, this.today]);
   }
 
   ngOnDestroy(): void {
@@ -93,7 +95,7 @@ export class ReservationComponent implements OnInit {
 
   public historyForm(){
     this.historyFilterForm = this.formBuilder.group({
-      dateRange:[],
+      dateRange:[[this.today, this.today]],
       moveType:[],
       stoLocation:[],
       cosCenter:[],
@@ -137,6 +139,10 @@ export class ReservationComponent implements OnInit {
     let id = String($event.id);
     this.activeTab = $event.id;
     this.dataShareService.sendData(id);
+    if(id == '2'){
+      this.historyFilterForm.reset(); 
+      this.historyFilterForm.get('dateRange').setValue([this.today, this.today]);
+    }
   }
 
   selectType(type){

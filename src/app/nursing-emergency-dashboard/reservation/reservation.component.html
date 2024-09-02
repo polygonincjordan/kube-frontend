@@ -22,7 +22,8 @@
                   formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
                   <ng-option *ngFor="let item of storageLocationList" [value]="item">
                     <span [title]="item.Lgort + '-' + item.Lgobe">
-                      {{ item.Lgort }} - {{ item.Lgobe }}  
+                      {{ item.Lgort }} - {{ item.Lgobe }}
+                      
                     </span>
                   </ng-option>
                 </ng-select>
@@ -62,7 +63,7 @@
                         rangeInputFormat: 'DD.MM.YYYY',
                         dateInputFormat: 'DD.MM.YYYY',
                         containerClass: 'daterangepicker my-custom-daterangepicker',
-                        showWeekNumbers: false}" class="form-control" style="border-radius: 8px;" [placeholder]="todayPlaceholder"/>
+                        showWeekNumbers: false}" class="form-control" style="border-radius: 8px;" />
                   </div>  
                   </div>
                   

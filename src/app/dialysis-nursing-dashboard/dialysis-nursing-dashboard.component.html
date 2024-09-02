@@ -94,11 +94,11 @@ float: right;" />
     </span> -->
   </div>
   <!-- hide refresh button in resevation:- task of saja -->
-  <!-- <div  *ngIf="reservation" class="d-flex w-100">
+    <div  *ngIf="reservation" class="d-flex w-100">
     <div *ngIf="reservation" class="d-flex justify-content-center" style="text-align: center; font-size: 21px; font-weight: bold;width: 94%;margin-left: 95px;">
       {{headerLabel.length ? headerLabel:''}}
     </div>
-    <div class="" style="display: flex; justify-content: end; align-items: center;margin-right: 5px;">
+    <!-- <div class="" style="display: flex; justify-content: end; align-items: center;margin-right: 5px;">
       <div style="
           width: 90px;
           color: black;
@@ -113,8 +113,8 @@ float: right;" />
         <i class="fa fa-refresh" aria-hidden="true" style="cursor: pointer"></i>
         <span class="ml-1">Refresh</span>
       </div>
-    </div>
-  </div> -->
+    </div> -->
+  </div>
   <div class="col-md-5" style="text-align: center; font-size: 21px; font-weight: bold" *ngIf="!reservation"
     [ngStyle]="{'margin': erSetting ? 'auto' : 'unset'}">
     {{erSetting ? headerLabel.length ? headerLabel :"ER Nurse Assignment" : analysis ? headerLabel.length ? headerLabel

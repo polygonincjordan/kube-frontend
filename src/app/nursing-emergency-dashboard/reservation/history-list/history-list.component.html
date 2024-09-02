@@ -10,7 +10,8 @@
             <th colspan="1" scope="col">Quantity</th>
             <th colspan="1" scope="col">Request Date</th>
             <th colspan="1" scope="col">Unit of Entry (UnE)</th>
-            <th colspan="1" scope="col">Reservation Status </th>
+            <th colspan="1" scope="col">Status</th>
+            <th colspan="1" scope="col" title="Is Deleted?">Del</th>
             <th colspan="1" scope="col">User Name</th>
             <th colspan="1" scope="col">Action</th>
           </tr>
@@ -24,6 +25,7 @@
             <td colspan="1">{{item.Bdmng}}</td>
             <td colspan="1">{{getDate(item.Erdat)| date : "dd.MM.y" }}</td>
             <td colspan="1">{{item.Meins}}</td>
+            <td colspan="1"></td>
             <td colspan="1"></td>
             <td colspan="1">{{item.Erusr}}</td>
             <td colspan="1" style="text-align: center; overflow: visible !important">
@@ -49,7 +51,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="9"  *ngIf="historyList?.length == 0">
+            <td colspan="11"  *ngIf="historyList?.length == 0">
               <div class="pagination-container text-center p-3">
                 No Record Found!
               </div>

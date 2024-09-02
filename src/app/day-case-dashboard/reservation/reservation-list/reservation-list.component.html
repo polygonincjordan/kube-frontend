@@ -73,10 +73,12 @@
               <td colspan="1">
                 <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="sloc" [title]="product.value.sloc">
-                  <ng-option *ngFor="let item of storageLocationList" [value]="item.Lgort">{{ item.Lgort }}</ng-option>
-
+                  <ng-option *ngFor="let item of storageLocationList" [value]="item.Lgort">
+                    <span [title]="item.Lgort + '-' + item.Lgobe">
+                    {{ item.Lgort }} - {{ item.Lgobe }}
+                    </span>
+                  </ng-option>
                 </ng-select>
-
               </td>
               <td colspan="1" class="d-flex justify-content-center">
                 <img [src]="'assets/img/Delete.svg'" class="all-notes cursor-pointer" (click)="removeRow($event, i)" />
