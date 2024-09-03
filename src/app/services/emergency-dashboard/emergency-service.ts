@@ -1294,8 +1294,8 @@ export class EmergencyService {
     );
   }
 
-  getHistoryReservationLiat() {
-    return this.http.get(this.url + 'getHistoryReservationList', {
+  getHistoryReservationLiat(fromDate?:any, toDate?:any) {
+    return this.http.get(this.url + `getHistoryReservationList?Erdat=${fromDate}&Erdat1=${toDate}`, {
       withCredentials: true,
     });
   }
