@@ -184,6 +184,10 @@ export class ReservationComponent implements OnInit {
     });
   }
 
+  clearDateRange() {
+    this.historyFilterForm.get('dateRange').setValue(null);
+  }
+
   applyFilter() {
     const formValues = this.historyFilterForm.value;
     this.historyComponent.getHistoryList(formValues)

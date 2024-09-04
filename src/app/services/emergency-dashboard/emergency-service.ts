@@ -1300,6 +1300,38 @@ export class EmergencyService {
     });
   }
 
+  getHistoryReservationList(fromDate?: any,toDate?: any,sloc?: any,matnr?: any,moveType?: any,costCtr?: any) {
+    let queryParams = [];
+  
+    if (fromDate && toDate) {
+      queryParams.push(`Erdat=${fromDate}`);
+      queryParams.push(`Erdat1=${toDate}`);
+    }
+  
+    if (sloc) {
+      queryParams.push(`Sloc=${sloc}`);
+    }
+  
+    if (matnr) {
+      queryParams.push(`Matnr=${matnr}`);
+    }
+  
+    if (moveType) {
+      queryParams.push(`MoveType=${moveType}`);
+    }
+  
+    if (costCtr) {
+      queryParams.push(`CostCtr=${costCtr}`);
+    }
+  
+    const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+    
+    return this.http.get(this.url + `getHistoryReservationList${queryString}`, {
+      withCredentials: true,
+    });
+  }
+  
+
   callHistoryList() {
     this.formValuesSubject.next(null);
   }

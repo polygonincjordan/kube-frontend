@@ -71,7 +71,7 @@ export class ReservationComponent implements OnInit {
       this.historyComponent?.getHistoryList();
       this.historyFilterForm.get('dateRange').setValue([this.today, this.today]);
     });
-    this.historyFilterForm.get('dateRange').setValue([this.today, this.today]);
+     this.historyFilterForm.get('dateRange').setValue([this.today, this.today]);
   }
 
   ngOnDestroy(): void {
@@ -184,9 +184,12 @@ export class ReservationComponent implements OnInit {
     });
   }
 
+  clearDateRange() {
+    this.historyFilterForm.get('dateRange').setValue(null);
+  }
+
   applyFilter() {
     const formValues = this.historyFilterForm.value;
-    console.log(formValues);
-    this.historyComponent.filterHistory(formValues);
+    this.historyComponent.getHistoryList(formValues)
   }
 }

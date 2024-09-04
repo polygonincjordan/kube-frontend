@@ -31,6 +31,7 @@ export class HistoryListComponent implements OnInit {
   public wordType = WordType
   public materialList: Array<MaterialDetailsResult> = [];
   public materialListCopy: Array<MaterialDetailsResult> = [];
+  public defaultDate = '9999-12-31';
   public movementTypes = [
     { value: '201', label: '201' },
     { value: '311', label: '311' }
@@ -99,44 +100,31 @@ export class HistoryListComponent implements OnInit {
     })
   }
 
-  getHistoryList(){
-    this.emergencyService.getHistoryReservationLiat().subscribe({
+  getHistoryList(formValue?){
+    const fromDate = `${new DatePipe('en-US').transform(
+      formValue?.dateRange?.[0] || this.defaultDate, 'yyyy-MM-dd'
+    )}T00:00:00`;
+    
+    const toDate = `${new DatePipe('en-US').transform(
+      formValue?.dateRange?.[1] || this.defaultDate, 'yyyy-MM-dd'
+    )}T00:00:00`;
+    const Sloc = formValue?.stoLocation?.Lgort
+    const Matnr = formValue?.meCode?.Matnr  
+    const MoveType = formValue?.moveType
+    const CostCtr = formValue?.cosCenter?.Kostl
+   
+    this.emergencyService.getHistoryReservationList(fromDate,toDate,Sloc,Matnr,MoveType,CostCtr).subscribe({
       next:(res:any)=>{
         if (res) {
           this.historyList = res.d?.results || [];
-          this.historyCloneList = res.d?.results || [];
         } else {
           this.historyList = [];
-          this.filteredHistoryList = [];
         }
       },error:(err:any)=>{
         console.log(err)
       }
     })
   }
-
-  filterHistory(formValues){
-    this.filteredHistoryList = this.historyCloneList.filter(item => {
-      const erdat = new Date(parseInt(item.Erdat.match(/\d+/)[0]));
-      // const erdat1 = new Date(parseInt(item.Erdat1.match(/\d+/)[0]));
-      const startDate = new Date(formValues.dateRange?.[0]);
-      const endDate = new Date(formValues.dateRange?.[1]);
-      return (!formValues.moveType || item.MoveType === formValues.moveType) &&
-             (!formValues.stoLocation || item.Sloc === formValues.stoLocation.Lgort) &&
-             (!formValues.cosCenter || item.CostCtr === formValues.cosCenter.Kostl) &&
-             (!formValues.meCode || item.Matnr === formValues.meCode.Matnr) &&
-             (!formValues.userName || item.Erusr === formValues.userName) &&
-             (!formValues.dateRange || (erdat >= startDate && erdat <= endDate));
-    });
-    if(this.filteredHistoryList?.length){
-     this.historyList = this.filteredHistoryList; 
-    }else{
-      this.historyList = [];
-    }
-  }
-
-  
-  
 
   getDate(value) {
     if (value) {

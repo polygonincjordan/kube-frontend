@@ -58,12 +58,15 @@
                   <div class="storage-box">
                     <div class="date-function" style="border-radius: 8px;position: relative;top: -10px;min-width: 21%;">
                       <span class='pn-input-title z-indexlabel'>Date </span>
-                      <img src="assets/img/Calender.svg" alt="" style="position: relative;top: 37px;right: 6px;float: right;transform: translateY(-50%);" />
+                      <img src="assets/img/Calender.svg" alt="" style="position: relative;top: 37px;right: 3px;float: right;transform: translateY(-50%);" />
                       <input #drp="bsDaterangepicker" bsDaterangepicker  formControlName="dateRange" [bsConfig]="{
                         rangeInputFormat: 'DD.MM.YYYY',
                         dateInputFormat: 'DD.MM.YYYY',
                         containerClass: 'daterangepicker my-custom-daterangepicker',
                         showWeekNumbers: false}" class="form-control" style="border-radius: 8px;" />
+                         <span (click)="clearDateRange()"  style="position: absolute; top: 37px; right: 23px; transform: translateY(-50%); cursor: pointer;">
+                          &#10005;
+                      </span>
                   </div>  
                   </div>
                   
