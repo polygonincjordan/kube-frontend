@@ -31,6 +31,7 @@ export class HistoryListComponent implements OnInit {
   public wordType = WordType
   public materialList: Array<MaterialDetailsResult> = [];
   public materialListCopy: Array<MaterialDetailsResult> = [];
+  public defaultDate = '9999-12-31';
   public movementTypes = [
     { value: '201', label: '201' },
     { value: '311', label: '311' }
@@ -100,24 +101,24 @@ export class HistoryListComponent implements OnInit {
   }
 
   getHistoryList(formValue?){
-    const fromDate =`${new DatePipe('en-US').transform(
-      formValue?.dateRange[0] ?  formValue?.dateRange[0] :new Date().setDate(new Date().getDate()),
-      'yyyy-MM-dd'
-    )}T00:00:00`
-   const toDate =`${new DatePipe('en-US').transform(
-    formValue?.dateRange[1] ?  formValue?.dateRange[1] : new Date().setDate(new Date().getDate()),
-      'yyyy-MM-dd'
-    )}T00:00:00`
+    const fromDate = `${new DatePipe('en-US').transform(
+      formValue?.dateRange?.[0] || this.defaultDate, 'yyyy-MM-dd'
+    )}T00:00:00`;
+    
+    const toDate = `${new DatePipe('en-US').transform(
+      formValue?.dateRange?.[1] || this.defaultDate, 'yyyy-MM-dd'
+    )}T00:00:00`;
+    const Sloc = formValue?.stoLocation?.Lgort
+    const Matnr = formValue?.meCode?.Matnr  
+    const MoveType = formValue?.moveType
+    const CostCtr = formValue?.cosCenter?.Kostl
    
-    this.emergencyService.getHistoryReservationLiat(fromDate,toDate).subscribe({
+    this.emergencyService.getHistoryReservationList(fromDate,toDate,Sloc,Matnr,MoveType,CostCtr).subscribe({
       next:(res:any)=>{
         if (res) {
           this.historyList = res.d?.results || [];
-          this.historyCloneList = res.d?.results || [];
-          this.filterHistory(formValue)
         } else {
           this.historyList = [];
-          this.filteredHistoryList = [];
         }
       },error:(err:any)=>{
         console.log(err)
@@ -125,20 +126,6 @@ export class HistoryListComponent implements OnInit {
     })
   }
 
-  filterHistory(formValues){
-    this.filteredHistoryList = this.historyCloneList.filter(item => {
-      return (!formValues?.moveType || item.MoveType === formValues?.moveType) &&
-             (!formValues?.stoLocation || item.Sloc === formValues?.stoLocation.Lgort) &&
-             (!formValues?.cosCenter || item.CostCtr === formValues?.cosCenter.Kostl) &&
-             (!formValues?.meCode || item.Matnr === formValues?.meCode.Matnr) &&
-             (!formValues?.userName || item.Erusr === formValues?.userName)
-    });
-    if(this.filteredHistoryList?.length){
-     this.historyList = this.filteredHistoryList; 
-    }else{
-      this.historyList = [];
-    }
-  }
   getDate(value) {
     if (value) {
       var str = value;

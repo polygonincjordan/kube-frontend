@@ -5,8 +5,10 @@
           <tr>
             <th colspan="1" scope="col">Reservation #</th>
             <th colspan="1" scope="col">Material</th>
-            <th colspan="1" scope="col">Storage Loc.</th>
+            <th colspan="1" scope="col">Issue S. Loc.</th>
             <th colspan="1" scope="col">Cost Center</th>
+            <th colspan="1" scope="col">Req. S. Loc</th>
+            <th colspan="1" scope="col">Move. Type</th>
             <th colspan="1" scope="col">Quantity</th>
             <th colspan="1" scope="col">Request Date</th>
             <th colspan="1" scope="col">Unit of Entry (UnE)</th>
@@ -22,6 +24,8 @@
             <td colspan="1" [title]="item.Matnr+ ' ' + item.Maktx">{{item.Matnr + ' ' + item.Maktx}}</td>
             <td colspan="1">{{item.Sloc}}</td>
             <td colspan="1">{{item.CostCtr}}</td>
+            <td colspan="1"></td>
+            <td colspan="1">{{item.MoveType}}</td>
             <td colspan="1">{{item.Bdmng}}</td>
             <td colspan="1">{{getDate(item.Erdat)| date : "dd.MM.y" }}</td>
             <td colspan="1">{{item.Meins}}</td>
@@ -51,7 +55,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="11"  *ngIf="historyList?.length == 0">
+            <td colspan="13"  *ngIf="historyList?.length == 0">
               <div class="pagination-container text-center p-3">
                 No Record Found!
               </div>
