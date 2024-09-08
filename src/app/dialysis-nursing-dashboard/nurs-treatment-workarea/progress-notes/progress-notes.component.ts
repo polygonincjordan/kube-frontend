@@ -136,18 +136,16 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   createProgressNote() {
-    console.log('this.progressNoteForm.value',this.progressNoteForm.value);
-    
     if (this.progressNoteForm.value.ProfGroup) {
       if (this.progressNoteForm.value.Text) {
         let createTime = this.progressNoteForm.value.ActionTime.split(':');
         this.progressNoteForm.value.ActionTime =
           'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
-
-        this.progressNoteForm.value.ActionDate =
-          this.progressNoteForm.value.ActionDate.toISOString().split('.')[0];
-        this._dataServices
-          .createProgressEntry(this.progressNoteForm.value)
+        const actionDate = new Date(this.progressNoteForm.value.ActionDate);
+        actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
+        this.progressNoteForm.value.ActionDate = actionDate.toISOString().split('.')[0];
+  
+        this._dataServices.createProgressEntry(this.progressNoteForm.value)
           .subscribe(
             (_success: any) => {
               if (_success) {
@@ -168,7 +166,6 @@ export class ProgressNotesComponent implements OnInit {
       this.emergencyService.errorSwalModel('Please select occupational group');
     }
   }
-
   reloadPhyOrderListEvent(event) {
     if (event) {
       this.getProgressNotesData();

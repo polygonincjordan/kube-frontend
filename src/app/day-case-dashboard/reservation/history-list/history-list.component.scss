@@ -1,6 +1,8 @@
 .order-templete-main {
     max-height: 550px;
-    overflow: hidden;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: visible;
     padding-left: 10px;
     .consumable-histry-table {
       table {

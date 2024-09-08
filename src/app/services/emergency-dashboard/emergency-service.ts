@@ -1300,6 +1300,12 @@ export class EmergencyService {
     });
   }
 
+  getUnitList(materialCode){
+    return this.http.get(this.url + `getUnitReservationList?Matnr=${materialCode}`, {
+      withCredentials: true,
+    });
+  }
+
   getHistoryReservationList(fromDate?: any,toDate?: any,sloc?: any,matnr?: any,moveType?: any,costCtr?: any) {
     let queryParams = [];
   

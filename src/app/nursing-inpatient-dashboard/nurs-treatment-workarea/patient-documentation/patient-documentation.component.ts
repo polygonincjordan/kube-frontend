@@ -993,7 +993,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.openEducationAssessment = true;
         this.educationAssessmentComp.saveAndReleaseEducation(false);
         this.educationAssessmentComp.ngOnInit();
-        this.createAndReleaseMed();
+        // this.createAndReleaseMed();
       }
     }
     // nurse endorsement

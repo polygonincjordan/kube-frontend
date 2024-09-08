@@ -72,8 +72,12 @@
                   [disabled]="true" [readOnly]="true">
               </td>
               <td colspan="1">
-                <input class="form-control" type="text" formControlName="Meins" [title]="product.value.Meins"
-                  [disabled]="true" [readOnly]="true">
+                <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
+                [clearable]="true" [searchable]="true" formControlName="Meins">
+                <ng-option *ngFor="let item of UOMList" [value]="item.Meinh">
+                  {{item.Meinh}}-{{item.Msehl}}
+                </ng-option>
+                </ng-select>
               </td>
               <td colspan="1">
                 <input class="form-control" type="text" numbersOnly formControlName="Menge"
