@@ -5,6 +5,7 @@ import { ConsumableService } from '@services/consumables/consumable.service';
 import { ConsumableList, MaterialDetails, MaterialDetailsResult, MaterialStockDetails } from '@services/consumables/interfaces/consumables.interface';
 import { DataShareService } from '@services/data-share.service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { getAlertConfig } from '@services/index';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
@@ -39,11 +40,13 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
   public userconfig: UserConfig;
   public periodParameterMonthSelectValue: any;
   public wordType = WordType
+  UOMList: any;
   constructor(
     private consumableService: ConsumableService,
     private dataShareService: DataShareService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private emergencyService: EmergencyService
   ) {
     this.getMaterialList();
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
@@ -267,6 +270,18 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     });
   }
 
+  public getUnitTextList(event: any, index: number){
+    if(event){
+     this.emergencyService.getUnitList(event).subscribe({
+       next:(resp:any)=>{
+         if (resp && resp.d.results) {
+           this.UOMList = resp.d.results;
+         }
+       }
+     })
+    }
+   }
+
   public getDetailsOfMaterial(event: any, index: number) {
     const material = this.materialList.find((elem) => elem.Matnr === event);
     (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx').patchValue(material.Maktx);
@@ -290,6 +305,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
             Lgort: materialDetail.Lgort,
             Charg: materialDetail.Charg,
           });
+          this.getUnitTextList(event, this.indexNumber.valueOf());
         } else {
           // this.showNotificationMessage = true;
           Swal.fire({

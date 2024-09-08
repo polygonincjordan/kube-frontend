@@ -147,8 +147,9 @@ export class ProgressNoteComponent implements OnInit {
           this.progressNoteForm.value.PatientId = this.erListSelectedData.falnr
           this.progressNoteForm.value.DocumentOu = this.erListSelectedData.Treatmentou
 
-        this.progressNoteForm.value.ActionDate =
-          this.progressNoteForm.value.ActionDate.toISOString().split('.')[0];
+          const actionDate = new Date(this.progressNoteForm.value.ActionDate);
+          actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
+          this.progressNoteForm.value.ActionDate = actionDate.toISOString().split('.')[0];
         this._dataServices
           .createProgressEntry(this.progressNoteForm.value)
           .subscribe(
