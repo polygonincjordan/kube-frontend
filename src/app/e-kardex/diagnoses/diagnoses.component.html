@@ -69,7 +69,9 @@
               </div>
             </div>
           </ng-container>
-          <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
+          <div>
+            <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
+          </div>
           <app-error-placeholder *ngIf="isError"></app-error-placeholder>
         </div>
       </div>
@@ -97,12 +99,12 @@
 
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth ||
       InOutPatientViewValue.showIn">
-      <div class="inner_box" style="overflow: auto">
+      <div class="inner_box" style="max-height: 40vh;overflow: auto">
         <div class="main_bg main_diagnoses_table" style="min-height: 36.76vh;
           overflow: auto">
           <!-- end---------------------- -->
           <div class="head">
-            <title clas="patient-title">Petient Order Profile</title>
+            <title clas="patient-title">Patient Documents Profile</title>
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
               <span (click)="openEnlarge(Inpatient, 'Inpatient')"><img src=""
