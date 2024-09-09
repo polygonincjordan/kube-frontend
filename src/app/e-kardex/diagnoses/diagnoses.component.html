@@ -69,7 +69,9 @@
               </div>
             </div>
           </ng-container>
-          <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
+          <div>
+            <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
+          </div>
           <app-error-placeholder *ngIf="isError"></app-error-placeholder>
         </div>
       </div>
