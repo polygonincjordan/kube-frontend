@@ -20,8 +20,8 @@
     <!-- in patient form end -->
     <div class="col-lg-6 2" *ngIf="InOutPatientViewValue.showBoth ||
       InOutPatientViewValue.showOut">
-      <div class="inner_box" style="max-height: 40vh; overflow: auto">
-        <div class="main_bg main_diagnoses_table" style="min-height: 36.76vh;
+      <div class="inner_box" style="height: 100%; overflow: hidden">
+        <div class="main_bg main_diagnoses_table" style="min-height: fit-content;
           overflow: auto">
           <!-- end---------------------- -->
           <div class="head patient-table">
@@ -69,9 +69,9 @@
               </div>
             </div>
           </ng-container>
-          <div>
-            <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
-          </div>
+          <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
+          <!-- <div>
+          </div> -->
           <app-error-placeholder *ngIf="isError"></app-error-placeholder>
         </div>
       </div>
@@ -99,8 +99,8 @@
 
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth ||
       InOutPatientViewValue.showIn">
-      <div class="inner_box" style="max-height: 40vh;overflow: auto">
-        <div class="main_bg main_diagnoses_table" style="min-height: 36.76vh;
+      <div class="inner_box" style="height: 100%;overflow: hidden">
+        <div class="main_bg main_diagnoses_table" style="min-height: fit-content;
           overflow: auto">
           <!-- end---------------------- -->
           <div class="head">
