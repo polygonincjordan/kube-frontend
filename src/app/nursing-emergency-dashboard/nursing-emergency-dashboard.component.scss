@@ -7,6 +7,36 @@
   display: flex;
   align-items: center;
   border-radius: 15px 15px 0px 0px;
+
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    color: #0056b0 !important; /* This sets the clock color */ /* If needed, you can also change the background */
+  }
+
+  /* Hide default time input icon */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* Wrapper for time input and custom icon */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Custom clock icon */
+.custom-clock-icon {
+  position: absolute;
+  right: 10px;
+  color: #0056b0;
+  pointer-events: none; /* Make the icon unclickable */
+}
+
+/* Adjust padding in the input to account for the custom icon */
+.time-input {
+  padding-right: 25px; /* Adjust based on your icon size */
+}
+
 }
 
 .er-header {
@@ -18,6 +48,9 @@
   align-items: center;
   margin: 10px auto 0px;
   border-radius: 15px 15px 0px 0px;
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    color: #0056b0 !important; /* This sets the clock color */ /* If needed, you can also change the background */
+  }
 }
 
 .checkin-edash-main {
@@ -28,6 +61,9 @@
   display: flex;
   height: 85vh !important;
 }
+
+
+
 
 .treatment-edash-main {
   width: 100%;

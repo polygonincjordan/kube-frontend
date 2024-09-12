@@ -141,6 +141,8 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       SearchData: [''],
       DateRange: [[new Date(), new Date()]],
       SelectDropdown: [''],
+      startTime: [this.getCurrentTime()],
+      endTime: [this.getCurrentTime()] 
     });
     this.form = this.formBuilder.group({
       admittedFrom: [''],
@@ -295,6 +297,13 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     } else {
       this.selectModule('checkin');
     }
+  }
+
+  getCurrentTime(): string {
+    const now = new Date();
+    const hours = ('0' + now.getHours()).slice(-2);   // Pad single digit hours with '0'
+    const minutes = ('0' + now.getMinutes()).slice(-2); // Pad single digit minutes with '0'
+    return `${hours}:${minutes}`;  // Return in HH:MM format
   }
 
   showFilterFn($event) {
