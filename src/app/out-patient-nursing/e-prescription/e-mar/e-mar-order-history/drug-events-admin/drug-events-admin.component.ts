@@ -284,12 +284,12 @@ export class DrugEventsAdminComponent implements OnInit {
                       next: (data) => {
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('Administrator').patchValue({
-                          Meresp2: parseData.d.results[0].NameFirst
+                          Meresp2: parseData.d.NameFirst
                         })
                         if (parseData) {
                           const PayloadData = {
                             ...this.administratiForm.get('Administrator').value,
-                            Meresp2: parseData.d.results[0].Vma !== null ? parseData.d.results[0].Vma : "",
+                            Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
                             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`
@@ -338,12 +338,12 @@ export class DrugEventsAdminComponent implements OnInit {
                         
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('NotAdminister').patchValue({
-                          Meresp2: parseData.d.results[0].NameFirst
+                          Meresp2: parseData.d.NameFirst
                         })
                         if (parseData) {
                           const PayloadData = {
                             ...this.administratiForm.get('NotAdminister').value,
-                            Meresp2: parseData.d.results[0].Vma !== null ? parseData.d.results[0].Vma : "",
+                            Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
