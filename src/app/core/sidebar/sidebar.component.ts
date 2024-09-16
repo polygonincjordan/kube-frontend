@@ -69,7 +69,7 @@ export class SidebarComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.ePrescriptionActive = this.PatientService.HeaderConfigurationData.episodeOfCare.caseTypeTxt === "Inpatient Case";
+      this.ePrescriptionActive = this.PatientService.HeaderConfigurationData?.episodeOfCare.caseTypeTxt === "Inpatient Case";
     }, 3000);
   }
 
