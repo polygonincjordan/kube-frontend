@@ -1,5 +1,5 @@
 <div class="patient_docs mx-4">
-  <div class="row">
+  <div class="row full-width">
     <!-- in patient form start -->
     <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
       inPatientShow && !inPatientSoapForm">
@@ -210,10 +210,10 @@
       </div>
     </div>
   </div>
-  <div *ngIf="
-    InOutPatientViewValue.showBoth && patientCaseSetDataSource.length>= 1
-    " class="col-lg-12 padding-bottom-2rem">
-    <app-stepper [listItem]="patientCaseSetDataSource"></app-stepper>
+  <div *ngIf="InOutPatientViewValue.showBoth && patientCaseSetDataSource.length>= 1">
+    <div style="width:100%;padding:0px 10px;">
+      <app-stepper [listItem]="patientCaseSetDataSource"></app-stepper>
+    </div>
   </div>
 </div>
 <ng-template #labpdfmodal>

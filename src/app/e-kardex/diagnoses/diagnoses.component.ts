@@ -229,11 +229,11 @@ export class DiagnosesComponent implements OnInit {
           console.log('222',this.patientProfileDocumet);
           this.documentTypeFilterValue.forEach((element) => {
             let checkPatinet = this.admissionService.documentTypeFilter.find(
-              (el) => el.Dtid === element.Dtid
+              (el) => el?.Dtid === element?.Dtid
             );
             if (!checkPatinet) {
               this.admissionService.documentTypeFilter.push({
-                Dtid: element.Dtid,
+                Dtid: element?.Dtid,
                 DtidText: element.DtidText,
               });
             }
@@ -675,10 +675,9 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientSoapData = {};
 
-    if (paitentData.Dtid != DocType.ZMED_SOAP) {
+    if (paitentData?.Dtid != DocType.ZMED_SOAP) {
       this.userConfigurationService
-      .getPatientVisitData(paitentData.DocKey)
-      .pipe(
+      .getPatientVisitData(paitentData.DocKey) .pipe(
         untilDestroyed(this),
         catchError((err) => {
           return of([]);
@@ -687,20 +686,29 @@ export class DiagnosesComponent implements OnInit {
       .subscribe((patientResult: PatientVisitDataResult) => {
         this.patientVisitRecord = patientResult;
         if (
-          this.patientVisitRecord.Dtid == DocType.ZMED_MEDRP ||
-          this.patientVisitRecord.Released == 'X'
+          this.patientVisitRecord?.Dtid == DocType.ZMED_MEDRP ||
+          this.patientVisitRecord?.Released == 'X'
         ) {
           this.pdfFormOpen();
-        } else if (this.patientVisitRecord.Dtid == DocType.ZMED_SOAP) {
+        } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_SOAP) {
           this.soapFormOpen();
-        } else if (this.patientVisitRecord.Dtid == DocType.ZMED_VISIT) {
+        } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_VISIT) {
           this.visitFormOpen();
         }
-        this.InOutPatientViewValue = {
-          showBoth: false,
-          showIn: false,
-          showOut: true,
-        };
+        // if(this.patientVisitRecord){
+        //   this.InOutPatientViewValue = {
+        //     showBoth: false,
+        //     showIn: false,
+        //     showOut: true,
+        //   };
+        // }else{
+        //   this.InOutPatientViewValue = {
+        //     showBoth: true,
+        //     showIn: false,
+        //     showOut: false,
+        //   };
+        // }
+        
         this.modalService.dismissAll();
       });
     this.editing = false;
@@ -745,7 +753,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientDischargeData = {}
     this.inPatientSoapData = {}
-    if (paitentData.Dtid !== 'ZMED_SOAP') {
+    if (paitentData?.Dtid !== 'ZMED_SOAP') {
       this.inPatientConfigurationService
         .getPatientVisitDataByDocKey(paitentData.DocKey)
         .pipe(
@@ -760,19 +768,19 @@ export class DiagnosesComponent implements OnInit {
           this.inPatientForm = "";
           if (paitentData.Released) {
             this.pdfFormOpen();
-          } else if (!paitentData.Released && paitentData.Dtid !== "ZMED_ATCHM") {
-            if (paitentData.Dtid === "ZMED_OPERT") {
+          } else if (!paitentData.Released && paitentData?.Dtid !== "ZMED_ATCHM") {
+            if (paitentData?.Dtid === "ZMED_OPERT") {
               this.inPatientShow = true;
               this.inPatientForm = "OPERT";
-            } else if (paitentData.Dtid === "ZMED_ORRPT") {
+            } else if (paitentData?.Dtid === "ZMED_ORRPT") {
               this.inPatientShow = true;
               this.inPatientForm = "ORRPT";
-            } else if (paitentData.Dtid === "ZMED_SOAP") {
+            } else if (paitentData?.Dtid === "ZMED_SOAP") {
               this.soapFormOpen();
               this.inPatientShow = true;
               this.inPatientForm = "SOAP";
               this.inPatientSoapForm = true
-            } else if (paitentData.Dtid === "ZMED_PHDIS") {
+            } else if (paitentData?.Dtid === "ZMED_PHDIS") {
               this.inPatientShow = true;
               this.inPatientForm = "PHDIS";
               this.inPatientConfigurationService.getPatientSummaryDataByDocKey(paitentData.DocKey).subscribe((resp) => {
@@ -916,7 +924,7 @@ export class DiagnosesComponent implements OnInit {
         showIn: true,
         showOut: false,
       };
-      if (releaseData.Dtid === "ZMED_PHDIS") {
+      if (releaseData?.Dtid === "ZMED_PHDIS") {
         this.inPatientConfigurationService.getPatientSummaryDataByDocKey(releaseData.DocKey).subscribe((resp) => {
           if (resp && resp.results && resp.results.length) {
             this.inPatientDischargeData = resp;
@@ -926,16 +934,16 @@ export class DiagnosesComponent implements OnInit {
         this.inPatientVisitData = releaseData;
         this.inPatientSoapData = releaseData;
       }
-      if (releaseData.Dtid === "ZMED_OPERT") {
+      if (releaseData?.Dtid === "ZMED_OPERT") {
         this.inPatientShow = true;
         this.inPatientForm = "OPERT";
-      } else if (releaseData.Dtid === "ZMED_ORRPT") {
+      } else if (releaseData?.Dtid === "ZMED_ORRPT") {
         this.inPatientShow = true;
         this.inPatientForm = "ORRPT";
-      } else if (releaseData.Dtid === "ZMED_PHDIS") {
+      } else if (releaseData?.Dtid === "ZMED_PHDIS") {
         this.inPatientShow = true;
         this.inPatientForm = "PHDIS";
-      } else if (releaseData.Dtid === "" || releaseData.Dtid === "ZMED_SOAP") {
+      } else if (releaseData?.Dtid === "" || releaseData?.Dtid === "ZMED_SOAP") {
 
         if(this.inPatientForm === "OutSOAP"){
 
@@ -964,9 +972,9 @@ export class DiagnosesComponent implements OnInit {
     this.isCopyRequest = releaseData;
     this.patientVisitRecord.VISITTOATTACHMENTS = undefined;
     this.patientVisitRecord.Released = '';
-    if (this.patientVisitRecord.Dtid == DocType.ZMED_SOAP) {
+    if (this.patientVisitRecord?.Dtid == DocType.ZMED_SOAP) {
       this.soapFormOpen();
-    } else if (this.patientVisitRecord.Dtid == DocType.ZMED_VISIT) {
+    } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_VISIT) {
       this.visitFormOpen();
     }
   }

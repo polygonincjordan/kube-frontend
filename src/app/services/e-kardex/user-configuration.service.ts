@@ -329,7 +329,7 @@ export class UserConfigurationService {
   }
 
   procesAllsPatientData(results: any): PatientVisitDataResult[] {
-    if (results[0].Dtid == 'ZMED_SOAP') {
+    if (results[0]?.Dtid == 'ZMED_SOAP') {
       this.processSoapPatientData(results);
     }else{
       this.processPatientData(results);

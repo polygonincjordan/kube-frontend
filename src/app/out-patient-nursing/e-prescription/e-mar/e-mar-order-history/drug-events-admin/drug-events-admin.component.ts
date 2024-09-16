@@ -279,17 +279,17 @@ export class DrugEventsAdminComponent implements OnInit {
                 this.Witnessid.onUpdateData.subscribe((resp) => {
                   if (this.LoginSubscription) { this.LoginSubscription.unsubscribe(); }
                   this.LoginSubscription = this.authService
-                    .login(resp.username, resp.password)
+                    .emrLogin(resp.username, resp.password)
                     .subscribe({
                       next: (data) => {
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('Administrator').patchValue({
-                          Meresp2: parseData.d.results[0].GpartName
+                          Meresp2: parseData.d.NameFirst
                         })
                         if (parseData) {
                           const PayloadData = {
                             ...this.administratiForm.get('Administrator').value,
-                            Meresp2: parseData.d.results[0].Gpart !== null ? parseData.d.results[0].Gpart : "",
+                            Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
                             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`
@@ -297,9 +297,12 @@ export class DrugEventsAdminComponent implements OnInit {
                           const { Quanunit, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)
                         }
+                       
                       },
                       error: (err) => {
-                        this.showErrorPopup(null, err.message.error, 'Warn');
+                        const errorBody = JSON.parse(err._body);
+                        let errorMessage = errorBody?.error?.message.value;
+                        this.showErrorPopup(null, errorMessage, 'Warn');
                       },
                     });
                 })
@@ -329,17 +332,18 @@ export class DrugEventsAdminComponent implements OnInit {
                 this.Witnessid.onUpdateData.subscribe((resp) => {
                   if (this.LoginSubscription) { this.LoginSubscription.unsubscribe(); }
                   this.LoginSubscription = this.authService
-                    .login(resp.username, resp.password)
+                    .emrLogin(resp.username, resp.password)
                     .subscribe({
                       next: (data) => {
+                        
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('NotAdminister').patchValue({
-                          Meresp2: parseData.d.results[0].GpartName
+                          Meresp2: parseData.d.NameFirst
                         })
                         if (parseData) {
                           const PayloadData = {
                             ...this.administratiForm.get('NotAdminister').value,
-                            Meresp2: parseData.d.results[0].Gpart !== null ? parseData.d.results[0].Gpart : "",
+                            Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
@@ -349,7 +353,9 @@ export class DrugEventsAdminComponent implements OnInit {
                         }
                       },
                       error: (err) => {
-                        this.showErrorPopup(null, err.message.error, 'Warn');
+                        const errorBody = JSON.parse(err._body);
+                        let errorMessage = errorBody?.error?.message.value;
+                        this.showErrorPopup(null, errorMessage, 'Warn');
                       },
                     });
                 })
