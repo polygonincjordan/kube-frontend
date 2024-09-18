@@ -1071,16 +1071,33 @@ export class CheckInComponent implements OnInit {
     this.modalRefForLab?.hide();
   }
 
+  changeStatus(item) {
+    let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
+    const json = {
+      "Einri": item.Einri,
+      "Falnr": item.Falnr,
+      "Patnr": item.Patnr,
+      "Lfdnr": item.Lfdbw,
+      "VisitStat": "55",
+      "Sdate": new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
+      "Stime": createTime
+    }
+    this.emergencyService.changeStatus(json).subscribe(
+      (success: any) => {
+        this.getErList();
+      });
+  }
+
   getPrintUrl(){
     this.emergencyService.getPrintLabel().subscribe((res:any)=>{
       this.printUrl = res.d.results[0].Url 
    })
   }
   printLabel(){
-    console.log('=-=-=-=-=-click',this.printUrl,'--',this.activelabLabelData.Vkgid);
+    console.log('=-=-=-=-=-click',this.printUrl,'--',this.activelabLabelData);
     
-    if(this.activelabLabelData.Vkgid){
-      this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res:any)=>{
+    if(this.activelabLabelData){
+      this.emergencyService.patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr).subscribe((res:any)=>{
         if(res){
           this.closeLabModal()
         }
