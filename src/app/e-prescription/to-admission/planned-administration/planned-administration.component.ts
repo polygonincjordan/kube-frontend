@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DatePipe } from '@angular/common';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
 import { TemplateDescriptionComponent } from '../../administration/create-administration/template-description/template-description.component';
+import { PopoverDirective } from 'ngx-bootstrap/popover';
+
 
 @Component({
   selector: 'planned-administration',
@@ -39,6 +41,7 @@ export class PlannedAdministrationComponent implements OnInit {
   @ViewChild('prnPopup', { static: true }) prnPopup: AdditionInfoPopupComponent;
   @ViewChild('templateDescription', { static: true }) templateDescription: TemplateDescriptionComponent;
   @Output() onDrugArraySubmit : EventEmitter<any | any[]> = new EventEmitter;
+  @ViewChildren(PopoverDirective) popovers: QueryList<PopoverDirective>;
   // @Input() set ContinueHospital(data: any) {
   //   if (data && data.CONTINUEHOSPITAL) {
   //     if(data.checkbox){
@@ -68,7 +71,24 @@ export class PlannedAdministrationComponent implements OnInit {
         this.ePrescriptionService.drugArrayActions$.next({isSubmitted:false, value: this.drugArray.value});
       }
     });
+  }
 
+  hidePopover() {
+    this.popovers.forEach(popover => popover.hide());
+  }
+  ngDoCheck(): void {
+    if (!!this.popovers) {
+      this.popovers.forEach((popover: PopoverDirective) => {
+        if (popover.popover['_declarationTContainer']['localNames'][0] === "hourPopover") {
+          const popoverSubscription: Subscription = popover.onShown.subscribe(() => {
+            this.popovers
+              .filter(p => p !== popover)
+              .forEach(p => p.hide());
+            popoverSubscription.unsubscribe();
+          });
+        }
+      });
+    }
   }
 
   onCancel(){
