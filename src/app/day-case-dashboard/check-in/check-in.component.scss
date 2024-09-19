@@ -267,3 +267,12 @@ table {
   border-right: 10px solid transparent;
   border-bottom: 20px solid yellow;
 }
+
+.modal-header{
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.modal-footer {
+  padding: 0.75rem !important;
+}

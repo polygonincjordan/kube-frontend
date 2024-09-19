@@ -24,6 +24,7 @@ import { Subscription, forkJoin} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { SharedService } from '@services/shared.service';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -97,6 +98,8 @@ export class CheckInComponent implements OnInit {
   selectedDocumentDetails: any;
   private refreshSubscription: Subscription;
   refreshInterval:any;
+  admissionStatusModel: any;
+  selectedStatus: any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -105,7 +108,8 @@ export class CheckInComponent implements OnInit {
     private patientService: PatientService,
     private _route: ActivatedRoute,
     private helperService:HelperService,
-    private dayCaseDashboardService:DayCaseDashboardService
+    private dayCaseDashboardService:DayCaseDashboardService,
+    public sharedService:SharedService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -1233,5 +1237,47 @@ export class CheckInComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+
+  public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
+    this.admissionStatusModel = data
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md',
+    };
+    this.modalRefForRisk = this.modalService.show(template, config);
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+        this.admissionStatusModel = [];
+      }
+    });
+  }
+
+  selectStatus(value){
+    if(value){
+      this.selectedStatus = value
+    }
+  }
+
+  changeStatus() {
+    const json = {
+      Einri: this.admissionStatusModel.Einri,
+      Falnr: this.admissionStatusModel.Falnr,
+      Patnr: this.admissionStatusModel.Patnr,
+      Lfdnr: this.admissionStatusModel.Lfdnr,
+      VisitStat:this.selectedStatus,
+      Sdate: new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
+      Stime: 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
+    };
+    this.emergencyService.changeStatus(json).subscribe({
+      next: (_success: any) => {
+        this.getErList()
+        this.modalService.hide();
+      },
+      error: (err: any) => {
+        this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => {})}
+    });
+
   }
 }
