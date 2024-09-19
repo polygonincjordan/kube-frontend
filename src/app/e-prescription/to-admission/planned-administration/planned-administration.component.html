@@ -224,16 +224,17 @@
                             <label class="m-0">Complex</label>
                           </div>
                         </td>
-                        <td class=" border-0">
+                        <td class=" border-0" >
                           <div class="d-flex align-items-center
-                                position-relative" [popover]="hourPopover" [popoverContext]="{index: i}">
+                                position-relative" [popover]="hourPopover" (mousedown)="hidePopover()"
+                                [popoverContext]="{index: i}" [outsideClick]="true">
                             <input type="checkbox" class="mr-1 checkbox-panel">
                             <span class="mr-2 admin"></span>
                             <label class="m-0">POM</label>
                           </div>
                         </td>
                       </tr>
-                      <tr>
+                      <tr (mouseleave)="hidePopover()">
                         <td class="align-middle border-0 p-1" colspan="3">
                           <div class="d-flex align-items-center
                               position-relative">
