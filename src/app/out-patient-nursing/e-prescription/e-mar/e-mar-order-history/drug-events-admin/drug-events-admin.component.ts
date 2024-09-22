@@ -177,8 +177,8 @@ export class DrugEventsAdminComponent implements OnInit {
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(this.getUserConfigData.UserId),
-        Meresp2: new FormControl(this.Merespdata),
+        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
       }),
       NotAdminister: new FormGroup({
@@ -194,7 +194,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Adnotestx: new FormControl(item.Events.Prncond),
         Meresp1: new FormControl(this.getUserConfigData.UserId),
         Quanunit: new FormControl(data.Unit),
-        Meresp2: new FormControl(this.Merespdata)
+        Meresp2: new FormControl(item.Events.WitnessEmp),
       }),
       DrugAdminister: new FormGroup({
         Fsource: new FormControl(item.Events.Fsource),
