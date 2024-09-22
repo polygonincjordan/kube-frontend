@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
-import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
+import { EPrescriptionService, PrescriptionList } from '@services/e-Prescription/e-prescription.service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 import { StorageService } from '@services/storage.service';
@@ -46,6 +46,10 @@ export class DrugEventsAdminComponent implements OnInit {
   public isEndedDisabled: boolean;
   emarActive: boolean = false;
   public RequestStatus: any;
+  @Input() set medicationData(data: PrescriptionList) {
+    console.log(data);
+    
+  }
   constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService) { }
 
   ngOnInit() {
@@ -92,6 +96,8 @@ export class DrugEventsAdminComponent implements OnInit {
 
 
   openModalForDrugsEvents(item, data) {
+    console.log(item);
+    
     this.administratiForm = this.AdministerEventForm(item, data);
     this.administratiForm.get('AdditionalSupply').patchValue({ Nursingou: this.medicationAdministrative.OrderingTo });
     const config: ModalOptions = { class: 'modal-dialog-centered drug-event' };
@@ -177,8 +183,8 @@ export class DrugEventsAdminComponent implements OnInit {
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(this.getUserConfigData.UserId),
-        Meresp2: new FormControl(this.Merespdata),
+        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
       }),
       NotAdminister: new FormGroup({
@@ -192,9 +198,9 @@ export class DrugEventsAdminComponent implements OnInit {
         Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Adnotestx: new FormControl(item.Events.Prncond),
-        Meresp1: new FormControl(this.getUserConfigData.UserId),
+        Meresp1: new FormControl(item.Events.AdmEmp),
         Quanunit: new FormControl(data.Unit),
-        Meresp2: new FormControl(this.Merespdata)
+        Meresp2: new FormControl(item.Events.WitnessEmp)
       }),
       DrugAdminister: new FormGroup({
         Fsource: new FormControl(item.Events.Fsource),
