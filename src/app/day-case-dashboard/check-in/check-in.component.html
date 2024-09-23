@@ -16,7 +16,7 @@
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Case#
+              Case# <i class="fa fa-sort" aria-hidden="true" (click)="sortCase()"></i>
             </th>
             <th scope="col">Risk</th>
             <th scope="col" style="padding-left: 0px;" >
@@ -25,11 +25,11 @@
             <th scope="col" style="padding-left: 0px;">
               Vital
             </th>
-            <th scope="col" style="padding-left: 0px;">
-             Admission Status
+            <th scope="col"  style="padding-left: 0px;">
+             Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="sortAdmission()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Date
+              Date <i class="fa fa-sort" aria-hidden="true" (click)="sortDate()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
@@ -38,16 +38,16 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Dept. OU
+              Dept. OU <i class="fa fa-sort" aria-hidden="true" (click)="sortDept()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Diagnosis
+              Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="sortDiagnosis()"></i>
             </th>
             <!-- <th scope="col" style="padding-left: 0px;">
               Allergy
             </th> -->
             <th scope="col" style="padding-left: 0px;; min-width: 70px">
-              Diet
+              Diet <i class="fa fa-sort" aria-hidden="true" (click)="sortDiet()"></i>
             </th>
             <th scope="col" style="padding-left: 0px">
               Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
@@ -56,13 +56,13 @@
               Attending physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Attachment
+              Attachment <i class="fa fa-sort" aria-hidden="true" (click)="sortAttachment()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Isolation
+              Isolation <i class="fa fa-sort" aria-hidden="true" (click)="sortIsolation()"></i>
             </th>
             <th scope="col" style="padding-left: 0px">
-              Fin.Clearance Status
+              Fin.Clearance Status <i class="fa fa-sort" aria-hidden="true" (click)="sortIFinClearance()"></i>
             </th>
             <th scope="col" style="text-align: center">Actions</th>
           </tr>
@@ -390,25 +390,18 @@
 </ng-template>
 
 <!-- change Status -->
-<ng-template #AdmissionStatus>
+<ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
   <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
     <h4 class="modal-title" style="color: white">Change Admission Status</h4>
   </div>
   <div class="modal-body p-0">
     <div class="p-3">
-      <div class="w-100">
-        <label class="location-label" for="storage-location">Select Status</label>
-        <ng-select class="ng-select-dropdown" [placeholder]="'Select Status'" [clearable]="true" (change)="selectStatus($event)">
-       <ng-option *ngIf="this.admissionStatusModel?.AdmissionStatus === 'Planned Arrival'" value="96">Actual Arrival</ng-option>
-       <ng-option *ngIf="this.admissionStatusModel?.AdmissionStatus === 'Actual Arrival'" value="97">Planned Discharge</ng-option>
-       <ng-option *ngIf="this.admissionStatusModel?.AdmissionStatus === 'Planned Discharge'" value="98">Actual Discharge</ng-option>
-       </ng-select>
-      </div>
+      <p>Are you sure you want to change status to <strong>{{ admissionStatusModel?.AdmissionStatus }}</strong></p>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"  (click)="closeRiskModal()">Cancel</button>
-    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" [disabled]="!selectedStatus" (click)="changeStatus()">Change</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"  (click)="closeRiskModal()">No</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="changeStatus(admissionStatusModel?.AdmissionStatus)">Yes</button>
   </div>
   <div>
   </div>
