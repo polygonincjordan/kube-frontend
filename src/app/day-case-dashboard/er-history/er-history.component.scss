@@ -226,3 +226,6 @@ table {
   border-right: 10px solid transparent;
   border-bottom: 20px solid yellow;
 }
+
+tr:nth-child(even) {background: #fff !important}
+tr:nth-child(odd) {background: #e4edf5   !important}

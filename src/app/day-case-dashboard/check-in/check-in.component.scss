@@ -3,14 +3,14 @@
   // white-space: nowrap;
   td{
     border: none;
-    background: #fbfcff;
+    // background: #fbfcff;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;;
 
     &:nth-child(12){
       border: none;
-    background: #fbfcff;
+    // background: #fbfcff;
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 80px;
@@ -276,3 +276,7 @@ table {
 .modal-footer {
   padding: 0.75rem !important;
 }
+
+
+tr:nth-child(even) {background: #fff !important}
+tr:nth-child(odd) {background: #e4edf5   !important}
