@@ -461,7 +461,7 @@ export class DrugEventsAdminComponent implements OnInit {
           this.modalRef.hide()
           this.route.queryParams.subscribe((params: ParamMap) => {
             this.router.navigate(['e-prescription'], { queryParams: { ...params, isEmr: 'true' } });
-            window.location.reload();
+            // window.location.reload();
           });
         })
       },
