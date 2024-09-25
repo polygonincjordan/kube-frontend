@@ -465,7 +465,7 @@ export class ErHistoryComponent implements OnInit {
       .filter(item => item.AttendPhy && item.AttendPhy.trim() !== '') // Filter out items with blank or null SpecialityCode
       .map(item => item.AttendPhy.trim()) // Extract AttendPhy values
   }
-  getErHistoryList(date?: any) {
+  getErHistoryList(date?: any, formControlData?: any) {
     return new Promise((resolve, reject) => {
       this.currentDatePassed = date;
       this.storageService.setLastPassedData(date);
@@ -490,6 +490,7 @@ export class ErHistoryComponent implements OnInit {
       if (date != undefined) {
         this.ePrescriptionService.loadData(link, false, false, false, false).subscribe({
           next: (_success: any) => {
+            console.log("ER history reposnse")
             // Handle successful data retrieval
             this.ERlistData = _success.body.d.results;
             this.ERlistData = [];
@@ -514,6 +515,7 @@ export class ErHistoryComponent implements OnInit {
             this.ERlistDataClone = this.ERlistData;
             this.lastIndex = this.ERlistData.length - 1;
             resolve(this.ERlistData);
+            this.filterListData(formControlData)
           },
           error: (err: any) => {
             // Handle errors if the request fails
@@ -1734,6 +1736,7 @@ export class ErHistoryComponent implements OnInit {
     console.log('storageService', this.storageService.checkinPatientData);
   }
   filterListData(event) {
+    console.log("Filter Data", event);
     // this.ERlistData = this.ERlistData.filter(el =>{
     //  if (event.Triage != '' && el.TriagePriorityCode.includes(event.Triage)) {
     //    return el;
@@ -1751,7 +1754,7 @@ export class ErHistoryComponent implements OnInit {
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
-    if (event.Triage || event.Physician || event.Status || event.FCategory) {
+    if (event?.Triage || event?.Physician || event?.Status || event?.FCategory) {
       // if(event.Physician) event.Physician = event.Physician.trimStart();
       let filterValue = this.ERlistDataClone;
       if (event.Triage && event.Triage?.length) {
@@ -1993,6 +1996,39 @@ export class ErHistoryComponent implements OnInit {
       });
     }
 
+  }
+  sortCaseNumber() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Falnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Falnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Falnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Falnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
   }
   sortRoom() {
     if (!this.asc) {

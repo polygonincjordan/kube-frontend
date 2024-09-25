@@ -119,6 +119,7 @@ import { ReservationListComponent } from './reservation/reservation-list/reserva
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
 import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
+import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 
 const route: Routes = [
   {
@@ -235,7 +236,8 @@ const route: Routes = [
     NgbCollapseModule,
     PopoverModule,
     NgxExtendedPdfViewerModule,
-    ImageEditorModule
+    ImageEditorModule,
+    VitalSignModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

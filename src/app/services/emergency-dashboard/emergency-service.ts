@@ -45,6 +45,7 @@ export class EmergencyService {
   public currentTab: Subject<string> = new Subject<string>();
   private formValuesSubject = new BehaviorSubject<any>(null);
   formValues$ = this.formValuesSubject.asObservable();
+  vitalSign: boolean = false;
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
@@ -576,6 +577,7 @@ export class EmergencyService {
     this.Services = false;
     this.IOCharts = false;
     this.DietMealOrdering = false;
+    this.vitalSign = false
     if (tabName && tabName === 'OrderSet') {
       this.OrderSet = true;
     } else if (tabName && tabName === 'CPOE') {
@@ -606,6 +608,8 @@ export class EmergencyService {
       this.IOCharts = true;
     } else if (tabName && tabName === 'DietMealOrdering') {
       this.DietMealOrdering = true;
+    } else if (tabName && tabName === 'VitalSign') {
+      this.vitalSign = true;
     }
   }
   // tabPanelNavigation(tabName: any) {

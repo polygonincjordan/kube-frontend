@@ -73,6 +73,12 @@
           <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.Consumables">
           Consumables
         </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.vitalSign?'tab-change' : 'tab-default'"
+        style="cursor: pointer;" (click)="tabChange('vitalSign')">
+        <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
+        <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
+        Vital Sign
+      </div>
         <span style="margin-left: auto;">
           <!-- <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
           z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="!showPatients">
@@ -898,6 +904,9 @@
       </ng-container>
       <ng-container *ngIf="this.emergencyService.Services">
         <app-services></app-services>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.vitalSign">
+        <app-er-vitals-comman></app-er-vitals-comman>
       </ng-container>
     </div>
     <div style="background-color: #fff;width: 35%;max-height: 75vh; overflow: auto;" *ngIf="showPatients">
