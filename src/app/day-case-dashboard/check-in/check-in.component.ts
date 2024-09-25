@@ -1555,6 +1555,20 @@ export class CheckInComponent implements OnInit {
     });
   }
 
+
+  getStatusValue() {
+    let currentStatus = this.admissionStatusModel.AdmissionStatus;
+    if (currentStatus === 'Planned Arrival') {
+      return 'Actual Arrival';
+    } else if (currentStatus === 'Actual Arrival') {
+      return 'Planned Discharge';
+    } else if (currentStatus === 'Planned Discharge') {
+      return 'Actual Discharge';
+    } else {
+      return '';
+    }
+  }
+
   selectStatus(value){
     if(value){
       this.selectedStatus = value
