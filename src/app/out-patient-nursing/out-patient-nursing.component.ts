@@ -188,6 +188,7 @@ export class OutPatientNursingComponent implements OnInit {
           this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
           this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
         }
+        this.resetFilterForm();
       }
     );
     this.filterForm = this.formBuilder.group({
@@ -552,19 +553,31 @@ export class OutPatientNursingComponent implements OnInit {
   }
 
   refreshCheckIn() {
-    this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])
+    var date1 = this.formDetailGroup.get("DateRange").value[0];
+    var date2 = this.formDetailGroup.get("DateRange").value[1];
+    // this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])
     if (this.selectedModule === 'checkin') {
-      this.CheckInComponent.getErList([new Date(), new Date()]);
+      this.CheckInComponent.getErList([date1, date2]);
     } else if (this.selectedModule === 'erhistory') {
-      this.ErHistoryComponent.getErHistoryList([new Date(), new Date()]);
+      this.ErHistoryComponent.getErHistoryList([date1, date2],this.filterForm.value);
     } else if (this.selectedModule === 'LabResults') {
-      this.LabResultsComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
+      this.LabResultsComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([date1, date2]));
     } else if (this.selectedModule === 'AdministeredDoses') {
-      this.AdministeredDosesComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
+      this.AdministeredDosesComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([date1, date2]));
     }else if(this.selectedModule === 'reservation'){
       this.emergencyService?.callHistoryList()
     }
-    // Resetting filter form values
+  
+    this.closeAndRefresh();
+  }
+
+  clearFilter() {
+    this.resetFilterForm();
+    this.filterList();
+  }
+
+  resetFilterForm() {
+      // Resetting filter form values
     this.filterForm.patchValue({
       Triage: '',
       Physician: '',
@@ -590,7 +603,6 @@ export class OutPatientNursingComponent implements OnInit {
       specialty: '',
       patient: ''
     });
-    this.closeAndRefresh();
   }
 
 

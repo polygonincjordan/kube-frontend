@@ -11,6 +11,7 @@
             <!-- <th scope="col"></th> -->
             <th scope="col">Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i></th>
             <th scope="col" style="padding-left: 0px;text-align: center;">MRN <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i></th>
+            <th scope="col" style="padding-left: 0px;text-align: center;">Case# <i class="fa fa-sort" aria-hidden="true" (click)="sortCaseNumber()"></i></th>
             <!-- <th scope="col" style="padding-left: 0px;">Sex & Age</th> -->
             <th scope="col" style="padding-left: 0px;text-align: center;">Date</th>
             <th scope="col" style="padding-left: 0px;text-align: center;min-width:50px">Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i></th>
@@ -35,6 +36,7 @@
               top: 3px;"></td> -->
             <td scope="row" style="width: 16%;cursor: pointer;" (click)="redirectToTreatByName(item)">{{item.Patient}}</td>
             <td style="width: 5%;padding-left: 0px;">{{item.Patnr}}</td>
+            <td style="width: 5%;padding-left: 0px;">{{item.Falnr}}</td>
             <!-- <td style="width: 6%;padding-left: 0px;">F-40Y</td> -->
             <td style="width: 1%;padding-left: 0px;">{{getDate(item.Datum)| date : "dd.MM.y"}}</td>
             <td scope="row" style="width: 5%;padding-left: 0px;text-align: center;">{{getTime(item.ZeitIntern)}}</td>

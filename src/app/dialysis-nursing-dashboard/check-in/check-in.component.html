@@ -16,6 +16,10 @@
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
+              Case#
+              <i class="fa fa-sort" aria-hidden="true" (click)="sortCaseNumber()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px; text-align: center">
               Date  <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDate()"></i>
             </th>
             <th scope="col" style="padding-left: 0px; text-align: center">
@@ -67,6 +71,7 @@
               {{ item.PatnrName }}
             </td>
             <td style="width: 5%; padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
+            <td style="width: 5%; padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none" [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
               {{ getDate(item.Bwidt) | date : "dd.MM.y" }}
             </td>

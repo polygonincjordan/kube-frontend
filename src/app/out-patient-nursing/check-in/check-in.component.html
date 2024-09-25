@@ -13,10 +13,14 @@
             </th>
             <th class="w-5" style="padding-left: 0px; text-align: center">
               MRN
+              <i class="fa fa-sort" aria-hidden="true" (click)="sortCaseNumber()"></i>
+            </th>
+            <th class="w-5" style="padding-left: 0px; text-align: center">
+              Case #
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
             <th class="w-5" style="padding-left: 0px; text-align: center">
-              Date
+              Date <i class="fa fa-sort" aria-hidden="true" (click)="sort('Datum')"></i>
             </th>
             <th class="w-5" style="padding-left: 0px; text-align: center">
               Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
@@ -32,10 +36,10 @@
               Speciality <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th class="w-5" style="padding-left: 0px; text-align: center">
-              Visit type
+              Visit type <i class="fa fa-sort" aria-hidden="true" (click)="sort('Besuchsarttext')"></i>
             </th>
             <th class="w-8 pl-4">
-              Status
+              Status <i class="fa fa-sort" aria-hidden="true" (click)="sort('StatusTxt')"></i>
             </th>
             <th class="w-6" style="padding-left: 0px">
               Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
@@ -54,6 +58,8 @@
             </td>
             <td style="padding-left: 0px; vertical-align: middle;" [title]="item.Patnr"
               class="border-top-none text-center p-2">{{ item.Patnr }}</td>
+            <td style="padding-left: 0px; vertical-align: middle;" [title]="item.Falnr"
+              class="border-top-none text-center p-2">{{ item.Falnr }}</td>
             <td style="padding-left: 0px; vertical-align: middle;" class="border-top-none p-2"
               [title]="getDate(item.Datum) | date : 'dd.MM.y'">
               {{ getDate(item.Datum) | date : "dd.MM.y" }}

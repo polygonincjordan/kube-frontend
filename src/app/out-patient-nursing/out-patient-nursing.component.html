@@ -227,10 +227,10 @@ float: right;" />
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
+          <button class="btn btn-primary" style="    background-color: #0082c8;
     border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+      Reset
+    </button>
         </div>
       </form>
     </div>
@@ -285,10 +285,7 @@ font-size: 12px;
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
-    border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+          <button class="btn btn-primary" style="background-color: #0082c8;border: #0082c8;" (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>
@@ -350,10 +347,7 @@ font-size: 12px;
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
-    border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;" (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>
@@ -538,7 +532,7 @@ font-size: 12px;
     *ngIf="PhysicianOrder"></app-physician-orders-list>
   <app-administered-doses [listItem]="missedMedPatientList" *ngIf="AdministeredDoses"
     style="width: calc(100% - 60px)"></app-administered-doses>
-  <app-nurs-treatment-workarea style="width: 100%;" *ngIf="treatmentarea"
+  <app-nurs-treatment-workarea style="width: calc(100% - 78px);" *ngIf="treatmentarea"
     (redirectTreatmentPatientData)="collectTreatmentPatientData($event)"></app-nurs-treatment-workarea>
   <app-er-history style="width: calc(100% - 78px);" *ngIf="erhistory" (redirectCheckInData)="collectCheckInData($event)"
     (redirectVisitData)="collectErPatientSearchData($event)"

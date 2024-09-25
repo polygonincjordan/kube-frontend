@@ -158,9 +158,9 @@ export class CheckInComponent implements OnInit, OnDestroy {
       console.error('Error scale:', error);
     });
     
-    this.refreshInterval = setInterval(() => {
-      this.getErList(this.todayDate);
-    },environment.refreshTime);
+    // this.refreshInterval = setInterval(() => {
+    //   this.getErList(this.todayDate);
+    // },environment.refreshTime);
   }
   getAssignedTime(triagetime, triagedate, index) {
     let {
@@ -909,6 +909,39 @@ export class CheckInComponent implements OnInit, OnDestroy {
       });
     }
   }
+  sortCaseNumber() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Falnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Falnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Falnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Falnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
   sortRoom() {
     if (!this.asc) {
       this.asc = true;
@@ -1040,6 +1073,25 @@ export class CheckInComponent implements OnInit, OnDestroy {
         return 0;
       });
     }
+  }
+  sortState = { column: '', direction: '' };
+  sort(column: string) {
+    if (this.sortState.column === column) {
+      this.sortState.direction = this.sortState.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortState.column = column;
+      this.sortState.direction = 'asc';
+    }
+
+    this.ERlistData.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return this.sortState.direction === 'asc' ? -1 : 1;
+      } else if (a[column] > b[column]) {
+        return this.sortState.direction === 'asc' ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
   }
   // er bed code
   openModalForErBed(data) {

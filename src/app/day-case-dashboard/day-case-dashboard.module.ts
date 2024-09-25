@@ -111,6 +111,7 @@ import { ReservationComponent } from './reservation/reservation.component';
 import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
 import { EMarWitnessComponent } from './administered-doses/administered-does-event/e-mar-witness/e-mar-witness.component';
 import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
+import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 
 const route: Routes = [
   {
@@ -217,7 +218,8 @@ const route: Routes = [
     NgxExtendedPdfViewerModule,
     ImageEditorModule,
     NursingCarePlanDocumentModule,
-    NursingDischargeSummaryModule,NursingAdmissionAssessmentModule
+    NursingDischargeSummaryModule,NursingAdmissionAssessmentModule,
+    VitalSignModule
   ],
 })
 export class DayCaseDashboardModule { }
