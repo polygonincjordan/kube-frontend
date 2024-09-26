@@ -639,7 +639,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
       .map(item => item.AttendPhy.trim()) // Extract AttendPhy values
   }
 
-  getErList(date?: any) {
+  getErList(date?: any, formControlData?: any) {
     this.helperService.isNotAllowedSpinnerInAPI = true;
     return new Promise((resolve, reject) => {
       const storedUser = JSON.parse(localStorage.getItem('UserConfiguration')).results;
@@ -673,6 +673,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
               this.lastIndex = this.ERlistData.length - 1;
               resolve(this.ERlistData);
             }
+            this.filterListData(formControlData)
           },
           error: (err: any) => {
             // Handle errors if the request fails

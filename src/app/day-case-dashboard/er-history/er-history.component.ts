@@ -2077,6 +2077,39 @@ onSelectSurgeon(value){
       });
     }
   }
+  sortSpeciality() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
   sortCategory() {
     if (!this.asc) {
       this.asc = true;

@@ -938,8 +938,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Orgfa.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Orgfa.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -953,8 +953,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Orgfa.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Orgfa.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

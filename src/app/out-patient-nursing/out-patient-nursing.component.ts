@@ -557,7 +557,7 @@ export class OutPatientNursingComponent implements OnInit {
     var date2 = this.formDetailGroup.get("DateRange").value[1];
     // this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])
     if (this.selectedModule === 'checkin') {
-      this.CheckInComponent.getErList([date1, date2]);
+      this.CheckInComponent.getErList([date1, date2], this.filterForm.value);
     } else if (this.selectedModule === 'erhistory') {
       this.ErHistoryComponent.getErHistoryList([date1, date2],this.filterForm.value);
     } else if (this.selectedModule === 'LabResults') {
