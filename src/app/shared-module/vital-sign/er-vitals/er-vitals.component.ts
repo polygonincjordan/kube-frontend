@@ -89,8 +89,9 @@ export class ErVitalsComponentComman implements OnInit {
     this.maintainvitalform = this.formBuilder.group({
       maintainVitalFormitems: new FormArray([]),
     });
+    console.log(storageService?.patientData)
     this.maintainVitalBarForm = this.formBuilder.group({
-      Orgdo: [storageService?.patientData?.Deptorgunit],
+      Orgdo: [storageService?.patientData?.deptOrgUnit],
       Vma: [this.storageService.getGpart()],
       Descr: [''],
       Odate: [''],
@@ -785,11 +786,14 @@ export class ErVitalsComponentComman implements OnInit {
   CreateVitalList() {
     this.showMaintain = true;
     let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S';
-    if (this.vitalListResp.length != 0) {
-      this.maintainVitalBarForm.controls.Orgdo.setValue(this.vitalListResp[0].Orgdo);
-    } else {
-      this.maintainVitalBarForm.controls.Orgdo.setValue('');
-    }
+    console.log(createTime, "createTime");
+    
+    // if (this.vitalListResp.length != 0) {
+    //   this.maintainVitalBarForm.controls.Orgdo.setValue(this.vitalListResp[0].Orgdo);
+    // } else {
+    //   this.maintainVitalBarForm.controls.Orgdo.setValue('');
+    // }
+    this.maintainVitalBarForm.controls.Orgdo.setValue(this.storageService?.patientData?.deptOrgUnit);
     this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));

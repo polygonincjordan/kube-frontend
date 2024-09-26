@@ -38,7 +38,7 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Dept. OU <i class="fa fa-sort" aria-hidden="true" (click)="sortDept()"></i>
+              Speciality <i class="fa fa-sort" aria-hidden="true" (click)="sortDept()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="sortDiagnosis()"></i>
@@ -102,7 +102,7 @@
               {{ getTime(item.Bwizt) }}
             </td>
             <td style="padding-left: 0px" [title]="item.Zimmkub" class="border-top-none">{{ item.Zimmkub }}</td>
-            <td style="padding-left: 0px" [title]="item.Orgfa" class="border-top-none">{{ item.Orgfa }}</td>
+            <td style="padding-left: 0px" [title]="item.Orgfakb" class="border-top-none">{{ item.Orgfakb }}</td>
             <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
             <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
