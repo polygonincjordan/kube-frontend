@@ -68,6 +68,7 @@ export class CheckInComponent implements OnInit {
   riskform: FormGroup;
   riskFormitems: FormArray;
   updateRiskForm: FormGroup;
+  changeStatusForm: FormGroup;
   modalRef: BsModalRef;
   colName: any;
   modalCommonDataArr: any;
@@ -100,6 +101,30 @@ export class CheckInComponent implements OnInit {
   refreshInterval:any;
   admissionStatusModel: any;
   selectedStatus: any;
+
+  dischargeTypeList = [
+    {
+      label: 'AMA',
+      value: 'AM'
+    },
+    {
+      label: 'Deceased',
+      value: 'EX'
+    },
+    {
+      label: 'Dis.to Ext.Hosp',
+      value: 'DE'
+    },
+    {
+      label: 'Left w/o treat',
+      value: 'LW'
+    },
+    {
+      label: 'Reg. Discharge',
+      value: 'RD'
+    },
+  ]
+
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -156,9 +181,9 @@ export class CheckInComponent implements OnInit {
       this.falnr = params.falnr;
       this.lfdnr = params.lfdnr;
     });
-    this.modalService.onHidden.subscribe((reason: string | undefined) => {
-      this.getErList();
-    });
+    // this.modalService.onHidden.subscribe((reason: string | undefined) => {
+    //   this.getErList();
+    // });
   }
 
 
@@ -1540,12 +1565,23 @@ export class CheckInComponent implements OnInit {
   public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
     this.admissionStatusModel = data;
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-md',
+      class: 'modal-dialog-centered modal-md add-habit-size',
       initialState: {
         admissionStatusModel: this.admissionStatusModel // Pass data into the modal
       }
     };
     this.modalRefForRisk = this.modalService.show(template, config);
+    this.changeStatusForm = this.formBuilder.group({
+      Einri: [this.admissionStatusModel?.Einri],
+      Falnr: [this.admissionStatusModel?.Falnr],
+      Lfdnr: [this.admissionStatusModel?.Lfdnr],
+      AdmStatusCode: [''],
+      Bwidt: [new Date()],
+      Bwizt: [''],
+      Kztxt: [''],
+      Bwart: [''],
+      Pernr: [this.admissionStatusModel?.BehArztName],
+    });
 
     this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
       if (reason === 'backdrop-click') {
@@ -1594,17 +1630,21 @@ export class CheckInComponent implements OnInit {
         default:
             visitStatCode = null; // Handle undefined cases
     }
-    
+     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     const json = {
       Einri: this.admissionStatusModel.Einri,
       Falnr: this.admissionStatusModel.Falnr,
-      Patnr: this.admissionStatusModel.Patnr,
       Lfdnr: this.admissionStatusModel.Lfdnr,
-      VisitStat: visitStatCode.toString(),
-      Sdate: new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
-      Stime: 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
+      AdmStatusCode: visitStatCode.toString(),
+      Bwidt: this.changeStatusForm.value.Bwidt ? this.changeStatusForm.value.Bwidt.getFullYear() + '-' + String(this.changeStatusForm.value.Bwidt.getMonth() + 1).padStart(2, '0') + '-' + String(this.changeStatusForm.value.Bwidt.getDate()).padStart(2, '0') + 'T00:00:00' : null,
+      Bwizt: createTime,
+      Kztxt: this.changeStatusForm.value.Kztxt,
+      Bwart: this.changeStatusForm.value.Bwart,
+      Pernr: this.admissionStatusModel.BehArzt,
     };
-    this.emergencyService.changeStatus(json).subscribe({
+
+    this.emergencyService.changeAdmissionStatus(json).subscribe({
       next: (_success: any) => {
         this.getErList()
         this.modalService.hide();

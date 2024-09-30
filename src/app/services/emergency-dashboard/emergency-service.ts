@@ -236,6 +236,12 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  changeAdmissionStatus(json) {
+    const urlWithParams = `${this.url}changeAdmissionStatus`;
+    return this.http.post(urlWithParams, json, {
+      withCredentials: true,
+    });
+  }
 
   patientPrintLabel(einri, patnr) {
     const urlWithParams = `${this.url}printPatientLabel?einri=${einri}&patnr=${patnr}`;
