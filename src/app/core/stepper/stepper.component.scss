@@ -1,4 +1,5 @@
 .stepperContainer{
+  overflow: auto;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -6,12 +7,15 @@
   background-color: white;
   // margin-bottom: 30px;
 }
+.stepperContainer::-webkit-scrollbar{
+  height: 0;
+}
 .stepperMainCont {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
-  padding: 10px 0px;
+  padding: 0px;
   background-color: white;
   overflow-x: scroll;
   scroll-behavior: smooth;
@@ -138,7 +142,7 @@
 }
 .stepperLineArrowImage {
   height: 20px;
-  margin-top: 25px;
+  margin-top: 0;
 }
 
 // .stepperLineStyle {

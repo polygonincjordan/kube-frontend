@@ -735,11 +735,27 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     height: 2px;
   }
 }
-
-.document-detail-list {
-  height: calc(100vh - 532px);
-  overflow: auto;
+@media only screen and (max-width:3000px) {
+  .document-detail-list {
+    height:calc(100vh - 542px);
+    overflow: auto;
+  }
 }
+@media only screen and (min-width:1280px) and (max-width:1920px) {
+  .document-detail-list {
+    height:calc(100vh - 480px);
+    overflow: auto;
+  }
+}
+
+@media only screen and  (max-width: 1600px)  {
+  .document-detail-list {
+    height:calc(100vh - 529px);
+    overflow: auto;
+  }
+}
+
+
 .width-83 {
   width: 83% !important;
 }
@@ -773,5 +789,13 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     color: #cacaca;
     font-size: 14px;
     padding-right: 3px;
+  }
+}
+
+::ng-deep .main_bg{
+  app-no-data-found{
+    img{
+      height: 150px;
+    }
   }
 }
