@@ -735,11 +735,19 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     height: 2px;
   }
 }
-
-.document-detail-list {
-  height:calc(100vh - 535px);
-  overflow: auto;
+@media only screen and (max-width:3000px) {
+  .document-detail-list {
+    height:calc(100vh - 542px);
+    overflow: auto;
+  }
 }
+@media only screen and (max-width:1600px) {
+  .document-detail-list {
+    height:calc(100vh - 480px);
+    overflow: auto;
+  }
+}
+
 .width-83 {
   width: 83% !important;
 }
