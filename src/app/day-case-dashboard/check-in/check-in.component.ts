@@ -677,7 +677,7 @@ export class CheckInComponent implements OnInit {
           this.sendErPatientCount.emit(this.ERlistData.length);
           // }
           _success.d.results.forEach((element) => {
-            if (element.StatusTxt != 'Checked Out') {
+            if (element.AdmissionStatus != 'Actual Discharge') {
               this.ERlistData.push(element);
               this.sendErPatientCount.emit(this.ERlistData.length);
               //   //this.triagePriorityList(element);
@@ -1616,16 +1616,16 @@ export class CheckInComponent implements OnInit {
     
     switch (visitStat.toLowerCase()) {
         case 'planned arrival':
-            visitStatCode = 95;
-            break;
-        case 'actual arrival':
-            visitStatCode = 96;
-            break;
-        case 'planned discharge':
             visitStatCode = 97;
             break;
-        case 'actual discharge':
+        case 'actual arrival':
             visitStatCode = 98;
+            break;
+        case 'planned discharge':
+            visitStatCode = 99;
+            break;
+        case 'actual discharge':
+            visitStatCode = 96;
             break;
         default:
             visitStatCode = null; // Handle undefined cases
@@ -1637,12 +1637,16 @@ export class CheckInComponent implements OnInit {
       Falnr: this.admissionStatusModel.Falnr,
       Lfdnr: this.admissionStatusModel.Lfdnr,
       AdmStatusCode: visitStatCode.toString(),
-      Bwidt: this.changeStatusForm.value.Bwidt ? this.changeStatusForm.value.Bwidt.getFullYear() + '-' + String(this.changeStatusForm.value.Bwidt.getMonth() + 1).padStart(2, '0') + '-' + String(this.changeStatusForm.value.Bwidt.getDate()).padStart(2, '0') + 'T00:00:00' : null,
+      Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
       Bwizt: createTime,
       Kztxt: this.changeStatusForm.value.Kztxt,
       Bwart: this.changeStatusForm.value.Bwart,
       Pernr: this.admissionStatusModel.BehArzt,
     };
+
+    if(!json?.Bwart) {
+      delete json.Bwart
+    }
 
     this.emergencyService.changeAdmissionStatus(json).subscribe({
       next: (_success: any) => {
@@ -1654,5 +1658,13 @@ export class CheckInComponent implements OnInit {
       }
     });
 
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
   }
 }
