@@ -139,7 +139,6 @@ export class DiagnosesComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.getFirstFiveDocuments();
     this.subscription = this.route.queryParams.subscribe(() => {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
@@ -193,6 +192,7 @@ export class DiagnosesComponent implements OnInit {
         // this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
       } else {
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+        this.limitItems();
         console.log('1111', this.patientProfileDocumet);
         
       }
@@ -205,22 +205,6 @@ export class DiagnosesComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
-
-  public itemsToShow = 5
-
-  getFirstFiveDocuments() {
-    if (this.patientProfileDocumet) {
-      
-    }
-  }
-
-  showMore() {
-    this.itemsToShow += 5; // Increase the limit by 5 each time "Show More" is clicked
-  }
-
- 
-
-
 
   getDate(value) {
     if (value) {
@@ -337,8 +321,11 @@ export class DiagnosesComponent implements OnInit {
         } else {
           // this.patientProfileDocumet = data?.d.results;
           this.documentTypeFilterValue = data?.d.results;
-          
-          this.patientProfileDocumet = this.groupBy(data?.d?.results, 'Dodat');
+          let deep = _cloneDeep( data?.d.results);
+          deep.sort((a, b) => {
+            return b.Dodat - a.Dodat;
+          });
+          this.patientProfileDocumet = this.groupBy(deep, 'Dodat');
           this.limitItems()
           console.log('222',this.patientProfileDocumet);
           this.documentTypeFilterValue.forEach((element) => {
@@ -358,18 +345,20 @@ export class DiagnosesComponent implements OnInit {
 
   limitItems() {
     let limit = 0;
+    let proObj = {};
     Object.keys(this.patientProfileDocumet).forEach((item) => {
-      if (!this.newLimitProfileList[item]) {
-        this.newLimitProfileList[item] = [];
-      }
-  
-      this.patientProfileDocumet[item].forEach((data: any) => {
+     
+     this.patientProfileDocumet[item].forEach((data: any) => {
         if (limit < 5) {
-          this.newLimitProfileList[item].push(data);
+          if (!proObj[item]) {
+            proObj[item] = [];
+          }
+          proObj[item].push(data);
           limit++;
         }
       });
     });
+    this.newLimitProfileList = proObj
   }
 
   groupBy(array: any[], key: string): any {
