@@ -109,6 +109,7 @@ export class DiagnosesComponent implements OnInit {
   pdfTemplateRef: any;
   pdfUrlType: string;
   htmlData: any;
+  firstFiveDocuments: [string, any[]][];
   
   constructor(
     private sanitizer: DomSanitizer,
@@ -136,6 +137,7 @@ export class DiagnosesComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.getFirstFiveDocuments();
     this.subscription = this.route.queryParams.subscribe(() => {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
@@ -145,6 +147,7 @@ export class DiagnosesComponent implements OnInit {
       this.getUserConfigSetting();
       this.getPatientCaseStepperData();
       this.getAttachmentsList();
+      
     })
 
     this.admissionService.educationDateFilter.subscribe((res: any) => {
@@ -201,7 +204,17 @@ export class DiagnosesComponent implements OnInit {
     }
   }
 
+  public itemsToShow = 5
 
+  getFirstFiveDocuments() {
+    if (this.patientProfileDocumet) {
+       // Take the first 5 items
+    }
+  }
+
+  showMore() {
+    this.itemsToShow += 5; // Increase the limit by 5 each time "Show More" is clicked
+  }
 
   getCurrentVisitDetails(type: string) {
     this.admissionService
@@ -226,6 +239,8 @@ export class DiagnosesComponent implements OnInit {
           this.documentTypeFilterValue = data?.d.results;
           
           this.patientProfileDocumet = this.groupBy(data?.d?.results, 'Dodat');
+          this.firstFiveDocuments = Object.entries(this.patientProfileDocumet).slice(0, 5);; // Convert object to array
+          
           console.log('222',this.patientProfileDocumet);
           this.documentTypeFilterValue.forEach((element) => {
             let checkPatinet = this.admissionService.documentTypeFilter.find(
