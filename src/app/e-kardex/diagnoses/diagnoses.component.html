@@ -174,7 +174,7 @@
             </div> -->
 
             <div class="document-detail-list">
-              <div class="row  m-0" *ngFor="let item of newLimitProfileList | keyvalue ; let i = index">
+              <div class="row  m-0" *ngFor="let item of newLimitProfileList | keyvalue : sortKeys; let i = index">
                 <!-- <div class="witdh-16 pl-2 mt-3">
                   <strong class="list-doc-date" [title]="getDate(item.key) | date: 'dd-MM-y'">{{ getDate(item.key) | date: "dd-MM-y" || '-' }}</strong>
                 </div> -->
@@ -187,10 +187,12 @@
                       <span class="in-line" style="font-weight:700" [title]="getDate(member.Dodat) | date: 'dd.MM.y'"> {{ getDate(member.Dodat) | date: "dd.MM.y" }}</span>
                     </div>
                     <div class="col-md-4 p-0">
-                      <span class="" [title]="member.Dktxt">{{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
+                      <span class="" [title]="member.MitarbName" ><strong> Physician:</strong> {{ member.MitarbName }}
+                        -
+                        {{ member.Orgdo }}</span>
                     </div>
                     <div class="col-md-3 p-0">
-                      <span class="in-line" style="font-weight:700" [title]="member.MitarbName"> {{ member.MitarbName }}</span>
+                      <span class="in-line" style="font-weight:700" [title]="member.Dktxt"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
                     </div>
                     <div class="col-md-2 pl-0">
                       <span class="" style="font-weight:700" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</span>

@@ -25,6 +25,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
+import { KeyValue } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -350,10 +351,10 @@ export class DiagnosesComponent implements OnInit {
      
      this.patientProfileDocumet[item].forEach((data: any) => {
         if (limit < 5) {
-          if (!proObj[item]) {
-            proObj[item] = [];
+          if (!proObj[item.replace('/Date(', '').replace(')/', '')]) {
+            proObj[item.replace('/Date(', '').replace(')/', '')] = [];
           }
-          proObj[item].push(data);
+          proObj[item.replace('/Date(', '').replace(')/', '')].push(data);
           limit++;
         }
       });
@@ -1268,5 +1269,9 @@ createAttachmentDoc(){
     },
     (_error: any) => {}
   );
+}
+ // Sort by keys (alphabetically)
+ sortKeys(a: KeyValue<string, any>, b: KeyValue<string, any>): number {
+  return b.key.localeCompare(a.key);
 }
 }
