@@ -6,7 +6,9 @@
   margin-top: 10px;
   width: 100%;
 }
-
+.main_dashboard {
+  height: calc(100vh - 320px);
+}
 .mb-4 {
   padding-right: 0px;
   padding-left: 5px;
@@ -164,8 +166,15 @@ svg#Layer_1 {
   background: #555;
 }
 .main_row {
+  // margin-left: 20px;
   @media (max-width: 1200px) {
     display: block;
+  }
+  .col-md-2 {
+    @media (min-width: 768px) {
+      flex: 0 0 20.66667%;
+      max-width: 20.66667%;
+    }
   }
 }
 
@@ -184,7 +193,12 @@ svg#Layer_1 {
     }
   }
 }
-
+// .ml-45{
+//   // margin-left: 45px;
+//   @media (max-width:2500px) {
+//     margin-left: 5px;
+//   }
+// }
 .e-kardex-header-right {
   @media (max-width: 1200px) {
     margin: 10px auto;
@@ -897,7 +911,6 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   @media (max-width: 1400px) {
     max-width: 70% !important;
   }
-
 
   @media (max-width: 576px) {
     max-width: 100% !important;

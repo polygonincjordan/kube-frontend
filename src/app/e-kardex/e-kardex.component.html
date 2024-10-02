@@ -1,54 +1,61 @@
 <div class="e-kardex-content" id="app-container" [className]="sidebar.containerClassnames">
   <main class="mt-0 mb-0">
     <app-topnav></app-topnav>
-    <div class="row justify-content-center main_row">
-      <div class="e-kardex-header-left col-8 col-sm-4 col-md-2" style="margin-bottom: 5px;">
-        <div class="card h-100 justify-content-center">
-          <app-pateint-bmi [patient]="patient"></app-pateint-bmi>
+    <div style="padding:0 35px">
+      <div class="row justify-content-between main_row">
+        <div class="e-kardex-header-left col-8 col-sm-4 col-md-2" style="margin-bottom: 5px;">
+          <div class="card h-100 justify-content-center">
+            <app-pateint-bmi [patient]="patient"></app-pateint-bmi>
+          </div>
         </div>
-      </div>
-      <div class="e-kardex-header-right col-12 col-sm-6 col-md-9 mb-2 p-0">
-        <div class="card d-flex flex-row mb-4 py-2 h-100">
-          <!-- vitals signs--------------- -->
-          <div class="min-width-fit-content">
-            <div class="w-max font-bold mb-2">Vitals Signs</div>
-            <div class="d-flex justify-content-center cursor-pointer">
-              <span class="text-xl mr-3" style="    position: relative;
-              top: -4px;">
-                <img src="assets/img/er-vital.png" (click)="openModalVital($event)" width="21px">
-              </span>
-              <div class="dropdown setting_dropdown" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                <span type="button" class="simple-icon-settings setting_btn" id="dropdownBasic1" ngbDropdownToggle>
+        <div class="e-kardex-header-right col-12 col-sm-6 col-md-9 mb-2 p-0 ml-45">
+          <div class="card d-flex flex-row mb-4 py-2 h-100">
+            <!-- vitals signs--------------- -->
+            <div class="min-width-fit-content">
+              <div class="w-max font-bold mb-2">Vitals Signs</div>
+              <div class="d-flex justify-content-center cursor-pointer">
+                <span class="text-xl mr-3" style="    position: relative;
+                top: -4px;">
+                  <img src="assets/img/er-vital.png" (click)="openModalVital($event)" width="21px">
                 </span>
-                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" onClose>
-                  <ng-container *ngFor="let itemCatalog of catalog">
-                    <div *ngIf="itemCatalog.Display" class="custom-switch custom-switch-primary dropdown-item-toggle">
-                      <input class="custom-switch-input" (change)="
-                          toggleSlide(
+                <div class="dropdown setting_dropdown" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                  <span type="button" class="simple-icon-settings setting_btn" id="dropdownBasic1" ngbDropdownToggle>
+                  </span>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" onClose>
+                    <ng-container *ngFor="let itemCatalog of catalog">
+                      <div *ngIf="itemCatalog.Display" class="custom-switch custom-switch-primary dropdown-item-toggle">
+                        <input class="custom-switch-input" (change)="
+                            toggleSlide(
+                              patient?.isInPatient
+                                ? itemCatalog?.IPCaseType
+                                : itemCatalog?.OPCaseType,
+                              itemCatalog
+                            )
+                          " [checked]="
                             patient?.isInPatient
                               ? itemCatalog?.IPCaseType
-                              : itemCatalog?.OPCaseType,
-                            itemCatalog
-                          )
-                        " [checked]="
-                          patient?.isInPatient
-                            ? itemCatalog?.IPCaseType
-                            : itemCatalog?.OPCaseType
-                        " [id]="itemCatalog.CatItemKey" type="checkbox" />
-                      <label class="custom-switch-btn" [for]="itemCatalog.CatItemKey"></label>
-                      <span>{{ itemCatalog?.SettItemName }} </span>
-                    </div>
-                  </ng-container>
+                              : itemCatalog?.OPCaseType
+                          " [id]="itemCatalog.CatItemKey" type="checkbox" />
+                        <label class="custom-switch-btn" [for]="itemCatalog.CatItemKey"></label>
+                        <span>{{ itemCatalog?.SettItemName }} </span>
+                      </div>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </div>
+            <app-vitals-card-list [listVitals]="listVitals" class="overflow-hidden"></app-vitals-card-list>
           </div>
-          <app-vitals-card-list [listVitals]="listVitals" class="overflow-hidden"></app-vitals-card-list>
         </div>
       </div>
     </div>
-    <app-patient-history></app-patient-history>
-    <app-diagnoses class="diagnoses-section"></app-diagnoses>
+    <div class="main_dashboard">
+      <app-patient-history></app-patient-history>
+      <app-diagnoses class="diagnoses-section" style="display: flex;
+    flex-direction: column;height:100%;"></app-diagnoses>
+
+
+    </div>
   </main>
   <app-sidebar></app-sidebar>
 

@@ -99,6 +99,7 @@ export class DiagnosesComponent implements OnInit {
   soapPdf: any;
   active: boolean = false;
 
+  
   patientProfileDocumet:  { [key: string]: any[] } = {};
   currentVisitDocumet: any = [];
   paramsObject:any
@@ -109,6 +110,8 @@ export class DiagnosesComponent implements OnInit {
   pdfTemplateRef: any;
   pdfUrlType: string;
   htmlData: any;
+  firstFiveDocuments: [string, any[]][];
+  newLimitProfileList: { [key: string]: any[] } = {};;
   
   constructor(
     private sanitizer: DomSanitizer,
@@ -145,6 +148,7 @@ export class DiagnosesComponent implements OnInit {
       this.getUserConfigSetting();
       this.getPatientCaseStepperData();
       this.getAttachmentsList();
+      
     })
 
     this.admissionService.educationDateFilter.subscribe((res: any) => {
@@ -188,6 +192,7 @@ export class DiagnosesComponent implements OnInit {
         // this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
       } else {
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+        this.limitItems();
         console.log('1111', this.patientProfileDocumet);
         
       }
@@ -199,54 +204,6 @@ export class DiagnosesComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-
-
-  getCurrentVisitDetails(type: string) {
-    this.admissionService
-      .getDicumentDetails(
-        this.paramsObject.einri,
-        type,
-        this.paramsObject.patnr,
-        this.filterDate,
-        this.paramsObject.falnr
-      )
-      .pipe(
-        untilDestroyed(this),
-        catchError((err) => {
-          return of([]);
-        })
-      )
-      .subscribe((data: any) => {
-        if (type == '2') {
-          this.currentVisitDocumet = data?.d.results;
-        } else {
-          // this.patientProfileDocumet = data?.d.results;
-          this.documentTypeFilterValue = data?.d.results;
-          
-          this.patientProfileDocumet = this.groupBy(data?.d?.results, 'Dodat');
-          console.log('222',this.patientProfileDocumet);
-          this.documentTypeFilterValue.forEach((element) => {
-            let checkPatinet = this.admissionService.documentTypeFilter.find(
-              (el) => el?.Dtid === element?.Dtid
-            );
-            if (!checkPatinet) {
-              this.admissionService.documentTypeFilter.push({
-                Dtid: element?.Dtid,
-                DtidText: element.DtidText,
-              });
-            }
-          });
-        }
-      });
-  }
-
-  groupBy(array: any[], key: string): any {
-    return array.reduce((result, currentValue) => {
-      (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
-      return result;
-    }, {});
   }
 
   getDate(value) {
@@ -316,7 +273,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   getDataByUserConfig() {
-    this.userConfigurationService.patientData$
+  this.userConfigurationService.patientData$
       .pipe(
         untilDestroyed(this),
         catchError((err) => {
@@ -340,6 +297,75 @@ export class DiagnosesComponent implements OnInit {
           this.patientVisitdataSource = deep;
         }
       });
+  }
+
+
+  getCurrentVisitDetails(type: string) {
+    this.admissionService
+      .getDicumentDetails(
+        this.paramsObject.einri,
+        type,
+        this.paramsObject.patnr,
+        this.filterDate,
+        this.paramsObject.falnr
+      )
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((data: any) => {
+        if (type == '2') {
+          this.currentVisitDocumet = data?.d.results;
+        } else {
+          // this.patientProfileDocumet = data?.d.results;
+          this.documentTypeFilterValue = data?.d.results;
+          let deep = _cloneDeep( data?.d.results);
+          deep.sort((a, b) => {
+            return b.Dodat - a.Dodat;
+          });
+          this.patientProfileDocumet = this.groupBy(deep, 'Dodat');
+          this.limitItems()
+          console.log('222',this.patientProfileDocumet);
+          this.documentTypeFilterValue.forEach((element) => {
+            let checkPatinet = this.admissionService.documentTypeFilter.find(
+              (el) => el?.Dtid === element?.Dtid
+            );
+            if (!checkPatinet) {
+              this.admissionService.documentTypeFilter.push({
+                Dtid: element?.Dtid,
+                DtidText: element.DtidText,
+              });
+            }
+          });
+        }
+      });
+  }
+
+  limitItems() {
+    let limit = 0;
+    let proObj = {};
+    Object.keys(this.patientProfileDocumet).forEach((item) => {
+     
+     this.patientProfileDocumet[item].forEach((data: any) => {
+        if (limit < 5) {
+          if (!proObj[item]) {
+            proObj[item] = [];
+          }
+          proObj[item].push(data);
+          limit++;
+        }
+      });
+    });
+    this.newLimitProfileList = proObj
+  }
+
+  groupBy(array: any[], key: string): any {
+    return array.reduce((result, currentValue) => {
+      (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+      return result;
+    }, {});
   }
 
   getDataByInPatientConfig() {

@@ -1,11 +1,13 @@
 <div class="stepperContainer">
   <div style="display: flex;
+  position:relative;
+  width:100%;
   align-items: center;
   justify-content: center;
-  padding: 0px 15px 0px 15px;">
+  padding: 0px 20px 0px 20px;">
     <img width="52px" class="c-pointer goback-icon" (click)="goback('')" style="margin: auto" [ngClass]="selectedback == 'goback' ? '': 'goback'" title="Default view" src="assets/img/doctor.png"/>
   <img
-    class="stepperLineArrowImage ml-1"
+    class="stepperLineArrowImage ml-1 leftArrow"
     src="assets/img/arrow-left.png"
     (click)="scrollLeft()"
   />
@@ -87,7 +89,7 @@
     </div>
   </div>
   <img
-    class="stepperLineArrowImage"
+    class="stepperLineArrowImage rightArrow"
     src="assets/img/arrow-right.png"
     (click)="scrollRight()"
   />

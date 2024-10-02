@@ -1,5 +1,5 @@
 <div class="patient_docs mx-4">
-  <div class="row full-width">
+  <div class="row full-width pb-2">
     <!-- in patient form start -->
     <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
       inPatientShow && !inPatientSoapForm">
@@ -20,9 +20,9 @@
     <!-- in patient form end -->
     <div class="col-lg-6 2" *ngIf="InOutPatientViewValue.showBoth ||
       InOutPatientViewValue.showOut">
-      <div class="inner_box" style="height: 100%; overflow: hidden">
+      <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
-        overflow: auto;
+        /* overflow: auto; */
         max-height: 100%;">
           <!-- end---------------------- -->
           <div class="head patient-table">
@@ -103,9 +103,9 @@
 
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth ||
       InOutPatientViewValue.showIn">
-      <div class="inner_box" style="height: 100%;overflow: hidden">
+      <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
-        overflow: auto;
+        /* overflow: auto; */
         max-height: 100%;">
   
           <!-- end---------------------- -->
@@ -173,31 +173,37 @@
           </div>
             </div> -->
 
-
             <div class="document-detail-list">
-              <div class="row  m-0" *ngFor="let item of patientProfileDocumet | keyvalue; let i = index">
+              <div class="row  m-0" *ngFor="let item of newLimitProfileList | keyvalue ; let i = index">
                 <!-- <div class="witdh-16 pl-2 mt-3">
                   <strong class="list-doc-date" [title]="getDate(item.key) | date: 'dd-MM-y'">{{ getDate(item.key) | date: "dd-MM-y" || '-' }}</strong>
                 </div> -->
-               
-                <div class="w-100 mt-1 ml-1 document-list mr-0 ml-0 align-items-center row m-0 py-1 px-2" *ngFor="let member of item.value; let i = index" [ngClass]="i > 0 ? 'mt-1':''">
-                  <div class="col-md-4 pl-0">
-                    <strong class="" [title]="member.Dktxt">{{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</strong>
-                  </div>
-                  <div class="col-md-2 pl-0">
-                    <strong class="color-43aee7" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</strong>
-                  </div>
-                  <div class="col-md-2 p-0">
-                    <strong class="in-line" [title]="getDate(member.Dodat) | date: 'dd-MM-y'"><span *ngIf="member.Dodat">|</span> {{ getDate(member.Dodat) | date: "dd-MM-y" }}</strong>
-                  </div>
-                  <div class="col-md-3 pl-0">
-                    <strong class="in-line" [title]="member.MitarbName"><span *ngIf="member.MitarbName">|</span> {{ member.MitarbName }}</strong>
-                  </div>
+               <!-- {{item.value|json}} -->
+              
+                <div class="w-100 mt-2 ml-1 document-list mr-0 ml-0 align-items-center row m-0 py-1 px-2" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngFor="let member of item.value ; let ind = index" [ngClass]="i > 0 ? 'mt-1':''">
+                  <ng-container>
+                
+                    <div class="col-md-2 p-0">
+                      <span class="in-line" style="font-weight:700" [title]="getDate(member.Dodat) | date: 'dd.MM.y'"> {{ getDate(member.Dodat) | date: "dd.MM.y" }}</span>
+                    </div>
+                    <div class="col-md-4 p-0">
+                      <span class="" [title]="member.Dktxt">{{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
+                    </div>
+                    <div class="col-md-3 p-0">
+                      <span class="in-line" style="font-weight:700" [title]="member.MitarbName"> {{ member.MitarbName }}</span>
+                    </div>
+                    <div class="col-md-2 pl-0">
+                      <span class="" style="font-weight:700" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</span>
+                    </div>
+                  </ng-container>
+                 
+
+                 
                   <div class="col-md-1 pl-0 d-flex align-items-center" (click)="$event.preventDefault()">
                     <div class="col-md-6 p-0 mr-2" *ngIf="member.NodocText !='N/A'">
-                      <img width="25" src="assets/img/rad-patient-image.png" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'image/bmp' || member.AttMimeType === 'url'" />
+                      <!-- <img width="25" src="assets/img/rad-patient-image.png" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'image/bmp' || member.AttMimeType === 'url'" />
                       <i aria-hidden="true" (click)="getnewReleasedPdf(member, labpdfmodal)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="member.AttMimeType === 'PDF'"></i>
-                      <img src="assets/img/document-html.png" width="15px" height="15px" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'HTML'" />
+                      <img src="assets/img/document-html.png" width="15px" height="15px" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'HTML'" /> -->
                     </div>
                       <div class="col-md-6 p-0">
                         <div class="d-flex" style="width: 100%;"
@@ -209,6 +215,8 @@
                 </div>
               </div>
             </div>
+            
+           
 
           </ng-container>
           <app-no-data-found *ngIf="noDatafoundInPatient"></app-no-data-found>

@@ -16,6 +16,7 @@
   align-items: flex-start;
   width: 100%;
   padding: 0px;
+  margin-left: 20px;
   background-color: white;
   overflow-x: scroll;
   scroll-behavior: smooth;
@@ -141,8 +142,19 @@
   border-left: none;
 }
 .stepperLineArrowImage {
-  height: 20px;
+  height: 22px;
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+  transform: translateY(-50%);
   margin-top: 0;
+  margin: 3px;
+}
+.leftArrow{
+  left: 80px;
+}
+.rightArrow{
+  right: 0;
 }
 
 // .stepperLineStyle {
