@@ -173,37 +173,43 @@
           </div>
             </div> -->
 
-            <div *ngFor="let paitentData of patientVisitdataSource | slice : 0 :
-                5" class="detail_row">
-                <div class="d-flex align-items-center w-100"
-                  (click)="modelFormOpen(paitentData, false)">
-                  <span>{{ formatDate(paitentData.Erdattim) }}</span>
-                  <p class="attending-section" style="width: 100%">
-                    <strong> Physician:</strong>{{ paitentData.Mitarbname
-                    }}
-                    -
-                    {{ paitentData.Orgdo }}
-                  </p>
-                  <span class="fix-width mw-135 version-class">{{
-                    paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
-                </div>
-                <div class="d-flex align-items-center" >
-                  <div class="d-flex" style="width: 100%;"
-                    (click)="onReleaseHistoryData(paitentData.DocKey)">
-                    <span class="border-0 txt-al-ctr"
-                    [ngStyle]="{'min-width': paitentData.Dokvr != '00' ? '80px': '104px' }">{{
-                      paitentData.Released == "X" ? "Released" : "Draft"
-                      }}</span>
-                    <select *ngIf="paitentData.Dokvr != '00'" class="mr-2" name="" id=""></select>
-                  </div>
-                  <!-- <div class="mw-15" style="min-width: 15px">
-                    <a *ngIf="paitentData.Released == 'X'"
-                      (click)="onOpenAttachment(paitentData.DocKey)"><img
-                        src="assets/img/attach.png" class="mw-15" /></a>
-                  </div> -->
+            <div class="document-detail-list">
+              <div class="row m-0" *ngFor="let item of newLimitProfileList | keyvalue; let i = index">
+                <div class="w-100 document-list align-items-center row m-0 py-2 px-3 main-height" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngFor="let member of item.value; let ind = index" >
+                  <ng-container>
+                    <!-- Date Column -->
+                    <div class="col-md-2 p-0">
+                      <span class="in-line" [title]="getDate(member.Dodat) | date: 'dd-MM-y'">
+                        {{ getDate(member.Dodat) | date: 'dd-MM-y' }}
+                      </span>
+                    </div>
+            
+                    <!-- Visit Note and Version -->
+                    <div class="col-md-5 p-0">
+                      <span class="" [title]="member.Dktxt">
+                        {{ member.DtidText }} {{ member.Dokvr ? dockVer(member.Dokvr) : '' }}
+                      </span>
+                    </div>
+            
+                    <!-- Physician Name -->
+                    <div class="col-md-3 p-0">
+                      <span class="in-line" [title]="member.MitarbName">
+                        Physician: {{ member.MitarbName }}
+                      </span>
+                    </div>
+            
+                    <!-- Status -->
+                    <div class="col-md-2 p-0">
+                      <span class="color-43aee7" [title]="member.DokstText">
+                        {{ member.DokstText ? member.DokstText : "N/A" }}
+                      </span>
+                    </div>
+                  </ng-container>
+                 
                 </div>
               </div>
-
+            </div>
+            
            
 
           </ng-container>

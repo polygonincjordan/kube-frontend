@@ -800,12 +800,16 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 .in-line {
   display: flex;
   align-items: center;
-  padding: 5px 8px;
+  padding: 8px 8px;
   span {
     color: #cacaca;
     font-size: 14px;
     padding-right: 3px;
   }
+}
+
+.main-height{
+  margin-top: 8px !important;
 }
 
 ::ng-deep .main_bg{
