@@ -722,20 +722,19 @@ export class DiagnosesComponent implements OnInit {
         } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_VISIT) {
           this.visitFormOpen();
         }
-        // if(this.patientVisitRecord){
-        //   this.InOutPatientViewValue = {
-        //     showBoth: false,
-        //     showIn: false,
-        //     showOut: true,
-        //   };
-        // }else{
-        //   this.InOutPatientViewValue = {
-        //     showBoth: true,
-        //     showIn: false,
-        //     showOut: false,
-        //   };
-        // }
-        
+        if(this.patientVisitRecord){
+          this.InOutPatientViewValue = {
+            showBoth: false,
+            showIn: false,
+            showOut: true,
+          };
+        }else{
+          this.InOutPatientViewValue = {
+            showBoth: true,
+            showIn: false,
+            showOut: false,
+          };
+        }
         this.modalService.dismissAll();
       });
     this.editing = false;
