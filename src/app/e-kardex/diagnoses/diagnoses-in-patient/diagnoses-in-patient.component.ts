@@ -289,10 +289,18 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
       surgeryData: this.surgeryTableData && this.surgeryTableData.length ? this.surgeryTableData : [],
       preDiganosisData: this.preDiagnosisTableData && this.preDiagnosisTableData.length ? this.preDiagnosisTableData : [],
       postDiagnosisData: this.postDiagnosisTableData && this.postDiagnosisTableData.length ? this.postDiagnosisTableData : [],
-      patientDtId: this.inPatientDataObj.Dtid === undefined && this.inPatientFormInput === "ORRPT" ? "ZMED_ORRPT" : this.inPatientDataObj.Dtid === undefined && this.inPatientFormInput === "OPERT" ? "ZMED_OPERT" : this.inPatientDataObj.Dtid
+      patientDtId: this.getPatientDtId()
     };
     this.inPatientConfigurationService.saveInPatientDocumentData(saveDataList, this.userConfig, false)
     this.updateEvent.emit(true);
+  }
+
+
+  getPatientDtId(): string {
+    if (this.inPatientDataObj.Dtid === undefined) {
+      return this.inPatientFormInput === "ORRPT" ? "ZMED_ORRPT" : "ZMED_OPERT";
+    }
+    return this.inPatientDataObj.Dtid;
   }
 
   loadDischargeSummarySet() {
@@ -345,11 +353,11 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     this.formatePayloadDateTime();
     this.saveReleaseGeneratePayload();
     const saveDataList = {
-      patientFormData: !this.inPatientFormInput ? this.inPatientDataSet.value : this.inPatientOrrptDataSet.value,
+      patientFormData: this.inPatientFormInput === "OPERT" ? this.inPatientDataSet.value : this.inPatientOrrptDataSet.value,
       surgeryData: this.surgeryTableData && this.surgeryTableData.length ? this.surgeryTableData : [],
       preDiganosisData: this.preDiagnosisTableData && this.preDiagnosisTableData.length ? this.preDiagnosisTableData : [],
       postDiagnosisData: this.postDiagnosisTableData && this.postDiagnosisTableData.length ? this.postDiagnosisTableData : [],
-      patientDtId: this.inPatientDataObj.Dtid === undefined && this.inPatientFormInput ? "ZMED_ORRPT" : this.inPatientDataObj.Dtid === undefined && !this.inPatientFormInput ? "ZMED_OPERT" : this.inPatientDataObj.Dtid
+      patientDtId: this.getPatientDtId()
     };
     this.inPatientConfigurationService.saveInPatientDocumentData(saveDataList, this.userConfig, true)
     this.updateEvent.emit(true);
