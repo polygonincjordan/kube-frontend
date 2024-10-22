@@ -13,7 +13,9 @@ export class DiagnosisHistoryPopupComponent {
   modalRef: BsModalRef;
   @ViewChild('releaseHistory', { static: true }) releaseHistory: TemplateRef<any>;
   @Output() onReleseClose: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onReleseCloseInPatient: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAttachmentClose: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onInPatientAttachmentClose: EventEmitter<any> = new EventEmitter<any>();
 
   public configurationData: any;
 
@@ -43,12 +45,21 @@ export class DiagnosisHistoryPopupComponent {
   }
 
   onOpenModelInpatient(value: any) {
-    this.onReleseClose.emit({value: value, Oldversion: true});
+    if(value.Dtid === "ZMED_OPERT" || value.Dtid === "ZMED_ORRPT" || value.Dtid === "ZMED_PHDIS"){
+      this.onReleseCloseInPatient.emit({value: value, Oldversion: true})
+    }else {
+      this.onReleseClose.emit({value: value, Oldversion: true});
+    }
     this.modalRef.hide();
   }
 
   onOpenAttachmentInpatient(value: any) {
-    this.onAttachmentClose.emit(value);
+    console.log(value,"sdfdfd");
+    if(value.Dtid === "ZMED_OPERT" || value.Dtid === "ZMED_ORRPT" || value.Dtid === "ZMED_PHDIS"){
+      this.onInPatientAttachmentClose.emit(value.DocKey)
+    }else {
+      this.onAttachmentClose.emit(value.DocKey);
+    }
     this.modalRef.hide();
   }
 

@@ -142,7 +142,7 @@ export class DiagnosesComponent implements OnInit {
     this.isLoading = true;
     this.subscription = this.route.queryParams.subscribe(() => {
       this.userConfigurationService.getListOfPatientVisitDataSet();
-      // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+      this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
       this.inPatientConfigurationService.getPatientCaseSet();
       this.getDataByUserConfig();
       this.getDataByInPatientConfig();
@@ -686,11 +686,41 @@ export class DiagnosesComponent implements OnInit {
         customClass: 'myalertpopup'
       }).then((result) => {
         if (result.value) {
-          this.modelOpenProcess(paitentData, oldversion)
+          this.modelOpenProcess(paitentData, paitentData.Oldversion)
         }
       })
     } else {
-      this.modelOpenProcess(paitentData, oldversion)
+      this.modelOpenProcess(paitentData, paitentData.Oldversion)
+    }
+  }
+
+  modifyAndOpenForm(data: any, oldversion?: boolean) {
+    // Remove the 'dockey' property
+    data.Dockey = data.DocKey; // Assign the new value for 'newDockey'
+    
+    // Add the 'newDockey' property
+    delete data.DocKey;
+  
+    // Proceed with opening the form
+    this.modelFormOpenInPatient(data, oldversion);
+  }
+
+  FormOpenInPatient(paitentData: any, oldversion?: boolean) {
+    if (this.editing) {
+      Swal.fire({
+        text: "Are you sure you want to close without saving?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      }).then((result) => {
+        if (result.value) {
+          this.modifyAndOpenForm(paitentData.value, paitentData.Oldversion)
+        }
+      })
+    } else {
+      this.modifyAndOpenForm(paitentData.value, paitentData.Oldversion)
     }
   }
 
@@ -772,7 +802,8 @@ export class DiagnosesComponent implements OnInit {
   }
   }
 
-  modelFormOpenInPatient(paitentData) {
+  modelFormOpenInPatient(paitentData,oldversion?: boolean) {
+    this.oldversion = oldversion;
     this.closeAllForm();
     this.soapPdf={};
     this.patientVisitRecord = {} as PatientVisitDataResult;
@@ -781,7 +812,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientSoapData = {}
     if (paitentData?.Dtid !== 'ZMED_SOAP') {
       this.inPatientConfigurationService
-        .getPatientVisitDataByDocKey(paitentData.DocKey)
+        .getPatientVisitDataByDocKey(paitentData.Dockey)
         .pipe(
           untilDestroyed(this),
           catchError((err) => {
@@ -792,7 +823,7 @@ export class DiagnosesComponent implements OnInit {
           this.inPatientVisitData = patientResult;
           this.inPatientShow = false;
           this.inPatientForm = "";
-          if (paitentData.Released) {
+          if (this.inPatientVisitData.Released) {
             this.pdfFormOpen();
           } else if (!paitentData.Released && paitentData?.Dtid !== "ZMED_ATCHM") {
             if (paitentData?.Dtid === "ZMED_OPERT") {
@@ -809,7 +840,7 @@ export class DiagnosesComponent implements OnInit {
             } else if (paitentData?.Dtid === "ZMED_PHDIS") {
               this.inPatientShow = true;
               this.inPatientForm = "PHDIS";
-              this.inPatientConfigurationService.getPatientSummaryDataByDocKey(paitentData.DocKey).subscribe((resp) => {
+              this.inPatientConfigurationService.getPatientSummaryDataByDocKey(paitentData.Dockey).subscribe((resp) => {
                 if (resp && resp.results && resp.results.length) {
                   this.inPatientDischargeData = resp;
                 }
@@ -817,13 +848,15 @@ export class DiagnosesComponent implements OnInit {
 
             }
           } else {
+            this.getReleasedPdf(this.inPatientVisitData);
+            this.pdfFormOpen();
             this.inPatientShow = false;
             this.inPatientForm = "";
           }
         });
     } else {
       this.userConfigurationService
-        .getSoapPatientVisitData(paitentData.DocKey)
+        .getSoapPatientVisitData(paitentData.Dockey)
         .pipe(
           untilDestroyed(this),
           catchError((err) => {
@@ -935,8 +968,11 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientSoapForm = false;
     this.closeAllForm();
     if (isUpdate) {
-      this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
-      this.getDataByUserConfig();
+      setTimeout(() => {
+        
+        this.getCurrentVisitDetails('1')
+      }, 10000);
+      
     }
   }
 
@@ -1150,12 +1186,30 @@ export class DiagnosesComponent implements OnInit {
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.userConfigurationService.getAttachmentVisitData(attachmentId).subscribe((data) => {
       if (data) {
+        this.oldversion = true;
         this.patientVisitRecord = { ...data, DOCCATTOATTACHMENTS: { results: [data] } };
         this.pdfFormOpen();
         this.InOutPatientViewValue = {
           showBoth: false,
           showIn: false,
           showOut: true,
+        };
+      }
+    })
+  }
+
+  onInPatientAttachment(attachmentId: any) {
+    this.inPatientVisitData = {} as InPatientDataResult;
+    this.patientVisitRecord = {} as PatientVisitDataResult;
+    this.userConfigurationService.getAttachmentVisitData(attachmentId).subscribe((data) => {
+      if (data) {
+        this.oldversion = true;
+        this.patientVisitRecord = { ...data, DOCCATTOATTACHMENTS: { results: [data] } };
+        this.pdfFormOpen();
+        this.InOutPatientViewValue = {
+          showBoth: false,
+          showIn: true,
+          showOut: false,
         };
       }
     })
