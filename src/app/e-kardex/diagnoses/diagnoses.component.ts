@@ -711,7 +711,6 @@ export class DiagnosesComponent implements OnInit {
   }
 
   FormOpenInPatient(paitentData: any, oldversion?: boolean) {
-    debugger
     if (this.editing) {
       Swal.fire({
         text: "Are you sure you want to close without saving?",
