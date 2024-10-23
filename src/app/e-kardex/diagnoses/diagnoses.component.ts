@@ -112,7 +112,8 @@ export class DiagnosesComponent implements OnInit {
   pdfUrlType: string;
   htmlData: any;
   firstFiveDocuments: [string, any[]][];
-  newLimitProfileList: { [key: string]: any[] } = {};;
+  newLimitProfileList: { [key: string]: any[] } = {};modalReference: any;
+;
   
   constructor(
     private sanitizer: DomSanitizer,
@@ -613,16 +614,17 @@ export class DiagnosesComponent implements OnInit {
     this.closeAllForm();
     this.sattingmodel= content;
     this.saveUserconfig = Object.assign({}, this.userconfig);
-    this.modalService
-      .open(content, { windowClass: 'myCustomModalClass' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+    // Store the modal reference when opening the modal
+  this.modalReference = this.modalService.open(content, { windowClass: 'myCustomModalClass' });
+
+  this.modalReference.result.then(
+    (result) => {
+      this.closeResult = `Closed with: ${result}`;
+    },
+    (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    }
+  );
   }
 
   async updateUserConfig(userconfig: UserConfig) {
@@ -630,6 +632,9 @@ export class DiagnosesComponent implements OnInit {
     this.userconfig = userconfig;
     this.closeAllForm();
     this.active = false;
+    if (this.modalReference) {
+      this.modalReference.close();
+    }
   }
 
   changeDefaultVisitNote(event: any, userconfig: UserConfig) {
@@ -781,7 +786,7 @@ export class DiagnosesComponent implements OnInit {
     )
     .subscribe((patientResult: any) => {
       this.inPatientSoapData = patientResult;
-
+      console.log(paitentData, "left side data");
       if (paitentData.Released) {
         this.isInPatientSoap = true;
         this.inPatientForm = "OutSOAP";
@@ -810,7 +815,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientDischargeData = {}
     this.inPatientSoapData = {}
-    if (paitentData?.Dtid !== 'ZMED_SOAP') {
+    if (paitentData?.Dtid !== 'ZMED_SOAP'&& paitentData?.Dtid !== 'ZMED_VISIT') {
       this.inPatientConfigurationService
         .getPatientVisitDataByDocKey(paitentData.Dockey)
         .pipe(
@@ -854,7 +859,7 @@ export class DiagnosesComponent implements OnInit {
             this.inPatientForm = "";
           }
         });
-    } else {
+    } else if (paitentData?.Dtid == 'ZMED_SOAP') {
       this.userConfigurationService
         .getSoapPatientVisitData(paitentData.Dockey)
         .pipe(
@@ -866,8 +871,9 @@ export class DiagnosesComponent implements OnInit {
         .subscribe((patientResult: any) => {
 
           this.inPatientSoapData = patientResult;
-
-          if (paitentData.Released
+          console.log(paitentData, "right side data");
+          
+          if (paitentData?.Released
           ) {
             this.isInPatientSoap = true;
             this.getReleasedPdf(this.inPatientSoapData);
@@ -877,6 +883,29 @@ export class DiagnosesComponent implements OnInit {
             this.inPatientShow = true;
             this.inPatientForm = "SOAP";
             this.inPatientSoapForm = true
+          }
+        });
+    }else{
+      this.userConfigurationService
+        .getPatientVisitData(paitentData.Dockey)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((patientResult: any) => {
+
+          this.patientVisitRecord = patientResult;
+
+          if (this.patientVisitRecord.Released
+          ) {
+            this.isInPatientSoap = true;
+            this.getReleasedPdf(this.patientVisitRecord);
+            this.pdfFormOpen();
+          } else {
+            this.visitFormOpen();
+            this.inPatientShow = true;
           }
         });
     }
