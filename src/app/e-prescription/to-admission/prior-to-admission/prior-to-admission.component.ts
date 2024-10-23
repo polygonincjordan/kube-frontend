@@ -632,6 +632,9 @@ export class PriorToAdmissionComponent implements OnInit {
           customClass: 'myalertpopup',
           icon: 'success'
         }).then(() => {
+          if(validData.find(element =>  element.ContHospital)){
+            this.onSubmit();
+          }
           this.drugArray.clear();
           this.generateDefaultForm();
           this.priortoad = [];
@@ -643,7 +646,6 @@ export class PriorToAdmissionComponent implements OnInit {
           this.showErrorPopup("", error.error.error.message.value, "Error")
         });
     }
-    this.onSubmit();
   }
 
   onSubmit() {
@@ -698,7 +700,10 @@ export class PriorToAdmissionComponent implements OnInit {
           this.subscription = this.ePrescriptionService.postData('EstdordSet', postObject).subscribe((res: any) => {
             this.drugArray.clear();
             this.priortoad = [];
-          this.generateDefaultForm();
+            this.generateDefaultForm();
+          },
+          (error) => {
+            this.showErrorPopup("", error.error.error.message.value, "Error")
           });
         }
       }
