@@ -112,7 +112,8 @@ export class DiagnosesComponent implements OnInit {
   pdfUrlType: string;
   htmlData: any;
   firstFiveDocuments: [string, any[]][];
-  newLimitProfileList: { [key: string]: any[] } = {};;
+  newLimitProfileList: { [key: string]: any[] } = {};modalReference: any;
+;
   
   constructor(
     private sanitizer: DomSanitizer,
@@ -613,16 +614,17 @@ export class DiagnosesComponent implements OnInit {
     this.closeAllForm();
     this.sattingmodel= content;
     this.saveUserconfig = Object.assign({}, this.userconfig);
-    this.modalService
-      .open(content, { windowClass: 'myCustomModalClass' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+    // Store the modal reference when opening the modal
+  this.modalReference = this.modalService.open(content, { windowClass: 'myCustomModalClass' });
+
+  this.modalReference.result.then(
+    (result) => {
+      this.closeResult = `Closed with: ${result}`;
+    },
+    (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    }
+  );
   }
 
   async updateUserConfig(userconfig: UserConfig) {
@@ -630,6 +632,9 @@ export class DiagnosesComponent implements OnInit {
     this.userconfig = userconfig;
     this.closeAllForm();
     this.active = false;
+    if (this.modalReference) {
+      this.modalReference.close();
+    }
   }
 
   changeDefaultVisitNote(event: any, userconfig: UserConfig) {
@@ -686,11 +691,11 @@ export class DiagnosesComponent implements OnInit {
         customClass: 'myalertpopup'
       }).then((result) => {
         if (result.value) {
-          this.modelOpenProcess(paitentData, paitentData.Oldversion)
+          this.modelOpenProcess(paitentData, oldversion)
         }
       })
     } else {
-      this.modelOpenProcess(paitentData, paitentData.Oldversion)
+      this.modelOpenProcess(paitentData,oldversion)
     }
   }
 
@@ -706,6 +711,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   FormOpenInPatient(paitentData: any, oldversion?: boolean) {
+    debugger
     if (this.editing) {
       Swal.fire({
         text: "Are you sure you want to close without saving?",
@@ -781,7 +787,7 @@ export class DiagnosesComponent implements OnInit {
     )
     .subscribe((patientResult: any) => {
       this.inPatientSoapData = patientResult;
-
+      console.log(paitentData, "left side data");
       if (paitentData.Released) {
         this.isInPatientSoap = true;
         this.inPatientForm = "OutSOAP";
@@ -802,6 +808,127 @@ export class DiagnosesComponent implements OnInit {
   }
   }
 
+  // modelFormOpenInPatient(paitentData,oldversion?: boolean) {
+  //   this.oldversion = oldversion;
+  //   this.closeAllForm();
+  //   this.soapPdf={};
+  //   this.patientVisitRecord = {} as PatientVisitDataResult;
+  //   this.inPatientVisitData = {} as InPatientDataResult;
+  //   this.inPatientDischargeData = {}
+  //   this.inPatientSoapData = {}
+  //   if (paitentData?.Dtid !== 'ZMED_SOAP' && paitentData?.Dtid !== 'ZMED_VISIT') {
+  //     this.inPatientConfigurationService
+  //       .getPatientVisitDataByDocKey(paitentData.Dockey)
+  //       .pipe(
+  //         untilDestroyed(this),
+  //         catchError((err) => {
+  //           return of([]);
+  //         })
+  //       )
+  //       .subscribe((patientResult: InPatientDataResult) => {
+  //         this.inPatientVisitData = patientResult;
+  //         this.inPatientShow = false;
+  //         this.inPatientForm = "";
+  //         if (this.inPatientVisitData.Released) {
+  //           this.pdfFormOpen();
+  //         } else if (!paitentData.Released && paitentData?.Dtid !== "ZMED_ATCHM") {
+  //           if (paitentData?.Dtid === "ZMED_OPERT") {
+  //             this.inPatientShow = true;
+  //             this.inPatientForm = "OPERT";
+  //           } else if (paitentData?.Dtid === "ZMED_ORRPT") {
+  //             this.inPatientShow = true;
+  //             this.inPatientForm = "ORRPT";
+  //           } else if (paitentData?.Dtid === "ZMED_SOAP") {
+  //             this.soapFormOpen();
+  //             this.inPatientShow = true;
+  //             this.inPatientForm = "SOAP";
+  //             this.inPatientSoapForm = true
+  //           } else if (paitentData?.Dtid === "ZMED_PHDIS") {
+  //             this.inPatientShow = true;
+  //             this.inPatientForm = "PHDIS";
+  //             this.inPatientConfigurationService.getPatientSummaryDataByDocKey(paitentData.Dockey).subscribe((resp) => {
+  //               if (resp && resp.results && resp.results.length) {
+  //                 this.inPatientDischargeData = resp;
+  //               }
+  //             })
+
+  //           }
+  //         } else {
+  //           this.getReleasedPdf(this.inPatientVisitData);
+  //           this.pdfFormOpen();
+  //           this.inPatientShow = false;
+  //           this.inPatientForm = "";
+  //         }
+  //       });
+  //   } else if (paitentData?.Dtid == 'ZMED_SOAP') {
+  //     this.userConfigurationService
+  //       .getSoapPatientVisitData(paitentData.Dockey)
+  //       .pipe(
+  //         untilDestroyed(this),
+  //         catchError((err) => {
+  //           return of([]);
+  //         })
+  //       )
+  //       .subscribe((patientResult: any) => {
+
+  //         this.inPatientSoapData = patientResult;
+
+  //         if (this.inPatientSoapData.Released
+  //         ) {
+  //           this.isInPatientSoap = true;
+  //           this.getReleasedPdf(this.inPatientSoapData);
+  //           this.pdfFormOpen();
+  //         } else {
+  //           this.soapFormOpen();
+  //           this.inPatientShow = true;
+  //           this.inPatientForm = "SOAP";
+  //           this.inPatientSoapForm = true
+  //         }
+  //       });
+  //   }else if (paitentData?.Dtid == 'ZMED_VISIT'){
+  //     this.userConfigurationService
+  //     .getPatientVisitData(paitentData.Dockey) .pipe(
+  //       untilDestroyed(this),
+  //       catchError((err) => {
+  //         return of([]);
+  //       })
+  //     )
+  //     .subscribe((patientResult: PatientVisitDataResult) => {
+  //       this.patientVisitRecord = patientResult;
+  //       if (
+  //         this.patientVisitRecord?.Dtid == DocType.ZMED_MEDRP ||
+  //         this.patientVisitRecord?.Released == 'X'
+  //       ) {
+  //         this.pdfFormOpen();
+  //       } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_VISIT) {
+  //         this.visitFormOpen();
+  //       }
+  //       if(this.patientVisitRecord){
+  //         this.InOutPatientViewValue = {
+  //           showBoth: false,
+  //           showIn: false,
+  //           showOut: true,
+  //         };
+  //       }else{
+  //         this.InOutPatientViewValue = {
+  //           showBoth: true,
+  //           showIn: false,
+  //           showOut: false,
+  //         };
+  //       }
+  //       this.modalService.dismissAll();
+  //     });
+  //   this.editing = false;
+  //   }
+  //   else
+  //   this.InOutPatientViewValue = {
+  //     showBoth: false,
+  //     showIn: true,
+  //     showOut: false,
+  //   };
+  //   this.modalService.dismissAll();
+  // }
+
   modelFormOpenInPatient(paitentData,oldversion?: boolean) {
     this.oldversion = oldversion;
     this.closeAllForm();
@@ -810,7 +937,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientDischargeData = {}
     this.inPatientSoapData = {}
-    if (paitentData?.Dtid !== 'ZMED_SOAP') {
+    if (paitentData?.Dtid !== 'ZMED_SOAP'&& paitentData?.Dtid !== 'ZMED_VISIT') {
       this.inPatientConfigurationService
         .getPatientVisitDataByDocKey(paitentData.Dockey)
         .pipe(
@@ -854,7 +981,7 @@ export class DiagnosesComponent implements OnInit {
             this.inPatientForm = "";
           }
         });
-    } else {
+    } else if (paitentData?.Dtid == 'ZMED_SOAP') {
       this.userConfigurationService
         .getSoapPatientVisitData(paitentData.Dockey)
         .pipe(
@@ -866,8 +993,9 @@ export class DiagnosesComponent implements OnInit {
         .subscribe((patientResult: any) => {
 
           this.inPatientSoapData = patientResult;
-
-          if (paitentData.Released
+          console.log(paitentData, "right side data");
+          
+          if (paitentData?.Released
           ) {
             this.isInPatientSoap = true;
             this.getReleasedPdf(this.inPatientSoapData);
@@ -877,6 +1005,29 @@ export class DiagnosesComponent implements OnInit {
             this.inPatientShow = true;
             this.inPatientForm = "SOAP";
             this.inPatientSoapForm = true
+          }
+        });
+    }else{
+      this.userConfigurationService
+        .getPatientVisitData(paitentData.Dockey)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((patientResult: any) => {
+
+          this.patientVisitRecord = patientResult;
+
+          if (this.patientVisitRecord.Released
+          ) {
+            this.isInPatientSoap = true;
+            this.getReleasedPdf(this.patientVisitRecord);
+            this.pdfFormOpen();
+          } else {
+            this.visitFormOpen();
+            this.inPatientShow = true;
           }
         });
     }

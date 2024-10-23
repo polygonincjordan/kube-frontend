@@ -141,7 +141,7 @@
                       class="mr-1">Physician Discharge Summary</span>
                   <span class="dropdown-item c-pointer d-flex align-items-center"
                   (click)="openModalForAttachment(attachmentmodal)"><img src="assets/img/in-patient-dropdown.png"
-                        class="mr-1">Attachment Documen</span>
+                        class="mr-1">Attachment Document</span>
                 </div>
               </span>
             </div>
@@ -393,7 +393,7 @@
 
               <div *ngFor="let paitentData of patientGridVisitdataSource"
                 class="detail_row"
-                (click)="modelFormOpenInPatient(paitentData)">
+                (click)="modifyAndOpenForm(paitentData)">
                 <div class="d-flex align-items-center w-100">
                   <span>{{ formatDate(paitentData.Erdattim) }}</span>
                   <p class="attending-section" style="width: 100%">
