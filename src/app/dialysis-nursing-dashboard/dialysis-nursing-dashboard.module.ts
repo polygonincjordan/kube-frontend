@@ -129,6 +129,10 @@ import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/m
 import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
 import { NursingAdmissionAssessmentModule } from '../shared-module/nursing-admission-assessment/nursing-admission-assessment.module';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { EOrderMainComponent } from './nurs-treatment-workarea/e-order-main/e-order-main.component';
+import { EOrderSearchlistComponent } from './nurs-treatment-workarea/e-order-searchlist/e-order-searchlist.component';
+import { CreateEorderComponent } from './nurs-treatment-workarea/create-e-order/create-e-order.component';
+import { EOrderHistoryComponent } from './nurs-treatment-workarea/e-order-history/e-order-history.component';
 
 
 const route: Routes = [
@@ -229,7 +233,11 @@ const route: Routes = [
     ReservationListComponent,
     HistoryListComponent,
     EmarWitnessComponent,
-    DrugEventsAdminComponent
+    DrugEventsAdminComponent,
+    EOrderMainComponent,
+    EOrderSearchlistComponent,
+    CreateEorderComponent,
+    EOrderHistoryComponent
   ],
   providers: [
     EmergencyService,

@@ -9,6 +9,11 @@
           <img src="assets/img/black-Folder.svg" class="tab-img">
           Orders Profile
         </div>
+        <div class="col-sm-1.5 tab-default"
+        [ngClass]="this.emergencyService.clinicalOrders?'tab-change' : 'tab-default'"
+        (click)="tabChange('clinicalOrders')" style="cursor: pointer;">
+        Clinical Orders  
+        </div>
         <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.Services?'tab-change' : 'tab-default'"
           style="cursor: pointer;" (click)="tabChange('Services')">
           <img src="assets/img/CPOE.svg" class="tab-img" *ngIf="!this.emergencyService.Services">
@@ -855,6 +860,9 @@
       <div class="order-templete-main" *ngIf="this.emergencyService.patientProfile">
         <app-patient-profile [showPatients]="showPatients"
           (assignPatient)="assignPatient($event)"></app-patient-profile>
+      </div>
+      <div *ngIf="this.emergencyService.clinicalOrders">
+        <app-e-order-main></app-e-order-main>
       </div>
 
       <ng-container *ngIf="this.emergencyService.PhysicianOrders">
