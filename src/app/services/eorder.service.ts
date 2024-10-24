@@ -163,6 +163,14 @@ export class eOrderService {
           this.loadFeesOrder();
           this.loadHistory();
           break;
+          case 'clinicalOrders':
+            this.navigationTab = 'Clinical';
+            this.feeServiceData = null;
+            this.feeServiceOrderData = null
+            // this.loadFeesOrder();
+            // this.loadHistory();
+            this.loadeOrderDataNew();
+            break;
         case 'Medications':
           this.navigationTab = 'Medications';
           this.feeServiceData = null;
@@ -294,6 +302,20 @@ export class eOrderService {
       this.clearData();
       this.loadParameters();
       this.loadConfiguration();
+    }
+  }
+
+  loadeOrderDataNew() {
+    this.loadParameters();
+    if (
+      this.constants.patnr !== undefined &&
+      this.constants.falnr !== undefined &&
+      this.constants.einri !== undefined
+    ) {
+      // this.loadPatientData(this.route.snapshot.queryParamMap.get('patnr'),this.route.snapshot.queryParamMap.get('falnr'),this.route.snapshot.queryParamMap.get('einri'));
+      this.clearData();
+      this.loadParameters();
+      this.loadClinicalOrder();
     }
   }
 
