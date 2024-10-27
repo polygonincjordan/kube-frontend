@@ -168,17 +168,12 @@
           </ul>
         </div>
         <div class="col-md-12">
-          <form [formGroup]="maintainvitalform" style="    max-height: 31em;
-  overflow: auto;">
+          <form [formGroup]="maintainvitalform" style="max-height: 31em; overflow: auto;">
             <table class="table table-bordered maintain-vital-table">
-              <thead style="
-          position: sticky;
-          top: 0;
-          z-index: 9;">
+              <thead style="position: sticky; top: 0; z-index: 9;">
                 <tr>
-                  <!-- <th scope="col" style="width: 1%;">Specify</th> -->
                   <th scope="col">Vital Signs</th>
-                  <th scope="col">Description </th>
+                  <th scope="col">Description</th>
                   <th scope="col" style="width: 111px;">Unit of Meas.</th>
                   <th scope="col" style="width: 128px;">Measured value</th>
                   <th scope="col">Additional info</th>
@@ -186,42 +181,57 @@
                   <th scope="col" style="width: 10%;">Reason</th>
                   <th scope="col">Planned Date</th>
                   <th scope="col">Planned Time</th>
-                  <!-- <th scope="col" style="width: 1%;">Cancelled</th> -->
                 </tr>
               </thead>
-              <tbody style="    background: #fbfcff;">
+              <tbody style="background: #fbfcff;">
                 <ng-container formArrayName="maintainVitalFormitems">
-                  <ng-container
-                    *ngFor="let item of maintainvitalform.get('maintainVitalFormitems')['controls']; let i = index;">
-                    <tr [formGroupName]="i"
-                      [ngClass]="selectedRowDelete?.Bcpid == item?.value?.Bcpid ? 'row-delete' : ''"
-                      (click)="rowDelete(item,i)" (dblclick)="openAllVitalModal(allVitalSignModal,i)">
-                      <!-- <td><input type="text" value="--"></td> -->
-                      <td [title]="maintainVitalFormitems['controls'][i]['controls']['Extid'].value"><input type="text"
-                          formControlName="Extid" style="font-weight:bold;pointer-events: none;"></td>
-                      <td [title]="maintainVitalFormitems['controls'][i]['controls']['Name'].value"><input type="text"
-                          formControlName="Name" style="font-weight:bold;pointer-events: none;"></td>
-                      <td><input type="text" formControlName="UnitTxt" style="pointer-events: none;"></td>
-                      <td><input type="text" formControlName="Value" style="font-weight: bold;"></td>
-                      <td><input type="text" formControlName="Addinfo"></td>
-                      <td><ng-select appendTo="body">
-                          <ng-option *ngFor=" let item of measuredValueQual" [value]="item">
-                            {{ item.Text }}
-                          </ng-option>
-                        </ng-select></td>
-                      <td><ng-select appendTo="body">
-                          <ng-option *ngFor=" let item of Reason" [value]="item">
-                            {{ item.ReasonText }}
-                          </ng-option>
-                        </ng-select></td>
-                      <td><input type="text" value="--"></td>
-                      <td><input type="text" value="--"></td>
-                      <!-- <td><input type="text" value="--"></td> -->
+                  <ng-container *ngFor="let item of maintainvitalform.get('maintainVitalFormitems')['controls']; let i = index;">
+                    <tr [formGroupName]="i" (click)="rowDelete(item, i)" (dblclick)="openAllVitalModal(allVitalSignModal, i)">
+                      <td [title]="item.controls.Extid.value" [ngClass]="{'new-class': selectedRowsIndex === i && selectedColIndex === 0 }">
+                        <input type="text" formControlName="Extid" id="cell-{{i}}-0" (keydown)="handleKeydown($event, i, 0)" style="font-weight:bold;pointer-events: none;">
+                      </td>
+                      <td [title]="item.controls.Name.value" [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 1 }">
+                        <input type="text" formControlName="Name" id="cell-{{i}}-1" (keydown)="handleKeydown($event, i, 1)" style="font-weight:bold;pointer-events: none;">
+                      </td>
+                      <td [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 2 }">
+                        <input type="text" formControlName="UnitTxt" id="cell-{{i}}-2" (keydown)="handleKeydown($event, i, 2)" style="pointer-events: none;">
+                      </td>
+                      <td [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 3 }">
+                        <input type="text" formControlName="Value" id="cell-{{i}}-3" (keydown)="handleKeydown($event, i, 3)" style="font-weight: bold;">
+                      </td>
+                      <td [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 4 }">
+                        <input type="text" formControlName="Addinfo" id="cell-{{i}}-4" (keydown)="handleKeydown($event, i, 4)">
+                      </td>
+                      <!-- Wrap ng-select in a div to capture keydown -->
+                      <td >
+                        <div (keydown)="handleKeydown($event, i, 5)">
+                          <ng-select appendTo="body" id="cell-{{i}}-5">
+                            <ng-option *ngFor="let item of measuredValueQual" [value]="item">
+                              {{ item.Text }}
+                            </ng-option>
+                          </ng-select>
+                        </div>
+                      </td>
+                      <!-- Wrap ng-select in a div to capture keydown -->
+                      <td>
+                        <div (keydown)="handleKeydown($event, i, 6)">
+                          <ng-select appendTo="body" id="cell-{{i}}-6">
+                            <ng-option *ngFor="let item of Reason" [value]="item">
+                              {{ item.ReasonText }}
+                            </ng-option>
+                          </ng-select>
+                        </div>
+                      </td>
+                      <td [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 7 }">
+                        <input type="text" value="--" id="cell-{{i}}-7" (keydown)="handleKeydown($event, i, 7)">
+                      </td>
+                      <td [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 8 }">
+                        <input type="text" value="--" id="cell-{{i}}-8" (keydown)="handleKeydown($event, i, 8)">
+                      </td>
                     </tr>
                   </ng-container>
                 </ng-container>
               </tbody>
-
             </table>
           </form>
         </div>

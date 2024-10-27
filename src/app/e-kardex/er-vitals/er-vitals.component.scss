@@ -464,3 +464,16 @@
   display: flex;
   align-items: center;
 }
+
+
+.new-class  input{
+  width: 100%;
+  border: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  background: antiquewhite !important;
+}
+.new-class{
+  background: antiquewhite !important; 
+}

@@ -81,6 +81,10 @@ export class ErVitalsComponent implements OnInit {
   DiastolicNormalRange: any;
   vitalNormalRange:any
   isCheckData: boolean = true;
+  nextInput: HTMLElement;
+  nextInputId: string;
+  selectedRowsIndex: number;
+  selectedColIndex: any;
   constructor(private chartService: ChartdataService, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, private modalService: BsModalService, private modalNgbService: NgbModal, public vitalsService: VitalsService, private emergencyService: EmergencyService, private formBuilder: FormBuilder, private storageService: StorageService) {
     this.chartDataConfig = this.chartService;
     this.maintainvitalform = this.formBuilder.group({
@@ -278,6 +282,47 @@ export class ErVitalsComponent implements OnInit {
       }
     ];
     this.deleteReasonsList();
+  }
+  handleKeydown(event: KeyboardEvent, rowIndex: number, colIndex: any): void {
+    const rowCount = this.maintainvitalform.get('maintainVitalFormitems')['controls'].length;
+    const colCount = 9; // Adjust based on the number of columns
+    let nextRow = rowIndex;
+    let nextCol = colIndex;
+  
+    switch (event.key) {
+      case 'ArrowLeft':
+        nextCol = colIndex > 0 ? colIndex - 1 : colCount - 1;
+        break;
+      case 'ArrowRight':
+        nextCol = colIndex < colCount - 1 ? colIndex + 1 : 0;
+        break;
+      case 'ArrowUp':
+        nextRow = rowIndex > 0 ? rowIndex - 1 : rowCount - 1;
+        break;
+      case 'ArrowDown':
+        nextRow = rowIndex < rowCount - 1 ? rowIndex + 1 : 0;
+        break;
+      default:
+        return; // If other keys are pressed, do nothing
+    }
+  
+    this.nextInputId = `cell-${nextRow}-${nextCol}`;
+    this.selectedRowsIndex = nextRow;
+    this.selectedColIndex = nextCol;
+    if(this.nextInputId == `cell-${nextRow}-5`){
+      this.nextInput = document.getElementById(`cell-${nextRow}-7`) as HTMLElement;
+      this.selectedColIndex = 7;
+    }else if (this.nextInputId ==`cell-${nextRow}-6` && event.key == 'ArrowLeft'){
+      this.nextInput = document.getElementById(`cell-${nextRow}-4`) as HTMLElement;
+      this.selectedColIndex = 4;
+    }
+    else {
+      this.nextInput = document.getElementById(this.nextInputId) as HTMLElement;
+    }
+    if (this.nextInput) {
+      this.nextInput.focus();
+      event.preventDefault();
+    }
   }
   openModalForErVital(checkinitem) {
     this.erListSelectedData = checkinitem;
