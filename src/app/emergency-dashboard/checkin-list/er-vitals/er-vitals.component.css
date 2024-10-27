@@ -137,3 +137,15 @@ span.pn-input-title{
     display: flex;   
     scroll-behavior: smooth;
 } 
+
+.new-class  input{
+    width: 100%;
+    border: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    background: antiquewhite !important;
+}
+.new-class{
+    background: antiquewhite !important; 
+}
