@@ -85,12 +85,14 @@
                           </span>
                         </td>
                         <td class="align-middle border-0 w-15 mw-small">
-                          <span class="d-inline-block align-top w-100">
+                          <span class="align-top w-100">
                             <!-- <select id="localization-select" class="form-control input-type-select" [(ngModel)]="element.localization">
                               <option *ngFor="let localElement of element.locationtype" [value]="localElement.code">
                                 {{localElement.description}}</option>
                             </select> -->
                             <ng-select
+                            [appendTo]="'body'"
+                            [dropdownPosition]="'bottom'"
                               [searchable]="true"
                               [(ngModel)]="element.localization">
                               <ng-option
