@@ -163,7 +163,7 @@
                           <input type="text" formControlName="Value" id="cell-{{i}}-3" (keydown)="handleKeydown($event, i, 3)" style="font-weight: bold;">
                         </td>
                         <td [ngClass]="{ 'new-class': selectedRowsIndex === i && selectedColIndex === 4 }">
-                          <input type="text" formControlName="Addinfo" id="cell-{{i}}-4" (keydown)="handleKeydown($event, i, 4)">
+                          <input type="text" id="cell-{{i}}-4" (keydown)="handleKeydown($event, i, 4)">
                         </td>
                         <!-- Wrap ng-select in a div to capture keydown -->
                         <td >
