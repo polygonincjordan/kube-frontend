@@ -873,7 +873,7 @@ export class DiagnosesComponent implements OnInit {
           this.inPatientSoapData = patientResult;
           console.log(paitentData, "right side data");
           
-          if (paitentData?.Released
+          if (paitentData?.DokstText ==="Released"
           ) {
             this.isInPatientSoap = true;
             this.getReleasedPdf(this.inPatientSoapData);
@@ -898,7 +898,7 @@ export class DiagnosesComponent implements OnInit {
 
           this.patientVisitRecord = patientResult;
 
-          if (this.patientVisitRecord.Released
+          if (paitentData?.DokstText ==="Released"
           ) {
             this.isInPatientSoap = true;
             this.getReleasedPdf(this.patientVisitRecord);
