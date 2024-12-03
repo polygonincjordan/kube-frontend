@@ -352,7 +352,7 @@ export class eOrderService {
           if (data && data.d) {
             this.configurationoption = data.d;
             this.configurationoptionBackup = JSON.parse(JSON.stringify(data.d));
-            this.configurationoptionBackup.Ordprofile ? this.navigationTab = 'Ordprofile' : this.configurationoptionBackup.Medicat ? this.navigationTab = 'Medications' : this.configurationoptionBackup.Doctfees ? this.navigationTab = 'Fees' : ''
+            this.configureNavigationDefault(this.configurationoptionBackup)
             if (this.configurationoptionBackup.Clinicord) {
               this.loadClinicalOrder();
             }
@@ -371,6 +371,27 @@ export class eOrderService {
       }
     );
   }
+
+  configureNavigationDefault(configuration) {
+    if (configuration.Clinicord) {
+      this.navigationTab = 'Clinical';
+    } else if (configuration.Medicat) {
+      this.navigationTab = 'Medications';
+    } else if (configuration.Doctfees) {
+      this.navigationTab = 'Fees';
+    } else if (configuration.Ordset) {
+      this.navigationTab = 'OrderSet';
+    } else if (configuration.Surgery) {
+      this.navigationTab = 'Surgery';
+    } else if (configuration.Consultation) {
+      this.navigationTab = 'Consultation';
+    } else if (configuration.Admission) {
+      this.navigationTab = 'Admission';
+    } else if (configuration.Ordprofile) {
+      this.navigationTab = 'Ordprofile';
+    }
+  }
+
 
   saveConfiguration() {
     this.spinner.show();
