@@ -176,7 +176,7 @@ export class eOrderService {
           this.feeServiceData = null;
           this.feeServiceOrderData = null
           this.loadFeesOrder();
-          this.loadHistory();
+          // this.loadHistory();
           this.loadMedicalOrder();
           break;
         case 'Fees':
@@ -322,7 +322,7 @@ export class eOrderService {
   loadClinicalOrder() {
     this.loadFavouriteData();
     this.loadLocalization();
-    this.loadHistory();
+    // this.loadHistory();
     if (this.eOrders === null) {
       this.switchVal.name = 'history';
     }
@@ -332,7 +332,7 @@ export class eOrderService {
     this.loadMedicalData();
     this.loadFrequency();
     this.loadDuration();
-    this.loadHistory();
+    // this.loadHistory();
     if (this.eOrders === null) {
       this.switchVal.name = 'history';
     }
@@ -362,6 +362,7 @@ export class eOrderService {
             if (this.configurationoptionBackup.Doctfees) {
               this.loadFeesOrder();
             }
+            this.loadHistory();
           }
           this.spinner.hide();
         }
@@ -2234,56 +2235,81 @@ export class eOrderService {
             customClass: 'myalertpopup',
             //type: "info",
           })
-            .then((result) => {
-              if (result.value) {
-                this.loadFrequency();
+          .then((result) => {
+            if (result.value) {
+              this.loadFrequency();
                 userSelect.forEach((obj) => {
                   let updateDate = "";
                   if (obj.date) {
                     updateDate = obj.date.split('-');
                   }
-                  if (obj.Vma || !obj.Reconcile) {
-                    swal
-                      .fire({
-                        title: "Bad Request",
-                        text: obj.Vma ? `Medication was written by another physician, Editing or Cancellation is not possible` : `Drug Item is reconciled, Changes are not possible`,
-                        confirmButtonColor: '#096798',
-                        confirmButtonText: 'close',
-                        customClass: 'myalertpopup',
-                        backdrop: true,
-                        icon: 'error',
-                      })
-                      .then((result) => {
-                        this.spinner.hide();
-                        this.clearData();
-                        this.resetView();
-                        this.loadHistory();
-                      });
-                  } else if (obj.Billed || obj.Reconcile) {
-                    swal
-                      .fire({
-                        title: "Bad Request",
-                        text: obj.Billed ? `Service ${obj.Talst} has been billed On ${updateDate[2]}.${updateDate[1]}.${updateDate[0]}. Editing is not possible` : `Medication Order has been already created, Editing or Cancellation is not possible`,
-                        confirmButtonColor: '#096798',
-                        confirmButtonText: 'close',
-                        customClass: 'myalertpopup',
-                        backdrop: true,
-                        icon: 'error',
-                      })
-                      .then((result) => {
-                        this.spinner.hide();
-                        this.clearData();
-                        this.resetView();
-                        this.loadHistory();
-                      });
-                  } else {
-                    this.loadMedicalDetails(obj);
-                    obj['dataType'] = 'EditHistoryData';
-                    obj['locationtype'] = this.localizationList;
-                    obj['frequency'] = this.frequencyObject;
-                    obj['editItem'] = true;
-                    obj['localization'] = obj.Lslok;
-                    this.onInsertOrder(obj);
+                  if(obj.type === 'MED' || obj.type === 'RAD'){
+                    if (obj.Vma || !obj.Reconcile) {
+                      swal
+                        .fire({
+                          title: "Bad Request",
+                          text: obj.Vma ? `Medication was written by another physician, Editing or Cancellation is not possible` : `Drug Item is reconciled, Changes are not possible`,
+                          confirmButtonColor: '#096798',
+                          confirmButtonText: 'close',
+                          customClass: 'myalertpopup',
+                          backdrop: true,
+                          icon: 'error',
+                        })
+                        .then((result) => {
+                          this.clearData();
+                          this.resetView();
+                          this.loadHistory();
+                        });
+                    } else if (obj.Billed || obj.Reconcile) {
+                      swal
+                        .fire({
+                          title: "Bad Request",
+                          text: obj.Billed ? `Service ${obj.Talst} has been billed On ${updateDate[2]}.${updateDate[1]}.${updateDate[0]}. Editing is not possible` : `Medication Order has been already created, Editing or Cancellation is not possible`,
+                          confirmButtonColor: '#096798',
+                          confirmButtonText: 'close',
+                          customClass: 'myalertpopup',
+                          backdrop: true,
+                          icon: 'error',
+                        })
+                        .then((result) => {
+                          this.clearData();
+                          this.resetView();
+                        });
+                    } else {
+                      this.loadMedicalDetails(obj);
+                      obj['dataType'] = 'EditHistoryData';
+                      obj['locationtype'] = this.localizationList;
+                      obj['frequency'] = this.frequencyObject;
+                      obj['editItem'] = true;
+                      obj['localization'] = obj.Lslok;
+                      this.onInsertOrder(obj);
+                    }
+                  }
+                  else{
+                    if (obj.Billed || obj.Reconcile) {
+                      swal
+                        .fire({
+                          title: "Bad Request",
+                          text: obj.Billed ? `Service ${obj.Talst} has been billed On ${updateDate[2]}.${updateDate[1]}.${updateDate[0]}. Editing is not possible` : `Medication Order has been already created, Editing or Cancellation is not possible`,
+                          confirmButtonColor: '#096798',
+                          confirmButtonText: 'close',
+                          customClass: 'myalertpopup',
+                          backdrop: true,
+                          icon: 'error',
+                        })
+                        .then((result) => {
+                          this.clearData();
+                          this.resetView();
+                        });
+                    } else {
+                      this.loadMedicalDetails(obj);
+                      obj['dataType'] = 'EditHistoryData';
+                      obj['locationtype'] = this.localizationList;
+                      obj['frequency'] = this.frequencyObject;
+                      obj['editItem'] = true;
+                      obj['localization'] = obj.Lslok;
+                      this.onInsertOrder(obj);
+                    }
                   }
                 });
               }
