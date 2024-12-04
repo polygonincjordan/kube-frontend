@@ -10,7 +10,8 @@
       <div style="display: flex;
       justify-content: end;align-items: center;flex:1">
         <ul class="allergy-header-ul d-flex">
-          <li class="allergy-header-item" [title]="storageService.patientData.name" style="max-width: 340px;min-width: 300px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">Patient Name :<span>{{storageService.patientData.name}}</span></li>
+          <li class="allergy-header-item" [title]="storageService.patientData.name" style="max-width: 340px;min-width: 300px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
+            Patient Name :<span>{{storageService.patientData.name}}</span></li>
           <li class="allergy-header-item">MRN: {{storageService.patnr}}</li>
           <li class="allergy-header-item">Admission date:
             {{storageService.patientData.periodStart | date : "dd.MM.y"}}
