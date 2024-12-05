@@ -169,7 +169,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
       Matnr: new FormControl(""),
       Arktx: new FormControl(""),
       Stock: new FormControl(""),
-      Menge: new FormControl("", Validators.required),
+      Menge: new FormControl("", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
       Meins: new FormControl(""),
       Lfdat: new FormControl(this.isFormatDate(new Date())),
       Lfsta: new FormControl("3"),
@@ -188,6 +188,13 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
       Lgort: new FormControl(""),
       isSelected: new FormControl(false),
     })
+  }
+
+  allowDecimalsOnly(event: KeyboardEvent): void {
+    const char = String.fromCharCode(event.which || event.keyCode);
+    if (!/[\d\.]/.test(char) || (char === '.' && (event.target as HTMLInputElement).value.includes('.'))) {
+      event.preventDefault();
+    }
   }
 
   public isAllchecked(event: any): void {

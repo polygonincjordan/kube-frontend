@@ -113,6 +113,7 @@ export class DiagnosesComponent implements OnInit {
   htmlData: any;
   firstFiveDocuments: [string, any[]][];
   newLimitProfileList: { [key: string]: any[] } = {};modalReference: any;
+  isEnlarge: boolean = false;
 ;
   
   constructor(
@@ -512,6 +513,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   openEnlarge(content, dataType: string) {
+    this.isEnlarge = true
     this.closeAllForm();
     this.bsRangeValue = [] as Date[];
     if (dataType === 'OutPatient') {
@@ -872,18 +874,33 @@ export class DiagnosesComponent implements OnInit {
 
           this.inPatientSoapData = patientResult;
           console.log(paitentData, "right side data");
-          
-          if (paitentData?.DokstText ==="Released"
-          ) {
-            this.isInPatientSoap = true;
-            this.getReleasedPdf(this.inPatientSoapData);
-            this.pdfFormOpen();
-          } else {
-            this.soapFormOpen();
-            this.inPatientShow = true;
-            this.inPatientForm = "SOAP";
-            this.inPatientSoapForm = true
-          }
+          if(this.isEnlarge){
+            if(paitentData.Released){
+              this.isInPatientSoap = true;
+              this.getReleasedPdf(this.inPatientSoapData);
+              this.pdfFormOpen();
+              this.isEnlarge = false;
+            }
+            else {
+              this.soapFormOpen();
+              this.inPatientShow = true;
+              this.inPatientForm = "SOAP";
+              this.inPatientSoapForm = true
+              this.isEnlarge = false;
+            }
+          }else{
+            if (paitentData?.DokstText ==="Released"
+            ) {
+              this.isInPatientSoap = true;
+              this.getReleasedPdf(this.inPatientSoapData);
+              this.pdfFormOpen();
+            } else {
+              this.soapFormOpen();
+              this.inPatientShow = true;
+              this.inPatientForm = "SOAP";
+              this.inPatientSoapForm = true
+            }
+          } 
         });
     }else{
       this.userConfigurationService
@@ -897,16 +914,30 @@ export class DiagnosesComponent implements OnInit {
         .subscribe((patientResult: any) => {
 
           this.patientVisitRecord = patientResult;
-
-          if (paitentData?.DokstText ==="Released"
-          ) {
-            this.isInPatientSoap = true;
-            this.getReleasedPdf(this.patientVisitRecord);
-            this.pdfFormOpen();
-          } else {
-            this.visitFormOpen();
-            this.inPatientShow = true;
+          if(this.isEnlarge){
+            if(paitentData.Released){
+              this.isInPatientSoap = true;
+              this.getReleasedPdf(this.patientVisitRecord);
+              this.pdfFormOpen();
+              this.isEnlarge = false;
+            }
+            else {
+              this.visitFormOpen();
+              this.inPatientShow = true;
+              this.isEnlarge = false;
+            }
+          }else{
+            if (paitentData?.DokstText ==="Released"
+            ) {
+              this.isInPatientSoap = true;
+              this.getReleasedPdf(this.patientVisitRecord);
+              this.pdfFormOpen();
+            } else {
+              this.visitFormOpen();
+              this.inPatientShow = true;
+            }
           }
+          
         });
     }
     this.InOutPatientViewValue = {
@@ -984,6 +1015,7 @@ export class DiagnosesComponent implements OnInit {
     if (isUpdate) {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+      this.getCurrentVisitDetails('1');
       this.getDataByUserConfig();
     }
   }
@@ -997,10 +1029,9 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientSoapForm = false;
     this.closeAllForm();
     if (isUpdate) {
-      setTimeout(() => {
-        
-        this.getCurrentVisitDetails('1')
-      }, 10000);
+      this.getCurrentVisitDetails('1')
+      // setTimeout(() => {
+      // }, 10000);
       
     }
   }

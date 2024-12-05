@@ -63,6 +63,10 @@
                 </ng-select>
               </td>
               <td colspan="1">
+                <input class="form-control" type="text" formControlName="Stock" [title]="product.value.Stock"
+                  [disabled]="true" [readOnly]="true">
+              </td>
+              <td colspan="1">
                 <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
                 [clearable]="true" [searchable]="true" formControlName="Meins">
                 <ng-option *ngFor="let item of UOMList" [value]="item.Meinh">
@@ -71,11 +75,7 @@
                 </ng-select>
               </td>
               <td colspan="1">
-                <input class="form-control" type="text" formControlName="Meins" [title]="product.value.Meins"
-                  [disabled]="true" [readOnly]="true">
-              </td>
-              <td colspan="1">
-                <input class="form-control" type="text" numbersOnly formControlName="Menge"
+                <input class="form-control" type="text" (keypress)="allowDecimalsOnly($event)"  formControlName="Menge"
                   [title]="product.value.Menge" required>
                 <div *ngIf="consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').invalid &&
               consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').touched"
