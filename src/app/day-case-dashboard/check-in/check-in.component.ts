@@ -1654,7 +1654,12 @@ export class CheckInComponent implements OnInit {
         this.modalService.hide();
       },
       error: (err: any) => {
-        this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+        if(!this.changeStatusForm.get('Bwizt')?.value){
+          this.sharedService.errorSwallModel('Error:Please Enter the Time').then((result) => { })
+        }else{
+
+          this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+        }
       }
     });
 

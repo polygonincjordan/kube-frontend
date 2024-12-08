@@ -40,7 +40,7 @@ export class AdministeredDoesEventComponent {
   public TimeReason: any[] = [];
   public adminiterList: any;
   userProfile: any[]
-  eventSet:any;
+  eventSet: any[] = []; 
   administered: boolean = true;
   notadministered: boolean = false;
   additionalsupply: boolean = false;
@@ -50,7 +50,7 @@ export class AdministeredDoesEventComponent {
 
   
   AdministerEventForm(eventset, data) {
-    this.changeEvents('Administered');
+    this.changeEvents('Administered');  
     let mainGroup= new FormGroup({
       Administrator: new FormGroup({
         Descr: new FormControl(eventset?.Descr),
@@ -73,8 +73,8 @@ export class AdministeredDoesEventComponent {
         Fsource: new FormControl(eventset?.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(eventset?.Events.AdmEmp),
-        Meresp2: new FormControl(eventset?.Events.WitnessEmp),
+        Meresp1: new FormControl(eventset?.AdmEmp),
+        Meresp2: new FormControl(eventset?.WitnessEmp),
         Quanunit: new FormControl(eventset?.Unit),
       }),
       NotAdminister: new FormGroup({
@@ -98,8 +98,8 @@ export class AdministeredDoesEventComponent {
         Rtimdif: new FormControl(eventset?.Rtimdif),
         Adnotestx: new FormControl(eventset?.Prncond),
         Quanunit: new FormControl(eventset?.Unit),
-        Meresp1: new FormControl(eventset?.Events.AdmEmp),
-        Meresp2: new FormControl(eventset?.Events.WitnessEmp),
+        Meresp1: new FormControl(eventset?.AdmEmp),
+        Meresp2: new FormControl(eventset?.WitnessEmp),
       }),
       DrugAdminister: new FormGroup({
         Descr: new FormControl(eventset?.Descr),
@@ -295,31 +295,6 @@ export class AdministeredDoesEventComponent {
         const selectedItem = values;
         this.listitem  = values;
         this.administratiForm = this.AdministerEventForm(this.eventSet[0], selectedItem);
-    //      this.administratiForm.patchValue({
-    //       Descrlt: selectedItem.Descrlt,
-    //       CombineofDose: `${selectedItem.Quan} ${selectedItem.Quantunittxt} ${selectedItem.Routedescr} ${selectedItem.Formatdescr} ${selectedItem.N1ztxt}`,
-    //       Admindose: `${selectedItem.Quan} ${selectedItem.Quantunittxt}`,
-    //       time: (selectedItem.Prn || selectedItem.Prncond !== "" ? new Date() : this.sanitizeSAPDateFormat(selectedItem.Pbdad, selectedItem.Pbtad)),
-    //       Rdrugdq: this.eventSet[0]?.Quan,
-    //       Quanunit: this.eventSet[0]?.Unit,
-    //       Rdosdif: '',
-    //       Rbdad: new Date(),
-    //       Rtimdif: this.eventSet[0]?.Rtimdif,
-    //       Prncond: selectedItem.Prncond,
-    //       Meresp1: this.storageService.getUserProfile().UserName,
-    //       Meresp2: selectedItem.Merespdata,
-    //       Empid: this.storageService.getUserProfile().UserName,
-    //       Pamountu: selectedItem.Pamountu,
-    //       Adnotestx: selectedItem.Adnotestx,
-    //       Rcodeid: selectedItem.Rcodeid,
-    //       Material: selectedItem.Material,
-    //       Ptime: selectedItem.Ptime,
-    //       Pdate: selectedItem.Pdate,
-    //       Pamount: selectedItem.Pamount,
-    //       Fsource: this.eventSet[0]?.Fsource,
-    //       Batch: selectedItem.Batch,
-    //       Nursingou: selectedItem.Nursingou
-    // });
       }
       else{
         this.checkboxclicktable = false;
