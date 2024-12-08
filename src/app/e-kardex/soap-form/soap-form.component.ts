@@ -63,7 +63,6 @@ export class SoapFormComponent implements OnInit {
   this.isUpdate = false;
   }
   async releaseForm() {
-    
     this.patientVisitData.Released = 'X';
     if(this.isUpdate){
     await this.patientVisitService.toReleaseSoapPatientVisitData(this.patientVisitData);

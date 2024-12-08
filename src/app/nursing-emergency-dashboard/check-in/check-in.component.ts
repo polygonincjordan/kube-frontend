@@ -23,6 +23,7 @@ import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.
 import { Subscription, forkJoin} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
+import { DomSanitizer } from '@angular/platform-browser';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -89,6 +90,7 @@ export class CheckInComponent implements OnInit {
   pdfUrl: any;
   selectedIconPdf: BsModalRef;
   modalRefForLab:BsModalRef;
+  OpenPdfModal:BsModalRef;
   activelabLabelData:any
   modalRefForTriage: BsModalRef;
   selectedPatientDetails: any;
@@ -97,6 +99,8 @@ export class CheckInComponent implements OnInit {
   private refreshSubscription: Subscription;
   refreshInterval:any;
   printUrl: any;
+  pdfData: any;
+  pdfSrc: any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -104,7 +108,8 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
-    private helperService:HelperService
+    private helperService:HelperService,
+    private sanitizer: DomSanitizer
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -672,7 +677,7 @@ export class CheckInComponent implements OnInit {
           this.ERlistDataClone = this.ERlistData;
           this.lastIndex = this.ERlistData.length - 1;
         }
-        this.getPrintUrl()
+        // this.getPrintUrl()
       },
       (_error: any) => { }
     );
@@ -1089,6 +1094,7 @@ export class CheckInComponent implements OnInit {
   }
 
   public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    this.getPrintUrl();
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-md lab-modal-size',
     };
@@ -1126,14 +1132,12 @@ export class CheckInComponent implements OnInit {
       this.printUrl = res.d.results[0].Url 
    })
   }
-  printLabel(){
-    console.log('=-=-=-=-=-click',this.printUrl,'--',this.activelabLabelData);
-    
+  printLabel(template: TemplateRef<any>){
     if(this.activelabLabelData){
       this.emergencyService.patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr).subscribe((res:any)=>{
-        if(res){
-          this.closeLabModal()
-        }
+        this.opendocumentPdf(template)
+        this.pdfData = res.d?.DataRaw;
+        this.closeLabModal()
       },
       (_error: any) => {
         // Swal.fire({
@@ -1149,6 +1153,24 @@ export class CheckInComponent implements OnInit {
     }
     
   }
+
+
+  opendocumentPdf(template: TemplateRef<any>) {
+    const byteArray = new Uint8Array(atob(this.pdfData).split("").map((char) => char.charCodeAt(0)));
+    const file = new Blob([byteArray], { type: "application/pdf" });
+  
+    // Create an object URL for the Blob
+    this.pdfUrl = URL.createObjectURL(file);
+  
+    // Open the modal
+    this.pdfFormOpen();
+  }
+  
+
+  closePdfModal(){
+    this.OpenPdfModal.hide();
+  }
+  
 
   openModalForTriage(template, data) {
     // Assuming this is within a method of your component or service

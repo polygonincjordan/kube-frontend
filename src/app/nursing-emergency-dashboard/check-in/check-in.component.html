@@ -421,8 +421,19 @@
   </div>
   <div class="modal-footer">
     <div style="text-align: end">
-      <button class="update-risk-save-btn" (click)="printLabel()">Print</button>
+      <button class="update-risk-save-btn" (click)="printLabel(document)">Print</button>
       <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #document>
+  <div class="Pdf_modal">
+    <iframe src="pdfSrc" width="500" height="400"></iframe>
+    <div class="bottom">
+      <button style="width: 100px;" (click)="closePdfModal()"> <img src="assets/img/Frame-icone.svg" style="width: 19px; cursor: pointer" title="Print Patient Label"/><span style="margin-left:7px">Print</span></button
+      ><button style="width: 100px;"  (click)="closePdfModal()">Close</button>
     </div>
   </div>
 </ng-template>

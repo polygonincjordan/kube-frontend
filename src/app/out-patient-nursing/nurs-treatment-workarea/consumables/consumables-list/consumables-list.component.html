@@ -57,10 +57,14 @@
                 <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Arktx"
                   (search)="searchMaterial($event.term, wordType.MaterialName$, i)"
-                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Arktx">
+                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Matnr + '' + product.value.Arktx">
                   <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
                     {{item.Maktx}}</ng-option>
                 </ng-select>
+              </td>
+              <td colspan="1">
+                <input class="form-control" type="text" formControlName="Stock" [title]="product.value.Stock"
+                  [disabled]="true" [readOnly]="true">
               </td>
               <td colspan="1">
                 <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
@@ -71,11 +75,7 @@
                 </ng-select>
               </td>
               <td colspan="1">
-                <input class="form-control" type="text" formControlName="Meins" [title]="product.value.Meins"
-                  [disabled]="true" [readOnly]="true">
-              </td>
-              <td colspan="1">
-                <input class="form-control" type="text" numbersOnly formControlName="Menge"
+                <input class="form-control" type="text" (keypress)="allowDecimalsOnly($event)"  formControlName="Menge"
                   [title]="product.value.Menge" required>
                 <div *ngIf="consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').invalid &&
               consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').touched"
