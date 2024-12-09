@@ -1958,18 +1958,23 @@ export class PatientDocumentationComponent implements OnInit {
 
  
 
-  formatTime(dateTimeString){     
-    if(dateTimeString){
-      if(!dateTimeString.toString().includes('PT')){
-            const date = new Date(dateTimeString)?.toISOString()            
-            const dateDataArr = date.split('T')        
-            return `PT${dateDataArr[1].substring(0,2)}H${dateDataArr[1].substring(3,5)}M${dateDataArr[1].substring(6,8)}S`
+  formatTime(dateTimeString: string): string {
+    if (dateTimeString) {
+      if (!dateTimeString.toString().includes('PT')) {
+        // Assuming `dateTimeString` is in the format "HH:mm:ss"
+        const timeParts = dateTimeString.split(':');
+        if (timeParts.length === 3) {
+          const hours = timeParts[0].padStart(2, '0');
+          const minutes = timeParts[1].padStart(2, '0');
+          const seconds = timeParts[2].padStart(2, '0');
+          return `PT${hours}H${minutes}M${seconds}S`;
         }
+      }
     }
-    else{
-      return dateTimeString;
-    }
+    return dateTimeString;
   }
+  
+  
 
   getReleasedPdf(item) {
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {
@@ -2476,7 +2481,7 @@ cleanPayload(payload: any) {
 }
 
   postOpenAssessment(docStatus:string,action:string){
-    
+    debugger
     const toMonitor =
     this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
     const dAssessmentForm = this.patientDocService.dialysisAssecementForm;
