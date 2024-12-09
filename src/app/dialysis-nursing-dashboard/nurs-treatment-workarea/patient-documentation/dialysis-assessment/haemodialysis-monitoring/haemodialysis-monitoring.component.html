@@ -33,9 +33,8 @@
                 <input type="checkbox" name="" (change)="tableCheckChange($event,i)">
               </div>
             </td>
-            <td>
-              <input type="text" bsDatepicker
-              [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" class="border-0 px-3 py-2" name="Timee" style="width: 140px;" formControlName="Timee">
+            <td style="padding:3px">
+              <input type="time" class="border-0 px-3 py-2" name="Timee" style="width: 140px;" formControlName="Timee">
             </td>
             <td>
               <input type="text" class="border-0 px-3" style="width: 80px;" formControlName="Bfr">
