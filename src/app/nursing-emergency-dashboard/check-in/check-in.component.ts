@@ -169,6 +169,9 @@ export class CheckInComponent implements OnInit {
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
+    if (this.pdfUrl) {
+      URL.revokeObjectURL(this.pdfUrl); // Clean up the URL when the component is destroyed
+    }
   }
 
   assignMe(data: any) {
@@ -1132,43 +1135,57 @@ export class CheckInComponent implements OnInit {
       this.printUrl = res.d.results[0].Url 
    })
   }
-  printLabel(template: TemplateRef<any>){
-    if(this.activelabLabelData){
-      this.emergencyService.patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr).subscribe((res:any)=>{
-        this.opendocumentPdf(template)
-        this.pdfData = res.d?.DataRaw;
-        this.closeLabModal()
-      },
-      (_error: any) => {
-        // Swal.fire({
-        //   text: 'something went worng.',
-        //   icon: 'error',
-        //   confirmButtonText: 'Ok',
-        //   customClass: 'myalertpopup'
-        // })
-      
-      }
-    ); 
-      this.closeLabModal();
+  printLabel(template: TemplateRef<any>) {
+    if (this.activelabLabelData) {
+      this.emergencyService
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .subscribe(
+          (res: any) => {
+            if (res?.d?.DataRaw) {
+              this.pdfData = res.d.DataRaw;
+              this.opendocumentPdf(template);
+              this.closeLabModal()
+            } else {
+              this.showError('No PDF data available.');
+            }
+          },
+          (_error: any) => {
+            this.showError('Something went wrong while fetching the label.');
+          }
+        );
     }
-    
   }
-
-
+  
   opendocumentPdf(template: TemplateRef<any>) {
-    const byteArray = new Uint8Array(atob(this.pdfData).split("").map((char) => char.charCodeAt(0)));
-    const file = new Blob([byteArray], { type: "application/pdf" });
-  
-    // Create an object URL for the Blob
-    this.pdfUrl = URL.createObjectURL(file);
-  
-    // Open the modal
-    this.pdfFormOpen();
+    try {
+      const byteArray = new Uint8Array(
+        atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
+      );
+      const file = new Blob([byteArray], { type: 'application/pdf' });
+      this.pdfUrl = URL.createObjectURL(file);
+      this.pdfFormOpen(); // Open the modal
+    } catch (error) {
+      this.showError('Error processing the PDF data.');
+    }
   }
+  
+  showError(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+    this.closeLabModal(); // Ensure modal cleanup
+  }
+  
+ 
+  
   
 
   closePdfModal(){
     this.OpenPdfModal.hide();
+    this.closeLabModal()
   }
   
 
