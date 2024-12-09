@@ -42,6 +42,7 @@ export class ProgressNotesComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.paramsObj.patientId = params.patnr;
       this.paramsObj.caseid = params.falnr;
+      this.paramsObj.tretmentOU = params.tretmentOU;
     });
   }
 
@@ -61,7 +62,8 @@ export class ProgressNotesComponent implements OnInit {
       ProfGroup: [this.userProfileDetail.ProfGroup],
       ActionDate: [new Date()],
       ActionTime: [new Date().getHours() + ':' + new Date().getMinutes()],
-      DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
+      // DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
+      DocumentOu: [this.paramsObj.tretmentOU],
       Text: ['', [Validators.required]],
       Category: [],
       EmployeeResp: ['9000000000'],
@@ -129,6 +131,7 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   createProgressNote() {
+    
     if (this.progressNoteForm.value.ProfGroup) {
       if (this.progressNoteForm.value.Text) {
         let createTime = this.progressNoteForm.value.ActionTime.split(':');

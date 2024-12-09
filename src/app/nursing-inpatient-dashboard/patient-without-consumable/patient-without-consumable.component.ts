@@ -17,8 +17,9 @@ export class PatientWithoutConsumableComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() sendFilterOption = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
 
-  public patientWithoutConsumableList: Array<PatientWithouConsumables> = [];
+  public patientWithoutConsumableList:any = [];
   public filteredPatients: Array<PatientWithouConsumables> = [];
   public financialCategory: Array<any> = [];
   public statucList: Array<any> = [];
@@ -31,6 +32,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
   // Sorting properties
   public sortColumn: string = '';
   public sortDirection: string = 'asc'; // Default sorting direction
+  patientWithoutConsumableListClone: any[];
 
 
   constructor(
@@ -61,6 +63,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
       next: (resp: PatientWithouConsumables) => {
         if (resp && resp) {
           this.patientWithoutConsumableList = this.filteredPatients = resp.d.results;
+          this.patientWithoutConsumableListClone = this.filteredPatients = resp.d.results;
           this.patientWithoutConsumableList.forEach((ele: any) => {
             this.financialCategory.push(ele?.FinancecategoryName);
             this.statucList.push(ele?.StatusText);
@@ -73,6 +76,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoConsumable$, true, value);
           this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
+          this.dataToParent.emit(this.patientWithoutConsumableList);
         }
       }
     });
@@ -156,52 +160,18 @@ export class PatientWithoutConsumableComponent implements OnInit {
   }
 
   public filterListData(event) {
-    let filterValue = this.filteredPatients;
-    if ((event.Status && event.Status != '') && (event.FCategory && event.FCategory != '')) {
-      // if (event.Status && event.Status.length) {
-      //   console.log('event',event);
-        
-      //   this.statusValueArr = event.Status.map((statusValue) => {
-      //     console.log('statusValue',statusValue);
-      //     return filterValue.filter((element: any) => {
-      //       const statusText = element.StatusText ? element.StatusText.trim().toLowerCase() : ''; // Handle undefined or missing StatusText
-      //       return statusText === statusValue.trim().toLowerCase()
-      //     });
-      //   });
-      // }
-    
-
-      // if (event.FCategory && event.FCategory.length) {
-      //   this.categoryValueArr = event.FCategory.map((categoryValue) => {
-      //     return filterValue.filter((element: any) => {
-      //       const financeCategory = element.FinancecategoryName ? element.FinancecategoryName.trim().toLowerCase() : ''; // Handle undefined or missing FinancecategoryName
-      //       return financeCategory === categoryValue.trim().toLowerCase();
-      //     });
-      //   });
-      // }
-      const filteredData = filterValue.filter((item:any) => {
-        const statusMatch = event.Status.includes(item.StatusText);
-    
-        const fCategoryMatch = event.FCategory.includes(item.FinancecategoryName);
-    
-        return statusMatch && fCategoryMatch;
+   const statusFilter = event.Status;
+   const fCategoryFilter = event.FCategory;
+   const room = event.Rooms
+   const Physician = event.Physician
+   this.patientWithoutConsumableList = this.patientWithoutConsumableListClone.filter((item) => {
+        const statusMatch = statusFilter ? item.StatusText.includes(statusFilter) : true;
+        const physicianMatch = Physician ? item.PhysicianName.includes(Physician) : true;
+        const roomMatch = room && room.length > 0 ? room.includes(item.RoomidText) : true;
+        const fCategoryMatch = fCategoryFilter && fCategoryFilter.length > 0 ? fCategoryFilter.includes(item.FinancecategoryName) : true;
+        return statusMatch && fCategoryMatch && roomMatch && physicianMatch;
     });
-
-      // filterValue = this.flattenArrays([...this.statusValueArr, ...this.categoryValueArr]);
-
-      this.patientWithoutConsumableList = filteredData;
-      this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
-    } else {
-      // Reset the filter and show all patients
-      this.patientWithoutConsumableList = this.filteredPatients;
-      this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
-    }
-  }
-
-  
-
-  private flattenArrays(arrays: any[][]): any[] {
-    return arrays.reduce((acc, val) => acc.concat(val), []);
+  this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
   }
 
 }

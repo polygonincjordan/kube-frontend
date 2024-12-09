@@ -1,0 +1,163 @@
+label {
+  font-weight: bold;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.bg-tab {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background-color: #0056b0;
+  color: white;
+  border-radius: 5px;
+}
+
+.title {
+  color: #0056b0;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.sidenav {
+  overflow: auto;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: white;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.header-sidenav {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+.npo {
+  background-color: white;
+  padding: 5px 27px;
+}
+
+// .sidenav .closebtn {
+//   position: absolute;
+//   top: 0;
+//   right: 25px;
+//   font-size: 36px;
+//   margin-left: 50px;
+// }
+
+#main {
+  transition: margin-left 0.5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+.btn-default {
+  background-color: #c6c8ca;
+  color: white;
+  border-radius: 5px;
+}
+
+.input-with-symbol {
+  position: relative;
+  display: inline-block;
+}
+
+.unit-symbol {
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: black;
+  background-color: #d9d9d9;
+  padding: 9px;
+  width: 70px;
+}
+
+input[type="text"] {
+  padding-right: 45px;
+  /* Adjust this padding to make room for the unit */
+  font-size: 16px;
+  width: 200px;
+  /* Adjust the width as needed */
+}
+
+.table {
+  z-index: 1;
+}
+
+thead {
+  background-color: #f3f9ff;
+}
+
+tr td,
+tbody th {
+  vertical-align: middle;
+  background-color: #fbfcff;
+  text-wrap: nowrap;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  width: 100% !important;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-header {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #f8f8f8;
+
+  h4 {
+    color: #0056b0;
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
+.width-100 {
+  width: 100px;
+}
+
+.img-background {
+  background: #f5f5f8;
+  padding: 8px;
+  border-radius: 10px;
+}
+.total_net{
+  color: #01601B;
+    font-weight: 800;
+}
+
+.total_net_nagative{
+  color: #dc3545 !important;
+    font-weight: 800 !important;
+}

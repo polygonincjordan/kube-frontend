@@ -750,7 +750,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = false;
       this.reservation = false;
     } else if (module == 'erhistory') {
-      this.headerLabel = 'Day Case Discharged Patients';
+      this.headerLabel = 'Inpatient Discharged Patients';
       this.formDetailGroup
         .get('DateRange')
         .patchValue([new Date(), new Date()]);

@@ -15,6 +15,9 @@
               MRN
               <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i>
             </th>
+            <th scope="col" style="padding-left: 0px;">
+              Case# <i class="fa fa-sort" aria-hidden="true" (click)="sortCase()"></i>
+            </th>
             <th scope="col">Risk</th>
             <th scope="col" style="padding-left: 0px;" >
               Allergy
@@ -22,14 +25,11 @@
             <th scope="col" style="padding-left: 0px;">
               Vital
             </th>
-            <th scope="col" style="padding-left: 0px;">
-              Case
+            <th scope="col"  style="padding-left: 0px;">
+             Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="sortAdmission()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-             Admission Status
-            </th>
-            <th scope="col" style="padding-left: 0px;">
-              Date
+              Date <i class="fa fa-sort" aria-hidden="true" (click)="sortDate()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
@@ -38,16 +38,16 @@
               Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Dept. OU
+              Speciality <i class="fa fa-sort" aria-hidden="true" (click)="sortDept()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Diagnosis
+              Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="sortDiagnosis()"></i>
             </th>
             <!-- <th scope="col" style="padding-left: 0px;">
               Allergy
             </th> -->
             <th scope="col" style="padding-left: 0px;; min-width: 70px">
-              Diet
+              Diet <i class="fa fa-sort" aria-hidden="true" (click)="sortDiet()"></i>
             </th>
             <th scope="col" style="padding-left: 0px">
               Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
@@ -56,15 +56,15 @@
               Attending physician <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Attachment
+              Attachment <i class="fa fa-sort" aria-hidden="true" (click)="sortAttachment()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Isolation
+              Isolation <i class="fa fa-sort" aria-hidden="true" (click)="sortIsolation()"></i>
             </th>
             <th scope="col" style="padding-left: 0px">
-              Fin.Clearance Status
+              Fin.Clearance Status <i class="fa fa-sort" aria-hidden="true" (click)="sortIFinClearance()"></i>
             </th>
-            <!-- <th scope="col" style="text-align: center">Actions</th> -->
+            <th scope="col" style="text-align: center">Actions</th>
           </tr>
         </thead>
         &nbsp;
@@ -75,6 +75,7 @@
               {{ item.Pnamec }},({{ item.Gschle }}, {{ item.Agepat }})
             </td>
             <td style="padding-left: 0px" [title]="item.Patnr" class="border-top-none">{{ item.Patnr }}</td>
+            <td style="padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td class="border-left" style="width: 3%"
               [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
               <span>
@@ -91,7 +92,6 @@
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
             </td>
-            <td style="padding-left: 0px" [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
             <td style="padding-left: 0px" [title]="item.AdmissionStatus" class="border-top-none">{{ item.AdmissionStatus }}</td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
               [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
@@ -102,7 +102,7 @@
               {{ getTime(item.Bwizt) }}
             </td>
             <td style="padding-left: 0px" [title]="item.Zimmkub" class="border-top-none">{{ item.Zimmkub }}</td>
-            <td style="padding-left: 0px" [title]="item.Orgfa" class="border-top-none">{{ item.Orgfa }}</td>
+            <td style="padding-left: 0px" [title]="item.Orgfakb" class="border-top-none">{{ item.Orgfakb }}</td>
             <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
             <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
@@ -111,6 +111,24 @@
             <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
             <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
+            <td colspan="1" style="text-align: center; overflow: visible !important">
+              <div>
+                <div class="dropdown">
+                  <i
+                    class="fa fa-ellipsis-v dropdown-toggle"
+                    aria-hidden="true"
+                    style="cursor: pointer"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+                    <a class="dropdown-item c-pointer" (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">Change Status</a>
+                  </div>
+                </div>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -368,5 +386,98 @@
                  border-radius: 24px;" (click)="closeTriageModal()">Cancel</button>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<!-- change Status -->
+<ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
+  <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
+    <h4 class="modal-title" style="color: white">Change Admission Status</h4>
+  </div>
+  <div class="modal-body p-0">
+    <form [formGroup]="changeStatusForm">
+      <div class="p-3">
+        <p class="m-0">Are you sure you want to change status to <strong>{{ getStatusValue() }}</strong></p>
+      </div>
+      <div class="row m-0 mb-2" *ngIf="getStatusValue() === 'Actual Arrival'">
+        <div class="col-md-4 row m-0 align-items-center ">
+          <div class="col-md-4">
+            <strong class="m-0">Date</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"/>
+          </div>
+        </div>
+        <div class="col-md-3 row m-0 align-items-center pl-0" >
+          <div class="col-md-3 p-0">
+            <strong class="m-0">Time</strong>
+          </div>
+          <div class="col-md-9 p-0">
+            <input type="time" class="form-control" formControlName="Bwizt"  />
+          </div>
+        </div>
+        <div class="col-md-5 row m-0 align-items-center">
+          <div class="col-md-4">
+            <strong class="m-0">Comments</strong>
+          </div>
+          <div class="col-md-8 pl-0">
+            <input type="text" class="form-control" formControlName="Kztxt"  />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="getStatusValue() === 'Planned Discharge' || getStatusValue() === 'Actual Discharge'">
+        <div class="col-md-4 row m-0 align-items-center mb-2">
+          <div class="col-md-4">
+            <strong class="m-0">Date</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"/>
+          </div>
+        </div>
+
+        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
+          <div class="col-md-4 p-0">
+            <strong class="m-0">Dis. Type</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <ng-select formControlName="Bwart">
+              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value" >{{item?.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
+          <div class="col-md-5 p-0">
+            <strong class="m-0">Dis. Physician</strong>
+          </div>
+          <div class="col-md-7 pl-0">
+            <input type="text" class="form-control" formControlName="Pernr"  />
+          </div>
+        </div>
+        <div class="col-md-4 row m-0 align-items-center mb-2">
+          <div class="col-md-4">
+            <strong class="m-0">Time</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input type="time" class="form-control" formControlName="Bwizt"  />
+          </div>
+        </div>
+        <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
+          <div class="col-md-2 p-0">
+            <strong class="m-0">Comments</strong>
+          </div>
+          <div class="col-md-10 pl-0">
+            <input type="text" class="form-control" formControlName="Kztxt"  />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"  (click)="closeRiskModal()">No</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="changeStatus(admissionStatusModel?.AdmissionStatus)">Yes</button>
+  </div>
+  <div>
   </div>
 </ng-template>

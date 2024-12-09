@@ -14,62 +14,41 @@
 <div class="container-fluid d-flex p-0 check-in-table">
   <div class="w-100">
     <div class="row medicationRow admin-dose d-flex">
-      <div [ngClass]="rightside?'w-25':'w-100'">
+      <div [ngClass]="rightside ? 'w-40' : 'w-100'">
         <table class="table checkin-table custom-table-striped table-responsive-sm" *ngIf="tablelistshow">
           <thead>
             <tr class="checkin-table-header">
-              <th scope="col" style="padding-left: 11px;">
-                MRN
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Patient
-              </th>
-              <th scope="col">
-                DOB
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Room/Bed
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Allergy
-              </th>
+              <th scope="col" style="padding-left: 11px;">Patient Name</th>
+              <th scope="col" style="padding-left: 0px;">MRN</th>
+              <th scope="col" style="padding-left: 0px;">Case #</th>
+              <th scope="col">DOB</th>
+              <th scope="col" style="padding-left: 0px;">Room</th>
+              <th scope="col" style="padding-left: 0px;">Allergy</th>
               <th scope="col" style="padding-left: 0px;">Diagnosis</th>
-              <th scope="col" style="padding-left: 0px; ">
-                Physician
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Assigned Nurse
-              </th>
+              <th scope="col" style="padding-left: 0px;">Attending Physician</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of missedMedPatientList | filter:searchString ; let i = index"
-              (click)="openRightside(item)">
-              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">
-                {{item?.Patnr }}
+            <tr *ngFor="let item of missedMedPatientList | filter: searchString; let i = index" (click)="openRightside(item)">
+              <td class="border-top-none patient" style="padding-left: 1px;cursor: pointer;" [title]="item.PatientName">
+                {{item?.PatientName}}
               </td>
-              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Patname"> {{item?.Patname }}
-              </td>
+              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">{{item?.Patnr}}</td>
+              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Falnr">{{item?.Falnr}}</td>
               <td class="border-top-none patient" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
-                {{ getDate(item.PatientDob) | date : "dd.MM.y" }}
+                {{ getDate(item.PatientDob) | date : 'dd.MM.y' }}
               </td>
-              <td class="border-top-none patient" style="padding-left: 1px;"
-                [title]="item.RoomidText || item.BedidText">
-                {{ item?.RoomidText }} {{item?.BedidText}}
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.RoomidText">
+                {{ item?.RoomidText }}
               </td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Allergies">
-                {{ item?.Allergies}}
+                {{ item?.Allergies }}
               </td>
-              <td class="border-top-none allergy patient"
-                style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden;"
-                [title]="item.Diagnosis">
+              <td class="border-top-none allergy patient" style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden;" [title]="item.Diagnosis">
                 {{ item?.Diagnosis }}
               </td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.AttendingDoctorName">
-                {{ item?.AttendingDoctorName}}
-              </td>
-              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.NurseName">
-                {{ item?.NurseName}}
+                {{ item?.AttendingDoctorName }}
               </td>
             </tr>
           </tbody>
@@ -78,35 +57,25 @@
         <table class="table checkin-table custom-table-striped table-responsive-sm" *ngIf="tablelistshow1">
           <thead>
             <tr class="checkin-table-header">
-              <th scope="col" style="padding-left: 11px;">
-                MRN
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Patient
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                DOB
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Room/Bed
-              </th>
+              <th scope="col" style="padding-left: 5px;">Patient Name</th>
+              <th scope="col" style="padding-left: 11px;">MRN</th>
+              <th scope="col" style="padding-left: 0px;">Case #</th>
+              <th scope="col">DOB</th>
+              <th scope="col" style="padding-left: 0px;">Room</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of missedMedPatientList | filter:searchString ; let i = index"
-              (click)="openRightside(item)">
-              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">
-                {{item?.Patnr }}
+            <tr *ngFor="let item of missedMedPatientList | filter: searchString; let i = index" (click)="openRightside(item)">
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Patname">
+                {{item?.Patname}}
               </td>
-              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Patname"> {{item?.Patname }}
+              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">{{item?.Patnr}}</td>
+              <td class="border-top-none" style="padding-left: 1px;" [title]="item.Falnr">{{item?.Falnr}}</td>
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
+                {{ getDate(item.PatientDob) | date : 'dd.MM.y' }}
               </td>
-              <td class="border-top-none patient" style="padding-left: 1px;"
-                [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
-                {{ getDate(item.PatientDob) | date : "dd.MM.y" }}
-              </td>
-              <td class="border-top-none patient" style="padding-left: 1px;"
-                [title]="item.RoomidText || item.BedidText">
-                {{ item?.RoomidText }} {{item?.BedidText}}
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.RoomidText">
+                {{ item?.RoomidText }}
               </td>
             </tr>
           </tbody>
@@ -115,7 +84,7 @@
           No results
         </div>
       </div>
-      <div class="w-75" *ngIf="rightside">
+      <div class="w-60" *ngIf="rightside">
         <div class="event-component w-100">
           <app-administered-does-event (eventEmitter)="handleEvent(value)" [checkValue]="checkValue"
             [MedicationAdministrationList]="tablelist"
@@ -125,6 +94,7 @@
     </div>
   </div>
 </div>
+
 
 <ng-template #phyordertemplate>
   <div class="modal-header">

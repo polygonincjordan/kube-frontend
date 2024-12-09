@@ -1,0 +1,50 @@
+<div class="e-order-content" id="app-container">
+  <div class="d-flex">
+    <div class="container-fluid">
+      <div class="tab-navigation-part">
+        <div class="tab-navigate">
+          <div class="tab-nav">
+            <ul class="m-0 p-0 d-flex flex-wrap">
+              <li
+                class="d-flex m-0 align-items-center"
+                (click)="tabPanelNavigation('patients-diet-meal')"
+                [ngClass]="activeTab === 'patients-diet-meal' ? 'active' : ''"
+              >
+                <!-- <img src="assets/img/grid-icon.svg" /> -->
+                <p class="d-inline-block m-0">Patient’s Diet Meal ordering</p>
+              </li>
+              <!-- <li
+                class="d-flex m-0 align-items-center"
+                (click)="tabPanelNavigation('dislike-preference')"
+                [ngClass]="activeTab === 'dislike-preference' ? 'active' : ''"
+              >
+                <p class="d-inline-block m-0">Dislikes & Preference</p>
+              </li> -->
+              <li
+                class="d-flex m-0 align-items-center"
+                (click)="tabPanelNavigation('companion-meal-ordering')"
+                [ngClass]="
+                  activeTab === 'companion-meal-ordering' ? 'active' : ''
+                "
+              >
+                <!-- <img src="assets/img/grid-icon.svg" /> -->
+                <p class="d-inline-block m-0">Companion’s Meal Ordering</p>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-panel">
+            <ng-container *ngIf="activeTab === 'patients-diet-meal'">
+              <app-patients-diet-meal-new></app-patients-diet-meal-new>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'dislike-preference'">
+              <app-dislike-preference-new></app-dislike-preference-new>
+            </ng-container>
+            <ng-container *ngIf="activeTab === 'companion-meal-ordering'">
+              <app-companion-meal-ordering-new></app-companion-meal-ordering-new>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

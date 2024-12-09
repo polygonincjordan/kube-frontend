@@ -97,8 +97,8 @@ export class AdministeredDoesEventComponent {
         Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(eventset?.Rtimdif),
         Adnotestx: new FormControl(eventset?.Prncond),
-        Quanunit: new FormControl(eventset?.Unit),
         Meresp1: new FormControl(eventset?.Events.AdmEmp),
+        Quanunit: new FormControl(eventset?.Unit),
         Meresp2: new FormControl(eventset?.Events.WitnessEmp),
       }),
       DrugAdminister: new FormGroup({

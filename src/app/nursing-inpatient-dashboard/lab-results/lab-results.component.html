@@ -1,167 +1,155 @@
 <div class="edash-rightSide">
-    <div class="edash-mainContent">
-      <div class="container-fluid check-in-table">
-        <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
-          <img src="assets/img/pres-search-icon.svg" alt="" />
-          <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" />
-        </div>
-        <table class="table checkin-table custom-table-striped">
-          <thead>
-            <tr class="checkin-table-header">
-              <th scope="col" style="padding-left: 11px;">
-                Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Patient Name
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                MRN
-              </th>
-              <th scope="col" style="padding-left: 0px;">Room/Bed</th>
-              <th scope="col" style="padding-left: 0px; ">
-                Order Description
-              </th>
-              <th scope="col" style="padding-left: 0px;">
-                Order No
-              </th>
-              <th scope="col" style="padding-left: 0px;">
-                Order Status
-              </th>
-              <th scope="col" style="padding-left: 0px;">
-                Service Status
-              </th>
-              <th scope="col" style="padding-left: 0px;">
-                Created by
-              </th>
-              <th scope="col">
-                Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPhysician()"></i>
-              </th>
-              <th scope="col">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          &nbsp;
-          <tbody>
-            <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-              <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" [ngClass]="" class="border-top-none" (click)="redirectToTreatByName(item)">
-                {{ getDate(item.Datum) | date : "dd.MM.y" }}
-              </td>
-              <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
-              <td class="border-top-none" style="padding-left: 1px;">
-                {{ item.Patient }}
-              </td>
-              <td scope="row" class="border-top-none" style="padding-left: 1px;">
-                {{ item.Patnr }}
-              </td>
-              <td scope="row" class="border-top-none">
-                {{ item.Zimmr }} {{ item.Bett }}
-              </td>
-              <td scope="row" class="border-top-none" style="padding-left: 1px;">
-                {{ item.Leitx }}
-              </td>
-              <td scope="row" class="border-top-none" style="padding-left: 1px;">
-                {{ item.Prgnr }}
-              </td>
-              <td class="border-top-none" style="padding-left: 1px;">
-                {{ item.Posstatus }}
-              </td>
-              <td class="border-top-none" style="padding-left: 1px;">
-                {{ item.Lststatus }}
-              </td>
-              <td class="border-top-none" style="padding-left: 1px;">
-                {{ item.Erusr }}
-              </td>
-              <td class="border-top-none" [title]="getTimeSinceOrdered(item)">
-                {{ getTimeSinceOrdered(item) }}
-              </td>
-              <td style="width: 1%" >
-                <div style="display: flex; justify-content: end; line-height: 14px">
-                  <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
-                    <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
-                  </div>
-                  <div style="margin-left: 3px; margin-right: 3px" (click)="labSampleCollectedPrintModal(labSampleCollectedPrint,item)">
-                    <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
-                  </div>
+  <div class="edash-mainContent">
+    <div class="container-fluid check-in-table">
+      <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" />
+      </div>
+      <table class="table checkin-table custom-table-striped">
+        <thead>
+          <tr class="checkin-table-header">
+            <th scope="col" style="padding-left: 11px;">Patient Name <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatientName()"></i></th>
+            <th scope="col" style="padding-left: 0px;">MRN</th>
+            <th scope="col" style="padding-left: 0px;">Case #</th>
+            <th scope="col" style="padding-left: 0px;">Room</th>
+            <th scope="col" style="padding-left: 0px;">Order Description</th>
+            <th scope="col" style="padding-left: 0px;">
+              Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px;">
+              Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDesiredAt()"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px;">Order Status</th>
+            <th scope="col" style="padding-left: 0px;">Service Status</th>
+            <th scope="col" style="padding-left: 0px;">Order # <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortOrder()"></i></th>
+            <th scope="col" style="padding-left: 0px;">Created by</th>
+            <th scope="col">
+              Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTimeSince()"></i>
+            </th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
+            <td scope="row" class="border-top-none" style="padding-left: 11px;">
+              {{ item.Patient }}
+            </td>
+            <td scope="row" class="border-top-none" style="padding-left: 1px;">
+              {{ item.Patnr }}
+            </td>
+            <td scope="row" class="border-top-none">
+              {{ item.Falnr }}
+            </td>
+            <td scope="row" class="border-top-none">
+              {{ item.RoomidText }}
+            </td>
+            <td scope="row" class="border-top-none" style="padding-left: 1px;">
+              {{ item.Leitx }}
+            </td>
+            <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" class="border-top-none" (click)="redirectToTreatByName(item)">
+              {{ getDate(item.Datum) | date : "dd.MM.y" }}
+            </td>
+            <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">
+              {{ item.Posstatus }}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;">
+              {{ item.Lststatus }}
+            </td>
+            <td scope="row" class="border-top-none" style="padding-left: 1px;">
+              {{ item.Prgnr }}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;">
+              {{ item.Erusr }}
+            </td>
+            <td class="border-top-none" [title]="getTimeSinceOrdered(item)">
+              {{ getTimeSinceOrdered(item) }}
+            </td>
+            <td style="width: 1%">
+              <div style="display: flex; justify-content: end; line-height: 14px">
+                <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel, item)">
+                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div *ngIf="ERlistData?.length == 0" style="text-align: center">
-          No results
-        </div>
+                <div style="margin-left: 3px; margin-right: 3px" (click)="labSampleCollectedPrintModal(labSampleCollectedPrint, item)">
+                  <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="ERlistData?.length == 0" style="text-align: center">
+        No results
       </div>
     </div>
   </div>
-  <app-er-bed #erBed (reloadCheckin)="reload($event)"></app-er-bed>
-  <app-er-vitals #erVitalsModal></app-er-vitals>
+</div>
 
-  <ng-template #labPrintLabel>
-    <div>
-      <div class="allergy-header">
-        <div style="font-size: 23px; font-weight: bold">
-          <span>Printing Label</span>
-        </div>
-      </div>
-    </div>
-    <div class="modal-body" style="padding: 0 11px 0px">
-      <p>Are you sure you want to print label for "{{activelabLabelData?.Leitx}}" for "{{activelabLabelData?.Patient}}" with MRN {{activelabLabelData?.Patnr}}</p>
-    </div>
-    <div class="modal-footer">
-      <div style="text-align: end">
-        <button class="update-risk-save-btn" (click)="printLabel()">Print</button>
-        <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
-      </div>
-    </div>
-  </ng-template>
+<app-er-bed #erBed (reloadCheckin)="reload($event)"></app-er-bed>
+<app-er-vitals #erVitalsModal></app-er-vitals>
 
-  <ng-template #labSampleCollectedPrint>
-    <div>
-      <div class="allergy-header">
-        <div style="font-size: 23px; font-weight: bold">
-          <span>Status Change</span>
-        </div>
+<ng-template #labPrintLabel>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Printing Label</span>
       </div>
     </div>
-    <div class="modal-body" style="padding: 0 11px 0px">
-      <p>Are you sure you want to change status “{{activelabLabelData?.Leitx}}” to sample collected?</p>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <p>Are you sure you want to print label for "{{ activelabLabelData?.Leitx }}" for "{{ activelabLabelData?.Patient }}" with MRN {{ activelabLabelData?.Patnr }}</p>
+  </div>
+  <div class="modal-footer">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="printLabel()">Print</button>
+      <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
     </div>
-    <div class="modal-footer">
-      <div style="text-align: end">
-        <button class="update-risk-save-btn" (click)="sampleCollectedprint()">Yes</button>
-        <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
-      </div>
-    </div>
-  </ng-template>
+  </div>
+</ng-template>
 
-  <ng-template #commonColModal>
-    <div class="modal-body p-0">
-      <div class="infoModel-title" style="background: #0056b0">
-        <h4 class="m-0 pl-3">{{ colName }}</h4>
-      </div>
-      <div class="search-functionality search-image-comman col-md-10 pl-0 mt-2" *ngIf="this.colName == 'Allergen' || this.colName == 'RiskCode'">
-        <img src="assets/img/pres-search-icon.svg" alt="" />
-        <input type="text" placeholder="Search" id="searchFilter" class="form-control w-100" [(ngModel)]="searchString" (input)="someMethod(searchString)" />
-      </div>
-      <div style="max-height: 30em; overflow: auto; padding: 11px">
-        <table class="table table-bordered">
-          <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
-            <tr>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-          <tbody style="background: #fbfcff">
-            <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
-              <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText || item.TypText || item.Rsfna}}</td>
-            </tr>
-          </tbody>
-        </table>
+<ng-template #labSampleCollectedPrint>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Status Change</span>
       </div>
     </div>
-  </ng-template>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <p>Are you sure you want to change status "{{ activelabLabelData?.Leitx }}" to sample collected?</p>
+  </div>
+  <div class="modal-footer">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="sampleCollectedprint()">Yes</button>
+      <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
 
-  <app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
+<ng-template #commonColModal>
+  <div class="modal-body p-0">
+    <div class="infoModel-title" style="background: #0056b0">
+      <h4 class="m-0 pl-3">{{ colName }}</h4>
+    </div>
+    <div class="search-functionality search-image-comman col-md-10 pl-0 mt-2" *ngIf="this.colName == 'Allergen' || this.colName == 'RiskCode'">
+      <img src="assets/img/pres-search-icon.svg" alt="" />
+      <input type="text" placeholder="Search" id="searchFilter" class="form-control w-100" [(ngModel)]="searchString" (input)="someMethod(searchString)" />
+    </div>
+    <div style="max-height: 30em; overflow: auto; padding: 11px">
+      <table class="table table-bordered">
+        <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
+          <tr>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff">
+          <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
+            <td>{{ item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText || item.TypText || item.Rsfna }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+<app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
