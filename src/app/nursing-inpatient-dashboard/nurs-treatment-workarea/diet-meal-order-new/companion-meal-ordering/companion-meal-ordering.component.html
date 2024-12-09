@@ -1,0 +1,171 @@
+<div class="d-flex flex-row align-items-center bg-tab justify-content-between mt-2 p-3">
+    <h4 class="title">Companion’s Meal Ordering</h4>
+    <div>
+        <button class="btn btn-primary mr-2" (click)="createNewDiet('dietMeal')">
+            Order Companion Meal
+        </button>
+    </div>
+</div>
+<div id="mySidenav" class="sidenav" [ngStyle]="{ width: sidenavWidth }">
+    <form class="comparion-order" *ngIf="modalType == 'dietMeal'" [formGroup]="dietOrderForm" (ngSubmit)="saveForm()">
+        <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
+            <div class="title">Companion’s Meal Ordering Details</div>
+        </div>
+        <div class="container p-4">
+            <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                <label for="">Date</label>
+                <div class="w-70 d-flex flex-column">
+                    <div class="date-function mr-2">
+                        <input #drp="bsDatepicker" bsDatepicker formControlName="Mealday"
+                            (bsValueChange)="onStartDateChange($event)" [bsConfig]="{
+                  dateInputFormat: 'DD.MM.YYYY',
+                  containerClass: 'datepicker',
+                  showWeekNumbers: false,
+                  allowedPositions: ['top']
+                }" [class.is-invalid]="
+                  dietOrderForm?.get('Mealday')?.invalid &&
+                  dietOrderForm?.get('Mealday')?.touched
+                " class="form-control" style="border-radius: 10px" />
+                        <div *ngIf="
+                  dietOrderForm?.get('Mealday')?.invalid &&
+                  dietOrderForm?.get('Mealday')?.touched
+                " class="invalid-feedback">
+                            Please select a valid date.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                <label class="w-30" for="">Diet Consistency</label>
+                <div class="w-70">
+                    <input type="checkbox" formCOntrolName="Dietconsistency" value="X" [checked]="true" (change)="dietConsistencySelect('X', $event)"/>
+                    <label class="ml-2 m-0">Companion Meal</label>
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-between mb-2 mt-3">
+                <label class="w-30" for="">Diet Description</label>
+                <div class="w-70 flex-row mt-1">
+                    <div class="row m-0">
+                        <div class="col-md-4 pl-0">
+                            <input type="checkbox" formCOntrolName="Mealtype" value="B" (change)="selectMeal('B', $event, 'BreakFastQuantity')" 
+                            [checked]="dietOrderForm.get('Mealtype')?.value?.includes('B')" />
+                            <label class="ml-2 m-0">Breakfast</label>
+                        </div>
+                        <div class="col-md-6 ml-3">
+                            <input type="number" placeholder="quantity" class="form-control w-100" min="1" (input)="validateNumber($event)"
+                                formControlName="BreakFastQuantity" (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
+                        dietOrderForm?.get('BreakFastQuantity')?.invalid && isInvalidForm
+                      " />
+                            <div *ngIf="
+                        dietOrderForm?.get('BreakFastQuantity')?.invalid && isInvalidForm
+                      " class="invalid-feedback">
+                                Please enter quantity.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 m-0">
+                        <div class="col-md-4 pl-0">
+                            <input type="checkbox" formCOntrolName="Mealtype" value="L" (change)="selectMeal('L', $event, 'LunchQuantity')" 
+                            [checked]="dietOrderForm.get('Mealtype')?.value?.includes('L')" />
+                            <label class="ml-2 m-0">Lunch</label>
+                        </div>
+                        <div class="col-md-6 ml-3">
+                            <input type="number" placeholder="quantity" class="form-control w-100" min="1" (input)="validateNumber($event)"
+                                formControlName="LunchQuantity" (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
+                        dietOrderForm?.get('LunchQuantity')?.invalid && isInvalidForm
+                      " />
+                            <div *ngIf="
+                        dietOrderForm?.get('LunchQuantity')?.invalid && isInvalidForm
+                      " class="invalid-feedback">
+                                Please enter quantity.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 m-0">
+                        <div class="col-md-4 pl-0">
+                            <input type="checkbox" formCOntrolName="Mealtype" value="D" (change)="selectMeal('D', $event, 'DinnerQuantity')" 
+                            [checked]="dietOrderForm.get('Mealtype')?.value?.includes('D')"/>
+                            <label class="ml-2 m-0">Dinner</label>
+                        </div>
+                        <div class="col-md-6 ml-3">
+                            <input type="number" placeholder="quantity" class="form-control w-100" min="1" (input)="validateNumber($event)"
+                                formControlName="DinnerQuantity" (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
+                        dietOrderForm?.get('DinnerQuantity')?.invalid && isInvalidForm
+                      " />
+                            <div *ngIf="
+                        dietOrderForm?.get('DinnerQuantity')?.invalid && isInvalidForm
+                      " class="invalid-feedback">
+                                Please enter quantity.
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="
+                          dietOrderForm?.get('Mealtype')?.invalid && isInvalidForm
+                        " class="invalid-feedback">
+                        Please select a meal type.
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center justify-content-between mb-2 mt-3">
+                <label class="w-30" for="">Comment</label>
+                <div class="w-70 d-flex flex-column">
+                    <input type="text" class="form-control w-100" formControlName="Comments" [class.is-invalid]="
+                    dietOrderForm?.get('Comments')?.invalid &&
+                    dietOrderForm?.get('Comments')?.touched
+                  " />
+                    <div *ngIf="
+                    dietOrderForm?.get('Comments')?.invalid &&
+                    dietOrderForm?.get('Comments')?.touched
+                  " class="invalid-feedback">
+                        Please enter comment.
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 d-flex flex-row align-items-center justify-content-end">
+                <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <button type="submit" class="btn btn-primary mr-2">Confirm</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead">
+            <tr>
+                <th>Meal Date</th>
+                <th>Diet Consistency</th>
+                <th>Diet Description</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Date & Time</th>
+                <th>Username</th>
+                <th>Comment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+            <tr *ngFor="let item of companionOrderList">
+                <td [title]="dateFormate(item?.Mealday)">{{ dateFormate(item?.Mealday) }}</td>
+                <td>{{ item.Dietconsistency }}</td>
+                <td>{{ item.Diettype }}</td>
+                <td>{{ item.Quantity }}</td>
+                <td>{{ item.Servicestatustext }}</td>
+                <td>{{ dateFormate(item?.Createdon) }} {{ convertTime(item?.Createdat) }}</td>
+                <td [title]="item.Createdby">{{ item?.Createdby }}</td>
+                <td>{{ item.Comments }}</td>
+                <td class="width-100">
+                    <div>
+                        <!-- <img class="mr-2" src="assets/makassed-img/deal-view.svg" [tooltip]="'Display Order Details'" /> -->
+                        <img src="assets/makassed-img/deal-cancel.svg" [tooltip]="'Cancel Order'" />
+                        <!-- <img class="mr-2" src="assets/makassed-img/deal-edit.svg" [tooltip]="'Edit Order'" /> -->
+                        <img class="mr-2" src="assets/makassed-img/deal-confirm.svg" [tooltip]="'Confirm Order'" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -6,6 +6,7 @@ import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithouConsumables } from '@services/consumables/interfaces/consumables.interface';
 import { NoReleasedMissedDocuments } from '@services/consumables/interfaces/no-documents.inteface';
 import { DataShareService } from '@services/data-share.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { ActionType, FilterType, RedirectionType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
@@ -20,7 +21,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() sendErNoDocumentCount = new EventEmitter<any>();
-
+  @Output() dataToParent = new EventEmitter<any>();
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
   // @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
 
@@ -47,6 +48,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   public selectedIconPdf: BsModalRef;
   public documentUrl: SafeResourceUrl | null = null;
 
+
   constructor(
     private consumableService: ConsumableService,
     private storageService: StorageService,
@@ -55,6 +57,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
+    private dayCaseDashboardService: DayCaseDashboardService
   ) {
     this.RedirectionType = RedirectionType;
     this.ActionType = ActionType;
@@ -66,26 +69,26 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataShareService.sendFilterType(null);
-    this.getPatientWithoutDocuments([new Date() , new Date()]);
+    this.getPatientWithoutDocuments(new Date());
   }
 
   public getPatientWithoutDocuments(date? :any) {
-    const json = {
+   const json = {
       Deptcode:'3',
-      Datege :`${new DatePipe('en-US').transform(
-        date ?  date[0] : new Date().setDate(new Date().getDate()),
+      Datege:`${new DatePipe('en-US').transform(
+        date ?  date : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
       )}T00:00:00`,
-      Datele:`${new DatePipe('en-US').transform(
-        date ?  date[1]  :new Date().setDate(new Date().getDate()),
-        'yyyy-MM-dd'
-      )}T00:00:00`,
+      // Datele:`${new DatePipe('en-US').transform(
+      //   date ?  date[1]  :new Date().setDate(new Date().getDate()),
+      //   'yyyy-MM-dd'
+      // )}T00:00:00`,
       
     };
     this.consumableService.getMissedDocsSet(json).subscribe({
       next: (resp: any) => {
         if (resp && resp) {
-          this.noReleasedMissedDocumentsList = this.filterNoReleaseMissDoc = resp.d.results;
+          this.noReleasedMissedDocumentsList = this.filterNoReleaseMissDoc = resp?.d?.results;
           this.noReleasedMissedDocumentsList.forEach((ele: any) => {
             this.financialCategory.push(ele?.FinancecategoryName);
             this.statusList.push(ele?.StatusText);
@@ -97,6 +100,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoDocuments$, true, value);
           this.sendErNoDocumentCount.emit(this.noReleasedMissedDocumentsList.length);
+          this.dataToParent.emit(this.noReleasedMissedDocumentsList);
         }
       }
     });
@@ -161,6 +165,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   }
 
   public redirectToDocuments(data: any, type: string, action: string) {
+    this.dayCaseDashboardService.isRedirectToSelectedDoc = true;
     const json = {
       Patnr: data.Patient,
       Einri: data.Einri,
@@ -191,12 +196,21 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
         case RedirectionType.FAC$:
           this.getReleasedPdf('HTML', data.FacePainScaleDoknr);
           break;
-        case RedirectionType.TRASM$:
-          this.getReleasedPdf('PDF', data.EmergencyNursingDoknr);
+        case RedirectionType.NAA$:
+          this.getReleasedPdf('PDF', data.ZmedNradmDoknr);
           break;
+        case RedirectionType.SRGPP$:
+          this.getReleasedPdf('PDF', data.ZmedSrgppDoknr);
+        break;
         case RedirectionType.EDUAS$:
           this.getReleasedPdf('PDF', data.EducationAssessDoknr);
-          break;
+        break;
+        case RedirectionType.MORSE$:
+          this.getReleasedPdf('HTML', data.ScaMorseDoknr);
+        break;
+        case RedirectionType.NCP$:
+          this.getReleasedPdf('PDF', data.ZmedNcpDoknr);
+        break;
         default:
           // Handle other cases if needed
           break;

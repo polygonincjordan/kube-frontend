@@ -24,6 +24,7 @@ import { Subscription, forkJoin} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { SharedService } from '@services/shared.service';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -67,6 +68,7 @@ export class CheckInComponent implements OnInit {
   riskform: FormGroup;
   riskFormitems: FormArray;
   updateRiskForm: FormGroup;
+  changeStatusForm: FormGroup;
   modalRef: BsModalRef;
   colName: any;
   modalCommonDataArr: any;
@@ -97,6 +99,32 @@ export class CheckInComponent implements OnInit {
   selectedDocumentDetails: any;
   private refreshSubscription: Subscription;
   refreshInterval:any;
+  admissionStatusModel: any;
+  selectedStatus: any;
+
+  dischargeTypeList = [
+    {
+      label: 'AMA',
+      value: 'AM'
+    },
+    {
+      label: 'Deceased',
+      value: 'EX'
+    },
+    {
+      label: 'Dis.to Ext.Hosp',
+      value: 'DE'
+    },
+    {
+      label: 'Left w/o treat',
+      value: 'LW'
+    },
+    {
+      label: 'Reg. Discharge',
+      value: 'RD'
+    },
+  ]
+
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -105,7 +133,8 @@ export class CheckInComponent implements OnInit {
     private patientService: PatientService,
     private _route: ActivatedRoute,
     private helperService:HelperService,
-    private dayCaseDashboardService:DayCaseDashboardService
+    private dayCaseDashboardService:DayCaseDashboardService,
+    public sharedService:SharedService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -152,9 +181,9 @@ export class CheckInComponent implements OnInit {
       this.falnr = params.falnr;
       this.lfdnr = params.lfdnr;
     });
-    this.modalService.onHidden.subscribe((reason: string | undefined) => {
-      this.getErList();
-    });
+    // this.modalService.onHidden.subscribe((reason: string | undefined) => {
+    //   this.getErList();
+    // });
   }
 
 
@@ -648,7 +677,7 @@ export class CheckInComponent implements OnInit {
           this.sendErPatientCount.emit(this.ERlistData.length);
           // }
           _success.d.results.forEach((element) => {
-            if (element.StatusTxt != 'Checked Out') {
+            if (element.AdmissionStatus != 'Actual Discharge') {
               this.ERlistData.push(element);
               this.sendErPatientCount.emit(this.ERlistData.length);
               //   //this.triagePriorityList(element);
@@ -736,8 +765,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -751,8 +780,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -769,8 +798,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -784,8 +813,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -802,8 +831,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -817,8 +846,305 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortCase() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Falnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Falnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Falnr.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Falnr.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortAdmission() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Allergies.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Allergies.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Allergies.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Allergies.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortDate() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Bwidt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwidt.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Bwidt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwidt.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortDept() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortDiagnosis() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Diagnose.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Diagnose.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Diagnose.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Diagnose.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortDiet() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Zznmealstat.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zznmealstat.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Zznmealstat.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zznmealstat.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortAttachment() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.DokIcon.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.DokIcon.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.DokIcon.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.DokIcon.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortIsolation() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Zzisoindi.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zzisoindi.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Zzisoindi.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zzisoindi.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortIFinClearance() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.ZzfinClear.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -868,8 +1194,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -883,8 +1209,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -901,8 +1227,8 @@ export class CheckInComponent implements OnInit {
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -916,8 +1242,8 @@ export class CheckInComponent implements OnInit {
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1023,8 +1349,6 @@ export class CheckInComponent implements OnInit {
         // Handle getTriageLatestDocumentSet response
         const latestDocumentData = latestDocumentResponse.d.results[0];
         // Handle triage popup open based on condition
-        console.log('latestDocumentData', latestDocumentData);
-        console.log('triageListData', triageListData);
         // Do whatever processing you need with the responses here
         if (latestDocumentData === undefined) {
           this.triageModal.openModalForMain(data, '', triageListData);
@@ -1076,6 +1400,7 @@ export class CheckInComponent implements OnInit {
       Einri: data.Einri,
       Falnr: data.Falnr,
       Lfdnr: data.Lfdbw,
+      Treatmentou: data.Orgpf,
       redirectFor: '',
       doctype: '',
       action: ''
@@ -1233,6 +1558,113 @@ export class CheckInComponent implements OnInit {
         return 'Completed';
       default:
         return '';
+    }
+  }
+
+
+  public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
+    this.admissionStatusModel = data;
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md add-habit-size',
+      initialState: {
+        admissionStatusModel: this.admissionStatusModel // Pass data into the modal
+      }
+    };
+    this.modalRefForRisk = this.modalService.show(template, config);
+    this.changeStatusForm = this.formBuilder.group({
+      Einri: [this.admissionStatusModel?.Einri],
+      Falnr: [this.admissionStatusModel?.Falnr],
+      Lfdnr: [this.admissionStatusModel?.Lfdnr],
+      AdmStatusCode: [''],
+      Bwidt: [new Date()],
+      Bwizt: [''],
+      Kztxt: [''],
+      Bwart: [''],
+      Pernr: [this.admissionStatusModel?.BehArztName],
+    });
+
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+        this.admissionStatusModel = [];
+      }
+    });
+  }
+
+
+  getStatusValue() {
+    let currentStatus = this.admissionStatusModel.AdmissionStatus;
+    if (currentStatus === 'Planned Arrival') {
+      return 'Actual Arrival';
+    } else if (currentStatus === 'Actual Arrival') {
+      return 'Planned Discharge';
+    } else if (currentStatus === 'Planned Discharge') {
+      return 'Actual Discharge';
+    } else {
+      return '';
+    }
+  }
+
+  selectStatus(value){
+    if(value){
+      this.selectedStatus = value
+    }
+  }
+
+  changeStatus(visitStat: string) {
+    let visitStatCode: number;
+    
+    switch (visitStat.toLowerCase()) {
+        case 'planned arrival':
+            visitStatCode = 97;
+            break;
+        case 'actual arrival':
+            visitStatCode = 98;
+            break;
+        case 'planned discharge':
+            visitStatCode = 99;
+            break;
+        case 'actual discharge':
+            visitStatCode = 96;
+            break;
+        default:
+            visitStatCode = null; // Handle undefined cases
+    }
+     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    const json = {
+      Einri: this.admissionStatusModel.Einri,
+      Falnr: this.admissionStatusModel.Falnr,
+      Lfdnr: this.admissionStatusModel.Lfdnr,
+      AdmStatusCode: visitStatCode.toString(),
+      Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
+      Bwizt: createTime,
+      Kztxt: this.changeStatusForm.value.Kztxt,
+      Bwart: this.changeStatusForm.value.Bwart,
+      Pernr: this.admissionStatusModel.BehArzt,
+    };
+
+    if(!json?.Bwart) {
+      delete json.Bwart
+    }
+
+    this.emergencyService.changeAdmissionStatus(json).subscribe({
+      next: (_success: any) => {
+        this.getErList()
+        this.modalService.hide();
+      },
+      error: (err: any) => {
+        this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+      }
+    });
+
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
     }
   }
 }

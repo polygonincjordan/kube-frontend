@@ -107,6 +107,17 @@ span.pn-input-title{
 .maintain-vital-table .row-delete{
     background: antiquewhite;
 }
+.new-class  input{
+    width: 100%;
+    border: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    background: antiquewhite !important;
+}
+.new-class{
+    background: antiquewhite !important; 
+}
 .maintain-vital-table .row-delete input{
     width: 100%;
     border: none;
@@ -138,14 +149,9 @@ span.pn-input-title{
     scroll-behavior: smooth;
 } 
 
-.new-class  input{
-    width: 100%;
-    border: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    background: antiquewhite !important;
-}
-.new-class{
-    background: antiquewhite !important; 
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6; /* Reduce opacity to indicate it's disabled */
+    cursor: not-allowed;
 }

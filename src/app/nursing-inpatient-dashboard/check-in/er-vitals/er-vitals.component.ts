@@ -38,6 +38,7 @@ export class ErVitalsComponent implements OnInit {
   selectedRowIndex: any;
   stickyHead = true;
   searchString = '';
+  isEditAndDeleteAble: boolean = false;
   nextInput: HTMLElement;
   nextInputId: string;
   selectedRowsIndex: number;
@@ -59,6 +60,49 @@ export class ErVitalsComponent implements OnInit {
     this.initialValues();
     this.deleteReasonsList();
   }
+
+  handleKeydown(event: KeyboardEvent, rowIndex: number, colIndex: any): void {
+    const rowCount = this.maintainvitalform.get('maintainVitalFormitems')['controls'].length;
+    const colCount = 9; // Adjust based on the number of columns
+    let nextRow = rowIndex;
+    let nextCol = colIndex;
+  
+    switch (event.key) {
+      case 'ArrowLeft':
+        nextCol = colIndex > 0 ? colIndex - 1 : colCount - 1;
+        break;
+      case 'ArrowRight':
+        nextCol = colIndex < colCount - 1 ? colIndex + 1 : 0;
+        break;
+      case 'ArrowUp':
+        nextRow = rowIndex > 0 ? rowIndex - 1 : rowCount - 1;
+        break;
+      case 'ArrowDown':
+        nextRow = rowIndex < rowCount - 1 ? rowIndex + 1 : 0;
+        break;
+      default:
+        return; // If other keys are pressed, do nothing
+    }
+  
+    this.nextInputId = `cell-${nextRow}-${nextCol}`;
+    this.selectedRowsIndex = nextRow;
+    this.selectedColIndex = nextCol;
+    if(this.nextInputId == `cell-${nextRow}-5`){
+      this.nextInput = document.getElementById(`cell-${nextRow}-7`) as HTMLElement;
+      this.selectedColIndex = 7;
+    }else if (this.nextInputId ==`cell-${nextRow}-6` && event.key == 'ArrowLeft'){
+      this.nextInput = document.getElementById(`cell-${nextRow}-4`) as HTMLElement;
+      this.selectedColIndex = 4;
+    }
+    else {
+      this.nextInput = document.getElementById(this.nextInputId) as HTMLElement;
+    }
+    if (this.nextInput) {
+      this.nextInput.focus();
+      event.preventDefault();
+    }
+  }
+
   initialValues() {
     this.maintainVitalBarForm = this.formBuilder.group({
       Orgdo: [''],
@@ -289,50 +333,11 @@ export class ErVitalsComponent implements OnInit {
      
     ];
   }
-
-  handleKeydown(event: KeyboardEvent, rowIndex: number, colIndex: any): void {
-    const rowCount = this.maintainvitalform.get('maintainVitalFormitems')['controls'].length;
-    const colCount = 9; // Adjust based on the number of columns
-    let nextRow = rowIndex;
-    let nextCol = colIndex;
-  
-    switch (event.key) {
-      case 'ArrowLeft':
-        nextCol = colIndex > 0 ? colIndex - 1 : colCount - 1;
-        break;
-      case 'ArrowRight':
-        nextCol = colIndex < colCount - 1 ? colIndex + 1 : 0;
-        break;
-      case 'ArrowUp':
-        nextRow = rowIndex > 0 ? rowIndex - 1 : rowCount - 1;
-        break;
-      case 'ArrowDown':
-        nextRow = rowIndex < rowCount - 1 ? rowIndex + 1 : 0;
-        break;
-      default:
-        return; // If other keys are pressed, do nothing
-    }
-  
-    this.nextInputId = `cell-${nextRow}-${nextCol}`;
-    this.selectedRowsIndex = nextRow;
-    this.selectedColIndex = nextCol;
-    if(this.nextInputId == `cell-${nextRow}-5`){
-      this.nextInput = document.getElementById(`cell-${nextRow}-7`) as HTMLElement;
-      this.selectedColIndex = 7;
-    }else if (this.nextInputId ==`cell-${nextRow}-6` && event.key == 'ArrowLeft'){
-      this.nextInput = document.getElementById(`cell-${nextRow}-4`) as HTMLElement;
-      this.selectedColIndex = 4;
-    }
-    else {
-      this.nextInput = document.getElementById(this.nextInputId) as HTMLElement;
-    }
-    if (this.nextInput) {
-      this.nextInput.focus();
-      event.preventDefault();
-    }
-  }
-  openModalForErVital(checkinitem) {
+  openModalForErVital(checkinitem,tab?) {
     this.erListSelectedData = checkinitem;
+    if(tab==="erHistory"){
+      this.isEditAndDeleteAble=true
+    }
     const config: ModalOptions = { class: 'modal-dialog-centered er-vital-modal' };
     this.modalRef = this.modalService.show(this.erVitalsModal, config);
     this.modalRef.onHide.subscribe((reason: string | any) => {
@@ -489,7 +494,7 @@ export class ErVitalsComponent implements OnInit {
           // }
           this.addItemForVital(element);
         });
-        this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo);
+        this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData?.Orgpf);
         this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
         this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
         this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
@@ -609,7 +614,7 @@ export class ErVitalsComponent implements OnInit {
       "Lfdnr": this.erListSelectedData.Lfdbw,
       "Orgfa": "",
       "Orgpf": "",
-      "Orgdo": this.maintainVitalBarForm.controls.Orgdo.value,
+      "Orgdo": this.erListSelectedData?.Orgpf,
       "Mitarb": this.storageService.getGpart(),
       "Origin": "",
       "Odate": createDate,
@@ -670,7 +675,7 @@ export class ErVitalsComponent implements OnInit {
     // }else{
     //   this.maintainVitalBarForm.controls.Orgdo.setValue('');
     // }
-    this.maintainVitalBarForm.controls.Orgdo.setValue('EMEMDAMC');
+    this.maintainVitalBarForm.controls.Orgdo.setValue(this.erListSelectedData?.Orgpf);
     this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));

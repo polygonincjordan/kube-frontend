@@ -183,4 +183,10 @@ export class PatientService {
     }
     return typeof _risks === 'string' ? _risks : alternativeText;
   }
+
+  public getHeaderDataPatient(encounterId): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/patient/getHeaderDataPatient/${encounterId}`;
+    return this.http.get(url, { withCredentials: true })
+  }
+
 }

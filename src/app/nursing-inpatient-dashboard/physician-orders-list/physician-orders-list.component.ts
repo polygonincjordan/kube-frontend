@@ -73,6 +73,7 @@ export class PhysicianOrdersListComponent implements OnInit{
   oldDate: any;
   printUrl: any;
   dataOnTableForPhyOrder = [];
+  dataOnTableForPhyOrderClone=[]
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -628,9 +629,13 @@ export class PhysicianOrdersListComponent implements OnInit{
   }
       this.dayCaseDashboardService.getNotPhysicionOrderList(jsonObj1).subscribe(
         (_success: any) => {
-          this.dataOnTableForPhyOrder = _success?.d?.results;
-          this.dataToParent.emit(this.dataOnTableForPhyOrder);
-        })
+          if(_success){
+            this.dataOnTableForPhyOrder = _success?.d?.results;
+            this.dataOnTableForPhyOrderClone = _success?.d?.results;
+              this.dataToParent.emit(this.dataOnTableForPhyOrder);
+              this.sendErPatientCount.emit(this.dataOnTableForPhyOrder.length);
+            }
+        },(error)=>{})
   }
   
 
@@ -640,30 +645,14 @@ export class PhysicianOrdersListComponent implements OnInit{
    }
 
   filterPhysicianOrders(event) { 
-    const { wardNo, patientStatus, Physician } = event;
-    const filterFunction = (item) => {
-      let passWardFilter = true;
-      let passStatusFilter = true;
-      let passPhysicianFilter = true;
-      if (wardNo && item.RoomidText !== wardNo) {
-        passWardFilter = false;
-      }
-      if (patientStatus && item.Status !== patientStatus) {
-        passStatusFilter = false;
-      }
-      if (Physician && item.Erusr !== Physician) {
-        passPhysicianFilter = false;
-      }
-
-      if (patientStatus === "Recently discharged") {
-        passStatusFilter = item.Status === "Released";
-      }
-      return passWardFilter && passStatusFilter && passPhysicianFilter;
-      
-    };
-    const filteredList = this.dataOnTableForPhyOrder.filter(filterFunction);
-    this.dataOnTableForPhyOrder = filteredList;
-  }
+    const { wardNo, Physician } = event;
+    this.dataOnTableForPhyOrder = this.dataOnTableForPhyOrderClone.filter((item: any) => {
+        const matchesPhysician = Physician.length === 0 || Physician.includes(item.Erusr);
+        const matchesWardNo = !wardNo || item.RoomidText === wardNo;
+        
+        return matchesPhysician && matchesWardNo;
+    });
+   }
   
   
 
@@ -832,8 +821,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     if (!this.asc) {
       this.asc = true;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Erdat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Erdat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Date.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Date.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -847,8 +836,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     } else {
       this.asc = false;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Erdat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Erdat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Date.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Date.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -865,8 +854,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     if (!this.asc) {
       this.asc = true;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Ertim.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Ertim.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Time.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Time.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -878,8 +867,8 @@ export class PhysicianOrdersListComponent implements OnInit{
     } else {
       this.asc = false;
       this.dataOnTableForPhyOrder.sort((a, b) => {
-        const nameA = a.Ertim.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Ertim.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Time.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Time.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

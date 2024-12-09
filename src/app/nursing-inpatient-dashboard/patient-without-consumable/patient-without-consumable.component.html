@@ -9,40 +9,28 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr>
+            <th scope="col" (click)="sortTable('Patient')" style="padding-left: 11px;">
+              Patient Name
+              <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
             <th scope="col" (click)="sortTable('Patient')">
               MRN
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'Patient', 'fa-sort-up': sortColumn === 'Patient' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Patient' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
-            <th scope="col" (click)="sortTable('PatientName')">
-              Patient Name <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'PatientName', 'fa-sort-up': sortColumn === 'PatientName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PatientName' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-
-            <th scope="col" (click)="sortTable('Date')">
-              Date
+            <th scope="col" (click)="sortTable('Falnr')">
+              Case #
               <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'Date', 'fa-sort-up': sortColumn === 'Date' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Date' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-            <th scope="col" (click)="sortTable('Time')">
-              Time
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'Time', 'fa-sort-up': sortColumn === 'Time' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Time' && sortDirection === 'desc'}"
+                [ngClass]="{'fa-sort': sortColumn !== 'Falnr', 'fa-sort-up': sortColumn === 'Falnr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Falnr' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
             <th scope="col" (click)="sortTable('RoomidText')">
               Room
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'RoomidText', 'fa-sort-up': sortColumn === 'RoomidText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'RoomidText' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
-            <th scope="col" (click)="sortTable('StatusText')">
-              Status
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'StatusText', 'fa-sort-up': sortColumn === 'StatusText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'StatusText' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
             <th scope="col" (click)="sortTable('FinancecategoryName')">
@@ -52,52 +40,24 @@
                 aria-hidden="true"></i>
             </th>
             <th scope="col" (click)="sortTable('PhysicianName')">
-              Assigned Physician
+              Attending Physician
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'PhysicianName', 'fa-sort-up': sortColumn === 'PhysicianName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'PhysicianName' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
-            <th scope="col" (click)="sortTable('NurseName')">
-              Assigned Nurse
-              <i class="fa"
-                [ngClass]="{'fa-sort': sortColumn !== 'NurseName', 'fa-sort-up': sortColumn === 'NurseName' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'NurseName' && sortDirection === 'desc'}"
-                aria-hidden="true"></i>
-            </th>
           </tr>
         </thead>
-        &nbsp;
         <tbody>
           <tr *ngFor="let item of patientWithoutConsumableList | filter:searchString ; let i = index"
             (click)="redirectToTreatByName(item)">
-            <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}
-            </td>
-            <td scope="row" [ngClass]="" [title]="item.PatientName" class="border-top-none">
+            <td [title]="item.PatientName" class="border-top-none" style="padding-left: 11px;">
               {{ item.PatientName }}
             </td>
-            <td class="border-top-none" [title]="getDate(item.Date) | date : 'dd.MM.y'">
-              {{ getDate(item.Date) | date : "dd.MM.y" }}
-            </td>
-            <td scope="row" class="border-top-none" [title]="getTime(item.Time)">
-              {{ getTime(item.Time) }}
-            </td>
-            <td [title]="item.RoomidText" class="border-top-none">
-              {{ item.RoomidText }}
-            </td>
-            <td [title]="item.StatusText" class="border-top-none">
-              <!-- [ngClass]="[item.StatusText == 'Physician Start' ? 'status-physician-start': '', item.StatusText == 'Called' ? 'status-called' : '']" -->
-              <span>
-                {{ item.StatusText }}
-              </span>
-            </td>
-            <td scope="row" [title]="item.FinancecategoryName" class="border-top-none">
-              {{ item.FinancecategoryName }}
-            </td>
-            <td [title]="item.PhysicianName" class="border-top-none">
-              {{ item.PhysicianName }}
-            </td>
-            <td [title]="item.NurseName" class="border-top-none">
-              {{ item.NurseName }}
-            </td>
+            <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}</td>
+            <td [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
+            <td [title]="item.RoomidText" class="border-top-none">{{ item.RoomidText }}</td>
+            <td [title]="item.FinancecategoryName" class="border-top-none">{{ item.FinancecategoryName }}</td>
+            <td [title]="item.PhysicianName" class="border-top-none">{{ item.PhysicianName }}</td>
           </tr>
         </tbody>
       </table>

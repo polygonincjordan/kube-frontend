@@ -37,7 +37,9 @@ export class EmergencyService {
   public ePrescription: boolean = true;
   public orderdetails: boolean = false;
   public IOCharts: boolean = false;
+  public IOChartsPlus: boolean = false;
   public DietMealOrdering: boolean = false;
+  public DietMealOrderingPlus: boolean = false;
   public lab = false;
   public rad = false;
   public Consumables = false;
@@ -585,6 +587,8 @@ export class EmergencyService {
     this.IOCharts = false;
     this.DietMealOrdering = false;
     this.vitalSign = false
+    this.DietMealOrderingPlus = false;
+    this.IOChartsPlus = false;
     this.clinicalOrders = false;
     if (tabName && tabName === 'OrderSet') {
       this.OrderSet = true;
@@ -620,6 +624,10 @@ export class EmergencyService {
       this.vitalSign = true;
     }else if (tabName && tabName === 'clinicalOrders') {
       this.clinicalOrders = true;
+    } else if (tabName && tabName === 'DietMealOrderingPlus') {
+      this.DietMealOrderingPlus = true;
+    } else if (tabName && tabName === 'IOChartsPlus') {
+      this.IOChartsPlus = true;
     }
   }
   // tabPanelNavigation(tabName: any) {
@@ -1426,6 +1434,123 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+
+  fetchCompanionMealOrdering(mrn: string, caseNumber: string) {
+    return this.http.get(this.url + `fetchCompanionMealOrdering?mrn=${mrn}&falnr=${caseNumber}`, {
+      withCredentials: true,
+    });
+  }
+
+  confirmAndCancelDietOrder(paylaod: any) {
+    return this.http.post(this.url + `confirmAndCancelDietOrder`, paylaod, {
+      withCredentials: true,
+    });
+  }
+
+  fetchDietMealOrderDetails(einri: string, caseNumber: string) {
+    return this.http.get(this.url + `fetchDietMealOrderDetails?einri=${einri}&case=${caseNumber}`, {
+      withCredentials: true,
+    });
+  }
+
+  fetchDislikeList(mrn: string) {
+    return this.http.get(this.url + `fetchDislikeList?mrn=${mrn}`, {
+      withCredentials: true,
+    });
+  }
+
+  fetchAssessmentList(mrn: string, falnr: string) {
+    return this.http.get(this.url + `fetchAssessmentList?mrn=${mrn}&falnr=${falnr}`, {
+      withCredentials: true,
+    });
+  }
+
+  fetchSnackList() {
+    return this.http.get(this.url + `fetchSnackList`, {
+      withCredentials: true,
+    });
+  }
+  fetchNursingIndicatorsList() {
+    return this.http.get(this.url + `fetchNursingIndicatorsList`, {
+      withCredentials: true,
+    });
+  }
+  fetchFoodPrefList() {
+    return this.http.get(this.url + `fetchFoodPrefList`, {
+      withCredentials: true,
+    });
+  }
+  fetchDietMasterList() {
+    return this.http.get(this.url + `fetchDietMasterList`, {
+      withCredentials: true,
+    });
+  }
+  saveDeitMealOrder(paylaod: any) {
+    return this.http.post(this.url + `saveDeitMealOrder`, paylaod, {
+      withCredentials: true,
+    });
+  }
+
+  
+  ioChartCategoryList() {
+    const url = `${environment.eKardexApiUrl}/ioChartCategorySet`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
+  ioChartCategoryTypeCodeList() {
+    const url = `${environment.eKardexApiUrl}/ioChartCategoryTypeCodeSet`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
+  ioChartFullDeatials(Patnr: string, Falnr: string) {
+    const url = `${environment.eKardexApiUrl}/ioChartMainListSet?mrn=${Patnr}&falnr=${Falnr}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
+  startEndChartDetails(Patnr: string, Falnr: string) {
+    const url = `${environment.eKardexApiUrl}/startEndChartInfo?mrn=${Patnr}&falnr=${Falnr}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
+  viewHistoryDetails(Patnr: string, Falnr: string) {
+    const url = `${environment.eKardexApiUrl}/iochartHistoryList?mrn=${Patnr}&falnr=${Falnr}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
+  saveIOChartDetails(data) {
+    return this.http.post(this.url + 'saveIOChartData', data, {
+      withCredentials: true,
+    });
+  }
+
+  saveStartNewIOChart(data) {
+    return this.http.post(this.url + 'saveStartNewIOChart', data, {
+      withCredentials: true,
+    });
+  }
+
+  endTheCurrentIOChart(data) {
+    return this.http.post(this.url + 'endTheCurrentIOChart', data, {
+      withCredentials: true,
+    });
+  }
+
+  ioChartViewHistorySap(itemNo) {
+    return this.http.get(this.url + `ioChartViewHistorySap?itemNo=${itemNo}`, {
+      withCredentials: true,
+    });
+  }
+
 
   createAssessment(data: any) {
     console.log(data);

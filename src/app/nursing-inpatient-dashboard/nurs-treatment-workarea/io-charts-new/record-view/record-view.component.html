@@ -1,0 +1,191 @@
+<div class="d-flex flex-row align-items-center justify-content-between record-view-iochart mb-3">
+  <button type="button" (click)="back()" class="btn btn-primary mr-2">
+    <div class="d-flex flex-row align-items-center">
+      <i class="fa fa-chevron-left"></i> &nbsp; back
+    </div>
+  </button>
+  <div class="d-flex flex-row align-items-center w-20">
+    <div class="search-input col-md-12 pl-0">
+      <img src="assets/img/pres-search-icon.svg" alt="" />
+      <input type="text" placeholder="Search" class="form-control w-100" id="searchFilter" [(ngModel)]="searchText"
+        (input)="applyFilter()" />
+    </div>
+  </div>
+  <!-- <div class="d-flex flex-row align-items-center justify-content-end w-50">
+    <div class="date-function w-35 mr-2">
+      <img src="assets/img/Calender.svg" alt="" />
+      <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{
+          rangeInputFormat: 'DD-MM-YYYY',
+          dateInputFormat: 'DD-MM-YYYY',
+          containerClass: 'daterangepicker',
+          showWeekNumbers: false
+        }" class="form-control" style="border-radius: 10px" [(ngModel)]="selectedDateRange"
+        (ngModelChange)="onDateRangeChange($event)" />
+    </div>
+    <div class="d-flex flex-row w-35 align-items-center">
+      <div class="header-time" style="position: relative">
+        <span style="
+            position: relative;
+            top: 33px;
+            left: -7px;
+            float: right;
+            margin-top: -26px;
+            font-size: 18px;
+          ">
+          <img src="assets/img/Time.svg" alt="" />
+        </span>
+        <input type="text" class="form-control" aria-label="24hr format" [ngxTimepicker]="fullTime"
+          [(ngModel)]="startTime" placeholder="Start-Time" style="border-radius: 10px !important" [format]="24" />
+        <ngx-material-timepicker #fullTime
+          style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
+      </div>
+      <div class="mx-2">-</div>
+      <div class="header-time" style="position: relative">
+        <span style="
+            position: relative;
+            top: 33px;
+            left: -7px;
+            float: right;
+            margin-top: -26px;
+            font-size: 18px;
+          ">
+          <img src="assets/img/Time.svg" alt="" />
+        </span>
+        <input type="text" class="form-control" aria-label="24hr format" [ngxTimepicker]="endTimetemp"
+          [(ngModel)]="endTime" placeholder="End-Time" style="border-radius: 10px !important" [format]="24" />
+        <ngx-material-timepicker #endTimetemp
+          style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
+      </div>
+    </div>
+    <div class="w-25 ml-2">
+      <ng-select appendTo="body" placeholder="Select Time Option" class="record-view" [(ngModel)]="selectedTimeOption">
+        <ng-option disabled="true">12 Hours</ng-option>
+        <ng-option value="7AM - 7PM">7AM - 7PM</ng-option>
+        <ng-option value="7PM - 7AM">7PM - 7AM</ng-option>
+        <ng-option disabled="true">8 Hours</ng-option>
+        <ng-option value="7AM - 3PM">7AM - 3PM</ng-option>
+        <ng-option value="3PM - 11PM">3PM - 11PM</ng-option>
+        <ng-option value="11PM - 7AM">11PM - 7AM</ng-option>
+      </ng-select>
+    </div>
+  </div> -->
+</div>
+<!-- <div class="d-flex flex-row mb-2 align-items-center justify-content-end record-view-iochart">
+  <div class="w-30"></div>
+  <div class="w-15">
+    <ng-select appendTo="body" placeholder="Select Category" class="mr-2 record-view" [(ngModel)]="selectedCategory">
+      <ng-option value="Oral">Oral</ng-option>
+      <ng-option value="Enteral (GI)">Enteral (GI)</ng-option>
+      <ng-option value="Parenteral">Parenteral</ng-option>
+      <ng-option value="IV Fluids">IV Fluids</ng-option>
+      <ng-option value="Blood Products">Blood Products</ng-option>
+      <ng-option value="Other">Other</ng-option>
+    </ng-select>
+  </div>
+  <div class="w-15">
+    <ng-select appendTo="body" placeholder="Select Type" class="mr-2 record-view" [(ngModel)]="selectedType">
+      <ng-option *ngFor="let item of Types" [value]="item">{{
+        item
+        }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="w-15">
+    <ng-select appendTo="body" placeholder="Select Entered By" class="record-view" [(ngModel)]="selectedEnteredBy">
+      <ng-option value="Saja Oweis">Saja Oweis</ng-option>
+      <ng-option value="Fare">Fare</ng-option>
+    </ng-select>
+  </div>
+  <button type="button" (click)="applyFilter()" class="btn btn-primary ml-2">
+    Apply
+  </button>
+</div> -->
+<div class="d-flex flex-row align-items-center justify-content-between child-section w-100 f-16 p-2 mb-2">
+  <div class="d-flex flex-row w-100 p-2">
+    <div class="font-weight-bold f-16 w-40">
+      {{ recordViewData.title }} Record View Details
+    </div>
+  </div>
+</div>
+<div [ngClass]="filteredTableData.length > 2 ? 'table-responsive' : 'w-100'" *ngIf="filteredTableData.length > 0">
+  <table class="table table-bordered border-separate record-view" style="min-width: 1350px">
+    <thead class="thead">
+      <tr>
+        <th width="10%">Category</th>
+        <th width="10%">Type</th>
+        <th class="text-left" *ngFor="let date of dates">{{ date }}</th>
+      </tr>
+    </thead>
+    <tbody class="tbody">
+      <ng-container *ngFor="let row of filteredTableData | filter: searchText ">
+        <!-- Main row for the category -->
+        <tr [class.position-relative]="row.subRows.length > 1">
+          <td [attr.rowspan]="
+              row.subRows && !row.isCollapsed ? row.subRows.length + 1 : 1
+            ">
+            <div class="position-relative">
+              <!-- {{ getCategoryName(row.category) }} -->
+                {{row.categoryDescri}}
+              <div class="img-collapse category-arrow" [class.collapsed]="row.isCollapsed" (click)="toggleCollapse(row)"
+                *ngIf="row.subRows.length > 1">
+                <img src="assets/img/down-arrow.png" alt="" width="8px" />
+              </div>
+            </div>
+          </td>
+          <ng-container *ngIf="row.isCollapsed">
+            <td></td>
+            <td *ngFor="let date of dates; let i = index" class="text-left" [ngClass]="row?.summedValuesByDate[date] === 0 ? 'nonvalue-color' : 'value-color'">
+              {{ row?.summedValuesByDate[date] === 0 ? "--" : row?.summedValuesByDate[date] + " mL" }}
+            </td>
+          </ng-container>
+          <!-- Placeholder cell to align with the collapsed rows -->
+          <!-- <td colspan="2" *ngIf="row.subRows.length === 0"></td> -->
+        </tr>
+
+        <!-- SubRows: Show only if not collapsed, otherwise show summary row -->
+        <ng-container *ngIf="!row.isCollapsed">
+          <tr *ngFor="let subRow of row.subRows">
+            <td>
+              <!-- {{ subRow?.Typedesc ? subRow?.Typedesc : getCategoryTypeName(subRow.type) }} -->
+              {{ subRow?.Typedesc ? subRow?.Typedesc : subRow.type }}
+            </td>
+            <td *ngFor="let date of dates; let i = index;" class="text-left" [ngClass]="
+                subRow.childRow[i].value === ''
+                  ? 'nonvalue-color'
+                  : 'value-color'
+              ">
+              {{ subRow.childRow[i].value | number: '1.0-1' }} <span *ngIf="subRow.childRow[i].value"> mL</span>
+              <i *ngIf="
+                  subRow.childRow[i].remarks
+                " class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" [attr.title]="subRow.childRow[i].remarks">
+              </i>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+
+      <!-- Total Volume Row -->
+      <tr class="total-volume">
+        <th colspan="2" class="text-left">Entry Total Volume</th>
+        <td *ngFor="let item of calculationForColumn" class="text-left">
+          {{ item?.totalValue }}
+        </td>
+      </tr>
+      <!-- Entered By Row -->
+      <tr>
+        <th colspan="2" class="text-left">Entered By</th>
+        <td *ngFor="let item of calculationForColumn" class="text-left">
+          {{ item?.enteredBy }}
+        </td>
+      </tr>
+      <!-- Grand Total Intake Row -->
+      <tr class="total-intake">
+        <th colspan="2">Grand Total Intake</th>
+        <td [attr.colspan]="dates.length">{{ grandTotal }}</td>
+        <!-- <td *ngIf="dates.length > 1" [attr.colspan]="dates.length"></td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="filteredTableData.length === 0" class="d-flex flex-row align-items-center justify-content-center w-100">
+  NO DATA FOUND
+</div>

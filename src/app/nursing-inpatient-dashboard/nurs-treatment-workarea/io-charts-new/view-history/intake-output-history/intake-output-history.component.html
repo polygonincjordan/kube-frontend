@@ -1,0 +1,113 @@
+<div class="d-flex flex-row align-items-center justify-content-between record-view-iochart">
+    <button type="button" (click)="back()" class="btn btn-primary mr-2">
+        <div class="d-flex flex-row align-items-center">
+            <i class="fa fa-chevron-left"></i> &nbsp; back
+        </div>
+    </button>
+</div>
+
+<div class="tab-contant mt-3 mb-3 ml-3">
+    <div class="cursor-pointer" [ngClass]="tabIndex === 0 ? 'active-tab': ''" (click)="changeTab(0)">
+        <h4>Intake Records</h4>
+    </div>
+    <div class="cursor-pointer" [ngClass]="tabIndex === 1 ? 'active-tab': ''" (click)="changeTab(1)">
+        <h4>Output Records</h4>
+    </div>
+</div>
+
+<div>
+    <div class="d-flex flex-row align-items-center justify-content-between child-section w-100 f-16 p-2 mb-2">
+        <div class="d-flex flex-row w-100 p-2">
+            <div class="font-weight-bold f-16 w-40">
+                {{ tabIndex == 0 ? 'Intake' : 'Output' }} Record View Details
+            </div>
+        </div>
+    </div>
+    <div [ngClass]="filteredTableData.length > 2 ? 'table-responsive' : 'w-100'" *ngIf="filteredTableData.length > 0">
+        <table class="table table-bordered border-separate record-view" style="min-width: 1350px">
+            <thead class="thead">
+                <tr>
+                    <th width="10%">Category</th>
+                    <th width="10%">Type</th>
+                    <th class="text-left" *ngFor="let date of dates">{{ date }}</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                <ng-container *ngFor="let row of filteredTableData ">
+                    <!-- Main row for the category -->
+                    <tr [class.position-relative]="row.subRows.length > 1">
+                        <td [attr.rowspan]="
+                    row.subRows && !row.isCollapsed ? row.subRows.length + 1 : 1
+                  ">
+                            <div class="position-relative">
+                                <!-- {{ getCategoryName(row.category) }} -->
+                                {{row.categoryDescri}}
+                                <div class="img-collapse category-arrow" [class.collapsed]="row.isCollapsed"
+                                    (click)="toggleCollapse(row)" *ngIf="row.subRows.length > 1">
+                                    <img src="assets/img/down-arrow.png" alt="" width="8px" />
+                                </div>
+                            </div>
+                        </td>
+                        <ng-container *ngIf="row.isCollapsed">
+                            <td></td>
+                            <td *ngFor="let date of dates; let i = index" class="text-left"
+                                [ngClass]="row?.summedValuesByDate[date] === 0 ? 'nonvalue-color' : 'value-color'">
+                                {{ row?.summedValuesByDate[date] === 0 ? "--" : row?.summedValuesByDate[date] + " mL" }}
+                            </td>
+                        </ng-container>
+                        <!-- Placeholder cell to align with the collapsed rows -->
+                        <!-- <td colspan="2" *ngIf="row.subRows.length === 0"></td> -->
+                    </tr>
+    
+                    <!-- SubRows: Show only if not collapsed, otherwise show summary row -->
+                    <ng-container *ngIf="!row.isCollapsed">
+                        <tr *ngFor="let subRow of row.subRows">
+                            <td>
+                                <!-- {{ subRow?.Typedesc ? subRow?.Typedesc : getCategoryTypeName(subRow.type) }} -->
+                                {{ subRow?.Typedesc ? subRow?.Typedesc : subRow.type }}
+                            </td>
+                            <td *ngFor="let date of dates; let i = index;" class="text-left" [ngClass]="
+                      subRow.childRow[i].value === ''
+                        ? 'nonvalue-color'
+                        : 'value-color'
+                    ">
+                                {{ subRow.childRow[i].value | number: '1.0-1' }} <span *ngIf="subRow.childRow[i].value">
+                                    mL</span>
+                                <i *ngIf="
+                        subRow.childRow[i].remarks
+                      " class="fa fa-info-circle" data-toggle="tooltip" data-placement="top"
+                                    [attr.title]="subRow.childRow[i].remarks">
+                                </i>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+    
+                <!-- Total Volume Row -->
+                <tr class="total-volume">
+                    <th colspan="2" class="text-left">Entry Total Volume</th>
+                    <td *ngFor="let item of calculationForColumn" class="text-left">
+                        {{ item?.totalValue }}
+                    </td>
+                </tr>
+                <!-- Entered By Row -->
+                <tr>
+                    <th colspan="2" class="text-left">Entered By</th>
+                    <td *ngFor="let item of calculationForColumn" class="text-left">
+                        {{ item?.enteredBy }}
+                    </td>
+                </tr>
+                <!-- Grand Total Intake Row -->
+                <tr class="total-intake">
+                    <th colspan="2">Grand Total {{ tabIndex == 0 ? 'Intake' : 'Output' }}</th>
+                    <td [attr.colspan]="dates.length">{{ grandTotal }}</td>
+                    <!-- <td *ngIf="dates.length > 1" [attr.colspan]="dates.length"></td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="filteredTableData.length === 0" class="d-flex flex-row align-items-center justify-content-center w-100">
+    NO DATA FOUND
+</div>

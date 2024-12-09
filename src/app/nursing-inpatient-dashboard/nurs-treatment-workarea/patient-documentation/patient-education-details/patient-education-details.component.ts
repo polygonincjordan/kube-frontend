@@ -7,6 +7,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Subscription, catchError, of } from 'rxjs';
@@ -139,6 +140,7 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private storageService: StorageService,
     private dataShareService: DataShareService,
+    public sharedService: SharedService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -391,7 +393,8 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     this.educationForm.reset();
     this.initForm();
   }
-  async saveEducationFormValue(type) {
+  async saveEducationFormValue(dockStatus: string, actiontype?: string) {
+    return new Promise((resolve, reject) => {
     this.AttendPhy = this.patientService?.HeaderConfigurationData?.participant?.individual.id;
     let saveEducation = [];
     this.educationForm.value.TOITEM.filter((element) => {
@@ -420,8 +423,7 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.educationForm.value.TOITEM = saveEducation;
-    if (type) this.educationForm.value.DocStatus = '2';
-    else this.educationForm.value.DocStatus = '1';
+    this.educationForm.value.DocStatus = dockStatus;
 
     if (this.AttendPhy) {
       this.educationForm.value.AttendPhy = this.AttendPhy
@@ -435,11 +437,35 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
         this.educationForm.value.DocStatus = '3';
       }
     }
-    return this.admissionService.saveEducationData(d);
+
+    this.subscription = this.admissionService.saveEducationData(d)
+    .subscribe({
+      next: (data: any) => {},
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(
+          `PUT Error at Nursing admission document : ${err}`
+        );
+      },
+      complete: () => {
+        resolve(true);
+        if (actiontype === 'edit') {
+          this.sharedService.successSwallModel(
+            'Nursing admission document updated successfully'
+          );
+        } else {
+          this.sharedService.successSwallModel(
+            'Nursing admission document created successfully'
+          );
+        }
+      },
+    });
+    // return this.admissionService.saveEducationData(d);
+  })
 
   }
 
-  async saveAndReleaseEducation(type) {
+  async saveAndReleaseEducation(dockStatus) {
     this.AttendPhy =
       this.patientService?.HeaderConfigurationData?.participant?.individual.id;
 
@@ -471,8 +497,10 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.educationForm.value.TOITEM = saveEducation;
-    if (type) this.educationForm.value.DocStatus = '2';
-    else this.educationForm.value.DocStatus = '1';
+    this.educationForm.value.DocStatus = dockStatus;
+
+    // if (type) this.educationForm.value.DocStatus = DocStatus;
+    // else this.educationForm.value.DocStatus = '1';
 
     if (this.AttendPhy) {
       this.educationForm.value.AttendPhy = this.AttendPhy
@@ -487,12 +515,12 @@ export class PatientEducationDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.admissionService.saveEducationData(d).subscribe((res: any) => {
-      res.d.DocStatus = '2';
-      this.admissionService.saveEducationData(res).subscribe((res) => {
+    // this.admissionService.saveEducationData(d).subscribe((res: any) => {
+      // res.d.DocStatus = '2';
+      this.admissionService.saveEducationData(d).subscribe((res) => {
         this.reloadTableList.next(true);
       });
-    })
+    // })
 
   }
 

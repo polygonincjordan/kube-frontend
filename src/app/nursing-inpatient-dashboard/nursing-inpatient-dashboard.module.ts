@@ -114,6 +114,17 @@ import { DietMealOrderComponent } from './nurs-treatment-workarea/diet-meal-orde
 import { PatientsDietMealComponent } from './nurs-treatment-workarea/diet-meal-order/patients-diet-meal/patients-diet-meal.component';
 import { CompanionMealOrderingComponent } from './nurs-treatment-workarea/diet-meal-order/companion-meal-ordering/companion-meal-ordering.component';
 import { DislikePreferenceComponent } from './nurs-treatment-workarea/diet-meal-order/dislike-preference/dislike-preference.component';
+import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
+import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
+import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { DietMealOrderComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/diet-meal-order.component';
+import { PatientsDietMealComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/patients-diet-meal/patients-diet-meal.component';
+import { DislikePreferenceComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/dislike-preference/dislike-preference.component';
+import { CompanionMealOrderingComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/companion-meal-ordering/companion-meal-ordering.component';
+import { RecordViewComponentNew } from './nurs-treatment-workarea/io-charts-new/record-view/record-view.component';
+import { IntakeOutputHistoryComponentNew } from './nurs-treatment-workarea/io-charts-new/view-history/intake-output-history/intake-output-history.component';
+import { ViewHistoryComponentNew } from './nurs-treatment-workarea/io-charts-new/view-history/view-history.component';
+import { IoChartsComponentNew } from './nurs-treatment-workarea/io-charts-new/io-charts.component';
 
 const route: Routes = [
   {
@@ -202,6 +213,18 @@ const route: Routes = [
     PatientsDietMealComponent,
     CompanionMealOrderingComponent,
     DislikePreferenceComponent,
+
+    EmarWitnessComponent,
+    DrugEventsAdminComponent,
+
+    DietMealOrderComponentNew,
+    PatientsDietMealComponentNew,
+    DislikePreferenceComponentNew,
+    CompanionMealOrderingComponentNew,
+    RecordViewComponentNew,
+    IntakeOutputHistoryComponentNew,
+    ViewHistoryComponentNew,
+    IoChartsComponentNew
   ],
   providers: [
     EmergencyService,
@@ -242,6 +265,7 @@ const route: Routes = [
     NursingCarePlanDocumentModule,
     NursingDischargeSummaryModule,
     NursingAdmissionAssessmentModule,
+    VitalSignModule
   ],
 })
 export class NursingInpatientDashboardModule {}

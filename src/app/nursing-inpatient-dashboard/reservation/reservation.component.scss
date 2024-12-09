@@ -49,9 +49,11 @@
   .search-functionalitypl-0 {
     .tab-search-panel {
       padding: 10px;
-  
+      .colum-style{
+        padding-right: 0px !important;
+      }
       .storage-box {
-        margin-left: 20px;
+        // margin-left: 20px;
         /* Adjust the left margin to create space */
       }
   
@@ -137,7 +139,7 @@
 }
 
   .apply-button{
-    margin-left: 12px;
+    margin-right: 12px;
   }
   
   
@@ -169,5 +171,18 @@
     span {
       // padding-left: 10px;
     }
+}
+
+@media (max-width: 1440px) {
+  .search-functionalitypl-0 .tab-search-panel .ng-select-dropdown {
+    width: 165px !important;
+  }
+}
+
+
+@media (max-width: 1344px) {
+  .search-functionalitypl-0 .tab-search-panel .ng-select-dropdown {
+    width: 160px !important;
+  }
 }
   

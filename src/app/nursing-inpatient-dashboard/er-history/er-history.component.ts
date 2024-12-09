@@ -86,6 +86,7 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
+  editDeleteDisable: boolean= true;
   constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private dayCaseDashboardService:DayCaseDashboardService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -128,11 +129,10 @@ export class ErHistoryComponent implements OnInit {
    }
   
   ngOnInit() {
-   console.log(this.storageService.lastPassedDate);
    if (this.storageService.lastPassedDate != undefined) {
-    this.getErList(this.storageService.lastPassedDate);
+    // this.getErList(this.storageService.lastPassedDate);
    }else{
-    this.getErList([new Date(),new Date()]);
+    this.getErList([new Date()]);
    }
     this.dataForTriage();
   }
@@ -296,15 +296,21 @@ export class ErHistoryComponent implements OnInit {
     template: TemplateRef<any>,
     data: any
   ) {
+    
+    
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl risk-modal-size' };
       this.modalRefForRisk = this.modalService.show(template,config);
       this.selectedERList = data;
+      // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
+      //   this.editDeleteDisable = true;
+      // }
       this.getRiskList(data);
       this.getRiskValues();
       this.isRiskUpdate = false;
       this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.resetRiskForm();
+        //  this.editDeleteDisable = false;
         }
       });
 
@@ -316,12 +322,16 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl allergy-modal-size' };
       this.modalRefForAllergy = this.modalService.show(template,config);
       this.selectedERList = data;
+      // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
+      //   this.editDeleteDisable = true;
+      // }
       this.userProfile = this.storageService.getUserProfile();
       this.updateAllergyForm.enable();
       this.isCheckboxesDisabled = false;
       this.modalRefForAllergy.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
          this.resetAllergyForm();
+        //  this.editDeleteDisable = false;
         }
       });
       this.getCancelReasons();
@@ -335,7 +345,9 @@ export class ErHistoryComponent implements OnInit {
       this.getAllergyTypeValues();
   }
   getSelectedDates(dates){
-   this.getErList(dates);
+  //   console.log("call selected","dates");
+    
+  //  this.getErList(dates);
   }
   getDate(value) {
     if (value) {
@@ -383,14 +395,8 @@ export class ErHistoryComponent implements OnInit {
     this.currentDatePassed = date;
     this.storageService.setLastPassedData(date);
     const json = {
-      //  fromDate:'2022-10-11T00:00:00',
-      // toDate:'2023-10-22T00:00:00',
       fromDate:`${new DatePipe('en-US').transform(
-        date ?  date[0] : new Date().setDate(new Date().getDate()),
-        'yyyy-MM-dd'
-      )}T00:00:00`,
-      toDate:`${new DatePipe('en-US').transform(
-        date ?  date[1]  :new Date().setDate(new Date().getDate()),
+        date ?  date : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
       )}T00:00:00`,
     }
@@ -400,23 +406,8 @@ export class ErHistoryComponent implements OnInit {
       if (_success.d.results.length == 0) {
         this.sendErPatientCount.emit( this.ERlistData.length);
       }
-      // this.ERlistData = [];
-      //  _success.d.results.forEach(element => {
-      //   if (element.StatusTxt == 'Checked Out') {
-      //     this.ERlistData.push(element);
-      //     this.sendErPatientCount.emit( this.ERlistData.length);
-      //     //this.triagePriorityList(element);
-      //   }
-      //  });
-      //  this.ERlistData.forEach((element,index) => {
-      //   if (element.TriageDate != null && element.TriageDate != '') {
-      //   this.getAssignedTime(this.getTime(element.CheckedOutT),this.getDate(element.CheckedOutD),this.getTime(element.TriageTime),this.getDate(element.TriageDate),index);
-      //   }
-      //   else{
-      //     this.ERlistData[index]['assignedTime'] = '';
-      //   } 
-      // });
       this.ERlistDataClone = this.ERlistData;
+      this.sendErPatientCount.emit( this.ERlistData.length);
       this.lastIndex = this.ERlistData.length - 1;
 
       },
@@ -456,7 +447,7 @@ export class ErHistoryComponent implements OnInit {
   }
   openModalVital(item){
     item["admissionDate"] = this.getDate(item.Datum);
-    this.erVitalsModal.openModalForErVital(item);
+    this.erVitalsModal.openModalForErVital(item,"erHistory");
   }
   public openModalForTriage(
     template: TemplateRef<any>,
@@ -1035,6 +1026,171 @@ export class ErHistoryComponent implements OnInit {
       Mode:'D'
     }]
     this.saveRiskList();
+  }
+  sortDiagnosis() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Diagnose.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Diagnose.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Diagnose.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Diagnose.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortFinancial() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.ZzfinClear.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  DischargeTime() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.DischargeTime.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.DischargeTime.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.DischargeTime.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.DischargeTime.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  DischargeType() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.DischargeType.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.DischargeType.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.DischargeType.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.DischargeType.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortAdmission() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.AdmissionStatus.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.AdmissionStatus.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.AdmissionStatus.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.AdmissionStatus.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
   }
   saveRiskJsonFormat(){
     this.riskJson=[];
@@ -1620,60 +1776,55 @@ export class ErHistoryComponent implements OnInit {
       this.redirectToTreatment(json);
       console.log('storageService',this.storageService.checkinPatientData);
     }
-    filterListData(event){
-      // this.ERlistData = this.ERlistData.filter(el =>{      
-      //  if (event.Triage != '' && el.TriagePriorityCode.includes(event.Triage)) {
-      //    return el;
-      //  }
-      //  if (event.Physician != '' && el.Behpersname.includes(event.Physician)) {
-      //   return el;
-      // }
-      // if (event.Status != '' && el.StatusTxt.includes(event.Status)) {
-      //   return el;
-      // }
-      // //   if ((el.TriagePriorityCode.includes(event.Triage)) || (el.Behpersname.includes(event.Physician)) || (el.StatusTxt.includes(event.Status))) {
-      // //    return el;
-      // //  }
-      // })
-      this.triageValueArr = [];
-      this.physicianValueArr = []; 
-      this.statusValueArr = [];
-      if (event.Physician || event.Status || event.FCategory) {
-        // if(event.Physician) event.Physician = event.Physician.trimStart();
-        let filterValue = this.ERlistDataClone;
-      if(event.Physician && event.Physician?.length) {
-        event.Physician.forEach(physicianValue => {
-        this.physicianValueArr.push(filterValue.filter((element:any) => {
-          if(element.Behpersname === physicianValue.trimStart()){
-            return element;
-          }
+  //   filterListData(event){
+  //     this.physicianValueArr = []; 
+  //     this.statusValueArr = [];
+  //     if (event.Physician || event.FCategory) {
+  //       // if(event.Physician) event.Physician = event.Physician.trimStart();
+  //       let filterValue = this.ERlistDataClone;
+  //     if(event.Physician && event.Physician?.length) {
+  //       event.Physician.forEach(physicianValue => {
+  //       this.physicianValueArr.push(filterValue.filter((element:any) => {
+  //         if(element.BehArztName === physicianValue.trimStart()){
+  //           return element;
+  //         }
         
-        }))
-        });
-        filterValue = this.physicianValueArr.flat();
-      }
-      if(event.FCategory && event.FCategory?.length){
-        if(event.FCategory == 'Self Payer'){
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat === 'Self Payer'){
-              return element;
-            }
-          }) 
-        }else{
-          filterValue = filterValue.filter((element:any) =>{
-            if(element.ZzfinCat !== 'Self Payer'){
-              return element;
-            }
-          }) 
-        }
+  //       }))
+  //       });
+  //       filterValue = this.physicianValueArr.flat();
+  //     }
+  //     if(event.FCategory && event.FCategory?.length){
+  //       if(event.FCategory == 'Self Payer'){
+  //         filterValue = filterValue.filter((element:any) =>{
+  //           if(element.KostrName === 'Self Payer'){
+  //             return element;
+  //           }
+  //         }) 
+  //       }else{
+  //         filterValue = filterValue.filter((element:any) =>{
+  //           if(element.KostrName !== 'Self Payer'){
+  //             return element;
+  //           }
+  //         }) 
+  //       }
        
-      }
-        this.ERlistData = filterValue;
-        this.sendErPatientCount.emit( this.ERlistData.length);
-      } else {
-        this.ERlistData = this.ERlistDataClone;
-        this.sendErPatientCount.emit( this.ERlistData.length);
-      }
+  //     }
+  //       this.ERlistData = filterValue;
+  //       this.sendErPatientCount.emit( this.ERlistData.length);
+  //     } else {
+  //       this.ERlistData = this.ERlistDataClone;
+  //       this.sendErPatientCount.emit( this.ERlistData.length);
+  //     }
+  // }
+
+  filterListData(event) {
+    const { FCategory, Physician, Status } = event;
+      this.ERlistData = this.ERlistDataClone.filter((item:any) => {
+      const matchesKostrName = !FCategory || item?.KostrName.includes(FCategory);
+      const matchesBehArztName = !Physician || item?.BehArztName.includes(Physician);
+      return matchesKostrName && matchesBehArztName;
+    });
+    this.sendErPatientCount.emit( this.ERlistData.length);
   }
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){
@@ -1728,8 +1879,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwidt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwidt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1743,8 +1894,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZeitIntern.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZeitIntern.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwidt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwidt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1763,8 +1914,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Datum.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Datum.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1778,8 +1929,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Datum.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Datum.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Bwizt.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Bwizt.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1797,8 +1948,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec1.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec1.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1812,8 +1963,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Patient.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Patient.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Pnamec1.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Pnamec1.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1830,8 +1981,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1845,8 +1996,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.Behpersname.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.Behpersname.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.BehArztName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.BehArztName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1897,8 +2048,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1912,8 +2063,41 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.BehraumKb.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.BehraumKb.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Zimmkub.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+  sortSpeciality() {
+    if (!this.asc) {
+      this.asc = true;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.ERlistData.sort((a, b) => {
+        const nameA = a.Orgfakb.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.Orgfakb.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -1930,8 +2114,8 @@ onSelectSurgeon(value){
     if (!this.asc) {
       this.asc = true;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return -1;
         }
@@ -1945,8 +2129,8 @@ onSelectSurgeon(value){
     } else {
       this.asc = false;
       this.ERlistData.sort((a, b) => {
-        const nameA = a.ZzfinCat.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.ZzfinCat.toUpperCase(); // ignore upper and lowercase
+        const nameA = a.KostrName.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.KostrName.toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }
@@ -2040,4 +2224,28 @@ onSelectSurgeon(value){
     }
   });
    }
+
+   getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
+  }
+
+  getFinTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'Pending';
+      case 'Green':
+        return 'Completed';
+      default:
+        return '';
+    }
+  }
 }
