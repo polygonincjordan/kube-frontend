@@ -73,8 +73,8 @@ export class AdministeredDoesEventComponent {
         Fsource: new FormControl(eventset?.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(eventset?.Events.AdmEmp),
-        Meresp2: new FormControl(eventset?.Events.WitnessEmp),
+        Meresp1: new FormControl(eventset?.AdmEmp),
+        Meresp2: new FormControl(eventset?.WitnessEmp),
         Quanunit: new FormControl(eventset?.Unit),
       }),
       NotAdminister: new FormGroup({
@@ -97,9 +97,9 @@ export class AdministeredDoesEventComponent {
         Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(eventset?.Rtimdif),
         Adnotestx: new FormControl(eventset?.Prncond),
-        Meresp1: new FormControl(eventset?.Events.AdmEmp),
+        Meresp1: new FormControl(eventset?.AdmEmp),
         Quanunit: new FormControl(eventset?.Unit),
-        Meresp2: new FormControl(eventset?.Events.WitnessEmp),
+        Meresp2: new FormControl(eventset?.WitnessEmp),
       }),
       DrugAdminister: new FormGroup({
         Descr: new FormControl(eventset?.Descr),

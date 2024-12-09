@@ -68,7 +68,11 @@
           <label>Language Spoken</label>
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" formControlName="ALanguageSpoken" [disabled]="true" [readOnly]="true" />
+          <!-- <input type="text" class="form-control" formControlName="ALanguageSpoken" [disabled]="true" [readOnly]="true" /> -->
+          <ng-select formControlName="ALanguageSpoken">
+            <ng-option  value="English">English</ng-option>
+            <ng-option  value="Arabic">Arabic</ng-option>
+          </ng-select>
         </div>
         <div class="col-md-7 row create-form-inputs">
           <div class="col-md-5 row m-0 align-items-center">

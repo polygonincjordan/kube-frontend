@@ -31,37 +31,55 @@ export class HaemodialysisMonitoringComponent implements OnInit {
     
     this.initializeFormData()
     if (this.patientDocService.isPatchValueForHaemodialysisMonitoring) {
-
       this.subscription =
         this.patientDocService.formDataBehaviorSubject.subscribe((resp) => {
           if (Object.keys(resp).length > 0) {
             this.isGenerateDefaultForm = false;
-            
+    
             this.haemodialysisMonitoring.patchValue(resp);
-
-            const TOMONITOR = resp?.TOMONITOR.results;
-
+    
+            const TOMONITOR = resp?.TOMONITOR?.results || [];
+    
             TOMONITOR.forEach((item) => {
               const timee = item.Timee;
-              const hours = timee.substring(2, 4);
-              const minutes = timee.substring(5, 7);
-              const seconds = timee.substring(8, 10);
-
-              const date = new Date();
-              date.setHours(hours);
-              date.setMinutes(minutes);
-              date.setSeconds(seconds);
-
+    
+              let formattedTime = '';
+              if (timee.startsWith('PT')) {
+                // Parse ISO 8601 duration format
+                const hours = parseInt(timee.substring(2, 4)) || 0;
+                const minutes = parseInt(timee.substring(5, 7)) || 0;
+    
+                const date = new Date();
+                date.setHours(hours);
+                date.setMinutes(minutes);
+                formattedTime = this.formatTime(date);
+              } else {
+                // If `Timee` is already in a valid time format
+                const date = new Date(timee);
+                formattedTime = this.formatTime(date);
+              }
+    
               if (this.patientDocService.ToMonitor.controls.length !== TOMONITOR.length) {
-                this.patientDocService.ToMonitor.push(this.patientDocService.createForm({ ...item, Timee: date }));
+                this.patientDocService.ToMonitor.push(
+                  this.patientDocService.createForm({ ...item, Timee: formattedTime })
+                );
               }
             });
-
           }
         });
-        this.patientDocService.isPatchValueForHaemodialysisMonitoring =false;
+      this.patientDocService.isPatchValueForHaemodialysisMonitoring = false;
     }
+    
+    
   }
+
+  private formatTime(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  }
+  
 
   ngOnInit(): void {
     if(this.isGenerateDefaultForm){  
