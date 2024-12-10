@@ -2481,7 +2481,6 @@ cleanPayload(payload: any) {
 }
 
   postOpenAssessment(docStatus:string,action:string){
-    debugger
     const toMonitor =
     this.patientDocService.dialysisAssecementForm.get('TOMONITOR').value;
     const dAssessmentForm = this.patientDocService.dialysisAssecementForm;

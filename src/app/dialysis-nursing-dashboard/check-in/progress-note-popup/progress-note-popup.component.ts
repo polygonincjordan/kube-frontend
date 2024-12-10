@@ -223,8 +223,16 @@ occupationalGroupList() {
     (_error: any) => {}
   );
 }
+
+
+closeMainPopup(){
+  this.progressNotesFilterList(null);
+  this.searchString = null;
+  this.modalRef.hide()
+}
+
 closePopup(event){
-  // this.modalRef.hide()
+
 }
 getDate(value) {
   if (value) {
