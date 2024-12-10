@@ -8,11 +8,11 @@
         <thead>
           <tr>
             <th colspan="4" scope="col">Service Description</th>
-            <th colspan="1" scope="col">Date</th>
+            <th colspan="1" scope="col">Date<i class="fa fa-sort" style="margin-left: 5px" aria-hidden="true" (click)="sortingItem('date')"></i></th>
             <!-- <th colspan="1" scope="col">Time</th> -->
-            <th colspan="1" scope="col">Status</th>
+            <th colspan="1" scope="col">Status<i class="fa fa-sort" style="margin-left: 5px" aria-hidden="true" (click)="sortingItem('Planned')"></i></th>
             <th colspan="1" scope="col">Comment</th>
-            <th colspan="1" scope="col">Created By</th>
+            <th colspan="1" scope="col">Created By<i class="fa fa-sort" style="margin-left: 5px" aria-hidden="true" (click)="sortingItem('Erusr')"></i></th>
             <th colspan="1" scope="col">
               <div class="d-flex align-items-center justify-content-between">
                 <div>Action</div>
@@ -43,7 +43,7 @@
               </td>
               <td class="align-middle border-0" >
                 <div class="trash-icon">
-                  <img src="./assets/img/Delete.svg">
+                  <img src="./assets/img/Delete.svg"  (click)="deleteItem(i)">
                 </div>
               </td>
             </tr>

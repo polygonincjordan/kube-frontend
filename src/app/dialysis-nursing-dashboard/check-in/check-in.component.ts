@@ -266,34 +266,74 @@ export class CheckInComponent implements OnInit {
     }
   }
 
+  // saveRiskJsonFormat() {
+  //   this.isFormValidError = true;
+  //   this.riskJson = [];
+  //   let mode = '';
+  //   if (this.isRiskUpdate) {
+  //     mode = 'U';
+  //   } else {
+  //     mode = 'I';
+  //   }
+  //   let finallfdnrValue;
+  //   if (mode == 'I') {
+  //     finallfdnrValue = '000';
+  //   } else {
+  //     finallfdnrValue = this.selectedDataForUpdate.Lfdnr;
+  //   }
+  //   let reportedon = '';
+  //   if (this.updateRiskForm.controls.Repdt.value !== '') {
+  //     reportedon =
+  //       this.updateRiskForm.controls.Repdt.value.getDate() +
+  //       '.' +
+  //       this.updateRiskForm.controls.Repdt.value.getMonth(
+  //         this.updateRiskForm.controls.Repdt.value.setMonth(
+  //           this.updateRiskForm.controls.Repdt.value.getMonth() + 1
+  //         )
+  //       ) +
+  //       '.' +
+  //       this.updateRiskForm.controls.Repdt.value.getFullYear();
+  //   }
+  //   this.riskJson = [
+  //     {
+  //       Patnr: this.selectedERList.Patnr,
+  //       Lfdnr: finallfdnrValue,
+  //       Rsfnr: this.updateRiskForm.controls.Rsfnr.value,
+  //       Rsfna: this.updateRiskForm.controls.Rsfna.value,
+  //       Rsfkb: this.updateRiskForm.controls.Rsfkb.value,
+  //       Rsfsn: this.updateRiskForm.controls.Rsfsn.value,
+  //       Mode: mode,
+  //     },
+  //   ];
+  //   if (this.updateRiskForm.controls.Repdt.value !== '') {
+  //     const repdt = this.updateRiskForm.controls.Repdt.value;
+  //     (reportedon =
+  //       repdt.getFullYear() +
+  //       '-' +
+  //       String(repdt.getMonth()).padStart(2, '0') +
+  //       '-' +
+  //       String(repdt.getDate()).padStart(2, '0') +
+  //       'T00:00:00'),
+  //       (this.riskJson[0]['Repdt'] = reportedon);
+  //   }
+  //   this.saveRiskList();
+  // }
+
   saveRiskJsonFormat() {
     this.isFormValidError = true;
     this.riskJson = [];
-    let mode = '';
-    if (this.isRiskUpdate) {
-      mode = 'U';
-    } else {
-      mode = 'I';
-    }
-    let finallfdnrValue;
-    if (mode == 'I') {
-      finallfdnrValue = '000';
-    } else {
-      finallfdnrValue = this.selectedDataForUpdate.Lfdnr;
-    }
+    let mode = this.isRiskUpdate ? 'U' : 'I';
+  
+    let finallfdnrValue = mode === 'I' ? '000' : this.selectedDataForUpdate.Lfdnr;
+  
+    // Properly format the 'Repdt' field
     let reportedon = '';
-    if (this.updateRiskForm.controls.Repdt.value !== '') {
-      reportedon =
-        this.updateRiskForm.controls.Repdt.value.getDate() +
-        '.' +
-        this.updateRiskForm.controls.Repdt.value.getMonth(
-          this.updateRiskForm.controls.Repdt.value.setMonth(
-            this.updateRiskForm.controls.Repdt.value.getMonth() + 1
-          )
-        ) +
-        '.' +
-        this.updateRiskForm.controls.Repdt.value.getFullYear();
+    const repdtControl = this.updateRiskForm.controls.Repdt.value;
+  
+    if (repdtControl) {
+      reportedon = `${repdtControl.getFullYear()}-${String(repdtControl.getMonth() + 1).padStart(2, '0')}-${String(repdtControl.getDate()).padStart(2, '0')}T00:00:00`;
     }
+  
     this.riskJson = [
       {
         Patnr: this.selectedERList.Patnr,
@@ -303,21 +343,13 @@ export class CheckInComponent implements OnInit {
         Rsfkb: this.updateRiskForm.controls.Rsfkb.value,
         Rsfsn: this.updateRiskForm.controls.Rsfsn.value,
         Mode: mode,
+        Repdt: reportedon || undefined, // Add Repdt only if it exists
       },
     ];
-    if (this.updateRiskForm.controls.Repdt.value !== '') {
-      const repdt = this.updateRiskForm.controls.Repdt.value;
-      (reportedon =
-        repdt.getFullYear() +
-        '-' +
-        String(repdt.getMonth()).padStart(2, '0') +
-        '-' +
-        String(repdt.getDate()).padStart(2, '0') +
-        'T00:00:00'),
-        (this.riskJson[0]['Repdt'] = reportedon);
-    }
+  
     this.saveRiskList();
   }
+  
   saveRiskList() {
     if (this.riskJson[0]['Mode'] !== 'D') {
       if (this.updateRiskForm.controls.Rsfna.value == '') {

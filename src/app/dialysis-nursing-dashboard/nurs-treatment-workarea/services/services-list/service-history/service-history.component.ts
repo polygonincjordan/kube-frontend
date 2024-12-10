@@ -14,7 +14,8 @@ export class ServiceHistoryComponent implements OnInit {
   @Input('orderHistory') orderHistory: any;
   public selectedData: any;
   public modalRef?: BsModalRef | null;
-
+  sortColumn: string | null = null;
+  sortDirection: 'asc' | 'desc' | null = null;
   public feeServiceListItems: FormArray;
   // public orderHistory: FormGroup;
   constructor(
@@ -50,4 +51,42 @@ export class ServiceHistoryComponent implements OnInit {
     let dateObject = new Date(Number(dateParts[0]), Number(dateParts[1] - 1), Number(dateParts[2]));
     return this.datePipe.transform(dateObject, 'dd-MM-yyyy');
   }
+
+  sortingItem(column: string) {
+    if (this.sortColumn === column) {
+      // Toggle sort direction
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Set new column and default to ascending
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    // Perform sorting
+    this.orderHistory.sort((a: any, b: any) => {
+      let valueA = a[column];
+      let valueB = b[column];
+
+      // Handle cases where values are strings
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      if (valueA < valueB) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
+  deleteItem(index: number): void {
+    if(index){
+      this.orderHistory.splice(index, 1);
+    }
+  }
+  
 }

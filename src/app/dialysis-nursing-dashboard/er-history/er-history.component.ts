@@ -26,6 +26,7 @@ export class ErHistoryComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('patientSearchModal') patientSearchModal: PatientSearchComponent;
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: ERDiagnosisComponent;
+  @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
   ERlistData: any=[];
   modalRef: BsModalRef;
   modalRefForAllergy:BsModalRef;
@@ -89,6 +90,14 @@ export class ErHistoryComponent implements OnInit {
   erListIndex: any;
   visitComments: any;
   lastIndex: number;
+  selectedIconPdf: BsModalRef;
+  refreshInterval:any;
+  modalRefForLab:BsModalRef;
+  OpenPdfModal:BsModalRef;
+  activelabLabelData:any
+  pdfData: any;
+  printUrl: any;
+  pdfUrl: string;
   constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private sessionStorage:SessionStorageService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -2133,4 +2142,82 @@ onSelectSurgeon(value){
     }
   });
    }
+
+   public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    this.getPrintUrl();
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLab = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLab.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+  closeLabModal(){
+    this.modalRefForLab?.hide();
+  }
+
+  getPrintUrl(){
+    this.emergencyService.getPrintLabel().subscribe((res:any)=>{
+      this.printUrl = res.d.results[0].Url 
+   })
+  }
+  printLabel() {
+    if (this.activelabLabelData) {
+      this.emergencyService
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .subscribe(
+          (res: any) => {
+            if (res?.d?.DataRaw) {
+              this.pdfData = res.d.DataRaw;
+              this.opendocumentPdf();
+              this.closeLabModal()
+            } else {
+              this.showError('No PDF data available.');
+            }
+          },
+          (_error: any) => {
+            this.showError('Something went wrong while fetching the label.');
+          }
+        );
+    }
+  }
+
+  pdfFormOpen() {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    this.selectedIconPdf = this.modalService.show(this.selectIconPdf, config);
+  }
+  
+  opendocumentPdf() {
+    try {
+      const byteArray = new Uint8Array(
+        atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
+      );
+      const file = new Blob([byteArray], { type: 'application/pdf' });
+      this.pdfUrl = URL.createObjectURL(file);
+      this.pdfFormOpen(); // Open the modal
+    } catch (error) {
+      this.showError('Error processing the PDF data.');
+    }
+  }
+  
+  showError(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+    this.closeLabModal(); // Ensure modal cleanup
+  }
+  
+  closePdfModal(){
+    this.OpenPdfModal.hide();
+    this.closeLabModal()
+  }
 }

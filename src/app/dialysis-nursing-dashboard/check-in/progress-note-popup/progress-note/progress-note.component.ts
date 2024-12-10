@@ -63,8 +63,8 @@ export class ProgressNoteComponent implements OnInit {
 
   initForm() {
     this.progressNoteForm = this.formBuider.group({
-      PatientId: [this.paramsObj.patientId],
-      CaseId: [this.paramsObj.caseid],
+      PatientId: [this.erListSelectedData.Patnr],
+      CaseId: [this.erListSelectedData.Falnr],
       MovementId: ['00000'],
       ProfGroup: [this.userProfileDetail.ProfGroup],
       ActionDate: [new Date()],
@@ -143,8 +143,8 @@ export class ProgressNoteComponent implements OnInit {
         this.progressNoteForm.value.ActionTime =
           'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
 
-          this.progressNoteForm.value.CaseId = this.erListSelectedData.Patnr
-          this.progressNoteForm.value.PatientId = this.erListSelectedData.falnr
+          this.progressNoteForm.value.CaseId = this.erListSelectedData.Falnr
+          this.progressNoteForm.value.PatientId = this.erListSelectedData.Patnr
           this.progressNoteForm.value.DocumentOu = this.erListSelectedData.Treatmentou
 
           const actionDate = new Date(this.progressNoteForm.value.ActionDate);
