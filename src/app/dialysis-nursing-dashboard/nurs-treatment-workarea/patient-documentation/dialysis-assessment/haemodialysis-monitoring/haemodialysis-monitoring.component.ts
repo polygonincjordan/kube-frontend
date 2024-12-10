@@ -136,33 +136,43 @@ export class HaemodialysisMonitoringComponent implements OnInit {
     }
   }
 
-  deleteRow(i:number){
-    if(this.checkedIndexes.includes(i)){
-      this.patientDocService.ToMonitor.removeAt(i)
-      const index = this.checkedIndexes.indexOf(i);
+  // deleteRow(i:number){
+  //   if(this.checkedIndexes.includes(i)){
+  //     this.patientDocService.ToMonitor.removeAt(i)
+  //     const index = this.checkedIndexes.indexOf(i);
 
-      const lastPartFromIndex = this.checkedIndexes.filter((index)=>{
-        return index !== i
-      });
+  //     const lastPartFromIndex = this.checkedIndexes.filter((index)=>{
+  //       return index !== i
+  //     });
 
-      const newArr = [];
+  //     const newArr = [];
 
-      lastPartFromIndex.forEach((index) => {
-        if(index > 1){
+  //     lastPartFromIndex.forEach((index) => {
+  //       if(index > 1){
           
-            newArr.push(index-1)
-        }else{
-            newArr.push(index);
-        }
-      });
+  //           newArr.push(index-1)
+  //       }else{
+  //           newArr.push(index);
+  //       }
+  //     });
       
-      this.checkedIndexes.splice(index, 1)
+  //     this.checkedIndexes.splice(index, 1)
 
-      this.checkedIndexes = newArr;
+  //     this.checkedIndexes = newArr;
       
       
-    }
+  //   }
+  // }
+
+
+  deleteRow(index: number): void {
+    this.patientDocService.ToMonitor.removeAt(index);
+    this.checkedIndexes = this.checkedIndexes.filter((checkedIndex) => checkedIndex !== index);
+    this.checkedIndexes = this.checkedIndexes.map((checkedIndex) =>
+      checkedIndex > index ? checkedIndex - 1 : checkedIndex
+    );
   }
+  
   
   ngOnDestroy(): void {
     if(this.subscription){
