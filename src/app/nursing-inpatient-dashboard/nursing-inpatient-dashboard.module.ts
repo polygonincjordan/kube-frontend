@@ -125,6 +125,7 @@ import { RecordViewComponentNew } from './nurs-treatment-workarea/io-charts-new/
 import { IntakeOutputHistoryComponentNew } from './nurs-treatment-workarea/io-charts-new/view-history/intake-output-history/intake-output-history.component';
 import { ViewHistoryComponentNew } from './nurs-treatment-workarea/io-charts-new/view-history/view-history.component';
 import { IoChartsComponentNew } from './nurs-treatment-workarea/io-charts-new/io-charts.component';
+import { GlasgowComaScaleComponent } from './nurs-treatment-workarea/patient-documentation/glasgow-coma-scale/glasgow-coma-scale.component';
 
 const route: Routes = [
   {
@@ -224,7 +225,8 @@ const route: Routes = [
     RecordViewComponentNew,
     IntakeOutputHistoryComponentNew,
     ViewHistoryComponentNew,
-    IoChartsComponentNew
+    IoChartsComponentNew,
+    GlasgowComaScaleComponent
   ],
   providers: [
     EmergencyService,

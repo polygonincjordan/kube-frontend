@@ -84,12 +84,12 @@
         <img src="assets/img/iochart.svg" class="tab-img" *ngIf="this.emergencyService.IOCharts" />
           I & O Chart
       </div>
-      <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOChartsPlus ? 'tab-change' : 'tab-default'"
+      <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOChartsPlus ? 'tab-change' : 'tab-default'"
         style="cursor: pointer" (click)="tabChange('IOChartsPlus')">
         <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.IOChartsPlus" />
         <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.IOChartsPlus"/>
           I & O Chart Plus
-      </div>
+      </div> -->
       <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrdering ? 'tab-change' : 'tab-default'"
       style="cursor: pointer" (click)="tabChange('DietMealOrdering')">
       <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrdering" />
@@ -97,11 +97,11 @@
         Diet Meal Ordering
     </div>
     <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrderingPlus ? 'tab-change' : 'tab-default'"
-    style="cursor: pointer" (click)="tabChange('DietMealOrderingPlus')">
-    <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrderingPlus" />
-    <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrderingPlus"/>
-      Diet Meal Ordering Plus
-  </div>
+      style="cursor: pointer" (click)="tabChange('DietMealOrderingPlus')">
+      <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrderingPlus" />
+      <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrderingPlus"/>
+        Diet Meal Ordering Plus
+    </div>
         <span style="margin-left: auto;">
           <!-- <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
           z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="!showPatients">
@@ -895,10 +895,8 @@
           [physicianOrderList]="physicianOrderList"></app-orders-templates>
       </div>
       <ng-container *ngIf="this.emergencyService.ProgressNotes">
-        <app-physician-orders (onSetDateFilterEventForProgressNotes)="
-                progressNotesFilterList($event)
-              " (onSetDateFilterEvent)="progressNotesFilterList($event)"
-          [occupationalGroupData]="occupationalGroupData" (onSearchChangEvent)="onSearchChange($event)"
+        <app-physician-orders (onSetDateFilterEventForProgressNotes)="progressNotesFilterList($event)" (onSetDateFilterEvent)="progressNotesFilterList($event)"
+          [occupationalGroupData]="occupationalGroupData" (onSearchChangEvent)="onSearchChange($event)" (deletedProgressNote)="deletedProgressNote($event)"
           (onSearchChangEventForProgressNotes)="onSearchChange($event)"></app-physician-orders>
       </ng-container>
       <div class="order-templete-main mt-3" *ngIf="this.emergencyService.ProgressNotes">

@@ -39,11 +39,12 @@ export class ReservationComponent implements OnInit {
     { id: 2, title: 'New Issue', content: '', active: true },
   ];
   public movementTypes = [
-    { value: '201', label: '201' },
-    { value: '311', label: '311' }
+    { value: '201', label: '201 Stock issue' },
+    { value: '311', label: '311 Stock Transfer' }
   ];
   todayPlaceholder: string;
   private subscription: Subscription;
+  historyListUserName: any = [];
   constructor( private dataShareService: DataShareService,private emergencyService: EmergencyService, private formBuilder: FormBuilder, private consumableService: ConsumableService) { 
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
@@ -182,6 +183,10 @@ export class ReservationComponent implements OnInit {
         });
       }
     });
+  }
+
+  historyListOutPut(event: any) {
+    this.historyListUserName = event;
   }
 
   clearDateRange() {

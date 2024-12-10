@@ -124,6 +124,11 @@ export class CheckInComponent implements OnInit {
       value: 'RD'
     },
   ]
+  activelabLabelData: any;
+  pdfData: any;
+  modalRefForLab:BsModalRef;
+  printUrl: any;
+  OpenPdfModal:BsModalRef;
 
   constructor(
     private emergencyService: EmergencyService,
@@ -600,6 +605,81 @@ export class CheckInComponent implements OnInit {
       }
     });
   }
+
+  public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    this.getPrintUrl();
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLab = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLab.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+
+  closeLabModal(){
+    this.modalRefForLab?.hide();
+  }
+
+  getPrintUrl(){
+    this.emergencyService.getPrintLabel().subscribe((res:any)=>{
+      this.printUrl = res.d.results[0].Url 
+   })
+  }
+
+  printLabel(template: TemplateRef<any>) {
+    if (this.activelabLabelData) {
+      this.emergencyService
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .subscribe(
+          (res: any) => {
+            if (res?.d?.DataRaw) {
+              this.pdfData = res.d.DataRaw;
+              this.opendocumentPdf(template);
+              this.closeLabModal()
+            } else {
+              this.showError('No PDF data available.');
+            }
+          },
+          (_error: any) => {
+            this.showError('Something went wrong while fetching the label.');
+          }
+        );
+    }
+  }
+
+  
+  closePdfModal(){
+    this.OpenPdfModal.hide();
+    this.closeLabModal()
+  }
+   
+  opendocumentPdf(template: TemplateRef<any>) {
+    try {
+      const byteArray = new Uint8Array(
+        atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
+      );
+      const file = new Blob([byteArray], { type: 'application/pdf' });
+      this.pdfUrl = URL.createObjectURL(file);
+      this.pdfFormOpen(); // Open the modal
+    } catch (error) {
+      this.showError('Error processing the PDF data.');
+    }
+  }
+  
+  showError(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+    this.closeLabModal(); // Ensure modal cleanup
+  }
+  
 
   closeRiskModal() {
     this.modalRefForRisk.hide();

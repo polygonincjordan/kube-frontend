@@ -3,18 +3,18 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th colspan="1" scope="col">Reservation #</th>
-            <th colspan="1" scope="col">Material</th>
-            <th colspan="1" scope="col">Issue S. Loc.</th>
-            <th colspan="1" scope="col">Cost Center</th>
-            <th colspan="1" scope="col">Req. S. Loc</th>
-            <th colspan="1" scope="col">Move. Type</th>
-            <th colspan="1" scope="col">Quantity</th>
-            <th colspan="1" scope="col">Request Date</th>
-            <th colspan="1" scope="col">Unit of Entry (UnE)</th>
-            <th colspan="1" scope="col">Status</th>
-            <th colspan="1" scope="col" title="Is Deleted?">Del</th>
-            <th colspan="1" scope="col">User Name</th>
+            <th colspan="1" scope="col">Reservation # <i class="fa fa-sort" aria-hidden="true" (click)="sort('Rsnum')"></i></th>
+            <th colspan="1" scope="col">Material <i class="fa fa-sort" aria-hidden="true" (click)="sort('Matnr')"></i></th>
+            <th colspan="1" scope="col">Issue S. Loc. <i class="fa fa-sort" aria-hidden="true" (click)="sort('Sloc')"></i></th>
+            <th colspan="1" scope="col">Cost Center <i class="fa fa-sort" aria-hidden="true" (click)="sort('CostCtr')"></i></th>
+            <th colspan="1" scope="col">Req. S. Loc <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i></th>
+            <th colspan="1" scope="col">Move. Type <i class="fa fa-sort" aria-hidden="true" (click)="sort('MoveType')"></i></th>
+            <th colspan="1" scope="col">Quantity <i class="fa fa-sort" aria-hidden="true" (click)="sort('Bdmng')"></i></th>
+            <th colspan="1" scope="col">Request Date <i class="fa fa-sort" aria-hidden="true" (click)="sort('Erdat')"></i></th>
+            <th colspan="1" scope="col">Unit of Entry (UnE) <i class="fa fa-sort" aria-hidden="true" (click)="sort('Meins')"></i></th>
+            <th colspan="1" scope="col">Status <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i></th>
+            <th colspan="1" scope="col" title="Is Deleted?">Del <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i></th>
+            <th colspan="1" scope="col">User Name <i class="fa fa-sort" aria-hidden="true" (click)="sort('Erusr')"></i></th>
             <th colspan="1" scope="col">Action</th>
           </tr>
         </thead>

@@ -12,6 +12,7 @@ export class PhysicianOrdersComponent implements OnInit {
   @Input() occupationalGroupData: any;
   @Output() onSearchChangEvent = new EventEmitter();
   @Output() onSetDateFilterEvent = new EventEmitter();
+  @Output() deletedProgressNote = new EventEmitter();
   @Output() onSetOccupFilterEvent = new EventEmitter();
   @Output() onSetDateFilterEventForProgressNotes = new EventEmitter();
   @Output() onSearchChangEventForProgressNotes = new EventEmitter();
@@ -33,6 +34,7 @@ export class PhysicianOrdersComponent implements OnInit {
       SearchData: ['', [Validators.required]],
       DateRange: [[], [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
+      filterDeleted: ['', [Validators.required]],
     });
   }
 
@@ -63,5 +65,10 @@ export class PhysicianOrdersComponent implements OnInit {
     }
     this.phyOrderForm();
     this.onSetDateFilterEvent.next(this.formDetailGroup);    
+  }
+
+  showDeletedProgress(event) {
+    console.log(event, "Physician");
+    this.deletedProgressNote.emit(event.target.checked);
   }
 }

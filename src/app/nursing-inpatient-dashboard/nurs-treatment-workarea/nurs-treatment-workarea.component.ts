@@ -997,11 +997,21 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((data: any[]) => {
-        this.ProgressNotesList = data;
         this.ProgressNotesListFilterValue = data;
+        const filter = data.filter(item=>!item.Cancelled);
+        this.ProgressNotesList = filter;
+        // this.ProgressNotesList = data;
       });
   }
 
+  deletedProgressNote(event: any) {
+    console.log(event, "Nur Treatment");
+    if(event) {
+      this.ProgressNotesList = this.ProgressNotesListFilterValue.filter(res => res.Cancelled == event)
+    } else {
+      this.ProgressNotesList = this.ProgressNotesListFilterValue;
+    }
+  }
   progressNotesFilterList(formFilter: any) {
     this.admittedFrom = '';
     this.admittedTo = '';
