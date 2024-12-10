@@ -146,7 +146,7 @@
     </span>
   </div> -->
   <div
-    *ngIf="noReleaseDoc && reservation"
+    *ngIf="noReleaseDoc"
     class="col-md-4"
     style="font-size: 18px; font-weight: bold; padding: 0; padding-left: 20px"
   >
@@ -862,7 +862,7 @@
           "
           data-bs-toggle="tooltip"
           data-bs-placement="right"
-          title="Patient Administration"
+          title="Medications Administering"
           [ngClass]="AdministeredDoses ? '' : ''"
           (click)="selectModule('AdministeredDoses')"
           style="width: 45px"

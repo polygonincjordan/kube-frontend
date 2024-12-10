@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { MaterialDetails, MaterialDetailsResult } from '@services/consumables/interfaces/consumables.interface';
@@ -18,6 +18,8 @@ export class HistoryListComponent implements OnInit {
   historyList: any;
   @Input() storageLocationList:any
   @Input() costCenterList:any
+  @Output() historyListOutPut: EventEmitter<void> = new EventEmitter<void>();
+
   filteredHistoryList: any[] = [];
   payload: { CostCtr: any; MoveType: any; Matnr: any; Sloc: any; Erdat: string; Erdat1: string; };
   itemDate: Date;
@@ -31,7 +33,8 @@ export class HistoryListComponent implements OnInit {
   public wordType = WordType
   public materialList: Array<MaterialDetailsResult> = [];
   public materialListCopy: Array<MaterialDetailsResult> = [];
-  public defaultDate = '9999-12-31';
+  // public defaultDate = '9999-12-31';
+  public defaultDate = new Date();
   public movementTypes = [
     { value: '201', label: '201' },
     { value: '311', label: '311' }
@@ -116,10 +119,16 @@ export class HistoryListComponent implements OnInit {
     this.emergencyService.getHistoryReservationList(fromDate,toDate,Sloc,Matnr,MoveType,CostCtr).subscribe({
       next:(res:any)=>{
         if (res) {
+          this.filteredHistoryList  = res.d?.results || [];
           this.historyList = res.d?.results || [];
+          if(formValue?.userName) {
+            this.historyList = this.historyList.filter(item => item.Erusr === formValue?.userName);
+          }
         } else {
           this.historyList = [];
         }
+        let uniqueNames: any = Array.from(new Set(this.filteredHistoryList.map(item => item.Erusr)));
+        this.historyListOutPut.emit(uniqueNames)
       },error:(err:any)=>{
         console.log(err)
       }
@@ -218,6 +227,27 @@ export class HistoryListComponent implements OnInit {
         Meins:data.Meins,
       });
     }
+  }
+
+  sortState = { column: '', direction: '' };
+
+  sort(column?: string) {
+    if (this.sortState.column === column) {
+      this.sortState.direction = this.sortState.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortState.column = column;
+      this.sortState.direction = 'asc';
+    }
+
+    this.historyList.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return this.sortState.direction === 'asc' ? -1 : 1;
+      } else if (a[column] > b[column]) {
+        return this.sortState.direction === 'asc' ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
 }

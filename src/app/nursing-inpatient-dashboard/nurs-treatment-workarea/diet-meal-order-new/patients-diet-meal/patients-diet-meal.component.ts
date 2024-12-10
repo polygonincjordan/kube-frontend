@@ -224,6 +224,7 @@ export class PatientsDietMealComponentNew implements OnInit {
       Operation: "I",
       Foodcomment: "",
       Foodid: ['', Validators.required],
+      NoDislike: [false]
     });
   }
 
@@ -264,7 +265,14 @@ export class PatientsDietMealComponentNew implements OnInit {
       Operation: 'I',
       Orderno: '',
       NursingIndicators: '',
-      Referorderno: ''
+      Referorderno: '',
+
+
+      sodium: [''],
+      carbohydrates: [''],
+      proteins: [''],
+      calories: [''],
+      Irradiated: [false]
     });
   }
 
@@ -385,6 +393,10 @@ export class PatientsDietMealComponentNew implements OnInit {
       this.dietOrderForm?.get('Irradiated')['controls']['yes']?.setValue(false);
     }
     console.log(this.dietOrderForm?.get('Irradiated')['controls']);
+  }
+
+  onNoDislikeChange(event) {
+    this.dietOrderForm?.get('NoDislike')['controls']?.setValue(event?.target?.checked);
   }
 
   onNPOChange() {

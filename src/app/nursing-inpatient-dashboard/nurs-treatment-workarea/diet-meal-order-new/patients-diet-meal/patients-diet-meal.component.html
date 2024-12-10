@@ -272,18 +272,12 @@
         </div>
       </div>
       <div class="d-flex flex-row align-items-center">
-        <label class="w-50" for="">Irradiated</label>
-        <div class="d-flex flex-row align-items-center w-50">
+        <input type="checkbox" id="flexCheckDefault" [checked]="this.dietOrderForm?.get('Irradiated')['controls']['yes'].value"
+          (change)="onIrradiatedChange('yes')" />
+        <label class="w-50 m-0 ml-2" for="">Irradiated</label>
+        <!-- <div class="d-flex flex-row align-items-center w-50">
           <div class="form-check npo">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              [checked]="
-                this.dietOrderForm?.get('Irradiated')['controls']['yes'].value
-              "
-              (change)="onIrradiatedChange('yes')"
-            />
+        
             <label class="form-check-label" for="flexCheckDefault"> Yes </label>
           </div>
           <div class="form-check npo">
@@ -298,7 +292,7 @@
             />
             <label class="form-check-label" for="flexCheckDefault"> No </label>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="d-flex flex-column mb-2">
         <label for="Remarks">Comments</label>
@@ -464,7 +458,7 @@
         </div>
       </div>
       <div class="d-flex flex-row align-items-center justify-content-between mb-2">
-        <label class="w-30" for="">Deit Description</label>
+        <label class="w-30" for="">Diet Description</label>
         <div class="w-70 d-flex flex-column">
           <ng-select [items]="dietDescription" [multiple]="true" bindLabel="Snacktype" formControlName="Dietdesc"
             bindValue="Snacktype" [closeOnSelect]="false" [class.is-invalid]="
@@ -483,7 +477,7 @@
             snackOrderForm?.get('Dietdesc')?.invalid &&
             snackOrderForm?.get('Dietdesc')?.touched
           " class="invalid-feedback">
-            Please select a deit description.
+            Please select a Diet description.
           </div>
         </div>
       </div>
@@ -529,6 +523,11 @@
     </div>
     <div class="modal-body p-0">
       <div class="container p-4">
+        <div class="d-flex flex-row align-items-center mb-3">
+          <input type="checkbox" id="flexCheckDefault" formControlName="NoDislike"
+            (change)="onNoDislikeChange($event)" />
+          <label class="w-50 m-0 ml-2" for="">Irradiated</label>
+        </div>
         <div class="d-flex flex-row align-items-center justify-content-between mb-2">
           <label class="w-30" style="font-size: 16px;margin: 0;" for="">Dislikes</label>
           <div class="w-70 d-flex flex-column">

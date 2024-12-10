@@ -111,8 +111,11 @@
             <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
             <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
-            <td colspan="1" style="text-align: center; overflow: visible !important">
-              <div>
+            <td colspan="1" style="display: flex; align-items: center; text-align: center; overflow: visible !important">
+              <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
+                <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>
+              </div>
+              <div class="ml-2">
                 <div class="dropdown">
                   <i
                     class="fa fa-ellipsis-v dropdown-toggle"
@@ -140,6 +143,35 @@
 </div>
 <app-er-bed #erBed (reloadCheckin)="reload($event)"></app-er-bed>
 <app-er-vitals #erVitalsModal></app-er-vitals>
+
+<ng-template #labPrintLabel>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Print Patient Label</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <p>Are you sure you want to print label for "{{activelabLabelData?.Patient}}" with MRN {{activelabLabelData?.Patnr}}</p>
+  </div>
+  <div class="modal-footer">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="printLabel(document)">Print</button>
+      <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #document>
+  <div class="Pdf_modal">
+    <iframe src="pdfSrc" width="500" height="400"></iframe>
+    <div class="bottom">
+      <button style="width: 100px;" (click)="closePdfModal()"> <img src="assets/img/Frame-icone.svg" style="width: 19px; cursor: pointer" title="Print Patient Label"/><span style="margin-left:7px">Print</span></button
+      ><button style="width: 100px;"  (click)="closePdfModal()">Close</button>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #visitCommentsModal>
   <div class="modal-body">

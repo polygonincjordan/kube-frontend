@@ -183,6 +183,39 @@
             font-weight-bold ha-color">Orders Sets</h4></a>
       </div>
     </div>
+    <!-- If User Role is Senior Nurse  -->
+    <hr class="ha-bordercol" *ngIf="isSeniorNurse">
+    <div class="ml-4" *ngIf="isSeniorNurse">
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/nursing-emergncy-dashboard" (click)="askQuestion('/nursing-emergncy-dashboard')"><h4 class="ml-3
+            font-weight-bold ha-color">Emergency Dashboard</h4></a>
+      </div>
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <!-- <h4 class="ml-3 font-weight-bold ha-color ">ln-Patients Dashboard</h4> -->
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/out-patient-nursing" (click)="askQuestion('/out-patient-nursing')"><h4 class="ml-3
+            font-weight-bold ha-color">Outpatient Dashboard</h4></a>
+      </div>
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/dialysis-nursing-dashboard" (click)="askQuestion('/dialysis-nursing-dashboard')"><h4 class="ml-3
+            font-weight-bold ha-color">Dialysis Nursing Dashboard</h4></a>
+      </div>
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/day-case-dashboard" (click)="askQuestion('/day-case-dashboard')"><h4 class="ml-3
+            font-weight-bold ha-color">Day Case Dashboard</h4></a>
+      </div>
+    </div>
     <hr class="ha-bordercol" *ngIf="outpatientlistdata">
     <div class="ml-4" *ngIf="widgetsSet && widgetsSet.length &&
       this.hospitalistdate && outpatientlistdata">

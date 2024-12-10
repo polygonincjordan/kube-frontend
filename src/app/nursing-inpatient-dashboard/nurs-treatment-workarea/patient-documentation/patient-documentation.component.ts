@@ -28,6 +28,7 @@ import { NursingDischargeSummaryComponent } from 'src/app/shared-module/nursing-
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { NursingAdmissionAssessmentComponent } from 'src/app/shared-module/nursing-admission-assessment/nursing-admission-assessment.component';
+import { GlasgowComaScaleComponent } from './glasgow-coma-scale/glasgow-coma-scale.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -45,6 +46,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
+  @ViewChild(GlasgowComaScaleComponent) GlasgowComaScaleComp: GlasgowComaScaleComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -232,7 +234,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingDischargeDocDeatils();
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
-    // this.fetchLatestDetails();
+    this.fetchLatestDetails();
   }
 
   LatestMFSSet(){
@@ -619,7 +621,9 @@ export class PatientDocumentationComponent implements OnInit {
       'isObstetricsFallRisk': { isObstetricsFallRisk: true, selectedDocName: 'Obstetrics Fall Risk Assessment' },
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
       'morsefallScale': { morsefallScale: true, selectedDocName: 'Morse Fall Scale' },
+      'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
     };
+    
 
     // Reset all flags to false initially
     this.isSurgicalPassport = false;
@@ -637,6 +641,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPreCardiacCath = false;
     this.isNursingInitialAssessment = false;
     this.isObstetricsFallRisk = false;
+    this.glasgowcomascale = false;
     this.attachments = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -991,6 +996,9 @@ export class PatientDocumentationComponent implements OnInit {
     }
     if (this.openNurseAdmission) {
       this.NursingAdmissionComp?.ngOnDestroy();
+    }
+    if (this.openGlasgowComaScale) {
+      this.GlasgowComaScaleComp.ngOnDestroy();
     }
     this.getPatientProfile();
     this.getLatestAssessment();
@@ -1381,7 +1389,48 @@ export class PatientDocumentationComponent implements OnInit {
       }
     
     }
-   
+     // Glasgow Coma Scale...
+     else if (this.glasgowcomascale) {
+      if (action == 'create') {
+        this.openGlasgowComaScale = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openGlasgowComaScale = true;;
+          let valueObj = {
+            type: WordType.EditGGCS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openGlasgowComaScale = true;
+          let valueObj = {
+            type: WordType.CopyGGCS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openGlasgowComaScale = true;
+        setTimeout(() => {
+          this.GlasgowComaScaleComp.ngOnInit();
+        }, 1000);
+        this.createAndRelease();
+      }
+    }
   }
   private subscription: Subscription;
   directReleasePainAss() {
@@ -1730,9 +1779,28 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.errorSwallModel(error?.error?.error.message.value)
         })
       }
+
+      if (this.openGlasgowComaScale) {
+        this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
      
     }
     else if (this.actionType == 'edit') {
+      if (this.openGlasgowComaScale) {
+        this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
           if (formValue) {
@@ -1805,6 +1873,15 @@ export class PatientDocumentationComponent implements OnInit {
 
     }
     else if (this.actionType == 'copy') {
+      if (this.openGlasgowComaScale) {
+        this.GlasgowComaScaleComp.copyGlosgowData().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error copy Glasgow coma scale:', error);
+        });
+      }
       if (this.openBradenScale) {
         this.BradenScaleComp.copyBradeScale().then((formValue: any) => {
           if (formValue) {

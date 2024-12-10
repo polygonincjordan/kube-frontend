@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
   vitalsService: any;
   hospitalistdate: boolean = true;
   outpatientlistdata: boolean = false;
+  isSeniorNurse: boolean=  false;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.sideWidget = false;
     this.showprofilemenu = false;
@@ -141,6 +142,7 @@ export class HeaderComponent implements OnInit {
   }
 
   removeSomeContentIntoProfile() {
+    this.isSeniorNurse = false;
     const getKubeRule = this.storageService.getKubeRule();
     if (getKubeRule === UserType.DayCaseNurse) {
       this.outpatientlistdata = false;
@@ -152,6 +154,8 @@ export class HeaderComponent implements OnInit {
       this.outpatientlistdata = false;
     } else if (getKubeRule === UserType.NursingInpatient) {
       this.outpatientlistdata = false;
+    } else if (getKubeRule == UserType.SeniorNurse) {
+      this.isSeniorNurse = true;
     } else {
       this.outpatientlistdata = true;
     }
