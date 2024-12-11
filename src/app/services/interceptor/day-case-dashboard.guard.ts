@@ -11,7 +11,7 @@ export class DayCaseDashboardGuard implements CanActivate {
 
   canActivate(): boolean {
     const getKubeRule = this.storageService.getKubeRule();
-    if (!this.storageService.isLoggedIn() || !(getKubeRule == UserType.DayCaseNurse)) {
+    if (!this.storageService.isLoggedIn() || !(getKubeRule == UserType.DayCaseNurse || getKubeRule == UserType.SeniorNurse)) {
       localStorage.clear();
       this.router.navigateByUrl('');
     }

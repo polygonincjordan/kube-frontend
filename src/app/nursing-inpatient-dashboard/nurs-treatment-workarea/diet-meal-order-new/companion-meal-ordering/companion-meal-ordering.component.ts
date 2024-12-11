@@ -161,6 +161,18 @@ export class CompanionMealOrderingComponentNew implements OnInit {
       Comments: ""
     });
 
+    this.snckOrderForm = this.fb.group({
+      Mealday: [new Date(), Validators.required],
+      Institution: [this.paramsObj?.einri],
+      Mrn: [this.paramsObj?.patnr],
+      Caseno: [this.paramsObj?.falnr],
+      snackTime: ["", Validators.required],
+      Quantity: ["", Validators.required],
+      snackConsistency: ['', Validators.required],
+      snackDescription: ['',Validators.required],
+      Comments: ""
+    });
+
   }
 
   companionOrder() {
