@@ -94,6 +94,7 @@ export class ErHistoryComponent implements OnInit {
   OpenPdfModal:BsModalRef;
   selectedIconPdf: BsModalRef;
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
+  refreshInterval:any;
    
   pdfUrl: string;
   constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private dayCaseDashboardService:DayCaseDashboardService) {
@@ -144,6 +145,15 @@ export class ErHistoryComponent implements OnInit {
     this.getErList([new Date()]);
    }
     this.dataForTriage();
+    this.refreshInterval = setInterval(() => {
+      this.getErList([new Date()]);
+    }, (30 * 60 * 1000));
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
   }
   addItemForRisk(element?): void {
     this.riskFormitems = this.riskform.get('riskFormitems') as FormArray;

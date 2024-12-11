@@ -33,12 +33,14 @@ export class MyClinicComponent implements OnInit {
     { Desc: "Attending Physician", Value: "01", isSelected: false },
     { Desc: "Diagnosis", Value: "02", isSelected: false },
     { Desc: "Case", Value: "03", isSelected: false },
-    { Desc: "Visit Type", Value: "04", isSelected: false }
+    { Desc: "Visit Type", Value: "04", isSelected: false },
+    { Desc: "Comment", Value: "05", isSelected: false }
   ]
   AttendingPhysician: boolean = false;
   Diagnosis: boolean = false;
   Case: boolean = false;
   VisitType: boolean = false;
+  comment: boolean = false;
   
   selectedItemsForStatusConf = '';
   defaultSelectedItemsForStatusConf = [];
@@ -273,6 +275,7 @@ export class MyClinicComponent implements OnInit {
     this.Diagnosis = false;
     this.Case = false;
     this.VisitType = false;
+    this.comment = false;
     let jsonObj = {
       Compid: 'MYCLINIC01',
     };
@@ -307,6 +310,7 @@ export class MyClinicComponent implements OnInit {
                   if(res.Desc == "Diagnosis") this.Diagnosis = true;
                   if(res.Desc == "Case") this.Case = true;
                   if(res.Desc == "Visit Type") this.VisitType = true;
+                  if(res.Desc == "Comment") this.comment = true;
                 })
               } else if (DataType === "MovementType") {
                 this.defaultSelectedItemsForMovType = [];
@@ -342,6 +346,7 @@ export class MyClinicComponent implements OnInit {
           this.Diagnosis = false;
           this.Case = false;
           this.VisitType = false;
+          this.comment = false
         }
         this.selectedView = '1';
         this.movementType = true;

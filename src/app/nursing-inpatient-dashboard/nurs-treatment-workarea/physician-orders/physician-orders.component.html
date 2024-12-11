@@ -67,9 +67,9 @@
             >
           </ng-select>
         </div>
-        <div>
-          <input class="form-check-input w-20" type="checkbox" value="" (change)="showDeletedProgress($event)" formControlName="filterDeleted" id="flexCheckDefault">
-          <label class="form-check-label" for="flexCheckDefault">
+        <div class="ml-3" *ngIf="this.emergencyService.ProgressNotes">
+          <input class="w-20" type="checkbox" value="" (change)="showDeletedProgress($event)" formControlName="filterDeleted" id="flexCheckDefault">
+          <label class="ml-2 form-check-label" for="flexCheckDefault">
             Deleted
           </label>
         </div>

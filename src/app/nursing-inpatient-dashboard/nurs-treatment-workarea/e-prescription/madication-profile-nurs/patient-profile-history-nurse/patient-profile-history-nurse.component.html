@@ -166,7 +166,7 @@
                     <img src="assets/img/Additional-Info.jpg" alt="" (click)="onOpenInfoPopup(item, i)" height="20" class="c-pointer"
                     title="{{item.get('Descr').value}}">
                   </div>
-                  <div class="p-2 c-pointer Mp-hover">
+                  <!-- <div class="p-2 c-pointer Mp-hover">
                     <img src="assets/img/selected-icon.png" alt="" height="20" class="c-pointer" (click)="openMoDetailPanel(i, item.value)"
                       [ngClass]="item.value.IsmoDetails? 'open-mo-detail':
                       ''" [ngClass]=" isFormSubmitted ?
@@ -183,7 +183,7 @@
                   <div class="p-2 c-pointer Mp-hover" *ngIf="item.value.ValidationDate !== null">
                     <img src="assets/img/check-data.png" alt="" height="20" title="" [popover]="ValidationData"
                       [popoverContext]="{item: item, index: item.value.Id} " triggers="mouseenter:mouseleave" placement="left">
-                  </div>
+                  </div> -->
                 </td>
               </tr>
               <tr>

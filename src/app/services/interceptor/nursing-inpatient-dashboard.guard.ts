@@ -20,7 +20,7 @@ export class NursingInpatientDashboardGuard implements CanActivate {
     const getKubeRule = this.storageService.getKubeRule();
     if (
       !this.storageService.isLoggedIn() ||
-      !(getKubeRule == UserType.NursingInpatient)
+      !(getKubeRule == UserType.NursingInpatient || getKubeRule == UserType.SeniorNurse)
     ) {
       localStorage.clear();
       this.router.navigateByUrl('');

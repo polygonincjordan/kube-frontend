@@ -141,6 +141,8 @@ export class LoginComponent implements AfterViewInit {
             this.router.navigateByUrl('/out-patient-nursing', {});
           }
         });
+    }  else if (getKubeRule == UserType.SeniorNurse) {
+      this.router.navigate(['/nursing-inpatient-dashboard'], {});
     }
   }
 }

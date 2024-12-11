@@ -31,13 +31,13 @@
           (click)="changeEvents('Administered')">
           <span class="span-dr">Administer</span>
         </button>
-        <div [ngClass]="qadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('QAdministered')">
+        <!-- <div [ngClass]="qadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('QAdministered')">
           <span>Q. Administer</span>
-        </div>
+        </div> -->
         <div [ngClass]="notadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('NotAdministered')">
           <span>Not Administered</span>
         </div>
-        <button [disabled]="isDisabledFsource" class="w-100 color-data" [ngClass]="addsupply ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+        <!-- <button [disabled]="isDisabledFsource" class="w-100 color-data" [ngClass]="addsupply ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
           (click)="changeEvents('AddSupply')">
           <span class="span-dr">Additional Supply</span>
         </button>
@@ -45,7 +45,7 @@
           [ngClass]="drugreturn ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('DrugReturn')"><span
             class="span-dr">Drug
             Return</span>
-        </button>
+        </button> -->
       </div>
       <div class="col-md-9" style="font-weight: bold;color:#69727b">
         <form action="" [formGroup]="administratiForm">

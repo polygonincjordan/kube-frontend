@@ -397,6 +397,9 @@ export class PatientsDietMealComponentNew implements OnInit {
 
   onNoDislikeChange(event) {
     this.dietOrderForm?.get('NoDislike')['controls']?.setValue(event?.target?.checked);
+    if(event?.target?.checked) {
+      this.dietOrderForm?.get('Foodid')['controls']?.setValue('');
+    }
   }
 
   onNPOChange() {

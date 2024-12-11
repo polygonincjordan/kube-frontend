@@ -11,7 +11,7 @@ export class OutPatientNursingGuard implements CanActivate {
 
   canActivate(): boolean {
     const getKubeRule = this.storageService.getKubeRule();
-    if (!this.storageService.isLoggedIn() || !(getKubeRule == UserType.opnurse)) {
+    if (!this.storageService.isLoggedIn() || !(getKubeRule == UserType.opnurse || getKubeRule == UserType.SeniorNurse)) {
       localStorage.clear();
       this.router.navigateByUrl('');
     }

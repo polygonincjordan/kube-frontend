@@ -12,7 +12,7 @@ export class DialysisNursingDashboardGuard implements CanActivate {
 
   canActivate(): boolean {
     const getKubeRule = this.storageService.getKubeRule();
-    if (!this.storageService.isLoggedIn() || !(getKubeRule == UserType.DIYNurse)) {
+    if (!this.storageService.isLoggedIn() || !(getKubeRule == UserType.DIYNurse || getKubeRule == UserType.SeniorNurse)) {
       localStorage.clear();
       this.router.navigateByUrl('');
     }

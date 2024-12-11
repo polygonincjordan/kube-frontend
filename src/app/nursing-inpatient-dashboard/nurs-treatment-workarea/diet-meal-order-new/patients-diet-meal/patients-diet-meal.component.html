@@ -271,7 +271,7 @@
           </div>
         </div>
       </div>
-      <div class="d-flex flex-row align-items-center">
+      <div class="d-flex flex-row align-items-center mt-3 mb-3">
         <input type="checkbox" id="flexCheckDefault" [checked]="this.dietOrderForm?.get('Irradiated')['controls']['yes'].value"
           (change)="onIrradiatedChange('yes')" />
         <label class="w-50 m-0 ml-2" for="">Irradiated</label>
@@ -526,7 +526,7 @@
         <div class="d-flex flex-row align-items-center mb-3">
           <input type="checkbox" id="flexCheckDefault" formControlName="NoDislike"
             (change)="onNoDislikeChange($event)" />
-          <label class="w-50 m-0 ml-2" for="">Irradiated</label>
+          <label class="w-50 m-0 ml-2" for="">Dislikes</label>
         </div>
         <div class="d-flex flex-row align-items-center justify-content-between mb-2">
           <label class="w-30" style="font-size: 16px;margin: 0;" for="">Dislikes</label>
@@ -535,7 +535,7 @@
               bindValue="FoodprefId" [closeOnSelect]="false" [class.is-invalid]="
                 dislikeFoodForm?.get('Foodid')?.invalid &&
                 dislikeFoodForm?.get('Foodid')?.touched
-              ">
+              " [readonly]="dislikeFoodForm?.get('NoDislike')?.value">
               <ng-template ng-option-tmp let-item="item" let-index="index" let-item$="item$">
                 <div class="d-flex flex-row align-items-center">
                   <input id="item-{{ index }}" type="checkbox" class="mr-2" [ngModel]="item$.selected"
