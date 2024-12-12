@@ -5,7 +5,7 @@
             Create New Companion Meal Order
         </button>
         <button class="btn btn-primary mr-2" (click)="createNewDiet('snackOrder')">
-            Create Snack Order
+            Create New Companion Snack Order
         </button>
     </div>
 </div>
@@ -143,7 +143,7 @@
     </form>
     <form class="comparion-order" *ngIf="modalType == 'snackOrder'" [formGroup]="snckOrderForm" (ngSubmit)="saveForm()">
         <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-            <div class="title">Snack Order Details</div>
+            <div class="title">Companion Snack Order Details</div>
         </div>
         <div class="container p-4">
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
