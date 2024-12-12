@@ -102,11 +102,8 @@
                     <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" (click)="labPrintLabelModal(labPrintLabel,item)" title="Print Label"/>
                   <!-- </div> -->
                   </div>
-
                 </td>
-                
           </tr>
-
         </tbody>
       </table>
       <div
@@ -121,6 +118,20 @@
  </div>
 
 </div>
+<ng-template #selectIconPdf>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'" [zoom]="'80'"
+      [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
+    </ngx-extended-pdf-viewer>
+
+    <div class="mt-2" style="text-align: center">
+      <button class="btn btn-primary" (click)="selectedIconPdf.hide()"
+        style="background-color: #0082c8; border: #0082c8">
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
 <ng-template #labPrintLabel>
   <div>
     <div class="allergy-header">

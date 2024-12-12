@@ -1135,7 +1135,7 @@ export class CheckInComponent implements OnInit {
       this.printUrl = res.d.results[0].Url 
    })
   }
-  printLabel(template: TemplateRef<any>) {
+  printLabel() {
     if (this.activelabLabelData) {
       this.emergencyService
         .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
@@ -1143,7 +1143,7 @@ export class CheckInComponent implements OnInit {
           (res: any) => {
             if (res?.d?.DataRaw) {
               this.pdfData = res.d.DataRaw;
-              this.opendocumentPdf(template);
+              this.opendocumentPdf();
               this.closeLabModal()
             } else {
               this.showError('No PDF data available.');
@@ -1156,7 +1156,7 @@ export class CheckInComponent implements OnInit {
     }
   }
   
-  opendocumentPdf(template: TemplateRef<any>) {
+  opendocumentPdf() {
     try {
       const byteArray = new Uint8Array(
         atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
@@ -1179,10 +1179,6 @@ export class CheckInComponent implements OnInit {
     this.closeLabModal(); // Ensure modal cleanup
   }
   
- 
-  
-  
-
   closePdfModal(){
     this.OpenPdfModal.hide();
     this.closeLabModal()
