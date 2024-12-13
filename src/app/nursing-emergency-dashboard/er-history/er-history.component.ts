@@ -88,6 +88,11 @@ export class ErHistoryComponent implements OnInit {
   lastIndex: number;
   printUrl: any;
   activelabLabelData: any;
+  pdfData: any;
+  pdfUrl:any
+  OpenPdfModal:BsModalRef;
+  selectedIconPdf: BsModalRef;
+  @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
   constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -421,7 +426,6 @@ export class ErHistoryComponent implements OnInit {
       });
       this.ERlistDataClone = this.ERlistData;
       this.lastIndex = this.ERlistData.length - 1;
-      this.getPrintUrl()
       },
       (_error: any) => {}
     );
@@ -485,6 +489,7 @@ export class ErHistoryComponent implements OnInit {
 
 
   public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    this.getPrintUrl();
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-md lab-modal-size',
     };
@@ -505,29 +510,85 @@ export class ErHistoryComponent implements OnInit {
       this.printUrl = res.d.results[0].Url 
    })
   }
-  printLabel(){
-    console.log('=-=-=-=-=-click',this.printUrl,'--',this.activelabLabelData.Vkgid);
-    
-    if(this.activelabLabelData.Vkgid){
-      this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res:any)=>{
-        if(res){
-          this.closeLabModal()
-        }
-      },
-      (_error: any) => {
-        // Swal.fire({
-        //   text: 'something went worng.',
-        //   icon: 'error',
-        //   confirmButtonText: 'Ok',
-        //   customClass: 'myalertpopup'
-        // })
-      
-      }
-    ); 
-      this.closeLabModal();
+
+  printLabel() {
+    if (this.activelabLabelData) {
+      this.emergencyService
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .subscribe(
+          (res: any) => {
+            if (res?.d?.DataRaw) {
+              this.pdfData = res.d.DataRaw;
+              this.opendocumentPdf();
+              this.closeLabModal()
+            } else {
+              this.showError('No PDF data available.');
+            }
+          },
+          (_error: any) => {
+            this.showError('Something went wrong while fetching the label.');
+          }
+        );
     }
-    
   }
+  
+  opendocumentPdf() {
+    try {
+      const byteArray = new Uint8Array(
+        atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
+      );
+      const file = new Blob([byteArray], { type: 'application/pdf' });
+      this.pdfUrl = URL.createObjectURL(file);
+      this.pdfFormOpen(); // Open the modal
+    } catch (error) {
+      this.showError('Error processing the PDF data.');
+    }
+  }
+
+  pdfFormOpen() {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    this.selectedIconPdf = this.modalService.show(this.selectIconPdf, config);
+  }
+  
+  showError(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+    this.closeLabModal(); // Ensure modal cleanup
+  }
+  
+  closePdfModal(){
+    this.OpenPdfModal.hide();
+    this.closeLabModal()
+  }
+  // printLabel(){
+  //   console.log('=-=-=-=-=-click',this.printUrl,'--',this.activelabLabelData.Vkgid);
+    
+  //   if(this.activelabLabelData.Vkgid){
+  //     this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res:any)=>{
+  //       if(res){
+  //         this.closeLabModal()
+  //       }
+  //     },
+  //     (_error: any) => {
+  //       // Swal.fire({
+  //       //   text: 'something went worng.',
+  //       //   icon: 'error',
+  //       //   confirmButtonText: 'Ok',
+  //       //   customClass: 'myalertpopup'
+  //       // })
+      
+  //     }
+  //   ); 
+  //     this.closeLabModal();
+  //   }
+    
+  // }
 
   dataForTriage(){
     this.allTriageData = [{
