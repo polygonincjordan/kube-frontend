@@ -1,0 +1,19 @@
+<div class="order-set-details" style="margin:5px 30px 0px 30px">
+    <div class="order-details-header">
+        <div class="arrow-steps clearfix" style="flex: 0 0 100%;">
+            <div [ngClass]="activeAllergy ? 'step':'step current'" (click)="activateTabs('Allergies')">
+                <span>Allergies</span>
+            </div>
+            <div [ngClass]="activeRiskFactor ? 'step':'step current'" (click)="activateTabs('RiskFactors')"><span>Risk
+                    Factors</span></div>
+            <div [ngClass]="activePastMedical ? 'step':'step current'" (click)="activateTabs('PastMedical')"><span>Past
+                    Medical</span></div>
+            <div [ngClass]="activePastSurgical ? 'step':'step current'" (click)="activateTabs('PastSurgical')">
+                <span>Past Surgical</span>
+            </div>
+            <div [ngClass]="activeFamilyHistory ? 'step':'step current'" (click)="activateTabs('FamilyHistory')">
+                <span>Family History</span>
+            </div>
+        </div>
+    </div>
+</div>
