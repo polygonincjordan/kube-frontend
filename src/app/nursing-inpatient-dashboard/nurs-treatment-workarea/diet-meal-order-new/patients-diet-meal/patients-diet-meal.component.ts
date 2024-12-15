@@ -97,8 +97,24 @@ export class PatientsDietMealComponentNew implements OnInit {
       this.paramsObj = res
     })
   }
-
+  selectedDislikes: any;
   ngOnInit(): void {
+
+    let staticList = [
+      {
+        FooddprefTxt: 'Banana',
+        FoodprefId: '1',
+      },
+      {
+        FooddprefTxt: 'Apple',
+        FoodprefId: '2',
+      },
+      {
+        FooddprefTxt: 'Mango',
+        FoodprefId: '3',
+      },
+    ]
+    this.dislikeList = staticList;
     this.createForm();
     this.initForm();
     this.onStartDateChange(null);
@@ -111,6 +127,14 @@ export class PatientsDietMealComponentNew implements OnInit {
     // this.getDislikeDetails();
     this.initAssessmentForm();
 
+
+
+  }
+
+  selectedDislike() {
+    this.dislikeFoodForm.get('Foodid')?.valueChanges.subscribe((selectedIds: any) => {
+      this.selectedDislikes = this.dislikeList.filter(food => selectedIds.includes(food.FoodprefId));
+    });
   }
 
   getOrderDetails() {
@@ -296,7 +320,8 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
   foodPrefDetails() {
     this.emergencyService.fetchFoodPrefList().subscribe((res: any) => {
-      this.dislikeList = res?.d?.results;
+      // this.dislikeList = res?.d?.results;
+  
     })
   }
   dietMealOrderDetails() {

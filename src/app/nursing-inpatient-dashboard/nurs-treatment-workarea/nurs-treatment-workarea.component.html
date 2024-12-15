@@ -1,8 +1,7 @@
 <div class="edash-rightSide" style="background-color: white;border-radius: 0px 10px 10px 0px;">
   <div class="edash-mainContent" style="display: flex;">
     <div class="container-fluid">
-      <div class="row position-relative" style="font-weight: bold;
-      padding: 4px;">
+      <div class="row position-relative" style="font-weight: bold; padding: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: auto;">
         <div class="col-sm-1.5 tab-default"
           [ngClass]="this.emergencyService.patientProfile?'tab-change' : 'tab-default'"
           (click)="tabChange('patientProfile')" style="cursor: pointer;">
@@ -101,6 +100,12 @@
       <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrderingPlus" />
       <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrderingPlus"/>
         Diet Meal Ordering Plus
+    </div>
+    <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.HistoryAssessment ? 'tab-change' : 'tab-default'"
+      style="cursor: pointer" (click)="tabChange('HistoryAssessment')">
+      <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.HistoryAssessment" />
+      <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.HistoryAssessment"/>
+        History Assessment
     </div>
         <span style="margin-left: auto;">
           <!-- <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
@@ -941,6 +946,9 @@
       </ng-container>
       <ng-container *ngIf="this.emergencyService.DietMealOrderingPlus">
         <app-diet-meal-order></app-diet-meal-order>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.HistoryAssessment">
+        <app-history-assessment></app-history-assessment>
       </ng-container>
     </div>
     <div style="background-color: #fff;width: 35%;max-height: 75vh; overflow: auto;" *ngIf="showPatients">
