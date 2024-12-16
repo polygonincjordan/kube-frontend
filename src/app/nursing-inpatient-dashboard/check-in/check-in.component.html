@@ -64,6 +64,9 @@
             <th scope="col" style="padding-left: 0px">
               Fin.Clearance Status <i class="fa fa-sort" aria-hidden="true" (click)="sortIFinClearance()"></i>
             </th>
+            <th scope="col" style="padding-left: 0px">
+              Ward <i class="fa fa-sort" aria-hidden="true" (click)="sortIFinClearance()"></i>
+            </th>
             <th scope="col" style="text-align: center">Actions</th>
           </tr>
         </thead>
@@ -111,6 +114,7 @@
             <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
             <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
+            <td style="padding-left: 0px" class="border-top-none"></td>
             <td colspan="1" style="display: flex; align-items: center; text-align: center; overflow: visible !important">
               <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
                 <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>

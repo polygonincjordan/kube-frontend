@@ -40,6 +40,7 @@ export class EmergencyService {
   public IOChartsPlus: boolean = false;
   public DietMealOrdering: boolean = false;
   public DietMealOrderingPlus: boolean = false;
+  public HistoryAssessment: boolean = false;
   public lab = false;
   public rad = false;
   public Consumables = false;
@@ -588,6 +589,7 @@ export class EmergencyService {
     this.DietMealOrdering = false;
     this.vitalSign = false
     this.DietMealOrderingPlus = false;
+    this.HistoryAssessment = false;
     this.IOChartsPlus = false;
     this.clinicalOrders = false;
     if (tabName && tabName === 'OrderSet') {
@@ -628,6 +630,8 @@ export class EmergencyService {
       this.DietMealOrderingPlus = true;
     } else if (tabName && tabName === 'IOChartsPlus') {
       this.IOChartsPlus = true;
+    } else if (tabName && tabName === 'HistoryAssessment') {
+      this.HistoryAssessment = true;
     }
   }
   // tabPanelNavigation(tabName: any) {

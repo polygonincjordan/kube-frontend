@@ -1088,6 +1088,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       this.emergencyService.tabPanelNavigation('IOChartsPlus');
     }  else if(tabName == 'DietMealOrderingPlus'){
       this.emergencyService.tabPanelNavigation('DietMealOrderingPlus');
+    }  else if(tabName == 'HistoryAssessment'){
+      this.emergencyService.tabPanelNavigation('HistoryAssessment');
     }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;

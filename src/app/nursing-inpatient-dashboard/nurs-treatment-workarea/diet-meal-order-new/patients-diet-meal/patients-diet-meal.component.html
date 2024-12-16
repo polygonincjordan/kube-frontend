@@ -531,7 +531,7 @@
         <div class="d-flex flex-row align-items-center justify-content-between mb-2">
           <label class="w-30" style="font-size: 16px;margin: 0;" for="">Dislikes</label>
           <div class="w-70 d-flex flex-column">
-            <ng-select [items]="dislikeList" [multiple]="true" bindLabel="FooddprefTxt" formControlName="Foodid"
+            <ng-select [items]="dislikeList" [multiple]="true" bindLabel="FooddprefTxt" formControlName="Foodid" (change)="selectedDislike()"
               bindValue="FoodprefId" [closeOnSelect]="false" [class.is-invalid]="
                 dislikeFoodForm?.get('Foodid')?.invalid &&
                 dislikeFoodForm?.get('Foodid')?.touched
@@ -558,6 +558,20 @@
       <button type="submit" class="btn btn-primary mr-2" (click)="createAndDeleteDislikeOrder('I')">Save</button>
     </div>
   </form>
+  <table class="table table-bordered mt-3" *ngIf="selectedDislikes">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Patient's Dislike</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let food of selectedDislikes; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ food.FooddprefTxt }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 <div class="table-responsive">
   <table class="table table-bordered">

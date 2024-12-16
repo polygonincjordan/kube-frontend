@@ -112,7 +112,10 @@
             <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td>
             <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
             <td colspan="1" style="text-align: center; overflow: visible !important">
-              <div>
+              <div style="margin-left: 3px; margin-right: 3px" (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
+                <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status"/>
+              </div>
+              <!-- <div>
                 <div class="dropdown">
                   <i
                     class="fa fa-ellipsis-v dropdown-toggle"
@@ -127,7 +130,7 @@
                     <a class="dropdown-item c-pointer" (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">Change Status</a>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </td>
           </tr>
         </tbody>
