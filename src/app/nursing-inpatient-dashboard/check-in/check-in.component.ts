@@ -1552,11 +1552,17 @@ export class CheckInComponent implements OnInit {
     this.erVitalsModal.openModalForErVital(item);
   }
   redirectToTreatByName(data) {
+
+    data.Patnr = data.Mrn;
+    data.Einri = data.Institute;
+    data.Falnr = data.CaseNumber;
+    data.Lfdnr = data.Lfdnr;
+
     const json = {
       Patnr: data.Patnr,
       Einri: data.Einri,
       Falnr: data.Falnr,
-      Lfdnr: data.Lfdbw,
+      Lfdnr: data.Lfdnr,
       Treatmentou: data.Orgpf,
       redirectFor: '',
       doctype: '',
