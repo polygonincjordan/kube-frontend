@@ -172,15 +172,11 @@
                 class="form-control"
                 formControlName="carbohydrates"
                 placeholder="Carbohydrates"
-                [class.is-invalid]="
-                  dietOrderForm?.get('carbohydrates').invalid &&
-                  dietOrderForm?.get('carbohydrates').touched
-                "
                 min="0"
               />
               <span class="unit-symbol">/ Grams</span>
             </div>
-            <div
+            <!-- <div
               *ngIf="
                 dietOrderForm?.get('carbohydrates').invalid &&
                 dietOrderForm?.get('carbohydrates').touched
@@ -188,7 +184,7 @@
               class="invalid-feedback input-error"
             >
               Please enter carbohydrates.
-            </div>
+            </div> -->
           </div>
           <div class="d-flex flex-column">
             <div class="input-with-symbol">
@@ -196,23 +192,10 @@
                 type="number"
                 class="form-control"
                 min="0"
-                [class.is-invalid]="
-                  dietOrderForm?.get('proteins')?.invalid &&
-                  dietOrderForm?.get('proteins')?.touched
-                "
                 formControlName="proteins"
                 placeholder="Proteins"
               />
               <span class="unit-symbol">/ Grams</span>
-            </div>
-            <div
-              *ngIf="
-                dietOrderForm?.get('proteins')?.invalid &&
-                dietOrderForm?.get('proteins')?.touched
-              "
-              class="invalid-feedback input-error"
-            >
-              Please enter proteins.
             </div>
           </div>
         </div>
@@ -227,21 +210,8 @@
                 min="0"
                 placeholder="Calories"
                 formControlName="calories"
-                [class.is-invalid]="
-                  dietOrderForm?.get('calories')?.invalid &&
-                  dietOrderForm?.get('calories')?.touched
-                "
               />
               <span class="unit-symbol">/ Kcal</span>
-            </div>
-            <div
-              *ngIf="
-                dietOrderForm?.get('calories')?.invalid &&
-                dietOrderForm?.get('calories')?.touched
-              "
-              class="invalid-feedback input-error"
-            >
-              Please enter calories.
             </div>
           </div>
           <div class="d-flex flex-column">
@@ -252,21 +222,8 @@
                 min="0"
                 formControlName="sodium"
                 placeholder="Sodium"
-                [class.is-invalid]="
-                  dietOrderForm?.get('sodium')?.invalid &&
-                  dietOrderForm?.get('sodium')?.touched
-                "
               />
               <span class="unit-symbol">/ Mg</span>
-            </div>
-            <div
-              *ngIf="
-                dietOrderForm?.get('sodium')?.invalid &&
-                dietOrderForm?.get('sodium')?.touched
-              "
-              class="invalid-feedback input-error"
-            >
-              Please enter sodium.
             </div>
           </div>
         </div>
@@ -580,9 +537,9 @@
         <!-- <th class="width-10"></th> -->
         <th style="white-space: nowrap;">Diet Meal Date</th>
         <th style="white-space: nowrap;">Meal Type</th>
-        <th>Diet Consistencye</th>
+        <th>Diet Consistency</th>
         <th>Diet Description</th>
-        <th>Add-ons</th>
+        <th>Dietary Specificaitons</th>
         <th style="white-space: nowrap;">Order Status</th>
         <!-- <th>Nursing Indicators</th> -->
         <th>Date & Time</th>
@@ -600,7 +557,28 @@
         <td [title]="item.Mealtypedesc">{{ item.Mealtypedesc }}</td>
         <td [title]="item.DietConsistency">{{ item?.DietConsistency }}</td>
         <td [title]="item.DietType" class="text-ellipsis">{{ item.DietType }}</td>
-        <td [title]="item.Dietdesc" class="text-ellipsis">{{ item.Dietdesc }}</td>
+        <td>
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+          >
+            <label for="">Carbohydrates</label>
+            <div>{{ item?.carbohydrates }}</div>
+          </div>
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+          >
+            <label for="">Proteins</label>
+            <div>{{ item?.proteins }}</div>
+          </div>
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+          >
+            <label for="">Calories</label>
+            <b>( {{ item?.calories }} mg)</b>
+            <label for="">Sodium</label>
+            <b>( {{ item?.sodium }} mg )</b>
+          </div>
+        </td>
         <td class="width-110" [title]="item.Orderstatusdesc">{{ item.Orderstatusdesc ? item.Orderstatusdesc : 'Canceled' }}</td>
         <td [title]="convertNursingIndicators(item.NursingIndicators)" class="text-ellipsis">{{ convertNursingIndicators(item?.NursingIndicators) }}</td>
         <td>{{ dateFormate(item?.Createdon) }} {{ convertTime(item?.Createdat) }}</td>

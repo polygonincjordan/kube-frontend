@@ -11,9 +11,11 @@
   align-items: center;
   justify-content: center;
 }
+
 .table.checkin-table tr {
   background-color: #fbfcff;
 }
+
 .allergy-header {
   background: #0056b0;
   position: relative;
@@ -23,6 +25,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .allergy-header-ul {
   width: 100%;
   padding: 0px 0px 0px 10px;
@@ -30,6 +33,7 @@
   margin: 0px;
   line-height: 0px;
 }
+
 .allergy-header-item {
   padding: 17px;
   font-weight: 500;
@@ -43,13 +47,16 @@
   margin: 0 5px;
   text-align: center;
 }
+
 .create-form-inputs {
   margin-bottom: 6px;
 }
+
 .create-form-inputs input::placeholder {
   font-size: 12px;
   font-style: italic;
 }
+
 .allergy-table input {
   width: 100%;
   border: none;
@@ -58,11 +65,13 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .allergy-table ::ng-deep.ng-select {
   .ng-select-container {
     background: none !important;
     border: 0;
   }
+
   .ng-clear-wrapper {
     border: 1px solid;
     border-radius: 20px;
@@ -72,12 +81,15 @@
     display: none;
   }
 }
+
 .allergy-table tr td {
   padding: 0 !important;
 }
+
 .risk-table tr td {
   padding: 0 !important;
 }
+
 .risk-table input {
   width: 100%;
   border: none;
@@ -86,11 +98,13 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .risk-table ::ng-deep.ng-select {
   .ng-select-container {
     background: none !important;
     border: 0;
   }
+
   .ng-clear-wrapper {
     border: 1px solid;
     border-radius: 20px;
@@ -108,6 +122,7 @@
 .border-right {
   border-right: 1px solid #e4edf5 !important;
 }
+
 .border-bottom {
   border-bottom: 1px solid #e4edf5 !important;
 }
@@ -117,21 +132,25 @@
   border-top-left-radius: 10px !important;
   border-top: 1px solid #e4edf5 !important;
 }
+
 .border-top-right {
   border-right: 1px solid #e4edf5 !important;
   border-top-right-radius: 10px !important;
   border-top: 1px solid #e4edf5 !important;
 }
+
 .border-bottom-right {
   border-right: 1px solid #e4edf5 !important;
   border-bottom-right-radius: 10px !important;
   border-bottom: 1px solid #e4edf5 !important;
 }
+
 .border-bottom-left {
   border-left: 1px solid #e4edf5 !important;
   border-bottom-left-radius: 10px !important;
   border-bottom: 1px solid #e4edf5 !important;
 }
+
 .border-top-action {
   border-left: 1px solid #e4edf5 !important;
   border-top: 1px solid #e4edf5 !important;
@@ -139,6 +158,7 @@
   border-top-right-radius: 10px !important;
   border-right: 1px solid #e4edf5 !important;
 }
+
 .border-bottom-action {
   border-left: 1px solid #e4edf5 !important;
   border-bottom: 1px solid #e4edf5 !important;
@@ -146,12 +166,15 @@
   border-bottom-right-radius: 10px !important;
   border-right: 1px solid #e4edf5 !important;
 }
+
 .border-right {
   border-right: 1px solid #e4edf5 !important;
 }
+
 .border-bottom {
   border-bottom: 1px solid #e4edf5 !important;
 }
+
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #fbfcff !important;
 }
@@ -165,12 +188,15 @@
 }
 
 .custom-table-striped tbody tr:nth-child(even) {
-  background-color: #f8fbff; /* Light background color for odd rows */
+  background-color: #f8fbff;
+  /* Light background color for odd rows */
 }
 
 .custom-table-striped tbody tr:nth-child(odd) {
-  background-color: #ffffff; /* White background color for even rows */
+  background-color: #ffffff;
+  /* White background color for even rows */
 }
+
 .border-top-none {
   border-top: none !important;
 }
@@ -227,5 +253,60 @@ table {
   border-bottom: 20px solid yellow;
 }
 
-tr:nth-child(even) {background: #fff !important}
-tr:nth-child(odd) {background: #e4edf5   !important}
+tr:nth-child(even) {
+  background: #fff !important
+}
+
+tr:nth-child(odd) {
+  background: #e4edf5 !important
+}
+
+.checkin-table {
+  width: 100%;
+
+  // white-space: nowrap;
+  th {
+    white-space: nowrap;
+  }
+  td {
+    border: none;
+    // background: #fbfcff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &:nth-child(1) {
+      border: none;
+      width: 200px !important;
+      max-width: 200px !important;
+      min-width: 200px !important;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 80px;
+      white-space: nowrap;
+    }
+
+    &:nth-child(9) {
+      border: none;
+      width: 150px !important;
+      max-width: 150px !important;
+      min-width: 150px !important;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 80px;
+      white-space: nowrap;
+    }
+
+    &:nth-child(16) {
+      width: 200px !important;
+      max-width: 200px !important;
+      min-width: 200px !important;
+      border: none;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 80px;
+      white-space: nowrap;
+      ;
+    }
+  }
+}

@@ -335,6 +335,10 @@ export class ErVitalsComponent implements OnInit {
   }
   openModalForErVital(checkinitem,tab?) {
     this.erListSelectedData = checkinitem;
+    this.erListSelectedData.Einri = this.erListSelectedData.Institute;
+    this.erListSelectedData.Falnr = this.erListSelectedData.CaseNumber;
+    this.erListSelectedData.Patnr = this.erListSelectedData.Mrn;
+    this.erListSelectedData.Lfdbw = this.erListSelectedData.Lfdnr;
     if(tab==="erHistory"){
       this.isEditAndDeleteAble=true
     }

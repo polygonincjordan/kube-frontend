@@ -152,13 +152,17 @@ export class ErTriageComponent implements OnInit {
       { value: '3', label: 'Other', Status: '', Quantity: '', Duration: '', Year: '', DateFrom: null, Habitid: '', },
     ];
     this.modalRefForAllergy = this.modalService.show(this.allergyModal, config);
+
     this.selectedTableDetails = data;
     if (data.Lfdbw) {
       this.encounterId = data.Einri + data.Falnr + data.Lfdbw;
     } else {
       this.encounterId = data.Einri + data.Falnr + data.Lfdnr;
     }
-
+    this.selectedTableDetails.Einri = this.selectedTableDetails.Institute;
+    this.selectedTableDetails.Falnr = this.selectedTableDetails.CaseNumber;
+    this.selectedTableDetails.Patnr = this.selectedTableDetails.Mrn;
+    
     this.storageService.setEinri(data.Einri);
     this.storageService.setFalnr(data.Falnr);
     this.storageService.setLfdnr(data.Lfdbw ? data.Lfdbw : data.Lfdnr);

@@ -420,11 +420,17 @@ export class PatientsDietMealComponentNew implements OnInit {
     console.log(this.dietOrderForm?.get('Irradiated')['controls']);
   }
 
-  onNoDislikeChange(event) {
-    this.dietOrderForm?.get('NoDislike')['controls']?.setValue(event?.target?.checked);
-    if(event?.target?.checked) {
-      this.dietOrderForm?.get('Foodid')['controls']?.setValue('');
+  onNoDislikeChange(event: Event): void {
+    let isChecked = (event.target as HTMLInputElement).checked;
+    this.dislikeFoodForm?.get('NoDislike')?.setValue(isChecked);
+    let foodIdControl = this.dislikeFoodForm?.get('Foodid');
+    if (isChecked) {
+      foodIdControl?.setValue('');
+      foodIdControl?.clearValidators();
+    } else {
+      foodIdControl?.setValidators(Validators.required);
     }
+    foodIdControl?.updateValueAndValidity();
   }
 
   onNPOChange() {
