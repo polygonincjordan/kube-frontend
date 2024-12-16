@@ -58,6 +58,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   getCheckInData: any;
   getCheckInStatusFilterData: any;
+  getCheckInFinancialFilterData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -545,6 +546,15 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         (accumulator: string[], currentValue) => {
           if (!accumulator.includes(currentValue?.AdmissionStatus)) {
             accumulator.push(currentValue?.AdmissionStatus);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue?.FinancialCategory)) {
+            accumulator.push(currentValue?.FinancialCategory);
           }
           return accumulator;
         },

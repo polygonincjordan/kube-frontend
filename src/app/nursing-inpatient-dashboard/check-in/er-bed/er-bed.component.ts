@@ -59,10 +59,10 @@ export class ErBedComponent implements OnInit {
     //   return false;
     // }else{
     const json = {
-      "Einri": this.selectedPatientdata.Einri,
-      "Patnr": this.selectedPatientdata.Patnr,
-      "Falnr": this.selectedPatientdata.Falnr,
-      "Lfdnr": this.selectedPatientdata.Lfdbw,
+      "Einri": this.selectedPatientdata.Institute,
+      "Patnr": this.selectedPatientdata.Mrn,
+      "Falnr": this.selectedPatientdata.CaseNumber,
+      "Lfdnr": this.selectedPatientdata.Lfdnr,
       "Zimmr": this.selectedErPat.Zimmr
     }
     this.emergencyService.SaveBedForPatient(json)

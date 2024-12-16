@@ -10,14 +10,19 @@ import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashbo
 import { ERDiagnosisComponent } from './diagnosis/diagnosis.component';
 import { DatePipe } from '@angular/common';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-er-history',
   templateUrl: './er-history.component.html',
   styleUrls: ['./er-history.component.scss']
 })
+@UntilDestroy()
 export class ErHistoryComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
   @Output() redirectVisitData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
@@ -97,7 +102,11 @@ export class ErHistoryComponent implements OnInit {
   refreshInterval:any;
    
   pdfUrl: string;
-  constructor(private emergencyService:EmergencyService,private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private dayCaseDashboardService:DayCaseDashboardService) {
+  inHospitaDischargelistList: any;
+  inHospitaDischargelistListClone: any;
+  constructor(private emergencyService:EmergencyService,private modalService: BsModalService,
+    private formBuilder: FormBuilder,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,
+    private dayCaseDashboardService:DayCaseDashboardService, private hospitalistService: HospitalistService) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
     });
@@ -142,11 +151,12 @@ export class ErHistoryComponent implements OnInit {
    if (this.storageService.lastPassedDate != undefined) {
     // this.getErList(this.storageService.lastPassedDate);
    }else{
-    this.getErList([new Date()]);
+    // this.getErList([new Date()]);
+    this.getHospitalList();
    }
     this.dataForTriage();
     this.refreshInterval = setInterval(() => {
-      this.getErList([new Date()]);
+      this.getHospitalList();
     }, (30 * 60 * 1000));
   }
 
@@ -433,6 +443,31 @@ export class ErHistoryComponent implements OnInit {
       (_error: any) => {}
     );
   }
+
+  getHospitalList() {
+      // this.dataOnTableForMissedDoses = _success.result.d.results;
+      let admittedFrom = '';
+      let admittedTo = '';
+      let wardNo = '';
+      let physician = '';
+      let speciality = '';
+      const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
+  
+      this.hospitalistService.getInHospitalistData$
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((data: any[]) => {
+          this.inHospitaDischargelistList = data[0].ToIPList.results;
+          this.inHospitaDischargelistListClone = data[0].ToIPList.results;
+  
+          this.dataToParent.emit(this.inHospitaDischargelistListClone);
+          this.lastIndex = this.inHospitaDischargelistList.length - 1;
+        });
+    }
   triagePriorityList(element) {
     const json ={
       patnr : element.Patnr,
@@ -1128,6 +1163,41 @@ export class ErHistoryComponent implements OnInit {
     }]
     this.saveRiskList();
   }
+
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.inHospitaDischargelistList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.inHospitaDischargelistList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
   sortDiagnosis() {
     if (!this.asc) {
       this.asc = true;
@@ -1920,12 +1990,12 @@ export class ErHistoryComponent implements OnInit {
 
   filterListData(event) {
     const { FCategory, Physician, Status } = event;
-      this.ERlistData = this.ERlistDataClone.filter((item:any) => {
-      const matchesKostrName = !FCategory || item?.KostrName.includes(FCategory);
-      const matchesBehArztName = !Physician || item?.BehArztName.includes(Physician);
+      this.inHospitaDischargelistList = this.inHospitaDischargelistListClone.filter((item:any) => {
+      const matchesKostrName = !FCategory || item?.FinancialCategory.includes(FCategory);
+      const matchesBehArztName = !Physician || item?.AttendingDoctorName.includes(Physician);
       return matchesKostrName && matchesBehArztName;
     });
-    this.sendErPatientCount.emit( this.ERlistData.length);
+    this.sendErPatientCount.emit( this.inHospitaDischargelistList.length);
   }
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){

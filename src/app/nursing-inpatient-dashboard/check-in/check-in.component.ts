@@ -18,13 +18,14 @@ import { StorageService } from '@services/storage.service';
 import { ErTriageComponent } from './er-triage/er-triage.component';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.interface';
-import { Subscription, forkJoin} from 'rxjs';
+import { Subscription, catchError, forkJoin, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { SharedService } from '@services/shared.service';
+import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -58,6 +59,7 @@ export class CheckInComponent implements OnInit {
   asc: boolean;
   triageValueArr: any = [];
   physicianValueArr: any = [];
+  financialValueArr: any = [];
   statusValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
@@ -98,7 +100,7 @@ export class CheckInComponent implements OnInit {
   selectedRowOfAllTriage: any;
   selectedDocumentDetails: any;
   private refreshSubscription: Subscription;
-  refreshInterval:any;
+  refreshInterval: any;
   admissionStatusModel: any;
   selectedStatus: any;
 
@@ -126,9 +128,11 @@ export class CheckInComponent implements OnInit {
   ]
   activelabLabelData: any;
   pdfData: any;
-  modalRefForLab:BsModalRef;
+  modalRefForLab: BsModalRef;
   printUrl: any;
-  OpenPdfModal:BsModalRef;
+  OpenPdfModal: BsModalRef;
+  inHospitalistList: any = [];
+  inHospitalistListClone: any = [];
 
   constructor(
     private emergencyService: EmergencyService,
@@ -137,9 +141,10 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
-    private helperService:HelperService,
-    private dayCaseDashboardService:DayCaseDashboardService,
-    public sharedService:SharedService
+    private helperService: HelperService,
+    private dayCaseDashboardService: DayCaseDashboardService,
+    public sharedService: SharedService,
+    private hospitalistService: HospitalistService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -176,9 +181,9 @@ export class CheckInComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getErList();
+    this.getHospitalList();
     this.refreshInterval = setInterval(() => {
-      this.getErList();
+      this.getHospitalList();
     }, (30 * 60 * 1000));
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
@@ -620,14 +625,14 @@ export class CheckInComponent implements OnInit {
     });
   }
 
-  closeLabModal(){
+  closeLabModal() {
     this.modalRefForLab?.hide();
   }
 
-  getPrintUrl(){
-    this.emergencyService.getPrintLabel().subscribe((res:any)=>{
-      this.printUrl = res.d.results[0].Url 
-   })
+  getPrintUrl() {
+    this.emergencyService.getPrintLabel().subscribe((res: any) => {
+      this.printUrl = res.d.results[0].Url
+    })
   }
 
   printLabel(template: TemplateRef<any>) {
@@ -651,12 +656,12 @@ export class CheckInComponent implements OnInit {
     }
   }
 
-  
-  closePdfModal(){
+
+  closePdfModal() {
     this.OpenPdfModal.hide();
     this.closeLabModal()
   }
-   
+
   opendocumentPdf(template: TemplateRef<any>) {
     try {
       const byteArray = new Uint8Array(
@@ -669,7 +674,7 @@ export class CheckInComponent implements OnInit {
       this.showError('Error processing the PDF data.');
     }
   }
-  
+
   showError(message: string) {
     Swal.fire({
       text: message,
@@ -679,7 +684,7 @@ export class CheckInComponent implements OnInit {
     });
     this.closeLabModal(); // Ensure modal cleanup
   }
-  
+
 
   closeRiskModal() {
     this.modalRefForRisk.hide();
@@ -740,13 +745,39 @@ export class CheckInComponent implements OnInit {
       (_error: any) => { }
     );
   }
+
+  getHospitalList() {
+    // this.dataOnTableForMissedDoses = _success.result.d.results;
+    let admittedFrom = '';
+    let admittedTo = '';
+    let wardNo = '';
+    let physician = '';
+    let speciality = '';
+    const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
+
+    this.hospitalistService.getInHospitalistData$
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((data: any[]) => {
+        this.inHospitalistList = data[0].ToIPList.results;
+        this.inHospitalistListClone = data[0].ToIPList.results;
+
+        this.dataToParent.emit(this.inHospitalistListClone);
+        this.lastIndex = this.inHospitalistList.length - 1;
+      });
+  }
+
   getErList(date?: any) {
     const json = {
-      fromDate:`${new DatePipe('en-US').transform(
-       new Date(),
-         'yyyy-MM-dd'
-       )}T00:00:00`,
-  }
+      fromDate: `${new DatePipe('en-US').transform(
+        new Date(),
+        'yyyy-MM-dd'
+      )}T00:00:00`,
+    }
     this.helperService.isNotAllowedSpinnerInAPI = true;
     this.dayCaseDashboardService.getDayCaseErCheckList(json).subscribe(
       (_success: any) => {
@@ -775,7 +806,7 @@ export class CheckInComponent implements OnInit {
             }
           });
           this.ERlistDataClone = this.ERlistData;
-          this.dataToParent.emit(this.ERlistDataClone); 
+          this.dataToParent.emit(this.ERlistDataClone);
           this.lastIndex = this.ERlistData.length - 1;
         }
       },
@@ -787,17 +818,52 @@ export class CheckInComponent implements OnInit {
     this.getErList(dates);
   }
 
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.inHospitalistList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.inHospitalistList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
   filterListData(event) {
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
+    this.financialValueArr = [];
     if (event.Physician || event.Status || event.FCategory) {
-      let filterValue = this.ERlistDataClone;
+      let filterValue = this.inHospitalistListClone;
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
           this.physicianValueArr.push(
             filterValue.filter((element) => {
-              if (element.BehArztName === physicianValue.trimStart()) {
+              if (element.AttendingDoctorName === physicianValue.trimStart()) {
                 return element;
               }
             })
@@ -819,25 +885,36 @@ export class CheckInComponent implements OnInit {
         filterValue = this.statusValueArr.flat();
       }
       if (event.FCategory && event.FCategory?.length) {
-        if (event.FCategory == 'Self-Pay') {
-          filterValue = filterValue.filter((element: any) => {
-            if (element.KostrName === 'Self-Pay') {
-              return element;
-            }
-          });
-        } else {
-          filterValue = filterValue.filter((element: any) => {
-            if (element.KostrName !== 'Self-Pay') {
-              return element;
-            }
-          });
-        }
+        event.FCategory.forEach((statusValue) => {
+          this.financialValueArr.push(
+            filterValue.filter((element) => {
+              if (element.FinancialCategory == statusValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.financialValueArr.flat();
+
+        // if (event.FCategory == 'Self-Pay') {
+        //   filterValue = filterValue.filter((element: any) => {
+        //     if (element.FinancialCategory === 'Self-Pay') {
+        //       return element;
+        //     }
+        //   });
+        // } else {
+        //   filterValue = filterValue.filter((element: any) => {
+        //     if (element.FinancialCategory !== 'Self-Pay') {
+        //       return element;
+        //     }
+        //   });
+        // }
       }
-      this.ERlistData = filterValue;
-      this.sendErPatientCount.emit(this.ERlistData.length);
+      this.inHospitalistList = filterValue;
+      this.sendErPatientCount.emit(this.inHospitalistList.length);
     } else {
-      this.ERlistData = this.ERlistDataClone;
-      this.sendErPatientCount.emit(this.ERlistData.length);
+      this.inHospitalistList = this.inHospitalistListClone;
+      this.sendErPatientCount.emit(this.inHospitalistList.length);
     }
   }
 
@@ -1685,32 +1762,32 @@ export class CheckInComponent implements OnInit {
     }
   }
 
-  selectStatus(value){
-    if(value){
+  selectStatus(value) {
+    if (value) {
       this.selectedStatus = value
     }
   }
 
   changeStatus(visitStat: string) {
     let visitStatCode: number;
-    
+
     switch (visitStat.toLowerCase()) {
-        case 'planned arrival':
-            visitStatCode = 97;
-            break;
-        case 'actual arrival':
-            visitStatCode = 98;
-            break;
-        case 'planned discharge':
-            visitStatCode = 99;
-            break;
-        case 'actual discharge':
-            visitStatCode = 96;
-            break;
-        default:
-            visitStatCode = null; // Handle undefined cases
+      case 'planned arrival':
+        visitStatCode = 97;
+        break;
+      case 'actual arrival':
+        visitStatCode = 98;
+        break;
+      case 'planned discharge':
+        visitStatCode = 99;
+        break;
+      case 'actual discharge':
+        visitStatCode = 96;
+        break;
+      default:
+        visitStatCode = null; // Handle undefined cases
     }
-     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+    let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     const json = {
       Einri: this.admissionStatusModel.Einri,
@@ -1724,7 +1801,7 @@ export class CheckInComponent implements OnInit {
       Pernr: this.admissionStatusModel.BehArzt,
     };
 
-    if(!json?.Bwart) {
+    if (!json?.Bwart) {
       delete json.Bwart
     }
 
