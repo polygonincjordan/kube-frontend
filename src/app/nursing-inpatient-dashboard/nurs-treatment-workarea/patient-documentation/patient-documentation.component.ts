@@ -132,6 +132,7 @@ export class PatientDocumentationComponent implements OnInit {
   patientProfileDocumet: any;
   pdfTemplateRef: BsModalRef;
   documentTypeFilterValue: any[] = [];
+  documentTypeFilterValueClone: any[] = [];
   asc: boolean = true;
   desc: boolean = false;
   PatientData: any;
@@ -146,6 +147,8 @@ export class PatientDocumentationComponent implements OnInit {
   openDischargeSummery: boolean = false;
 
   selectedDocData: any;
+  selectedDocumentOU: any;
+  selectedCreatedBy: any;
   medlatestDocList = [];
   medDocList = [];
   releaseDocumentImage: string;
@@ -163,7 +166,7 @@ export class PatientDocumentationComponent implements OnInit {
   file: File;
   selectedFile: File | null = null;
   documentUrl: SafeResourceUrl | null = null;
-  previousPeriodValue: any = 'current';
+  previousPeriodValue: any = 'Overall';
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];
@@ -401,13 +404,20 @@ export class PatientDocumentationComponent implements OnInit {
 
   }
 
+  removeDuplicates(array: any[]): any[] {
+    return [...new Set(array)];
+  }
+
   getPatientProfile() {
     this.admissionService.getDicumentDetails(this.storageService.einri, '1', this.storageService.patnr, '', this.storageService.falnr).subscribe({
       next: (_success: any) => {
         // Handle successful data retrieval
-        this.documentTypeFilterValue = _success.d.results;
+        this.documentTypeFilterValueClone = _success.d.results;
+        // this.documentTypeFilterValue = _success.d.results;
+        this.filterByPeriod();
         this.sort();
-        this.createdDocumentUserList = this.documentTypeFilterValue.map(item => item.MitarbName);
+        this.createdDocumentUserList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
+        this.createdDocumentUserList = this.removeDuplicates(this.createdDocumentUserList);
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValue.forEach((element) => {
             let checkPatinet = this.documentTypeFilter.find(el => el.Dtid === element.Dtid);
@@ -426,6 +436,79 @@ export class PatientDocumentationComponent implements OnInit {
         this.sharedService.waringSwallModel(`GET Error : ${err}`);
       },
     });
+  }
+
+  filterPeriodDate() {
+    this.filterByPeriod();
+    this.sort();
+  }
+
+  filterByPeriod() {
+    debugger
+    let currentDate = new Date();
+    let startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+    let yesterday = new Date(startOfDay);
+    yesterday.setDate(startOfDay.getDate() - 1);
+  
+    let filteredArray = [];
+    
+    switch (this.previousPeriodValue) {
+      case "Current Day":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.isSameDate(this.parseODataDate(item.Dodat), startOfDay));
+        break;
+      case "Since Yesterday":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= yesterday);
+        break;
+      case "In Past 3 Days":
+        let past3Days = new Date(startOfDay);
+        past3Days.setDate(startOfDay.getDate() - 3);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= past3Days);
+        break;
+      case "In Past Week":
+        let pastWeek = new Date(startOfDay);
+        pastWeek.setDate(startOfDay.getDate() - 7);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastWeek);
+        break;
+      case "In Past Month":
+        let pastMonth = new Date(startOfDay);
+        pastMonth.setMonth(startOfDay.getMonth() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastMonth);
+        break;
+      case "In Past Years":
+        let pastYear = new Date(startOfDay);
+        pastYear.setFullYear(startOfDay.getFullYear() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastYear);
+        break;
+      case "Overall":
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+        break;
+      default:
+        console.warn("Unknown period selected.");
+    }
+
+    // Filter based on the selected options
+    this.documentTypeFilterValue = filteredArray.filter((item) => {
+      const itemDate = new Date(parseInt(item.Dodat.match(/\d+/)[0]));
+      const isDateInRange = itemDate >= currentDate;
+
+      const isCreatedByMatch =
+        !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
+
+      const isDepartmentMatch =
+        !this.documentType || item.Orgdo === this.documentType;
+
+      return isCreatedByMatch && isDepartmentMatch;
+    });
+  }
+  
+  parseODataDate(odataDate: string): Date {
+    // Extract timestamp from the OData date format
+    let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
+    return new Date(timestamp);
+  }
+  
+  isSameDate(date1: Date, date2: Date): boolean {
+    return date1.toDateString() === date2.toDateString();
   }
 
   getTriageLatestDocuments() {
@@ -476,7 +559,10 @@ export class PatientDocumentationComponent implements OnInit {
         this.educationAssList = educationAssessmentResponse.d.results;
 
         // Handle patient profile response
-        this.documentTypeFilterValue = patientProfileResponse.d.results;
+        this.documentTypeFilterValueClone = patientProfileResponse.d.results;
+        // this.documentTypeFilterValue = patientProfileResponse.d.results;
+        this.filterByPeriod();
+
         this.sort();
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValue.forEach(element => {

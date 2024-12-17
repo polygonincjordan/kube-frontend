@@ -24,6 +24,7 @@
             <th scope="col" style="padding-left: 0px">Speciality <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DeptouDesc')"></i></th>
             <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('FinancialCategory')"></i></th>
             <th scope="col" style="width: 14%;">Attending Physician <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AttendingDoctorName')"></i></th>
+            <th scope="col" style="width: 14%;">LOS<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDays')"></i></th>
             <th scope="col" style="padding-left: 0px;">Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Diagnosis')"></i></th>
             <th scope="col" style="padding-left: 0px;">Financial Clearance <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZzfinClear')"></i></th>
             <th scope="col" style="padding-left: 0px;">Discharge Type <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DischargeType')"></i></th>
@@ -59,6 +60,7 @@
             <td class="border-top-none" style="width: 7%;">{{item.DeptouDesc}}</td>
             <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">{{item.FinancialCategory}}</td>
             <td class="border-top-none" style="width: 14%;">{{item.AttendingDoctorName}}</td>
+            <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
               <td class="border-top-none"  scope="row" style="max-width: 107px;
               padding-left: 0px;
               text-overflow: ellipsis;
@@ -96,7 +98,7 @@
     </div>
   </div>
   <div class="modal-body" style="padding: 0 11px 0px">
-    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Pnamec1}}" with MRN {{activelabLabelData?.Patnr}}</p>
+    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Patname}}" with MRN {{activelabLabelData?.Mrn}}</p>
   </div>
   <div class="modal-footer">
     <div style="text-align: end">
@@ -128,8 +130,8 @@
       </div>
       <div style="display: flex;
     justify-content: end;align-items: center;">
-    <ul class="allergy-header-ul"><li class="allergy-header-item">Patient Name : <span >{{selectedERList.Patient}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Patnr}}</li>
-      <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.Erdat) | date : "dd.MM.y"}}</li>
+    <ul class="allergy-header-ul"><li class="allergy-header-item">Patient Name : <span >{{selectedERList.Patname}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Mrn}}</li>
+      <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.AdmissionDate) | date : "dd.MM.y"}}</li>
     <li  class="close-icon allergy-header-item" style="border: none;
       padding: 0;
       margin: 0;"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;" (click)="closeTriageModal()"></li></ul>
@@ -186,8 +188,8 @@
       </div>
       <div style="display: flex;
     justify-content: end;align-items: center;flex:1">
-    <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{selectedERList.Patient}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Patnr}}</li>
-      <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.Erdat) | date : "dd.MM.y"}}</li>
+    <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{selectedERList.Patname}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Mrn}}</li>
+      <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.AdmissionDate) | date : "dd.MM.y"}}</li>
     <li  class="close-icon allergy-header-item" style="border: none;
       padding: 0;
       margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float:right" (click)="closeRiskModal()"></li></ul>
@@ -354,8 +356,8 @@
         </div>
         <div style="display: flex;
       justify-content: end;align-items: center;flex:1">
-      <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left: 10%;">Patient Name : <span >{{selectedERList.Patient}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Patnr}}</li>
-        <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.Erdat) | date : "dd.MM.y"}}</li>
+      <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left: 10%;">Patient Name : <span >{{selectedERList.Patname}}</span></li><li  class="allergy-header-item">MRN: {{selectedERList.Mrn}}</li>
+        <li  class="allergy-header-item">Admission date: {{getDate(selectedERList.AdmissionDate) | date : "dd.MM.y"}}</li>
       <li  class="close-icon allergy-header-item" style="border: none;
         padding: 0;
         margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float: right;" (click)="closeAllergyModal()"></li></ul>

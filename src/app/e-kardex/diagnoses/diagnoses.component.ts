@@ -682,7 +682,7 @@ export class DiagnosesComponent implements OnInit {
 
   }
 
-  modelFormOpen(paitentData: any, oldversion?: boolean) {
+  modelFormOpen(paitentData: any, oldversion?: boolean, template?: TemplateRef<any>) {
     if (this.editing) {
       Swal.fire({
         text: "Are you sure you want to close without saving?",
@@ -693,11 +693,11 @@ export class DiagnosesComponent implements OnInit {
         customClass: 'myalertpopup'
       }).then((result) => {
         if (result.value) {
-          this.modelOpenProcess(paitentData, paitentData.Oldversion)
+          this.modelOpenProcess(paitentData, paitentData.Oldversion, template)
         }
       })
     } else {
-      this.modelOpenProcess(paitentData, paitentData.Oldversion)
+      this.modelOpenProcess(paitentData, paitentData.Oldversion, template)
     }
   }
 
@@ -731,7 +731,7 @@ export class DiagnosesComponent implements OnInit {
     }
   }
 
-  modelOpenProcess(paitentData:any, oldversion?: boolean) {
+  modelOpenProcess(paitentData:any, oldversion?: boolean, template?: TemplateRef<any>) {
     this.oldversion = oldversion;
     this.soapPdf={};
     this.closeAllForm();
@@ -773,6 +773,13 @@ export class DiagnosesComponent implements OnInit {
           };
         }
         this.modalService.dismissAll();
+        const config: ModalOptions = { class: 'modal-dialog-centered' };
+        this.modalRef = this.modalServiceForAllergy.show(template,config);
+        this.InOutPatientViewValue = {
+         showBoth: true,
+         showIn: false,
+         showOut: false,
+       };
       });
     this.editing = false;
     }
@@ -792,7 +799,7 @@ export class DiagnosesComponent implements OnInit {
       if (paitentData.Released) {
         this.isInPatientSoap = true;
         this.inPatientForm = "OutSOAP";
-        this.getReleasedPdf(this.inPatientSoapData);
+        this.getReleasedPdf(this.inPatientSoapData, template);
         this.pdfFormOpen();
       } else {
         this.soapFormOpen();
@@ -809,7 +816,7 @@ export class DiagnosesComponent implements OnInit {
   }
   }
 
-  modelFormOpenInPatient(paitentData,oldversion?: boolean) {
+  modelFormOpenInPatient(paitentData,oldversion?: boolean,template?: TemplateRef<any>) {
     this.oldversion = oldversion;
     this.closeAllForm();
     this.soapPdf={};
@@ -855,7 +862,7 @@ export class DiagnosesComponent implements OnInit {
 
             }
           } else {
-            this.getReleasedPdf(this.inPatientVisitData);
+            this.getReleasedPdf(this.inPatientVisitData, template);
             this.pdfFormOpen();
             this.inPatientShow = false;
             this.inPatientForm = "";
@@ -877,7 +884,7 @@ export class DiagnosesComponent implements OnInit {
           if(this.isEnlarge){
             if(paitentData.Released){
               this.isInPatientSoap = true;
-              this.getReleasedPdf(this.inPatientSoapData);
+              this.getReleasedPdf(this.inPatientSoapData, template);
               this.pdfFormOpen();
               this.isEnlarge = false;
             }
@@ -892,7 +899,7 @@ export class DiagnosesComponent implements OnInit {
             if (paitentData?.DokstText ==="Released"
             ) {
               this.isInPatientSoap = true;
-              this.getReleasedPdf(this.inPatientSoapData);
+              this.getReleasedPdf(this.inPatientSoapData, template);
               this.pdfFormOpen();
             } else {
               this.soapFormOpen();
@@ -917,7 +924,7 @@ export class DiagnosesComponent implements OnInit {
           if(this.isEnlarge){
             if(paitentData.Released){
               this.isInPatientSoap = true;
-              this.getReleasedPdf(this.patientVisitRecord);
+              this.getReleasedPdf(this.patientVisitRecord, template);
               this.pdfFormOpen();
               this.isEnlarge = false;
             }
@@ -930,7 +937,7 @@ export class DiagnosesComponent implements OnInit {
             if (paitentData?.DokstText ==="Released"
             ) {
               this.isInPatientSoap = true;
-              this.getReleasedPdf(this.patientVisitRecord);
+              this.getReleasedPdf(this.patientVisitRecord, template);
               this.pdfFormOpen();
             } else {
               this.visitFormOpen();
@@ -947,11 +954,18 @@ export class DiagnosesComponent implements OnInit {
     };
     this.modalService.dismissAll();
   }
-  getReleasedPdf(item){
-
+  getReleasedPdf(item,  template?: TemplateRef<any>,){
+    console.log(item, "item")
     this.admissionService.getSoapPDF(item.Dockey)
     .subscribe((_success:any)=>{
      this.soapPdf = _success?.d;
+     const config: ModalOptions = { class: 'modal-dialog-centered' };
+     this.modalRef = this.modalServiceForAllergy.show(template,config);
+     this.InOutPatientViewValue = {
+      showBoth: true,
+      showIn: false,
+      showOut: false,
+    };
   })
   }
   openNewForm(type?: string) {
@@ -1012,6 +1026,7 @@ export class DiagnosesComponent implements OnInit {
       showOut: false,
     };
     this.closeAllForm();
+    this.closeModal()
     if (isUpdate) {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
@@ -1038,6 +1053,7 @@ export class DiagnosesComponent implements OnInit {
 
   copyReleaseForm(releaseData: any) {
     this.closeAllForm();
+    this.closeModal();
     this.inPatientDischargeData = {};
     this.isCopy = true;
     if (releaseData.DataType === "in-patient") {
@@ -1346,6 +1362,10 @@ uploadDocument(template) {
 resetAttachment(){
   this.modalRef.hide();
   this.createAttachmentForm.reset();
+}
+
+closeModal() {
+  this.modalRef.hide();
 }
 getAttachmentsList() {
   this.patientHistoryService.getAttachmentsList().subscribe(

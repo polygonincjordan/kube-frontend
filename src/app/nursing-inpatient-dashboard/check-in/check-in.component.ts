@@ -61,6 +61,8 @@ export class CheckInComponent implements OnInit {
   physicianValueArr: any = [];
   financialValueArr: any = [];
   statusValueArr: any = [];
+  wardValueArr: any = [];
+  specialtyValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
   selectedERList: any;
@@ -638,7 +640,7 @@ export class CheckInComponent implements OnInit {
   printLabel(template: TemplateRef<any>) {
     if (this.activelabLabelData) {
       this.emergencyService
-        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .patientPrintLabel(this.activelabLabelData.Institute, this.activelabLabelData.Mrn)
         .subscribe(
           (res: any) => {
             if (res?.d?.DataRaw) {
@@ -763,6 +765,7 @@ export class CheckInComponent implements OnInit {
         })
       )
       .subscribe((data: any[]) => {
+        data[0].ToIPList.results = data[0].ToIPList.results.filter(item => item.Floor != '9th Floor Day Surgery');
         this.inHospitalistList = data[0].ToIPList.results;
         this.inHospitalistListClone = data[0].ToIPList.results;
 
@@ -857,7 +860,7 @@ export class CheckInComponent implements OnInit {
     this.physicianValueArr = [];
     this.statusValueArr = [];
     this.financialValueArr = [];
-    if (event.Physician || event.Status || event.FCategory) {
+    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty) {
       let filterValue = this.inHospitalistListClone;
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
@@ -883,6 +886,30 @@ export class CheckInComponent implements OnInit {
           );
         });
         filterValue = this.statusValueArr.flat();
+      }
+      if (event.FWard && event.FWard?.length) {
+        event.FWard.forEach((wardValue) => {
+          this.wardValueArr.push(
+            filterValue.filter((element) => {
+              if (element.Floor == wardValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.wardValueArr.flat();
+      }
+      if (event.FSpecialty && event.FSpecialty?.length) {
+        event.FSpecialty.forEach((wardValue) => {
+          this.specialtyValueArr.push(
+            filterValue.filter((element) => {
+              if (element.DeptouDesc == wardValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.specialtyValueArr.flat();
       }
       if (event.FCategory && event.FCategory?.length) {
         event.FCategory.forEach((statusValue) => {
