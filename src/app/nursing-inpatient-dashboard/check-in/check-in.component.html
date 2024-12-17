@@ -62,6 +62,9 @@
               Attending physician <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AttendingDoctorName')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
+              LOS <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDays')"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px;">
               Attachment 
             </th>
             <th scope="col" style="padding-left: 0px;">
@@ -116,6 +119,7 @@
             <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.FinancialCategory" class="border-top-none">{{ item.FinancialCategory }}</td>
             <td style="padding-left: 0px" [title]="item.AttendingDoctorName" class="border-top-none">{{ item.AttendingDoctorName ? item.AttendingDoctorName:'--'}}</td>
+            <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
             <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td>
             <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
@@ -148,7 +152,7 @@
     </div>
   </div>
   <div class="modal-body" style="padding: 0 11px 0px">
-    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Pnamec1}}" with MRN {{activelabLabelData?.Patnr}}</p>
+    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Patname}}" with MRN {{activelabLabelData?.Mrn}}</p>
   </div>
   <div class="modal-footer">
     <div style="text-align: end">

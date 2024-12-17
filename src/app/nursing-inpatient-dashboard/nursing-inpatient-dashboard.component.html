@@ -145,6 +145,40 @@
       ><span *ngIf="ErPatientCount == 1">Patient</span>)
     </span>
   </div> -->
+  <div *ngIf="showConfiguration" class="card config p-3" style="border: none !important; background: #fff !important; top: 25%"
+  id="configurationCard">
+  <div class="card-body" style="padding: 7px" (click)="$event.stopPropagation();">
+    <div class="mb-2" style="
+        display: flex;
+        justify-content: space-between;
+        height: 25px;
+      ">
+      <h5 class="card-title">Configuration Options</h5>
+      <span style="position: relative; bottom: 4px">
+        <img src="assets/img/refresh.png" style="width: 29px"  />
+        <img src="assets/img/save.png" style="width: 19px" />
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 out-patient-config-select ward-list-select">
+        <div class="mb-2">
+          <label class="mb-1" for="wardSelect">Physician</label>
+          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForPhysician"
+            [placeholder]="'Physician'" [(ngModel)]="selectedPhysicianConf" [data]="assignUsersList">
+          </ng-multiselect-dropdown>
+          <!-- {{jsonString(selectedPhysicianConf)}} -->
+        </div>
+        <div>
+          <label class="mb-1" for="wardSelect">Speciality</label>
+          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpeciality"
+            [placeholder]="'Speciality'" [(ngModel)]="selectedSpecialityConf" [data]="specialityList">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   <div
     *ngIf="noReleaseDoc"
     class="col-md-4"
@@ -302,6 +336,7 @@
     *ngIf="!reservation"
     [ngStyle]="{ display: erSetting ? 'none' : 'flex' }"
   >
+  <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i>
     <i
       class="fa fa-filter"
       aria-hidden="true"
@@ -353,10 +388,10 @@
   *ngIf="showfilter && checkin"
   (click)="$event.stopPropagation()"
 >
-  <div class="card-body" style="padding: 4px 21px 21px 21px">
+  <div class="card-body p-0">
     <div class="">
-      <div class="d-flex justify-content-between align-items-center">
-        <span style="margin: 0">Filter</span>
+      <div class="d-flex justify-content-between align-items-center p-2 background_aliceblue">
+        <span style="margin: 0; font-size: 16px; font-weight: 600;">Filter</span>
         <span style="margin-left: 68px; font-size: 20px"
           ><i
             class="fa fa-times"
@@ -365,7 +400,7 @@
           ></i
         ></span>
       </div>
-      <form [formGroup]="filterForm">
+      <form [formGroup]="filterForm" class="p-2">
         <p style="margin: auto; margin-top: 5px">Physician</p>
         <ng-select
           class=""
@@ -401,9 +436,18 @@
           <ng-option [value]="item" *ngFor="let item of getCheckInFinancialFilterData">
             {{ item }}
           </ng-option>
-          <!-- <ng-option value="">Choose</ng-option>
-          <ng-option value="Self Payer">Self Payer</ng-option>
-          <ng-option value="Insurance">Insurance</ng-option> -->
+        </ng-select>
+        <p style="margin: auto; margin-top: 5px">Ward</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+        <p style="margin: auto; margin-top: 5px">Specialty</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FSpecialty" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+            {{ item }}
+          </ng-option>
         </ng-select>
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button
@@ -435,10 +479,10 @@
   *ngIf="showfilter && erhistory"
   (click)="$event.stopPropagation()"
 >
-  <div class="card-body" style="padding: 4px 21px 21px 21px">
+  <div class="card-body p-0">
     <div class="">
-      <div class="d-flex justify-content-between align-items-center">
-        <span style="margin: 0">Filter</span>
+      <div class="d-flex justify-content-between align-items-center p-2 background_aliceblue">
+        <span style="margin: 0; font-size: 16px; font-weight: 600;">Filter</span>
         <span style="margin-left: 68px; font-size: 20px"
           ><i
             class="fa fa-times"
@@ -447,7 +491,7 @@
           ></i
         ></span>
       </div>
-      <form [formGroup]="filterForm">
+      <form [formGroup]="filterForm" class="p-2">
         <p style="margin: auto; margin-top: 5px">Physician</p>
         <ng-select
           class=""
@@ -463,11 +507,29 @@
             {{ item.NamString }}
           </ng-option>
         </ng-select>
-        <p style="margin: auto; margin-top: 5px">Financial Category</p>
+        <!-- <p style="margin: auto; margin-top: 5px">Financial Category</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="FCategory">
           <ng-option value="">Choose</ng-option>
           <ng-option value="Self Payer">Self Payer</ng-option>
           <ng-option value="Insurance">Insurance</ng-option>
+        </ng-select> -->
+        <p style="margin: auto; margin-top: 5px">Financial Category</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FCategory" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInFinancialFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+        <p style="margin: auto; margin-top: 5px">Ward</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+        <p style="margin: auto; margin-top: 5px">Specialty</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FSpecialty" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+            {{ item }}
+          </ng-option>
         </ng-select>
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button

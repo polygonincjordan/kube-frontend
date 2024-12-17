@@ -330,6 +330,10 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl risk-modal-size' };
       this.modalRefForRisk = this.modalService.show(template,config);
       this.selectedERList = data;
+      this.selectedERList.Einri = this.selectedERList.Institute;
+      this.selectedERList.Falnr = this.selectedERList.CaseNumber;
+      this.selectedERList.Patnr = this.selectedERList.Mrn;
+      this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
       // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
       //   this.editDeleteDisable = true;
       // }
@@ -351,6 +355,10 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl allergy-modal-size' };
       this.modalRefForAllergy = this.modalService.show(template,config);
       this.selectedERList = data;
+      this.selectedERList.Einri = this.selectedERList.Institute;
+      this.selectedERList.Falnr = this.selectedERList.CaseNumber;
+      this.selectedERList.Patnr = this.selectedERList.Mrn;
+      this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
       // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
       //   this.editDeleteDisable = true;
       // }
@@ -461,9 +469,10 @@ export class ErHistoryComponent implements OnInit {
           })
         )
         .subscribe((data: any[]) => {
+          data[0].ToIPList.results = data[0].ToIPList.results.filter(item => item.Floor != '9th Floor Day Surgery');
           this.inHospitaDischargelistList = data[0].ToIPList.results;
           this.inHospitaDischargelistListClone = data[0].ToIPList.results;
-  
+          
           this.dataToParent.emit(this.inHospitaDischargelistListClone);
           this.lastIndex = this.inHospitaDischargelistList.length - 1;
         });
@@ -510,6 +519,10 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl triage-modal-size' };
       this.modalRefForTriage = this.modalService.show(template,config);
       this.selectedERList = data;
+      this.selectedERList.Einri = this.selectedERList.Institute;
+      this.selectedERList.Falnr = this.selectedERList.CaseNumber;
+      this.selectedERList.Patnr = this.selectedERList.Mrn;
+      this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
       this.triagePriorityList(data);
       // this.triageList.forEach(element => {
       //   if (element.Patnr == parseInt(this.selectedERList.Patnr)) {
@@ -671,7 +684,7 @@ export class ErHistoryComponent implements OnInit {
   printLabel(template: TemplateRef<any>) {
     if (this.activelabLabelData) {
       this.emergencyService
-        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .patientPrintLabel(this.activelabLabelData.Institute, this.activelabLabelData.Mrn)
         .subscribe(
           (res: any) => {
             if (res?.d?.DataRaw) {
@@ -2008,6 +2021,10 @@ openAssignDoc( template: TemplateRef<any>,data){
   });
   this.getAssignSurgeonList();
   this.selectedERList = data;
+  this.selectedERList.Einri = this.selectedERList.Institute;
+  this.selectedERList.Falnr = this.selectedERList.CaseNumber;
+  this.selectedERList.Patnr = this.selectedERList.Mrn;
+  this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
 }
 getAssignSurgeonList() {
   this.orderDashboardService

@@ -59,6 +59,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   getCheckInData: any;
   getCheckInStatusFilterData: any;
   getCheckInFinancialFilterData: any;
+  getCheckInWardFilterData: any;
+  getCheckInSpecialtyFilterData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -123,6 +125,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   inAttendPhyList: AttendingPhysician[];
   admittedTo = '';
   dropdownSettingsForLDRAttendPhy = {};
+  dropdownSettingsForPhysician: any = {};
   physician = '';
   getSpecialtyData: any[];
   dropdownSettingsForSpecialty = {};
@@ -132,11 +135,13 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   type = '';
   searchString!: string;
   dropdownSettingsForAttendPhy = {};
+  dropdownSettingsForSpeciality = {};
   actionTypeSubscription$: Subscription;
   phyOrderRoomsList: any;
   updatedDate: any;
   modalRef: BsModalRef;
   reservation: boolean = false;
+  showConfiguration: boolean = false;
 
   constructor(
     private orderDashboardService: OrdersDashboardService,
@@ -219,6 +224,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       Status: [''],
       FCategory: [''],
+      FWard: [''],
+      FSpecialty: [''],
     });
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
@@ -299,6 +306,30 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       defaultOpen: false,
       selectAllText: 'All',
     };
+    this.dropdownSettingsForPhysician = {
+      singleSelection: false,
+      enableCheckAll: true,
+      idField: 'Gpart',
+      textField: 'NamString',
+      itemsShowLimit: 2,
+      allowSearchFilter: true,
+      defaultOpen: false,
+      selectAllText: 'All',
+      limitSelection: 10
+    };
+    this.dropdownSettingsForSpeciality = {
+      singleSelection: false,
+      enableCheckAll: true,
+      idField: 'Orgid',
+      textField: 'Orgna',
+      itemsShowLimit: 2,
+      allowSearchFilter: true,
+      defaultOpen: false,
+      selectAllText: 'All',
+      clearSearchFilter: true,
+      limitSelection: 10
+
+    };
     this.dropdownSettings = {
       singleSelection: false,
       enableCheckAll: true,
@@ -349,6 +380,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     if (this.AdministeredDoses) {
       return;
     }
+  }
+  clickShowConfiguration() {
+    this.showConfiguration = !this.showConfiguration;
   }
   LDRListSet(fromdate?, todate?, physician?) {
     let fromdatevalue = '';
@@ -409,6 +443,27 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.assignUsersList = data?.d?.results;
     });
   }
+  userConfiguration: any;
+  clinicConfigDetail: any;
+  selectedPhysicianConf: any[] = [];
+  specialityList: any = [];
+  selectedSpecialityConf: any[] = []
+
+  clinicConfigGet() {
+    this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
+      if (resp.body && resp.body.d && resp.body.d) {
+        this.clinicConfigDetail = resp.body.d.results
+        localStorage.setItem('UserConfiguration', JSON.stringify(resp.body.d));
+        const attendPhy = this.clinicConfigDetail[0].AttendPhy.split(',')
+        this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
+
+        
+      const specialityCode =this.clinicConfigDetail[0].SpecialityCode.split(',');
+      this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
+      }
+    });
+  }
+
 
   getLabExtraction() {
     let obj = {
@@ -560,6 +615,24 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         },
         []
       );
+      this.getCheckInWardFilterData = this.getCheckInData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue?.Floor)) {
+            accumulator.push(currentValue?.Floor);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue?.DeptouDesc)) {
+            accumulator.push(currentValue?.DeptouDesc);
+          }
+          return accumulator;
+        },
+        []
+      );
     }
   }
 
@@ -636,13 +709,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
   refreshCheckIn() {
     if (this.selectedModule === 'checkin') {
-      this.CheckInComponent.getErList(new Date());
+      this.CheckInComponent.getHospitalList();
     } else if (this.selectedModule === 'erhistory') {
-      this.ErHistoryComponent.getErList(
-        this.formDetailGroup
-          .get('DateRange')
-          .patchValue([new Date(), new Date()])
-      );
+      this.ErHistoryComponent.getHospitalList();
     } else if (this.selectedModule === 'LabResults') {
       this.LabResultsComponent?.getErList(
         '',
@@ -684,6 +753,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Physician: '',
       Status: '',
       FCategory: '',
+      FWard: '',
+      FSpecialty: '',
     });
     this.filterFormLab.patchValue({
       Rooms: '',
@@ -1120,6 +1191,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       Status: [''],
       FCategory: [''],
+      FWard: [''],
+      FSpecialty: [''],
     });
   }
 

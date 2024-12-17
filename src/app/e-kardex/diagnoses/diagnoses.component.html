@@ -18,8 +18,7 @@
         (updateEvent)="updateInPatientForm($event)"></app-soap-form>
     </div>
     <!-- in patient form end -->
-    <div class="col-lg-6 2" *ngIf="InOutPatientViewValue.showBoth ||
-      InOutPatientViewValue.showOut">
+    <div class="col-lg-6 2" *ngIf="InOutPatientViewValue.showBoth">
       <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
         /* overflow: auto; */
@@ -44,7 +43,7 @@
               <div *ngFor="let paitentData of patientVisitdataSource | slice : 0 :
                 5" class="detail_row">
                 <div class="d-flex align-items-center w-100"
-                  (click)="modelFormOpen(paitentData, false)">
+                  (click)="modelFormOpen(paitentData, false, pdfViewModal)">
                   <span>{{ formatDate(paitentData.Erdattim) }}</span>
                   <p class="attending-section" style="width: 100%">
                     <strong> Physician:</strong>{{ paitentData.Mitarbname
@@ -101,8 +100,7 @@
         [isCopyRequest]="isCopyRequest" (updateEvent)="updateForm($event)"></app-visit-form>
     </div>
 
-    <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth ||
-      InOutPatientViewValue.showIn">
+    <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth">
       <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
         /* overflow: auto; */
@@ -183,18 +181,18 @@
                 <div class="w-100 mt-2 ml-1 document-list mr-0 ml-0 align-items-center row m-0 py-1 px-2" *ngFor="let member of item.value ; let ind = index" [ngClass]="i > 0 ? 'mt-1':''">
                   <ng-container>
                 
-                    <div class="col-md-2 p-0"  (click)="modelFormOpenInPatient(member)">
+                    <div class="col-md-2 p-0"  (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
                       <span class="in-line" style="font-weight:700" [title]="getDate(member.Dodat) | date: 'dd.MM.y'"> {{ getDate(member.Dodat) | date: "dd.MM.y" }}</span>
                     </div>
-                    <div class="col-md-4 p-0" (click)="modelFormOpenInPatient(member)">
+                    <div class="col-md-4 p-0" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
                       <span class="" [title]="member.MitarbName" ><strong> Physician:</strong> {{ member.MitarbName }}
                         -
                         {{ member.Orgdo }}</span>
                     </div>
-                    <div class="col-md-3 p-0" (click)="modelFormOpenInPatient(member)">
+                    <div class="col-md-3 p-0" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
                       <span class="in-line" style="font-weight:700" [title]="member.Dktxt"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
                     </div>
-                    <div class="col-md-2 pl-0" (click)="modelFormOpenInPatient(member)">
+                    <div class="col-md-2 pl-0" (click)="modelFormOpenInPatient(member,false, pdfViewModal)">
                       <span class="" style="font-weight:700" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</span>
                     </div>
                   </ng-container>
@@ -233,9 +231,15 @@
     </div>
   </div>
 </div>
+<ng-template #pdfViewModal>
+  <app-pdf-viewer [patientVisitData]="{patientVisit: patientVisitRecord, Oldversion: oldversion}"
+  [inPatientVisitData]="inPatientVisitData" [isInPatientSoap]="isInPatientSoap" [soapPdf]="soapPdf" [inPatientSoapData]="inPatientSoapData" (newItemEvent)="openNewForm()"
+  (copyItemEvent)="copyReleaseForm($event)"
+  (updateEvent)="updateForm($event)"></app-pdf-viewer>
+</ng-template>
 <ng-template #labpdfmodal>
   <div class="modal-body">
-    <ngx-extended-pdf-viewer
+    <!-- <ngx-extended-pdf-viewer
         *ngIf="pdfUrlType == 'pdf'"
         [src]="pdfUrl"
         height="80vh"
@@ -245,7 +249,11 @@
         [showOpenFileButton]="false"
         [showBookmarkButton]="false"
         >
-      </ngx-extended-pdf-viewer>
+      </ngx-extended-pdf-viewer> -->
+      <app-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [patientVisitData]="{patientVisit: patientVisitRecord, Oldversion: oldversion}"
+      [inPatientVisitData]="inPatientVisitData" [isInPatientSoap]="isInPatientSoap" [soapPdf]="soapPdf" [inPatientSoapData]="inPatientSoapData" (newItemEvent)="openNewForm()"
+      (copyItemEvent)="copyReleaseForm($event)"
+      (updateEvent)="updateForm($event)"></app-pdf-viewer>
     <div class="row" >
       <!-- <iframe [src]="pdfUrl" width="2000" height="600"> </iframe> -->
     </div>

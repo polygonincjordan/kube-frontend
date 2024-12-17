@@ -6,9 +6,9 @@
         <h3 class="header-heading">Vital Sign </h3>
         <ul class="list-simple" style="display: flex;
         align-items: center;">
-        <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.Pnamec}}</span></li>
-        <li style="padding: 17px">MRN : {{erListSelectedData.Patnr}}</li>
-        <li style="padding: 17px">Admission date :  {{erListSelectedData.Bwidt | date : "dd.MM.y"}} </li>
+        <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.Patname}}</span></li>
+        <li style="padding: 17px">MRN : {{erListSelectedData.Mrn}}</li>
+        <li style="padding: 17px">Admission date :  {{getDate(erListSelectedData.AdmissionDate) | date : "dd.MM.y"}} </li>
 
         </ul>
         <li class="close-icon"><img src="assets/img/CloseTab.svg" class="img-size w-80" (click)="modalRef.hide()"> </li>
