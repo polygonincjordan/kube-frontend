@@ -209,13 +209,15 @@
             </div>
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
                 <label class="w-30" for="">Snack Description</label>
-                <div class="w-70">
-                    <input type="checkbox" formCOntrolName="snackDescription" value="X" [checked]="true"
-                        (change)="dietConsistencySelect('X', $event)" />
-                    <label class="ml-2 m-0">Companion Meal</label>
-                </div>
-                <div *ngIf="snckOrderForm?.get('snackDescription')?.invalid && isInvalidForm" class="invalid-feedback">
-                    Please enter snack description.
+                <div class="w-70 d-flex flex-column">
+                    <div>
+                        <input type="checkbox" formCOntrolName="snackDescription" value="X" [checked]="true"
+                            (change)="dietConsistencySelect('X', $event)" />
+                        <label class="ml-2 m-0">Companion Meal</label>
+                    </div>
+                    <div *ngIf="snckOrderForm?.get('snackDescription')?.invalid && isInvalidForm" class="invalid-feedback">
+                        Please enter snack description.
+                    </div>
                 </div>
             </div>
 

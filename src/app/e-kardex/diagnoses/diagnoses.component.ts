@@ -754,32 +754,48 @@ export class DiagnosesComponent implements OnInit {
           this.patientVisitRecord?.Released == 'X'
         ) {
           this.pdfFormOpen();
-        } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_SOAP) {
-          this.soapFormOpen();
-        } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_VISIT) {
-          this.visitFormOpen();
-        }
-        if(this.patientVisitRecord){
-          this.InOutPatientViewValue = {
-            showBoth: false,
-            showIn: false,
-            showOut: true,
-          };
-        }else{
+          const config: ModalOptions = { class: 'modal-dialog-centered' };
+          this.modalRef = this.modalServiceForAllergy.show(template,config);
           this.InOutPatientViewValue = {
             showBoth: true,
             showIn: false,
             showOut: false,
           };
+        } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_SOAP) {
+          this.soapFormOpen();
+          this.InOutPatientViewValue = {
+            showBoth: false,
+            showIn: false,
+            showOut: true,
+          };
+        } else if (this.patientVisitRecord?.Dtid == DocType.ZMED_VISIT) {
+          this.visitFormOpen();
+          this.InOutPatientViewValue = {
+            showBoth: false,
+            showIn: false,
+            showOut: true,
+          };
         }
+        // if(this.patientVisitRecord){
+        //   this.InOutPatientViewValue = {
+        //     showBoth: false,
+        //     showIn: false,
+        //     showOut: true,
+        //   };
+        // }else{
+        //   this.InOutPatientViewValue = {
+        //     showBoth: true,
+        //     showIn: false,
+        //     showOut: false,
+        //   };
+        // }
         this.modalService.dismissAll();
-        const config: ModalOptions = { class: 'modal-dialog-centered' };
-        this.modalRef = this.modalServiceForAllergy.show(template,config);
-        this.InOutPatientViewValue = {
-         showBoth: true,
-         showIn: false,
-         showOut: false,
-       };
+     
+      //   this.InOutPatientViewValue = {
+      //    showBoth: true,
+      //    showIn: false,
+      //    showOut: false,
+      //  };
       });
     this.editing = false;
     }
@@ -801,15 +817,19 @@ export class DiagnosesComponent implements OnInit {
         this.inPatientForm = "OutSOAP";
         this.getReleasedPdf(this.inPatientSoapData, template);
         this.pdfFormOpen();
+        this.InOutPatientViewValue = {
+          showBoth: true,
+          showIn: false,
+          showOut: false,
+        };
       } else {
         this.soapFormOpen();
+        this.InOutPatientViewValue = {
+          showBoth: false,
+          showIn: false,
+          showOut: true,
+        };
       }
-
-      this.InOutPatientViewValue = {
-        showBoth: false,
-        showIn: false,
-        showOut: true,
-      };
       this.modalService.dismissAll();
     });
 
@@ -861,6 +881,8 @@ export class DiagnosesComponent implements OnInit {
               })
 
             }
+            this.showInDiv();
+            console.log(this.InOutPatientViewValue)
           } else {
             this.getReleasedPdf(this.inPatientVisitData, template);
             this.pdfFormOpen();
@@ -894,6 +916,7 @@ export class DiagnosesComponent implements OnInit {
               this.inPatientForm = "SOAP";
               this.inPatientSoapForm = true
               this.isEnlarge = false;
+              this.showInDiv();
             }
           }else{
             if (paitentData?.DokstText ==="Released"
@@ -905,7 +928,8 @@ export class DiagnosesComponent implements OnInit {
               this.soapFormOpen();
               this.inPatientShow = true;
               this.inPatientForm = "SOAP";
-              this.inPatientSoapForm = true
+              this.inPatientSoapForm = true;
+              this.showInDiv();
             }
           } 
         });
@@ -932,6 +956,7 @@ export class DiagnosesComponent implements OnInit {
               this.visitFormOpen();
               this.inPatientShow = true;
               this.isEnlarge = false;
+              this.showInDiv();
             }
           }else{
             if (paitentData?.DokstText ==="Released"
@@ -942,18 +967,28 @@ export class DiagnosesComponent implements OnInit {
             } else {
               this.visitFormOpen();
               this.inPatientShow = true;
+              this.showInDiv();
             }
           }
           
         });
     }
+    // this.InOutPatientViewValue = {
+    //   showBoth: false,
+    //   showIn: true,
+    //   showOut: false,
+    // };
+    this.modalService.dismissAll();
+  }
+
+  showInDiv() {
     this.InOutPatientViewValue = {
       showBoth: false,
       showIn: true,
       showOut: false,
     };
-    this.modalService.dismissAll();
   }
+
   getReleasedPdf(item,  template?: TemplateRef<any>,){
     console.log(item, "item")
     this.admissionService.getSoapPDF(item.Dockey)

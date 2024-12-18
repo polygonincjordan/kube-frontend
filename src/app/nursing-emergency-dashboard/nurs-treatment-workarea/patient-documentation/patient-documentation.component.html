@@ -1,9 +1,9 @@
 <div class="">
   <div class="er-physician-assessment">
     <div class="top-header">
-      <div class="w-100 d-flex align-items-center"
+      <div class="w-100 d-flex align-items-center" style="gap: 8px"
         *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale">
-        <div class="search-functionality col-md-3 pl-0">
+        <div class="search-functionality col-md-1 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
             id="searchFilter" />
@@ -19,6 +19,27 @@
           <ng-select [searchable]="true" placeholder="Document Type" (change)="documentFilter($event, '')"
             [(ngModel)]="documentType">
             <ng-option *ngFor="let data of documentTypeFilter" [value]="data.Dtid">{{ data.DtidText }}
+              <!-- [{{data.Dtid}}] -->
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="select-functionality text-left">
+          <ng-select [searchable]="true" placeholder="previous periods" [(ngModel)]="previousPeriodValue" (change)="filterPeriodDate()">
+            <ng-option *ngFor="let data of previousPeriodsList" [value]="data">{{ data}}
+              <!-- [{{data.Dtid}}] -->
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="select-functionality text-left">
+          <ng-select [searchable]="true" placeholder="Created by" [(ngModel)]="selectedCreatedBy" (change)="filterPeriodDate()">
+            <ng-option *ngFor="let data of createdDocumentUserList" [value]="data">{{ data }}
+              <!-- [{{data.Dtid}}] -->
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="select-functionality text-left">
+          <ng-select [searchable]="true" placeholder="Department OU" [(ngModel)]="selectedDocumentOU" (change)="filterPeriodDate()">
+            <ng-option *ngFor="let data of departmentOUList" [value]="data">{{ data }}
               <!-- [{{data.Dtid}}] -->
             </ng-option>
           </ng-select>
