@@ -18,7 +18,7 @@
         (updateEvent)="updateInPatientForm($event)"></app-soap-form>
     </div>
     <!-- in patient form end -->
-    <div class="col-lg-6 2" *ngIf="InOutPatientViewValue.showBoth">
+    <div class="col-lg-6 2"  *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showOut">
       <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
         /* overflow: auto; */
@@ -79,8 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-6 3" *ngIf="!InOutPatientViewValue.showBoth &&
-      !inPatientShow">
+    <div class="col-lg-6 3" *ngIf="!InOutPatientViewValue.showBoth && !inPatientShow">
       <!-- open pdf modal-------------------- -->
       <app-pdf-viewer *ngIf="pdfFormDiv" [patientVisitData]="{patientVisit: patientVisitRecord, Oldversion: oldversion}"
         [inPatientVisitData]="inPatientVisitData" [isInPatientSoap]="isInPatientSoap" [soapPdf]="soapPdf" [inPatientSoapData]="inPatientSoapData" (newItemEvent)="openNewForm()"
@@ -100,7 +99,7 @@
         [isCopyRequest]="isCopyRequest" (updateEvent)="updateForm($event)"></app-visit-form>
     </div>
 
-    <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth">
+    <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showIn">
       <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
         /* overflow: auto; */

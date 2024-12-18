@@ -417,7 +417,9 @@ export class PatientDocumentationComponent implements OnInit {
         this.filterByPeriod();
         this.sort();
         this.createdDocumentUserList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
-        this.createdDocumentUserList = this.removeDuplicates(this.createdDocumentUserList);
+          this.createdDocumentUserList = this.removeDuplicates(this.createdDocumentUserList);
+          this.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
+          this.departmentOUList = this.removeDuplicates(this.departmentOUList);
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValue.forEach((element) => {
             let checkPatinet = this.documentTypeFilter.find(el => el.Dtid === element.Dtid);
@@ -444,7 +446,6 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   filterByPeriod() {
-    debugger
     let currentDate = new Date();
     let startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
     let yesterday = new Date(startOfDay);
@@ -483,7 +484,7 @@ export class PatientDocumentationComponent implements OnInit {
         filteredArray = this.documentTypeFilterValueClone; // No filtering needed
         break;
       default:
-        console.warn("Unknown period selected.");
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
     }
 
     // Filter based on the selected options
@@ -560,6 +561,7 @@ export class PatientDocumentationComponent implements OnInit {
 
         // Handle patient profile response
         this.documentTypeFilterValueClone = patientProfileResponse.d.results;
+        
         // this.documentTypeFilterValue = patientProfileResponse.d.results;
         this.filterByPeriod();
 
