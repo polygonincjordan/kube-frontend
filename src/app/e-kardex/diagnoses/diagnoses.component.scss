@@ -819,3 +819,33 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     }
   }
 }
+
+//pdf modal
+.Pdf_modal {
+  display: block;
+  margin-bottom: 30px;
+
+  iframe {
+    width: 100%;
+  }
+}
+
+.bottom {
+  padding: 5px;
+  border: 1px solid;
+  text-align: center;
+
+  button {
+    border: 1px solid;
+    background: #3b82f6;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin: 0 2px;
+    font-weight: bold;
+  }
+}
+::ng-deep .modal-dialog-centered.pdfviewmodal {
+  top: 30px !important;
+  min-width: 90% !important;
+}

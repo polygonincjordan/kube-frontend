@@ -53,6 +53,13 @@ import { ProgressNotesKardexComponent } from './patient-history/progress-notes-k
 import { ProgressNoteListComponent } from './patient-history/progress-notes-kardex/progress-notes/progress-note-list/progress-note-list.component';
 import { ProgressNotesComponent } from './patient-history/progress-notes-kardex/progress-notes/progress-notes.component';
 import { StructureDocComponent } from './patient-history/structure-doc/structure-doc.component';
+import { PhysicianFormComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-form.component';
+import { PhysicianCreateAllergyComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-create-allergy/physician-create-allergy.component';
+import { PhysicianDiagnosisComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-diagnosis/physician-diagnosis.component';
+import { PhysicianErVitalsComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-er-vitals/physician-er-vitals.component';
+import { PhysicianFamilyHistoryComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-family-history/physician-family-history.component';
+import { PhysicianPastMedicalComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-past-medical/physician-past-medical.component';
+import { PhysicianPastSurgicalComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-past-surgical/physician-past-surgical.component';
 
 export const eKardexRoutes: Routes = [
   { path: '**', component: EKardexComponent },
@@ -118,7 +125,15 @@ export const eKardexRoutes: Routes = [
     FamilyHistoryComponent,
     DiagnosisComponent,
     ErVitalsComponent,
-    AreaChartComponent
+    AreaChartComponent,
+
+    PhysicianFormComponent,
+    PhysicianCreateAllergyComponent,
+    PhysicianDiagnosisComponent,
+    PhysicianErVitalsComponent,
+    PhysicianFamilyHistoryComponent,
+    PhysicianPastMedicalComponent,
+    PhysicianPastSurgicalComponent
   ],
 })
 export class EKardexModule { }

@@ -7,6 +7,7 @@ import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { Subscription } from 'rxjs';
 import { ConfigPopup } from '../../../core/config-popup/config-popup.component';
 import { ActivatedRoute } from '@angular/router';
+import { AdmissionService } from '@services/admission/admission.service';
 
 @Component({
   selector: 'diagnoses-in-patient',
@@ -41,6 +42,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
 
   inPatientDataObj: any;
   inPatientFormInput: string;
+  soapFormEvent: string;
 
   dischargeDispositionList: any = [
     { Desc: "Discharge Home", Value: "1" },
@@ -160,7 +162,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
 
   @ViewChild('inPatientPopup', { static: true }) configPopup: ConfigPopup;
 
-  constructor(private inPatientConfigurationService: InPatientConfigurationService, private datePipe: DatePipe , private route: ActivatedRoute) {
+  constructor(private inPatientConfigurationService: InPatientConfigurationService, private datePipe: DatePipe , private route: ActivatedRoute, private admissionService: AdmissionService) {
     this.inPatientDataSet = new FormGroup({
       DocKey: new FormControl(""),
       OperationPerformed: new FormControl(""),
@@ -293,6 +295,26 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     };
     this.inPatientConfigurationService.saveInPatientDocumentData(saveDataList, this.userConfig, false)
     this.updateEvent.emit(true);
+  }
+
+  realodEducationList(event: any) {
+    this.updateEvent.emit(true);
+  }
+
+  savePhysicianAssessmentForm(actionType: string) {
+    if(actionType == 'close') {
+      this.closeInPatientForm();
+      return;
+    }
+    if(actionType == 'release') {
+      this.soapFormEvent = actionType;
+      return;
+    }
+    if(this.admissionService.isEditPhysicianForm) {
+      this.soapFormEvent = "edit";
+    } else {
+      this.soapFormEvent = actionType;
+    }
   }
 
 

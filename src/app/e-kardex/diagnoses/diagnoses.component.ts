@@ -34,6 +34,8 @@ import { KeyValue } from '@angular/common';
   styleUrls: ['./diagnoses.component.scss'],
 })
 export class DiagnosesComponent implements OnInit {
+  @ViewChild('pdfViewModalForOhysician') pdfViewModalForOhysician?: TemplateRef<any>;
+
   modalRef: BsModalRef;
   userProfile: any;
   attachmentList: any;
@@ -195,9 +197,7 @@ export class DiagnosesComponent implements OnInit {
         // this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
       } else {
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
-        this.limitItems();
-        console.log('1111', this.patientProfileDocumet);
-        
+        this.limitItems();        
       }
     });
 
@@ -754,7 +754,7 @@ export class DiagnosesComponent implements OnInit {
           this.patientVisitRecord?.Released == 'X'
         ) {
           this.pdfFormOpen();
-          const config: ModalOptions = { class: 'modal-dialog-centered' };
+          const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
           this.modalRef = this.modalServiceForAllergy.show(template,config);
           this.InOutPatientViewValue = {
             showBoth: true,
@@ -836,6 +836,7 @@ export class DiagnosesComponent implements OnInit {
   }
   }
 
+  physicianAssPDFURL: any;
   modelFormOpenInPatient(paitentData,oldversion?: boolean,template?: TemplateRef<any>) {
     this.oldversion = oldversion;
     this.closeAllForm();
@@ -844,6 +845,49 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientDischargeData = {}
     this.inPatientSoapData = {}
+
+    if(paitentData?.Dtid == 'ZMED_PHASM') {
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+
+      if (paitentData.DokstText == 'Released') {
+        this.InOutPatientViewValue = {
+         showBoth: true,
+         showIn: false,
+         showOut: false,
+       };
+        const json = {
+          Dockey: paitentData.Dockey,
+        };
+        this.admissionService
+          .getPhysicianAssessDocPDF(json)
+          .pipe(
+            untilDestroyed(this),
+            catchError((err) => {
+              return of([]);
+            })
+          )
+          .subscribe((data: any) => {
+            // this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+            this.physicianAssPDFURL =  this.sanitizer.bypassSecurityTrustResourceUrl(
+              `data:application/pdf;base64, ${data?.d?.AttachmentData}`
+            );
+            this.soapPdf = data?.d
+            this.patientVisitRecord = data;
+            const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+            this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModalForOhysician,config);
+          });
+
+          return;
+      }
+      // this.admissionService.isEditPhysicianForm = true;
+      this.inPatientShow = true;
+      this.inPatientForm = "PhysicianAssessment";
+      this.admissionService.educationAddForm('edit');
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+      this.showInDiv();
+      return; 
+    }
+
     if (paitentData?.Dtid !== 'ZMED_SOAP'&& paitentData?.Dtid !== 'ZMED_VISIT') {
       this.inPatientConfigurationService
         .getPatientVisitDataByDocKey(paitentData.Dockey)
@@ -994,7 +1038,7 @@ export class DiagnosesComponent implements OnInit {
     this.admissionService.getSoapPDF(item.Dockey)
     .subscribe((_success:any)=>{
      this.soapPdf = _success?.d;
-     const config: ModalOptions = { class: 'modal-dialog-centered' };
+     const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
      this.modalRef = this.modalServiceForAllergy.show(template,config);
      this.InOutPatientViewValue = {
       showBoth: true,
@@ -1084,6 +1128,19 @@ export class DiagnosesComponent implements OnInit {
       // }, 10000);
       
     }
+  }
+
+  copyReleaseFormForPhysician() {
+    this.admissionService.isClonePhysicianForm = true;
+    this.inPatientShow = true;
+    this.inPatientForm = "PhysicianAssessment";
+    this.admissionService.educationAddForm('clone');
+    this.InOutPatientViewValue = {
+      showBoth: false,
+      showIn: true,
+      showOut: false,
+    };
+    this.modalRef?.hide();
   }
 
   copyReleaseForm(releaseData: any) {
@@ -1272,6 +1329,8 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientForm = "ORRPT";
     } else if (formType === "PHDIS") {
       this.inPatientForm = "PHDIS";
+    } else if (formType === "PhysicianAssessment") {
+      this.inPatientForm = "PhysicianAssessment";
     }
     this.inPatientShow = true;
     this.InOutPatientViewValue = {
