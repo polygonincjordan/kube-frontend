@@ -15,13 +15,22 @@
         <img src="assets/img/grid-icon.svg">
         Physician Discharge Summary
       </span>
-      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS'">
+      <span class="in-patient-title" *ngIf="inPatientFormInput === 'PhysicianAssessment'">
+        <img src="assets/img/grid-icon.svg">
+        Physician Assessment
+      </span>
+      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment'">
         <button type="button" (click)="saveForm()">Save</button>
         <button type="button" (click)="releaseForm()">Release</button>
         <button type="button" *ngIf="isDelete" (click)="deleteForm()">Delete</button>
         <button type="button"(click)="closeInPatientForm()">Close</button>
       </div>
-
+      <div class="right-button-group" *ngIf="inPatientFormInput == 'PhysicianAssessment'">
+        <button type="button" (click)="savePhysicianAssessmentForm('add')">Save</button>
+        <button type="button" (click)="savePhysicianAssessmentForm('release')">Release</button>
+        <button type="button" *ngIf="isDelete" (click)="savePhysicianAssessmentForm('delete')">Delete</button>
+        <button type="button"(click)="savePhysicianAssessmentForm('close')">Close</button>
+      </div>
       <div class="right-button-group" *ngIf="inPatientFormInput === 'PHDIS'">
         <button type="button" (click)="savePhdisForm()">Save</button>
         <button type="button" (click)="releasePhdisForm()">Release</button>
@@ -459,6 +468,9 @@
           </div>
         </div>
       </form>
+    </ng-container>
+    <ng-container *ngIf="inPatientFormInput === 'PhysicianAssessment'">
+      <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>
     </ng-container>
   </div>
 </div>
