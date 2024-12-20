@@ -552,6 +552,36 @@ export class InPatientsComponent implements OnInit {
       (_error: any) => { }
     );
   }
+
+  loginUserDetails = this.storageService.getUserProfile();
+  public openModuleForMyList(
+    data: any) {
+    let payload = {
+      "PatientNo": data.Mrn,
+      "Physician": this.loginUserDetails.UserName,
+      "CaseNo": data.CaseNumber
+    }
+    this.hospitalistService.patientListSet(payload).subscribe((data: any) => {
+      Swal.fire({
+        title: 'Success',
+        text: "Patient is added to Your List successfully",
+        showCancelButton: false,
+        confirmButtonColor: '#2B7D2B',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Okay',
+        willOpen: () => {
+          // This sets the title color directly using inline styles
+          const title = Swal.getTitle();
+          if (title) {
+            title.style.color = '#2B7D2B'; // Set the title color
+          }
+        },
+        customClass: {
+          title: 'swal-title-custom-success'  // Apply a custom class to the title
+        }
+      })
+    })
+  }
   inPatientListByFilter() {
     if (this.setModule == 'Abnormal_Rad_Findings') {
       this.initialfilterDataForLabRad('', '03');

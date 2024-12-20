@@ -11,6 +11,8 @@ export class EmrComponent implements OnInit {
   patientLab = false;
   patientRad = false;
   MySurgeries=false
+  FavoritePatients=false;
+  Endoscopy=false;
   clinicCount = 0;
   IPCount = 0;
   LabCount=0;
@@ -90,6 +92,8 @@ export class EmrComponent implements OnInit {
   }
 
   onClickWidgets(name) {
+    this.FavoritePatients = false;
+    this.Endoscopy = false;
     if (name == 'myclinic') {
       this.myClinic = true;
       this.inPatients = false;
@@ -120,6 +124,21 @@ export class EmrComponent implements OnInit {
       this.patientLab = false;
       this.patientRad = false;
       this.MySurgeries = true;
+    } else if (name == 'FavoritePatients') {
+      this.myClinic = false;
+      this.inPatients = false;
+      this.patientLab = false;
+      this.patientRad = false;
+      this.MySurgeries = false;
+      this.FavoritePatients = true;
+    } else if (name == 'Endoscopy') {
+      this.myClinic = false;
+      this.inPatients = false;
+      this.patientLab = false;
+      this.patientRad = false;
+      this.MySurgeries = false;
+      this.Endoscopy = true;
+      this.FavoritePatients = false;
     }
   }
   collectClinicCount(event) {

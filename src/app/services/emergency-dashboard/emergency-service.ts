@@ -1554,7 +1554,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
-
+  getPatientBed(bedType: any) {
+    return this.http.get(this.url + `getBedDetails?Uebbe=${bedType}`, {
+      withCredentials: true,
+    });
+  }
 
   createAssessment(data: any) {
     console.log(data);
