@@ -168,6 +168,32 @@ export class HeaderComponent implements OnInit {
       (_success: any) => {
         if (_success) {
           this.widgetsSet = JSON.parse(_success._body).d.results;
+          let endoscopy = {
+            "StyleClass": "card-header card-header-warning card-header-icon",
+            "Widgetid": "ENDOSCOPY01",
+            "Descr": "Endoscopy",
+            "Icon": "local_hotel",
+            "Rank": "001",
+            "Color": "",
+            "IsTile": true,
+            "Type": "L01",
+            "Gpart": "9000000051",
+            "Assigned": true
+          };
+          let myFavoritePatient = {
+            "StyleClass": "card-header card-header-warning card-header-icon",
+            "Widgetid": "MYFAVORITEPATIENT01",
+            "Descr": "My Favorite Patients List",
+            "Icon": "local_hotel",
+            "Rank": "001",
+            "Color": "",
+            "IsTile": true,
+            "Type": "L01",
+            "Gpart": "9000000051",
+            "Assigned": true
+          };
+          this.widgetsSet.push(endoscopy);
+          this.widgetsSet.push(myFavoritePatient);
           this.StatusOfTab.emit(this.widgetsSet);
         }
       },

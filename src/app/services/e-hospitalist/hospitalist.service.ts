@@ -293,4 +293,28 @@ export class HospitalistService {
       withCredentials: true,
     });
   }
+    getDischargeApproval(json) {
+    return this.http.get(this.url + `getDischargeApproveSet?Einri=${json.Einri}&Falnr=${json.Falnr}&PA=${json.PA}&PP=${json.PP}&PB=${json.PB}`, { withCredentials: true });
+  }
+
+  pregnantIndSet(payload: any) {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/postPregnantIndSet`;
+    return this.http.post(url, payload, {
+      withCredentials: true,
+    });
+  }
+
+  patientListSet(payload: any) {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/postMyPatientSet`;
+    return this.http.post(url, payload, {
+      withCredentials: true,
+    });
+  }
+
+  removePatientListSet(payload: any) {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/postRemoveMyPatientSet?PatientNo=${payload.PatientNo}&Physician=${payload.Physician}&CaseNo=${payload.CaseNo}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
 }

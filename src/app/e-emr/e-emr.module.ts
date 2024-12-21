@@ -43,6 +43,9 @@ import { ProgressNotesKardexComponent } from './in-patients/progress-notes-karde
 import { ProgressNoteListComponent } from './in-patients/progress-notes-kardex/progress-notes/progress-note-list/progress-note-list.component';
 import { PhysicianOrdersComponent } from './in-patients/progress-notes-kardex/physician-orders/physician-orders.component';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
+import { MyFavoritePatientsComponent } from './my-favorite-patients/my-favorite-patients.component';
+import { MainHospitalistListViewComponent } from './my-favorite-patients/main-hospitalist-list-view/main-hospitalist-list-view.component';
+import { MyEndoscopyComponent } from './my-endoscopy/my-endoscopy.component';
 export const emrRoutes: Routes = [
   // { path: '**', redirectTo: 'emr', pathMatch: 'full' },
   { path: '**', component: EmrComponent },
@@ -87,7 +90,10 @@ export const emrRoutes: Routes = [
     ProgressNotesKardexComponent,
     ProgressNoteListComponent,
     ProgressNotesComponent,
-    PhysicianOrdersComponent
+    PhysicianOrdersComponent,
+    MyFavoritePatientsComponent,
+    MainHospitalistListViewComponent,
+    MyEndoscopyComponent
   ],
   providers: [EEmrService, ChartService, EmergencyService,EPrescriptionService,MissedMedicationDosesService,PatientHistoryService],
 })

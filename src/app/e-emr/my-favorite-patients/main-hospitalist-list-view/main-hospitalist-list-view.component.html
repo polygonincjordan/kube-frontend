@@ -1,0 +1,475 @@
+<div class="main-hospital-home">
+
+  <div class="d-flex flex-row flex-wrap align-items-center p-3" *ngIf="listType === '09'">
+    <div class="card box m-2" style="width: 24%;" *ngFor="let item of listItem | filter : searchString">
+      <div class="d-flex flex-row align-items-center card-header p-3 justify-content-between"
+        [ngClass]="{'death-flag': item?.DthInd}">
+        <img src="assets/img/female-avatar.svg" *ngIf="item.PatientGender == 'F'" width="28px" alt="avatar"
+          srcset="">
+        <img src="assets/img/male-avatar.svg" *ngIf="item.PatientGender == 'M'" alt="avatar" width="28px"
+          srcset="">
+        <div class="font-weight-bold mx-2 w-75" style="cursor: pointer" (click)="redirectToeKardex(item)">{{
+          item.Patname }} </div>
+        <div class="minus-dropdown">
+          <i class="fa fa-minus" (click)="openModuleForRemoveMyList(item)" style="cursor: pointer"
+            id="dropdownMenuButton"></i>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="d-flex flex-column">
+          <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+            <div class="d-flex flex-row"><span class="box-title mr-2">MRN </span> <span class="box-value">{{ item.Mrn ||
+                '-' }}</span></div>
+            <div class="d-flex flex-row"><span class="box-title mr-2">Case</span> <span class="box-value">{{
+                item.CaseNumber || '-' }}</span></div>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+            <div class="box-title"> Attending Doctor </div>
+            <div class="box-value">{{ item.AttendingDoctorName || '-' }} </div>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+            <div class="box-title">Specialty/ Location </div>
+            <div class="box-value">{{ item.Deptou || '-' }} / {{ item.Floor || '-' }} - {{ item.BedidText }}</div>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+            <div class="box-title">Visit date </div>
+            <div class="box-value">{{ getDate(item.AdmissionDate) | date : "dd.MM.yyyy" }} - {{ item.CaseTypeText || '-'
+              }}</div>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-start mb-2">
+            <!-- <div class="d-flex flex-row align-items-center justify-content-end"> -->
+            <div class="blue-flag mr-2" data-toggle="tooltip" data-placement="top" title="Pregnant"
+              *ngIf="item.Pregnant" (click)="openBreastfeedPopup(breastfeedingtemplate,item)">
+              <img src="assets/icon-img/pregnanet.svg" alt="" />
+            </div>
+            <!-- <div class="mr-2" *ngIf="!item.Pregnant"></div> -->
+            <div class="blue-flag mr-2" data-toggle="tooltip" data-placement="top" title="Breast Feeding"
+              *ngIf="item.BreastFeed" (click)="openBreastfeedPopup(breastfeedingtemplate,item)">
+              <img src="assets/icon-img/breastfeed.svg" alt="" />
+            </div>
+            <!-- <div class="blank breastf mr-2" *ngIf="!item.BreastFeed"></div> -->
+            <div class="red-flag mr-2" data-toggle="tooltip" data-placement="top" title="Downpayment Due"
+              *ngIf="item.DownpayStatus && item.DownpayStatus === '@0A@'">
+              <img src="assets/icon-img/red-downpay.svg" alt="" />
+            </div>
+            <!-- <div class="blank down mr-2" *ngIf="!item.DownpayStatus"></div> -->
+            <div class="yellow-flag mr-2" data-toggle="tooltip" data-placement="top" title="Partial Downpayment"
+              *ngIf="item.DownpayStatus && item.DownpayStatus === '@09@'">
+              <img src="assets/icon-img/yellow-downpay.svg" alt="" />
+            </div>
+            <div class="green-flag mr-2" data-toggle="tooltip" data-placement="top" title="Downpayment Done"
+              *ngIf="item.DownpayStatus && item.DownpayStatus === '@08@'">
+              <img src="assets/icon-img/green-downpay.svg" alt="" />
+            </div>
+            <!-- <div class="grey-flag mr-2" data-toggle="tooltip" data-placement="top" title="Order" *ngIf="item.OrderFlag && item.OrderFlag !== ''">
+                <img src="assets/icon-img/grey-order.svg" alt="" />
+              </div> -->
+            <div class="red-flag mr-2" data-toggle="tooltip" data-placement="top" [title]="item.OrderFlag"
+              *ngIf="item.OrderFlag && item.OrderFlag !== ''">
+              <img src="assets/icon-img/red-order.svg" alt="" />
+            </div>
+            <!-- <div class="blank order mr-2" *ngIf="!item.OrderFlag"></div> -->
+            <div class="red-flag mr-2" data-toggle="tooltip" data-placement="top" title="Diet Order Exists"
+              *ngIf="item.DietStatus && item.DietStatus !== ''">
+              <img src="assets/icon-img/red-diet.svg" alt="" />
+            </div>
+            <div class="grey-flag mr-2" data-toggle="tooltip" data-placement="top" title="No Diet Order Exists"
+              *ngIf="item.DietStatus && item.DietStatus === ''">
+              <img src="assets/icon-img/grey-diet.svg" alt="" />
+            </div>
+            <!-- <div class="blank diet mr-2" *ngIf="!item.DietStatus || item.DietStatus === ''"></div> -->
+            <!-- </div> -->
+            <!-- <div data-bs-toggle="tooltip"
+            style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;"
+            data-bs-placement="right" title="{{ item.Allergies }}" class="allergy">{{ item?.Allergies }}</div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #progressEntryTemplate>
+  <div class="modal-body p-1">
+    <div class="row mb-2" style="justify-content: center;">
+      <div style="border: solid 2px
+        #0082c8;border-radius: 6px;width: fit-content;
+        padding: 5px 10px;font-size: 14px;">
+        <div>
+          <!-- <span style="font-weight: bold;color: #7b8087;">Patient:</span> -->
+          <span style="color: black;font-weight: bold">{{ipListData.PatnrName || ipListData.Patient}}</span>
+          <!-- <span style="color: black;margin-left: 3em;">(M,65Y)</span> -->
+          <span style="margin-left: 10em;font-weight: bold;color: #7b8087;">MRN:</span>
+          <span style="color: black;font-weight: bold">{{ipListData.Patnr}}</span>
+        </div>
+      </div>
+    </div>
+    <div style="border: solid 3px #3b82f6; padding: 24px; border-radius: 15px">
+      <form [formGroup]="progressEntryForm">
+        <div class="row">
+          <div class="col-sm-2 mr-4">
+            <span style="position: absolute; top: 4px; left: 22px; font-size: 15px"><i class="fa fa-calendar-o"
+                aria-hidden="true"></i></span>
+            <input formControlName="progressDate" class="form-control" type="text" placeholder="" [minDate]=""
+              [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD.MM.YYYY'
+              }" style="
+              height: 28px;
+              font-size: 13px;
+              width: 137px;
+              padding-left: 34px;
+              " />
+          </div>
+          <div class="col-sm-2" style="padding: 0 0 0 2px">
+            <span style="position: absolute; top: 4px; left: 10px; font-size: 15px"><i class="fa fa-clock-o"
+                aria-hidden="true"></i></span>
+            <input formControlName="progressTime" placeholder="" class="form-control" aria-label="24hr format"
+              [ngxTimepicker]="fullTime" [format]="24" style="
+              height: 28px;
+              font-size: 13px;
+              width: 100px;
+              padding-left: 34px;
+              " />
+            <ngx-material-timepicker #fullTime
+              style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
+          </div>
+          <div class="col-sm-2 col-sm-2 pl-0 mr-3">
+            <input class="form-control" type="text" placeholder="Assignment"
+              style="height: 28px; font-size: 13px; width: 157px" />
+          </div>
+          <div class="col-sm-2">
+            <select type="text" placeholder="Occupational Group" class="form-control" id="inputPassword"
+              style="height: 28px; font-size: 11px; width: 157px" formControlName="occupationalGroup">
+              <option value="" disabled selected>Occupational Group</option>
+              <option *ngFor="let item of occupationalGroupData" [ngValue]="item.Group">
+                {{ item.Text }}
+              </option>
+            </select>
+          </div>
+          <button type="button" class="create-progress" style="
+            border: 1px solid;
+            background: #3b82f6;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-right: 15px;
+            " (click)="createProgressEntry()">
+            Create
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mt-2">
+            <textarea cols="58" rows="6" [placeholder]="''" formControlName="text" style="width: 100%;">
+            </textarea>
+
+
+          </div>
+        </div>
+        <div *ngIf="showTextError" style="width: 100%;
+          margin-top: 0.25rem;
+          text-align: center;
+          color: #dc3545;">
+          Text field is required.
+        </div>
+      </form>
+      <div class="progress-list mt-3">
+        <div class="d-flex align-items-center justify-content-between" *ngFor="let item of ProgressNotesList">
+          <div class="progress-card mt-2">
+            <div class="card-header d-flex align-items-center">
+              <div class="date-name">
+                <p class="m-0">
+                  {{ getDate(item.ActionDate) | date : "d.MM.y" }}/{{
+                  parsePayloadFormateTime(item.ActionTime) }} - {{
+                  item.CreationUserName }}
+                </p>
+              </div>
+              <div class="occupational" [ngStyle]="getImageBorderLogic(item)">
+                <span>{{ item.ProfGroupName }}</span>
+              </div>
+              <div class="ml-2 category-name">
+                <span>{{ item.CategoryText }}</span>
+              </div>
+            </div>
+            <div class="progress-contain">
+              <p class="m-0" [innerHTML]="showParagraph(item.Text)"> </p>
+            </div>
+          </div>
+          <div class="action-img mr-3">
+
+            <img (click)="copyProgressEntryEvent(item)" width="30px" class="mr-3 cursor-pointer"
+              src="assets/img/copyImg.jfif" />
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</ng-template>
+<ng-template #breastfeedingtemplate>
+  <div class="p-20">
+    <div class="d-flex flex-row align-items-center justify-content-end">
+      <img src="assets/img/CloseTab.svg" width="33px" alt="" (click)="modalRef.hide()">
+    </div>
+    <div class="custom-modal-header text-center">
+      <div class="modal-title">
+        Pregnancy / Breast Feeding Indicators
+      </div>
+    </div>
+    <div class="modal-body description">
+      <!-- <div class="form-check p-0">
+        <label class="form-check-label mr-2" for="inlineRadio1">Pregnancy indicator</label>
+        <input type="checkbox" name="inlineRadioOptions" [(ngModel)]="PBData.Pregnant" [checked]="PBData.Pregnant">
+      </div>
+      <div class="form-check p-0">
+        <label class="form-check-label mr-2" for="inlineRadio1">Breast Feeding</label>
+        <input type="checkbox" name="inlineRadioOptions1" [(ngModel)]="PBData.BreastFeed" [checked]="PBData.BreastFeed">
+      </div> -->
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="modalData.Pregnant" [checked]="modalData.Pregnant"
+          value="" id="defaultCheck1">
+        <label class="form-check-label" for="defaultCheck1">
+          Pregnancy indicator
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="modalData.BreastFeed"
+          [checked]="modalData.BreastFeed" value="" id="defaultCheck2">
+        <label class="form-check-label" for="defaultCheck2">
+          Breast Feeding
+        </label>
+      </div>
+    </div>
+    <div class="d-flex flex-row align-items-center justify-content-center footer">
+      <button type="button" class="btn btn-primary mr-3" (click)="saveBreastFeedData(PBData)">
+        Save
+      </button>
+      <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #dischargeStatusTemplate>
+  <div class="p-20">
+    <div class="d-flex flex-row align-items-center justify-content-end">
+      <img src="assets/img/CloseTab.svg" width="33px" alt="" (click)="modalRef.hide()">
+    </div>
+    <div class="custom-modal-header text-center">
+      <div class="modal-title">
+        Discharge Approvals
+      </div>
+    </div>
+    <div class="modal-body description">
+      <div class="form-check">
+        <div class="d-flex flex-row align-items-center justify-content-between w-50">
+          <label class="form-check-label" for="defaultCheck1">
+            Billing
+          </label>
+          <input type="checkbox" [(ngModel)]="modalData.billing" [checked]="modalData.billing" disabled value=""
+            id="defaultCheck1">
+        </div>
+      </div>
+      <div class="form-check">
+        <div class="d-flex flex-row align-items-center justify-content-between w-50">
+          <label class="form-check-label" for="defaultCheck2">
+            Cashier
+          </label>
+          <input type="checkbox" [(ngModel)]="modalData.cashier" [checked]="modalData.cashier" disabled value=""
+            id="defaultCheck2">
+        </div>
+      </div>
+      <div class="form-check">
+        <div class="d-flex flex-row align-items-center justify-content-between w-50">
+          <label class="form-check-label" for="defaultCheck3">
+            Medical Nursing
+          </label>
+          <input type="checkbox" [(ngModel)]="modalData.medical_nursing" [checked]="modalData.medical_nursing" disabled
+            value="" id="defaultCheck3">
+        </div>
+      </div>
+      <div class="form-check">
+        <div class="d-flex flex-row align-items-center justify-content-between w-50">
+          <label class="form-check-label" for="defaultCheck4">
+            Pharmacy
+          </label>
+          <input type="checkbox" [(ngModel)]="modalData.pharmacy" [checked]="modalData.pharmacy" value="" disabled
+            id="defaultCheck4">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- phyorder modal -->
+<ng-template #phyordertemplate>
+  <div *ngIf="phyOrderAction == 'create'">
+    <div class="modal-body" style="border: solid 3px #007bff; border-radius: 25px">
+      <div class="row mb-2" style="justify-content: center;">
+        <div style="border: solid 2px
+          #0082c8;border-radius: 6px;width: fit-content;
+          padding: 5px 10px;font-size: 14px;">
+          <div>
+            <!-- <span style="font-weight: bold;color: #7b8087;">Patient:</span> -->
+            <span style="color: black;font-weight: bold">{{phyOrderData.PatnrName || ipListData.Patient}}</span>
+            <!-- <span style="color: black;margin-left: 3em;">(M,65Y)</span> -->
+            <span style="margin-left: 21em;font-weight: bold;color:
+              #7b8087;float: right;">MRN:<span style="color: black;">{{phyOrderData.Patnr}}</span></span>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="phyOrderform1">
+        <div class="row">
+          <div style="margin: 0 1px 0 12px; line-height: 26px">
+            <strong>Physician Name</strong>
+          </div>
+          <div class="">
+            <input formControlName="physicianNumber" type="text" placeholder="" class="form-control"
+              style="height: 29px; width: 122px; margin: 0 1px 0 10px" />
+          </div>
+          <div class="col-md-5">
+            <input formControlName="physicianName" type="text" placeholder="" class="form-control"
+              style="height: 29px" />
+          </div>
+          <div class="col-sm-2">
+            <button style="
+              float: right;
+              border: 1px solid;
+              background: #3b82f6;
+              color: #fff;
+              padding: 5px 10px;
+              border-radius: 4px;
+              margin: 0 0px 0 0;
+              font-weight: 700;
+              position: relative;
+              bottom: 2px;
+              left: 105px;
+              " (click)="createPhysicianOrder()">
+              Create
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2" style="line-height: 32px">
+          <div style="
+            background-color: #0082c8;
+            color: white;
+            width: 112px;
+            text-align: center;
+            margin: 2px;
+            height: 35px;
+            ">
+            Order Date
+          </div>
+          <div style="
+            background-color: #0082c8;
+            color: white;
+            width: 122px;
+            text-align: center;
+            margin: 2px;
+            height: 35px;
+            ">
+            Order Time
+          </div>
+          <div style="
+            background-color: #0082c8;
+            color: white;
+            width: 201px;
+            text-align: center;
+            margin: 2px;
+            height: 35px;
+            ">
+            Occupational group
+          </div>
+          <div style="
+            background-color: #0082c8;
+            color: white;
+            width: 380px;
+            text-align: center;
+            margin: 2px;
+            height: 35px;
+            ">
+            Physician Order
+          </div>
+        </div>
+        <div formArrayName="items" *ngFor="let item of phyOrderform1.get('items')['controls']; let i=
+          index;">
+          <div [formGroupName]="i" class="row mt-2" style="line-height: 32px">
+            <input formControlName="orderDate" class="form-control" type="text" placeholder="" [minDate]="" [maxDate]=""
+              #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD.MM.YYYY'
+              }" class="form-control" style="width: 112px; margin: 2px; height: 35px" />
+            <input type="text" class="form-control" aria-label="24hr format" [ngxTimepicker]="fullTime" [format]="24"
+              formControlName="orderTime" style="width: 122px; margin: 2px; height: 35px" />
+            <ngx-material-timepicker #fullTime
+              style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
+            <select formControlName="occupationalGroup" type="text" class="form-control"
+              style="width: 201px; margin: 2px; height: 35px">
+              <option *ngFor="let item of occupationalGroupData" [ngValue]="item.Group">
+                {{ item.Text }}
+              </option>
+            </select>
+            <input formControlName="physicianOrder" type="text" class="form-control"
+              style="width: 351px; margin: 2px; height: 35px" />
+            <!-- <i
+              class="fa fa-trash"
+              aria-hidden="true"
+              style="margin: 11px; font-size: 19px; color: #007bff"
+              (click)="removeItems(i)"
+            ></i> -->
+          </div>
+        </div>
+      </form>
+      <div *ngIf="showPhyOrderError" style="width: 100%;
+        margin-top: 0.25rem;
+        text-align: center;
+        color: #dc3545;">
+        Physician Order text is required
+      </div>
+      <div style="max-height: 238px;
+        overflow: auto;margin-left: -15px;">
+        <table class="table table-bordered table-hover mt-2">
+          <thead style="
+            background: #0082c8 !important;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 9;
+            ">
+            <tr>
+              <th colspan="1" scope="col">Created On</th>
+              <th colspan="1" scope="col">Status</th>
+              <th colspan="2" scope="col">Occupational Group</th>
+              <th colspan="2" scope="col">Employee</th>
+              <th colspan="4" scope="col">Physician Order</th>
+              <th colspan="1" scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let phyOrder of physicianOrderList" style="font-weight:
+              bold">
+              <td colspan="1">{{ getDate(phyOrder.CreationDate) | date :
+                "d.MM.y" }}</td>
+              <td colspan="1">{{ phyOrder.StatusText }}</td>
+              <td colspan="2">{{ phyOrder?.ProfessionalGroupText }}</td>
+              <td colspan="2">{{ phyOrder.EmployeeRespName }}</td>
+              <td colspan="4">{{ phyOrder.ZphysOrder }}</td>
+              <td colspan="1" style="text-align: center; overflow: visible
+                !important">
+                <div class="dropdown">
+                  <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer"
+                    aria-haspopup="true" aria-expanded="false"></i>
+                  <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item c-pointer">New Admission</a>
+                    </div> -->
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>

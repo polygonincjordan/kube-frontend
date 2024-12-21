@@ -1,15 +1,12 @@
 <app-header (StatusOfTab)="inPatientsData($event)"></app-header>
 <div class="container-fluid">
   <div style="display: flex " class="row m-0">
-    <div
-      class="card col p-0"
-      style="
+    <div class="card col p-0" style="
       margin-left: 1em;
       width: 20%;
       margin-top: 23px;
       border-radius: 8px;
-      height: 70px;"
-      (click)="onClickWidgets('myclinic')" *ngIf="isClinicData">
+      height: 70px;" (click)="onClickWidgets('myclinic')" *ngIf="isClinicData">
       <div [ngClass]="myClinic ? 'card-body inner-card-active' : 'card-body inner-card'">
         <span>My Clinic</span><br />
         <span>{{ clinicCount }}</span>
@@ -18,126 +15,85 @@
             left: 18px;
             top: 12px;
             font-size: 23px;"></i> -->
-          <img
-            src="assets/img/myclinic.png"
-            style="
-            position: relative;
-            left: 11px;
-            top: 4px;
-            font-size: 23px;
-            width: 45px;"/>
+          <img src="assets/img/myclinic.png" style="position: relative;left: 7px;top: 0px;font-size: 23px;width: 34px;" />
         </span>
       </div>
     </div>
-    <div
-      class="card col p-0"
-      style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
-      (click)="onClickWidgets('inpatients')"
-      *ngIf="isInPatientData"
-    >
-      <div
-        [ngClass]="
+    <div class="card col p-0" style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
+      (click)="onClickWidgets('inpatients')" *ngIf="isInPatientData">
+      <div [ngClass]="
           inPatients ? 'card-body inner-card-active' : 'card-body inner-card'
-        "
-      >
+        ">
         <span>My In-Patients</span><br />
         <span>{{ IPCount }}</span>
-        <span class="card-icon"
-          ><i
-            class="fa fa-bed"
-            aria-hidden="true"
-            style="position: relative; left: 18px; top: 12px; font-size: 23px"
-          ></i
-        ></span>
+        <span class="card-icon"><i class="fa fa-bed" aria-hidden="true"></i></span>
       </div>
     </div>
-    <div
-      class="card col p-0"
-      style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
-      (click)="onClickWidgets('MySurgeries')"
-      *ngIf="isMySurgeries"
-    >
-      <div
-        [ngClass]="
+    <div class="card col p-0" style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
+      (click)="onClickWidgets('MySurgeries')" *ngIf="isMySurgeries">
+      <div [ngClass]="
           MySurgeries ? 'card-body inner-card-active' : 'card-body inner-card'
-        "
-      >
+        ">
         <span>My Surgeries</span><br />
         <span>{{ Surgeries }}</span>
-        <span class="card-icon"
-          ><i
-            class="fa fa-bed"
-            aria-hidden="true"
-            style="position: relative; left: 18px; top: 12px; font-size: 23px"
-          ></i
-        ></span>
+        <span class="card-icon"><i class="fa fa-bed" aria-hidden="true"></i></span>
       </div>
     </div>
-    <div
-      class="card col p-0"
-      style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
-      (click)="onClickWidgets('patientlab')"
-      *ngIf="isLabData"
-    >
-      <div
-        [ngClass]="
+    <div class="card col p-0" style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
+      (click)="onClickWidgets('patientlab')" *ngIf="isLabData">
+      <div [ngClass]="
           patientLab ? 'card-body inner-card-active' : 'card-body inner-card'
-        "
-        class="card-body inner-card"
-      >
+        " class="card-body inner-card">
         <span>My Patient's Lab Results</span><br />
         <span>{{ LabCount }}</span>
-        <span class="card-icon"
-          ><i
-            class="fa fa-flask"
-            aria-hidden="true"
-            style="position: relative; left: 18px; top: 12px; font-size: 23px"
-          ></i
-        ></span>
+        <span class="card-icon"><i class="fa fa-flask" aria-hidden="true"></i></span>
       </div>
     </div>
-    <div
-      class="card col p-0"
-      style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
-      (click)="onClickWidgets('patientrad')"
-      *ngIf="isRadData"
-    >
-      <div
-        [ngClass]="
+    <div class="card col p-0" style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
+      (click)="onClickWidgets('patientrad')" *ngIf="isRadData">
+      <div [ngClass]="
           patientRad ? 'card-body inner-card-active' : 'card-body inner-card'
-        "
-      >
+        ">
         <span>My Patient's Rad Reports</span><br />
         <span>{{ RadCount }}</span>
-        <span class="card-icon"
-          ><i
-            class="fa fa-wpforms"
-            aria-hidden="true"
-            style="position: relative; left: 18px; top: 12px; font-size: 23px"
-          ></i
-        ></span>
+        <span class="card-icon"><i class="fa fa-wpforms" aria-hidden="true"></i></span>
+      </div>
+    </div>
+    <div class="card col p-0" style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
+    (click)="onClickWidgets('Endoscopy')">
+    <div [ngClass]="
+        patientRad ? 'card-body inner-card-active' : 'card-body inner-card'
+      ">
+      <span>Endoscopy</span><br />
+      <span>0</span>
+      <span class="card-icon"><i class="fa fa-wpforms" aria-hidden="true"></i></span>
+    </div>
+  </div>
+    <div class="card col p-0" style="margin-left: 1em; margin-top: 23px; border-radius: 8px"
+      (click)="onClickWidgets('FavoritePatients')">
+      <div [ngClass]="
+          patientRad ? 'card-body inner-card-active' : 'card-body inner-card'
+        ">
+        <span>My Favorite Patients List</span><br />
+        <span>0</span>
+        <span class="card-icon"><i class="fa fa-wpforms" aria-hidden="true"></i></span>
       </div>
     </div>
   </div>
 </div>
-<app-my-clinic
-  [hidden]="inPatients || patientLab || patientRad || MySurgeries"
-  (dataCount)="collectClinicCount($event)"
-></app-my-clinic>
-<app-In-Patients
-  [hidden]="myClinic || patientLab || patientRad || MySurgeries"
-  (dataCount)="collectIPCount($event)"
-></app-In-Patients>
-<app-patient-lab
-  [hidden]="myClinic || inPatients || patientRad || MySurgeries"
-  (dataCount)="collectLabCount($event)"
-></app-patient-lab>
-<app-patient-rad
-  [hidden]="myClinic || inPatients || patientLab || MySurgeries"
-  (dataCount)="collectRadCount($event)"
-></app-patient-rad>
-
-  <my-surgeries
-  [hidden]="myClinic || inPatients || patientLab || patientRad"
-  (dataCount)="collectSurgeries($event)"
-></my-surgeries>
+<app-my-clinic [hidden]="inPatients || patientLab || patientRad || MySurgeries || FavoritePatients || Endoscopy"
+  (dataCount)="collectClinicCount($event)"></app-my-clinic>
+<app-In-Patients [hidden]="myClinic || patientLab || patientRad || MySurgeries || FavoritePatients || Endoscopy"
+  (dataCount)="collectIPCount($event)"></app-In-Patients>
+<app-patient-lab [hidden]="myClinic || inPatients || patientRad || MySurgeries || FavoritePatients || Endoscopy"
+  (dataCount)="collectLabCount($event)"></app-patient-lab>
+<app-patient-rad [hidden]="myClinic || inPatients || patientLab || MySurgeries || FavoritePatients || Endoscopy"
+  (dataCount)="collectRadCount($event)"></app-patient-rad>
+<my-surgeries [hidden]="myClinic || inPatients || patientLab || patientRad || FavoritePatients || Endoscopy"
+  (dataCount)="collectSurgeries($event)"></my-surgeries>
+<div *ngIf="FavoritePatients">
+  <app-my-favorite-patients></app-my-favorite-patients>
+</div>
+<div *ngIf="Endoscopy">
+  <app-my-endoscopy></app-my-endoscopy>
+</div>
