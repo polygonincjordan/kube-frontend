@@ -199,6 +199,7 @@ export class DiagnosesComponent implements OnInit {
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
         this.limitItems();        
       }
+    
     });
 
 
@@ -1105,7 +1106,7 @@ export class DiagnosesComponent implements OnInit {
       showOut: false,
     };
     this.closeAllForm();
-    this.closeModal()
+    // this.closeModal()
     if (isUpdate) {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
