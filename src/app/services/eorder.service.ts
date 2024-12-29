@@ -450,7 +450,7 @@ export class eOrderService {
   //         this.userData.sex = data.sex;
   //         this.userData.email = data.email;
   //         this.userData.dob = dob
-  //           ? this.datePipe.transform(dob, 'dd.MM.YYYY')
+  //           ? this.datePipe.transform(dob, 'dd.MM.yyyy')
   //           : '';
   //         this.userData.patnr = data.patnr;
   //         this.userData.case = success.d.results[0].falnr;

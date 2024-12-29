@@ -1210,7 +1210,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   formatDate(date: string) {
-    return new DatePipe('en-US').transform(date, 'dd.MM.YYYY');
+    return new DatePipe('en-US').transform(date, 'dd.MM.yyyy');
   }
 
   onChangeSearchTextValue() {

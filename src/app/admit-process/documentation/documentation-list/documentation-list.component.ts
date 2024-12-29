@@ -301,7 +301,7 @@ export class DocumentationListComponent implements OnInit {
   formatDate(date: string) {
     if (date) {
       const newFormateDate = date.replace('/Date(', '').replace(')/', '')
-      return new DatePipe('en-US').transform(newFormateDate, 'dd.MM.YYYY');
+      return new DatePipe('en-US').transform(newFormateDate, 'dd.MM.yyyy');
     }
   }
 

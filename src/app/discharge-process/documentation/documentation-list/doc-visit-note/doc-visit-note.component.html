@@ -3,7 +3,7 @@
   <div class="details">
     <div>
       <span class="label_box">Visit Date</span>
-      <input type="text" readonly [ngModel]="patientVisitFormData.Visitdate | date : 'dd.MM.YYYY'" class="f-size-field" />
+      <input type="text" readonly [ngModel]="patientVisitFormData.Visitdate | date : 'dd.MM.yyyy'" class="f-size-field" />
       <input type="date" [ngModel]="patientVisitFormData.Visitdate | date : 'yyyy-MM-dd'" (ngModelChange)="patientVisitFormData.Visitdate = $event"  class="f-size-field" />
     </div>
     <div class="d-flex mt-2 align-items-start">
