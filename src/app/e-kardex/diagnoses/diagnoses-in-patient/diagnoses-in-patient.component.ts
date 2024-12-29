@@ -510,7 +510,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
 
   onChangeDate(dateValue: any, controlType) {
     if (dateValue) {
-      this.inPatientOrrptDataSet.get(controlType).patchValue(`\/Date(${new Date(`${this.datePipe.transform(dateValue, "YYYY-MM-dd")} 23:59:59`).getTime()})\/`);
+      this.inPatientOrrptDataSet.get(controlType).patchValue(`\/Date(${new Date(`${this.datePipe.transform(dateValue, "yyyy-MM-dd")} 23:59:59`).getTime()})\/`);
     }
   }
 

@@ -2716,7 +2716,7 @@ export class FeeListService {
           Fprice: `${element.newprice}`,
           Funit: element.Unit,
           Ibgdt:
-            this.datePipe.transform(element.date, 'YYYY-MM-dd') +
+            this.datePipe.transform(element.date, 'yyyy-MM-dd') +
             'T' +
             this.uiHelper.convertTimeToUTC(element.time),
           Remrk: element.note,

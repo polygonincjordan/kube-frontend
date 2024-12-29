@@ -49,7 +49,7 @@
               <img src="assets/img/next-icon.svg" width="10"> Previous
             </button>
             <div>
-              <button type="button" class="date-year-btn">{{ currentDate | date: 'dd-MM-YYYY' }}</button>
+              <button type="button" class="date-year-btn">{{ currentDate | date: 'dd-MM-yyyy' }}</button>
             </div>
             <button type="button" class="next-preview ml-3" (click)="showNextDate()" [disabled]="endDate === currentDate">
               Next <img src="assets/img/preview.svg" width="10">
