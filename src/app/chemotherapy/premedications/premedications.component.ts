@@ -796,13 +796,13 @@ export class PremedicationsComponent implements OnInit {
 
   parseDate(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}T${formatDate(date, "HH:mm:ss")}`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T${formatDate(date, "HH:mm:ss")}`;
     }
     return null;
   }
   parseDatedata(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}`;
     }
     return null;
   }

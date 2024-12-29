@@ -70,8 +70,8 @@ export class MissedMedicationDosesService {
     const filters = this.loadParameters(true, true);
     // data[0] = new Date(data[0]).getDate() - 200;
     if (data && data[0] && data[1]) {
-      const Pbdad = `${this.DatePipe.transform(data[0], 'YYYY-MM-dd')}T${this.DatePipe.transform(data[0], 'HH:mm:ss')}`;
-      const Pbdad1 = `${this.DatePipe.transform(data[1], 'YYYY-MM-dd')}T${this.DatePipe.transform(data[1], 'HH:mm:ss')}`;
+      const Pbdad = `${this.DatePipe.transform(data[0], 'yyyy-MM-dd')}T${this.DatePipe.transform(data[0], 'HH:mm:ss')}`;
+      const Pbdad1 = `${this.DatePipe.transform(data[1], 'yyyy-MM-dd')}T${this.DatePipe.transform(data[1], 'HH:mm:ss')}`;
       const additionalData = `and Pbdad eq datetime'${Pbdad}' and Pbdad1 eq datetime'${Pbdad1}'`;
       this.missedMedicationList.medicationData = null;
       this.loadData('EmarEventSet', filters, false, false, false, additionalData).subscribe({

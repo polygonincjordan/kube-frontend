@@ -1606,6 +1606,7 @@ export class eOrderService {
   }
 
   onCreateOrder() {
+    debugger;
     this.spinner.show();
     let postObject: any = {};
     postObject['einri'] = this.constants.einri;
@@ -1631,7 +1632,7 @@ export class eOrderService {
               Tarif: obj.catalogkey,
               Talst: obj.service,
               Wbgtmp:
-                this.datePipe.transform(obj.date, 'YYYY-MM-dd') +
+                this.datePipe.transform(obj.date, 'yyyy-MM-dd') +
                 'T' + obj.time + ":00",
               Lslok: obj.localization,
               Ergtx: obj.note,
@@ -1671,7 +1672,7 @@ export class eOrderService {
               Tarif: obj.catalogkey,
               Talst: obj.service,
               Wbgtmp:
-                this.datePipe.transform(obj.date, 'YYYY-MM-dd') +
+                this.datePipe.transform(obj.date, 'yyyy-MM-dd') +
                 'T' + obj.time + ":00",
               Lslok: obj.localization,
               Ergtx: obj.note,
@@ -3069,7 +3070,7 @@ export class eOrderService {
           Fprice: `${element.newprice}`,
           Funit: element.Unit,
           Ibgdt:
-            this.datePipe.transform(element.date, 'YYYY-MM-dd') +
+            this.datePipe.transform(element.date, 'yyyy-MM-dd') +
             'T' +
             this.uiHelper.convertTimeToUTC(element.time),
           Remrk: element.note,

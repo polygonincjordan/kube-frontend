@@ -102,7 +102,7 @@ export class AppointmentsListComponent implements OnInit {
   }
 
   setDoctorDataBasedOnDate(currentDate: Date) {
-    this.configurationData = this.allAppointmentData.filter(d => this.datePipe.transform(d.parseDate, 'YYYY-MM-dd') === this.datePipe.transform(currentDate, 'YYYY-MM-dd'));
+    this.configurationData = this.allAppointmentData.filter(d => this.datePipe.transform(d.parseDate, 'yyyy-MM-dd') === this.datePipe.transform(currentDate, 'yyyy-MM-dd'));
     this.configurationData.forEach((item) => {
       item.Doctors = [];
       if (this.selectedOptions && this.selectedOptions.length) {
@@ -115,7 +115,7 @@ export class AppointmentsListComponent implements OnInit {
   }
 
   filterDoctorEvents() {
-    this.configurationData = this.allEventData.filter(d => this.datePipe.transform(d.parseDate, 'YYYY-MM-dd') === this.datePipe.transform(this.currentDate, 'YYYY-MM-dd'));
+    this.configurationData = this.allEventData.filter(d => this.datePipe.transform(d.parseDate, 'yyyy-MM-dd') === this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'));
     this.configurationData.forEach((element) => {
       if (element.Doctors && element.Doctors.length > 0) {
         const doctor = element.Doctors[0];
@@ -169,7 +169,7 @@ export class AppointmentsListComponent implements OnInit {
 
   parseDate(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}T${formatDate(date, "HH:mm:ss")}`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T${formatDate(date, "HH:mm:ss")}`;
     }
     return null;
   }
@@ -184,7 +184,7 @@ export class AppointmentsListComponent implements OnInit {
 
   ParsedDate(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}`;
     }
     return null;
   }

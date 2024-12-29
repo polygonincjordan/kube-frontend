@@ -173,8 +173,8 @@ export class EPrescriptionService implements OnDestroy {
   loadMAREventData(data: any) {
     const filters = this.loadParameters(true, true, false, false);
     if (data && data[0] && data[1]) {
-      const Pbdad = `${this.DatePipe.transform(data[0], 'YYYY-MM-dd')}T${this.DatePipe.transform(data[0], 'HH:mm:ss')}`;
-      const Pbdad1 = `${this.DatePipe.transform(data[1], 'YYYY-MM-dd')}T${this.DatePipe.transform(data[1], 'HH:mm:ss')}`;
+      const Pbdad = `${this.DatePipe.transform(data[0], 'yyyy-MM-dd')}T${this.DatePipe.transform(data[0], 'HH:mm:ss')}`;
+      const Pbdad1 = `${this.DatePipe.transform(data[1], 'yyyy-MM-dd')}T${this.DatePipe.transform(data[1], 'HH:mm:ss')}`;
       const additionalData = `and Pbdad eq datetime'${Pbdad}' and Pbdad1 eq datetime'${Pbdad1}'`;
       this.loadData('EmarEventSet', filters, false, false, false, additionalData).subscribe({
         next: (resp: any) => {

@@ -619,7 +619,7 @@ export class BedComponent  {
 
   parseDate(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}T${"00:00:00"}`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T${"00:00:00"}`;
     }
     return null;
   }

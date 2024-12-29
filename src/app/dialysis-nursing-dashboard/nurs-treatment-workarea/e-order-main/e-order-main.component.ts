@@ -1617,7 +1617,7 @@ export class EOrderMainComponent {
 
   parseDate(date: any) {
     if (date !== null) {
-      return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}T00:00:00`;
+      return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T00:00:00`;
     }
     return null;
   }

@@ -330,7 +330,7 @@ export class ComplexOrderComponent implements OnInit, OnDestroy {
   }
 
   parseDate(date: any) {
-    return `${new DatePipe('en-US').transform(date, "YYYY-MM-dd")}T00:00:00`;
+    return `${new DatePipe('en-US').transform(date, "yyyy-MM-dd")}T00:00:00`;
   }
 
   parseTime(data: string) {
