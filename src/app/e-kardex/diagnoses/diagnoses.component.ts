@@ -1106,7 +1106,7 @@ export class DiagnosesComponent implements OnInit {
       showOut: false,
     };
     this.closeAllForm();
-    // this.closeModal()
+    this.closeModal()
     if (isUpdate) {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
