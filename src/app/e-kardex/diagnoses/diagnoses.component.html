@@ -403,7 +403,7 @@
 
               <div *ngFor="let paitentData of patientGridVisitdataSource"
                 class="detail_row"
-                (click)="modifyAndOpenForm(paitentData)">
+                (click)="modifyAndOpenForm(paitentData,pdfViewModal)">
                 <div class="d-flex align-items-center w-100">
                   <span>{{ formatDate(paitentData.Erdattim) }}</span>
                   <p class="attending-section" style="width: 100%">
