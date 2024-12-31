@@ -702,7 +702,7 @@ export class DiagnosesComponent implements OnInit {
     }
   }
 
-  modifyAndOpenForm(data: any, oldversion?: boolean) {
+  modifyAndOpenForm(data: any,template: TemplateRef<any>, oldversion?: boolean) {
     // Remove the 'dockey' property
     data.Dockey = data.DocKey; // Assign the new value for 'newDockey'
     
@@ -710,7 +710,7 @@ export class DiagnosesComponent implements OnInit {
     delete data.DocKey;
   
     // Proceed with opening the form
-    this.modelFormOpenInPatient(data, oldversion);
+    this.modelFormOpenInPatient(data, oldversion,template);
   }
 
   FormOpenInPatient(paitentData: any, oldversion?: boolean) {
@@ -903,7 +903,14 @@ export class DiagnosesComponent implements OnInit {
           this.inPatientShow = false;
           this.inPatientForm = "";
           if (this.inPatientVisitData.Released) {
-            this.pdfFormOpen();
+            // this.pdfFormOpen();
+            const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+            this.modalRef = this.modalServiceForAllergy.show(template,config);
+            this.InOutPatientViewValue = {
+             showBoth: true,
+             showIn: false,
+             showOut: false,
+           };
           } else if (!paitentData.Released && paitentData?.Dtid !== "ZMED_ATCHM") {
             if (paitentData?.Dtid === "ZMED_OPERT") {
               this.inPatientShow = true;
@@ -1092,6 +1099,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   pdfFormOpen() {
+    debugger
     this.pdfFormDiv = true;
   }
 
@@ -1460,7 +1468,7 @@ resetAttachment(){
 }
 
 closeModal() {
-  this.modalRef.hide();
+  this.modalRef?.hide();
 }
 getAttachmentsList() {
   this.patientHistoryService.getAttachmentsList().subscribe(
