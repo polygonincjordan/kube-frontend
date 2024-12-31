@@ -78,11 +78,11 @@
         <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
         Vital Sign
       </div>
-      <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOCharts ? 'tab-change' : 'tab-default'" style="cursor: pointer" (click)="tabChange('IOCharts')">
+      <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOCharts ? 'tab-change' : 'tab-default'" style="cursor: pointer" (click)="tabChange('IOCharts')">
         <img src="assets/img/black-iochart.svg" class="tab-img" *ngIf="!this.emergencyService.IOCharts" />
         <img src="assets/img/iochart.svg" class="tab-img" *ngIf="this.emergencyService.IOCharts" />
           I & O Chart
-      </div>
+      </div> -->
       <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOChartsPlus ? 'tab-change' : 'tab-default'"
         style="cursor: pointer" (click)="tabChange('IOChartsPlus')">
         <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.IOChartsPlus" />

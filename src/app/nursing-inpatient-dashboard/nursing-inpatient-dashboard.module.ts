@@ -130,6 +130,10 @@ import { HistoryAssessmentComponent } from './nurs-treatment-workarea/history-as
 import { PastSurgicalComponent } from './nurs-treatment-workarea/history-assessment/past-surgical/past-surgical.component';
 import { PastMedicalComponent } from './nurs-treatment-workarea/history-assessment/past-medical/past-medical.component';
 import { FamilyHistoryComponent } from './nurs-treatment-workarea/history-assessment/family-history/family-history.component';
+import { PediatricEarlyWarningComponent } from './nurs-treatment-workarea/patient-documentation/pediatric-early-warning/pediatric-early-warning.component';
+import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/nurse-endorsement/nurse-endorsement.component';
+import { NumericRatingScaleComponent } from './nurs-treatment-workarea/patient-documentation/numeric-rating-scale/numeric-rating-scale.component';
+import { FacePainScaleComponent } from './nurs-treatment-workarea/patient-documentation/face-pain-scale/face-pain-scale.component';
 
 const route: Routes = [
   {
@@ -218,10 +222,12 @@ const route: Routes = [
     PatientsDietMealComponent,
     CompanionMealOrderingComponent,
     DislikePreferenceComponent,
-
+    PediatricEarlyWarningComponent,
+    NurseEndorsementComponent,
+    NumericRatingScaleComponent,
     EmarWitnessComponent,
     DrugEventsAdminComponent,
-
+    FacePainScaleComponent,
     DietMealOrderComponentNew,
     PatientsDietMealComponentNew,
     DislikePreferenceComponentNew,
