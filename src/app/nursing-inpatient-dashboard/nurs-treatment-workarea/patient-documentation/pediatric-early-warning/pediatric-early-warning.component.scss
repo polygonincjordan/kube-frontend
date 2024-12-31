@@ -1,0 +1,81 @@
+.parent-box{
+  max-height: 450px;
+  overflow-y: auto;
+}
+.glosgow {
+    .glosgow-box {
+      padding: 15px;
+    //   border: 1px solid #cacaca;
+      border-radius: 6px;
+  
+      .selection-section {
+        padding: 15px;
+        border: 1px solid #D2EAFF;
+        border-radius: 15px;
+  
+        .selection-box {
+          margin-bottom: 20px;
+  
+          .d-flex {
+            padding: 10px;
+          }
+        }
+      }
+  
+      label {
+        margin: 0;
+        font-size: 14px;
+        cursor: pointer;
+      }
+  
+      .radio-input {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #000;
+        /* Change color as needed */
+        border-radius: 50%;
+        margin-right: 8px;
+        cursor: pointer;
+      }
+  
+      .radio-section {
+        padding: 15px;
+        border-bottom: 2px solid #cacaca;
+        margin: 0;
+      }
+  
+      h4 {
+        font-weight: 600;
+      }
+    }
+  }
+  .input-lable{
+    white-space: nowrap;
+    font-size: 14px;
+    color: #293A4A;
+    font-weight: 800;
+  }
+  .date-function {
+  
+    img {
+      position: absolute;
+      top: 50%;
+      left: 34%;
+      transform: translateY(-48%);
+      width: 18px;
+    }
+  }
+  .header {
+    font-weight: bold;
+    // text-align: center;
+    margin-left: 25%;
+    margin-bottom: 10px;
+}
+.checkbox-group label {
+    margin-bottom: 5px;
+}
+.warning-heading{
+  font-weight: 600;
+}

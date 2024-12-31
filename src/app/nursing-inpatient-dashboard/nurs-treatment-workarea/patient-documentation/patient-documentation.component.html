@@ -308,6 +308,94 @@
                 </div>
               </div>
 
+            <!-- Pain Assessment -->
+            <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+              (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
+              <div class="col-md-4">Pain Assessment {{painAssessmentLaestDoc[0]?.Zversion ?
+                dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
+            <div class="col-md-2 status-color">{{painAssessmentLaestDoc[0]?.StatusTxt || 'N/A'}}</div>
+            <div class="col-md-2" title="{{getTime(painAssessmentLaestDoc[0]?.DocTime)}}">
+              {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+            </div>
+            <div class="col-md-3">{{painAssessmentLaestDoc[0]?.PhyNm || '-'}}</div>
+            <div class="col-md-1">
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="openPainAssessmentPdf(painAssessmentLaestDoc[0].Dockey)"
+                *ngIf="painAssessmentLaestDoc[0]?.StatusTxt == 'Released'"></i>
+            </div>
+          </div>
+
+            <!-- pediatric early warning scale -->
+            <div
+              [ngClass]="pediatricEarlyWarningScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
+              <div class="col-md-4">Pediatric Early Warning Scale {{pediatricEarlyWarningList[0]?.Zversion ?
+                dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
+                <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}">
+                {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
+                *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>
+              </div>
+            </div>
+
+              <!-- Nurse Endorsement -->
+
+              <div
+                [ngClass]="nurseEndorsement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('nurseEndorsement',nurseEndorsementList[0])">
+                <div class="col-md-4">Nurse Endorsement {{nurseEndorsementList[0]?.Zversion ?
+                  dockVer(nurseEndorsementList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{nurseEndorsementList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(nurseEndorsementList[0]?.DocTime)}}">
+                  {{getDate(nurseEndorsementList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{nurseEndorsementList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
+                  (click)="getPatientProfileData(nurseEndorsementList[0])"
+                  *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                </div>
+              </div>
+
+              <!-- Numeric rating scale(more than 8 yrs) -->
+              <div
+                [ngClass]="numericratingscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;"
+                (click)="selectAssessment('numericratingscale',latestNumericratingscaleList[0])">
+                <div class="col-md-4">Numeric Rating Scale(more than 8 yrs) :</div>
+                <div class="col-md-2 status-color">{{latestNumericratingscaleList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestNumericratingscaleList[0]?.DocTime)}}">
+                  {{getDate(latestNumericratingscaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestNumericratingscaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestNumericratingscaleList[0],RedirectionType.NMRTSC$)"
+                    *ngIf="latestNumericratingscaleList[0]?.StatusTxt == 'Released'" />
+                </div>
+              </div>
+
+              <!-- Face Pain Scale -->
+              <div
+                [ngClass]="facepainscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('facepainscale',latestFacePainScaleList[0])">
+                <div class="col-md-4">Face Pain Scale :</div>
+                <div class="col-md-2 status-color">{{latestFacePainScaleList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestFacePainScaleList[0]?.DocTime)}}">
+                  {{getDate(latestFacePainScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestFacePainScaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestFacePainScaleList[0],RedirectionType.FAC$)"
+                    *ngIf="latestFacePainScaleList[0]?.StatusTxt == 'Released'" />
+                </div>
+              </div>
             <!--  Nursing Assessment -->
             <!-- <div
               [ngClass]="isNursingAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -461,7 +549,11 @@
     <app-nursing-admission-assessment *ngIf="openNurseAdmission"></app-nursing-admission-assessment>
     <app-patient-diagnoisi-history #patientDiagnosisHistory (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)" (onAttachmentClose)="onOpenAttachment($event)"></app-patient-diagnoisi-history>
     <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
+    <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
+    <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
+    <app-face-pain-scale *ngIf="openFacePainScale"></app-face-pain-scale>
 
+    <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <ng-template #releasepdfmodal>
       <div class="modal-body">
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
