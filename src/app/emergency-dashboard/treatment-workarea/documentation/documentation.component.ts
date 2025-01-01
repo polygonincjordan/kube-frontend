@@ -462,7 +462,9 @@ export class DocumentationComponent implements OnInit {
   pdfUrlConvertToBlob(pdfValue) {
     let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
     let file = new Blob([byteArray], { type: "application/pdf" });
-    this.pdfUrl = file;
+    const objectUrl = URL.createObjectURL(file);
+    // Sanitize the object URL and assign it to the pdfUrl
+    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
   }
   refresh() {
     this.getLatestAssessment();

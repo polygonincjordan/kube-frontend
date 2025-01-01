@@ -1040,6 +1040,8 @@ export class TreatmentWorkareaComponent implements OnInit {
       this.openModuleRad();
     } else if (tabName == 'patientProfile') {
       this.emergencyService.tabPanelNavigation('patientProfile');
+    } else if(tabName == 'HistoryAssessment'){
+      this.emergencyService.tabPanelNavigation('HistoryAssessment');
     }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;

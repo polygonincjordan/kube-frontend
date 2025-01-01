@@ -119,6 +119,10 @@ import { SurgeryTableListComponent } from './treatment-workarea/patient-profile/
 import { SurgeryEOrderComponent } from './treatment-workarea/cpoe/e-order-main/surgery-e-order/surgery-e-order.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { DiagnosisHistoryPopupComponent } from './treatment-workarea/documentation/dignosis-history-popup/diagnosis-history-popup.component';
+import { FamilyHistoryComponent } from './treatment-workarea/history-assessment/family-history/family-history.component';
+import { PastMedicalComponent } from './treatment-workarea/history-assessment/past-medical/past-medical.component';
+import { PastSurgicalComponent } from './treatment-workarea/history-assessment/past-surgical/past-surgical.component';
+import { HistoryAssessmentComponent } from './treatment-workarea/history-assessment/history-assessment.component';
 
 
 
@@ -185,7 +189,11 @@ export const emergencyDashboard: Routes = [
     RemoveTrailingZerosPipe,
     EducationFormComponent,
     SurgeryTableListComponent,
-    SurgeryEOrderComponent
+    SurgeryEOrderComponent,
+    FamilyHistoryComponent,
+    PastMedicalComponent,
+    PastSurgicalComponent,
+    HistoryAssessmentComponent
   ],
   providers: [EmergencyService, EPrescriptionService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService,PatientHistoryService,OrdersDashboardService,UserConfigurationService],
   imports: [

@@ -74,14 +74,17 @@
     
     </div>
   <div class="er-physician-assessment-secound-bar mt-2">
+    <label>Chief Complaint</label>
   <textarea   id="exampleFormControlTextarea1" placeholder="" rows="3" formControlName="ChiefComplaint"></textarea>
   <h3 class="common-heade">Examination</h3>
   <div class="box-shadow">
   <div class="row">
   <div class="col-md-6">
+    <label>Significant Findings</label>
       <textarea placeholder="" formControlName="Significant"></textarea>
   </div>
   <div class="col-md-6">
+    <label>Treatments</label>
       <textarea  placeholder="" formControlName="Treatments"></textarea>
   </div>
   
@@ -270,6 +273,7 @@
   <div class="box-shadow">
   <div class="row">
   <div class="col-md-4 template">
+    <label>Disposition</label>
     <ng-select placeholder="" appendTo="body" style="
     height: 29px;font-weight: 600;" formControlName="Disposition">
       <ng-option *ngFor=" let item of DispositionData"
@@ -279,14 +283,17 @@
     </ng-select>
   </div>
   <div class="col-md-4">
+    <label>Condition at Disposition</label>
       <input type="text" placeholder="" formControlName="ConditionDisp" >
   </div>
   <div class="col-md-4">
+    <label>Impression and Plan of Care</label>
       <input  placeholder="" formControlName="PlanCare">
   </div>
   </div> 
   <div class="row" style="margin-top: 15px;">
   <div class="col-md-4">
+    <label>Disposition Instructions</label>
       <textarea placeholder="" formControlName="InstructionDisp" rows="3"></textarea>
   </div>
   <div class="col-md-2">

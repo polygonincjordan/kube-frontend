@@ -333,3 +333,13 @@
 //     width: 100% !important;
 //   }
 // }
+
+ngx-extended-pdf-viewer .textLayer {
+  cursor: text !important; /* Change cursor to text selector */
+  user-select: text !important; /* Allow text selection */
+}
+
+/* Remove unwanted pointer styles */
+ngx-extended-pdf-viewer {
+  cursor: auto !important;
+}
