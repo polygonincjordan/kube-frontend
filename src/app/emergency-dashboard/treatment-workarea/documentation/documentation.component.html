@@ -846,13 +846,13 @@ min-width: 21%;">
     </div>
     <ng-template #releasepdfmodal>
       <div class="modal-body">
-        <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
+        <!-- <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
           [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
-        </ngx-extended-pdf-viewer>
-        <!-- <div class="row" *ngIf="pdfUrlType == 'pdf'">
+        </ngx-extended-pdf-viewer> -->
+        <div class="row" *ngIf="pdfUrlType == 'pdf'">
         <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
 
-      </div> -->
+      </div>
         <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
           <img [src]="releaseDocumentImage" style="height: 70vh;" />
         </div>

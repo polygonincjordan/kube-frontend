@@ -35,6 +35,7 @@ import { KeyValue } from '@angular/common';
 })
 export class DiagnosesComponent implements OnInit {
   @ViewChild('pdfViewModalForOhysician') pdfViewModalForOhysician?: TemplateRef<any>;
+  @ViewChild('pdfViewModal') pdfViewModal?: TemplateRef<any>;
 
   modalRef: BsModalRef;
   userProfile: any;
@@ -755,8 +756,13 @@ export class DiagnosesComponent implements OnInit {
           this.patientVisitRecord?.Released == 'X'
         ) {
           this.pdfFormOpen();
-          const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
-          this.modalRef = this.modalServiceForAllergy.show(template,config);
+          if(template) {
+            const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+            this.modalRef = this.modalServiceForAllergy.show(template,config);
+          } else if(this.pdfViewModal) {
+           const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+           this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModal,config);
+          }
           this.InOutPatientViewValue = {
             showBoth: true,
             showIn: false,
@@ -841,6 +847,7 @@ export class DiagnosesComponent implements OnInit {
   modelFormOpenInPatient(paitentData,oldversion?: boolean,template?: TemplateRef<any>) {
     this.oldversion = oldversion;
     this.closeAllForm();
+    debugger
     this.soapPdf={};
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.inPatientVisitData = {} as InPatientDataResult;
@@ -1043,11 +1050,17 @@ export class DiagnosesComponent implements OnInit {
 
   getReleasedPdf(item,  template?: TemplateRef<any>,){
     console.log(item, "item")
+    let dockey = item.Dockey ? item.Dockey : item.DocKey
     this.admissionService.getSoapPDF(item.Dockey)
     .subscribe((_success:any)=>{
      this.soapPdf = _success?.d;
-     const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
-     this.modalRef = this.modalServiceForAllergy.show(template,config);
+     if(template) {
+       const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+       this.modalRef = this.modalServiceForAllergy.show(template,config);
+     } else if(this.pdfViewModal) {
+      const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+      this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModal,config);
+     }
      this.InOutPatientViewValue = {
       showBoth: true,
       showIn: false,
@@ -1099,7 +1112,6 @@ export class DiagnosesComponent implements OnInit {
   }
 
   pdfFormOpen() {
-    debugger
     this.pdfFormDiv = true;
   }
 
