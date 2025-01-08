@@ -2501,7 +2501,6 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   getReleasedPdf(item) {
-    debugger
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {
       this.admissionService.getPatientProfilePDF(item.Dockey).subscribe((_success: any) => {
         if (item.AttMimeType == 'PDF') {

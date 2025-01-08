@@ -1523,7 +1523,6 @@ export class FeeListService {
   }
 
   onCreateOrder() {
-    debugger;
     this.spinner.show();
     let postObject: any = {};
     postObject['einri'] = this.constants.einri;

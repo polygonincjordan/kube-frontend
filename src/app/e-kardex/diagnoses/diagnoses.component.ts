@@ -1099,7 +1099,6 @@ export class DiagnosesComponent implements OnInit {
   }
 
   pdfFormOpen() {
-    debugger
     this.pdfFormDiv = true;
   }
 
