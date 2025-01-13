@@ -67,7 +67,7 @@
             >
           </ng-select>
         </div>
-        <div class="select-functionality ml-3" style="min-width: 200px">
+        <div class="select-functionality ml-3" style="min-width: 200px" *ngIf="this.emergencyService.PhysicianOrders">
           <ng-select [searchable]="true" (ngModelChange)="onDateChange()" formControlName="selectStatus" placeholder="Status">
             <ng-option *ngFor="let data of physicianOrderStatus" [value]="data.label">{{ data.label }}</ng-option>
           </ng-select>

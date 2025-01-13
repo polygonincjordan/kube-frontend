@@ -42,8 +42,12 @@ export class PhysicianOrdersComponent implements OnInit {
       DateRange: [[], [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
       filterDeleted: ['', [Validators.required]],
-      selectStatus: ['', [Validators.required]], 
+      selectStatus: ['Released', [Validators.required]], 
     });
+
+    if (this.emergencyService.PhysicianOrders) {
+      this.onSetDateFilterEvent.next(this.formDetailGroup);
+    }
   }
 
   allOrderRemoveDateFilter() {
