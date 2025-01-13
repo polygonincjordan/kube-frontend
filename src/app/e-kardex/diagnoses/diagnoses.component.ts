@@ -230,9 +230,10 @@ export class DiagnosesComponent implements OnInit {
   }
 
   getnewReleasedPdf(item, template: TemplateRef<any>) {
-    this.releaseDocumentImage = ''
+    this.releaseDocumentImage = '';    
+    let dockey = item.Dockey ? item.Dockey : item.DocKey
       this.admissionService
-        .getPatientProfilePDF(item.Dockey)
+        .getPatientProfilePDF(dockey)
         .subscribe((_success: any) => {
           if(item.AttMimeType == 'PDF') {
             this.pdfUrlConvertToBlob(_success.d.AttachmentData);
@@ -857,7 +858,7 @@ export class DiagnosesComponent implements OnInit {
     if(paitentData?.Dtid == 'ZMED_PHASM') {
       this.admissionService.selectedCurrentDocDetails = paitentData;
 
-      if (paitentData.DokstText == 'Released') {
+      if (paitentData.DokstText == 'Released' || paitentData.Released) {
         this.InOutPatientViewValue = {
          showBoth: true,
          showIn: false,
@@ -1051,7 +1052,7 @@ export class DiagnosesComponent implements OnInit {
   getReleasedPdf(item,  template?: TemplateRef<any>,){
     console.log(item, "item")
     let dockey = item.Dockey ? item.Dockey : item.DocKey
-    this.admissionService.getSoapPDF(item.Dockey)
+    this.admissionService.getSoapPDF(dockey)
     .subscribe((_success:any)=>{
      this.soapPdf = _success?.d;
      if(template) {
