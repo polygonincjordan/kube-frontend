@@ -50,6 +50,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   labItemsArr = [];
   servicesItemsArr = [];
   //phy order
+  public physicianOrderListClone: any[];
   navTabBoxActiveValue: string = '02';
   graphChartCountType: string = '1';
   reloadPhyOrderList: boolean = false;
@@ -980,6 +981,15 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       )
       .subscribe((data: any[]) => {
         this.physicianOrderList = data;
+        this.physicianOrderListClone = data;
+        if(formFilter.value.selectStatus) {
+          this.physicianOrderList = this.physicianOrderListClone.filter((res) =>{
+            
+            if(res.StatusText == formFilter.value.selectStatus) {
+              return res;
+            }
+          })
+        }
       });
   }
 

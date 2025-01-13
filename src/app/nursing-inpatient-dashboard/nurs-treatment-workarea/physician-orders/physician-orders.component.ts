@@ -18,7 +18,14 @@ export class PhysicianOrdersComponent implements OnInit {
   @Output() onSearchChangEventForProgressNotes = new EventEmitter();
 
   formDetailGroup: FormGroup;
-
+  physicianOrderStatus = [
+    {
+      label : 'Released',
+    },
+    {
+      label : 'Executed',
+    },
+  ]
   constructor(
     public ePrescriptionService: EPrescriptionService,
     public emergencyService: EmergencyService,
@@ -35,11 +42,13 @@ export class PhysicianOrdersComponent implements OnInit {
       DateRange: [[], [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
       filterDeleted: ['', [Validators.required]],
+      selectStatus: ['', [Validators.required]], 
     });
   }
 
   allOrderRemoveDateFilter() {
     this.formDetailGroup.controls.DateRange.setValue([]);
+    this.formDetailGroup.controls.selectStatus.setValue([]);
     this.onDateChange();
   }
 

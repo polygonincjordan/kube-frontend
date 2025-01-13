@@ -67,6 +67,11 @@
             >
           </ng-select>
         </div>
+        <div class="select-functionality ml-3" style="min-width: 200px">
+          <ng-select [searchable]="true" (ngModelChange)="onDateChange()" formControlName="selectStatus" placeholder="Status">
+            <ng-option *ngFor="let data of physicianOrderStatus" [value]="data.label">{{ data.label }}</ng-option>
+          </ng-select>
+        </div>
         <div class="d-flex ml-3" *ngIf="this.emergencyService.ProgressNotes">
           <input class="w-20" type="checkbox" value="" (change)="showDeletedProgress($event)" formControlName="filterDeleted" id="flexCheckDefault">
           <label class="ml-2 form-check-label" for="flexCheckDefault">
