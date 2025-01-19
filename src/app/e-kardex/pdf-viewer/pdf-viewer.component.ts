@@ -62,7 +62,7 @@ export class PdfViewerComponent implements OnInit {
           return obj.FileId === '';
         }) != null
       )
-      if(this.inPatientVisitData.DOCCATTOATTACHMENTS?.results.find((obj) => {
+     { if(this.inPatientVisitData.DOCCATTOATTACHMENTS?.results.find((obj) => {
         return obj.AttMimeType === 'PDF';
       }) != null){
         return this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -80,6 +80,23 @@ export class PdfViewerComponent implements OnInit {
             }).AttachmentData
           }`
         );
+      }
+    }
+    else if(this.inPatientVisitData.DOCCATTOATTACHMENTS?.results.length > 0){           
+          console.log('Attachment with FileID', this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results);
+          if(this.inPatientVisitData.DOCCATTOATTACHMENTS?.results[0].AttMimeType === 'PDF'){
+          return this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:application/pdf;base64, ${
+              this.inPatientVisitData.DOCCATTOATTACHMENTS.results[0].AttachmentData
+            }`
+          );
+        }else{
+          return this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:application/image;base64, ${
+              this.inPatientVisitData.DOCCATTOATTACHMENTS.results[0].AttachmentData
+            }`
+          );
+        }
       }
     }
     if (this.patientVisitDataSet && this.patientVisitDataSet.VISITTOATTACHMENTS) {
@@ -119,6 +136,7 @@ export class PdfViewerComponent implements OnInit {
           return obj.FileID === '';
         }) != null
       )
+      {
       if( this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results.find((obj) => {
         return obj.AttMimeType === 'PDF';
       }) != null){
@@ -138,6 +156,23 @@ export class PdfViewerComponent implements OnInit {
           }`
         );
       }
+    }    
+    else if(this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results.length > 0){ 
+     console.log('Attachment with FileID', this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results);
+      if(this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results[0].AttMimeType === 'PDF'){
+      return this.sanitizer.bypassSecurityTrustResourceUrl(
+        `data:application/pdf;base64, ${
+          this.patientVisitDataSet.DOCCATTOATTACHMENTS.results[0].AttachmentData
+        }`
+      );
+    }else{
+      return this.sanitizer.bypassSecurityTrustResourceUrl(
+        `data:application/image;base64, ${
+          this.patientVisitDataSet.DOCCATTOATTACHMENTS.results[0].AttachmentData
+        }`
+      );
+    }
+  }
     }
     if(this.isInPatientSoap){
       this.inOutData = this.inPatientSoapData;

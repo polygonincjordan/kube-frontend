@@ -848,7 +848,6 @@ export class DiagnosesComponent implements OnInit {
   modelFormOpenInPatient(paitentData,oldversion?: boolean,template?: TemplateRef<any>) {
     this.oldversion = oldversion;
     this.closeAllForm();
-    debugger
     this.soapPdf={};
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.inPatientVisitData = {} as InPatientDataResult;
