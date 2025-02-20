@@ -27,6 +27,7 @@ import { formatDate } from 'ngx-bootstrap/chronos';
 import { environment } from 'src/environments/environment';
 import { ProgressNotePopupComponent } from './progress-note-popup/progress-note-popup.component';
 import { SessionStorageService } from '@services/session-storage.service';
+import { SharedService } from '@services/shared.service';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -42,6 +43,8 @@ export class CheckInComponent implements OnInit {
   @ViewChild('progressNotesKardexId') progressNotesKardex: ProgressNotePopupComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+  changeStatusForm: FormGroup;
+
   isFormValidError: boolean = false;
   searchString: string = '';
   ERlistData: any[];
@@ -92,6 +95,29 @@ export class CheckInComponent implements OnInit {
   activelabLabelData:any
   pdfData: any;
   printUrl: any;
+
+  dischargeTypeList = [
+    {
+      label: 'AMA',
+      value: 'AM'
+    },
+    {
+      label: 'Deceased',
+      value: 'EX'
+    },
+    {
+      label: 'Dis.to Ext.Hosp',
+      value: 'DE'
+    },
+    {
+      label: 'Left w/o treat',
+      value: 'LW'
+    },
+    {
+      label: 'Reg. Discharge',
+      value: 'RD'
+    },
+  ]
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -99,7 +125,8 @@ export class CheckInComponent implements OnInit {
     private storageService: StorageService,
     private patientService: PatientService,
     private _route: ActivatedRoute,
-    private sessionStorage:SessionStorageService
+    private sessionStorage:SessionStorageService,
+    private sharedService: SharedService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -349,7 +376,112 @@ export class CheckInComponent implements OnInit {
   
     this.saveRiskList();
   }
+
+  admissionStatusModel: any;
+  public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
+    this.admissionStatusModel = data;
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md add-habit-size',
+      initialState: {
+        admissionStatusModel: this.admissionStatusModel // Pass data into the modal
+      }
+    };
+    this.modalRefForRisk = this.modalService.show(template, config);
+    this.changeStatusForm = this.formBuilder.group({
+      Einri: [this.admissionStatusModel?.Einri],
+      Falnr: [this.admissionStatusModel?.Falnr],
+      Lfdnr: [this.admissionStatusModel?.Lfdnr],
+      AdmStatusCode: [''],
+      Bwidt: [new Date()],
+      Bwizt: [''],
+      Kztxt: [''],
+      Bwart: [''],
+      Pernr: [this.admissionStatusModel?.PernrName],
+    });
+
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+        this.admissionStatusModel = [];
+      }
+    });
+  }
   
+  getStatusValue() {
+    let currentStatus = this.admissionStatusModel.AdmissionStatus;
+    if (currentStatus === 'Planned Arrival') {
+      return 'Actual Arrival';
+    } else if (currentStatus === 'Actual Arrival') {
+      return 'Planned Discharge';
+    } else if (currentStatus === 'Planned Discharge') {
+      return 'Actual Discharge';
+    } else {
+      return '';
+    }
+  }
+
+  changeStatus(visitStat: string) {
+    let visitStatCode: number;
+    
+    switch (visitStat.toLowerCase()) {
+        case 'planned arrival':
+            visitStatCode = 97;
+            break;
+        case 'actual arrival':
+            visitStatCode = 98;
+            break;
+        case 'planned discharge':
+            visitStatCode = 99;
+            break;
+        case 'actual discharge':
+            visitStatCode = 96;
+            break;
+        default:
+            visitStatCode = null; // Handle undefined cases
+    }
+     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    const json = {
+      Einri: this.admissionStatusModel.Einri,
+      Falnr: this.admissionStatusModel.Falnr,
+      Lfdnr: this.admissionStatusModel.Lfdnr,
+      AdmStatusCode: visitStatCode.toString(),
+      Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
+      Bwizt: createTime,
+      Kztxt: this.changeStatusForm.value.Kztxt,
+      Bwart: this.changeStatusForm.value.Bwart,
+      Pernr: this.admissionStatusModel.BehArzt,
+    };
+
+    if(!json?.Bwart) {
+      delete json.Bwart
+    }
+
+    this.emergencyService.changeAdmissionStatus(json).subscribe({
+      next: (_success: any) => {
+        this.getErList()
+        this.modalService.hide();
+      },
+      error: (err: any) => {
+        if(!this.changeStatusForm.get('Bwizt')?.value){
+          this.sharedService.errorSwallModel('Error:Please Enter the Time').then((result) => { })
+        }else{
+
+          this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+        }
+      }
+    });
+
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
+  }
+
   saveRiskList() {
     if (this.riskJson[0]['Mode'] !== 'D') {
       if (this.updateRiskForm.controls.Rsfna.value == '') {

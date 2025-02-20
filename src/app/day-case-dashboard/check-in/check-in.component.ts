@@ -1672,4 +1672,90 @@ export class CheckInComponent implements OnInit {
       return `\/Date(${date.getTime()})\/`;
     }
   }
+
+  pdfData: any;
+  modalRefForLab: BsModalRef;
+  printUrl: any;
+  activelabLabelData: any;
+
+  public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    this.getPrintUrl();
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLab = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLab.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+
+  getPrintUrl() {
+    this.emergencyService.getPrintLabel().subscribe((res: any) => {
+      this.printUrl = res.d.results[0].Url
+    })
+  }
+
+  closeLabModal() {
+    this.modalRefForLab?.hide();
+  }
+
+  printLabel(template: TemplateRef<any>) {
+    console.log(this.activelabLabelData, "activelabLabelData")
+    if (this.activelabLabelData) {
+      this.emergencyService
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .subscribe(
+          (res: any) => {
+            if (res?.d?.DataRaw) {
+              this.pdfData = res.d.DataRaw;
+              this.opendocumentPdf(template);
+              this.closeLabModal()
+            } else {
+              this.showError('No PDF data available.');
+            }
+          },
+          (_error: any) => {
+            this.showError('Something went wrong while fetching the label.');
+          }
+        );
+    }
+  }
+
+  opendocumentPdf(template: TemplateRef<any>) {
+    try {
+      const byteArray = new Uint8Array(
+        atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
+      );
+      const file = new Blob([byteArray], { type: 'application/pdf' });
+      this.pdfUrl = URL.createObjectURL(file);
+      this.pdfFormOpen(); // Open the modal
+    } catch (error) {
+      this.showError('Error processing the PDF data.');
+    }
+  }
+
+  // pdfFormOpen() {
+  //   const config: ModalOptions = {
+  //     class: 'modal-dialog-centered modal-xl pdfmodal-size',
+  //   };
+  //   this.selectedIconPdf = this.modalService.show(this.selectIconPdf, config);
+  // }
+
+  showError(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+    this.closeLabModal(); // Ensure modal cleanup
+  }
+
+  closePdfModal() {
+    // this.OpenPdfModal.hide();
+    this.closeLabModal()
+  }
 }

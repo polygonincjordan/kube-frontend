@@ -1,0 +1,58 @@
+<div class="nursing-admission-main">
+
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Scales</label>
+            <div class="container-fluid">
+                <div class="row create-form-inputs">
+                    <div class="scale-box">
+                        <div class="scale-box-checkbox">
+                            <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
+                                [ngModelOptions]="{ standalone: true }" />
+                            <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
+                        </div>
+                        <div class="scale-box-table">
+                            <table class="table table-bordered past-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Measured Value</th>
+                                        <th scope="col">Normal Range</th>
+                                        <th scope="col">Date/Time</th>
+                                        <th scope="col" colspan="3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of scalesList; let i = index">
+                                        <td>{{ item.ScaleType }}</td>
+                                        <td>{{ item.LastScore }}</td>
+                                        <td>{{ item.ScoreDesc }}</td>
+                                        <td>{{ item.Datetimee }}</td>
+                                        <td>
+                                            <a (click)="openScaleModel(item)">Create</a>
+                                        </td>
+                                        <td>
+                                            <a (click)="viewGlosgowModel(item)">View</a>
+                                        </td>
+                                        <td>
+                                            <img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer ml-1"
+                                                (click)="removeScale(i)" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <app-physical-assessment-document-section [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-document-section>
+    </div>
+</div>
+
+<app-braden-assessment-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-assessment-scale>
+<app-morse-fall-assessment-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-assessment-scale>
+<app-glos-gow-comma-assessment-scale-popup #scalesGlosgow (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-assessment-scale-popup>

@@ -24,7 +24,7 @@ import { EEmrService } from '@services/e-emr.service';
 import { SharedService } from '@services/shared.service';
 import { DataShareService } from '@services/data-share.service';
 import { FilterType } from '@services/interfaces/common.enum';
-import {environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { HelperService } from '@services/helper.service';
 
@@ -40,6 +40,9 @@ export class CheckInComponent implements OnInit, OnDestroy {
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+
+  @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
+
   isFormValidError: boolean = false;
   searchString: string = '';
   ERlistData: any[];
@@ -54,6 +57,8 @@ export class CheckInComponent implements OnInit, OnDestroy {
   statusValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
+  selectedIconPdf: BsModalRef;
+  OpenPdfModal: BsModalRef;
   selectedERList: any;
   isRiskUpdate: boolean;
   riskList: any[];
@@ -78,7 +83,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
   visitComments: any;
   todayDate = [new Date(), new Date()];
   private refreshSubscription: Subscription;
-  refreshInterval:any;
+  refreshInterval: any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -90,7 +95,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
     private dataShareService: DataShareService,
     private _dataServices: EEmrService,
     private sharedService: SharedService,
-    public helperService:HelperService
+    public helperService: HelperService
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -157,7 +162,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
     }).catch((error: any) => {
       console.error('Error scale:', error);
     });
-    
+
     // this.refreshInterval = setInterval(() => {
     //   this.getErList(this.todayDate);
     // },environment.refreshTime);
@@ -647,7 +652,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
       if (storedUser.length > 1) {
         link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser) ? this.getSpecialityCodes(storedUser) : null}&AttendPhy=${this.getAttendPhy(storedUser) ? this.getAttendPhy(storedUser) : null}`
       } else {
-        link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)[0] ? this.getSpecialityCodes(storedUser)[0]  : null}&AttendPhy=${this.getAttendPhy(storedUser)[0] ? this.getAttendPhy(storedUser)[0] : null}`
+        link = `e-prescription/ExceptCheckedOut?einri=${1000}&Erdat=${this.parseDate(date[0])}&datetime=${this.parseDate(date[1])}&Clinic=${this.getSpecialityCodes(storedUser)[0] ? this.getSpecialityCodes(storedUser)[0] : null}&AttendPhy=${this.getAttendPhy(storedUser)[0] ? this.getAttendPhy(storedUser)[0] : null}`
       }
       if (date != undefined) {
         this.ePrescriptionService.loadData(link, false, false, false, false).subscribe({
@@ -1154,4 +1159,92 @@ export class CheckInComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  pdfData: any;
+  modalRefForLab: BsModalRef;
+  printUrl: any;
+  pdfUrl: any;
+  activelabLabelData: any;
+
+  public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    this.getPrintUrl();
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLab = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLab.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+
+  getPrintUrl() {
+    this.emergencyService.getPrintLabel().subscribe((res: any) => {
+      this.printUrl = res.d.results[0].Url
+    })
+  }
+
+  closeLabModal() {
+    this.modalRefForLab?.hide();
+  }
+
+  printLabel(template: TemplateRef<any>) {
+    console.log(this.activelabLabelData, "activelabLabelData")
+    if (this.activelabLabelData) {
+      this.emergencyService
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .subscribe(
+          (res: any) => {
+            if (res?.d?.DataRaw) {
+              this.pdfData = res.d.DataRaw;
+              this.opendocumentPdf(template);
+              this.closeLabModal()
+            } else {
+              this.showError('No PDF data available.');
+            }
+          },
+          (_error: any) => {
+            this.showError('Something went wrong while fetching the label.');
+          }
+        );
+    }
+  }
+
+  opendocumentPdf(template: TemplateRef<any>) {
+    try {
+      const byteArray = new Uint8Array(
+        atob(this.pdfData).split('').map((char) => char.charCodeAt(0))
+      );
+      const file = new Blob([byteArray], { type: 'application/pdf' });
+      this.pdfUrl = URL.createObjectURL(file);
+      this.pdfFormOpen(); // Open the modal
+    } catch (error) {
+      this.showError('Error processing the PDF data.');
+    }
+  }
+
+  pdfFormOpen() {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    this.selectedIconPdf = this.modalService.show(this.selectIconPdf, config);
+  }
+
+  showError(message: string) {
+    Swal.fire({
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+    this.closeLabModal(); // Ensure modal cleanup
+  }
+
+  closePdfModal() {
+    this.OpenPdfModal.hide();
+    this.closeLabModal()
+  }
+
 }

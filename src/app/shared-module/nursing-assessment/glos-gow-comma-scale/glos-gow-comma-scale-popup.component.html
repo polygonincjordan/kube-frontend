@@ -1,0 +1,95 @@
+<ng-template #scalesGlosgowModal>
+  <div>
+    <div class="allergy-header">
+      <div class="allergy-header-title">
+        <span>Glasgow coma scale</span>
+      </div>
+      <div class="allergy-header-details">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon">
+            <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer"
+              (click)="closeGlosgowModel()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="main-glosgow">
+    <div class="radio-section">
+      <div class="row m-0">
+        <div class="col-md-4">
+          <h4>Eyes Opening Response (E)</h4>
+          <div class="radio-button-label" *ngFor="let option of eyeOpeningOptions">
+            <input type="radio" name="eyeOpeningResponse" (change)="calculate()" [value]="option.value" [(ngModel)]="eyeOpeningResponse"> {{option.label}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4>Moter Response (M)</h4>
+           <div class="radio-button-label" *ngFor="let option of motorOptions">
+            <input type="radio" (change)="calculate()" name="motorResponse" [value]="option.value" [(ngModel)]="motorResponse"> {{option.label}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4>Verbal Response (V)</h4>
+          <div class="radio-button-label" *ngFor="let option of verbalOptions">
+            <input type="radio" name="verbalResponse" (change)="calculate()" [value]="option.value" [(ngModel)]="verbalResponse"> {{option.label}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scale-result">
+      <h4 class="mb-4">Scale Result</h4>
+      <div class="row m-0">
+        <div class="col-md-3">
+          <div class="mb-2 row m-0 align-items-center">
+            <div class="col-md-6 p-0">
+              <label>Eye Score (E)</label>
+            </div>
+            <div class="col-md-6">
+              <input placeholder="C" class="form-control" [value]="eyeOpeningScore" disabled />
+            </div>
+          </div>
+          <div class="mb-2 row m-0 align-items-center">
+            <div class="col-md-6 p-0">
+              <label>Total Score</label>
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" [value]="totalProjectScore" disabled />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="mb-2 row m-0 align-items-center justify-content-end">
+            <div class="col-md-5 p-0">
+              <label>Moter Score (M)</label>
+            </div>
+            <div class="col-md-5 pr-0">
+              <input placeholder="C" class="form-control" [value]="moterScore" disabled />
+            </div>
+          </div>
+          <div class="mb-2 d-flex justify-content-between">
+            <input [value]="totalScoreDescription" class="form-control" disabled />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="mb-2 row m-0 align-items-center justify-content-end">
+            <div class="col-md-5 p-0">
+              <label>Verbal Score (V)</label>
+            </div>
+            <div class="col-md-5">
+              <input placeholder="T" class="form-control" [value]="verbalScore" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comment-input d-flex mt-4 align-items-center">
+        <label>Comments</label>
+        <textarea class="form-control" [(ngModel)]="comments" [disabled]="dockeyValue"></textarea>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4" style="text-align: end" *ngIf="!dockeyValue">
+      <button class="triage-model-btn" (click)="closeGlosgowModel()">Cancel</button>
+      <button class="triage-model-btn" (click)="createGlosgowData()">Save</button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,33 @@
+@import url("../nursing-assessment.component.scss");
+input[type="checkbox"] {
+  margin-right: 10px;
+  width: 15px !important;
+  height: 15px !important;
+  position: relative;
+  top: 3px;
+}
+input[type="radio"] {
+  margin-right: 10px;
+  width: 15px !important;
+  height: 15px !important;
+  position: relative;
+  top: 3px;
+}
+// input[type="text"] {
+//   height: 30px !important;
+// }
+
+.tab-ui::-webkit-scrollbar {
+  height: 0 !important;
+}
+
+.tab-ui {
+  overflow: auto;
+  white-space: nowrap;
+}
+.top-0 {
+  top: 0 !important;
+}
+.form-control:focus {
+  box-shadow: none !important;
+}
