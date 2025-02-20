@@ -134,6 +134,7 @@ import { PediatricEarlyWarningComponent } from './nurs-treatment-workarea/patien
 import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/nurse-endorsement/nurse-endorsement.component';
 import { NumericRatingScaleComponent } from './nurs-treatment-workarea/patient-documentation/numeric-rating-scale/numeric-rating-scale.component';
 import { FacePainScaleComponent } from './nurs-treatment-workarea/patient-documentation/face-pain-scale/face-pain-scale.component';
+import { NursingAssessmentModule } from '../shared-module/nursing-assessment/nursing-assessment.module';
 
 const route: Routes = [
   {
@@ -281,6 +282,7 @@ const route: Routes = [
     NursingCarePlanDocumentModule,
     NursingDischargeSummaryModule,
     NursingAdmissionAssessmentModule,
+    NursingAssessmentModule,
     VitalSignModule
   ],
 })

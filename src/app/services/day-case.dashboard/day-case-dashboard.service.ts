@@ -125,4 +125,31 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+
+  
+  nursingAssessmentLatestDoc(json: any) {
+    const url = `${this.url}nursingAssessmentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  getNursingAssessmentDocData(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetchNursingDocumentDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  deleteNursingAssessmentDoc(dockey: any) {
+    const url = `${this.url}deleteNursingAssessmentDoc?Dockey=${dockey}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
+
+  saveNursingAssessmentDoc(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveNursingAssessment`, payload, {
+      withCredentials: true,
+    });
+  }
 }

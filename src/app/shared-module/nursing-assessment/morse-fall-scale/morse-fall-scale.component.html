@@ -1,0 +1,210 @@
+<ng-template #morseFallScaleModal>
+  <div class="allergy-header">
+    <div class="allergy-header-title">
+      <span>Morse Fall Scale</span>
+    </div>
+    <div class="allergy-header-details">
+      <ul class="allergy-header-ul d-flex">
+        <li class="close-icon">
+          <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer" (click)="closeMorseFallScale()" />
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="haemodialysis-main">
+    <form [formGroup]="MorsefallForm">
+        <div class="haemodialysis-info">
+            <div class="container-fluid" style="padding: 0px;">
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
+                    <label for="" class="title-text m-0">Scale Information</label>
+                    <div class=" my-3">
+                       <div class="d-flex align-items-center">
+                            <div class="col-6 px-0 mb-2">
+                                <div class="row align-items-center w-100 custom-input">
+                                    <label for="" class="text-nowrap m-0 col-2">Scale Name</label>
+                                    <input type="text" class="col-6" value="Morse Fall Scale (MFS)" style="width: 100%;"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="col-6 px-0 ">
+                                <div class="row align-items-center w-100 custom-input">
+                                    <label for="" class="text-nowrap m-0 col-2">Realized by</label>
+                                    <input type="text" class="col-2" formControlName="AttendPhy" readonly>
+                                    <input type="text" class="col-4" [value]="realizedDescription" disabled>
+                                </div>
+                            </div>
+                       </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-2">Date</label>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
+                                    [bsValue]="CurrentDateAndTime" disabled>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"
+                                    [bsValue]="CurrentDateAndTime" disabled>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-5">
+                    <label for="" class="title-text m-0">Morse Fall scale (MFS)</label>
+                    <div class="haemodialysis-content my-3">
+                        <div class="d-flex align-items-end my-3 risk-input-wrap">
+                            <div class="row score-input">
+                                <label for="" class="common-label mb-4 col-5 pr-0">Risk Factor</label>
+                                <label for="" class="common-label m-0 col-5 px-0">Answer</label>
+                            </div>
+                        </div>
+                        <div class="d-flex my-3 risk-wrap">
+                            <label for="" class="common-label m-0">History of falls</label>
+                            <div class="d-flex align-items-center custom-input mr-5 ">
+                                <div class="d-flex align-items-center ">
+                                    <input type="radio" value="A" name="HistoryFalls" formControlName="HistoryFalls" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Unanswered</label>
+                                </div>
+                                <div class="d-flex align-items-center ">
+                                    <input type="radio" value="1" name="HistoryFalls" formControlName="HistoryFalls" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Yes</label>
+                                </div>
+                                <div class="d-flex align-items-center ">
+                                    <input type="radio" value="0" name="HistoryFalls" formControlName="HistoryFalls" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex my-3 risk-wrap">
+                            <label for="" class="common-label m-0">Secondary diagnosis</label>
+                            <div class="custom-input d-flex mr-5">
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="A" name="SecondaryDiagnosis"
+                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Unanswered</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="1" name="SecondaryDiagnosis"
+                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Yes</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="0" name="SecondaryDiagnosis"
+                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex my-3 risk-wrap">
+                            <label for="" class="common-label m-0">Ambulatory aid</label>
+                            <div class="custom-input d-flex mr-5">
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="A" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Unanswered</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="F" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Furniture</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="C" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Crutches / Cane / Walker</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="N" name="AmbulatoryAid" formControlName="AmbulatoryAid" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">None / Bed rest / Immobile</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex my-3 risk-wrap">
+                            <label for="" class="common-label m-0">IV Access</label>
+                            <div class="custom-input d-flex mr-5">
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="A" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Unanswered</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="1" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Yes</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="0" name="IvAccess" formControlName="IvAccess" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex my-3 risk-wrap">
+                            <label for="" class="common-label m-0">Gait</label>
+                            <div class="d-flex custom-input mr-5">
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="A" name="Gait" formControlName="Gait" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Unanswered</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="I" name="Gait" formControlName="Gait" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Impaired</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="W" name="Gait" formControlName="Gait" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Weak</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="N" name="Gait" formControlName="Gait" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Normal / Bed rest / Immobile</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex mt-3 risk-wrap">
+                            <label for="" class="common-label m-0">Mental status</label>
+                            <div class="custom-input d-flex mr-5">
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="A" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Unanswered</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="F" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Forgets imitations</label>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" value="O" name="MentalStatus" formControlName="MentalStatus" (change)="calculateTotal()">
+                                    <label for="" class="mx-3">Oriented to own ability</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-5">
+                    <label for="" class="title-text m-0">Scale Result</label>
+                    <div class=" my-3">
+                        <div class="col-6 px-0">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-2">Total score</label>
+                                <input type="text" class="col-2" [value]="totalScore" readonly>
+                                <input type="text" class="col-7" [value]="description" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-4">
+                    <div class=" my-0">
+                        <div class="col-8 px-0">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-1 morse-label-comments">Comments</label>
+                                <input type="text" class="col-10" style="width: 100%;"
+                                    formControlName="Comments">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+  </div>
+  <div class="col-md-12 pt-4 mb-3" style="text-align: end; border-top: 1px solid #cacaca;" *ngIf="!dockeyValue">
+    <button class="triage-model-btn" (click)="closeMorseFallScale()">
+      Cancel
+    </button>
+    <button class="triage-model-btn" (click)="createMorseFallScale()">
+      Save
+    </button>
+  </div>
+</ng-template>

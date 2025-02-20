@@ -215,6 +215,13 @@
           routerLink="/day-case-dashboard" (click)="askQuestion('/day-case-dashboard')"><h4 class="ml-3
             font-weight-bold ha-color">Day Case Dashboard</h4></a>
       </div>
+      <div class="d-flex my-4">
+        <img src="assets/img/braillesixdots.png" alt="" height="15"
+          class="mt-1">
+        <a class="mb-0" placement="right" routerLinkActive="active" target="_blank"
+          routerLink="/nursing-inpatient-dashboard" (click)="askQuestion('/nursing-inpatient-dashboard')"><h4 class="ml-3
+            font-weight-bold ha-color">Nursing Inpatient Dashboard</h4></a>
+      </div>
     </div>
     <hr class="ha-bordercol" *ngIf="outpatientlistdata">
     <div class="ml-4" *ngIf="widgetsSet && widgetsSet.length &&

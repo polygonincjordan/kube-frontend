@@ -34,6 +34,7 @@ import { PediatricEarlyWarningComponent } from './pediatric-early-warning/pediat
 import { NurseEndorsementComponent } from './nurse-endorsement/nurse-endorsement.component';
 import { NumericRatingScaleComponent } from './numeric-rating-scale/numeric-rating-scale.component';
 import { FacePainScaleComponent } from './face-pain-scale/face-pain-scale.component';
+import { NursingAssessmentComponent } from 'src/app/shared-module/nursing-assessment/nursing-assessment.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -50,6 +51,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
+  @ViewChild(NursingAssessmentComponent) NursingAssessmentComp: NursingAssessmentComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
   @ViewChild(GlasgowComaScaleComponent) GlasgowComaScaleComp: GlasgowComaScaleComponent;
   @ViewChild(PainAssessmentNurEmrComponent) PainAssessmentComp: PainAssessmentNurEmrComponent;
@@ -150,6 +152,7 @@ export class PatientDocumentationComponent implements OnInit {
   openMedReport: boolean = false;
   openEducationAssessment: boolean = false;
   openNurseAdmission: boolean = false;
+  openNurseAssissment: boolean = false;
   openNurseEndorsement: boolean = false;
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
@@ -254,6 +257,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSurgicalPass()
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
+    this.getNursingAssessmentDocDetails();
     this.getNursingDischargeDocDeatils();
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
@@ -373,6 +377,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService.getNursingCarePlanLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestNurCarePlanList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Nursing Plan Care Document Latest
+  getNursingAssessmentDocDetails() {
+    this.dayCaseDashboardService.nursingAssessmentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestNurAssessment = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -1071,6 +1088,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openDischargeSummery = false;
     this.openNurseAdmission = false;
     this.isNursingAdmission = false;
+    this.isNursingAssessment = false;
+    this.openNurseAssissment = false;
 
     this.openPhyAssess = false;
     this.openMedReport = false;
@@ -1102,6 +1121,9 @@ export class PatientDocumentationComponent implements OnInit {
 
     if (this.openBradenScale) {
       this.BradenScaleComp?.ngOnDestroy();
+    }
+    if (this.openNurseAssissment) {
+      this.NursingAssessmentComp?.ngOnDestroy();
     }
     if (this.openEducationAssessment) {
       this.educationAssessmentComp?.ngOnDestroy();
@@ -1150,6 +1172,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingPlanCareDocDetails();
     this.getNursingDischargeDocDeatils();
     this.getNursingAdmissionLatestDoc()
+    this.getNursingAssessmentDocDetails();
+
     this.LatestMFSSet();
   }
 
@@ -1525,6 +1549,8 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
+
+    
     // Glasgow Coma Scale...
     else if (this.glasgowcomascale) {
       if (action == 'create') {
@@ -1744,6 +1770,57 @@ export class PatientDocumentationComponent implements OnInit {
         this.createAndRelease();
       }
     }
+
+    else if (this.isNursingAssessment) {
+      if (action == 'create') {
+        this.openNurseAssissment = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNurseAssissment = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          // this.deleteNursingAssessmentDoc(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseNursingAssessmentDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNurseAssissment = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNurseAssissment = true;
+        this.NursingAssessmentComp.createNursingAssessmentDoc('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Nursing assessment document:', error);
+        });
+      }
+
+    }
   }
   private subscription: Subscription;
   directReleasePainAss() {
@@ -1844,6 +1921,34 @@ export class PatientDocumentationComponent implements OnInit {
             },
             complete: () => {
               this.sharedService.successSwallModel('Nursing admission document released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+  directReleaseNursingAssessmentDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .getNursingAssessmentDocData(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveNursingAssessmentDoc({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Nursing assessment document released successfully');
               this.refresh();
             }
           });
@@ -2153,6 +2258,19 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error creating Face pain scale:', error);
         });
+      }
+
+      // Nursing Admission Assessment Create API
+      if (this.openNurseAssissment) {
+        let docStatus = '1';
+        this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating nursing assessment:', error);
+        })
       }
     }
     else if (this.actionType == 'edit') {
@@ -2473,6 +2591,15 @@ export class PatientDocumentationComponent implements OnInit {
       }).catch((error: any) => {
         console.error('Error scale:', error);
         console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openNurseAssissment) {
+      this.NursingAssessmentComp.createNursingAssessmentDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Nursing assessment:', error);
       });
     } else if (this.openPainAssement) {
       this.PainAssessmentComp.savePainAssessmentDoc('2').then((formValue: any) => {
@@ -3059,6 +3186,41 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  async deleteNursingAssessmentDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteNursingAssessmentDoc(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
   async updateEducationAss(type) {
     // (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
     //   Swal.fire({
@@ -3174,6 +3336,18 @@ export class PatientDocumentationComponent implements OnInit {
     }).catch((error: any) => {
       console.error('Error scale:', error);
       console.error('Error creating Nursing admission document:', error);
+    });
+  }
+
+  // Copy + Release Nursing Assessment Document
+  copyDirectReleaseNursingAssessmentDoc() {
+    this.NursingAssessmentComp.createNursingAssessmentDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing assessment document:', error);
     });
   }
 

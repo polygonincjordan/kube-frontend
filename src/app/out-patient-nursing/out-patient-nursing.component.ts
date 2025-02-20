@@ -836,6 +836,7 @@ export class OutPatientNursingComponent implements OnInit {
     this.navigateToTreatmentArea(checkindata);
   }
   navigateToTreatmentArea(checkindata) {
+    debugger
     // changes the route without moving from the current view or
     // triggering a navigation event,
     if (checkindata.Lfdbw) {
