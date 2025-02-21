@@ -35,6 +35,7 @@ import { NurseEndorsementComponent } from './nurse-endorsement/nurse-endorsement
 import { NumericRatingScaleComponent } from './numeric-rating-scale/numeric-rating-scale.component';
 import { FacePainScaleComponent } from './face-pain-scale/face-pain-scale.component';
 import { NursingAssessmentComponent } from 'src/app/shared-module/nursing-assessment/nursing-assessment.component';
+import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -52,6 +53,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(NursingAssessmentComponent) NursingAssessmentComp: NursingAssessmentComponent;
+  @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
   @ViewChild(GlasgowComaScaleComponent) GlasgowComaScaleComp: GlasgowComaScaleComponent;
   @ViewChild(PainAssessmentNurEmrComponent) PainAssessmentComp: PainAssessmentNurEmrComponent;
@@ -158,6 +160,7 @@ export class PatientDocumentationComponent implements OnInit {
   openSurgicsalPassport: boolean = false;
   openNursingCarePlans: boolean = false;
   openDischargeSummery: boolean = false;
+  openPreCardiacCath: boolean = false;
 
   selectedDocData: any;
   selectedDocumentOU: any;
@@ -258,6 +261,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingAssessmentDocDetails();
+    this.getPreCardiecCathDocDetails();
     this.getNursingDischargeDocDeatils();
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
@@ -390,6 +394,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService.nursingAssessmentLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestNurAssessment = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Nursing Plan Care Document Latest
+  getPreCardiecCathDocDetails() {
+    this.dayCaseDashboardService.preCardiacCathLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestPreCardiacCathList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -1090,6 +1107,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNursingAdmission = false;
     this.isNursingAssessment = false;
     this.openNurseAssissment = false;
+    this.openPreCardiacCath = false;
 
     this.openPhyAssess = false;
     this.openMedReport = false;
@@ -1107,6 +1125,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNursingDischarge = false;
     this.openMorseFallScale = false;
     this.isEducationAssement = false;
+    this.isPreCardiacCath = false;
     this.attachments = false;
     this.morsefallScale = false;
     this.openPainAssement = false;
@@ -1173,6 +1192,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingDischargeDocDeatils();
     this.getNursingAdmissionLatestDoc()
     this.getNursingAssessmentDocDetails();
+    this.getPreCardiecCathDocDetails();
 
     this.LatestMFSSet();
   }
@@ -1791,7 +1811,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          // this.deleteNursingAssessmentDoc(this.selectedDocData.Dockey);
+          this.deleteNursingAssessmentDoc(this.selectedDocData.Dockey);
         }
       } else if (action == 'release') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -1817,6 +1837,58 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Nursing assessment document:', error);
+        });
+      }
+
+    }
+
+    // Pre-Cardiac Cath Checklist
+    else if (this.isPreCardiacCath) {
+      if (action == 'create') {
+        this.openPreCardiacCath = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPreCardiacCath = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deletePreCardiacCathDoc(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleasePreCardiecCathDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPreCardiacCath = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPreCardiacCath = true;
+        this.PreCardiacCathComp.createNursingAssessmentDoc('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiec Cath document:', error);
         });
       }
 
@@ -1962,6 +2034,33 @@ export class PatientDocumentationComponent implements OnInit {
       });
   }
 
+  directReleasePreCardiecCathDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcPreCardiacCathDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.savePreCardiacCathDoc({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Pre-Cardiec Cath released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
 
   public openModalForAttachment() {
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
@@ -2272,6 +2371,19 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating nursing assessment:', error);
         })
       }
+
+      // Pre Cardiec Cath Document Create API
+      if (this.openPreCardiacCath) {
+        let docStatus = '1';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
     }
     else if (this.actionType == 'edit') {
       if (this.openGlasgowComaScale) {
@@ -2390,6 +2502,30 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // Pre Cardiec Cath Document Create API
+      if (this.openPreCardiacCath) {
+        let docStatus = '1';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
+
+      if (this.openNurseAssissment) {
+        let docStatus = '1';
+        this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Nursing assessment document:', error);
+        })
+      }
     }
     else if (this.actionType == 'copy') {
       if (this.openGlasgowComaScale) {
@@ -2506,6 +2642,31 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+      
+      if (this.openNurseAssissment) {
+        let docStatus = '3';
+        this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Nursing assessment document:', error);
+        })
+      }
+
+    // Pre Cardiec Cath Document Create API
+      if (this.openPreCardiacCath) {
+        let docStatus = '3';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
 
       if (this.openMorseFallScale) {
         const formData = {
@@ -2601,6 +2762,15 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Nursing assessment:', error);
       });
+    } else if (this.openPreCardiacCath) {
+      this.PreCardiacCathComp.createNursingAssessmentDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Pre-Cardiac cath:', error);
+      });
     } else if (this.openPainAssement) {
       this.PainAssessmentComp.savePainAssessmentDoc('2').then((formValue: any) => {
         if (formValue) {
@@ -2689,7 +2859,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   getScaleDetails(item, docType?) {
-    if (docType === RedirectionType.TRASM$ || docType === RedirectionType.PEWS$) {
+    if (docType === RedirectionType.TRASM$ || docType === RedirectionType.PEWS$ || docType === RedirectionType.PRECATH$) {
       item.AttMimeType = 'PDF';
     } else {
       item.AttMimeType = 'HTML';
@@ -3221,6 +3391,41 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  async deletePreCardiacCathDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deletePreCardiacCathDoc(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
   async updateEducationAss(type) {
     // (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
     //   Swal.fire({
@@ -3364,6 +3569,19 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  // Copy + Release Nursing Admission Document
+  copyDirectReleasePreCardiac() {
+    // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
+    this.PreCardiacCathComp.createNursingAssessmentDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Pre-Cardiac Cath document:', error);
+    });
+  }
+
   openEducationAssPdf(Dockey) {
     this.pdfUrl = '';
     this.admissionService
@@ -3385,6 +3603,23 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .getSurgicalPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+  openPreCathDocPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .preCardiacCathDocPDF(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);

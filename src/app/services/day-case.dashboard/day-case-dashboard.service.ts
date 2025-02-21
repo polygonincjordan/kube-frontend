@@ -147,6 +147,39 @@ export class DayCaseDashboardService {
     });
   }
 
+  // Pre-Cardiac Cath Checklist
+  savePreCardiacCathDoc(payload: any): Observable<any> {
+    return this.http.post(this.url + `savePreCardiacCathDoc`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  preCardiacCathLatestDoc(json: any) {
+    const url = `${this.url}preCardiacCathLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcPreCardiacCathDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcPreCardiacCathDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  preCardiacCathDocPDF(dockey: string): Observable<any> {
+    return this.http.get(this.url + `preCardiacCathDocPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  deletePreCardiacCathDoc(dockey: any) {
+    const url = `${this.url}deletePreCardiacCathDoc?Dockey=${dockey}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
+
   saveNursingAssessmentDoc(payload: any): Observable<any> {
     return this.http.post(this.url + `saveNursingAssessment`, payload, {
       withCredentials: true,

@@ -135,6 +135,7 @@ import { NurseEndorsementComponent } from './nurs-treatment-workarea/patient-doc
 import { NumericRatingScaleComponent } from './nurs-treatment-workarea/patient-documentation/numeric-rating-scale/numeric-rating-scale.component';
 import { FacePainScaleComponent } from './nurs-treatment-workarea/patient-documentation/face-pain-scale/face-pain-scale.component';
 import { NursingAssessmentModule } from '../shared-module/nursing-assessment/nursing-assessment.module';
+import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 
 const route: Routes = [
   {
@@ -283,7 +284,8 @@ const route: Routes = [
     NursingDischargeSummaryModule,
     NursingAdmissionAssessmentModule,
     NursingAssessmentModule,
-    VitalSignModule
+    VitalSignModule,
+    PreCardiacCathModule
   ],
 })
 export class NursingInpatientDashboardModule {}
