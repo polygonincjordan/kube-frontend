@@ -75,7 +75,8 @@ export enum RedirectionType {
   NAA$='NAA',//Nursing Admission Assessment
   SRGPP$="SRGPP",//Surgical Passport
   NURDS$="NURDS",//Nursing Discharge Summary
-  NCP$="NCP"//, Nursing Care Plan (
+  NCP$="NCP", //, Nursing Care Plan (
+  PRECATH$="NCP"//, Nursing Care Plan (
 }
 
 export enum AssessmentType {
