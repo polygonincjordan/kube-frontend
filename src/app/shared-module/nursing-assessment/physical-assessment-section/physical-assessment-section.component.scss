@@ -31,3 +31,16 @@ input[type="radio"] {
 .form-control:focus {
   box-shadow: none !important;
 }
+
+.date-function {
+  input {
+    font-size: 12px;
+  }
+  img {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 14px;
+  }
+}

@@ -770,6 +770,10 @@ alreadySelected(){
     })
   }
  }
+
+ isDockeyAvailable(): boolean {
+  return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+}
  
   public updateTriageStatus(): void {
 

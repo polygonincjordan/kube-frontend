@@ -1,0 +1,292 @@
+<div class="tab-content pl-2 mb-3" style="border-radius: 7px">
+    <div class="row mt-2">
+        <div class="col-md-4 row m-0">
+            <div class="col-md-4">
+                <label class="m-0">Location</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-8 row m-0">
+            <div class="col-md-2">
+                <label class="m-0">Type of arrest</label>
+            </div>
+            <div class="col-md-2">
+                <ng-select>
+                    <ng-option></ng-option>
+                </ng-select>
+            </div>
+            <div class="col-md-5">
+                <input class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-4 row m-0">
+            <div class="col-md-4">
+                <label class="m-0">Date of arrest</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-8 row m-0">
+            <div class="col-md-2">
+                <label class="m-0">Type of arrest</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-8 row m-0">
+            <div class="col-md-2">
+                <label class="m-0">Code Activated By</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-4 row m-0">
+            <div class="col-md-4">
+                <label class="m-0">Time Code Activated</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-8 row m-0">
+            <div class="col-md-2">
+                <label class="m-0">Request approved by</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12 row m-0">
+            <div class="col-md-1">
+                <label class="m-0">History</label>
+            </div>
+            <div class="col-md-4 d-flex">
+                <div class="d-flex align-items-center mr-3">
+                    <input class="input-radio" type="radio" [value]="'0'" />
+                    <label class="m-0">DM</label>
+                </div>
+                <div class="d-flex align-items-center mr-3">
+                    <input class="input-radio" type="radio" [value]="'1'" />
+                    <label class="m-0">HTN</label>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input class="input-radio" type="radio" [value]="'2'" />
+                    <label class="m-0">CVA</label>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input class="input-radio" type="radio" [value]="'2'" />
+                    <label class="m-0">CA</label>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input class="input-radio" type="radio" [value]="'2'" />
+                    <label class="m-0">HF</label>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input class="input-radio" type="radio" [value]="'2'" />
+                    <label class="m-0">RF</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Arrest</label>
+            </div>
+            <div class="col-md-8">
+                <ng-select>
+                    <ng-option></ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Arrest</label>
+            </div>
+            <div class="col-md-8">
+                <ng-select>
+                    <ng-option></ng-option>
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>IV Line Location</label>
+            </div>
+            <div class="col-md-8">
+                <ng-select>
+                    <ng-option></ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Previously Inserted at</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Newly Inserted at</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3 mb-3 ml-2">
+        <strong>Code Blue Team</strong>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">Respiratory Therapist</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">Anesthesia</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">Compression By</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">IV/IO/Med By</label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">Defibrillator</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">Nursing Suprevisor</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label class="m-0">Team Leader</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 row m-0">
+            <div class="col-md-3">
+                <label>Time of arrival</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="time" />
+            </div>
+        </div>
+    </div>
+</div>

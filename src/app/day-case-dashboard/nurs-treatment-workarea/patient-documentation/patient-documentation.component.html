@@ -392,6 +392,22 @@
                   *ngIf="latestObstetricsList[0]?.StatusTxt == 'Released'" />
               </div>
             </div> -->
+            <!-- Glasgow Coma Scale -->
+              <div
+                [ngClass]="glasgowcomascale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('glasgowcomascale',latestGlasgowComaScaleList[0])">
+                <div class="col-md-4">Glasgow Coma Scale :</div>
+                <div class="col-md-2 status-color">{{latestGlasgowComaScaleList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestGlasgowComaScaleList[0]?.DocTime)}}">
+                  {{getDate(latestGlasgowComaScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestGlasgowComaScaleList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestGlasgowComaScaleList[0],RedirectionType.COMMA$)"
+                    *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
+                </div>
+              </div>
         </div>
         </div> 
       </div>
@@ -443,6 +459,7 @@
     <app-morse-fall-scale *ngIf="openMorseFallScale"></app-morse-fall-scale>
     <app-nursing-admission-assessment *ngIf="openNurseAdmission"></app-nursing-admission-assessment>
     <app-patient-diagnoisi-history #patientDiagnosisHistory (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)" (onAttachmentClose)="onOpenAttachment($event)"></app-patient-diagnoisi-history>
+    <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
 
     <ng-template #releasepdfmodal>
       <div class="modal-body">

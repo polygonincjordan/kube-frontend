@@ -8,7 +8,7 @@
                     <div class="scale-box">
                         <div class="scale-box-checkbox">
                             <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
-                                [ngModelOptions]="{ standalone: true }" />
+                                [ngModelOptions]="{ standalone: true }"  [disabled]="isDockeyAvailable()"/>
                             <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
                         </div>
                         <div class="scale-box-table">
@@ -55,4 +55,6 @@
 
 <app-braden-assessment-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-assessment-scale>
 <app-morse-fall-assessment-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-assessment-scale>
-<app-glos-gow-comma-assessment-scale-popup #scalesGlosgow (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-assessment-scale-popup>
+<app-glos-gow-comma-assessment-scale-popup #scalesGlosgow (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')">
+    
+</app-glos-gow-comma-assessment-scale-popup>

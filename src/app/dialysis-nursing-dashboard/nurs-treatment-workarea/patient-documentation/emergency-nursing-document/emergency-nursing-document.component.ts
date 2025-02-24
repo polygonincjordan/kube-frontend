@@ -453,6 +453,10 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     });
   }
 
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
+
   public saveDrugsWithNoDrugs() {
     let payload = {
       d: {

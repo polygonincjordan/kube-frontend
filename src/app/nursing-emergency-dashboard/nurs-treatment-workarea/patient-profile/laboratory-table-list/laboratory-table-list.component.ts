@@ -293,4 +293,79 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       customClass:'swal-class'
     });
   }
+
+  modalRefForLab: BsModalRef;
+  modalRefForLabCollcetion: BsModalRef;
+  printUrl: any;
+  activelabLabelData: any;
+  sampleOrderDescription: any;
+  public labPrintLabelModal(template: TemplateRef<any>, data: any) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLab = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLab.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+
+  public labSampleCollectedPrintModal(template: TemplateRef<any>, data: any) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-md lab-modal-size',
+    };
+    this.modalRefForLabCollcetion = this.modalService.show(template, config);
+    this.activelabLabelData = data
+    this.modalRefForLabCollcetion.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeLabModal();
+      }
+    });
+  }
+
+  getPrintUrl() {
+    this.emergencyService.getPrintLabel().subscribe((res: any) => {
+      this.printUrl = res.d.results[0].Url
+    })
+  }
+  printLabel() {
+    if (this.activelabLabelData.Vkgid) {
+      this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res: any) => { },
+        (_error: any) => {
+
+        }
+      );
+      this.closeLabModal();
+    }
+  }
+
+  sampleCollectedprint() {
+    if (this.activelabLabelData.Vkgid) {
+      let json = {
+        Vkgid: this.activelabLabelData.Vkgid
+      }
+      this.emergencyService.getLabSampleCollectedPrint(json).subscribe((res: any) => {
+        this.sampleOrderDescription = res.d.Leitx
+        if (res) {
+          Swal.fire({
+            text: 'Status has successfully changed.',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+        }
+
+      },
+        (_error: any) => { }
+      );
+      this.closeLabModal();
+    }
+  }
+
+  closeLabModal() {
+    this.modalRefForLab?.hide();
+    this.modalRefForLabCollcetion?.hide();
+  }
 }

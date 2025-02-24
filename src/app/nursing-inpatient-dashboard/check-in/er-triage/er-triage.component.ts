@@ -631,6 +631,10 @@ export class ErTriageComponent implements OnInit {
     });
   }
 
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
+
   saveTabaccolWithNoSmoke() {
     let payload = {
       d: {

@@ -1,0 +1,23 @@
+<div class="end-container">
+    <div class="sph-box">
+        <div class="container-fluid">
+            <div class="tab-navigation-part">
+                <div class="tab-navigate">
+                    <div class="tab-nav w-100">
+                        <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                            <li *ngFor="let tab of tabList" class="d-flex m-0 align-items-center"
+                                (click)="assessmentTabSelect(tab)" [ngClass]="selectedTabName == tab ? 'active' : ''">
+                                <img src="./assets/img/grid-icon.svg" />
+                                <p class="d-inline-block m-0">{{ tab }}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedTabName === 'Cardiopulmonary Resuscitation'">
+                    <app-cardiopulmanary-res></app-cardiopulmanary-res>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

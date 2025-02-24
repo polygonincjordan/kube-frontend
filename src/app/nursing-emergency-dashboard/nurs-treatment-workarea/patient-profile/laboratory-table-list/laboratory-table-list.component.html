@@ -20,8 +20,16 @@
                   <td>
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>
-                  <td style="text-align: center;">
-                    <img *ngIf="item.Pdf" (click)="getPdf(item)" class="width-25 cursor-pointer" src="assets/img/emergency-pdf.png" alt="" />
+                  <td>
+                    <div style="display: flex; justify-content: end; line-height: 14px">
+                      <img *ngIf="item.Pdf" (click)="getPdf(item)" class="width-25 cursor-pointer" src="assets/img/emergency-pdf.png" alt="" />
+                      <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
+                        <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
+                      </div>
+                      <div style="margin-left: 3px; margin-right: 3px" (click)="labSampleCollectedPrintModal(labSampleCollectedPrint,item)">
+                        <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
+                      </div>
+                    </div>
                   </td>
                   <td>
                     <img width="35px" class="mr-2 cursor-pointer" src="assets/img/information.jfif" (click)="getLabService(item, labServiceModal)"/>
@@ -181,3 +189,43 @@
       </div>
     </td>
   </ng-template>
+
+  
+  <ng-template #labPrintLabel>
+    <div>
+      <div class="allergy-header">
+        <div style="font-size: 23px; font-weight: bold">
+          <span>Printing Label</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body" style="padding: 0 11px 0px">
+      <p>Are you sure you want to print label for "{{activelabLabelData?.Leitxt}}" for "{{activelabLabelData?.Patient}}" with MRN {{activelabLabelData?.Patnr}}</p>
+    </div>
+    <div class="modal-footer"> 
+      <div style="text-align: end">
+        <button class="update-risk-save-btn" (click)="printLabel()">Print</button>
+        <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #labSampleCollectedPrint>
+    <div>
+      <div class="allergy-header">
+        <div style="font-size: 23px; font-weight: bold">
+          <span>Status Change</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body" style="padding: 0 11px 0px">
+      <p>Are you sure you want to change status “{{activelabLabelData?.Leitxt}}” to sample collected?</p>
+    </div>
+    <div class="modal-footer"> 
+      <div style="text-align: end">
+        <button class="update-risk-save-btn" (click)="sampleCollectedprint()">Yes</button>
+        <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+  

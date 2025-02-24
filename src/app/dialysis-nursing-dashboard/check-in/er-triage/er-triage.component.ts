@@ -842,6 +842,9 @@ export class ErTriageComponent implements OnInit {
     return null;
   }
 
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
 
   getDate(value) {
     if (value) {

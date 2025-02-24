@@ -182,11 +182,12 @@
                     [attr.disabled]="isDisabled() ? true : null"
                     style="height: 33px"
                   /> -->
-                  <input formControlName="RfLmp" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                    placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                    showWeekNumbers: false,
-                    dateInputFormat: 'DD.MM.YYYY'
-                  }" [attr.disabled]="isDisabled() ? true : null" />
+                    <div class="date-function">
+                      <img src="assets/img/Calender.svg" alt="">
+                      <input formControlName="RfLmp" class="form-control" style="color: #000; border-radius: 8px" type="text"
+                        placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                        dateInputFormat: 'DD.MM.YYYY' }" [attr.disabled]="isDisabled() ? true : null" />
+                    </div>
                   <!-- <input type="text" class="col-2" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" formControlName="RfLmp"> -->
                 </div>
               </div>
