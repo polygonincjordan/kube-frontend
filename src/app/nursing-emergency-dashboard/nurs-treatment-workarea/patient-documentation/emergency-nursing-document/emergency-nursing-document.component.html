@@ -234,7 +234,7 @@
         <div class="scale-box">
           <div class="scale-box-checkbox">
             <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
-              [ngModelOptions]="{ standalone: true }" />
+              [ngModelOptions]="{ standalone: true }"  [disabled]="isDockeyAvailable()"/>
             <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
           </div>
           <div class="scale-box-table">

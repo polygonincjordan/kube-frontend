@@ -786,6 +786,10 @@ export class ErTriageComponent implements OnInit {
     });
   }
 
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
+
   closeMainModel() {
     Swal.fire({
       text: 'Are you sure you want to close without saving the data?',

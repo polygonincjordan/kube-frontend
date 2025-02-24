@@ -245,7 +245,7 @@
           <div class="scale-box-checkbox">
             <!-- <input type="checkbox" style="width: 36px;
             height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
-            <input type="checkbox" [(ngModel)]="noScaleAppicable" [ngModelOptions]="{ standalone: true }" />
+            <input type="checkbox" [(ngModel)]="noScaleAppicable" [ngModelOptions]="{ standalone: true }"  [disabled]="isDockeyAvailable()"/>
             <label class="admitting-physician">No Scale Applicable</label>
           </div>
           <div class="scale-box-table">

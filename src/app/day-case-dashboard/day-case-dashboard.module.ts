@@ -112,6 +112,7 @@ import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescripti
 import { EMarWitnessComponent } from './administered-doses/administered-does-event/e-mar-witness/e-mar-witness.component';
 import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { GlasgowComaScaleComponent } from './nurs-treatment-workarea/patient-documentation/glasgow-coma-scale/glasgow-coma-scale.component';
 
 const route: Routes = [
   {
@@ -196,6 +197,7 @@ const route: Routes = [
     ReservationListComponent,
     HistoryListComponent,
     DrugEventsAdminComponent,
+    GlasgowComaScaleComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

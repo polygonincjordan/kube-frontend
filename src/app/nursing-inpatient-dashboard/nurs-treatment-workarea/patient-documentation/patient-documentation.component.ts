@@ -36,6 +36,7 @@ import { NumericRatingScaleComponent } from './numeric-rating-scale/numeric-rati
 import { FacePainScaleComponent } from './face-pain-scale/face-pain-scale.component';
 import { NursingAssessmentComponent } from 'src/app/shared-module/nursing-assessment/nursing-assessment.component';
 import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
+import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -53,6 +54,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(NursingAssessmentComponent) NursingAssessmentComp: NursingAssessmentComponent;
+  @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
   @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
   @ViewChild(GlasgowComaScaleComponent) GlasgowComaScaleComp: GlasgowComaScaleComponent;
@@ -104,6 +106,10 @@ export class PatientDocumentationComponent implements OnInit {
   public isObstetricsFallRisk: boolean = false;
   latestMorseFallScaleData: any;
 
+  public isCPRDocument: boolean = false;
+  public openCPRDocument: boolean = false;
+
+
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -123,6 +129,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestPediatricsAdmissionList = [];
   latestFallRiskAssessmentList = [];
   latestPreCardiacCathList = [];
+  latestCprList = [];
   latestNursingInitialList = [];
   latestObstetricsList = [];
 
@@ -760,6 +767,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isPediatricsAdmission': { isPediatricsAdmission: true, selectedDocName: 'Pediatrics Admission Assessment' },
       'isFallRiskAssessment': { isFallRiskAssessment: true, selectedDocName: 'Fall Risk Assessment - Pediatrics' },
       'isPreCardiacCath': { isPreCardiacCath: true, selectedDocName: 'Pre-Cardiac Cath Checklist' },
+      'isCPRDocument': { isCPRDocument: true, selectedDocName: 'CPR Document' },
       'isNursingInitialAssessment': { isNursingInitialAssessment: true, selectedDocName: 'Nursing Initial Assessment Gyno Obstetrics' },
       'isObstetricsFallRisk': { isObstetricsFallRisk: true, selectedDocName: 'Obstetrics Fall Risk Assessment' },
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
@@ -769,6 +777,7 @@ export class PatientDocumentationComponent implements OnInit {
       'numericratingscale': { numericratingscale: true, selectedDocName: 'Numeric rating scale(more than 8 years)' },
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
+      'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
     };
 
 
@@ -786,6 +795,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPediatricsAdmission = false;
     this.isFallRiskAssessment = false;
     this.isPreCardiacCath = false;
+    this.isCPRDocument = false;
     this.isNursingInitialAssessment = false;
     this.isObstetricsFallRisk = false;
     this.glasgowcomascale = false;
@@ -1108,6 +1118,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNursingAssessment = false;
     this.openNurseAssissment = false;
     this.openPreCardiacCath = false;
+    this.openCPRDocument = false;
 
     this.openPhyAssess = false;
     this.openMedReport = false;
@@ -1126,6 +1137,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openMorseFallScale = false;
     this.isEducationAssement = false;
     this.isPreCardiacCath = false;
+    this.isCPRDocument = false;
     this.attachments = false;
     this.morsefallScale = false;
     this.openPainAssement = false;
@@ -1176,6 +1188,9 @@ export class PatientDocumentationComponent implements OnInit {
     }
     if (this.openNumericRatingScale) {
       this.NumericRatingScaleComp.ngOnDestroy();
+    }
+    if (this.openCPRDocument) {
+      // this.CprDocumentComp.ngOnDestroy();
     }
     this.getPatientProfile();
     this.getLatestAssessment();
@@ -1893,6 +1908,58 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
+
+    // CPR Document
+    else if (this.isCPRDocument) {
+      if (action == 'create') {
+        this.openCPRDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openCPRDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deletePreCardiacCathDoc(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleasePreCardiecCathDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openCPRDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openCPRDocument = true;
+        // this.CprDocumentComp.createNursingAssessmentDoc('4').then((formValue) => {
+        //   if (formValue) {
+        //     this.refresh()
+        //   }
+        // }).catch((error: any) => {
+        //   console.error('Error scale:', error);
+        //   console.error('Error creating Pre-Cardiec Cath document:', error);
+        // });
+      }
+
+    }
   }
   private subscription: Subscription;
   directReleasePainAss() {
@@ -2372,6 +2439,19 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // CPR Document Create API
+      if (this.openCPRDocument) {
+        let docStatus = '1';
+        this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating nursing assessment:', error);
+        })
+      }
+
       // Pre Cardiec Cath Document Create API
       if (this.openPreCardiacCath) {
         let docStatus = '1';
@@ -2504,6 +2584,18 @@ export class PatientDocumentationComponent implements OnInit {
 
       // Pre Cardiec Cath Document Create API
       if (this.openPreCardiacCath) {
+        let docStatus = '1';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
+      // CPR Document Create API
+      if (this.openCPRDocument) {
         let docStatus = '1';
         this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
@@ -2668,6 +2760,19 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // CPR Document Create API
+      if (this.openCPRDocument) {
+        let docStatus = '3';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
+
       if (this.openMorseFallScale) {
         const formData = {
           ...this.morseFallScaleC.getFormData(),
@@ -2763,6 +2868,15 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Nursing assessment:', error);
       });
     } else if (this.openPreCardiacCath) {
+      this.PreCardiacCathComp.createNursingAssessmentDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Pre-Cardiac cath:', error);
+      });
+    } else if (this.openCPRDocument) {
       this.PreCardiacCathComp.createNursingAssessmentDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();

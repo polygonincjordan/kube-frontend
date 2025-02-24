@@ -78,6 +78,7 @@
                 id="noScaleAppicable"
                 [(ngModel)]="noScaleAppicable"
                 [ngModelOptions]="{ standalone: true }"
+                [disabled]="isDockeyAvailable()"
               />
               <label class="admitting-physician" for="noScaleAppicable"
                 >No Scale Applicable</label

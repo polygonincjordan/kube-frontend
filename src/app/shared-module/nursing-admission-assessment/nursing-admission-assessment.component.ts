@@ -930,7 +930,9 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
   }
-
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
   public openModalForAllergy() {
     this.createAllergyId.openModalForAllergy();
   }

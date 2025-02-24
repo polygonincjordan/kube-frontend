@@ -2036,6 +2036,10 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     )}/${event?.time}`;
   }
 
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
+
   public facePainValue(event) {
     this.scalesList[1].LastScore = event?.totalScore;
     this.scalesList[1].description = event?.description;

@@ -1,24 +1,19 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
 import { GlasgowComaScaleType } from '@services/e-kardex/interfaces/documents.interface';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-glos-gow-comma-scale-popup',
-  templateUrl: './glos-gow-comma-scale-popup.component.html',
-  styleUrls: ['./glos-gow-comma-scale-popup.component.scss']
+  selector: 'app-glasgow-coma-scale',
+  templateUrl: './glasgow-coma-scale.component.html',
+  styleUrls: ['./glasgow-coma-scale.component.scss']
 })
-export class GlosGowCommaScalePopupComponent implements OnInit {
-
-  @ViewChild('scalesGlosgowModal', { static: true }) scalesGlosgowModal: TemplateRef<any>;
-  @Output() scaleStoreValue = new EventEmitter<any>();
-  modalRef: BsModalRef;
+export class GlasgowComaScaleComponent implements OnInit, OnDestroy {
 
   public eyeOpeningScore: any = 'C';
   public moterScore: any = '1';
@@ -59,7 +54,6 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
 
   constructor(
     private emergencyService: EmergencyService,
-    private modalService: BsModalService,
     private dataShareService: DataShareService,
     private storageService: StorageService,
     private sharedService: SharedService,
@@ -102,25 +96,6 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initialize();
-  }
-
-
-  openModalForGlosgow(dockKey) {
-    this.dockeyValue = null;
-    const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-xl glasgow-scale-size',
-      ignoreBackdropClick: true
-    };
-    this.modalRef = this.modalService.show(this.scalesGlosgowModal, config);
-    this.eyeOpeningScore = 'C';
-    this.moterScore = '1';
-    this.verbalScore = 'T';
-    this.comments = '';
-    this.dockeyValue = dockKey ? dockKey : null;
-    this.totalScoreCalc();
-    if (this.dockeyValue) {
-      this.getGlosgowDetail(dockKey);
-    }
   }
 
   private initialize() {
@@ -235,9 +210,8 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
             description: this.totalScoreDescription,
             dockey: data?.d.Dockey,
             time: currentTime,
-            date: this.dateConvertToString(new Date())
+            date: new Date()
           }
-          this.scaleStoreValue.next(formValue);
           // this.glasgowValue.next(formValue); // emit value if needed...
           // resolve(formValue); // Resolve the promise with formValue
         },
@@ -246,25 +220,12 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
           this.sharedService.waringSwallModel(`POST Error at glos gow coma scale : ${err}`);
         },
         complete: () => {
-          this.modalRef?.hide();
           // Handle completion (optional), invoked when the observable completes
           resolve(true); // Resolve the promise with formValue
           this.sharedService.successSwallModel('Glas gow coma scale created successfully');
         }
       });
     });
-  }
-
-  dateConvertToString(date: Date) {
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    let year = date.getFullYear();
-
-    let hours = String(date.getHours()).padStart(2, '0');
-    let minutes = String(date.getMinutes()).padStart(2, '0');
-    let seconds = String(date.getSeconds()).padStart(2, '0');
-
-    return `${day}.${month}.${year}/${hours}:${minutes}:${seconds}`;
   }
 
   copyGlosgowData(): Promise<any> {
@@ -314,7 +275,4 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
     });
   }
 
-  closeGlosgowModel() {
-    this.modalRef.hide();
-  }
 }

@@ -458,6 +458,9 @@ export class NursingAssessmentComponent implements OnInit {
     }
   }
 
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
 
   get items(): FormArray {
     return this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
@@ -615,18 +618,35 @@ export class NursingAssessmentComponent implements OnInit {
           // });
         
           if (data?.d?.results[0].TOSCALE.results.length) {
-            data?.d?.results[0].TOSCALE.results.forEach((element) => {
-              this.scalesList.forEach((res: any) => {
-                if (element.ScaleType == res.ScaleType && element.LastScore) {
-                  res.Datetimee = element.Datetimee,
-                    res.Dockey = element.Dockey,
-                    res.ScoreDesc = element.ScoreDesc,
-                    res.LastScore = element.LastScore,
-                    res.ScaleType = element.ScaleType
-                }
-              })
-            })
+            // Sort the array in descending order based on Datetimee (as a string)
+            let sortedScales = data.d.results[0].TOSCALE.results.sort((a, b) => 
+              b.Datetimee.localeCompare(a.Datetimee)
+            );
+          
+            // Create a map to store only the latest record for each ScaleType
+            let latestScalesMap = new Map();
+            sortedScales.forEach(item => {
+              if (!latestScalesMap.has(item.ScaleType)) {
+                latestScalesMap.set(item.ScaleType, item);
+              }
+            });
+          
+            // Convert map values to an array (only latest records per ScaleType)
+            let latestScales = Array.from(latestScalesMap.values());
+          
+            // Update scalesList with the latest values
+            latestScales.forEach(element => {
+              let existingScale = this.scalesList.find(res => res.ScaleType === element.ScaleType);
+              if (existingScale) {
+                existingScale.Datetimee = element.Datetimee;
+                existingScale.Dockey = element.Dockey;
+                existingScale.ScoreDesc = element.ScoreDesc;
+                existingScale.LastScore = element.LastScore;
+              }
+            });
           }
+          
+          console.log(this.scalesList, "scalesList")
           // this.bindDataToFormArray(data?.d?.results[0].TOINFECTION.results)
         },
         error: (err: any) => {
