@@ -185,4 +185,37 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+
+  // CPR document
+  saveCprDocument(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveCprDocument`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  cprDocumentLatestDoc(json: any) {
+    const url = `${this.url}cprDocumentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcCprDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcCprDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  cprDocPDF(dockey: string): Observable<any> {
+    return this.http.get(this.url + `cprDocPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  deleteCprDocument(dockey: any) {
+    const url = `${this.url}deleteCprDocument?Dockey=${dockey}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
 }

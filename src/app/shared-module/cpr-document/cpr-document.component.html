@@ -1,5 +1,5 @@
 <div class="end-container">
-    <div class="sph-box">
+    <div class="sph-box pt-5">
         <div class="container-fluid">
             <div class="tab-navigation-part">
                 <div class="tab-navigate">
@@ -14,10 +14,237 @@
                     </div>
                 </div>
 
+                <div *ngIf="selectedTabName === 'CPR Medication'">
+                    <div class="">
+                        <div class="container container-width">
+                            <div class="d-flex mb-2" style="justify-content: space-between">
+                                <button class="personal-history">Medication and Patient Own </button>
+                                <button class="create-diagnosis"
+                                    (click)="openModal(medicationOrderCase)">Import</button>
+                            </div>
+                            <table class="table table-bordered past-table">
+                                <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                                    <tr>
+                                        <th>Order Type</th>
+                                        <th style="width: 270px;">Description</th>
+                                        <th>Home Medication</th>
+                                        <th>Patient's Own Meds</th>
+                                        <th>Dose</th>
+                                        <th>Validity</th>
+                                        <th>Route</th>
+                                        <th>Rate</th>
+                                        <!-- <th>The</th> -->
+
+                                        <th>Ordering Physician</th>
+                                        <th>Cycle</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: hsl(225, 100%, 99%);">
+                                    <tr *ngFor="let item of medicationImportDrugArray;let i=index"
+                                        style="text-align:center">
+                                        <td>{{item.OrderType}}</td>
+                                        <td style="width: 270px;">{{item.Description}}</td>
+                                        <td style="text-align: center;pointer-events: none;"><input type="checkbox"
+                                                style="width:18px" [(ngModel)]="item.HomeMedication"
+                                                [ngModelOptions]="{standalone: true}"></td>
+                                        <td style="text-align: center;pointer-events: none;"><input type="checkbox"
+                                                style="width:18px" [(ngModel)]="item.PatientOwnMed"
+                                                [ngModelOptions]="{standalone: true}"></td>
+                                        <td>{{item.Dose}}</td>
+                                        <td>{{item.Validity}}</td>
+                                        <td>{{item.Route}}</td>
+                                        <td>{{''}}</td>
+                                        <td>{{item.OrderingPhysician}}</td>
+                                        <td>{{item.Cycle}}</td>
+                                        <!-- <td></td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div *ngIf="selectedTabName === 'Cardiopulmonary Resuscitation'">
-                    <app-cardiopulmanary-res></app-cardiopulmanary-res>
+                    <app-cardiopulmanary-res [cprForm]="cprForm"></app-cardiopulmanary-res>
+                </div>
+
+                <div *ngIf="selectedTabName == 'Diagnosis'">
+                    <div class="d-flex mb-2 py-3" style="justify-content: space-between;
+                      padding-right: 22px">
+                        <div style="display: flex;
+                      align-items: center;
+                      gap: 10px;">
+                            <input type="checkbox" style="width: 36px; 
+                        height: 22px;" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)"
+                                formControlName="isDiagnosis" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+                            <label class="admitting-physician" for="noDiagnosisApplicable">No Diagnosis
+                                Applicable</label>
+                        </div>
+                        <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
+                            <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+                        </div>
+
+                    </div>
+                    <div style="max-height: 296px;
+                      overflow: auto;">
+                        <table class="table table-bordered past-table">
+                            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                                <tr>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Description </th>
+                                    <th scope="col">Remarks</th>
+                                    <th scope="col">Administion Diag.</th>
+                                    <th scope="col">Surgery Diag.</th>
+                                    <th scope="col">Preop Diag.</th>
+                                    <th scope="col">Discharge Diag.</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: #fbfcff;">
+                                <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                                    <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                                    <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                                    <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                            [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}"></td>
+                                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                            [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
+                                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                            [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
+                                    <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                            [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}"></td>
+                                    <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(i)"><img
+                                            src="assets/img/Delete.svg" style="position: relative;
+                              top: 6px;" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedTabName == 'Vitals'">
+                    <div class="container-fluid">
+                        <div class="allergy-box d-flex justify-content-between py-3">
+                            <div class="allergy-checkbox-section d-flex align-items-center">
+                                <input type="checkbox" id="noVitalSignsApplicable"
+                                    (change)="handleCheckboxVitals($event)" style="width: 24px;height: 20px;"
+                                    [attr.disabled]="toVitalsArr?.length >0 ? true:null" />
+                                <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No Vitals
+                                    Signs Applicable</label>
+                            </div>
+                            <div class="secound-bar-vital-sign" (click)="openModalVital()">
+                                <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+                            </div>
+                        </div>
+                        <div style="max-height: 296px;
+                  overflow: auto;">
+                            <table class="table table-bordered past-table">
+                                <thead style="background-color: #e4edf5; color: black; ">
+                                    <tr>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Measured Value </th>
+                                        <th scope="col">Normal Range</th>
+                                        <th scope="col">Date/Time</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: #fbfcff;">
+                                    <tr class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 3%;text-align: center;" (click)="deleteVitalsFromTable(i)"><img
+                                                src="assets/img/Delete.svg" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedTabName == 'Condition of patient on Code Team arrival'">
+                    <app-condition-patient [cprForm]="cprForm"></app-condition-patient>
+                </div>
+                <div *ngIf="selectedTabName == 'Observation'">
+                    <app-observation [cprForm]="cprForm"></app-observation>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<app-diagnosis-tab #diagnosisNotesKardexId (importEvent)="importDiagnosisData($event)"></app-diagnosis-tab>
+<app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>
+
+<ng-template #medicationOrderCase>
+    <div>
+        <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+        <div class="allergy-header">
+            <div style="
+          font-size: 23px;
+          font-weight: bold">
+                <span>Import Current Medication Order for {{storageService.patientData.name}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" style="padding: 0 11px 0px;">
+        <div style="display: flex;
+      justify-content: end;
+      padding-right: 1rem;">
+            <button (click)="medicationImport()" style="border: 1px solid;
+        background: #3b82f6;
+        color: #ffffff;
+        padding: 5px 20px;
+        border-radius: 4px;
+        font-weight: 700;margin-top: 4px;">
+                Import
+            </button>
+        </div>
+        <form style="max-height: 296px;
+      overflow: auto;">
+            <table class="table table-bordered allergy-table mt-3">
+                <thead style="background-color: #e4edf5;
+      color: black;text-align: center;position: sticky;
+      top: 0;">
+                    <tr>
+                        <th scope="col" style="    text-align: -webkit-center;">
+                            <input type="checkbox" [checked]="selectedMedicationOrder.length === drugArray.length"
+                                class="form-control" (change)="collectAllMedicationIData($event)" style="width:20px" />
+                        </th>
+                        <th scope="col">Medication Order - Case</th>
+                        <th scope="col">Dose</th>
+                        <th scope="col">Frequency</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Order type</th>
+                        <th scope="col">MO Valid</th>
+                    </tr>
+                </thead>
+                <tbody style="background: #fbfcff;">
+                    <tr *ngFor="let item of drugArray let i = index">
+                        <td style="text-align: -webkit-center;"> <span
+                                class="input-text-field d-inline-block align-top w-100">
+                                <ng-container>
+                                    <input type="checkbox" class="form-control" [checked]="isCheckedForMedication(item)"
+                                        (change)="collectMedicationIData($event,item)" style="width:20px" />
+                                </ng-container>
+                            </span></td>
+                        <td>{{item.Descrlt}} {{item.Quan}} {{item.Quanunit}} {{item.Routedescr}} {{item.N1id}}</td>
+                        <td>{{item.Quan}} {{item.Quanunit }}</td>
+                        <td></td>
+                        <td>{{item.MosidDesc}}</td>
+                        <td>{{item.MotypId == '30' ? 'Planned Administration':'Discharge'}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+</ng-template>

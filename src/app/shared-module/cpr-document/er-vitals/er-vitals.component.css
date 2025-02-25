@@ -1,0 +1,157 @@
+ .top-header-vital-sign {background: #0056b0;position: relative;padding: 15px 15px 10px; border-radius: 15px 15px 0px 0px;color: #fff;display: flex;    align-items: baseline;}
+ .top-header-vital-sign h3.header-heading, .secound-bar-vital-sign .arrows { width: 30%;font-size: 18px;}
+ul.list-simple {
+    width: 70%;
+    padding: 0px 0px 0px 10px;
+    text-align: right;
+    margin: 0px;
+    line-height: 0px;
+}
+ul.list-simple li input {
+    background: inherit;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    width: fit-content;
+}
+ul.list-simple li {
+    font-weight: 500;
+    list-style: none;
+    display: inline-block;
+    padding: 0px 10px;
+    font-size: 14px;
+    border: 1px solid #d3d1d1;
+    border-radius: 6px;
+    padding: 8px;
+    width: fit-content;
+    margin: 0px 5px;
+    text-align: center;
+}
+ul.list-simple li input::placeholder {color: #fff;}
+ul.list-simple li.close-icon {border: none;  padding: 0px;margin: 0px;}
+ul.list-simple li.close-icon img {width: 35px;}
+.vital-sign-table table thead tr th {
+    background: #e4edf5;
+    font-size: 14px;
+    font-weight: bold;
+}
+.vital-sign-table table tbody {
+    font-size: 12px;
+    font-weight: 500;
+}
+.vital-sign-table table tbody .dec {text-transform: capitalize;font-weight: bold;}
+.vital-sign-table table tbody td.red {color: red;}
+.vital-sign-table table tbody .orange { color: #ffab12;}
+.secound-bar-vital-sign { display: flex; padding: 15px;    align-items: baseline;}
+.secound-bar-vital-sign .arrows img {width: 70px;}
+.secound-bar-vital-sign ul.list-simple li {
+    background: #e4edf5;
+    border-radius: 10px;
+    padding:6px 10px;
+}
+.secound-bar-vital-sign ul.list-simple li img {
+    width: 30px;
+    padding: 3px;
+}
+.secound-bar-vital-sign ul.list-simple li.icon-pdf {
+    padding: 3px 5px;
+}
+.icon-pdf {
+    padding: 3px 5px;
+    border-radius: 7px;
+    margin-right: 6px;
+}
+.img-size{
+    width: 15px;
+}
+.selectedCol{
+    background: antiquewhite !important;
+}
+/* maintain */
+.maintain-secound-bar-vital-sign{
+    border: 1px solid #b2b4b7;
+    border-radius: 11px;
+    padding: 6px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 15px;
+    margin: 6px 8px;
+}
+span.pn-input-title{
+    position: absolute !important;
+      cursor: text;
+      font-size: 12px;
+      opacity: 1;
+      left: 7;
+      z-index: 3;
+      line-height: 2px !important;
+      color: #b2b4b7;
+      padding: 0 10px;
+      background-color: white;
+  }
+.maintain-modal-inputs{
+    width:17%;
+}
+.maintain-modal-inputs input {
+    height:34px;
+}
+.maintain-vital-table input{
+    width: 100%;
+    border: none;
+    background: #fbfcff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.maintain-vital-table .row-delete{
+    background: antiquewhite;
+}
+.new-class  input{
+    width: 100%;
+    border: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    background: antiquewhite !important;
+}
+.new-class{
+    background: antiquewhite !important; 
+}
+.maintain-vital-table .row-delete input{
+    width: 100%;
+    border: none;
+    background: antiquewhite;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.maintain-vital-table ::ng-deep.ng-select{
+    .ng-select-container{
+      background: none !important;
+      border: 0;
+    }
+.ng-clear-wrapper{
+      border: 1px solid;
+  border-radius: 20px;
+  background-color: #c6c8ca;
+  color: white;
+  text-align: center;
+    }
+  }
+  .custom-slider-main{
+    display: flex;
+    overflow: hidden;    
+    scroll-behavior: smooth;
+} 
+.custom-no-slider-main{
+    display: flex;   
+    scroll-behavior: smooth;
+} 
+
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6; /* Reduce opacity to indicate it's disabled */
+    cursor: not-allowed;
+}

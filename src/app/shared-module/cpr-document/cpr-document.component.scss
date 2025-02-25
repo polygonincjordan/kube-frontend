@@ -594,6 +594,7 @@
         .tab-navigation-part {
             background: none !important;
             padding: 3% !important;
+
             .tab-navigate {
                 margin-top: -35px;
 
@@ -879,4 +880,175 @@
     width: 16px;
     height: 16px;
     margin-right: 5px;
-  }
+}
+
+.main-border {
+    border: 2px solid #bababc;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+/*REMOVE THIS CSS */
+.container.container-width {
+    background: #FBFCFF;
+    border: 1px solid #D2EAFF;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 15px auto 0px;
+    max-width: 98%;
+    width: 98%;
+}
+
+/*REMOVE THIS CSS CLOSE */
+
+
+ul {
+    margin: 0px;
+    padding: 0;
+    list-style: none;
+}
+
+.container-width {
+    background: #FBFCFF;
+    border: 1px solid #D2EAFF;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 15px 0px;
+}
+
+.personal-history {
+    background: #0056b0;
+    border: 0px;
+    color: #fff;
+    font-size: 16px;
+    padding: 8px 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+.personal-history:hover {
+    background: #000;
+}
+
+.create-diagnosis {
+    border: 1px solid;
+    background: #3b82f6;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+    height: fit-content;
+}
+
+
+.table th,
+.table td {
+    border-color: #5d5c5c !important;
+    padding-top: 8px !important;
+}
+
+.nav-item a {
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    cursor: default;
+    margin: 0 3px;
+    padding: 10px 3px;
+    float: left;
+    position: relative;
+    background-color: #0056b0;
+    border: 1px solid #0056b0;
+    border-radius: 8px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    width: 70px;
+}
+
+.nav-item .selected {
+    background-color: #fff;
+    color: #0056b0 !important;
+}
+
+.admitting-physician {
+    white-space: pre;
+    font-size: 14px;
+    font-weight: bolder;
+    margin: 0;
+}
+
+.main-border {
+    border: 2px solid #bababc;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+
+.physical-examination .container {
+    width: 98%;
+    padding: 15px;
+    margin: 15px;
+    max-width: 100%;
+}
+
+.physical-examination .New-border {
+    border: 1px solid #355473;
+    padding: 10px;
+    border-radius: 15px;
+    height: 100%;
+    box-shadow: 0px 0px 2px #355473;
+}
+
+.physical-examination .mode-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+}
+
+.physical-examination .New-border ul.general-boxes {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    background: #e9edee;
+    position: relative;
+    font-size: 13px;
+    color: #000;
+    font-weight: 500;
+}
+
+.physical-examination .New-border ul.general-boxes li {
+    padding: 8px 5px;
+    border-bottom: 1px solid #c8cccf;
+}
+
+.physical-examination select.new-slect-box,
+.physical-examination .input-boxes input {
+    width: 100%;
+    border: 1px solid #0056b0;
+    border-radius: 5px;
+    width: 100%;
+    height: 35px;
+    margin-bottom: 6px !important;
+    padding: 0px 5px;
+    font-size: 14px;
+    box-shadow: 0px 0px 1px #0056b0 !important;
+}
+
+.physical-examination select.new-slect-box:last-child,
+.physical-examination input:last-child {
+    margin: 0px;
+}
+
+.physical-examination select.new-slect-box:focus-visible,
+.physical-examination input:focus-visible {
+    border: 1px solid #324c7d;
+    background: #fff !important;
+    outline: none;
+}
+
+.personal-history-textarea {
+    width: 85%;
+}

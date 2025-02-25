@@ -11,7 +11,6 @@ import { EnvironmentalSafetyTabComponent } from './environmental-safety-tab/envi
 import { ImportDiagnosisComponent } from './diagnosis-tab/import-diagnosis/import-diagnosis.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { SearchTextPipe } from 'src/app/e-prescription/discharge-order/medication-popup/search-text.pipe';
 
 @NgModule({
   declarations: [
