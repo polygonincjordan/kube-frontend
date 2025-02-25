@@ -269,6 +269,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingPlanCareDocDetails();
     this.getNursingAssessmentDocDetails();
     this.getPreCardiecCathDocDetails();
+    this.getCPRDocDetails();
     this.getNursingDischargeDocDeatils();
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
@@ -414,6 +415,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService.preCardiacCathLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestPreCardiacCathList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // CPR Document Latest
+  getCPRDocDetails() {
+    this.dayCaseDashboardService.cprDocumentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestCprList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -1190,7 +1204,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.NumericRatingScaleComp.ngOnDestroy();
     }
     if (this.openCPRDocument) {
-      // this.CprDocumentComp.ngOnDestroy();
+      this.CprDocumentComp.ngOnDestroy();
     }
     this.getPatientProfile();
     this.getLatestAssessment();
@@ -1208,7 +1222,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingAdmissionLatestDoc()
     this.getNursingAssessmentDocDetails();
     this.getPreCardiecCathDocDetails();
-
+    this.getCPRDocDetails();
     this.LatestMFSSet();
   }
 
@@ -1930,13 +1944,13 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deletePreCardiacCathDoc(this.selectedDocData.Dockey);
+          this.deleteCPRDoc(this.selectedDocData.Dockey);
         }
       } else if (action == 'release') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleasePreCardiecCathDoc();
+          this.directReleaseCPRDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -1949,14 +1963,14 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openCPRDocument = true;
-        // this.CprDocumentComp.createNursingAssessmentDoc('4').then((formValue) => {
-        //   if (formValue) {
-        //     this.refresh()
-        //   }
-        // }).catch((error: any) => {
-        //   console.error('Error scale:', error);
-        //   console.error('Error creating Pre-Cardiec Cath document:', error);
-        // });
+        this.CprDocumentComp.createCPRDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating CPR document:', error);
+        });
       }
 
     }
@@ -2116,6 +2130,34 @@ export class PatientDocumentationComponent implements OnInit {
             },
             complete: () => {
               this.sharedService.successSwallModel('Pre-Cardiec Cath released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+  directReleaseCPRDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcCprDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveCprDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('CPR Document released successfully');
               this.refresh();
             }
           });
@@ -2442,7 +2484,7 @@ export class PatientDocumentationComponent implements OnInit {
       // CPR Document Create API
       if (this.openCPRDocument) {
         let docStatus = '1';
-        this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+        this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -2597,7 +2639,7 @@ export class PatientDocumentationComponent implements OnInit {
       // CPR Document Create API
       if (this.openCPRDocument) {
         let docStatus = '1';
-        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+        this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -2763,7 +2805,7 @@ export class PatientDocumentationComponent implements OnInit {
       // CPR Document Create API
       if (this.openCPRDocument) {
         let docStatus = '3';
-        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+        this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -3517,6 +3559,41 @@ export class PatientDocumentationComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deletePreCardiacCathDoc(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
+  async deleteCPRDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteCprDocument(docKey)).subscribe(
           (_success: any) => {
             Swal.fire({
               text: "Document is deleted successfully",

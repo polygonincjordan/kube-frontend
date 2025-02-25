@@ -6,8 +6,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ErVitalsComponent } from './er-vitals/er-vitals.component';
-import { SearchTextPipe } from '../search-text.pipe';
 import { PhysicianAllergyComponent } from './physician-allergy/physician-allergy.component';
+import { SharedModuleModule } from '../shared-module.module';
 
 
 
@@ -15,8 +15,7 @@ import { PhysicianAllergyComponent } from './physician-allergy/physician-allergy
   declarations: [
     PreCardiacCathComponent,
     ErVitalsComponent,
-    PhysicianAllergyComponent,
-    SearchTextPipe
+    PhysicianAllergyComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +24,7 @@ import { PhysicianAllergyComponent } from './physician-allergy/physician-allergy
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
     NgxMaterialTimepickerModule,
-    
+    SharedModuleModule
   ],
   exports: [PreCardiacCathComponent]
 })
