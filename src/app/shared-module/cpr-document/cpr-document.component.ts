@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DiagnosisTabComponent } from './diagnosis-tab/diagnosis-tab.component';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
@@ -25,6 +25,8 @@ export class CprDocumentComponent implements OnInit {
 
   formSurgicalPaasDetailGroup: FormGroup;
   cprForm: FormGroup;
+  TOOBSERVATION: FormArray;
+
   modalRefUpdateName: BsModalRef;
 
 
@@ -121,15 +123,15 @@ export class CprDocumentComponent implements OnInit {
       TypeArrestTxt: "",
       DateArrest: new Date(),
       TimeArrest: currentTime,
-      TimeCode: "",
+      TimeCode: currentTime,
       CodeActivate: currentTime,
       RequestApproved: ",",
-      HDm: true,
-      HHtn: true,
-      HCva: true,
-      HCa: true,
-      HHf: true,
-      HRf: true,
+      HDm: false,
+      HHtn: false,
+      HCva: false,
+      HCa: false,
+      HHf: false,
+      HRf: false,
       Arrest: "",
       InitialRhythm: "",
       IvLine: "",
@@ -198,7 +200,49 @@ export class CprDocumentComponent implements OnInit {
       WitnessedBy: "",
       AttendPhy: this.storageService.getUserProfile()?.Gpart,
       DocStatus: "1",
-    })
+      TOOBSERVATION: new FormArray([])
+    });
+
+    for (let index = 0; index < 10; index++) {
+      this.addItem();
+    }
+  }
+
+  addItem(data?: any): void {
+    if (this.cprForm) {
+      this.TOOBSERVATION = this.cprForm.get('TOOBSERVATION') as FormArray;
+      this.TOOBSERVATION.push(this.createObservation(data));
+    }
+  }
+
+  createObservation(item): FormGroup {
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+    return this.formBuilder.group({
+      Dockey: [item?.Dockey ?? ''],
+      Timee: [this.parseTime(item?.Timee) ?? currentTime],  // Default to current time
+      Type: [item?.Type ?? ''],
+      Min2: [item?.Min2 ?? ''],
+      Min4: [item?.Min4 ?? ''],
+      Min6: [item?.Min6 ?? ''],
+      Min8: [item?.Min8 ?? ''],
+      Min10: [item?.Min10 ?? ''],
+      Min12: [item?.Min12 ?? ''],
+      Min14: [item?.Min14 ?? ''],
+      Min16: [item?.Min16 ?? ''],
+      Min18: [item?.Min18 ?? ''],
+      Min20: [item?.Min20 ?? ''],
+      Min22: [item?.Min22 ?? ''],
+      Min24: [item?.Min24 ?? ''],
+      Min26: [item?.Min26 ?? ''],
+      Min28: [item?.Min28 ?? ''],
+      Min30: [item?.Min30 ?? ''],
+      Min32: [item?.Min32 ?? ''],
+      Min34: [item?.Min34 ?? ''],
+      Min36: [item?.Min36 ?? ''],
+      Min38: [item?.Min38 ?? ''],
+      Min40: [item?.Min40 ?? ''],
+      Comments: [item?.Comments ?? '']
+    });
   }
 
   getNursingAdmissionDocDetails(docKey?) {
@@ -206,43 +250,137 @@ export class CprDocumentComponent implements OnInit {
       .fetcCprDocDetails(docKey)
       .subscribe({
         next: (data: any) => {
-          this.cprForm.patchValue(data.d.results[0]);
-          // this.nursingAdmissionForm.patchValue({
-          //   ADate: this.parseDate(data.d.results[0].ADate),
-          //   ATime: this.parseTime(data.d.results[0].ATime),
+          let timeFields = [
+            "TimeArrest", "TimeCode", "RespiratoryTm", "AnesthesiaTm",
+            "CompressionTm", "IvIoMedTm", "DefibrillatorTm", "NursingTm",
+            "TeamLeaderTm", "ChestCompression", "LeadsPlace", "MonitorActive",
+            "Cannula1", "Cannula2", "Infusion1", "Infusion2", "Ventilation",
+            "Intubation", "Terminated", "TransferredTm", "DeclaredExpired",
+            "DeclaredExpiredTm", "FTime"
+          ];
+
+          timeFields.forEach(field => {
+            data.d.results[0][field] = this.parseTime(data.d.results[0][field]);
+          });
+          const result = data.d.results[0];
+
+          this.cprForm.patchValue({
+            Dockey: result.Dockey,
+            Dtid: result.Dtid,
+            Einri: result.Einri,
+            Patnr: result.Patnr,
+            Falnr: result.Falnr,
+            Lfdnr: result.Lfdnr,
+            Orgdo: result.Orgdo,
+            Location: result.Location,
+            TypeArrest: result.TypeArrest,
+            TypeArrestTxt: result.TypeArrestTxt,
+            DateArrest: this.parseDate(result.DateArrest),
+            TimeArrest: result.TimeArrest,
+            TimeCode: result.TimeCode,
+            CodeActivate: result.CodeActivate,
+            RequestApproved: result.RequestApproved,
+            HDm: result.HDm,
+            HHtn: result.HHtn,
+            HCva: result.HCva,
+            HCa: result.HCa,
+            HHf: result.HHf,
+            HRf: result.HRf,
+            Arrest: result.Arrest,
+            InitialRhythm: result.InitialRhythm,
+            IvLine: result.IvLine,
+            NewlyInserted: result.NewlyInserted,
+            PreviouslyInserted: result.PreviouslyInserted,
+            Respiratory: result.Respiratory,
+            RespiratoryTm: result.RespiratoryTm,
+            Anesthesia: result.Anesthesia,
+            AnesthesiaTm: result.AnesthesiaTm,
+            Compression: result.Compression,
+            CompressionTm: result.CompressionTm,
+            IvIoMed: result.IvIoMed,
+            IvIoMedTm: result.IvIoMedTm,
+            Defibrillator: result.Defibrillator,
+            DefibrillatorTm: result.DefibrillatorTm,
+            Nursing: result.Nursing,
+            NursingTm: result.NursingTm,
+            TeamLeader: result.TeamLeader,
+            TeamLeaderTm: result.TeamLeaderTm,
+            Unresponsive: result.Unresponsive,
+            Breathing: result.Breathing,
+            PulsePresent: result.PulsePresent,
+            Cyanotic: result.Cyanotic,
+            PupilsDilated: result.PupilsDilated,
+            Seizure: result.Seizure,
+            HistorySeizures: result.HistorySeizures,
+            ChestCompression: result.ChestCompression,
+            Note: result.Note,
+            LeadsPlace: result.LeadsPlace,
+            MonitorActive: result.MonitorActive,
+            Cannula1: result.Cannula1,
+            Cannula2: result.Cannula2,
+            Infusion1: result.Infusion1,
+            Infusion2: result.Infusion2,
+            Note1: result.Note1,
+            LSites: result.LSites,
+            LAttempts: result.LAttempts,
+            LType: result.LType,
+            LSize: result.LSize,
+            VentilationBy: result.VentilationBy,
+            VentilationTxt: result.VentilationTxt,
+            Ventilation: result.Ventilation,
+            Intubation: result.Intubation,
+            Fio2: result.Fio2,
+            EttPlaced: result.EttPlaced,
+            EttSize: result.EttSize,
+            EttDepth: result.EttDepth,
+            EttIsPlaced: result.EttIsPlaced,
+            EttIsPlacedBy: result.EttIsPlacedBy,
+            ToothDamage: result.ToothDamage,
+            Bleeding: result.Bleeding,
+            Vomiting: result.Vomiting,
+            Terminated: result.Terminated,
+            Disposition: result.Disposition,
+            Transferred: result.Transferred,
+            TransferredTm: result.TransferredTm,
+            DeclaredExpired: result.DeclaredExpired,
+            DeclaredExpiredTm: result.DeclaredExpiredTm,
+            Autopsy: result.Autopsy,
+            FamilyInformed: result.FamilyInformed,
+            FDate: this.parseDate(result.FDate),
+            FTime: result.FTime,
+            NamePhysician: result.NamePhysician,
+            EcgStrip: result.EcgStrip,
+            AttachedBy: result.AttachedBy,
+            WitnessedBy: result.WitnessedBy,
+            AttendPhy: result.AttendPhy,
+            DocStatus: result.DocStatus
+          });
+
+          // this.cprForm.patchValue({
+          //   DateArrest: this.parseDate(data.d.results[0].DateArrest),
+          //   FDate: this.parseDate(data.d.results[0].FDate),
           // });
+          const toObservationData = data.d.results[0].TOOBSERVATION?.results || [];
+          const toObservationArray = this.cprForm.get('TOOBSERVATION') as FormArray;
+          toObservationArray.clear();
+          if (toObservationData.length) {
+            toObservationData.forEach(obs => {
+              this.addItem(obs)
+            });
+          } else {
+            for (let index = 0; index < 10; index++) {
+              this.addItem();
+            }
+          }
 
-          // if (data?.d?.results[0].TOSCALE.results.length) {
-          //   // Sort the array in descending order based on Datetimee (as a string)
-          //   let sortedScales = data.d.results[0].TOSCALE.results.sort((a, b) =>
-          //     b.Datetimee.localeCompare(a.Datetimee)
-          //   );
+          const remaining = 10 - toObservationData.length;
+          for (let index = 0; index < remaining; index++) {
+            this.addItem();
+          }
 
-          //   // Create a map to store only the latest record for each ScaleType
-          //   let latestScalesMap = new Map();
-          //   sortedScales.forEach(item => {
-          //     if (!latestScalesMap.has(item.ScaleType)) {
-          //       latestScalesMap.set(item.ScaleType, item);
-          //     }
-          //   });
-
-          //   // Convert map values to an array (only latest records per ScaleType)
-          //   let latestScales = Array.from(latestScalesMap.values());
-
-          //   // Update scalesList with the latest values
-          //   latestScales.forEach(element => {
-          //     let existingScale = this.scalesList.find(res => res.ScaleType === element.ScaleType);
-          //     if (existingScale) {
-          //       existingScale.Datetimee = element.Datetimee;
-          //       existingScale.Dockey = element.Dockey;
-          //       existingScale.ScoreDesc = element.ScoreDesc;
-          //       existingScale.LastScore = element.LastScore;
-          //     }
-          //   });
-          // }
-
-          // console.log(this.scalesList, "scalesList")
-          // this.bindDataToFormArray(data?.d?.results[0].TOINFECTION.results)
+          this.toDiagnosisArr = data.d.results[0].TODIAGNOSES.results;
+          this.medicationImportDrugArray = data.d.results[0].TOMEDICATION.results;
+          this.toVitalsArr = data.d.results[0].TOVITALSIGNS.results;
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
@@ -459,32 +597,36 @@ export class CprDocumentComponent implements OnInit {
       }
       this.cprForm.value.DocStatus = docStatus;
       let paylaod = this.cprForm.value;
-      if(this.cprForm.value.DateArrest) paylaod.DateArrest = this.cprForm.value.DateArrest.toISOString().split('T')[0] + "T00:00:00";
-      if(this.cprForm.value.FDate) paylaod.FDate = this.cprForm.value.FDate.toISOString().split('T')[0] + "T00:00:00";
+      if (this.cprForm.value.DateArrest) paylaod.DateArrest = this.cprForm.value.DateArrest.toISOString().split('T')[0] + "T00:00:00";
+      if (this.cprForm.value.FDate) paylaod.FDate = this.cprForm.value.FDate.toISOString().split('T')[0] + "T00:00:00";
 
-      paylaod.RAt = this.parsePayloadFormateTime(this.cprForm.value.RAt);
+      // paylaod.RAt = this.parsePayloadFormateTime(this.cprForm.value.RAt);
       let timeFields = [
-        "TimeArrest", "TimeCode", "RespiratoryTm", "AnesthesiaTm", 
-        "CompressionTm", "IvIoMedTm", "DefibrillatorTm", "NursingTm", 
-        "TeamLeaderTm", "ChestCompression", "LeadsPlace", "MonitorActive", 
-        "Cannula1", "Cannula2", "Infusion1", "Infusion2", "Ventilation", 
-        "Intubation", "Terminated", "TransferredTm", "DeclaredExpired", 
+        "TimeArrest", "TimeCode", "RespiratoryTm", "AnesthesiaTm",
+        "CompressionTm", "IvIoMedTm", "DefibrillatorTm", "NursingTm",
+        "TeamLeaderTm", "ChestCompression", "LeadsPlace", "MonitorActive",
+        "Cannula1", "Cannula2", "Infusion1", "Infusion2", "Ventilation",
+        "Intubation", "Terminated", "TransferredTm", "DeclaredExpired",
         "DeclaredExpiredTm", "FTime"
       ];
-      
+
       // Update the form fields with the converted values
       timeFields.forEach(field => {
         let currentValue = this.cprForm.get(field)?.value;
         paylaod[field] = this.parsePayloadFormateTime(currentValue);
       });
 
-      // paylaod.TOSCALE = this.scalesList.filter((res: any) => {
-      //   delete res.value;
-      //   res.LastScore = res?.LastScore.toString();
-      //   if(res.LastScore) {
-      //     return res;
-      //   }
-      // });
+      paylaod.TODIAGNOSES = this.toDiagnosisArr;
+      paylaod.TOMEDICATION = this.medicationImportDrugArray;
+      paylaod.TOVITALSIGNS = this.toVitalsArr;
+      let processedData: any[] = this.cprForm.value.TOOBSERVATION
+        .filter(item => item.Type !== "")
+        .map(item => ({
+          ...item,
+          Timee: this.parsePayloadFormateTime(item.Timee)
+        }));
+
+      paylaod.TOOBSERVATION = processedData;
 
       paylaod.Orgdo = this.storageService?.patientData?.deptOrgUnit;
       this.subscription = this.dayCaseDashboard

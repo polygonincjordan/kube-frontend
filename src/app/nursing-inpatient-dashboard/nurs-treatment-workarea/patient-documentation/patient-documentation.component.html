@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 12px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument">
         <div class="search-functionality col-md-2 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -126,6 +126,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'CPR Document'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseCPRDocument()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
@@ -154,7 +159,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -347,9 +352,12 @@
               </div>
               <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
               <div class="col-md-1">
-                <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                <!-- <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
-                *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>
+                *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i> -->
+                <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
+                    *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
               </div>
             </div>
 
@@ -496,11 +504,29 @@
                   (click)="getScaleDetails(latestCprList[0],RedirectionType.BRADEN$)"
                   *ngIf="latestCprList[0]?.StatusTxt == 'Released'" /> -->
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                (click)="openPreCathDocPdf(latestCprList[0]?.Dockey)"
+                (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
                 *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
               </div>
             </div>
 
+          <!--  Correspondence Document -->
+            <!-- <div
+              [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isCorrespondenceDocument',latestCorrespondenceList[0])">
+              <div class="col-md-4"> Correspondence Document {{latestCorrespondenceList[0]?.Zversion ?
+                  dockVer(latestCorrespondenceList[0]?.Zversion) : ''}}:</div>
+              <div class="col-md-2 status-color">{{latestCorrespondenceList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestCorrespondenceList[0]?.DocTime)}}">
+                {{getDate(latestCorrespondenceList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestCorrespondenceList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+              
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="openCorrespondenceDocumentPdf(latestCorrespondenceList[0]?.Dockey)"
+                *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
+              </div>
+            </div> -->
             <!--  Nursing Initial Assessment Gyno Obstetrics -->
             <!-- <div
               [ngClass]="isNursingInitialAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -592,6 +618,7 @@
     <app-nursing-assessment *ngIf="openNurseAssissment"></app-nursing-assessment>
     <app-pre-cardiac-cath *ngIf="openPreCardiacCath"></app-pre-cardiac-cath>
     <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
+    <app-correspondence-document *ngIf="openCorrespondenceDocument"></app-correspondence-document>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <ng-template #releasepdfmodal>

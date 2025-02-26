@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 import { SearchTextPipe } from './search-text.pipe';
 
 
-
 @NgModule({
   declarations: [
-    SearchTextPipe
+    SearchTextPipe,
   ],
   exports: [
     SearchTextPipe

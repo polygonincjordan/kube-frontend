@@ -190,6 +190,7 @@ export class SurgicalPassportComponent implements OnInit {
   }
 
   public importVitalsData(data) {
+    debugger
     data.forEach((el) => {
       this.toVitalsArr = this.toVitalsArr.concat({
         Dockey: '',
@@ -265,7 +266,7 @@ export class SurgicalPassportComponent implements OnInit {
       Patient: this.storageService?.patientData?.name,
       admissionDate: this.storageService.patientData.periodStart,
     };
-    this.erVitalsModal.openModalForErVital(item);
+    this.erVitalsModal.openModalForErVital(item, '', 'surgical');
   }
   public openModalForDiagnosis() {
     if(this.isCheckedDiagnosis) return
