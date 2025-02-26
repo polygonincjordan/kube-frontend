@@ -16,3 +16,11 @@
       width: 14px;
     }
   }
+
+  .thead-back-color {
+    background: #293a4a;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }

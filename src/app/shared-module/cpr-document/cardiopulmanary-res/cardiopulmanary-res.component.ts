@@ -19,4 +19,10 @@ export class CardiopulmanaryResComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  toggleValue(controlName: string) {
+    const currentValue = this.cprForm.get(controlName)?.value;
+    this.cprForm.get(controlName)?.setValue(!currentValue);
+  }
+  
+
 }

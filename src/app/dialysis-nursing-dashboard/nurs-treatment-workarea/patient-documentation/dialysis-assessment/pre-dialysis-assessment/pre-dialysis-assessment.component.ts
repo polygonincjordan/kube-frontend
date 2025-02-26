@@ -89,11 +89,11 @@ export class PreDialysisAssessmentComponent implements OnInit {
     date.setSeconds(0);
     this.predialysis.patchValue({
       TreatmentDate: new Date(),
-      TreatmentTime: currentTime,
+      TreatmentTime: '',
       DialysisFDate: new Date(),
       DialysisFTime: currentTime,
       BloodTest: null,
-      PrescribedTime: currentTime,
+      PrescribedTime: '',
       DryWeight: '',
       Machine: '',
       BloodFlow: '',

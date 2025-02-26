@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class ErVitalsComponent implements OnInit {
   @ViewChild('erVitalsModal', { static: true }) erVitalsModal: TemplateRef<any>;
+  @Output() importEvent = new EventEmitter();
+  
   modalRef: BsModalRef;
   modalRefForDelete: BsModalRef;
   modalRefForAllVitals: BsModalRef;
@@ -28,6 +30,7 @@ export class ErVitalsComponent implements OnInit {
   Reason = [];
   maintainVitalBarForm: FormGroup;
   deleteReasonsListData: any;
+  documentType: any;
   cancelReasonValue: any = '';
   isFormSubmitted = false;
   vitalDefaultListResp: any;
@@ -333,11 +336,12 @@ export class ErVitalsComponent implements OnInit {
      
     ];
   }
-  openModalForErVital(checkinitem,tab?) {
+  openModalForErVital(checkinitem,tab?,documentType?) {
     this.erListSelectedData = checkinitem;
     if(tab==="erHistory"){
       this.isEditAndDeleteAble=true
     }
+    this.documentType = documentType
     const config: ModalOptions = { class: 'modal-dialog-centered er-vital-modal' };
     this.modalRef = this.modalService.show(this.erVitalsModal, config);
     this.modalRef.onHide.subscribe((reason: string | any) => {
@@ -729,5 +733,17 @@ export class ErVitalsComponent implements OnInit {
       class: 'modal-dialog-centered',
     };
     this.modalRefForDelete = this.modalService.show(template, config);
+  }
+
+  Import() {
+    let value: any = []
+    this.selectedColData.TOITEM.results.forEach(element => {
+      element['Date'] = this.selectedColData.Odate;
+      element['Time'] = this.selectedColData.Otime;
+      value.push(element);
+    });
+    this.importEvent.emit(value);
+    this.modalRef.hide();
+    // this.vitalsArr = [];
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class ErVitalsComponent implements OnInit {
   @ViewChild('erVitalsModal', { static: true }) erVitalsModal: TemplateRef<any>;
+  @Output() importEvent = new EventEmitter();
+
   modalRef: BsModalRef;
   modalRefForDelete: BsModalRef;
   modalRefForAllVitals: BsModalRef;
@@ -43,6 +45,7 @@ export class ErVitalsComponent implements OnInit {
   nextInputId: string;
   selectedRowsIndex: number;
   selectedColIndex: any;
+  documentType: any;
   constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private formBuilder: FormBuilder, private storageService: StorageService) {
     this.maintainvitalform = this.formBuilder.group({
       maintainVitalFormitems: new FormArray([]),
@@ -333,12 +336,16 @@ export class ErVitalsComponent implements OnInit {
      
     ];
   }
-  openModalForErVital(checkinitem,tab?) {
+  openModalForErVital(checkinitem,tab?, documentType?) {
     this.erListSelectedData = checkinitem;
-    this.erListSelectedData.Einri = this.erListSelectedData.Institute;
-    this.erListSelectedData.Falnr = this.erListSelectedData.CaseNumber;
-    this.erListSelectedData.Patnr = this.erListSelectedData.Mrn;
-    this.erListSelectedData.Lfdbw = this.erListSelectedData.Lfdnr;
+    console.log(this.erListSelectedData, "this.erListSelectedData")
+    if(this.erListSelectedData.Institute) {
+      this.erListSelectedData.Einri = this.erListSelectedData.Institute;
+      this.erListSelectedData.Falnr = this.erListSelectedData.CaseNumber;
+      this.erListSelectedData.Patnr = this.erListSelectedData.Mrn;
+      this.erListSelectedData.Lfdbw = this.erListSelectedData.Lfdnr;
+    }
+    this.documentType = documentType;
     if(tab==="erHistory"){
       this.isEditAndDeleteAble=true
     }
@@ -733,5 +740,17 @@ export class ErVitalsComponent implements OnInit {
       class: 'modal-dialog-centered',
     };
     this.modalRefForDelete = this.modalService.show(template, config);
+  }
+
+  Import() {
+    let value: any = []
+    this.selectedColData.TOITEM.results.forEach(element => {
+      element['Date'] = this.selectedColData.Odate;
+      element['Time'] = this.selectedColData.Otime;
+      value.push(element);
+    });
+    this.importEvent.emit(value);
+    this.modalRef.hide();
+    // this.vitalsArr = [];
   }
 }

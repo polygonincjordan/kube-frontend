@@ -218,4 +218,37 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+
+  // Correspondence Document
+  saveCorrespondenceDocument(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveCorrespondenceDocument`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  correspondenceSetDocumentLatestDoc(json: any) {
+    const url = `${this.url}correspondenceSetDocumentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcCorrespondenceSetDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcCorrespondenceSetDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  correspondenceDocPDF(dockey: string): Observable<any> {
+    return this.http.get(this.url + `correspondenceDocPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  deleteCorrespondenceDocument(dockey: any) {
+    const url = `${this.url}deleteCorrespondenceDocument?Dockey=${dockey}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
 }

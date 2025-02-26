@@ -29,11 +29,12 @@
                 <div class="col-md-4">
                     <label class="m-0">Date of arrest</label>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <div class="date-function">
                         <img src="assets/img/Calender.svg" alt="">
-                        <input formControlName="DateArrest" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                          placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                        <input formControlName="DateArrest" class="form-control" style="color: #000; border-radius: 8px"
+                            type="text" placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker
+                            [bsConfig]="{ showWeekNumbers: false,
                           dateInputFormat: 'DD.MM.YYYY' }" />
                     </div>
                 </div>
@@ -86,30 +87,30 @@
                 </div>
                 <div class="col-md-4 d-flex">
                     <div class="d-flex align-items-center mr-3">
-                        <input class="input-radio" type="radio" [value]="'0'" formControlName="HDm" />
+                        <input class="input-radio" type="radio" [checked]="cprForm.get('HDm')?.value" (click)="toggleValue('HDm')" />
                         <label class="m-0">DM</label>
                     </div>
                     <div class="d-flex align-items-center mr-3">
-                        <input class="input-radio" type="radio" [value]="'1'" formControlName="HHtn" />
+                        <input class="input-radio" type="radio" [checked]="cprForm.get('HHtn')?.value" (click)="toggleValue('HHtn')" />
                         <label class="m-0">HTN</label>
                     </div>
                     <div class="d-flex align-items-center mr-3">
-                        <input class="input-radio" type="radio" [value]="'2'" formControlName="HCva" />
+                        <input class="input-radio" type="radio" [checked]="cprForm.get('HCva')?.value" (click)="toggleValue('HCva')" />
                         <label class="m-0">CVA</label>
                     </div>
                     <div class="d-flex align-items-center mr-3">
-                        <input class="input-radio" type="radio" [value]="'3'" formControlName="HCa" />
+                        <input class="input-radio" type="radio" [checked]="cprForm.get('HCa')?.value" (click)="toggleValue('HCa')" />
                         <label class="m-0">CA</label>
                     </div>
                     <div class="d-flex align-items-center mr-3">
-                        <input class="input-radio" type="radio" [value]="'4'" formControlName="HHf" />
+                        <input class="input-radio" type="radio" [checked]="cprForm.get('HHf')?.value" (click)="toggleValue('HHf')" />
                         <label class="m-0">HF</label>
                     </div>
                     <div class="d-flex align-items-center mr-3">
-                        <input class="input-radio" type="radio" [value]="'5'" formControlName="HRf" />
+                        <input class="input-radio" type="radio" [checked]="cprForm.get('HRf')?.value" (click)="toggleValue('HRf')" />
                         <label class="m-0">RF</label>
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
 
@@ -261,8 +262,8 @@
                     <label>Time of arrival</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="time" step="2" formControlName="DefibrillatorTm" class="form-control"
-                        min="08:00:00" max="17:00:00" />
+                    <input type="time" step="2" formControlName="DefibrillatorTm" class="form-control" min="08:00:00"
+                        max="17:00:00" />
                 </div>
             </div>
         </div>

@@ -275,9 +275,10 @@ export class DiagnosisTabComponent implements OnInit {
         // this.diagnosisDataList = result?.d.results;
         const diag = _.cloneDeep(result?.d.results);
         this.diagnosisStaticData = [...diag];
-        this.diagnosisStaticData.forEach((element,index) => {
-          this.collectDiagnosisData({target:{checked:true}},element,index);
-        });
+        // this.diagnosisStaticData.forEach((element,index) => {
+        //   this.collectDiagnosisData({target:{checked:true}},element,index);
+        // });
+        this.diagnosisArr = [...this.diagnosisStaticData];
       });
     
   }
@@ -706,15 +707,18 @@ export class DiagnosisTabComponent implements OnInit {
       (error: any) => {}
     );
   }
-  collectDiagnosisData(event,item,index){
+  collectDiagnosisData(event: any, item: any, index: number) {
     if (event.target.checked) {
-      this.diagnosisArr.push(item); 
-    }else{
-      this.diagnosisArr.splice(index,1);
+      this.diagnosisArr.push(item);
+    } else {
+      const itemIndex = this.diagnosisArr.findIndex(d => d.DiagKey1 === item.DiagKey1);
+      if (itemIndex !== -1) {
+        this.diagnosisArr.splice(itemIndex, 1);
+      }
     }
-  
   }
   Import(){
+    console.log(this.diagnosisArr, "Import data");
     this.importEvent.emit(this.diagnosisArr);
     this.modalRef.hide();
     this.diagnosisArr = [];
