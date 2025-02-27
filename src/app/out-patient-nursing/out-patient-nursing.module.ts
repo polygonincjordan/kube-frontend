@@ -80,6 +80,7 @@ import { ReservationListComponent } from './reservation/reservation-list/reserva
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { EmarWitnessComponent } from './e-prescription/e-mar/e-mar-order-history/drug-events-admin/emar-witness/emar-witness.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 
 const route: Routes = [
   {
@@ -158,7 +159,8 @@ const route: Routes = [
     TabsModule.forRoot(),
     NgbModule,
     NgxExtendedPdfViewerModule,
-    VitalSignModule
+    VitalSignModule,
+    CorrespondenceDocumentModule
   ],
 
 

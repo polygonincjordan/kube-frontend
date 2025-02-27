@@ -18,6 +18,8 @@ import { SocialHabitComponent } from './social-habit/social-habit.component';
 import { GlosGowCommaScalePopupComponent } from './glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
 import { FacePainScalePopupComponent } from './face-pain-scale/face-pain-scale-popup.component';
 import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric-rating-scale-popup.component';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @Component({
   selector: 'app-emergency-nursing-document',
@@ -417,7 +419,10 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   private ZMode: string = "I";
   private documentMode: string = "New";
   // private documentStatus: string = "";
-
+  selectedScales:any[]=[];
+  scalesArray: any[]=[];
+  toScaleArr: any[];
+  modalRefScales: BsModalRef;
   constructor(
     public storageService: StorageService,
     private formBuilder: FormBuilder,
@@ -426,6 +431,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     private emergencyService: EmergencyService,
     private sharedService: SharedService,
     private dataShareService: DataShareService,
+    private ePrescriptionService: EPrescriptionService,
+    private modalService: BsModalService
   ) {
     this.AssessmentType = AssessmentType;
     this._route.queryParams.subscribe((params) => {
@@ -2569,6 +2576,84 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         this.sharedService.waringSwallModel(`POST Error : ${error?.error?.error?.message?.value}`);
       },
     });
+  }
+
+  openModalForScales(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefScales = this.modalService.show(template, config);
+    this.loadScalesData();
+    // this.medicationImportDrugArray=[];
+  }
+
+  loadScalesData() {
+    // this.selectedScales = [];
+    this.toScaleArr = [];
+    const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${this.ePrescriptionService.parameters.patnr}`, false, false, false, false).subscribe((resp: any) => {
+     console.log(resp)
+      if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
+        //this.configurationData = resp.body.d.results;
+        // this.toScaleArr = resp.body.d.results;
+        if(resp.body?.d?.results.length) {
+          let requiredScales = ["Glasgow Coma Scale", "Morse Fall Scale (MFS)", "Braden scale for predicting pressure ulcers"];
+          this.toScaleArr = resp.body.d.results.filter(scale => requiredScales.includes(scale.Scaletype)).map(scale => ({ ...scale, isSelected: false }));
+        }
+        // this.medicationImportDrugArray=[];
+       //http://http://192.168.193.9:6051:8000/sap/opu/odata/sap/ZN_TRANSFER_ASSES_SRV/PatScalesSet?$filter=Patnr
+      }
+      //   this.filterEvents();
+    }, () => { scalesOrders.unsubscribe(); });
+  }
+
+  scalesImport() {
+    this.selectedScales.forEach((element) => {
+      this.scalesList.forEach((res: any) => {
+        if (element.Scaletype == res.ScaleType && element.Score) {
+          res.Datetimee = element.DateTime,
+            res.Dockey = element.Dockey,
+            res.ScoreDesc = element.ScoreDesc,
+            res.LastScore = element.Score,
+            res.ScaleType = element.Scaletype
+        }
+      })
+    })
+    // this.selectedScales.forEach(element => {
+    //   console.log(element)
+    //   this.scalesArray = this.scalesArray.concat({
+    //     "Dockey": "",
+    //     "ScaleType": element.Scaletype ,
+    //     "ScoreDesc": element.ScoreDesc ,
+    //     "Datetimee": element.DateTime,
+    //     "LastScore": element.Score,
+    //   });
+    // });
+    this.modalRefScales.hide();
+  }
+
+  collectAllScalesData(event: any) {
+    if (event.target.checked) {
+      this.selectedScales = (Object.assign([], this.toScaleArr));
+    } else {
+      this.selectedScales = [];
+    }
+  }
+
+  isCheckedScale(item: any): boolean {
+    return this.selectedScales.some(x => x.Scaletype == item.Scaletype);
+  }
+
+  collectScalesIData(event, item, i) {
+    if (event.target.checked) {
+      this.toScaleArr[i].isSelected = true;
+      this.selectedScales.push(item);
+    } else {
+      this.toScaleArr[i].isSelected = false;
+      const indexOf = this.selectedScales.findIndex(x => x.Scaletype == item.Scaletype);
+      if (indexOf !== -1)
+        this.selectedScales.splice(indexOf, 1);
+    }
   }
 
 }

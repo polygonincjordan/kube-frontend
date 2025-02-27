@@ -120,6 +120,7 @@ import { HistoryListComponent } from './reservation/history-list/history-list.co
 import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
 import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 
 const route: Routes = [
   {
@@ -237,7 +238,8 @@ const route: Routes = [
     PopoverModule,
     NgxExtendedPdfViewerModule,
     ImageEditorModule,
-    VitalSignModule
+    VitalSignModule,
+    CorrespondenceDocumentModule
   ],
 })
 export class NursingEmergencyDashboardModule { }
