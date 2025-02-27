@@ -1230,6 +1230,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openCPRDocument) {
       this.CprDocumentComp.ngOnDestroy();
     }
+    if (this.openCorrespondenceDocument) {
+      this.CorrespondenceComp.ngOnDestroy();
+    }
     this.getPatientProfile();
     this.getLatestAssessment();
     // this.getPhyAssessment();
@@ -2027,7 +2030,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseCPRDoc();
+          this.directReleaseCorrespondenceDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2924,6 +2927,20 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // Correspondence Document Edit
+      if (this.openCorrespondenceDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
     // Pre Cardiec Cath Document Create API
       if (this.openPreCardiacCath) {
         let docStatus = '3';
@@ -3082,7 +3099,16 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Glasgow coma scale:', error);
       });
-    }
+    }else if (this.openCorrespondenceDocument) {
+      this.CorrespondenceComp.createCorrespondenceDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating CPR Document:', error);
+      });
+    } 
   }
 
   newVersionDirectReleased() {
@@ -3947,6 +3973,19 @@ export class PatientDocumentationComponent implements OnInit {
   copyDirectReleasePreCardiac() {
     // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
     this.PreCardiacCathComp.createNursingAssessmentDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Pre-Cardiac Cath document:', error);
+    });
+  }
+
+  // Copy + Release Correspondence Document
+  copyDirectReleaseCorrespondenceDocument() {
+    // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
+    this.CorrespondenceComp.createCorrespondenceDocument('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }

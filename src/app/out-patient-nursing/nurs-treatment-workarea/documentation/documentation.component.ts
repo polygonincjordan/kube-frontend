@@ -11,12 +11,15 @@ import { InPatientDataResult } from '@services/e-kardex/interfaces/inpatient-dat
 import { PatientVisitDataResult } from '@services/e-kardex/interfaces/patient-visit-data';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { InPatientConfigurationService } from '@services/e-kardex/inPatient.service';
 import { DiagnosisHistoryPopupComponent } from './diagnosis-history-popup/diagnosis-history-popup.component';
 import { ErPhysicianComponent } from './er-physician/er-physician.component';
 import { MedicalReportComponent } from './medical-report/medical-report.component';
 import { EducationFormComponent } from './education-form/education-form.component';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { SharedService } from '@services/shared.service';
+import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -28,6 +31,8 @@ export class DocumentationComponent implements OnInit {
   @ViewChild(EducationFormComponent) educationAssessmentComp: EducationFormComponent;
   @ViewChild('diagnosisHistory', { static: true })
   diagnosisHistory: DiagnosisHistoryPopupComponent;
+  @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
   @ViewChild('notreleasedmodal') notreleasedmodal: TemplateRef<HTMLDivElement>;
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
@@ -84,6 +89,11 @@ export class DocumentationComponent implements OnInit {
   selectedFile: File | null = null;
   documentUrl: SafeResourceUrl | null = null;
 
+  public isCorrespondenceDocument: boolean = false;
+  public openCorrespondenceDocument: boolean = false;
+  latestCorrespondenceList = [];
+  private subscription: Subscription;
+
   patientVisitRecord: PatientVisitDataResult = {} as PatientVisitDataResult;
   inPatientVisitData: InPatientDataResult;
   pdfFormDiv: boolean;
@@ -100,7 +110,8 @@ export class DocumentationComponent implements OnInit {
   departmentOUList: any = [];
   InOutPatientViewValue: { showBoth: boolean; showIn: boolean; showOut: boolean; };
   imgType: any;
-  constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder) {
+  constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, 
+    private dayCaseDashboardService: DayCaseDashboardService, private sharedService: SharedService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -124,6 +135,7 @@ export class DocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
+    this.getCorrespondenceDocDetails();
     this.getPatientProfile();
   }
 
@@ -133,6 +145,7 @@ export class DocumentationComponent implements OnInit {
   }
   selectAssessment(name, selectedDocData) {
     this.selectedDocData = selectedDocData;
+    this.isCorrespondenceDocument = false;
     if (name == 'nursing') {
       this.phyAssess = false;
       this.nursAssess = false;
@@ -161,6 +174,14 @@ export class DocumentationComponent implements OnInit {
       this.attachments = true;
       this.educationAssessment = false;
       this.selectedDocName = 'Attachments Document'
+    } else if (name == 'isCorrespondenceDocument') {
+      this.phyAssess = false;
+      this.nursAssess = false;
+      this.medReport = false;
+      this.attachments = false;
+      this.educationAssessment = false;
+      this.isCorrespondenceDocument = true;
+      this.selectedDocName = 'Correspondence Document'
     }
   }
   selectNursAssessment(name) {
@@ -275,6 +296,24 @@ export class DocumentationComponent implements OnInit {
       (_error: any) => { }
     );
   }
+
+  // Correspondence Latest
+  getCorrespondenceDocDetails() {
+    const json = {
+      Einri: this.storageService.einri,
+      Falnr: this.storageService.falnr,
+    }
+    this.dayCaseDashboardService.correspondenceSetDocumentLatestDoc(json).subscribe({
+      next: (_success: any) => {
+        this.latestCorrespondenceList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
   getPatientProfile() {
     this.admissionService.getDicumentDetails(this.storageService.einri, '1', this.storageService.patnr, '', this.storageService.falnr).subscribe(
       (_success: any) => {
@@ -567,10 +606,14 @@ export class DocumentationComponent implements OnInit {
     this.pdfUrl = file;
   }
   refresh() {
+    if (this.openCorrespondenceDocument) {
+      this.CorrespondenceComp.ngOnDestroy();
+    }
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
+    this.getCorrespondenceDocDetails();
     this.phyAssess = false;
     this.nursAssess = false;
     this.educationAssessment = false;
@@ -583,8 +626,11 @@ export class DocumentationComponent implements OnInit {
     this.documentType = undefined;
     this.patientProfileDocumet = this.documentTypeFilterValue;
     this.medDocList = [];
+    this.isCorrespondenceDocument = false;
+    this.openCorrespondenceDocument = false;
   }
   openDocument(action) {
+    debugger
     this.actionType = action;
     if (this.phyAssess) {
       if (action == 'create') {
@@ -663,7 +709,57 @@ export class DocumentationComponent implements OnInit {
       if (action == 'create') {
         this.openModalForAttachment();
       }
+    } else if (this.isCorrespondenceDocument) {
+      if (action == 'create') {
+        this.openCorrespondenceDocument = true;
+        // this.educationAssessmentComp.resetAll();
+        // this.educationAssessmentComp.ngOnInit();
+
+      } else if (action == 'edit') {
+        this.openCorrespondenceDocument = true;
+        // this.educationAssessmentComp.ngOnInit();
+      } else if (action == 'delete') {
+        // this.educationAssessmentComp.ngOnInit();
+        this.deleteCorrespondenceDoc(this.selectedDocData.Dockey);
+      } else if (action == 'release') {
+        this.directReleaseCorrespondenceDoc()
+        // this.educationAssessmentComp.ngOnInit();
+        // this.releaseMed();
+      } else if (action == 'copy') {
+        this.openCorrespondenceDocument = true;
+        // this.educationAssessmentComp.ngOnInit();
+      } else if (action == 'createandrelease') {
+        this.openCorrespondenceDocument = true;
+        this.CorrespondenceComp.createCorrespondenceDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+            this.actionType = "";
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating CPR document:', error);
+        });
+        // this.educationAssessmentComp.ngOnInit();
+        // this.createAndReleaseMed();
+      }
     }
+  }
+
+  openCorrespondenceDocumentPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .correspondenceDocPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
   }
 
   public openModalForAttachment() {
@@ -834,7 +930,16 @@ export class DocumentationComponent implements OnInit {
       this.releaseMed();
     } else if (this.educationAssessment) {
       this.createEducationAss(true);
-    }
+    } else if (this.openCorrespondenceDocument) {
+      this.CorrespondenceComp.createCorrespondenceDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating CPR Document:', error);
+      });
+    } 
 
   }
   getReleasedPdf(item) {
@@ -963,6 +1068,16 @@ export class DocumentationComponent implements OnInit {
   }
 
   saveEducationAss() {
+    if (this.actionType == 'create') {
+      this.createEducationAss(false);
+    } else if (this.actionType == 'edit') {
+      this.updateEducationAss(false);
+    } else if (this.actionType == 'copy') {
+      this.createEducationAss(false);
+    }
+  }
+
+  saveCorrespondenceDocument() {
     if (this.actionType == 'create') {
       this.createEducationAss(false);
     } else if (this.actionType == 'edit') {
@@ -1120,6 +1235,34 @@ export class DocumentationComponent implements OnInit {
     }, (_error: any) => { });
   }
 
+  async createCorrespondenceDocument() {
+    if (this.openCorrespondenceDocument) {
+      let docStatus = '1';
+      // if(this.selectedDocData?.Dockey) docStatus = '3';
+      this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+  }
+
+    // Copy + Release Correspondence Document
+    copyDirectReleaseCorrespondenceDocument() {
+      // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
+      this.CorrespondenceComp.createCorrespondenceDocument('5', 'copy').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Pre-Cardiac Cath document:', error);
+      });
+    }
+
   async deleteEducationAss() {
     Swal.fire({
       title: 'Confirm',
@@ -1148,7 +1291,40 @@ export class DocumentationComponent implements OnInit {
       }
     });
   }
-
+async deleteCorrespondenceDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
   async updateEducationAss(type) {
     (await this.educationAssessmentComp.saveEducationFormValue(type)).subscribe((res: any) => {
       Swal.fire({
@@ -1176,7 +1352,33 @@ export class DocumentationComponent implements OnInit {
       );
     })
   }
-
+  directReleaseCorrespondenceDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcCorrespondenceSetDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveCorrespondenceDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('CPR Document released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
   openEducationAssPdf(Dockey) {
     this.pdfUrl = '';
     this.admissionService

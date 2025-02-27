@@ -8,7 +8,6 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { catchError, of } from 'rxjs';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { ScalesGlosgowComaComponent } from './scales-glosgow-coma/scales-glosgow-coma.component';
 import { ScalesFacePainComponent } from './scales-face-pain/scales-face-pain.component';
@@ -17,6 +16,8 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 import { ScalesNumericRatingComponent } from './scales-numeric-rating/scales-numeric-rating.component';
 import { SharedService } from '@services/shared.service';
 import { AddHabitSocialComponent } from './add-habit-social/add-habit-social.component';
+import { catchError, of, Subscription } from 'rxjs';
+import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @UntilDestroy()
 @Component({
@@ -107,6 +108,10 @@ export class ErTriageComponent implements OnInit {
   patientDetails: Patient;
   maritalStatus: any;
   socialHabitList: any[];
+  selectedScales:any[]=[];
+  scalesArray: any[]=[];
+  toScaleArr: any[];
+  modalRefScales: BsModalRef;
 
   constructor(
     private modalService: BsModalService,
@@ -115,7 +120,8 @@ export class ErTriageComponent implements OnInit {
     public storageService: StorageService,
     private patientService: PatientService,
     private formBuilder: FormBuilder,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private ePrescriptionService: EPrescriptionService,
   ) { }
 
   ngOnInit(): void {
@@ -810,6 +816,86 @@ export class ErTriageComponent implements OnInit {
       }
     });
   }
+
+  openModalForScales(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefScales = this.modalService.show(template, config);
+    this.loadScalesData();
+    // this.medicationImportDrugArray=[];
+  }
+
+  loadScalesData() {
+    // this.selectedScales = [];
+    this.toScaleArr = [];
+    const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${this.ePrescriptionService.parameters.patnr}`, false, false, false, false).subscribe((resp: any) => {
+     console.log(resp)
+      if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
+        //this.configurationData = resp.body.d.results;
+        // this.toScaleArr = resp.body.d.results;
+        if(resp.body?.d?.results.length) {
+          let requiredScales = ["Glasgow Coma Scale", "Morse Fall Scale (MFS)", "Braden scale for predicting pressure ulcers"];
+          this.toScaleArr = resp.body.d.results.filter(scale => requiredScales.includes(scale.Scaletype)).map(scale => ({ ...scale, isSelected: false }));
+        }
+        // this.medicationImportDrugArray=[];
+       //http://http://192.168.193.9:6051:8000/sap/opu/odata/sap/ZN_TRANSFER_ASSES_SRV/PatScalesSet?$filter=Patnr
+      }
+      //   this.filterEvents();
+    }, () => { scalesOrders.unsubscribe(); });
+  }
+
+  scalesImport() {
+
+    this.selectedScales.forEach((element) => {
+      this.scalesList.forEach((res: any) => {
+        if (element.Scaletype == res.ScaleType && element.Score) {
+          res.Datetimee = element.DateTime,
+            res.Dockey = element.Dockey,
+            res.ScoreDesc = element.ScoreDesc,
+            res.LastScore = element.Score,
+            res.ScaleType = element.Scaletype
+        }
+      })
+    })
+    // this.selectedScales.forEach(element => {
+    //   console.log(element)
+    //   this.scalesArray = this.scalesArray.concat({
+    //     "Dockey": "",
+    //     "ScaleType": element.Scaletype ,
+    //     "ScoreDesc": element.ScoreDesc ,
+    //     "Datetimee": element.DateTime,
+    //     "LastScore": element.Score,
+    //   });
+    // });
+    this.modalRefScales.hide();
+  }
+
+  collectAllScalesData(event: any) {
+    if (event.target.checked) {
+      this.selectedScales = (Object.assign([], this.toScaleArr));
+    } else {
+      this.selectedScales = [];
+    }
+  }
+
+  isCheckedScale(item: any): boolean {
+    return this.selectedScales.some(x => x.Scaletype == item.Scaletype);
+  }
+
+  collectScalesIData(event, item, i) {
+    if (event.target.checked) {
+      this.toScaleArr[i].isSelected = true;
+      this.selectedScales.push(item);
+    } else {
+      this.toScaleArr[i].isSelected = false;
+      const indexOf = this.selectedScales.findIndex(x => x.Scaletype == item.Scaletype);
+      if (indexOf !== -1)
+        this.selectedScales.splice(indexOf, 1);
+    }
+  }
+
 
   parseTime(data: string) {
     if (data && data.length) {

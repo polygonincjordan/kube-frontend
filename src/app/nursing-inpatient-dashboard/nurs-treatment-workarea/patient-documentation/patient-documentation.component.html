@@ -131,6 +131,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Correspondence Document'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseCorrespondenceDocument()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
@@ -510,7 +515,7 @@
             </div>
 
           <!--  Correspondence Document -->
-            <!-- <div
+            <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="font-weight: bold;" (click)="selectAssessment('isCorrespondenceDocument',latestCorrespondenceList[0])">
               <div class="col-md-4"> Correspondence Document {{latestCorrespondenceList[0]?.Zversion ?
@@ -526,7 +531,7 @@
                 (click)="openCorrespondenceDocumentPdf(latestCorrespondenceList[0]?.Dockey)"
                 *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
               </div>
-            </div> -->
+            </div>
             <!--  Nursing Initial Assessment Gyno Obstetrics -->
             <!-- <div
               [ngClass]="isNursingInitialAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "

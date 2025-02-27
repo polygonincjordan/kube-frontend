@@ -1,26 +1,37 @@
 .table-line {
-    border-bottom: 1px solid #cacaca;
-    padding-bottom: 10px;
+  border-bottom: 1px solid #cacaca;
+  padding-bottom: 10px;
 
 }
 
 .date-function {
-    input {
-      font-size: 12px;
-    }
-    img {
-      position: absolute;
-      top: 45%;
-      left: 75%;
-      transform: translateY(-50%);
-      width: 14px;
-    }
+  img {
+    position: absolute;
+    top: 45%;
+    left: 75%;
+    transform: translateY(-50%);
+    width: 14px;
+  }
+}
+
+.thead-back-color {
+  background: #293a4a;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+.table {
+  thead {
+    white-space: nowrap;
   }
 
-  .thead-back-color {
-    background: #293a4a;
-    color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 9;
+  td:not(:nth-child(1)):not(:nth-child(2)) {
+    min-width: 100px !important;
   }
+}
+
+::-webkit-scrollbar {
+  height: 10px !important;
+}

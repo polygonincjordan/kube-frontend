@@ -68,7 +68,15 @@ export class CorrespondenceDocumentComponent implements OnInit {
     })
   }
 
-
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
   getCorrespondenceDocDetails(docKey?) {
     this.subscription = this.dayCaseDashboard
       .fetcCorrespondenceSetDocDetails(docKey)

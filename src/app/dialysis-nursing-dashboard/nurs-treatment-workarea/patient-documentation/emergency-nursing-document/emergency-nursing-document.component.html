@@ -247,6 +247,9 @@
             height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
             <input type="checkbox" [(ngModel)]="noScaleAppicable" [ngModelOptions]="{ standalone: true }"  [disabled]="isDockeyAvailable()"/>
             <label class="admitting-physician">No Scale Applicable</label>
+            <div style="display: flex; width: 88%; justify-content: end;">
+              <img src="assets/img/file1.svg" title="Create & Import" class="img-size" (click)="openModalForScales(scalesOrderCase)" />
+            </div>
           </div>
           <div class="scale-box-table">
             <table class="table table-bordered past-table">
@@ -458,3 +461,55 @@
     </div>
   </div>
 </div>
+
+<ng-template #scalesOrderCase>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Import Current Scales Order for {{storageService.patientData.name}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <div style="display: flex; justify-content: end; padding-right: 1rem;">
+      <button (click)="scalesImport()" style="border: 1px solid; background: #3b82f6; color: #ffffff; padding: 5px 20px;
+            border-radius: 4px; font-weight: 700;margin-top: 4px;">
+        Import
+      </button>
+    </div>
+    <form style="max-height: 350px; overflow: auto;">
+      <table class="table table-bordered past-table mt-3">
+        <thead style="background-color: #e4edf5; color: black;text-align: center;position: sticky; top: 0;">
+          <tr>
+            <th scope="col" style="text-align: -webkit-center;">
+              <input type="checkbox" [checked]="selectedScales.length === toScaleArr.length" class="form-control"
+                (change)="collectAllScalesData($event)" style="width:20px" />
+            </th>
+            <th>Scale Type</th>
+            <th style="width: 270px;">Last Score</th>
+            <th>Score Description</th>
+            <th>Date/Time</th>
+            <th>Create</th>
+            <th>Display</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: hsl(225, 100%, 99%);">
+          <tr *ngFor="let item of toScaleArr;let i=index" style="text-align:center">
+            <td style="text-align: -webkit-center;"> <span class="input-text-field d-inline-block align-top w-100">
+                <ng-container>
+                  <input type="checkbox" class="form-control" [checked]="item.isSelected"
+                    (change)="collectScalesIData($event,item, i)" style="width:20px" />
+                </ng-container>
+              </span></td>
+            <td>{{item!.Scaletype}}</td>
+            <td style="width: 270px;">{{item?.Score}}</td>
+            <td style="text-align: center;pointer-events: none;">{{item?.ScoreDesc}}</td>
+            <td style="text-align: center;pointer-events: none;">{{item?.DateTime}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</ng-template>

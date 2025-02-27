@@ -124,8 +124,8 @@ export class CprDocumentComponent implements OnInit {
       DateArrest: new Date(),
       TimeArrest: currentTime,
       TimeCode: currentTime,
-      CodeActivate: currentTime,
-      RequestApproved: ",",
+      CodeActivate: "",
+      RequestApproved: "",
       HDm: false,
       HHtn: false,
       HCva: false,
@@ -556,7 +556,6 @@ export class CprDocumentComponent implements OnInit {
         "Amount": "",
         "Rate": "",
         "Therapy": "00000",
-        "Id": "",
         "OrderingPhysician": element.EmpRespNm,
         "Cycle": element.N1id
       });
