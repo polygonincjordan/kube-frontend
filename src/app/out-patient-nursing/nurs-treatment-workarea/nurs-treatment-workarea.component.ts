@@ -1058,6 +1058,8 @@ export class NursTreatmentWorkareaComponent implements OnInit {
       this.emergencyService.tabPanelNavigation('Services');
     } else if(tabName == 'vitalSign'){
       this.emergencyService.tabPanelNavigation('VitalSign');
+    } else if(tabName == 'HistoryAssessment'){
+      this.emergencyService.tabPanelNavigation('HistoryAssessment');
     }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;

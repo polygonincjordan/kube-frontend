@@ -46,40 +46,26 @@
         <h6 class="font-weight-bold ml-3">Patient profile document</h6>
       </div>
       <div class="document-detail-list">
-        <div class="row  m-1" *ngFor="let item of patientProfileDocumet | keyvalue | filter: searchString; let i = index">
-          <div class="witdh-16 pl-2 mt-3">
-            <strong class="list-doc-date" [title]="getDate(item.key) | date: 'dd-MM-y'">{{ getDate(item.key) | date: "dd-MM-y" || '-' }}</strong>
-          </div>
-          <div class="w-100 mt-1   ml-1 document-list mr-0 ml-0 align-items-center row m-0 p-2" *ngFor="let member of item.value; let i = index" [ngClass]="i > 0 ? 'mt-1':''">
-            <div class="col-md-4 pl-0">
-              <strong class="" [title]="member.Dktxt">{{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</strong>
-            </div>
-            <div class="col-md-2 pl-0">
-              <strong class="color-43aee7" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</strong>
-            </div>
-            <div class="col-md-2 p-0">
-              <strong class="in-line" [title]="getDate(member.Dodat) | date: 'dd-MM-y'"><span *ngIf="member.Dodat">|</span> {{ getDate(member.Dodat) | date: "dd-MM-y" }}</strong>
-            </div>
-            <div class="col-md-3 pl-0">
-              <strong class="in-line" [title]="member.MitarbName"><span *ngIf="member.MitarbName">|</span> {{ member.MitarbName }}</strong>
-            </div>
-            <div class="col-md-1 pl-0 d-flex align-items-center" (click)="$event.preventDefault()">
-              <div class="col-md-6 p-0 mr-2" *ngIf="member.NodocText !='N/A'">
-                <!-- <img src="assets/img/eye-icon.svg" (click)="getReleasedPdf(item, labpdfmodal)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" /> -->
-                <img width="25" src="assets/img/rad-patient-image.png" (click)="getReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'image/bmp' || member.AttMimeType === 'url'" />
-                <i aria-hidden="true" (click)="getReleasedPdf(member, labpdfmodal)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="member.AttMimeType === 'PDF'"></i>
-                <img src="assets/img/document-html.png" width="15px" height="15px" (click)="getReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'HTML'" />
-                <!-- <i class="fa fa-html5" aria-hidden="true" (click)="getReleasedPdf(item, labpdfmodal)" *ngIf="item.AttMimeType === 'HTML'"></i> -->
-              </div>
-                <div class="col-md-6 p-0">
-                  <div class="d-flex" style="width: 100%;"
-                  (click)="onReleaseHistoryData(member.Dockey, member)">
-                  <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name="" id=""></select>
+        <div class="m-0" style=" justify-content: right;"
+              *ngFor="let item of sortedDocuments | filter:searchString;">
+              <div class="mt-3 pl-2" style="width: 100px; font-weight: bold; color: #00008B;">{{ item.date | date: "dd-MM-y" }}</div>
+              <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
+                *ngFor="let member of item.documents">
+                <div class="col-md-4 pr-0 pl-0" (click)="getReleasedPdf(member, labpdfmodal)" [title]="member.Dktxt">
+                  {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div>
+                <div class="col-md-2 status-color pr-0" (click)="getReleasedPdf(member, labpdfmodal)">
+                  {{ member.DokstText ? member.DokstText : "N/A" }}</div>
+                <div class="col-md-2" (click)="getReleasedPdf(member, labpdfmodal)">
+                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
+                <div class="col-md-3 pr-0" (click)="getReleasedPdf(member, labpdfmodal)">{{ member.MitarbName }}</div>
+                <div class="col-md-1 p-0">
+                  <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
+                    <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

@@ -15,8 +15,11 @@ import { PatientVisitDataResult } from '@services/e-kardex/interfaces/patient-vi
 import { DiagnosisHistoryPopupComponent } from './dignosis-history-popup/diagnosis-history-popup.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { InPatientConfigurationService } from '@services/e-kardex/inPatient.service';
+import { SharedService } from '@services/shared.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 
 @Component({
   selector: 'app-documentation',
@@ -26,6 +29,8 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 export class DocumentationComponent implements OnInit {
   @ViewChild(ErPhysicianComponent) phyComp: ErPhysicianComponent;
   @ViewChild(MedicalReportComponent) medComp: MedicalReportComponent;
+  @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  
   @ViewChild(EducationFormComponent) educationAssessmentComp: EducationFormComponent;
   @ViewChild('diagnosisHistory', { static: true })
   diagnosisHistory: DiagnosisHistoryPopupComponent;
@@ -90,7 +95,24 @@ export class DocumentationComponent implements OnInit {
   paramsObject: any;
   seletcedCurrentDoc: any;
   InOutPatientViewValue: { showBoth: boolean; showIn: boolean; showOut: boolean; };
-  constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder) {
+  previousPeriodValue: any = 'Overall';
+  selectedDocumentOU: any;
+  selectedCreatedBy: any;
+  previousPeriodsList = [
+    "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
+  ];
+  createdDocumentUserList: any = [];
+  documentTypeFilterValueClone: any = [];
+  departmentOUList = [
+    "CARMDAMC", "", "F21IUAMC"
+  ];
+  public isCorrespondenceDocument: boolean = false;
+  public openCorrespondenceDocument: boolean = false;
+  latestCorrespondenceList: any = []
+  private subscription: Subscription;
+
+  constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, 
+    private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, private sharedService: SharedService, private dayCaseDashboardService: DayCaseDashboardService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -146,6 +168,14 @@ export class DocumentationComponent implements OnInit {
       this.attachments = true;
       this.educationAssessment = false;
       this.selectedDocName = 'Attachments Document'
+    } else if (name == 'isCorrespondenceDocument') {
+      this.phyAssess = false;
+      this.nursAssess = false;
+      this.medReport = false;
+      this.attachments = false;
+      this.educationAssessment = false;
+      this.isCorrespondenceDocument = true;
+      this.selectedDocName = 'Correspondence Document'
     }
   }
   selectNursAssessment(name) {
@@ -207,6 +237,56 @@ export class DocumentationComponent implements OnInit {
       (_error: any) => { }
     );
   }
+
+  // Correspondence Latest
+  getCorrespondenceDocDetails() {
+    const json = {
+      Einri: this.storageService.einri,
+      Falnr: this.storageService.falnr,
+    }
+    this.dayCaseDashboardService.correspondenceSetDocumentLatestDoc(json).subscribe({
+      next: (_success: any) => {
+        this.latestCorrespondenceList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  openCorrespondenceDocumentPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .correspondenceDocPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+  async createCorrespondenceDocument() {
+    if (this.openCorrespondenceDocument) {
+      let docStatus = '1';
+      // if(this.selectedDocData?.Dockey) docStatus = '3';
+      this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+  }
+
   documentFilter(event, type) {
     if (type == 'date') {
       this.dateRange = event;
@@ -260,11 +340,21 @@ export class DocumentationComponent implements OnInit {
       (_error: any) => { }
     );
   }
+  removeDuplicates(array: any[]): any[] {
+    return [...new Set(array)];
+  }
   getPatientProfile() {
-    this.admissionService.getDicumentDetails(this.storageService.einri, '1', this.storageService.patnr, '', this.storageService.falnr).subscribe(
-      (_success: any) => {
-        this.documentTypeFilterValue = _success.d.results;
+    this.admissionService.getDicumentDetails(this.storageService.einri, '1', this.storageService.patnr, '', this.storageService.falnr).subscribe({
+      next: (_success: any) => {
+        // Handle successful data retrieval
+        this.documentTypeFilterValueClone = _success.d.results;
+        // this.documentTypeFilterValue = _success.d.results;
+        this.filterByPeriod();
         this.sort();
+        this.createdDocumentUserList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
+          this.createdDocumentUserList = this.removeDuplicates(this.createdDocumentUserList);
+          this.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
+          this.departmentOUList = this.removeDuplicates(this.departmentOUList);
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValue.forEach((element) => {
             let checkPatinet = this.documentTypeFilter.find(el => el.Dtid === element.Dtid);
@@ -277,8 +367,12 @@ export class DocumentationComponent implements OnInit {
           })
         }
       },
-      (_error: any) => { }
-    );
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error Data:', err);
+        // this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
   }
 
   groupBy(array: any[], key: string): any {
@@ -471,6 +565,7 @@ export class DocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
+    this.getCorrespondenceDocDetails();
     this.phyAssess = false;
     this.nursAssess = false;
     this.educationAssessment = false;
@@ -482,6 +577,8 @@ export class DocumentationComponent implements OnInit {
     this.dateRange = '';
     this.documentType = undefined;
     this.patientProfileDocumet = this.documentTypeFilterValue;
+    this.isCorrespondenceDocument = false;
+    this.openCorrespondenceDocument = false;
     this.medDocList = [];
   }
   openDocument(action) {
@@ -563,9 +660,103 @@ export class DocumentationComponent implements OnInit {
       if (action == 'create') {
         this.openModalForAttachment();
       }
+    } else if (this.isCorrespondenceDocument) {
+      if (action == 'create') {
+        this.openCorrespondenceDocument = true;
+        // this.educationAssessmentComp.resetAll();
+        // this.educationAssessmentComp.ngOnInit();
+
+      } else if (action == 'edit') {
+        this.openCorrespondenceDocument = true;
+        // this.educationAssessmentComp.ngOnInit();
+      } else if (action == 'delete') {
+        // this.educationAssessmentComp.ngOnInit();
+        this.deleteCorrespondenceDoc(this.selectedDocData.Dockey);
+      } else if (action == 'release') {
+        this.directReleaseCorrespondenceDoc()
+        // this.educationAssessmentComp.ngOnInit();
+        // this.releaseMed();
+      } else if (action == 'copy') {
+        this.openCorrespondenceDocument = true;
+        // this.educationAssessmentComp.ngOnInit();
+      } else if (action == 'createandrelease') {
+        this.openCorrespondenceDocument = true;
+        this.CorrespondenceComp.createCorrespondenceDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+            this.actionType = "";
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating CPR document:', error);
+        });
+        // this.educationAssessmentComp.ngOnInit();
+        // this.createAndReleaseMed();
+      }
     }
   }
+async deleteCorrespondenceDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
 
+  directReleaseCorrespondenceDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcCorrespondenceSetDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveCorrespondenceDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('CPR Document released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
   public openModalForAttachment() {
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
     this.removeFile();
@@ -579,6 +770,78 @@ export class DocumentationComponent implements OnInit {
       }
     });
 
+  }
+
+  filterPeriodDate() {
+    this.filterByPeriod();
+    this.sort();
+  }
+
+  filterByPeriod() {
+    let currentDate = new Date();
+    let startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+    let yesterday = new Date(startOfDay);
+    yesterday.setDate(startOfDay.getDate() - 1);
+  
+    let filteredArray = [];
+    
+    switch (this.previousPeriodValue) {
+      case "Current Day":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.isSameDate(this.parseODataDate(item.Dodat), startOfDay));
+        break;
+      case "Since Yesterday":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= yesterday);
+        break;
+      case "In Past 3 Days":
+        let past3Days = new Date(startOfDay);
+        past3Days.setDate(startOfDay.getDate() - 3);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= past3Days);
+        break;
+      case "In Past Week":
+        let pastWeek = new Date(startOfDay);
+        pastWeek.setDate(startOfDay.getDate() - 7);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastWeek);
+        break;
+      case "In Past Month":
+        let pastMonth = new Date(startOfDay);
+        pastMonth.setMonth(startOfDay.getMonth() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastMonth);
+        break;
+      case "In Past Years":
+        let pastYear = new Date(startOfDay);
+        pastYear.setFullYear(startOfDay.getFullYear() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastYear);
+        break;
+      case "Overall":
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+        break;
+      default:
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+    }
+
+    // Filter based on the selected options
+    this.documentTypeFilterValue = filteredArray.filter((item) => {
+      const itemDate = new Date(parseInt(item.Dodat.match(/\d+/)[0]));
+      const isDateInRange = itemDate >= currentDate;
+
+      const isCreatedByMatch =
+        !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
+
+      const isDepartmentMatch =
+        !this.documentType || item.Orgdo === this.documentType;
+
+      return isCreatedByMatch && isDepartmentMatch;
+    });
+  }
+
+  parseODataDate(odataDate: string): Date {
+    // Extract timestamp from the OData date format
+    let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
+    return new Date(timestamp);
+  }
+  
+  isSameDate(date1: Date, date2: Date): boolean {
+    return date1.toDateString() === date2.toDateString();
   }
 
   getAttachmentsList() {
@@ -712,7 +975,16 @@ export class DocumentationComponent implements OnInit {
       this.releaseMed();
     } else if (this.educationAssessment) {
       this.createEducationAss(true);
-    }
+    }  else if (this.openCorrespondenceDocument) {
+      this.CorrespondenceComp.createCorrespondenceDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating CPR Document:', error);
+      });
+    } 
 
   }
   getReleasedPdf(item) {

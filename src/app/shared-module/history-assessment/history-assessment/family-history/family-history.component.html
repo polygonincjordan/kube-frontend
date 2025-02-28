@@ -1,0 +1,289 @@
+<ng-template #familyHistoryKardexModal>
+  <div class="modal-body" style="padding: 0 !important;">
+    <div class="allergy-header">
+      <div style="
+        font-size: 23px;
+        font-weight: bold">
+        <span>Family History</span>
+      </div>
+      <div style="display: flex;
+      justify-content: end;align-items: center;flex:1">
+        <ul class="allergy-header-ul d-flex">
+          <li class="allergy-header-item" style="margin-left:10%">Patient Name :
+            <span>{{storageService.patientData.name}}</span>
+          </li>
+          <li class="allergy-header-item">MRN: {{storageService.patnr}}</li>
+          <li class="allergy-header-item">Admission date: {{storageService.patientData.periodStart | date : "dd.MM.y"}}
+          </li>
+          <li class="close-icon allergy-header-item" style="border: none;
+        padding: 0;
+        margin: 0;flex:1"><img src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float:right"
+              (click)="modalRef.hide()"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="" style="margin: 13px;">
+      <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+      <div class="row">
+        <div class="col-md-10" style="text-align: center;
+      font-size: 23px;
+      font-weight: bold;">
+          <span style="position: relative;
+      left: 10%;"> Family History</span>
+        </div>
+      </div>
+      <form [formGroup]="updateSurgForm" (keydown.enter)="$event.preventDefault()">
+      <div style="border: solid 1px #d9d9d9;border-radius: 5px;padding: 12px;">
+        
+        <div class="row" style="font-weight: bold;color: #7b8087;">
+          <div class="col-md-12">
+            <div style="border: solid 1px
+         #d9d9d9;border-radius: 6px;
+            padding: 5px 10px;">
+            <div class="form-check form-check-inline">
+              <!-- <input class="form-check-input" type="checkbox" id="inlineCheckbox1" formControlName="NoFamilyHistory" (change)="handleCheckboxPastMed()" [attr.disabled]="familyHistroyList.length >0 ? true:null"> -->
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" #chkEnable formControlName="NoFamilyHistory" (change)="disableField(chkEnable.checked)">
+              <label class="form-check-label" for="inlineCheckbox1">No Family History</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row" style="font-weight: bold;color: #7b8087;">
+        <div class="col-md-12">
+          <div style="border-radius: 6px;
+            padding: 5px 10px;">
+            <div class="form-check form-check-inline" [formGroup]="registerForm">
+              
+              <div class="d-flex align-items-center position-relative  mr-1" >
+            <!-- <input type="text" class="form-control" placeholder="Problem" style="height: 33px;"formControlName="Problem" (dblclick)="openCommonModal(commonColModal)" (keyup.enter)="openCommonModal(commonColModal)"  > -->
+                
+          <input type="text" class="form-control" placeholder="Problem" style="height: 33px;" formControlName="Problem" (dblclick)="openCommonModal(commonColModal,'Problem')" (keyup.enter)="openCommonModal(commonColModal,'Problem')">
+              </div>
+              
+              <div class="form-check" >
+                <input class="form-check-input" type="checkbox" value="" formControlName="Father"
+                >
+                <label class="form-check-label" >
+                  Father
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" formControlName="Mother"
+                >
+                <label class="form-check-label" >
+                  Mother
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" formControlName="Brother"
+                >
+                <label class="form-check-label" >
+                  Brother
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" formControlName="Sister"
+                >
+                <label class="form-check-label" >
+                  Sister
+                </label>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" formControlName="Son">
+                <label class="form-check-label" >
+                  Child
+                </label>
+              </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" formControlName="Paternal">
+                  <label class="form-check-label">
+                    Paternal
+                  </label>
+                </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" formControlName="Maternal">
+                    <label class="form-check-label">
+                      Maternal
+                    </label>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [formGroup]="registerForm" style="display: flex;align-items: center;justify-content: space-between;">
+        <div class="d-flex align-items-center position-relative " style="left:9px; width: 373px;">
+        <input type="text" class="form-control" style="
+        height: 33px;"
+      formControlName="Comments" placeholder="Comments">
+    </div>
+    <div class="d-flex">
+        <!-- <div> -->
+          <button class="c-pointer save-risk" (click)="saveFamilyHistroyForm()" style="border: 1px solid;
+          background: #0056b0;
+          color: #fff;
+          padding: 8px 20px;
+          border-radius: 16px px;
+          font-weight: 700;
+          border-radius: 24px;" [disabled]="enableCreatePMed">Save</button>
+        <!-- </div>
+        <div> -->
+          <button class="c-pointer save-risk" (click)="resetFamilyHistroyForm()" style="border: 1px solid;
+          background: #0056b0;
+          color: #fff;
+          padding: 8px 20px;
+          border-radius: 16px px;
+          font-weight: 700;
+          border-radius: 24px;">Cancel</button>
+        <!-- </div>         -->
+      </div>
+      </div>
+    </div>
+  </form>
+    </div>
+    <div class="modal-body" style="padding: 0 11px 0px;">
+      <form style="max-height: 296px;
+      overflow: auto;" [formGroup]="familyHistoryForm">
+        <table class="table table-borderless risk-table" >
+          <thead style="background-color: #e4edf5;
+      color: black;text-align: center;">
+            <tr>
+              
+              <th scope="col">Problem</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col">Comments</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container>
+              <ng-container
+                *ngFor="let item of familyHistroyList; let i = index;">
+                <tr class="past-med-input">
+                 
+                  <td style="padding-left: 2px;
+          padding-right: 2px;
+          width: 11%;    text-align: center;
+    line-height: 30px;">
+                        {{item.Problem}}
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Father" [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label">
+                        Father
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Mother" [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label" for="mother{{i}}">
+                        Mother
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Brother" [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label" for="brother{{i}}">
+                        Brother
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Sister" [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label" for="sister{{i}}">
+                        Sister
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Son" [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label" for="child{{i}}">
+                        Child
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Paternal"
+                        [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label" for="paternal{{i}}">
+                        Paternal
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-top: 18px;padding-right: 3px;width: 1%;font-weight: bold;pointer-events: none;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" [(ngModel)]="item.Maternal"
+                        [ngModelOptions]="{standalone: true}">
+                      <label class="form-check-label" for="maternal{{i}}">
+                        Maternal
+                      </label>
+                    </div>
+                  </td>
+                  <td style="padding-left: 2px;
+          padding-right: 2px;
+          width: 20%;    text-align: center;
+    line-height: 30px;">
+          {{item.Comments}}
+        </td>
+               
+                 <td style="padding-left: 2px;
+                 padding-right: 2px;
+                 width: 15%;text-align: center;"><img style="cursor: pointer;" src="assets/img/allergy-edit.svg" (click)="selectValueFromRiskTable(familyHistroyList[i])" title="Edit"><img src="assets/img/Delete.svg" style="margin-left: 11px;cursor: pointer; "(click)="confirmationForPastSurgDelete(item)">
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+
+
+          </tbody>
+        </table>
+      </form>
+
+    </div>
+  </div>
+</ng-template>
+<ng-template #commonColModal>
+  <div class="modal-body" style="padding: 0 !important;">
+    <div class="infoModel-title" style="background:#0056b0">
+      <h4 class="m-0 pl-3">Problem</h4>
+    </div>
+    <div  class="search-functionality col-md-10 pl-0 mt-2" *ngIf="this.colName == 'Problem' "><img  src="assets/img/pres-search-icon.svg" alt="" style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%);"><input  type="text" placeholder="Search" id="searchFilter" class="form-control w-100" style="height: 38px; font: 600 14px/1.5 Nunito,sans-serif; color: #848f96; border-radius: 8px!important; box-shadow: none; padding: 10px 10px 10px 42px;margin-left: 8px;" [(ngModel)]="searchString" (input)="someMethod(searchString)">
+    </div>
+    <div style="    max-height: 30em;
+    overflow: auto;padding: 11px;">
+      <table class="table table-bordered">
+          <thead style="
+          position: sticky;
+          top: -10px;
+          z-index: 9;background: #e4edf5;">
+        <tr>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody style="    background: #fbfcff;">
+            <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
+          <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText || item.TypText || item.Name}}</td>
+         
+        </tr>
+      </tbody>
+    
+      </table>
+    </div>
+  </div>
+</ng-template>

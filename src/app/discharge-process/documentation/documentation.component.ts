@@ -63,6 +63,9 @@ export class DocumentationComponent implements OnInit {
       SearchData: ['', [Validators.required]],
       DateRange: [, [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
+      previousPeriodValue: [null, [Validators.required]],
+      selectedCreatedBy: [null, [Validators.required]],
+      selectedDocumentOU: [null, [Validators.required]],
     });
   }
 
@@ -75,6 +78,9 @@ export class DocumentationComponent implements OnInit {
     this.admissionService.documentTypeDrop.next({
       documentType: this.selectedDocType,
       dateRange: this.dateRange,
+      previousPeriodValue: this.formDetailGroup.value.previousPeriodValue,
+      selectedCreatedBy: this.formDetailGroup.value.selectedCreatedBy,
+      selectedDocumentOU: this.formDetailGroup.value.selectedDocumentOU,
     });
     // this.onDateFilter.next(event)
   }
@@ -84,6 +90,9 @@ export class DocumentationComponent implements OnInit {
     this.admissionService.documentTypeDrop.next({
       documentType: this.selectedDocType,
       dateRange: this.dateRange,
+      previousPeriodValue: this.formDetailGroup.value.previousPeriodValue,
+      selectedCreatedBy: this.formDetailGroup.value.selectedCreatedBy,
+      selectedDocumentOU: this.formDetailGroup.value.selectedDocumentOU,
     });
   }
 
@@ -93,6 +102,9 @@ export class DocumentationComponent implements OnInit {
     this.admissionService.documentTypeDrop.next({
       documentType: '',
       dateRange: '',
+      previousPeriodValue: '',
+      selectedCreatedBy: '',
+      selectedDocumentOU: '',
     });
   }
 

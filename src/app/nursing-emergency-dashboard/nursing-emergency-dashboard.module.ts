@@ -121,6 +121,7 @@ import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/m
 import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/drug-events-admin.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
+import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 
 const route: Routes = [
   {
@@ -239,7 +240,8 @@ const route: Routes = [
     NgxExtendedPdfViewerModule,
     ImageEditorModule,
     VitalSignModule,
-    CorrespondenceDocumentModule
+    CorrespondenceDocumentModule,
+    HistoryAssessmentModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

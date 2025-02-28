@@ -123,6 +123,7 @@ import { FamilyHistoryComponent } from './treatment-workarea/history-assessment/
 import { PastMedicalComponent } from './treatment-workarea/history-assessment/past-medical/past-medical.component';
 import { PastSurgicalComponent } from './treatment-workarea/history-assessment/past-surgical/past-surgical.component';
 import { HistoryAssessmentComponent } from './treatment-workarea/history-assessment/history-assessment.component';
+import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 
 
 
@@ -217,7 +218,8 @@ export const emergencyDashboard: Routes = [
     NgbCollapseModule,
     TimepickerModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    CorrespondenceDocumentModule
   ]
 })
 export class EmergencyDashboardModule { }

@@ -81,6 +81,7 @@ import { HistoryListComponent } from './reservation/history-list/history-list.co
 import { EmarWitnessComponent } from './e-prescription/e-mar/e-mar-order-history/drug-events-admin/emar-witness/emar-witness.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
+import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 
 const route: Routes = [
   {
@@ -160,7 +161,8 @@ const route: Routes = [
     NgbModule,
     NgxExtendedPdfViewerModule,
     VitalSignModule,
-    CorrespondenceDocumentModule
+    CorrespondenceDocumentModule,
+    HistoryAssessmentModule
   ],
 
 
