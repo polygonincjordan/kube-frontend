@@ -14,11 +14,32 @@
                 containerClass: 'daterangepicker documentation-datepicker', showWeekNumbers: false }"
               class="form-control" formControlName="DateRange" (ngModelChange)="onDateChange($event)" />
           </div>
-          <div class="select-functionality text-left">
+          <div class="select-functionality text-left mr-3">
             <ng-select [searchable]="true" placeholder="Document Type" (change)="documentFilter($event)"
               formControlName="SelectDropdown">
               <ng-option *ngFor="let data of this.admissionService.documentTypeFilter" [value]="data.Dtid">{{
                 data.DtidText }}</ng-option>
+            </ng-select>
+          </div>
+          <div class="select-functionality text-left mr-3">
+            <ng-select [searchable]="true" placeholder="previous periods"  (change)="filterPeriodDate()" formControlName="previousPeriodValue">
+              <ng-option *ngFor="let data of previousPeriodsList" [value]="data">{{ data}}
+                <!-- [{{data.Dtid}}] -->
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="select-functionality text-left mr-3">
+            <ng-select [searchable]="true" placeholder="Created by"  (change)="filterPeriodDate()" formControlName="selectedCreatedBy">
+              <ng-option *ngFor="let data of this.admissionService.createdDocumentUserList" [value]="data">{{ data }}
+                <!-- [{{data.Dtid}}] -->
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="select-functionality text-left">
+            <ng-select [searchable]="true" placeholder="Department OU"  (change)="filterPeriodDate()" formControlName="selectedDocumentOU">
+              <ng-option *ngFor="let data of this.admissionService.createdDocumentUserList" [value]="data">{{ data }}
+                <!-- [{{data.Dtid}}] -->
+              </ng-option>
             </ng-select>
           </div>
         </div>

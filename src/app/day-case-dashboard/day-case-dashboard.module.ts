@@ -113,6 +113,7 @@ import { EMarWitnessComponent } from './administered-doses/administered-does-eve
 import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/e-mar-order-nurse/drug-events-admin/emar-witness/emar-witness.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { GlasgowComaScaleComponent } from './nurs-treatment-workarea/patient-documentation/glasgow-coma-scale/glasgow-coma-scale.component';
+import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 
 const route: Routes = [
   {
@@ -221,7 +222,8 @@ const route: Routes = [
     ImageEditorModule,
     NursingCarePlanDocumentModule,
     NursingDischargeSummaryModule,NursingAdmissionAssessmentModule,
-    VitalSignModule
+    VitalSignModule,
+    HistoryAssessmentModule
   ],
 })
 export class DayCaseDashboardModule { }

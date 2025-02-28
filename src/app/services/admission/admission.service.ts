@@ -33,10 +33,12 @@ export class AdmissionService {
   public clearSoapEvent = new BehaviorSubject(false);
   public isClearSelectedDoc = new BehaviorSubject(false);
 
-  public documentTypeDrop = new BehaviorSubject({documentType: '', dateRange: ''});
+  public documentTypeDrop = new BehaviorSubject({documentType: '', dateRange: '', selectedDocumentOU : '', selectedCreatedBy: '', previousPeriodValue: ''});
   public documentDateRangeFilter = new BehaviorSubject('');
 
   documentTypeFilter: any[] = [];
+  departmentOUList: any[] = [];
+  createdDocumentUserList: any[] = [];
   documentType
   formDetailGroup: any;
 

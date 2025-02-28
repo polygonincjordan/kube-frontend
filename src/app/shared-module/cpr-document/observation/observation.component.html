@@ -13,7 +13,7 @@
                                 max="17:00:00" />
                         </td>
                         <td class="w-10">
-                            <ng-select formControlName="Type">
+                            <ng-select formControlName="Type" style="width: 150px">
                                 <ng-option *ngFor="let item of observationList" [value]="item?.value">{{ item?.label
                                     }}</ng-option>
                             </ng-select>

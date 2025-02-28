@@ -90,7 +90,17 @@ export class DocumentationListComponent implements OnInit {
   pdfUrlType = ''
   htmlData: any;
   isImageFrame: boolean = false;
-
+  previousPeriodValue: any = 'Overall';
+  documentTypeFilterValueClone: any[] = [];
+  createdDocumentUserList: any = [];
+  departmentOUList = [
+    "CARMDAMC", "", "F21IUAMC"
+  ];
+  selectedCreatedBy: any;
+  documentType: any;
+  sortedDocuments: any;
+  asc: boolean = true;
+  desc: boolean = false;
   constructor(
     private patientHistoryService:PatientHistoryService,
     private storageService:StorageService,
@@ -157,7 +167,7 @@ export class DocumentationListComponent implements OnInit {
     });
 
     this.admissionService.documentTypeDrop.subscribe((res: any) => {
-      if (res.documentType || res.dateRange) {
+      if (res.documentType || res.dateRange || res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
         let filterValue = this.documentTypeFilterValue;
         if (res.documentType) {
           filterValue = filterValue.filter((element) => {
@@ -177,10 +187,22 @@ export class DocumentationListComponent implements OnInit {
             return itemDate >= fromDate && itemDate <= toDate;
           })
         }
+        if(res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
+          this.selectedCreatedBy =  res.selectedCreatedBy;
+          this.previousPeriodValue =  res.previousPeriodValue;
+          this.previousPeriodValue =  res.previousPeriodValue;
+          // this.documentType =  res.documentType;
+          this.filterByPeriod();
+        }
         this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
       } else {
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
       }
+
+      this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
+        date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
+        documents: this.patientProfileDocumet[key]
+      }));
     });
   }
 
@@ -368,6 +390,98 @@ export class DocumentationListComponent implements OnInit {
     this.pdfFormDiv = true;
   }
 
+  removeDuplicates(array: any[]): any[] {
+    return [...new Set(array)];
+  }
+
+  sort() {
+    this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+    this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
+      date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
+      documents: this.patientProfileDocumet[key]
+    }));
+    console.log(this.sortedDocuments, "sortedDocuments");
+
+    // Sort the array based on the date property
+    if (this.asc) {
+      this.asc = false;
+      this.desc = true;
+      this.sortedDocuments.sort((a, b) => b.date - a.date);
+    } else {
+      this.asc = true;
+      this.desc = false;
+      this.sortedDocuments.sort((a, b) => a.date - b.date);
+    }
+    // this.documentTypeFilterValue.sort((a, b) => 0 - (a > b ? -1 : 1));
+  }
+
+  filterByPeriod() {
+    let currentDate = new Date();
+    let startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+    let yesterday = new Date(startOfDay);
+    yesterday.setDate(startOfDay.getDate() - 1);
+  
+    let filteredArray = [];
+    
+    switch (this.previousPeriodValue) {
+      case "Current Day":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.isSameDate(this.parseODataDate(item.Dodat), startOfDay));
+        break;
+      case "Since Yesterday":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= yesterday);
+        break;
+      case "In Past 3 Days":
+        let past3Days = new Date(startOfDay);
+        past3Days.setDate(startOfDay.getDate() - 3);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= past3Days);
+        break;
+      case "In Past Week":
+        let pastWeek = new Date(startOfDay);
+        pastWeek.setDate(startOfDay.getDate() - 7);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastWeek);
+        break;
+      case "In Past Month":
+        let pastMonth = new Date(startOfDay);
+        pastMonth.setMonth(startOfDay.getMonth() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastMonth);
+        break;
+      case "In Past Years":
+        let pastYear = new Date(startOfDay);
+        pastYear.setFullYear(startOfDay.getFullYear() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastYear);
+        break;
+      case "Overall":
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+        break;
+      default:
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+    }
+
+    // Filter based on the selected options
+    this.documentTypeFilterValue = filteredArray.filter((item) => {
+      const itemDate = new Date(parseInt(item.Dodat.match(/\d+/)[0]));
+      const isDateInRange = itemDate >= currentDate;
+
+      const isCreatedByMatch =
+        !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
+
+      const isDepartmentMatch =
+        !this.documentType || item.Orgdo === this.documentType;
+
+      return isCreatedByMatch && isDepartmentMatch;
+    });
+    console.log(this.documentTypeFilterValue, "filterByPeriod");
+  }
+  parseODataDate(odataDate: string): Date {
+    // Extract timestamp from the OData date format
+    let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
+    return new Date(timestamp);
+  }
+  
+  isSameDate(date1: Date, date2: Date): boolean {
+    return date1.toDateString() === date2.toDateString();
+  }
+
   getCurrentVisitDetails(type: string) {
     this.admissionService
       .getDicumentDetails(
@@ -387,20 +501,27 @@ export class DocumentationListComponent implements OnInit {
         if (type == '2') {
           this.currentVisitDocumet = data?.d.results;
         } else {
-          // this.patientProfileDocumet = data?.d.results;
-          this.documentTypeFilterValue = data?.d.results;
-          this.patientProfileDocumet = this.groupBy(data?.d?.results, 'Dodat');
-          this.documentTypeFilterValue.forEach((element) => {
-            let checkPatinet = this.admissionService.documentTypeFilter.find(
-              (el) => el.Dtid === element.Dtid
-            );
-            if (!checkPatinet) {
-              this.admissionService.documentTypeFilter.push({
-                Dtid: element.Dtid,
-                DtidText: element.DtidText,
+          this.documentTypeFilterValueClone = data?.d.results;
+          // this.documentTypeFilterValue = _success.d.results;
+          this.filterByPeriod();
+          this.sort();
+          this.admissionService.departmentOUList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
+          this.admissionService.createdDocumentUserList = this.removeDuplicates(this.admissionService.departmentOUList);
+          this.admissionService.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
+          this.admissionService.departmentOUList = this.removeDuplicates(this.admissionService.departmentOUList);
+          if (this.documentTypeFilterValue.length) {
+            this.documentTypeFilterValue.forEach((element) => {
+                let checkPatinet = this.admissionService.documentTypeFilter.find(
+                  (el) => el.Dtid === element.Dtid
+                );
+                if (!checkPatinet) {
+                  this.admissionService.documentTypeFilter.push({
+                    Dtid: element.Dtid,
+                    DtidText: element.DtidText,
+                  });
+                }
               });
-            }
-          });
+          }
         }
       });
   }

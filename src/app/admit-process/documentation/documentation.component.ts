@@ -32,6 +32,10 @@ export class DocumentationComponent implements OnInit {
   dateRange: any;
   selectedDocType: any;
   userConfig: UserConfig = {} as UserConfig;
+  previousPeriodsList = [
+    "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
+  ];
+  previousPeriodValue: any = 'Overall';
 
   constructor(
     public ePrescriptionService: EPrescriptionService,
@@ -64,6 +68,9 @@ export class DocumentationComponent implements OnInit {
       SearchData: ['', [Validators.required]],
       DateRange: [, [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
+      previousPeriodValue: [null, [Validators.required]],
+      selectedCreatedBy: [null, [Validators.required]],
+      selectedDocumentOU: [null, [Validators.required]],
     });
   }
 
@@ -76,6 +83,9 @@ export class DocumentationComponent implements OnInit {
     this.admissionService.documentTypeDrop.next({
       documentType: this.selectedDocType,
       dateRange: this.dateRange,
+      previousPeriodValue: this.formDetailGroup.value.previousPeriodValue,
+      selectedCreatedBy: this.formDetailGroup.value.selectedCreatedBy,
+      selectedDocumentOU: this.formDetailGroup.value.selectedDocumentOU,
     });
     // this.onDateFilter.next(event)
   }
@@ -85,6 +95,9 @@ export class DocumentationComponent implements OnInit {
     this.admissionService.documentTypeDrop.next({
       documentType: this.selectedDocType,
       dateRange: this.dateRange,
+      previousPeriodValue: this.formDetailGroup.value.previousPeriodValue,
+      selectedCreatedBy: this.formDetailGroup.value.selectedCreatedBy,
+      selectedDocumentOU: this.formDetailGroup.value.selectedDocumentOU,
     });
   }
 
@@ -94,6 +107,9 @@ export class DocumentationComponent implements OnInit {
     this.admissionService.documentTypeDrop.next({
       documentType: '',
       dateRange: '',
+      previousPeriodValue: '',
+      selectedCreatedBy: '',
+      selectedDocumentOU: '',
     });
   }
 
@@ -178,6 +194,32 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.isRealoadData.next(true);
     })
   }
+
+
+  filterPeriodDate() {
+    // this.filterByPeriod();
+    // this.sort();
+    debugger
+    this.admissionService.documentTypeDrop.next({
+      documentType: this.selectedDocType,
+      dateRange: this.dateRange,
+      previousPeriodValue: this.formDetailGroup.value.previousPeriodValue,
+      selectedCreatedBy: this.formDetailGroup.value.selectedCreatedBy,
+      selectedDocumentOU: this.formDetailGroup.value.selectedDocumentOU,
+    });
+  }
+
+
+  parseODataDate(odataDate: string): Date {
+    // Extract timestamp from the OData date format
+    let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
+    return new Date(timestamp);
+  }
+  
+  isSameDate(date1: Date, date2: Date): boolean {
+    return date1.toDateString() === date2.toDateString();
+  }
+
 
   saveEducationForm() {
     this.admissionService.isSaveEducationData.next(true);

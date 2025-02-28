@@ -630,7 +630,6 @@ export class DocumentationComponent implements OnInit {
     this.openCorrespondenceDocument = false;
   }
   openDocument(action) {
-    debugger
     this.actionType = action;
     if (this.phyAssess) {
       if (action == 'create') {
