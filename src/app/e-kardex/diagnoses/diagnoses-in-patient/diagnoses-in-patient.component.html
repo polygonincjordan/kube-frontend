@@ -19,7 +19,11 @@
         <img src="assets/img/grid-icon.svg">
         Physician Assessment
       </span>
-      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment'">
+      <span class="in-patient-title" *ngIf="inPatientFormInput === 'CorrespondenceDocument'">
+        <img src="assets/img/grid-icon.svg">
+        Correspondence Document
+      </span>
+      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment' && inPatientFormInput !== 'Correspondence Document'">
         <button type="button" (click)="saveForm()">Save</button>
         <button type="button" (click)="releaseForm()">Release</button>
         <button type="button" *ngIf="isDelete" (click)="deleteForm()">Delete</button>
@@ -34,6 +38,12 @@
       <div class="right-button-group" *ngIf="inPatientFormInput === 'PHDIS'">
         <button type="button" (click)="savePhdisForm()">Save</button>
         <button type="button" (click)="releasePhdisForm()">Release</button>
+        <button type="button" *ngIf="isDelete" (click)="deletePhdisForm()">Delete</button>
+        <button type="button"(click)="closeInPatientForm()">Close</button>
+      </div>
+      <div class="right-button-group" *ngIf="inPatientFormInput === 'Correspondence Document'">
+        <button type="button" (click)="saveCorrespondenceDocument()">Save</button>
+        <button type="button" (click)="releaseCorresponde()">Release</button>
         <button type="button" *ngIf="isDelete" (click)="deletePhdisForm()">Delete</button>
         <button type="button"(click)="closeInPatientForm()">Close</button>
       </div>
@@ -471,6 +481,9 @@
     </ng-container>
     <ng-container *ngIf="inPatientFormInput === 'PhysicianAssessment'">
       <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>
+    </ng-container>
+    <ng-container *ngIf="inPatientFormInput === 'Correspondence Document'">
+      <app-correspondence-document></app-correspondence-document>
     </ng-container>
   </div>
 </div>

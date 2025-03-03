@@ -26,6 +26,8 @@ export class PastMedicalComponent implements OnInit {
   pastJson: {};
   searchString = '';
   modalCommonDataArr: any;
+  loginUserDetails = this.storageService.getUserProfile();
+
   constructor(private modalService: BsModalService,public storageService: StorageService,private patientHistory:PatientHistoryService,private formBuilder: FormBuilder) {
     this.pastmedform = this.formBuilder.group({
       pastMedFormitems: new FormArray([]),
@@ -43,6 +45,8 @@ export class PastMedicalComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.storageService.patientData);
+    this.getPastMedicalHistory();
+    this.getProblemCatalogSet();
   }
   addItemForPatMed(element?): void {
     this.pastMedFormitems = this.pastmedform.get('pastMedFormitems') as FormArray;
@@ -98,8 +102,8 @@ export class PastMedicalComponent implements OnInit {
       })
   }
   openModalForPastMedical(){
-    const config: ModalOptions = { class: 'modal-dialog-centered past-med-modal-size' };
-    this.modalRef = this.modalService.show(this.pastMedicalKardexModal, config);
+    // const config: ModalOptions = { class: 'modal-dialog-centered past-med-modal-size' };
+    // this.modalRef = this.modalService.show(this.pastMedicalKardexModal, config);
     this.resetPastMedForm();
     this.modalRef.onHide.subscribe((reason: string | any) => {
       if(reason === 'backdrop-click') {
@@ -108,14 +112,14 @@ export class PastMedicalComponent implements OnInit {
       }
     });
 
-    this.getPastMedicalHistory();
-    this.getProblemCatalogSet();
+
   }
   getProblemCatalogSet() {
     this.patientHistory.getProblemCatalogSet().subscribe(
       (_success: any) => {
        this.diseaseCatLog = _success.d.results;
-     
+       this.modalCommonDataArr = this.diseaseCatLog;
+    
      
       },
       (_error: any) => {}
@@ -336,5 +340,23 @@ export class PastMedicalComponent implements OnInit {
       }
     }
    
+  }
+
+  selectValueFromTable(item) {
+    // if(this.buttondisabled) return;
+    this.isMedUpdate = true;
+    this.updateMedForm.controls.Disease.setValue(item.Disease);
+    this.updateMedForm.controls.Bcpid.setValue(item.Bcpid);
+    this.updateMedForm.controls.Bchid.setValue(item.Bchid);
+    this.updateMedForm.controls.FromDate.setValue(item.FromDate);
+    this.updateMedForm.controls.ToDate.setValue(item.ToDate);
+    this.updateMedForm.controls.Treatment.setValue(item.Treatment);
+    this.updateMedForm.controls.Remarks.setValue(item.Remarks);
+    this.updateMedForm.controls.Medhistid.setValue(item.Medhistid);
+    this.updateMedForm.controls.Patnr.setValue(item.Patnr);
+    this.updateMedForm.controls.RespEmp.setValue(item.RespEmp);
+    this.updateMedForm.controls.Treatou.setValue(this.loginUserDetails?.Treatmentou);
+    this.updateMedForm.controls.Departmentou.setValue(this.loginUserDetails?.Deptorgunit);
+
   }
 }

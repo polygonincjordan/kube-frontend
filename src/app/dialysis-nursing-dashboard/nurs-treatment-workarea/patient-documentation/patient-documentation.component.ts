@@ -361,7 +361,7 @@ export class PatientDocumentationComponent implements OnInit {
       next: (_success: any) => {
         // Handle successful data retrieval
         this.documentTypeFilterValue = _success.d.results;
-        this.sort();
+        // this.sort();
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValue.forEach((element) => {
             let checkPatinet = this.documentTypeFilter.find(el => el.Dtid === element.Dtid);
@@ -495,6 +495,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   filterPeriodDate() {
     this.filterByPeriod();
+    this.asc = true;
     this.sort();
   }
 
@@ -549,7 +550,7 @@ export class PatientDocumentationComponent implements OnInit {
         !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
 
       const isDepartmentMatch =
-        !this.documentType || item.Orgdo === this.documentType;
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
 
       return isCreatedByMatch && isDepartmentMatch;
     });

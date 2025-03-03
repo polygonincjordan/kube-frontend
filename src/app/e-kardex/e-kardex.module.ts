@@ -60,6 +60,7 @@ import { PhysicianErVitalsComponent } from './diagnoses/diagnoses-in-patient/phy
 import { PhysicianFamilyHistoryComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-family-history/physician-family-history.component';
 import { PhysicianPastMedicalComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-past-medical/physician-past-medical.component';
 import { PhysicianPastSurgicalComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-past-surgical/physician-past-surgical.component';
+import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 
 export const eKardexRoutes: Routes = [
   { path: '**', component: EKardexComponent },
@@ -81,7 +82,8 @@ export const eKardexRoutes: Routes = [
     NgSelectModule,
     Ng2SearchPipeModule,
     NgxMaterialTimepickerModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    CorrespondenceDocumentModule
   ],
   providers: [
     eOrderService,

@@ -635,18 +635,18 @@ export class CprDocumentComponent implements OnInit {
           error: (err: any) => {
             this.sharedService.waringSwallModel(`Error ${err}`);
             this.sharedService.waringSwallModel(
-              `PUT Error at Nursing assessment document : ${err}`
+              `PUT Error at CPR document : ${err}`
             );
           },
           complete: () => {
             resolve(true);
             if (actiontype === 'edit') {
               this.sharedService.successSwallModel(
-                'Nursing assessment document updated successfully'
+                'CPR document updated successfully'
               );
             } else {
               this.sharedService.successSwallModel(
-                'Nursing assessment document created successfully'
+                'CPR document created successfully'
               );
             }
           },

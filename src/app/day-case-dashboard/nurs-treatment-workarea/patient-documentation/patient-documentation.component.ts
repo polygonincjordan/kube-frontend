@@ -411,8 +411,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValueClone = _success.d.results;
           // this.documentTypeFilterValue = _success.d.results;
-          this.filterByPeriod();
-          this.sort();
+
           this.createdDocumentUserList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
           this.createdDocumentUserList = this.removeDuplicates(this.createdDocumentUserList);
           this.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
@@ -491,6 +490,7 @@ export class PatientDocumentationComponent implements OnInit {
 
         // Handle patient profile response
         this.documentTypeFilterValue = patientProfileResponse.d.results;
+        this.filterByPeriod();
         this.sort();
         if (this.documentTypeFilterValue.length) {
           this.documentTypeFilterValue.forEach(element => {
@@ -2105,6 +2105,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   filterPeriodDate() {
     this.filterByPeriod();
+    this.asc = true;
     this.sort();
   }
 
@@ -2159,7 +2160,7 @@ export class PatientDocumentationComponent implements OnInit {
         !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
 
       const isDepartmentMatch =
-        !this.documentType || item.Orgdo === this.documentType;
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
 
       return isCreatedByMatch && isDepartmentMatch;
     });

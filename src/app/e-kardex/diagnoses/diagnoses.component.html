@@ -35,6 +35,10 @@
                   class="simple-icon-settings" /></span>
               <span (click)="openNewForm('out')"><img src="assets/img/file.png"
                   class="mw-15" /></span>
+              <span (click)="openNewForm('Correspondence')" class="mw-15">
+                <img src="assets/img/envelope.png" class="mw-15" />
+                <!-- <i class="fa fa-solid fa-envelope"></i> -->
+              </span>
             </div>
           </div>
           <ng-container *ngIf="!nodatafound && !isError">
@@ -97,6 +101,20 @@
         [patientVisitData]="patientVisitRecord"
         [isCreateRequest]="isCreateRequest"
         [isCopyRequest]="isCopyRequest" (updateEvent)="updateForm($event)"></app-visit-form>
+        <ng-container *ngIf="correspondenceFormDiv">
+          <div class="main_soap">
+            <div class="head">Correspondence Document</div>
+            <div class="details">
+              <app-correspondence-document></app-correspondence-document>
+            </div>
+              <div class="bottom">
+                <button (click)="saveCorrespondenceDocument()" >Save</button>
+                <button (click)="releaseCorresponde()">Release</button>
+                <!-- <button (click)="deleteCorrespondeDoc()">Delete</button> -->
+                <button (click)="updateForm(false)">Close</button>
+              </div>
+            </div>
+        </ng-container>
     </div>
 
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showIn">
@@ -142,6 +160,9 @@
                   <span class="dropdown-item c-pointer d-flex align-items-center"
                   (click)="openNewFormForInPatient('PhysicianAssessment')"><img src="assets/img/in-patient-dropdown.png"
                         class="mr-1">Physician Assessment</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatient('CorrespondenceDocument')"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Correspondence Document</span>
                 </div>
               </span>
             </div>

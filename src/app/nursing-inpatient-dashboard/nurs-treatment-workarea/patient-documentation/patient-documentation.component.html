@@ -497,7 +497,7 @@
             <div
               [ngClass]="isCPRDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="font-weight: bold;" (click)="selectAssessment('isCPRDocument',latestCprList[0])">
-              <div class="col-md-4"> CPR {{latestCprList[0]?.Zversion ?
+              <div class="col-md-4"> CPR Document {{latestCprList[0]?.Zversion ?
                   dockVer(latestCprList[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{latestCprList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(latestCprList[0]?.DocTime)}}">
