@@ -1395,7 +1395,9 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
   loadScalesData() {
     // this.selectedScales = [];
     this.toScaleArr = [];
-    const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${this.ePrescriptionService.parameters.patnr}`, false, false, false, false).subscribe((resp: any) => {
+    let patnr = this.ePrescriptionService.parameters.patnr;
+    patnr = patnr.padStart(10, '0');  
+    const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${patnr}`, false, false, false, false).subscribe((resp: any) => {
      console.log(resp)
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         //this.configurationData = resp.body.d.results;

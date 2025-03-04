@@ -122,6 +122,7 @@ import { DrugEventsAdminComponent } from './nurs-treatment-workarea/e-prescripti
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
+import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 
 const route: Routes = [
   {
@@ -241,7 +242,8 @@ const route: Routes = [
     ImageEditorModule,
     VitalSignModule,
     CorrespondenceDocumentModule,
-    HistoryAssessmentModule
+    HistoryAssessmentModule,
+    CprDocumentModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

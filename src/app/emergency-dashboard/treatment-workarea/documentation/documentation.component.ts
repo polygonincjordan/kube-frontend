@@ -828,7 +828,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
 
       const isDepartmentMatch =
-        !this.documentType || item.Orgdo === this.documentType;
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
 
       return isCreatedByMatch && isDepartmentMatch;
     });

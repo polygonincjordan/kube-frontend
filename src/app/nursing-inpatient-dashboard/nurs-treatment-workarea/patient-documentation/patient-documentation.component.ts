@@ -499,8 +499,8 @@ export class PatientDocumentationComponent implements OnInit {
         // Handle successful data retrieval
         this.documentTypeFilterValueClone = _success.d.results;
         // this.documentTypeFilterValue = _success.d.results;
-        this.filterByPeriod();
-        this.sort();
+        // this.filterByPeriod();
+        // this.sort();
         this.createdDocumentUserList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
           this.createdDocumentUserList = this.removeDuplicates(this.createdDocumentUserList);
           this.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
@@ -527,6 +527,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   filterPeriodDate() {
     this.filterByPeriod();
+    this.asc = true;
     this.sort();
   }
 
@@ -571,7 +572,6 @@ export class PatientDocumentationComponent implements OnInit {
       default:
         filteredArray = this.documentTypeFilterValueClone; // No filtering needed
     }
-
     // Filter based on the selected options
     this.documentTypeFilterValue = filteredArray.filter((item) => {
       const itemDate = new Date(parseInt(item.Dodat.match(/\d+/)[0]));
@@ -581,7 +581,7 @@ export class PatientDocumentationComponent implements OnInit {
         !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
 
       const isDepartmentMatch =
-        !this.documentType || item.Orgdo === this.documentType;
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
 
       return isCreatedByMatch && isDepartmentMatch;
     });

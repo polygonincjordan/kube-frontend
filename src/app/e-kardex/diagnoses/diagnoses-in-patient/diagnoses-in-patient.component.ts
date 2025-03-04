@@ -8,6 +8,9 @@ import { Subscription } from 'rxjs';
 import { ConfigPopup } from '../../../core/config-popup/config-popup.component';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
+import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
+import Swal from 'sweetalert2';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @Component({
   selector: 'diagnoses-in-patient',
@@ -16,6 +19,8 @@ import { AdmissionService } from '@services/admission/admission.service';
 })
 
 export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
+  @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  
   inPatientDataSet: FormGroup;
   inPatientOrrptDataSet: FormGroup;
   inPatientPhdisDataSet: FormGroup;
@@ -162,7 +167,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
 
   @ViewChild('inPatientPopup', { static: true }) configPopup: ConfigPopup;
 
-  constructor(private inPatientConfigurationService: InPatientConfigurationService, private datePipe: DatePipe , private route: ActivatedRoute, private admissionService: AdmissionService) {
+  constructor(private inPatientConfigurationService: InPatientConfigurationService, private datePipe: DatePipe , private route: ActivatedRoute, private admissionService: AdmissionService, private dayCaseDashboardService: DayCaseDashboardService) {
     this.inPatientDataSet = new FormGroup({
       DocKey: new FormControl(""),
       OperationPerformed: new FormControl(""),
@@ -346,6 +351,67 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
       this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
     });
     this.updateEvent.emit(true);
+  }
+
+  saveCorrespondenceDocument() {
+    let docStatus = '1';
+    // if(this.selectedDocData?.Dockey) docStatus = '3';
+    this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
+      if (formValue) {
+        // this.refresh();
+        this.updateEvent.emit(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Correspondence Document:', error);
+    });
+  }
+
+  releaseCorresponde() {
+    this.CorrespondenceComp.createCorrespondenceDocument('4').then((formValue) => {
+      if (formValue) {
+        // this.refresh();
+      this.updateEvent.emit(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating CPR document:', error);
+    });
+  }
+
+  async deleteCorrespondenceDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            // this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            // this.refresh();
+          }
+        );
+      }
+    });
   }
 
   releasePhdisForm() {

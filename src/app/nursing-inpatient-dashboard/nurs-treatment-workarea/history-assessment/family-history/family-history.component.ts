@@ -89,6 +89,9 @@ export class FamilyHistoryComponent implements OnInit {
       Problem: [{ value: "", disabled: false }],
       Comments: [{ value: "", disabled: false }],
     });
+    this.getProblemList();
+    this.getFamilyHistory();
+    this.addFamilyHistroyForm();
   }
   initForm() {
     this.updateSurgForm = this.formBuilder.group({
@@ -111,10 +114,13 @@ export class FamilyHistoryComponent implements OnInit {
       TreatOu: ['CAROPAMC'],
       NoFamilyHistory: [false]
     });
+    console.log(this.updateSurgForm, "updateSurgForm")
   }
   getProblemList() {
     this.patientHistory.getProblemList().subscribe((res: any) => {
-      this.problemList = res.d.results
+      this.problemList = res.d.results;
+      console.log(this.problemList, "this.problemList");
+      
     })
   }
 
@@ -154,13 +160,14 @@ export class FamilyHistoryComponent implements OnInit {
     this.familyHistoryFormItems.push(group);
   }
   openModalForFamilyHistory() {
-    const config: ModalOptions = { class: 'modal-dialog-centered past-med-modal-size' };
-    this.modalRef = this.modalService.show(this.pastSurgicalcalKardexModal, config);
-    this.modalRef.onHide.subscribe((reason: string | any) => {
-      if (reason === 'backdrop-click') {
+    // const config: ModalOptions = { class: 'modal-dialog-centered past-med-modal-size' };
+    // this.modalRef = this.modalService.show(this.pastSurgicalcalKardexModal, config);
+    // this.modalRef.onHide.subscribe((reason: string | any) => {
+    //   if (reason === 'backdrop-click') {
 
-      }
-    });
+    //   }
+    // });
+
     this.getProblemList();
     this.getFamilyHistory();
     this.addFamilyHistroyForm();
@@ -240,6 +247,8 @@ export class FamilyHistoryComponent implements OnInit {
         this.colName = column;
         this.searchString = '';
         if (column == 'Problem') {
+          console.log(this.problemList, "this.problemList Coman");
+          
           this.modalCommonDataArr = this.problemList;
           this.searchString = this.registerForm.controls.Problem.value;
         this.someMethod(this.searchString);
@@ -260,7 +269,7 @@ export class FamilyHistoryComponent implements OnInit {
     }else{
      if (event == "") {
       if (this.colName == 'Problem') {
-        this.modalCommonDataArr = this.allergenValues;
+        this.modalCommonDataArr = this.problemList;
       }else{
         this.modalCommonDataArr = this.riskValues;
       }

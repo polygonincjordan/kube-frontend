@@ -352,6 +352,7 @@ export class DocumentationComponent implements OnInit {
   
   filterPeriodDate() {
     this.filterByPeriod();
+    this.asc = true;
     this.sort();
   }
 
@@ -406,7 +407,7 @@ export class DocumentationComponent implements OnInit {
         !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
 
       const isDepartmentMatch =
-        !this.documentType || item.Orgdo === this.documentType;
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
 
       return isCreatedByMatch && isDepartmentMatch;
     });

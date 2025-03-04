@@ -75,7 +75,7 @@ export class HistoryAssessmentComponent implements OnInit {
   physicianOrderListFilterValue: any[];
   occupationalGroupData: any;
   StateComment = '';
-  activeAllergy: boolean = false;
+  activeAllergy: boolean = true;
   activeProgressNotes: boolean = false;
   activePhysicianOrders: boolean = false;
   activeRiskFactor: boolean = false;
@@ -140,6 +140,7 @@ export class HistoryAssessmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.openModalForAllergy(this.allergyModal);
   }
 
 
@@ -173,28 +174,28 @@ export class HistoryAssessmentComponent implements OnInit {
 
   // past medical
   openModalForPastMedical() {
-    this.pastMedicalKardex.openModalForPastMedical();
+    // this.pastMedicalKardex.openModalForPastMedical();
   }
   // past surgical
   openModalForPastSurgical() {
-    this.pastSurgicalKardex.openModalForPastSurgical();
+    // this.pastSurgicalKardex.openModalForPastSurgical();
   }
   // family history
   openModalForFamilyHistory() {
-    this.familyHistoryKardex.openModalForFamilyHistory();
+    // this.familyHistoryKardex.openModalForFamilyHistory();
   }
   public openModalForAllergy(
     template: TemplateRef<any>
   ) {
-    const config: ModalOptions = { class: 'modal-dialog-centered allergy-modal-size' };
-    this.modalRefForAllergy = this.modalServiceForAllergy.show(template, config);
-    this.userProfile = this.storageService.getUserProfile();
-    this.isCheckboxesDisabled = false;
-    this.modalRefForAllergy.onHide.subscribe((reason: string | any) => {
-      if (reason === 'backdrop-click') {
-        this.resetAllergyForm();
-      }
-    });
+    // const config: ModalOptions = { class: 'modal-dialog-centered allergy-modal-size' };
+    // this.modalRefForAllergy = this.modalServiceForAllergy.show(template, config);
+    // this.userProfile = this.storageService.getUserProfile();
+    // this.isCheckboxesDisabled = false;
+    // this.modalRefForAllergy.onHide.subscribe((reason: string | any) => {
+    //   if (reason === 'backdrop-click') {
+    //     this.resetAllergyForm();
+    //   }
+    // });
     this.getAllergyHistoryList();
     this.getAllergenValues();
     this.getAllergenGroupValues();
@@ -1255,16 +1256,15 @@ export class HistoryAssessmentComponent implements OnInit {
   public openModalForRisk(
     template: TemplateRef<any>
   ) {
-    const config: ModalOptions = { class: 'modal-dialog-centered modal-xl kardex-risk-modal-size' };
-    this.modalRefForRisk = this.modalServiceForAllergy.show(template, config);
+    // const config: ModalOptions = { class: 'modal-dialog-centered modal-xl kardex-risk-modal-size' };
+    // this.modalRefForRisk = this.modalServiceForAllergy.show(template, config);
     //this.selectedERList = data;
     this.getRiskList();
     this.getRiskValues();
     this.isRiskUpdate = false;
     this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
       if (reason === 'backdrop-click') {
-        this.resetRiskForm();
-        this.resetUpdateRiskForm();
+        
       }
     });
 
@@ -1276,6 +1276,7 @@ export class HistoryAssessmentComponent implements OnInit {
     }
     this.emergencyService.getRiskList(json).subscribe(
       (_success: any) => {
+        this.resetRiskForm();
         this.riskList = [];
         this.riskList = _success.d.results;
 

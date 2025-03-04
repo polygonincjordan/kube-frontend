@@ -1,7 +1,7 @@
-<ng-template #pastSurgicalKardexModal>
+<!-- <ng-template #pastSurgicalKardexModal> -->
   <div>
     <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
-    <div class="allergy-header">
+    <!-- <div class="allergy-header">
       <div style="
       font-size: 18px;
       font-weight: bold">
@@ -15,7 +15,7 @@
       padding: 0;
       margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float: right;" (click)="closePastSurgModal()"></li></ul>
     </div>
-      </div>
+      </div> -->
   </div>
     <div class="modal-body">
       <form [formGroup]="updateSurgForm" (keydown.enter)="$event.preventDefault()">
@@ -118,7 +118,8 @@
             width: 41%;pointer-events: none;"><input type="text" class="form-control" formControlName="Remarks"></td>
            <td style="padding-left: 2px;
            padding-right: 2px;
-           width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg"><img src="assets/img/Delete.svg" style="margin-left: 11px;" (click)="confirmationForPastSurgDelete(pastSurgList[i])">
+           width: 15%;text-align: center;"><img src="assets/img/allergy-edit.svg" (click)="selectValueFromTable(pastSurgList[i])">
+           <img src="assets/img/Delete.svg" style="margin-left: 11px;" (click)="confirmationForPastSurgDelete(pastSurgList[i])">
           </tr>
          </ng-container>
          </ng-container>
@@ -130,7 +131,7 @@
     
       </div>
     </div>
-  </ng-template>
+  <!-- </ng-template> -->
   <ng-template #commonColModal>
     <div class="modal-body" style="padding: 0 !important;">
       <div class="infoModel-title" style="background:#0056b0">

@@ -24,6 +24,7 @@ export class PastSurgicalComponent implements OnInit {
   updateSurgForm:FormGroup;
   pastJson = {};
   modalCommonDataArr: any;
+  loginUserDetails = this.storageService.getUserProfile();
   searchString = '';
   constructor(private modalService: BsModalService,public storageService: StorageService,private patientHistory:PatientHistoryService,private formBuilder: FormBuilder) {
     this.pastsurgform = this.formBuilder.group({
@@ -39,6 +40,8 @@ export class PastSurgicalComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.getPastSurgicalHistory();
+    this.getSurgicalCatalogSet();
   }
   addItemForPatSurg(element?): void {
     this.pastSurgFormitems = this.pastsurgform.get('pastSurgFormitems') as FormArray;
@@ -90,8 +93,8 @@ export class PastSurgicalComponent implements OnInit {
       })
   }
   openModalForPastSurgical(){
-    const config: ModalOptions = { class: 'modal-dialog-centered past-med-modal-size' };
-    this.modalRefForSurg = this.modalService.show(this.pastSurgicalcalKardexModal, config);
+    // const config: ModalOptions = { class: 'modal-dialog-centered past-med-modal-size' };
+    // this.modalRefForSurg = this.modalService.show(this.pastSurgicalcalKardexModal, config);
     this.resetSurgMedForm();
     this.modalRefForSurg.onHide.subscribe((reason: string | any) => {
       if(reason === 'backdrop-click') {
@@ -99,8 +102,7 @@ export class PastSurgicalComponent implements OnInit {
        this.resetupdateMedForm();
       }
     });
-    this.getPastSurgicalHistory();
-    this.getSurgicalCatalogSet();
+
   }
   getSurgicalCatalogSet() {
     this.patientHistory.getSurgicalCatalogSet().subscribe(
@@ -257,7 +259,7 @@ export class PastSurgicalComponent implements OnInit {
           "Date" : datevalue,
           "Remarks" :this.updateSurgForm.controls.Remarks.value
           }
-          if (this.problemExists(this.updateSurgForm.controls.Surgeryname.value)) {
+          // if (this.problemExists(this.updateSurgForm.controls.Surgeryname.value)) {
             this.SurgCatLog.forEach(element => {
             if (element.Bcpname.toLowerCase() === this.updateSurgForm.controls.Surgeryname.value.toLowerCase()) {
              this.pastJson['Bchid'] = element.Bchid;
@@ -265,14 +267,14 @@ export class PastSurgicalComponent implements OnInit {
             }
          });
          this.savePastSurgList();
-          } else {
-            Swal.fire({
-              text: "Please select from the list of surgeries",
-              icon: 'error',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
-            })
-          }
+          // } else {
+          //   Swal.fire({
+          //     text: "Please select from the list of surgeries",
+          //     icon: 'error',
+          //     confirmButtonText: 'Ok',
+          //     customClass: 'myalertpopup'
+          //   })
+          // }
     
   }
   problemExists(surgery) {
@@ -297,5 +299,25 @@ export class PastSurgicalComponent implements OnInit {
       }
     }
    
+  }
+
+  selectValueFromTable(item) {
+    this.updateSurgForm.controls.Surgeryname.setValue(item.Surgeryname);
+    this.updateSurgForm.controls.Bchid.setValue(item.Bchid);
+    this.updateSurgForm.controls.Bcpid.setValue(item.Bcpid);
+    this.updateSurgForm.controls.Date.setValue(item.Date);
+
+    this.updateSurgForm.controls.Einri.setValue(item.Einri);
+    this.updateSurgForm.controls.Mandt.setValue(item.Mandt);
+    this.updateSurgForm.controls.Patnr.setValue(item.Patnr);
+
+    this.updateSurgForm.controls.SurgHistid.setValue(item.SurgHistid);
+    this.updateSurgForm.controls.Remarks.setValue(item.Remarks);
+    this.updateSurgForm.controls.RespEmp.setValue(item.RespEmp);
+    this.updateSurgForm.controls.Source.setValue(item.Source);
+
+    this.updateSurgForm.controls.Treatou.setValue(this.loginUserDetails.Treatmentou);
+    this.updateSurgForm.controls.Departmentou.setValue(this.loginUserDetails.Deptorgunit);
+
   }
 }

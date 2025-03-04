@@ -26,6 +26,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { KeyValue } from '@angular/common';
+import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 
 @UntilDestroy()
 @Component({
@@ -36,6 +38,7 @@ import { KeyValue } from '@angular/common';
 export class DiagnosesComponent implements OnInit {
   @ViewChild('pdfViewModalForOhysician') pdfViewModalForOhysician?: TemplateRef<any>;
   @ViewChild('pdfViewModal') pdfViewModal?: TemplateRef<any>;
+  @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
 
   modalRef: BsModalRef;
   userProfile: any;
@@ -91,6 +94,7 @@ export class DiagnosesComponent implements OnInit {
   oldversion: boolean;
   subscription: Subscription;
   soapFormDiv: boolean = false;
+  correspondenceFormDiv: boolean = false;
   pdfFormDiv: boolean = false;
   visitFormDiv: boolean = false;
   isCreateRequest: boolean = false;
@@ -130,7 +134,8 @@ export class DiagnosesComponent implements OnInit {
     private route: ActivatedRoute,
     private admissionService:AdmissionService,
     private formBuilder: FormBuilder,
-    private patientHistoryService:PatientHistoryService
+    private patientHistoryService:PatientHistoryService,
+    private dayCaseDashboardService: DayCaseDashboardService
   ) {
 
     this.createAttachmentForm= this.formBuilder.group({
@@ -669,6 +674,7 @@ export class DiagnosesComponent implements OnInit {
   closeAllForm() {
     this.soapFormDiv = false;
     this.inPatientSoapForm = false;
+    this.correspondenceFormDiv = false;
     this.pdfFormDiv = false;
     this.visitFormDiv = false
     this.isCreateRequest = false;
@@ -1069,6 +1075,27 @@ export class DiagnosesComponent implements OnInit {
   })
   }
   openNewForm(type?: string) {
+    if(type == 'Correspondence') {
+      type = 'out';
+      this.inPatientSoapData = {} as PatientVisitDataResult;
+      this.inPatientSoapData.DocKey = '';
+      this.inPatientSoapData.Einri = this.storageService.einri;
+      this.inPatientSoapData.Falnr = this.storageService.falnr;
+      this.inPatientSoapData.Lfdnr = this.storageService.lfdnr;
+      this.inPatientSoapData.Patnr = this.storageService.patnr;
+      this.inPatientSoapData.Visitdate = new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd');
+      this.correspondenceFormDiv = false;
+      this.pdfFormDiv = false;
+      this.visitFormDiv = false;
+      this.isCreateRequest = true;
+      this.inPatientShow = false;
+      this.soapFormDiv = false;
+      this.visitFormDiv = false;
+      this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
+      this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
+      this.correspondenceFormDiv = true;
+      return
+    }
 
   this.editing = true;
   if (this.userconfig.DefaultNewDocumentSOAP) {
@@ -1084,6 +1111,7 @@ export class DiagnosesComponent implements OnInit {
     this.visitFormDiv = false;
     this.isCreateRequest = true;
     this.inPatientShow = false;
+    this.correspondenceFormDiv = false;
     this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
     this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
     this.soapFormDiv = true;
@@ -1100,11 +1128,77 @@ export class DiagnosesComponent implements OnInit {
       this.visitFormDiv = false;
       this.isCreateRequest = true;
       this.inPatientShow = false;
+      this.correspondenceFormDiv = false;
       this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
 
       this.patientVisitRecord.Dtid = DocType.ZMED_VISIT;
       this.visitFormDiv = true;
     }
+  }
+
+  saveCorrespondenceDocument() {
+    let docStatus = '1';
+    // if(this.selectedDocData?.Dockey) docStatus = '3';
+    this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
+      if (formValue) {
+        // this.refresh();
+        this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Correspondence Document:', error);
+    });
+  }
+
+  releaseCorresponde() {
+    this.CorrespondenceComp.createCorrespondenceDocument('4').then((formValue) => {
+      if (formValue) {
+        // this.refresh();
+      this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating CPR document:', error);
+    });
+  }
+
+  deleteCorrespondeDoc() {
+    this.deleteCorrespondenceDoc('')
+  }
+
+  async deleteCorrespondenceDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            // this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            // this.refresh();
+          }
+        );
+      }
+    });
   }
 
   soapFormOpen() {
@@ -1352,6 +1446,8 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientForm = "PHDIS";
     } else if (formType === "PhysicianAssessment") {
       this.inPatientForm = "PhysicianAssessment";
+    } else if (formType === "CorrespondenceDocument") {
+      this.inPatientForm = "Correspondence Document";
     }
     this.inPatientShow = true;
     this.InOutPatientViewValue = {
