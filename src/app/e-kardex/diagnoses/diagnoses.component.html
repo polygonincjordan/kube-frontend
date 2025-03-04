@@ -6,7 +6,7 @@
       <diagnoses-in-patient (onClose)="loadinPatientPanel($event)"
         [userConfigSet]="userconfig"
         (updateEvent)="updateInPatientForm($event)"
-        [inPatientVisitData]="inPatientVisitData" [inPatientDischargeData]="inPatientDischargeData"
+        [inPatientVisitData]="inPatientVisitData" [inPatientDischargeData]="inPatientDischargeData" [selectedPatient]="selectedPatient"
         [inPatientForm]="inPatientForm"></diagnoses-in-patient>
     </div>
     <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
@@ -28,16 +28,17 @@
             <title clas="patient-title">Out-Patient Documents</title>
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
-              <span (click)="openEnlarge(Outcontent, 'OutPatient')"><img src=""
-                  class="iconsminds-resize" /></span>
-              <!-- onclick this open configuration option modal -->
-              <span (click)="openSettings(opionmodal)"><img src=""
-                  class="simple-icon-settings" /></span>
-              <span (click)="openNewForm('out')"><img src="assets/img/file.png"
-                  class="mw-15" /></span>
-              <span (click)="openNewForm('Correspondence')" class="mw-15">
-                <img src="assets/img/envelope.png" class="mw-15" />
-                <!-- <i class="fa fa-solid fa-envelope"></i> -->
+              <span (click)="openNewForm('Correspondence')" class="mw-15" [title]="'Create Correspondence'">
+                <img src="assets/img/e-kardex.png" class="mw-15" />
+              </span>
+              <span (click)="openEnlarge(Outcontent, 'OutPatient')" [title]="'View All'">
+                <img src="" class="iconsminds-resize" />
+              </span>
+              <span (click)="openSettings(opionmodal)" [title]="'Users Preferences'">
+                <img src="" class="simple-icon-settings" />
+              </span>
+              <span (click)="openNewForm('out')" [title]="'Create New Document'">
+                <img src="assets/img/file.png" class="mw-15" />
               </span>
             </div>
           </div>
@@ -128,13 +129,14 @@
             <title clas="patient-title">Patient Documents Profile</title>
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
-              <span (click)="openEnlarge(Inpatient, 'Inpatient')"><img src=""
-                  class="iconsminds-resize" /></span>
+              <span (click)="openEnlarge(Inpatient, 'Inpatient')" [title]="'View All'">
+                <img src="" class="iconsminds-resize" />
+              </span>
               <!-- onclick this open configuration option modal -->
               <!-- <span (click)="openSettings(opionmodal)"
                 ><img src="" class="simple-icon-settings"
               /></span> -->
-              <span class="show position-relative dropdown-in-patient p-0"
+              <span class="show position-relative dropdown-in-patient p-0" [title]="'Create New Document '"
                 dropdown>
                 <span><img src="assets/img/file.png" class="mw-15"
                     dropdownToggle /></span>
@@ -671,4 +673,4 @@
 </ng-template>
 <diagnosis-history-popup #diagnosisHistory
   (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)"
-  (onAttachmentClose)="onOpenAttachment($event)" (onInPatientAttachmentClose)="onInPatientAttachment($event)" (onReleseCloseInPatient)="FormOpenInPatient($event)"></diagnosis-history-popup>
+  (onAttachmentClose)="onOpenAttachment($event)" (onInPatientAttachmentClose)="onInPatientAttachment($event)"  (onCorrespondeClose)="onInPatientCorrespondence($event)" (onReleseCloseInPatient)="FormOpenInPatient($event)"></diagnosis-history-popup>

@@ -134,6 +134,7 @@ import { EOrderSearchlistComponent } from './nurs-treatment-workarea/e-order-sea
 import { CreateEorderComponent } from './nurs-treatment-workarea/create-e-order/create-e-order.component';
 import { EOrderHistoryComponent } from './nurs-treatment-workarea/e-order-history/e-order-history.component';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
+import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 
 
 const route: Routes = [
@@ -283,7 +284,8 @@ const route: Routes = [
     NgxExtendedPdfViewerModule,
     NursingAdmissionAssessmentModule,
     VitalSignModule,
-    HistoryAssessmentModule
+    HistoryAssessmentModule,
+    CprDocumentModule
   ],
 })
 export class DialysisNursingDashboardModule {}

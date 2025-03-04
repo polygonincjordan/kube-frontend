@@ -56,7 +56,9 @@
             <td style="padding-left: 0px" [title]="item.Floor" class="border-top-none">{{ item.Floor }}</td>
             <td style="padding-left: 0px" [title]="item.RoomidText" class="border-top-none">{{ item.RoomidText }}</td>
             <td style="padding-left: 0px" [title]="item.BedidText" class="border-top-none">{{ item.BedidText }}</td> 
-            <td class="border-top-none" style="width: 10%;padding-left: 0px;text-align: center;">{{item?.AdmissionStatus}}</td>
+            <td class="border-top-none" style="width: 10%;padding-left: 0px;text-align: center;">
+              {{admissionStatusCheck(item)}}
+            </td>
             <td class="border-top-none" style="width: 7%;">{{item.DeptouDesc}}</td>
             <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">{{item.FinancialCategory}}</td>
             <td class="border-top-none" style="width: 14%;">{{item.AttendingDoctorName}}</td>

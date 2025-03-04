@@ -714,6 +714,14 @@ export class CheckInComponent implements OnInit {
     this.riskItemsArr = [];
   }
 
+  admissionStatusCheck(item: any) {
+    if(item?.PatientstatusPlandischarg == 'X') {
+      return 'Planned Discharge';
+    } else if(item?.PatientstatusAdmitted == 'X') {
+      return 'Actual Admission';
+    }
+  }
+
   getRiskList(data) {
     const json = {
       einri: data.Einri,
@@ -748,6 +756,36 @@ export class CheckInComponent implements OnInit {
     );
   }
 
+  // getHospitalList() {
+  //   // this.dataOnTableForMissedDoses = _success.result.d.results;
+  //   let admittedFrom = '';
+  //   let admittedTo = '';
+  //   let wardNo = '';
+  //   let physician = '';
+  //   let speciality = '';
+  //   const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
+
+  //   this.hospitalistService.getInHospitalistData$
+  //     .pipe(
+  //       untilDestroyed(this),
+  //       catchError((err) => {
+  //         return of([]);
+  //       })
+  //     )
+  //     .subscribe((data: any[]) => {
+  //       data[0].ToIPList.results = data[0].ToIPList.results.filter(item => item.Floor != '9th Floor Day Surgery');
+
+  //       let IPList: any[] = data[0].ToIPList.results;
+  //       this.inHospitalistList = IPList.filter(item => item.PatientstatusDischarged !== 'X');
+  //       let IPListClone: any[] = data[0].ToIPList.results;
+  //       this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
+  //       console.log(this.inHospitalistList, "inHospitaDischargelistList");
+
+  //       this.dataToParent.emit(this.inHospitalistListClone);
+  //       this.lastIndex = this.inHospitalistList.length - 1;
+  //     });
+  // }
+
   getHospitalList() {
     // this.dataOnTableForMissedDoses = _success.result.d.results;
     let admittedFrom = '';
@@ -755,19 +793,19 @@ export class CheckInComponent implements OnInit {
     let wardNo = '';
     let physician = '';
     let speciality = '';
-    const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
+    // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
 
-    this.hospitalistService.getInHospitalistData$
-      .pipe(
-        untilDestroyed(this),
-        catchError((err) => {
-          return of([]);
-        })
-      )
-      .subscribe((data: any[]) => {
-        data[0].ToIPList.results = data[0].ToIPList.results.filter(item => item.Floor != '9th Floor Day Surgery');
-        this.inHospitalistList = data[0].ToIPList.results;
-        this.inHospitalistListClone = data[0].ToIPList.results;
+    this.hospitalistService.getInPatientAdmittedList('02', admittedFrom, admittedTo, wardNo, physician, speciality, '')
+      .subscribe((data: any) => {
+        console.log(data, "----");
+        let patientList: any[] = data?.d?.results[0]?.ToIPList.results;
+        patientList = patientList.filter(item => item.Floor != '9th Floor Day Surgery');
+
+        let IPList: any[] = patientList;
+        this.inHospitalistList = IPList.filter(item => item.PatientstatusDischarged !== 'X');
+        let IPListClone: any[] = patientList;
+        this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
+        console.log(this.inHospitalistList, "inHospitaDischargelistList");
 
         this.dataToParent.emit(this.inHospitalistListClone);
         this.lastIndex = this.inHospitalistList.length - 1;

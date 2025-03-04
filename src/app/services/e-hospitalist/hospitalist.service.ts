@@ -157,6 +157,13 @@ export class HospitalistService {
     });
   }
 
+  getInPatientAdmittedList(typ_eq: string, admDateFrom: string, admDateTo: string, floor: string, physician: string, speciality: string, reportType: string) {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/getHospitalSet?typ_eq=${typ_eq}&admdatefrom=${admDateFrom}&admdateto=${admDateTo}&floor=${floor}&physician=${physician}&deptou=${speciality}&reporttype=${reportType}`;
+    return this.http.get(url,{
+      withCredentials: true,
+    });
+  }
+
   getHospitalCount(type: string, floor: string) {
     const url = `${environment.eKardexApiUrl}/eHospitalist/getHospitalCountSet?type=${type}&floor=${floor}`;
     return this.http.get(url,{

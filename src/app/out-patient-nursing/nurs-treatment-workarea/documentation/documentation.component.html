@@ -1,7 +1,7 @@
 <div class="">
   <div class="er-physician-assessment">
     <div class="top-header">
-      <div class="w-100 d-flex align-items-center" style="gap: 10px;" *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument">
+      <div class="w-100 d-flex align-items-center" style="gap: 10px;" *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument && !openCPRDocument">
         <div class="search-functionality col-md-2 pl-0" style="flex: 0 0 13.66667%; max-width: 13.66667%;">
           <img src="assets/img/pres-search-icon.svg" alt="" style="position: absolute;
       top: 50%;
@@ -188,8 +188,36 @@ min-width: 15%;">
           </div>
         </div>
       </div>
+      <div class="w-100 d-flex align-items-center" *ngIf="openCPRDocument"
+        style="    justify-content: space-between;">
+        <div>
+          <span style="font-weight: bold;font-size: 15px;">{{selectedDocName}}</span>
+        </div>
+        <div class="d-flex">
+          <div class="header-btn">
+            <button type="button" class="action-doc" (click)="refresh()">
+              Cancel
+            </button>
+          </div>
+          <div class="header-btn">
+            <button type="button" class="action-doc" (click)="createCPRDocument()">
+              Save
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'create'">
+            <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'edit'">
+            <button type="button" class="action-doc" (click)="releaseFromForm()">
+              Release
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument && !openCPRDocument">
         <div class="col-md-6 pl-0">
           <div class="box-col document-overflow">
             <div class="d-flex doc-header">
@@ -278,6 +306,26 @@ min-width: 15%;">
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCorrespondenceDocumentPdf(latestCorrespondenceList[0]?.Dockey)"
                 *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
+              </div>
+            </div>
+
+            <div
+              [ngClass]="isCPRDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+              style="font-weight: bold;" (click)="selectAssessment('isCPRDocument',latestCprList[0])">
+              <div class="col-md-4"> CPR Document {{latestCprList[0]?.Zversion ?
+                  dockVer(latestCprList[0]?.Zversion) : ''}}:</div>
+              <div class="col-md-2 status-color">{{latestCprList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(latestCprList[0]?.DocTime)}}">
+                {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{latestCprList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1">
+                <!-- <img src="assets/img/document-html.png" width="18px" height="18px"
+                  (click)="getScaleDetails(latestCprList[0],RedirectionType.BRADEN$)"
+                  *ngIf="latestCprList[0]?.StatusTxt == 'Released'" /> -->
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
+                *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
               </div>
             </div>
 
@@ -909,6 +957,8 @@ min-width: 15%;">
         [latestDocs]="latestDocList"></app-er-physician>
       <app-correspondence-document [hidden]="!openCorrespondenceDocument"></app-correspondence-document>
       <app-medical-report [hidden]="!openMedReport" [docDetails]="medDocList"></app-medical-report>
+      <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
+
       <app-education-form *ngIf="openEducationAssessment" [docDetails]="educationAssList"
         (reloadTableList)="reloadDoc($event)"></app-education-form>
     </div>

@@ -82,7 +82,12 @@ export class CorrespondenceDocumentComponent implements OnInit {
       .fetcCorrespondenceSetDocDetails(docKey)
       .subscribe({
         next: (data: any) => {
-          this.correspondForm.patchValue(data.d.results[0])
+          this.correspondForm.patchValue({
+            ChiefComplaint: data.d.results[0]?.ChiefComplaint,
+            Dockey: data.d.results[0]?.Dockey,
+            Orgdo: data.d.results[0]?.Orgdo,
+            AttendPhy: data.d.results[0]?.AttendPhy,
+          })
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);

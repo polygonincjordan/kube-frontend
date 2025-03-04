@@ -28,6 +28,8 @@ import { PatientHistoryService } from '@services/e-kardex/patient-history.servic
 import { KeyValue } from '@angular/common';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { DataShareService } from '@services/data-share.service';
+import { ActionType, RedirectionType, WordType } from '@services/interfaces/common.enum';
 
 @UntilDestroy()
 @Component({
@@ -135,7 +137,8 @@ export class DiagnosesComponent implements OnInit {
     private admissionService:AdmissionService,
     private formBuilder: FormBuilder,
     private patientHistoryService:PatientHistoryService,
-    private dayCaseDashboardService: DayCaseDashboardService
+    private dayCaseDashboardService: DayCaseDashboardService,
+    private dataShareService: DataShareService
   ) {
 
     this.createAttachmentForm= this.formBuilder.group({
@@ -274,6 +277,7 @@ export class DiagnosesComponent implements OnInit {
     // this.seletcedCurrentDoc = item;
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
+    this.selectedPatient = item;
     this.admissionService
       .getReleaseHistoryData(releaseId, this.paramsObject.einri)
       .subscribe((data) => {
@@ -688,7 +692,7 @@ export class DiagnosesComponent implements OnInit {
       showIn: false,
       showOut: false,
     };
-
+    this.selectedPatient = '';
   }
 
   modelFormOpen(paitentData: any, oldversion?: boolean, template?: TemplateRef<any>) {
@@ -851,6 +855,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   physicianAssPDFURL: any;
+  selectedPatient: any;
   modelFormOpenInPatient(paitentData,oldversion?: boolean,template?: TemplateRef<any>) {
     this.oldversion = oldversion;
     this.closeAllForm();
@@ -859,7 +864,8 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientDischargeData = {}
     this.inPatientSoapData = {}
-
+    this.selectedPatient = paitentData;
+    
     if(paitentData?.Dtid == 'ZMED_PHASM') {
       this.admissionService.selectedCurrentDocDetails = paitentData;
 
@@ -897,6 +903,45 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientShow = true;
       this.inPatientForm = "PhysicianAssessment";
       this.admissionService.educationAddForm('edit');
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+      this.showInDiv();
+      return; 
+    }
+
+    if(paitentData?.Dtid == 'ZMED_CORES') {
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+
+      if (paitentData.DokstText == 'Released' || paitentData.Released) {
+        this.InOutPatientViewValue = {
+         showBoth: true,
+         showIn: false,
+         showOut: false,
+       };
+        const json = {
+          Dockey: paitentData.Dockey,
+        };
+       
+      this.dayCaseDashboardService
+        .correspondenceDocPDF(paitentData.Dockey)
+        .subscribe((data: any) => {
+          this.physicianAssPDFURL =  this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:application/pdf;base64, ${data?.d?.AttachmentData}`
+          );
+          this.soapPdf = data?.d
+          this.patientVisitRecord = data;
+          const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+          this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModalForOhysician,config);
+        });
+        return;
+      }
+      // this.admissionService.isEditPhysicianForm = true;
+      this.inPatientShow = true;
+      this.inPatientForm = "Correspondence Document";
+      let valueObj = {
+        type: WordType.EditBS,
+        docKey: paitentData.Dockey
+      }
+      this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
       this.admissionService.selectedCurrentDocDetails = paitentData;
       this.showInDiv();
       return; 
@@ -1246,10 +1291,31 @@ export class DiagnosesComponent implements OnInit {
   }
 
   copyReleaseFormForPhysician() {
+    if(this.selectedPatient?.Dtid == 'ZMED_CORES') {
+      this.copyReleaseCorrespondence();
+      return;
+    }
     this.admissionService.isClonePhysicianForm = true;
     this.inPatientShow = true;
     this.inPatientForm = "PhysicianAssessment";
     this.admissionService.educationAddForm('clone');
+    this.InOutPatientViewValue = {
+      showBoth: false,
+      showIn: true,
+      showOut: false,
+    };
+    this.modalRef?.hide();
+  }
+
+  copyReleaseCorrespondence() {
+    this.admissionService.isClonePhysicianForm = true;
+    this.inPatientShow = true;
+    this.inPatientForm = "Correspondence Document";
+    let valueObj = {
+      type: WordType.CopyBS,
+      docKey: this.selectedPatient.Dockey
+    }
+    this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
     this.InOutPatientViewValue = {
       showBoth: false,
       showIn: true,
@@ -1500,6 +1566,21 @@ export class DiagnosesComponent implements OnInit {
         };
       }
     })
+  }
+
+  onInPatientCorrespondence(attachmentId: any) {
+    this.inPatientVisitData = {} as InPatientDataResult;
+    this.patientVisitRecord = {} as PatientVisitDataResult;
+    this.dayCaseDashboardService.correspondenceDocPDF(attachmentId)
+      .subscribe((data: any) => {
+        this.physicianAssPDFURL =  this.sanitizer.bypassSecurityTrustResourceUrl(
+          `data:application/pdf;base64, ${data?.d?.AttachmentData}`
+        );
+        this.soapPdf = data?.d
+        this.patientVisitRecord = data;
+        const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+        this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModalForOhysician,config);
+      });
   }
 
   onReleaseHistoryData(releaseId: any) {

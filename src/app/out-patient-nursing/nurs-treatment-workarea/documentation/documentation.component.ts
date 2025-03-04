@@ -20,6 +20,7 @@ import { EducationFormComponent } from './education-form/education-form.componen
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { SharedService } from '@services/shared.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
+import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -32,6 +33,7 @@ export class DocumentationComponent implements OnInit {
   @ViewChild('diagnosisHistory', { static: true })
   diagnosisHistory: DiagnosisHistoryPopupComponent;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
   
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
   @ViewChild('notreleasedmodal') notreleasedmodal: TemplateRef<HTMLDivElement>;
@@ -89,6 +91,10 @@ export class DocumentationComponent implements OnInit {
   selectedFile: File | null = null;
   documentUrl: SafeResourceUrl | null = null;
 
+  public isCPRDocument: boolean = false;
+  public openCPRDocument: boolean = false;
+  latestCprList = [];
+
   public isCorrespondenceDocument: boolean = false;
   public openCorrespondenceDocument: boolean = false;
   latestCorrespondenceList = [];
@@ -132,6 +138,7 @@ export class DocumentationComponent implements OnInit {
 
   requiredCommonApiCall() {
     this.getLatestAssessment();
+    this.getCPRDocDetails();
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
@@ -146,6 +153,7 @@ export class DocumentationComponent implements OnInit {
   selectAssessment(name, selectedDocData) {
     this.selectedDocData = selectedDocData;
     this.isCorrespondenceDocument = false;
+    this.isCPRDocument = false;
     if (name == 'nursing') {
       this.phyAssess = false;
       this.nursAssess = false;
@@ -182,6 +190,15 @@ export class DocumentationComponent implements OnInit {
       this.educationAssessment = false;
       this.isCorrespondenceDocument = true;
       this.selectedDocName = 'Correspondence Document'
+    } else if (name == 'isCPRDocument') {
+      this.phyAssess = false;
+      this.nursAssess = false;
+      this.medReport = false;
+      this.attachments = false;
+      this.educationAssessment = false;
+      this.isCorrespondenceDocument = false;
+      this.isCPRDocument = true;
+      this.selectedDocName = 'CPR Document'
     }
   }
   selectNursAssessment(name) {
@@ -306,6 +323,26 @@ export class DocumentationComponent implements OnInit {
     this.dayCaseDashboardService.correspondenceSetDocumentLatestDoc(json).subscribe({
       next: (_success: any) => {
         this.latestCorrespondenceList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // CPR Document Latest
+  getCPRDocDetails() {
+    const json = {
+        Einri: this.storageService.einri,
+        Falnr: this.storageService.falnr,
+        Patnr: this.storageService.patnr,
+        Lfdnr: this.storageService.lfdnr,
+        Lfdbw: this.storageService.lfdnr
+    }
+    this.dayCaseDashboardService.cprDocumentLatestDoc(json).subscribe({
+      next: (_success: any) => {
+        this.latestCprList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -610,15 +647,21 @@ export class DocumentationComponent implements OnInit {
     if (this.openCorrespondenceDocument) {
       this.CorrespondenceComp.ngOnDestroy();
     }
+    if (this.openCPRDocument) {
+      this.CprDocumentComp.ngOnDestroy();
+    }
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
     this.getCorrespondenceDocDetails();
+    this.getCPRDocDetails();
     this.phyAssess = false;
     this.nursAssess = false;
     this.educationAssessment = false;
     this.openEducationAssessment = false;
+    this.openCPRDocument = false;
+    this.isCPRDocument = false;
     this.medReport = false;
     this.openPhyAssess = false;
     this.openMedReport = false;
@@ -701,6 +744,38 @@ export class DocumentationComponent implements OnInit {
       } else if (action == 'createandrelease') {
         this.openEducationAssessment = true;
         this.educationAssessmentComp.saveAndReleaseEducation(false);
+        // this.educationAssessmentComp.ngOnInit();
+        // this.createAndReleaseMed();
+      }
+    }  else if (this.isCPRDocument) {
+      if (action == 'create') {
+        this.openCPRDocument = true;
+        // this.educationAssessmentComp.resetAll();
+        // this.educationAssessmentComp.ngOnInit();
+
+      } else if (action == 'edit') {
+        this.openCPRDocument = true;
+        // this.educationAssessmentComp.ngOnInit();
+      } else if (action == 'delete') {
+        // this.educationAssessmentComp.ngOnInit();
+        this.deleteCPRDoc(this.latestCprList[0].Dockey);
+      } else if (action == 'release') {
+        this.directReleaseCPRDoc()
+        // this.educationAssessmentComp.ngOnInit();
+        // this.releaseMed();
+      } else if (action == 'copy') {
+        this.openCPRDocument = true;
+        // this.educationAssessmentComp.ngOnInit();
+      } else if (action == 'createandrelease') {
+        this.openCPRDocument = true;
+        this.CprDocumentComp.createCPRDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating CPR document:', error);
+        });
         // this.educationAssessmentComp.ngOnInit();
         // this.createAndReleaseMed();
       }
@@ -939,8 +1014,33 @@ export class DocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating CPR Document:', error);
       });
+    } else if (this.openCPRDocument) {
+      this.CprDocumentComp.createCPRDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating CPR Document:', error);
+      });
     } 
+  }
 
+  openCprDocumentPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .cprDocPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
   }
   getReleasedPdf(item) {
     if (item.AttMimeType == 'PDF' || item.AttMimeType == 'url' || item.AttMimeType == 'image/bmp' || item.AttMimeType == 'HTML') {
@@ -1250,6 +1350,20 @@ export class DocumentationComponent implements OnInit {
     }
   }
 
+  async createCPRDocument() {
+    if (this.openCPRDocument) {
+      let docStatus = '1';
+      this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating nursing assessment:', error);
+      })
+    }
+  }
+
     // Copy + Release Correspondence Document
     copyDirectReleaseCorrespondenceDocument() {
       // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
@@ -1291,6 +1405,42 @@ export class DocumentationComponent implements OnInit {
       }
     });
   }
+
+async deleteCPRDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteCprDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
 async deleteCorrespondenceDoc(docKey: string) {
     Swal.fire({
       title: 'Confirm',
@@ -1351,6 +1501,33 @@ async deleteCorrespondenceDoc(docKey: string) {
         }
       );
     })
+  }
+  directReleaseCPRDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcCprDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveCprDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('CPR Document released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
   }
   directReleaseCorrespondenceDoc() {
     this.subscription = this.dayCaseDashboardService

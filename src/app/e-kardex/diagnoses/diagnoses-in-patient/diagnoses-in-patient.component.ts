@@ -74,6 +74,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   @Input() set inPatientForm(data: string) {
     this.inPatientFormInput = data;
   }
+  @Input() selectedPatient: any;
 
   @Input() set inPatientVisitData(data) {
     this.inPatientDataObj = data
@@ -354,12 +355,13 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   saveCorrespondenceDocument() {
-    let docStatus = '1';
+    let docStatus = this.selectedPatient?.Dockey ? '3' : '1';
     // if(this.selectedDocData?.Dockey) docStatus = '3';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
       if (formValue) {
         // this.refresh();
         this.updateEvent.emit(true);
+        this.selectedPatient = '';
       }
     }).catch((error: any) => {
       console.error('Error scale:', error);
@@ -368,10 +370,12 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   releaseCorresponde() {
-    this.CorrespondenceComp.createCorrespondenceDocument('4').then((formValue) => {
+    let docStatus = this.selectedPatient?.Dockey ? '5' : '4';
+    this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue) => {
       if (formValue) {
         // this.refresh();
       this.updateEvent.emit(true);
+      this.selectedPatient = '';
       }
     }).catch((error: any) => {
       console.error('Error scale:', error);
