@@ -74,16 +74,20 @@ export class CprDocumentComponent implements OnInit {
 
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
       (data) => {
+        console.log(data, "data");
+        
         if (data != null) {
           if (data.type == ActionType.Add$ && data.value == '') {
             this.docKey = data.value.Dockey;
           }
           if (data.type == ActionType.Update$ && data.value) {
             this.docKey = data.value.docKey;
+            console.log(this.docKey, "this.docKey");
             this.getNursingAdmissionDocDetails(data.value.docKey);
           }
           if (data.type == ActionType.Copy$ && data.value) {
             this.docKey = data.value.docKey;
+            console.log(this.docKey, "this.docKey");
             this.getNursingAdmissionDocDetails(data.value.docKey);
           }
         }
@@ -255,8 +259,7 @@ export class CprDocumentComponent implements OnInit {
             "CompressionTm", "IvIoMedTm", "DefibrillatorTm", "NursingTm",
             "TeamLeaderTm", "ChestCompression", "LeadsPlace", "MonitorActive",
             "Cannula1", "Cannula2", "Infusion1", "Infusion2", "Ventilation",
-            "Intubation", "Terminated", "TransferredTm", "DeclaredExpired",
-            "DeclaredExpiredTm", "FTime"
+            "Intubation", "Terminated", "TransferredTm", "DeclaredExpiredTm", "FTime"
           ];
 
           timeFields.forEach(field => {
@@ -605,8 +608,7 @@ export class CprDocumentComponent implements OnInit {
         "CompressionTm", "IvIoMedTm", "DefibrillatorTm", "NursingTm",
         "TeamLeaderTm", "ChestCompression", "LeadsPlace", "MonitorActive",
         "Cannula1", "Cannula2", "Infusion1", "Infusion2", "Ventilation",
-        "Intubation", "Terminated", "TransferredTm", "DeclaredExpired",
-        "DeclaredExpiredTm", "FTime"
+        "Intubation", "Terminated", "TransferredTm",  "DeclaredExpiredTm", "FTime"
       ];
 
       // Update the form fields with the converted values

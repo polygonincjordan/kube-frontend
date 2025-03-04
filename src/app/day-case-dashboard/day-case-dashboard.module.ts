@@ -114,6 +114,7 @@ import { EmarWitnessComponent } from './nurs-treatment-workarea/e-prescription/m
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { GlasgowComaScaleComponent } from './nurs-treatment-workarea/patient-documentation/glasgow-coma-scale/glasgow-coma-scale.component';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
+import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 
 const route: Routes = [
   {
@@ -223,7 +224,8 @@ const route: Routes = [
     NursingCarePlanDocumentModule,
     NursingDischargeSummaryModule,NursingAdmissionAssessmentModule,
     VitalSignModule,
-    HistoryAssessmentModule
+    HistoryAssessmentModule,
+    CprDocumentModule
   ],
 })
 export class DayCaseDashboardModule { }

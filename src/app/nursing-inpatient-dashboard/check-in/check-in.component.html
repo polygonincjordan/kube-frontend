@@ -101,7 +101,9 @@
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
             </td>
-            <td style="padding-left: 0px" [title]="item?.AdmissionStatus" class="border-top-none">{{ item?.AdmissionStatus }}</td>
+            <td style="padding-left: 0px" [title]="item?.AdmissionStatus" class="border-top-none">
+              {{ admissionStatusCheck(item) }}
+            </td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
               [title]="getDate(item.AdmissionDate) | date : 'dd.MM.y'">
               {{ getDate(item.AdmissionDate) | date : "dd.MM.y" }}

@@ -55,6 +55,7 @@ import { PatientHistoryService } from '@services/e-kardex/patient-history.servic
 import { DocVisitNoteComponent } from './documentation/documentation-list/doc-visit-note/doc-visit-note.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { TransferAssessmentComponent } from './documentation/documentation-list/transfer-assessment/transfer-assessment.component';
+import { NewbornAssessmentModule } from '../shared-module/newborn-assessment/newborn-assessment.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -115,6 +116,7 @@ export const ePrescriptionRoutes: Routes = [
     NgxMaterialTimepickerModule,
     QuillModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    NewbornAssessmentModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

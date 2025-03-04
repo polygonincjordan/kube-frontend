@@ -452,31 +452,66 @@ export class ErHistoryComponent implements OnInit {
     );
   }
 
-  getHospitalList() {
-      // this.dataOnTableForMissedDoses = _success.result.d.results;
-      let admittedFrom = '';
-      let admittedTo = '';
-      let wardNo = '';
-      let physician = '';
-      let speciality = '';
-      const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
+  // getHospitalList() {
+  //     // this.dataOnTableForMissedDoses = _success.result.d.results;
+  //     let admittedFrom = '';
+  //     let admittedTo = '';
+  //     let wardNo = '';
+  //     let physician = '';
+  //     let speciality = '';
+  //     const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
   
-      this.hospitalistService.getInHospitalistData$
-        .pipe(
-          untilDestroyed(this),
-          catchError((err) => {
-            return of([]);
-          })
-        )
-        .subscribe((data: any[]) => {
-          data[0].ToIPList.results = data[0].ToIPList.results.filter(item => item.Floor != '9th Floor Day Surgery');
-          this.inHospitaDischargelistList = data[0].ToIPList.results;
-          this.inHospitaDischargelistListClone = data[0].ToIPList.results;
-          
-          this.dataToParent.emit(this.inHospitaDischargelistListClone);
-          this.lastIndex = this.inHospitaDischargelistList.length - 1;
-        });
+  //     this.hospitalistService.getInHospitalistData$
+  //       .pipe(
+  //         untilDestroyed(this),
+  //         catchError((err) => {
+  //           return of([]);
+  //         })
+  //       )
+  //       .subscribe((data: any[]) => {
+  //         data[0].ToIPList.results = data[0].ToIPList.results.filter(item => item.Floor != '9th Floor Day Surgery');
+  //         let IpList: any[] = data[0].ToIPList.results;
+  //         this.inHospitaDischargelistList = IpList.filter(item => item.PatientstatusAdmitted != 'X' || item.PatientstatusPlandischarg != 'X');
+
+  //         let IpListClone: any[] = data[0].ToIPList.results;
+  //         this.inHospitaDischargelistListClone = IpListClone.filter(item => item.PatientstatusAdmitted != 'X' || item.PatientstatusPlandischarg != 'X');
+  //         console.log(this.inHospitaDischargelistList, "inHospitaDischargelistList");
+  //         this.dataToParent.emit(this.inHospitaDischargelistListClone);
+  //         this.lastIndex = this.inHospitaDischargelistList.length - 1;
+  //       });
+  //   }
+
+  getHospitalList() {
+    // this.dataOnTableForMissedDoses = _success.result.d.results;
+    let admittedFrom = '';
+    let admittedTo = '';
+    let wardNo = '';
+    let physician = '';
+    let speciality = '';
+    // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
+
+    this.hospitalistService.getInPatientAdmittedList('02', admittedFrom, admittedTo, wardNo, physician, speciality, '')
+      .subscribe((data: any) => {
+        let patientList: any[] = data?.d?.results[0]?.ToIPList.results;
+
+        patientList = patientList.filter(item => item.Floor != '9th Floor Day Surgery');
+        let IpList: any[] = patientList;
+        this.inHospitaDischargelistList = IpList.filter(item => item.PatientstatusDischarged == 'X');
+
+        let IpListClone: any[] = patientList;
+        this.inHospitaDischargelistListClone = IpListClone.filter(item => item.PatientstatusDischarged == 'X');
+        console.log(this.inHospitaDischargelistList, "inHospitaDischargelistList");
+        this.dataToParent.emit(this.inHospitaDischargelistListClone);
+        this.lastIndex = this.inHospitaDischargelistList.length - 1;
+      });
+  }
+
+    admissionStatusCheck(item: any) {
+      if(item?.PatientstatusDischarged == 'X') {
+        return 'Actual Discharge';
+      }
     }
+
   triagePriorityList(element) {
     const json ={
       patnr : element.Patnr,

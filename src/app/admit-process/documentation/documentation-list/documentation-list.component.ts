@@ -917,7 +917,8 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddEditNeonatal &&
       !this.admissionService.isAddEditNeonatalMR &&
       !this.admissionService.isAddEditDocVisitForm&&
-      !this.admissionService.isAddEditTransferAssestForm
+      !this.admissionService.isAddEditTransferAssestForm &&
+      !this.admissionService.isAddEditNewbornAssessment
     ) {
       return true;
     }

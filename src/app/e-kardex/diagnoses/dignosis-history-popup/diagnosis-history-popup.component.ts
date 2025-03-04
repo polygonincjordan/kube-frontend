@@ -15,6 +15,7 @@ export class DiagnosisHistoryPopupComponent {
   @Output() onReleseClose: EventEmitter<any> = new EventEmitter<any>();
   @Output() onReleseCloseInPatient: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAttachmentClose: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onCorrespondeClose: EventEmitter<any> = new EventEmitter<any>();
   @Output() onInPatientAttachmentClose: EventEmitter<any> = new EventEmitter<any>();
 
   public configurationData: any;
@@ -57,6 +58,8 @@ export class DiagnosisHistoryPopupComponent {
     console.log(value,"sdfdfd");
     if(value.Dtid === "ZMED_OPERT" || value.Dtid === "ZMED_ORRPT" || value.Dtid === "ZMED_PHDIS"){
       this.onInPatientAttachmentClose.emit(value.DocKey)
+    } else if(value.Dtid === "ZMED_CORES") {
+      this.onCorrespondeClose.emit(value.DocKey);
     }else {
       this.onAttachmentClose.emit(value.DocKey);
     }

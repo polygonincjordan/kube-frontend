@@ -118,6 +118,9 @@
 <div *ngIf="admissionService.isAddEditTransferAssestForm">
   <app-transfer-assessment [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-transfer-assessment>
 </div>
+<div *ngIf="admissionService.isAddEditNewbornAssessment">
+  <app-newborn-assessment></app-newborn-assessment>
+</div>
 
 <ng-template #labpdfmodal>
   <div class="modal-body">
