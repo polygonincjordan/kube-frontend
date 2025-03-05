@@ -16,10 +16,10 @@
               <div class="d-flex justify-content-center cursor-pointer">
                 <span class="text-xl mr-3" style="    position: relative;
                 top: -4px;">
-                  <img src="assets/img/er-vital.png" (click)="openModalVital($event)" width="21px">
+                  <img src="assets/img/er-vital.png" (click)="openModalVital($event)" width="21px" [title]="'View Vitals History'">
                 </span>
                 <div class="dropdown setting_dropdown" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-                  <span type="button" class="simple-icon-settings setting_btn" id="dropdownBasic1" ngbDropdownToggle>
+                  <span type="button" class="simple-icon-settings setting_btn" id="dropdownBasic1" [title]="'Show/Hide Vitals'" ngbDropdownToggle>
                   </span>
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic1" onClose>
                     <ng-container *ngFor="let itemCatalog of catalog">

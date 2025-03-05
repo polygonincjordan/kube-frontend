@@ -221,7 +221,7 @@
       style="padding-top: 11px; font-size: 18px; cursor: pointer"
       (click)="previousDate()"
     ></i>
-    <form [formGroup]="formDetailGroup">
+    <form [formGroup]="formDetailGroup" *ngIf="!erhistory">
       <div
         class="date-function"
         style="
@@ -255,7 +255,23 @@
         </p>
       </div>
     </form>
-
+    <form [formGroup]="singleData" *ngIf="erhistory">
+      <div class="date-function" style="background: #dee5ea;
+      padding: 2px;
+      border-radius: 8px;
+      display: flex;
+      position: relative;">
+          <input class="form-control"  formControlName="fromDate" type="text" placeholder="From Date" #dp="bsDatepicker" bsDatepicker 
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+          style="height: 33px;
+          "
+        />
+        <!-- <img src="assets/img/date-icon.svg" alt=""> -->
+      </div>
+    </form>
     <i
       class="fa fa-chevron-right"
       aria-hidden="true"
@@ -401,7 +417,7 @@
         ></span>
       </div>
       <form [formGroup]="filterForm" class="p-2">
-        <p style="margin: auto; margin-top: 5px">Physician</p>
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
         <ng-select
           class=""
           id="inputGroupSelect01"
@@ -416,7 +432,7 @@
             {{ item.NamString }}
           </ng-option>
         </ng-select>
-        <p style="margin: auto; margin-top: 5px">Status</p>
+        <p style="margin: auto; margin-top: 5px">Admission Status</p>
         <ng-select
           class=""
           id="inputGroupSelect01"

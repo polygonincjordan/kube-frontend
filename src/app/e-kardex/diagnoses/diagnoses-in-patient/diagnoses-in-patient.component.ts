@@ -355,7 +355,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   saveCorrespondenceDocument() {
-    let docStatus = this.selectedPatient?.Dockey ? '3' : '1';
+    let docStatus = this.selectedPatient?.DokstText == 'Released' ? '3' : '1';
     // if(this.selectedDocData?.Dockey) docStatus = '3';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
       if (formValue) {

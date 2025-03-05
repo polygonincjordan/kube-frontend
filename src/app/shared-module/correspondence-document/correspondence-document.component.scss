@@ -1,6 +1,6 @@
 .chief-complain {
     textarea {
-        height: 100px;
+        height: 65%;
         border-radius: 10px;
         font-size: 12px;
         border: 1px solid #0056b0;
@@ -28,4 +28,8 @@
 
 .chief-complain {
     height: calc(100vh - 270px);
+}
+
+.chief-complain-kardex {
+    height: calc(100vh - 500px) !important;
 }

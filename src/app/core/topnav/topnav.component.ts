@@ -117,6 +117,11 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getDataPatient(res);
       this.loadPatientData();
     });
+    this.menuButtonClick(
+      { stopPropagation: () => {} }, // Dummy event object
+      0,
+      'menu-default sub-hidden main-hidden'
+    );
   }
 
   ngAfterViewInit(): void {

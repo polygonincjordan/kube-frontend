@@ -26,7 +26,7 @@
               Vital
             </th>
             <th scope="col"  style="padding-left: 0px;">
-             Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionStatus')"></i>
+             Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('patientStatus')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Date <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDate')"></i>
@@ -44,7 +44,7 @@
               Bed <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('BedidText')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
-              Speciality <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DeptouDesc')"></i>
+              Specialty <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DeptouDesc')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Diagnosis')"></i>
@@ -64,15 +64,15 @@
             <th scope="col" style="padding-left: 0px;">
               LOS <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDays')"></i>
             </th>
-            <th scope="col" style="padding-left: 0px;">
+            <!-- <th scope="col" style="padding-left: 0px;">
               Attachment 
-            </th>
+            </th> -->
             <th scope="col" style="padding-left: 0px;">
               Isolation <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('IsolationType')"></i>
             </th>
-            <th scope="col" style="padding-left: 0px">
+            <!-- <th scope="col" style="padding-left: 0px">
               Fin.Clearance Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZzfinClear')"></i>
-            </th>
+            </th> -->
             <th scope="col" style="text-align: center">Actions</th>
           </tr>
         </thead>
@@ -101,8 +101,8 @@
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
             </td>
-            <td style="padding-left: 0px" [title]="item?.AdmissionStatus" class="border-top-none">
-              {{ admissionStatusCheck(item) }}
+            <td style="padding-left: 0px" [title]="item?.patientStatus" class="border-top-none">
+              {{ item?.patientStatus }}
             </td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
               [title]="getDate(item.AdmissionDate) | date : 'dd.MM.y'">
@@ -122,9 +122,9 @@
             <td style="padding-left: 0px" [title]="item.FinancialCategory" class="border-top-none">{{ item.FinancialCategory }}</td>
             <td style="padding-left: 0px" [title]="item.AttendingDoctorName" class="border-top-none">{{ item.AttendingDoctorName ? item.AttendingDoctorName:'--'}}</td>
             <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
-            <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
+            <!-- <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td> -->
             <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td>
-            <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
+            <!-- <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td> -->
             <td colspan="1" style="display: flex; align-items: center; text-align: center; overflow: visible !important">
               <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
                 <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>

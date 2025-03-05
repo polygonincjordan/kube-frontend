@@ -90,6 +90,7 @@ export class AdmitProcessComponent implements OnInit {
       }
     })
     this.getProgressNotesData();
+    this.tabChange('ProgressNotes');
   }
   LDRListSet(fromdate?,todate?,physician?) {
     let fromdatevalue = '';
