@@ -28,14 +28,14 @@
             <title clas="patient-title">Out-Patient Documents</title>
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
-              <span (click)="openNewForm('Correspondence')" class="mw-15" [title]="'Create Correspondence'">
-                <img src="assets/img/e-kardex.png" class="mw-15" />
+              <span (click)="openNewForm('Correspondence')" [title]="'Create Correspondence'">
+                <img src="assets/img/edit-ekardex.png" class="mw-15" />
               </span>
               <span (click)="openEnlarge(Outcontent, 'OutPatient')" [title]="'View All'">
-                <img src="" class="iconsminds-resize" />
+                <img src="" class="iconsminds-resize mw-15" />
               </span>
               <span (click)="openSettings(opionmodal)" [title]="'Users Preferences'">
-                <img src="" class="simple-icon-settings" />
+                <img src="" class="simple-icon-settings mw-15" />
               </span>
               <span (click)="openNewForm('out')" [title]="'Create New Document'">
                 <img src="assets/img/file.png" class="mw-15" />
@@ -106,7 +106,7 @@
           <div class="main_soap">
             <div class="head">Correspondence Document</div>
             <div class="details">
-              <app-correspondence-document></app-correspondence-document>
+              <app-correspondence-document [correspondence]="'correspondence'"></app-correspondence-document>
             </div>
               <div class="bottom">
                 <button (click)="saveCorrespondenceDocument()" >Save</button>
@@ -130,13 +130,13 @@
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
               <span (click)="openEnlarge(Inpatient, 'Inpatient')" [title]="'View All'">
-                <img src="" class="iconsminds-resize" />
+                <img src="" class="iconsminds-resize mw-15" />
               </span>
               <!-- onclick this open configuration option modal -->
               <!-- <span (click)="openSettings(opionmodal)"
                 ><img src="" class="simple-icon-settings"
               /></span> -->
-              <span class="show position-relative dropdown-in-patient p-0" [title]="'Create New Document '"
+              <span class="show position-relative dropdown-in-patient p-0 mw-15" [title]="'Create New Document '"
                 dropdown>
                 <span><img src="assets/img/file.png" class="mw-15"
                     dropdownToggle /></span>

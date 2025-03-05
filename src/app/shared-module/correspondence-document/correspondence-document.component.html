@@ -1,5 +1,5 @@
 <form [formGroup]="correspondForm">
-    <div class="chief-complain mt-3">
+    <div class="chief-complain mt-3" [ngClass]="correspondence == 'correspondence' ? 'chief-complain-kardex' :'chief-complain'">
         <span class="text-area-label">Chief Complaint</span>
         <textarea class="form-control" formControlName="ChiefComplaint"></textarea>
     </div>

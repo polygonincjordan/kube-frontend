@@ -799,13 +799,14 @@ export class CheckInComponent implements OnInit {
       .subscribe((data: any) => {
         console.log(data, "----");
         let patientList: any[] = data?.d?.results[0]?.ToIPList.results;
+        patientList = patientList.map(item => ({ ...item, patientStatus: this.admissionStatusCheck(item) }));
+
         patientList = patientList.filter(item => item.Floor != '9th Floor Day Surgery');
 
         let IPList: any[] = patientList;
         this.inHospitalistList = IPList.filter(item => item.PatientstatusDischarged !== 'X');
         let IPListClone: any[] = patientList;
         this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
-        console.log(this.inHospitalistList, "inHospitaDischargelistList");
 
         this.dataToParent.emit(this.inHospitalistListClone);
         this.lastIndex = this.inHospitalistList.length - 1;
@@ -917,7 +918,7 @@ export class CheckInComponent implements OnInit {
         event.Status.forEach((statusValue) => {
           this.statusValueArr.push(
             filterValue.filter((element) => {
-              if (element.AdmissionStatus == statusValue) {
+              if (element.patientStatus == statusValue) {
                 return element;
               }
             })

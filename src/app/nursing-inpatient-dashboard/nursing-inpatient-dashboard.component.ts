@@ -99,6 +99,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   getWards: WardList[];
   public formgroupData: any = {};
   form: FormGroup;
+  singleData: FormGroup;
   formSubscription: any;
   ErPatientCount: any;
   inLDRAttendPhyList: any;
@@ -142,6 +143,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
   reservation: boolean = false;
   showConfiguration: boolean = false;
+  singleformgroupData: any;
 
   constructor(
     private orderDashboardService: OrdersDashboardService,
@@ -171,6 +173,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       patientStatus: [''],
       Physician: [''],
     });
+    this.singleData = this.formBuilder.group({
+      fromDate:[new Date()]
+    })
     this.AdministeredDosesform = this.formBuilder.group({
       Physician: [''],
       wardNo: [''],
@@ -220,6 +225,15 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.formSubscription = this.singleData.valueChanges.subscribe((data)=>{
+      this.singleformgroupData = data;
+      if(data.fromDate){
+        this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+         this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.singleformgroupData.fromDate)
+
+      }
+    })
     this.filterForm = this.formBuilder.group({
       Physician: [''],
       Status: [''],
@@ -599,8 +613,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.getCheckInData = data;
       this.getCheckInStatusFilterData = this.getCheckInData.reduce(
         (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue?.AdmissionStatus)) {
-            accumulator.push(currentValue?.AdmissionStatus);
+          if (!accumulator.includes(currentValue?.patientStatus)) {
+            accumulator.push(currentValue?.patientStatus);
           }
           return accumulator;
         },
@@ -708,10 +722,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   refreshCheckIn() {
+    this.singleData?.patchValue({fromDate: new Date()});
     if (this.selectedModule === 'checkin') {
       this.CheckInComponent.getHospitalList();
     } else if (this.selectedModule === 'erhistory') {
-      this.ErHistoryComponent.getHospitalList();
+      // this.ErHistoryComponent.getHospitalList();
+      this.ErHistoryComponent.getErList(this.singleData.get("fromDate").patchValue(new Date()));
     } else if (this.selectedModule === 'LabResults') {
       this.LabResultsComponent?.getErList(
         '',
@@ -981,6 +997,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.formDetailGroup
         .get('DateRange')
         .patchValue([new Date(), new Date()]);
+      this.singleData.get("fromDate").patchValue(new Date());
+
       this.headerLabel = 'Not Released/Missed Documents ';
       this.treatmentarea = false;
       this.checkin = false;
@@ -1207,6 +1225,16 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   previousDate() {
+    if(this.erhistory) {
+      if(this.singleData.get('fromDate').value){
+        const currentDate = this.singleData.get('fromDate').value;
+        const previousDate = new Date(currentDate);
+        previousDate.setDate(previousDate.getDate() - 1);
+        this.singleData.patchValue({ fromDate: previousDate });
+        // this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+      }
+      return;
+    }
     if (
       +this.formDetailGroup.get('DateRange').value[0] ==
       +this.formDetailGroup.get('DateRange').value[1]
@@ -1273,6 +1301,16 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   upcomingDate() {
+    if(!this.erhistory) {
+      if(this.singleData.get('fromDate').value){
+        const currentDate = this.singleData.get('fromDate').value;
+        const nextDate = new Date(currentDate);
+        nextDate.setDate(nextDate.getDate() + 1);
+        this.singleData.patchValue({ fromDate: nextDate });
+        // this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+      }
+      return;
+    }
     console.log('Upcomming');
     this.formDetailGroup.get('DateRange').patchValue([new Date(), new Date()]);
     if (

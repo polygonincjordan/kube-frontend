@@ -1,44 +1,133 @@
 <div>
-    <div class="row m-0">
+    <div class="row m-0 mb-2">
         <div class="col-md-4 row m-0">
             <div class="col-md-6">
                 <label>Date</label>
             </div>
             <div class="col-md-6">
-                <input class="form-control" />
+                <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder=""
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                          dateInputFormat: 'DD.MM.YYYY' }" />
             </div>
         </div>
         <div class="col-md-4 row m-0">
         </div>
         <div class="col-md-4 row m-0">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label>Time</label>
             </div>
             <div class="col-md-6">
-                <input class="form-control" type="time" />
+                <input type="time" step="2" class="form-control" min="08:00:00" max="17:00:00" />
             </div>
         </div>
     </div>
-    <div class="row m-0">
+    <div class="row m-0 mb-2">
         <div class="col-md-4 row m-0">
             <div class="col-md-6">
                 <label>Mode of Delivery</label>
             </div>
             <div class="col-md-6">
-                <!-- <ng-select class="form-control">
+                <ng-select>
                     <ng-option></ng-option>
-                </ng-select> -->
+                </ng-select>
             </div>
         </div>
         <div class="col-md-4 row m-0">
+            <div class="col-md-6">
+                <label>Assessment Done</label>
+            </div>
+            <div class="col-md-6">
+                <ng-select>
+                    <ng-option></ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-md-4 row m-0">
+            <div class="col-md-4">
+                <label>Assessed By</label>
+            </div>
+            <div class="col-md-8">
+                <input class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row m-0 mb-2">
+        <div class="col-md-4 row m-0">
+
         </div>
         <div class="col-md-4 row m-0">
             <div class="col-md-6">
-                <label>Time</label>
+                <label>Date of Birth</label>
             </div>
             <div class="col-md-6">
-                <input class="form-control" type="time" />
+                <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder=""
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                          dateInputFormat: 'DD.MM.YYYY' }" />
+            </div>
+        </div>
+        <div class="col-md-4 row m-0">
+            <div class="col-md-4">
+                <label>Time of Birth</label>
+            </div>
+            <div class="col-md-6">
+                <input type="time" step="2" class="form-control" min="08:00:00" max="17:00:00" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Vitals</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part p-0">
+                    <div class="container-fluid">
+                        <div class="allergy-box d-flex justify-content-between py-3">
+                            <div class="allergy-checkbox-section d-flex align-items-center">
+                                <input type="checkbox" id="noVitalSignsApplicable"
+                                    (change)="handleCheckboxVitals($event)" style="width: 24px;height: 20px;"
+                                    [attr.disabled]="toVitalsArr?.length >0 ? true:null" />
+                                <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No Vitals
+                                    Signs Applicable</label>
+                            </div>
+                            <div class="secound-bar-vital-sign" (click)="openModalVital()">
+                                <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+                            </div>
+                        </div>
+                        <div style="max-height: 296px;
+                  overflow: auto;">
+                            <table class="table table-bordered past-table">
+                                <thead style="background-color: #e4edf5; color: black; ">
+                                    <tr>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Measured Value </th>
+                                        <th scope="col">Normal Range</th>
+                                        <th scope="col">Date/Time</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: #fbfcff;">
+                                    <tr class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+                                        <td style="    padding: 10px !important;
+                      width: 3%;text-align: center;" (click)="deleteVitalsFromTable(i)"><img
+                                                src="assets/img/Delete.svg" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>

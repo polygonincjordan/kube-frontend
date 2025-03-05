@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 export class CorrespondenceDocumentComponent implements OnInit {
 
   correspondForm: FormGroup;
+  @Input() correspondence: any;
 
   paramsObject: any;
   docKey: any;

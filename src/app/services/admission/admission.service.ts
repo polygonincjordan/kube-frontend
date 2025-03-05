@@ -102,7 +102,7 @@ export class AdmissionService {
   public isEditVisitForm: boolean = false;
 
   public isAddEditTransferAssestForm: boolean = false;
-  public isAddEditNewbornAssessment: boolean = false;
+  public isAddEditNewbornAssessment: boolean = true;
   public isCloneTransferAssestForm: boolean = false;
   public isEditTransferAssestForm: boolean = false;
   public document = new BehaviorSubject(false);

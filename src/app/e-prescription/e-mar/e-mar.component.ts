@@ -11,7 +11,7 @@ import { MultiSelectComponent } from 'ng-multiselect-dropdown';
 export class EmarComponent {
   constructor(public ePrescriptionService: EPrescriptionService) { }
   public data = [];
-  selectedItems = [];
+  // selectedItems = [];
   public settings = {};
   selectedItem: string;
   ngOnInit() {
@@ -21,6 +21,7 @@ export class EmarComponent {
       { item_id: 3, item_text: 'Ended' },
       { item_id: 4, item_text: 'Cancelled' },
     ];
+    this.ePrescriptionService.selectedItems = [{item_id: 1, item_text: 'Active'}]
     this.settings = {
       singleSelection: false,
       idField: 'item_id',
