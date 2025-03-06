@@ -328,6 +328,11 @@ svg#Layer_1 {
       img.mw-15 {
         max-width: 20px;
       }
+
+      img {
+        height: 25px !important;
+        width: 25px !important;
+      }
     }
   }
 }
@@ -828,6 +833,14 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   iframe {
     width: 100%;
   }
+}
+
+.physician-ass {
+  border: none !important;
+}
+
+.physician-head {
+  justify-content: space-between !important;
 }
 
 .bottom {

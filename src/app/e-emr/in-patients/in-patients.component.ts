@@ -645,6 +645,38 @@ export class InPatientsComponent implements OnInit {
       );
     }
   }
+
+  resetFilter() {
+    this.clearFilter();
+    let jsonObj = {
+      Floor: this.f.wardNo.value,
+      Patientstatus: this.f.patientStatus.value,
+      module: this.setModule,
+    };
+    this._dataServices.getInPatientList(jsonObj).subscribe(
+      (_success: any) => {
+        if (_success) {
+          //_success = JSON.parse(_success._body);
+
+          //this.showFilterFn();
+          this.showfilter = false;
+          if (_success.module == 'home') {
+            this.dataOnTable = _success.result.d.results;
+          } else if (_success.module == 'Not_Executed_Physician_Order') {
+            this.dataOnTableForPhyOrder = _success.result.d.results;
+          } else if ((_success.module = 'Missed_Medications_Doses')) {
+            this.dataOnTableForMissedDoses = _success.result.d.results;
+          } else {
+            alert('else')
+            this.dataOnTable = _success.result.d.results;
+          }
+          //this.dataOnTable = _success.d.results;
+          //this.dataCount.emit(this.dataOnTable.length);
+        }
+      },
+      (_error: any) => { }
+    );
+  }
   getWardList() {
     this._dataServices.getWardList().subscribe(
       (_success: any) => {

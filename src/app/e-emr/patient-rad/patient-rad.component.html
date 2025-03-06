@@ -73,13 +73,22 @@
                     (onDeSelect)="onDeselectForStatus($event)"
                   >
                   </ng-multiselect-dropdown>
-                  <button
-                    class="btn btn-primary"
-                    style="margin-left: 48px;background-color: #0082c8; border: #0082c8"
-                    (click)="filterData()"
-                  >
-                    Filter
-                  </button>
+                  <div class="d-flex">
+                    <button
+                      class="btn btn-primary"
+                      style="background-color: #0082c8; border: #0082c8"
+                      (click)="filterData()"
+                    >
+                      Filter
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      style="margin-left: 48px;background-color: #0082c8; border: #0082c8"
+                      (click)="filterData('clear')"
+                    >
+                      Clear
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
