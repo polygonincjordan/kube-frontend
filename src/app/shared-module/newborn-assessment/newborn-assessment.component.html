@@ -75,6 +75,88 @@
         </div>
     </div>
 
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Anthropometric Measurements</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part p-0">
+                    <div class="container-fluid">
+                        <div class="row m-0 mb-2">
+                            <div class="col-md-6 row m-0">
+                                <div class="col-md-3">
+                                    <label>Birth Weight</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <ng-select>
+                                        <ng-option></ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 row m-0">
+                                <div class="col-md-3">
+                                    <label>Head Circumference</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>CM</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-2">
+                            <div class="col-md-6 row m-0">
+                                <div class="col-md-3">
+                                    <label>Length of the Baby</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>CM</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 row m-0">
+                                <div class="col-md-3">
+                                    <label>Chest Circumference</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>CM</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-2">
+                            <div class="col-md-6 row m-0">
+                                <div class="col-md-3">
+                                    <label>Gestation</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Weeks</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 row m-0">
+                                <div class="col-md-3">
+                                    <label>Gender</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="end-container">
         <div class="scale-box-main">
@@ -123,6 +205,91 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Anthropometric Measurements</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part p-0">
+                    <div class="tab-navigate">
+                        <div class="tab-nav w-100">
+                            <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                                <li *ngFor="let tab of tabList" class="d-flex m-0 align-items-center"
+                                    (click)="assessmentTabSelect(tab)"
+                                    [ngClass]="selectedTabName == tab ? 'active' : ''">
+                                    <img src="./assets/img/grid-icon.svg" />
+                                    <p class="d-inline-block m-0">{{ tab }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row m0">
+                        <div class="col-md-2">
+                            <label>Skin Color</label>
+                        </div>
+                        <div class="col-md-3">
+                            <ng-select>
+                                <ng-option></ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row m0">
+                        <div class="col-md-2">
+                            <label>Appearance</label>
+                        </div>
+                        <div class="col-md-1 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2" class="m-0 ml-2">Normal</label>                            
+                        </div>
+                        <div class="col-md-1 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Rash / Milia</label>                            
+                        </div>
+                        <div class="col-md-2 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Bruising Abrasions</label>                            
+                        </div>
+                        <div class="col-md-2 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Lanugo</label>                            
+                        </div>
+                        <div class="col-md-2 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Edema</label>                            
+                        </div>
+                    </div>
+                    <div class="row m0">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-1 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Mongolian Spot</label>                            
+                        </div>
+                        <div class="col-md-1 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Skin Tags</label>                            
+                        </div>
+                        <div class="col-md-2 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Petechia/ Ecchymosis</label>                            
+                        </div>
+                        <div class="col-md-2 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Coatings (Vernix / Meconium)</label>                            
+                        </div>
+                        <div class="col-md-2 row m-0 align-items-center">
+                            <input type="checkbox" />
+                            <label class="m-0 ml-2">Edema</label>                            
                         </div>
                     </div>
                 </div>

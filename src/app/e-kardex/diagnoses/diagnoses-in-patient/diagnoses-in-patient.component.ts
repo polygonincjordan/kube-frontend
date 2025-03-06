@@ -370,7 +370,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   releaseCorresponde() {
-    let docStatus = this.selectedPatient?.Dockey ? '5' : '4';
+    let docStatus = this.selectedPatient?.Dockey ? this.selectedPatient?.DokstText == 'Released' ? '5' : '2' : '4';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue) => {
       if (formValue) {
         // this.refresh();
@@ -469,6 +469,10 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   closeInPatientForm() {
+    this.selectedPatient = '';
+    this.admissionService.selectedCurrentDocDetails = '';
+    this.admissionService.isClonePhysicianForm = false;
+    this.admissionService.isEditPhysicianForm = false;
     this.onClose.emit({ isvalid: true, isinvalid: false })
   }
 

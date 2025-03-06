@@ -31,6 +31,15 @@
               <span (click)="openNewForm('Correspondence')" [title]="'Create Correspondence'">
                 <img src="assets/img/edit-ekardex.png" class="mw-15" />
               </span>
+              <span (click)="openNewForm('PhysicianAssessment')" [title]="'Create Physician Assessment'">
+                <img src="assets/img/physician-ass-ekardex.webp" class="mw-15" />
+              </span>
+              <span (click)="openModalForAttachment(cvisAttachmentmodal)" [title]="'Create CVIS Attachments'">
+                <img src="assets/img/civic-ekardex-copy.jpg" class="mw-15" />
+              </span>
+              <span (click)="openModalForAttachment(attachmentmodal)" [title]="'Create Attachments'">
+                <img src="assets/img/attechment-ekardex.jpg" class="mw-15" />
+              </span>
               <span (click)="openEnlarge(Outcontent, 'OutPatient')" [title]="'View All'">
                 <img src="" class="iconsminds-resize mw-15" />
               </span>
@@ -113,6 +122,27 @@
                 <button (click)="releaseCorresponde()">Release</button>
                 <!-- <button (click)="deleteCorrespondeDoc()">Delete</button> -->
                 <button (click)="updateForm(false)">Close</button>
+              </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="physicianAssessFormDiv">
+          <div class="main_soap">
+            <div class="head physician-head">
+              <div>
+                Physician Assessment
+              </div>
+              <div class="bottom physician-ass">
+                <button type="button" (click)="savePhysicianAssessmentForm('add')">Save</button>
+                <button type="button" (click)="savePhysicianAssessmentForm('release')">Release</button>
+                <!-- <button type="button" *ngIf="isDelete" (click)="savePhysicianAssessmentForm('delete')">Delete</button> -->
+                <button type="button"(click)="updateForm(false)">Close</button>
+              </div>
+            </div>
+            <div class="details">
+              <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>
+            </div>
+              <div class="bottom">
+               
               </div>
             </div>
         </ng-container>
@@ -674,3 +704,129 @@
 <diagnosis-history-popup #diagnosisHistory
   (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)"
   (onAttachmentClose)="onOpenAttachment($event)" (onInPatientAttachmentClose)="onInPatientAttachment($event)"  (onCorrespondeClose)="onInPatientCorrespondence($event)" (onReleseCloseInPatient)="FormOpenInPatient($event)"></diagnosis-history-popup>
+
+  <ng-template #cvisAttachmentmodal>
+    <div class="modal-body">
+      <div class="main-white-boxes">
+        <div class="attachment-main-new">
+          <h4 class="top-head-h4">CVIS Attachments</h4>
+        </div>
+        <form [formGroup]="createCVISAttachmentForm"
+          >
+          <!-- <div class="attachment-main-new">
+            <div class="attachment">
+              <span> Attachment Type</span>
+              <ng-select placeholder="Search" formControlName="attachmentType"
+                style="font-size: 12px; width: 65%;" [ngClass]="{'error-border': createAttachmentForm.get('attachmentType')?.hasError('required') && (createAttachmentForm.get('attachmentType')?.touched || createAttachmentForm.get('attachmentType')?.dirty)}">
+                <ng-option *ngFor="let item of attachmentList" [value]="item.Id">
+                  {{ item.Descr }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div> -->
+          <div class="attachment-main-new upload-box">
+            <span class="top-head-new"> Upload Attachment</span>
+            <div class="d-flex"
+              style="align-items: center;justify-content: space-between;">
+              <div class="attachment position-relative">
+                <input type="file" id="docpicker" style="display: none;"
+                  formControlName="attachmentFile"
+                  accept="image/png, image/gif, image/jpeg, application/pdf"
+                  (change)="handleFileChange($event)" >
+                <label id="myfile" class="w-100 pl-2 m-0" >
+                  <label for="docpicker" class="choose-filebut"
+                    *ngIf="!this.file"
+                    [ngClass]="{'error-border': createCVISAttachmentForm.get('attachmentFile')?.hasError('required') && (createCVISAttachmentForm.get('attachmentFile')?.touched || createCVISAttachmentForm.get('attachmentFile')?.dirty)}">
+                    Choose file
+                  </label>
+                  <div
+                    class="choose-filename d-flex justify-content-between align-items-center"
+                    *ngIf="this.file">
+                    <div title="{{filename}}">{{filename}}</div>
+                    <img src="./assets/img/close.png" title="remove"
+                      class="cursor-pointer" *ngIf="this.file"
+                      (click)="removeFile(); createCVISAttachmentForm.get('attachmentFile').markAsTouched()"  height="13" />
+                  </div>
+                </label>
+                <div class="attachment-btn d-flex position-absolute" >
+                  <button class="border-0 px-1 fs-6"
+                    (click)="onFileSelected(documentUrlpdf)" title="view"
+                    *ngIf="this.file"><img style="filter: grayscale(1);"
+                      src="./assets/img/eye-icon.svg" /></button>
+                </div>
+              </div>
+  
+              <div class="btns-save-cancel">
+                <button class="btn-save me-1" (click)="createCVISAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
+                <button class="btn-save" (click)="resetCVISAttachment()">
+                  Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #attachmentmodal>
+    <div class="modal-body">
+      <div class="main-white-boxes">
+        <div class="attachment-main-new">
+          <h4 class="top-head-h4">Attachments</h4>
+        </div>
+        <form [formGroup]="createAttachmentForm"
+          >
+          <div class="attachment-main-new">
+            <div class="attachment">
+              <span> Attachment Type</span>
+              <ng-select placeholder="Search" formControlName="attachmentType"
+                style="font-size: 12px; width: 65%;" [ngClass]="{'error-border': createAttachmentForm.get('attachmentType')?.hasError('required') && (createAttachmentForm.get('attachmentType')?.touched || createAttachmentForm.get('attachmentType')?.dirty)}">
+                <ng-option *ngFor="let item of attachmentList" [value]="item.Id">
+                  {{ item.Descr }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="attachment-main-new upload-box">
+            <span class="top-head-new"> Upload Attachment</span>
+            <div class="d-flex"
+              style="align-items: center;justify-content: space-between;">
+              <div class="attachment position-relative">
+                <input type="file" id="docpicker" style="display: none;"
+                  formControlName="attachmentFile"
+                  accept="image/png, image/gif, image/jpeg, application/pdf"
+                  (change)="handleFileChange($event)" >
+                <label id="myfile" class="w-100 pl-2 m-0" >
+                  <label for="docpicker" class="choose-filebut"
+                    *ngIf="!this.file"
+                    [ngClass]="{'error-border': createAttachmentForm.get('attachmentFile')?.hasError('required') && (createAttachmentForm.get('attachmentFile')?.touched || createAttachmentForm.get('attachmentFile')?.dirty)}">
+                    Choose file
+                  </label>
+                  <div
+                    class="choose-filename d-flex justify-content-between align-items-center"
+                    *ngIf="this.file">
+                    <div title="{{filename}}">{{filename}}</div>
+                    <img src="./assets/img/close.png" title="remove"
+                      class="cursor-pointer" *ngIf="this.file"
+                      (click)="removeFile(); createAttachmentForm.get('attachmentFile').markAsTouched()"  height="13" />
+                  </div>
+                </label>
+                <div class="attachment-btn d-flex position-absolute" >
+                  <button class="border-0 px-1 fs-6"
+                    (click)="onFileSelected(documentUrlpdf)" title="view"
+                    *ngIf="this.file"><img style="filter: grayscale(1);"
+                      src="./assets/img/eye-icon.svg" /></button>
+                </div>
+              </div>
+  
+              <div class="btns-save-cancel">
+                <button class="btn-save me-1" (click)="createAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
+                <button class="btn-save" (click)="resetAttachment()">
+                  Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>

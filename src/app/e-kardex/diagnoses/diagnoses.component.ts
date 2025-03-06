@@ -23,7 +23,7 @@ import { error } from 'console';
 import { AdmissionService } from '@services/admission/admission.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { KeyValue } from '@angular/common';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
@@ -88,6 +88,7 @@ export class DiagnosesComponent implements OnInit {
   bsInlineValue = new Date();
   inPatientShow = false;
   createAttachmentForm:FormGroup;
+  createCVISAttachmentForm:FormGroup;
   inPatientForm: string;
   inPatientSoapForm = false;
   inPatientSoapData: any;
@@ -97,6 +98,7 @@ export class DiagnosesComponent implements OnInit {
   subscription: Subscription;
   soapFormDiv: boolean = false;
   correspondenceFormDiv: boolean = false;
+  physicianAssessFormDiv: boolean = false;
   pdfFormDiv: boolean = false;
   visitFormDiv: boolean = false;
   isCreateRequest: boolean = false;
@@ -145,7 +147,9 @@ export class DiagnosesComponent implements OnInit {
       attachmentType: [''],
       attachmentFile: [''],
     });
-
+  this.createCVISAttachmentForm= this.formBuilder.group({
+      attachmentFile: [null, Validators.required],
+      });
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -679,6 +683,7 @@ export class DiagnosesComponent implements OnInit {
     this.soapFormDiv = false;
     this.inPatientSoapForm = false;
     this.correspondenceFormDiv = false;
+    this.physicianAssessFormDiv = false;
     this.pdfFormDiv = false;
     this.visitFormDiv = false
     this.isCreateRequest = false;
@@ -1136,10 +1141,34 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientShow = false;
       this.soapFormDiv = false;
       this.visitFormDiv = false;
+      this.physicianAssessFormDiv = false;
       this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
       this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
       this.correspondenceFormDiv = true;
       return
+    }
+    if(type == 'PhysicianAssessment') {
+      this.inPatientForm = "PhysicianAssessment";
+      type = 'out';
+      this.inPatientSoapData = {} as PatientVisitDataResult;
+      this.inPatientSoapData.DocKey = '';
+      this.inPatientSoapData.Einri = this.storageService.einri;
+      this.inPatientSoapData.Falnr = this.storageService.falnr;
+      this.inPatientSoapData.Lfdnr = this.storageService.lfdnr;
+      this.inPatientSoapData.Patnr = this.storageService.patnr;
+      this.inPatientSoapData.Visitdate = new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd');
+      this.correspondenceFormDiv = false;
+      this.pdfFormDiv = false;
+      this.visitFormDiv = false;
+      this.isCreateRequest = true;
+      this.inPatientShow = false;
+      this.soapFormDiv = false;
+      this.visitFormDiv = false;
+      this.physicianAssessFormDiv = true;
+      this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
+      this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
+      this.correspondenceFormDiv = false;
+      return;
     }
 
   this.editing = true;
@@ -1157,6 +1186,7 @@ export class DiagnosesComponent implements OnInit {
     this.isCreateRequest = true;
     this.inPatientShow = false;
     this.correspondenceFormDiv = false;
+    this.physicianAssessFormDiv = false;
     this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
     this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
     this.soapFormDiv = true;
@@ -1174,6 +1204,7 @@ export class DiagnosesComponent implements OnInit {
       this.isCreateRequest = true;
       this.inPatientShow = false;
       this.correspondenceFormDiv = false;
+      this.physicianAssessFormDiv = false;
       this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
 
       this.patientVisitRecord.Dtid = DocType.ZMED_VISIT;
@@ -1181,6 +1212,89 @@ export class DiagnosesComponent implements OnInit {
     }
   }
 
+  soapFormEvent: any;
+  savePhysicianAssessmentForm(actionType: string) {
+    if(actionType == 'close') {
+      this.closeInPatientForm();
+      return;
+    }
+    if(actionType == 'release') {
+      this.soapFormEvent = actionType;
+      return;
+    }
+    if(this.admissionService.isEditPhysicianForm) {
+      this.soapFormEvent = "edit";
+    } else {
+      this.soapFormEvent = actionType;
+    }
+  }
+  realodEducationList(event: any) {
+    this.updateForm(event)
+  }
+  closeInPatientForm() {
+    this.selectedPatient = '';
+    // this.onClose.emit({ isvalid: true, isinvalid: false })
+  }
+
+    createCVISAttachmentDoc(){
+      this.createCVISAttachmentForm.markAllAsTouched();    
+      if(this.createCVISAttachmentForm.valid){
+        const json = {
+          "DocNr": "",
+          "Version": "",
+          "Dtid": "ZMED_CVIS",
+          "Einri": this.storageService.einri,
+          "Patnr": this.storageService.patnr,
+          "Falnr": this.storageService.falnr,
+          "Orgdo": this.storageService.patientData.deptOrgUnit,
+          "AttendPhy": this.storageService.getUserProfile().Gpart,
+          "DocType": "",
+          "FileName": this.filename,
+          "Mimetype": this.mimetype,
+          "AttachmentDataStr":this.base64Value
+        }
+        this.patientHistoryService.createAttachmentDoc(json).subscribe(
+          (_success: any) => {
+            this.resetCVISAttachment();
+            this.createCVISAttachmentForm.reset();
+            Swal.fire({
+              title: 'Created Successfully',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            }).then(() => {
+              this.file = null;
+              this.filename = '';
+              this.mimetype = '';
+              this.base64Value = '';
+              this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+              this.userConfigurationService.getListOfPatientVisitDataSet()
+            });
+          },
+          (_error: any) => {
+            this.showErrorPopup("", _error.error.error.message.value, "Error")
+          }
+          );
+        }
+    }
+
+    showErrorPopup(title: any, text: any, messageType) {
+      return Swal.fire({
+        title: title ? title : '',
+        text: text ? text : '',
+        showCancelButton: messageType === 'Conform' ? true : false,
+        confirmButtonColor: '#0890c5',
+        cancelButtonColor: '#84898c',
+        confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup',
+        icon: 'error'
+      });
+    }
+
+    resetCVISAttachment(_error?: any, p0?: string){
+      this.modalRef.hide();
+      this.createCVISAttachmentForm.reset();
+    }
   saveCorrespondenceDocument() {
     let docStatus = '1';
     // if(this.selectedDocData?.Dockey) docStatus = '3';
@@ -1264,8 +1378,11 @@ export class DiagnosesComponent implements OnInit {
       showIn: false,
       showOut: false,
     };
+    this.admissionService.selectedCurrentDocDetails = '';
+    this.admissionService.isClonePhysicianForm = false;
+    this.admissionService.isEditPhysicianForm = false;
     this.closeAllForm();
-    this.closeModal()
+    this.closeModal();
     if (isUpdate) {
       this.userConfigurationService.getListOfPatientVisitDataSet();
       this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
@@ -1601,6 +1718,8 @@ export class DiagnosesComponent implements OnInit {
   public openModalForAttachment(
     template: TemplateRef<any>,
   ) {
+    this.createAttachmentForm.reset();
+    this.createCVISAttachmentForm.reset();
     this.removeFile();
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
       this.modalRef = this.modalServiceForAllergy.show(template,config);

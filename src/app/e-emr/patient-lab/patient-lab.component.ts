@@ -197,13 +197,19 @@ export class PatientLabComponent implements OnInit {
       (_error: any) => {}
     );
   }
-  filterData() {
+
+  filterData(dataType?: any) {
     this.resetPiechartData();
+    if(dataType == 'clear') {
+      this.patientMrn = '';
+      this.selectedItemsForStatus = '';
+      this.modalForselectedItemsForStatus = [];
+    }
     let jsonObj = {
       Widgetid: 'MYLAB01',
       Datefrom: this.dateFrom.getFullYear() +'-'+ String(this.dateFrom.getMonth() +1).padStart(2, '0') +'-'+ String(this.dateFrom.getDate()).padStart(2, '0') +'T00:00:00',
       Dateto: this.dateTo.getFullYear() +'-'+String(this.dateTo.getMonth() +1).padStart(2, '0') +'-'+ String(this.dateTo.getDate()).padStart(2, '0')+'T00:00:00',
-      Patnr:this.patientMrn,
+      Patnr: this.patientMrn,
       Status:this.selectedItemsForStatus,
       New:"X",
       FilterXml:

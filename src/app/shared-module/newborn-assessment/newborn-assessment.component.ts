@@ -20,15 +20,14 @@ export class NewbornAssessmentComponent implements OnInit {
   encounterId: any;
   public toVitalsArr: any = [];
   tabList = [
-    'Gastrontestinal',
-    'Reproductive',
-    'Genitourinary',
-    'Skin/Integumentary',
-    'Neurological',
-    'Cardiovascular',
-    'Ears/Nose/Throat',
-    'Ophthalmology',
-    'Respiratory',
+    'Skin',
+    'Head & Neck',
+    'Chest and Thoracic',
+    'Abdomen',
+    'Genitalia',
+    'Musculoskeletal / Neuromuscular',
+    'Malformation',
+    'General Impression',
   ];
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,
     private modalService: BsModalService) {
