@@ -366,8 +366,9 @@ export class PatientDocumentationComponent implements OnInit {
   getPediatricWarningScore() {
     this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
       next: (_success: any) => {
-        console.log('_success21212121', _success);
-        this.pediatricEarlyWarningList = _success.d.results
+        this.pediatricEarlyWarningList = _success.d.results.find( res => res.Dtid == 'ZSCA_PEWS' )
+        this.pediatricEarlyWarningList = [this.pediatricEarlyWarningList]
+        console.log('_success21212121', this.pediatricEarlyWarningList);
 
         // this.nurseEndorsementList = _success.d.results
       },
@@ -2940,7 +2941,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
-
+      if (this.openPediatricEarlyWarningScale) {
+        this.PediatricWarningScaleComp.savePediatricEarlyWarningScale('copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
     // Pre Cardiec Cath Document Create API
       if (this.openPreCardiacCath) {
         let docStatus = '3';
@@ -3176,7 +3185,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   getScaleDetails(item, docType?) {
-    if (docType === RedirectionType.TRASM$  || docType === RedirectionType.PRECATH$) {
+    if (docType === RedirectionType.TRASM$  || docType === RedirectionType.PRECATH$ || docType === RedirectionType.PEWS$ ) {
       item.AttMimeType = 'PDF';
     } else {
       item.AttMimeType = 'HTML';

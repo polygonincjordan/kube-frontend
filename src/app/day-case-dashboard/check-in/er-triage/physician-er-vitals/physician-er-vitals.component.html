@@ -3,7 +3,7 @@
     <div class="" style="max-width: 100%;background-color: white;" *ngIf="!showMaintain">
       <div class="vital-sign-table">
         <div class="top-header-vital-sign">
-          <h3 class="header-heading">Vital Sign </h3>
+          <h3 class="header-heading">Vital Signs </h3>
           <ul class="list-simple vital-header">
             <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.Patient}}</span></li>
             <li style="padding: 17px">MRN : {{erListSelectedData.Patnr}}</li>
@@ -106,7 +106,7 @@
     <div class="" style="max-width: 100%;background-color: white;" *ngIf="showMaintain">
       <div class="vital-sign-table">
         <div class="top-header-vital-sign">
-          <h3 class="header-heading">Maintain Vital Sign </h3>
+          <h3 class="header-heading">Maintain Vital Signs </h3>
           <ul class="list-simple" style="display: flex;
             align-items: center;">
             <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.Patient}}</span></li>
@@ -235,10 +235,10 @@
   <div class="modal-body" style="padding: 0 !important;">
     <form>
       <div class="infoModel-title" style="background:#0056b0">
-        <h4 class="m-0 pl-3">Delete Vital Sign</h4>
+        <h4 class="m-0 pl-3">Delete Vital Signs</h4>
       </div>
       <div class="infoModel-contant p-3">
-        <label>Are you sure you want to delete this vital sign</label>
+        <label>Are you sure you want to delete this Vital Signs</label>
         <select class="form-control" [(ngModel)]="cancelReasonValue" (ngModelChange)="onChange($event)"
           [ngModelOptions]="{standalone: true}">
           <option selected value="">Reason for deletion</option>
@@ -263,7 +263,7 @@
 <ng-template #allVitalSignModal>
   <div class="modal-body" style="padding: 0 !important;">
     <div class="infoModel-title" style="background:#0056b0">
-      <h4 class="m-0 pl-3">All Vital Sign</h4>
+      <h4 class="m-0 pl-3">All Vital Signs</h4>
     </div>
     <div style="    max-height: 30em;
       overflow: auto;padding: 11px;">

@@ -1190,5 +1190,8 @@ export class DialysisNursingDashboardComponent implements OnInit {
     }
   }
 
+  caseNumberReturn(caseNumber: any) {
+    return parseInt(caseNumber, 10).toString()
+  }
 
 }

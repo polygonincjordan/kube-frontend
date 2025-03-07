@@ -489,4 +489,8 @@ export class EmergencyDashboardComponent implements OnInit {
       XLSX.utils.book_append_sheet(workbook, ws, "test");
       XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
     }
+
+    caseNumberReturn(caseNumber: any) {
+      return parseInt(caseNumber, 10).toString()
+    }
 }

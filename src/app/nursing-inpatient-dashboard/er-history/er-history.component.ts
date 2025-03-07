@@ -725,7 +725,7 @@ export class ErHistoryComponent implements OnInit {
   printLabel(template: TemplateRef<any>) {
     if (this.activelabLabelData) {
       this.emergencyService
-        .patientPrintLabel(this.activelabLabelData.Institute, this.activelabLabelData.Mrn)
+        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
         .subscribe(
           (res: any) => {
             if (res?.d?.DataRaw) {

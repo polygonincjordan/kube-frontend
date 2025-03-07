@@ -357,7 +357,7 @@ export class ErVitalsComponent implements OnInit {
       this.modalRefForDelete = this.modalService.show(template, config);
     } else {
       Swal.fire({
-        text: "Please select vital sign to delete.",
+        text: "Please select Vital Signs to delete.",
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
@@ -452,7 +452,7 @@ export class ErVitalsComponent implements OnInit {
       }
     } else {
       Swal.fire({
-        text: "Please select vital sign to change.",
+        text: "Please select Vital Signs to change.",
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'

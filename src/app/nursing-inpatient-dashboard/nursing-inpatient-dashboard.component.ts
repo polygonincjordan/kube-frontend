@@ -1196,12 +1196,18 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       .subscribe((patientData: Patient) => {
         this.isLoading = false;
         this.patient = patientData;
+        console.log(this.patient, "this.patient");
+        
         localStorage.setItem('initOrg', patientData.deptOrgUnit);
         this.titleService.setTitle(
           `${patientData?.name} | ${this._route.snapshot.parent.routeConfig.path}`
         );
         this.storageService.setPatientData(patientData);
       });
+  }
+
+  caseNumberReturn(caseNumber: any) {
+    return parseInt(caseNumber, 10).toString()
   }
 
   refreshFormGroup() {
@@ -1301,7 +1307,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   upcomingDate() {
-    if(!this.erhistory) {
+    if(this.erhistory) {
       if(this.singleData.get('fromDate').value){
         const currentDate = this.singleData.get('fromDate').value;
         const nextDate = new Date(currentDate);

@@ -76,7 +76,7 @@
         style="cursor: pointer;" (click)="tabChange('vitalSign')">
         <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
         <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
-        Vital Sign
+        Vital Signs
       </div>
       <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOCharts ? 'tab-change' : 'tab-default'" style="cursor: pointer" (click)="tabChange('IOCharts')">
         <img src="assets/img/black-iochart.svg" class="tab-img" *ngIf="!this.emergencyService.IOCharts" />

@@ -106,7 +106,7 @@
     </div>
   </div>
   <div class="modal-body" style="padding: 0 11px 0px">
-    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Patname}}" with MRN {{activelabLabelData?.Mrn}}</p>
+    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Pnamec1}}" with MRN {{activelabLabelData?.Patnr}}</p>
   </div>
   <div class="modal-footer">
     <div style="text-align: end">
@@ -115,7 +115,20 @@
     </div>
   </div>
 </ng-template>
+<ng-template #selectIconPdf>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'" [zoom]="'80'"
+      [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
+    </ngx-extended-pdf-viewer>
 
+    <div class="mt-2" style="text-align: center">
+      <button class="btn btn-primary" (click)="selectedIconPdf.hide()"
+        style="background-color: #0082c8; border: #0082c8">
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
 <ng-template #document>
   <div class="Pdf_modal">
     <iframe src="pdfSrc" width="500" height="400"></iframe>

@@ -56,6 +56,7 @@ import { DocVisitNoteComponent } from './documentation/documentation-list/doc-vi
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { TransferAssessmentComponent } from './documentation/documentation-list/transfer-assessment/transfer-assessment.component';
 import { NewbornAssessmentModule } from '../shared-module/newborn-assessment/newborn-assessment.module';
+import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -116,7 +117,8 @@ export const ePrescriptionRoutes: Routes = [
     NgxMaterialTimepickerModule,
     QuillModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
-    NewbornAssessmentModule
+    NewbornAssessmentModule,
+    VitalSignModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
