@@ -1187,4 +1187,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     const config: ModalOptions = { class: 'modal-dialog-centered patient-info-modal-size' };
     this.modalRef = this.modalService.show(template, config);
   }
+
+  caseNumberReturn(caseNumber: any) {
+    return parseInt(caseNumber, 10).toString()
+  }
 }

@@ -19,9 +19,11 @@ font-weight: bold;width: 99%;">
       white-space: nowrap;">MRN: {{patient.id}}<span style="margin-left: 50px;" [title]="patient?.gender">{{
           patient?.gender
           }}</span></span>
-      <span class="col-md-4" style="margin-left: 14px;text-overflow: ellipsis;
+      <span class="col-md-2" style="margin-left: 14px;text-overflow: ellipsis;
 overflow: hidden;
 white-space: nowrap;" [title]="patient?.primDiaTxt">Dx: {{ patient?.primDiaTxt }}</span>
+<span class="col-md-2" style="margin-left: 14px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+[title]="caseNumberReturn(patient?.case)">Case#: {{ caseNumberReturn(patient?.case) }}</span>
       <span class="col-md-2" style="margin-left: 27px;
 border: 1px solid;
 border-radius: 16px;

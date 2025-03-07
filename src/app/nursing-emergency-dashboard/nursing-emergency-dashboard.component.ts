@@ -1084,4 +1084,8 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       return date;
     }
   }
+
+  caseNumberReturn(caseNumber: any) {
+    return parseInt(caseNumber, 10).toString()
+  }
 }

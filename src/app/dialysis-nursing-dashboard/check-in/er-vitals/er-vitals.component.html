@@ -3,7 +3,7 @@
       <div class="" style="max-width: 100%;background-color: white;" *ngIf="!showMaintain">
         <div class="vital-sign-table">
         <div class="top-header-vital-sign">
-        <h3 class="header-heading">Vital Sign </h3>
+        <h3 class="header-heading">Vital Signs </h3>
         <ul class="list-simple" style="display: flex;
         align-items: center;">
         <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.PatnrName}}</span></li>
@@ -96,7 +96,7 @@
   <div class="" style="max-width: 100%;background-color: white;" *ngIf="showMaintain">
     <div class="vital-sign-table">
     <div class="top-header-vital-sign">
-    <h3 class="header-heading">Maintain Vital Sign </h3>
+    <h3 class="header-heading">Maintain Vital Signs </h3>
     <ul class="list-simple"  style="display: flex;
     align-items: center;">
         <li style="padding: 17px">Patient Name : <span>{{erListSelectedData.PatnrName}}</span></li>
@@ -243,10 +243,10 @@
   <div class="modal-body p-0">
     <form>
       <div class="infoModel-title" style="background:#0056b0">
-        <h4 class="m-0 pl-3">Delete Vital Sign</h4>
+        <h4 class="m-0 pl-3">Delete Vital Signs</h4>
       </div>
       <div class="infoModel-contant p-3">
-        <label>Are you sure you want to delete this vital sign</label>
+        <label>Are you sure you want to delete this Vital Signs</label>
         <select class="form-control" [(ngModel)]="cancelReasonValue" (ngModelChange)="onChange($event)" [ngModelOptions]="{standalone: true}">
           <option selected value="">Reason for deletion</option>
           <option *ngFor="let reason of deleteReasonsListData" [value]="reason.Stoid" >{{reason.N1stotx}}</option>
@@ -268,7 +268,7 @@
 <ng-template #allVitalSignModal>
   <div class="modal-body p-0">
     <div class="infoModel-title" style="background:#0056b0">
-      <h4 class="m-0 pl-3">All Vital Sign</h4>
+      <h4 class="m-0 pl-3">All Vital Signs</h4>
     </div>
     <div  class="search-functionality col-md-12 pl-0 mt-2"><img  src="assets/img/pres-search-icon.svg" alt="" style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%);"><input  type="text" placeholder="Search" id="searchFilter" class="form-control w-100" style="height: 38px; font: 600 14px/1.5 Nunito,sans-serif; color: #848f96; border-radius: 8px!important; box-shadow: none; padding: 10px 10px 10px 42px;margin-left: 8px;" [(ngModel)]="searchString">
     </div>
@@ -302,10 +302,10 @@
   <div class="modal-body p-0">
     <form>
       <div class="infoModel-title" style="background:#0056b0">
-        <h4 class="m-0 pl-3">Change Reason Vital Sign</h4>
+        <h4 class="m-0 pl-3">Change Reason Vital Signs</h4>
       </div>
       <div class="infoModel-contant p-3">
-        <label>Are you sure you want to Change this vital sign</label>
+        <label>Are you sure you want to Change this Vital Signs</label>
         <select class="form-control" [(ngModel)]="cancelReasonValue" (ngModelChange)="onChange($event)" [ngModelOptions]="{standalone: true}">
           <option selected value="">Reason for change</option>
           <option *ngFor="let reason of deleteReasonsListData" [value]="reason.Stoid" >{{reason.N1stotx}}</option>

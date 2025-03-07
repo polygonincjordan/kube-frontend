@@ -27,6 +27,10 @@
                   <img src="./assets/img/grid-icon.svg" />
                   <p class="d-inline-block m-0">Documentation</p>
                 </li>
+                <li class="d-flex m-0 align-items-center" (click)="tabChange('vitalSign')" [ngClass]="this._admissionservice.vitalSign ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Vital Signs</p>
+                </li>
               </ul>
             </div>
             <div class="tab-panel">
@@ -45,6 +49,7 @@
               <ng-container *ngIf="this._admissionservice.Documentation">
                 <app-documentation (onSearchDocument)="onSearchChange($event)" (formEvent)="formEvent($event)" (isDocumentTypeFilter)="documentTypeFilter($event)" (onDateFilter)="onDateFilter($event)"></app-documentation>
               </ng-container>
+
             </div>
           </div>
         </div>
@@ -60,6 +65,9 @@
           </div>
           <div class="order-templete-main mt-3" *ngIf="this._admissionservice.Documentation" >
             <app-documentation-list [searchString]="searchString" [filterDateValue]="filterDateValue" [isDocumentTypeFilter]="isDocumentTypeFilter" [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded"></app-documentation-list>
+          </div>
+          <div class="order-templete-main mt-3" *ngIf="this._admissionservice.vitalSign" >
+            <app-er-vitals-comman></app-er-vitals-comman>
           </div>
         </div>
       </div>

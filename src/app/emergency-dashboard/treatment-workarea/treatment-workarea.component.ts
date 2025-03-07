@@ -1042,6 +1042,8 @@ export class TreatmentWorkareaComponent implements OnInit {
       this.emergencyService.tabPanelNavigation('patientProfile');
     } else if(tabName == 'HistoryAssessment'){
       this.emergencyService.tabPanelNavigation('HistoryAssessment');
+    } else if(tabName == 'vitalSign'){
+      this.emergencyService.tabPanelNavigation('VitalSign');
     }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;

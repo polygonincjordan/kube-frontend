@@ -46,6 +46,7 @@ export class AdmissionService {
   public ProgressNotes: boolean = false;
   public Diagnosis: boolean = false;
   public Documentation: boolean = false;
+  public vitalSign: boolean = false;
   public isAddEditMedicalForm : boolean = false;
   public isDischargeProcess : boolean = false;
 
@@ -102,7 +103,7 @@ export class AdmissionService {
   public isEditVisitForm: boolean = false;
 
   public isAddEditTransferAssestForm: boolean = false;
-  public isAddEditNewbornAssessment: boolean = true;
+  public isAddEditNewbornAssessment: boolean = false;
   public isCloneTransferAssestForm: boolean = false;
   public isEditTransferAssestForm: boolean = false;
   public document = new BehaviorSubject(false);
@@ -150,6 +151,7 @@ export class AdmissionService {
 
   tabPanelNavigation(tabName: any) {
     localStorage.setItem('tabName', tabName);
+    this.vitalSign = false;
     if (tabName && tabName === 'PhysicianOrders') {
       this.PhysicianOrders = true; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false;
     } else if (tabName && tabName === 'ProgressNotes') {
@@ -160,6 +162,8 @@ export class AdmissionService {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = true; this.isDischargeProcess = false;
     } else if (tabName && tabName === 'discharge') {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = true;
+    } else if (tabName && tabName === 'vitalSign') {
+      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false; this.vitalSign = true;
     }
   }
 

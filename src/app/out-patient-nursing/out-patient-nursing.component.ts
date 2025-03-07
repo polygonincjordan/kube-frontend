@@ -1021,4 +1021,7 @@ export class OutPatientNursingComponent implements OnInit {
       return date;
     }
   }
+  caseNumberReturn(caseNumber: any) {
+    return parseInt(caseNumber, 10).toString()
+  }
 }

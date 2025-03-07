@@ -25,6 +25,7 @@ import { NumberOnlyDirective } from './pipes/number-only.directive';
 import { DigitDecimaNumberUserSetDirective } from './pipes/digit-decima-number.directive';
 import { CustomDecimalPipe2 } from './pipes/custom.decimal.pipe';
 import { EventfilterPipe2 } from './pipes/eventfilter.pipe';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     TopnavComponent,
@@ -54,6 +55,7 @@ import { EventfilterPipe2 } from './pipes/eventfilter.pipe';
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
+    NgbCollapseModule
   ],
   providers: [EEmrService,EmergencyService],
   exports: [

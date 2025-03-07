@@ -50,6 +50,12 @@
           <img src="assets/img/Document.svg" class="tab-img">
           Documentation
         </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.vitalSign?'tab-change' : 'tab-default'"
+        style="cursor: pointer;" (click)="tabChange('vitalSign')">
+        <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
+        <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
+        Vital Signs
+      </div>
         <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.HistoryAssessment ? 'tab-change' : 'tab-default'"
          style="cursor: pointer" (click)="tabChange('HistoryAssessment')">
           <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.HistoryAssessment" />
@@ -833,6 +839,9 @@
       </ng-container>
       <ng-container *ngIf="this.emergencyService.HistoryAssessment">
         <app-history-assessment></app-history-assessment>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.vitalSign">
+        <app-er-vitals-comman></app-er-vitals-comman>
       </ng-container>
     </div>
     <div style="background-color: #fff;width: 35%;max-height: 75vh; overflow: auto;" *ngIf="showPatients">

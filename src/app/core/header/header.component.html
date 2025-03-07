@@ -8,7 +8,7 @@
     <span><i
         class="fa fa-search" title="Patient Search"
         aria-hidden="true"
-        (click)="openModal(template)"></i></span>&nbsp;
+        (click)="openModal(patientSearchModal)"></i></span>&nbsp;
     <!-- <span *ngIf="isPhysician"><i
         class="fa fa-th"
         aria-hidden="true"
@@ -25,6 +25,103 @@
 </div>
 <!-- modal -->
 <!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">button</button> -->
+
+<ng-template #patientSearchModal id="patientSearchModal">
+  <div class="modal-header">
+    <div class="d-flex justify-space-between">
+      <h4 class="modal-title">Search For Patient!</h4>
+      <div class="close-box" (click)="closeModal()">
+        <img src="assets/img/red-cross.svg" alt="clsose" width="25" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <input type="text" id="input1" required autocomplete="nope" formControlName="mrn"
+                  (keydown.enter)="patientSearch(patientsearchtemplate)">
+                <label for="input1" class="placeholder">
+                  MRN
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <input type="text" id="input1" required autocomplete="nope" formControlName="firstName"
+                  (keydown.enter)="patientSearch(patientsearchtemplate)">
+                <label for="input1" class="placeholder">
+                  Patient First Name
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <input type="text" id="input1" required autocomplete="nope" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                  bsDatepicker [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"
+                  formControlName="dob" (keydown.enter)="patientSearch(patientsearchtemplate)">
+                <label for="input1" class="placeholder">
+                  Date of Birth
+                </label>
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <input type="text" id="input1" required autocomplete="nope" formControlName="idNumber"
+                  (keydown.enter)="patientSearch(patientsearchtemplate)">
+                <label for="input1" class="placeholder">
+                  Case Number
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <input type="text" id="input1" required autocomplete="nope" formControlName="lastName"
+                  (keydown.enter)="patientSearch(patientsearchtemplate)">
+                <label for="input1" class="placeholder">
+                  Patient Last Name
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <input type="text" id="input1" required autocomplete="nope" formControlName="telephone"
+                  (keydown.enter)="patientSearch(patientsearchtemplate)">
+                <label for="input1" class="placeholder">
+                  Phone Number
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex align-items-center gap-3">
+      <!-- <button type="button" class="btn btn-primary btn-shadow" (click)="activeModal.close('Close click')">Close</button> -->
+      <button type="button" class="btn btn-primary" (click)="patientSearch(patientsearchtemplate)">Search</button>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #template style="max-width: 392px">
   <!-- <div class="modal-header">
     <h4 class="modal-title pull-left">Patient Search Result</h4>
@@ -327,13 +424,7 @@
 <!-- end profile -->
 <!-- patient search modal -->
 <!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">button</button> -->
-<ng-template #patientsearchtemplate style="min-width: 392px">
-  <!-- <div class="modal-header">
-    <h4 class="modal-title pull-left">Patient Search Result</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div> -->
+<!-- <ng-template #patientsearchtemplate style="min-width: 392px">
   <div class="modal-body">
     <div class="input-group mb-1">
       <div class="input-group-prepend">
@@ -378,5 +469,95 @@
       </table>
     </div>
   </div>
+</ng-template> -->
+
+<ng-template #patientsearchtemplate style="min-width: 392px">
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Patient Search Result</h4>
+      <div class="close-box" (click)="modalRefForPatientSearch?.hide()">
+        <img src="assets/img/red-cross.svg" alt="clsose" width="25" />
+      </div>
+    </div>
+    <div class="modal-body p-2">
+      <div class="icon-group mb-2">
+        <div class="search-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-search fa-lg"></i></span>
+            </div>
+            <input type="text" [placeholder]="'Quick search'" [(ngModel)]="searchString" id="searchFilter" class="form-control w-70">
+            <div class="input-group-append">
+              <span class="input-group-text"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-6 col-sm-12" style="height: calc(100vh - 180px); overflow: auto;">
+        <table class="table">
+          <thead style="
+              background: #0082c8 !important;
+              color: white;
+              position: sticky;
+              top: 0;
+            ">
+            <tr>
+              <th scope="col">MRN</th>
+              <!-- <th scope="col">Last Name</th>
+              <th scope="col">First Name</th> -->
+              <th scope="col">Name</th>
+              <th scope="col">Birthdate</th>
+              <th scope="col">Sex</th>
+              <th scope="col">Telephone</th>
+              <th scope="col">Case list details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of patientSearchData | filter : searchString; let i = index;">
+              <tr style="font-weight: bold">
+                <td>{{ item.PATNR }}</td>
+                <!-- <td (click)="openPatientSearch(item)">{{ item.NNAME }}</td>
+                <td (click)="openPatientSearch(item)">{{ item.VNAME }}</td> -->
+                <td>{{ item.PNAME }}</td>
+                <td>{{ item.GBDAT | date : "dd.MM.yyyy" }}</td>
+                <td>{{ item.GSCHLTXT }}</td>
+                <td>{{ item.TELNR }}</td>
+                <td>
+                  <!-- <img src="assets/img/accord-arrow-down.svg" width="20"
+                    (click)="getPatientCase(item.PATNR, i); !consultation ? showOrder(item) : ''" /> -->
+                    <img src="assets/img/deal-view.svg" class="mr-2 w-15" title="Show Cases List" (click)="getPatientCase(item.PATNR, i); !consultation ? showOrder(item) : ''" />  
+                    <label class="show_case_list" (click)="getPatientCase(item.PATNR, i); !consultation ? showOrder(item) : ''">Show Case List</label>
+                  </td>
+              </tr>
+              <tr #collapse="ngbCollapse" [(ngbCollapse)]="!item.active" class="collapsable-div" *ngIf="!consultation">
+                <td colspan="16">
+                  <div class="complex-table-container">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th width="8%">Case #</th>
+                          <th width="15%">Attending Doctor</th>
+                          <th>Case Type</th>
+                          <th width="10%">Case Date</th>
+                          <th width="10%">Specialty</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of item['CaseList']; let i = index" (click)="openPatientSearch(data, 'caseList')">
+                          <td class="font-12">{{ data?.Case }}</td>
+                          <td  class="font-12">{{ data?.PersonName }} </td>
+                          <td  class="font-12"> {{ data?.CaseType === '1' ? 'IP' : (data?.CaseType === '2' ? 'OP' : '') }}</td>
+                          <td  class="font-12">{{ getDate(data?.StartDate) | date : "dd.MM.yyyy" }}</td>
+                          <td  class="font-12">{{ data?.DeptUnitName }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </ng-template>
 <!-- patient search modal end -->
