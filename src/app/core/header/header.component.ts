@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   EventEmitter,
@@ -61,11 +61,16 @@ export class HeaderComponent implements OnInit {
     private formBuilder: FormBuilder,
     private storageService: StorageService,
     private route: Router,
+    private _router: Router,
+    private _route: ActivatedRoute,
     private eprescriptionService: EPrescriptionService
   ) {
     if (this.storageService.getKubeRule() == UserType.Physician) {
       this.isPhysician = true;
     }
+    let path = window.location.pathname.substring(1);
+    console.log(path, "path");
+    
   }
 
   public openModal(template: TemplateRef<any>) {
@@ -386,7 +391,41 @@ export class HeaderComponent implements OnInit {
     const queryParams = `patnr=${data.Patnr}&falnr=${data.Falnr}&einri=${data.Einri}&lfdnr=${data.Lfdnr}&nav=Treatmentarea`;
     const url = redirectPoint + queryParams;
 
-    window.open(url, '_blank');
+    // window.open(url, '_blank');
+
+    this._router.navigate([], {
+      relativeTo: this._route,
+      // queryParams: {
+      //   patnr: checkindata.Patnr,
+      //   falnr: checkindata.Falnr,
+      //   einri: checkindata.Einri,
+      //   lfdnr: checkindata.Lfdnr,
+      //   redirectFor: checkindata.redirectFor
+      // },
+      queryParamsHandling: 'merge',
+      // preserve the existing query params in the route
+      skipLocationChange: false,
+      // do not trigger navigation
+    });
+    window.open(
+      redirectPoint +
+        'patnr=' +
+        data.Patnr +
+        '&falnr=' +
+        data.Falnr +
+        '&einri=' +
+        data.Einri +
+        '&lfdnr=' +
+        data.Lfdnr + 
+        '&redirectFor=' +
+        data.redirectFor +
+        '&action=' +
+        data.action +
+        '&doctype=' +
+        data.doctype +
+        '&nav=Treatmentarea',
+      '_blank'
+    );
   }
   closeModal(){
     this.modalRef.hide();

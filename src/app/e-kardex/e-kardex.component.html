@@ -1,4 +1,4 @@
-<div class="e-kardex-content" id="app-container" [className]="sidebar.containerClassnames">
+<div id="app-container" [ngClass]="sidebar.containerClassnames == 'menu-default sub-hidden' ? 'menu-default sub-hidden' : 'menu-default' ">
   <main class="mt-0 mb-0">
     <app-topnav></app-topnav>
     <div style="padding:0 35px">

@@ -42,10 +42,12 @@
   <div class="col-md-6">
     <div class="box-col document-contant">
       <div class="d-flex doc-header">
-        <div class="header-file">
-          <img width="30" src="assets/img/info-document.png" />
+        <div class="d-flex">
+          <div class="header-file">
+            <img width="30" src="assets/img/info-document.png" />
+          </div>
+          <h6 class="font-weight-bold ml-3">Patient profile document</h6>
         </div>
-        <h6 class="font-weight-bold ml-3">Patient profile document</h6>
         <span *ngIf="asc"><img src="assets/img/asc.png" style="    width: 30px;cursor: pointer;" (click)="sort()"
             title="Sorting" /></span>
         <span *ngIf="desc"><img src="assets/img/desc.png" style="    width: 30px;cursor: pointer;"

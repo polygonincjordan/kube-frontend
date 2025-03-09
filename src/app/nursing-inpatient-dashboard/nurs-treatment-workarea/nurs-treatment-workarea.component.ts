@@ -143,7 +143,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         //this.getBetDetails();
       }
     });
-
+    let fullUrl = window.location.href;
+console.log('Full URL:', fullUrl);
     // this.phyOrderTableList();
     // this.occupationalGroupList();
     this.myTag = this.el.nativeElement.querySelector("div");

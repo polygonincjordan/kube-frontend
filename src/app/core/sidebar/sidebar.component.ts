@@ -24,19 +24,19 @@ export class SidebarComponent implements OnInit {
   EINRI = this.storageService.einri;
   LFDBW = this.storageService.lfdnr;
 
-  @HostListener('window:resize', ['$event'])
-  handleWindowResize(event: any): void {
-    if (event && !event.isTrusted) {
-      return;
-    }
-    const { containerClassnames } = this.sidebarService.sidebarObject;
-    const nextClasses = this.getMenuClassesForResize(containerClassnames);
-    this.sidebarService.setContainerClassnames(
-      0,
-      nextClasses.join(' '),
-      this.sidebarService.sidebarObject.selectedMenuHasSubItems
-    );
-  }
+  // @HostListener('window:resize', ['$event'])
+  // handleWindowResize(event: any): void {
+  //   if (event && !event.isTrusted) {
+  //     return;
+  //   }
+  //   const { containerClassnames } = this.sidebarService.sidebarObject;
+  //   const nextClasses = this.getMenuClassesForResize(containerClassnames);
+  //   this.sidebarService.setContainerClassnames(
+  //     0,
+  //     nextClasses.join(' '),
+  //     this.sidebarService.sidebarObject.selectedMenuHasSubItems
+  //   );
+  // }
 
   getMenuClassesForResize(classes: string): string[] {
     let nextClasses = classes.split(' ').filter((x: string) => x !== '');

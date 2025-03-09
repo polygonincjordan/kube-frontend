@@ -37,7 +37,7 @@
           </div>
           <div class="select-functionality text-left">
             <ng-select [searchable]="true" placeholder="Department OU"  (change)="filterPeriodDate()" formControlName="selectedDocumentOU">
-              <ng-option *ngFor="let data of this.admissionService.createdDocumentUserList" [value]="data">{{ data }}
+              <ng-option *ngFor="let data of this.admissionService.departmentOUList" [value]="data">{{ data }}
                 <!-- [{{data.Dtid}}] -->
               </ng-option>
             </ng-select>

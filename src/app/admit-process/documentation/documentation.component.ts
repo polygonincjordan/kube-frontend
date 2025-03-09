@@ -199,7 +199,6 @@ export class DocumentationComponent implements OnInit {
   filterPeriodDate() {
     // this.filterByPeriod();
     // this.sort();
-    debugger
     this.admissionService.documentTypeDrop.next({
       documentType: this.selectedDocType,
       dateRange: this.dateRange,
