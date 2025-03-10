@@ -1145,7 +1145,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           '&einri=' +
           checkindata.Einri +
           '&lfdnr=' +
-          checkindata.Lfdnr +
+          checkindata.Lfdnr + 
           '&redirectFor=' +
           checkindata.redirectFor +
           '&action=' +

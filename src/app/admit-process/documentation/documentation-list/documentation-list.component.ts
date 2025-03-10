@@ -168,7 +168,7 @@ export class DocumentationListComponent implements OnInit {
 
     this.admissionService.documentTypeDrop.subscribe((res: any) => {
       if (res.documentType || res.dateRange || res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
-        let filterValue = this.documentTypeFilterValue;
+        let filterValue = this.documentTypeFilterValueClone;
         if (res.documentType) {
           filterValue = filterValue.filter((element) => {
             if (res.documentType == element.Dtid) {
@@ -190,13 +190,14 @@ export class DocumentationListComponent implements OnInit {
         if(res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
           this.selectedCreatedBy =  res.selectedCreatedBy;
           this.previousPeriodValue =  res.previousPeriodValue;
-          this.previousPeriodValue =  res.previousPeriodValue;
+          this.selectedDocumentOU =  res.selectedDocumentOU;
           // this.documentType =  res.documentType;
           this.filterByPeriod();
         }
-        this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
-      } else {
+        // filterValue = this.documentTypeFilterValue
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+      } else {
+        this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValueClone, 'Dodat');
       }
 
       this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
@@ -414,6 +415,7 @@ export class DocumentationListComponent implements OnInit {
     }
     // this.documentTypeFilterValue.sort((a, b) => 0 - (a > b ? -1 : 1));
   }
+  selectedDocumentOU: any;
 
   filterByPeriod() {
     let currentDate = new Date();
@@ -466,7 +468,7 @@ export class DocumentationListComponent implements OnInit {
         !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
 
       const isDepartmentMatch =
-        !this.documentType || item.Orgdo === this.documentType;
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
 
       return isCreatedByMatch && isDepartmentMatch;
     });
