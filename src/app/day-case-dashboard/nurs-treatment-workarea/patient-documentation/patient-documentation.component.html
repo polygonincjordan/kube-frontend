@@ -170,13 +170,17 @@
                   {{getDate(surgicalPassportList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{surgicalPassportList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
                     (click)="getPatientProfileData(nurseEndorsementList[0])"
                     *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openSurgicalAssPdf(surgicalPassportList[0]?.Dockey)"
                     *ngIf="surgicalPassportList[0]?.StatusTxt == 'Released'"></i>
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(surgicalPassportList[0]?.Dockey, surgicalPassportList[0])">
+                      <select *ngIf="surgicalPassportList.length && surgicalPassportList[0]?.StatusTxt !='N/A' && surgicalPassportList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
              
@@ -191,10 +195,14 @@
                   {{getDate(educationAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{educationAssList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
+                      <select *ngIf="educationAssList.length && educationAssList[0]?.StatusTxt !='N/A' && educationAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
 
@@ -307,13 +315,17 @@
                 {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
               </div>
               <div class="col-md-3">{{latestCprList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <!-- <img src="assets/img/document-html.png" width="18px" height="18px"
                   (click)="getScaleDetails(latestCprList[0],RedirectionType.BRADEN$)"
                   *ngIf="latestCprList[0]?.StatusTxt == 'Released'" /> -->
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
                 *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
+                  <select *ngIf="latestCprList.length && latestCprList[0]?.StatusTxt !='N/A' && latestCprList[0]?.Zversion != '00'" class="mr-2" name=""
+                    id=""></select>
+                </div>
               </div>
             </div>
             <!--  Nursing Assessment -->
@@ -453,8 +465,16 @@
               <div class="mt-3 pl-2" style="width: 100px; font-weight: bold;">{{ item.date | date: "dd-MM-y" }}</div>
               <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
                 *ngFor="let member of item.documents">
+                <!-- <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
+                  {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div> -->
                 <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
-                  {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div>
+                  <div>
+                    {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :
+                  </div>
+                  <div *ngIf="member.DtidText == 'Document Attachment'">
+                    {{ member.Dktxt }}
+                  </div>
+                </div>
                 <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
                   {{ member.DokstText ? member.DokstText : "N/A" }}</div>
                 <div class="col-md-2" (click)="getPatientProfileData(member)">

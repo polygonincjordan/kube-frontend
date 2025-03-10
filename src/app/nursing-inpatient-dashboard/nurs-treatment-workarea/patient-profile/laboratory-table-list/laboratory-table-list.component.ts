@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class LaboratoryTableListComponent implements OnInit, OnChanges {
   @ViewChild('labpdfmodal') labpdfmodal: TemplateRef<HTMLDivElement>;
+  @Output() reloadTableData = new EventEmitter();
 
   @Input() searchString: any;
   @Input() laboratoryList: any[] = [];
@@ -334,7 +335,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     if (this.activelabLabelData.Vkgid) {
       this.emergencyService.PrintLabel(this.printUrl + this.activelabLabelData.Vkgid).subscribe((res: any) => { },
         (_error: any) => {
-
+          this.reloadTableData.next('reload');
         }
       );
       this.closeLabModal();
@@ -347,7 +348,8 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
         Vkgid: this.activelabLabelData.Vkgid
       }
       this.emergencyService.getLabSampleCollectedPrint(json).subscribe((res: any) => {
-        this.sampleOrderDescription = res.d.Leitx
+        this.sampleOrderDescription = res.d.Leitx;
+        this.reloadTableData.next('reload');
         if (res) {
           Swal.fire({
             text: 'Status has successfully changed.',

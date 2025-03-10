@@ -48,7 +48,7 @@
         <div class="table-list" [ngClass]="{ expanded: isExpanded }">
           <div class="card">
             <div class="card-body p-1">
-              <app-laboratory-table-list *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [laboratoryList]="laboratoryList" ></app-laboratory-table-list>
+              <app-laboratory-table-list *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [laboratoryList]="laboratoryList" (reloadTableData)="resetAllFilter()" ></app-laboratory-table-list>
               <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()"></app-radiology-table-list>
               <div class="card mt-2" *ngIf="isMedication || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)">
                 <div class="card-body p-0 medication-emer-table">
