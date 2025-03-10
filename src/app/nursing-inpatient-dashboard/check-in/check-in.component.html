@@ -123,7 +123,12 @@
             <td style="padding-left: 0px" [title]="item.AttendingDoctorName" class="border-top-none">{{ item.AttendingDoctorName ? item.AttendingDoctorName:'--'}}</td>
             <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
             <!-- <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td> -->
-            <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td>
+            <!-- <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td> -->
+            <td class="border-left text-center">
+              <span>
+                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon" [title]="item.IsolationType" />
+              </span>
+            </td>
             <!-- <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td> -->
             <td colspan="1" style="display: flex; align-items: center; text-align: center; overflow: visible !important">
               <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">

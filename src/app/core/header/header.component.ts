@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
   myFlagForSlideToggle: boolean = true;
   passform: FormGroup;
   consultation: boolean = false;
-
+  urlPath: any;
   constructor(
     private modalService: BsModalService,
     private _dataServices: EEmrService,
@@ -68,8 +68,8 @@ export class HeaderComponent implements OnInit {
     if (this.storageService.getKubeRule() == UserType.Physician) {
       this.isPhysician = true;
     }
-    let path = window.location.pathname.substring(1);
-    console.log(path, "path");
+    this.urlPath = window.location.pathname.substring(1);
+    console.log(this.urlPath, "path");
     
   }
 
@@ -360,36 +360,36 @@ export class HeaderComponent implements OnInit {
   redirectToTreatment(data) {
     const userType = this.storageService.getKubeRule();
 
-    let redirectPoint = '';
+    let redirectPoint = `/${this.urlPath}?`;
 
-    if (userType === UserType.opnurse) {
-      redirectPoint = 'out-patient-nursing?';
-    } else if (
-      [
-        UserType.ERHospitalist,
-        UserType.SeniorPhysician,
-        UserType.Physician,
-        UserType.FloorHospitalist,
-        UserType.SeniorHospitalist,
-        UserType.Community,
-        UserType.PartTime,
-      ].includes(userType)
-    ) {
-      redirectPoint = 'e-kardex?';
-    } else if (userType === UserType.ERNurse) {
-      redirectPoint = 'nursing-emergncy-dashboard?';
-    } else if (userType === UserType.DayCaseNurse) {
-      redirectPoint = 'day-case-dashboard?';
-    } else if (userType === UserType.DIYNurse) {
-      redirectPoint = 'dialysis-nursing-dashboard?';
-    } else if (userType === UserType.NursingInpatient) {
-      redirectPoint = 'nursing-inpatient-dashboard?';
-    }  else if (userType === UserType.SeniorNurse) {
-      redirectPoint = this.route.url+`?`;
-    }
+    // if (userType === UserType.opnurse) {
+    //   redirectPoint = 'out-patient-nursing?';
+    // } else if (
+    //   [
+    //     UserType.ERHospitalist,
+    //     UserType.SeniorPhysician,
+    //     UserType.Physician,
+    //     UserType.FloorHospitalist,
+    //     UserType.SeniorHospitalist,
+    //     UserType.Community,
+    //     UserType.PartTime,
+    //   ].includes(userType)
+    // ) {
+    //   redirectPoint = 'e-kardex?';
+    // } else if (userType === UserType.ERNurse) {
+    //   redirectPoint = 'nursing-emergncy-dashboard?';
+    // } else if (userType === UserType.DayCaseNurse) {
+    //   redirectPoint = 'day-case-dashboard?';
+    // } else if (userType === UserType.DIYNurse) {
+    //   redirectPoint = 'dialysis-nursing-dashboard?';
+    // } else if (userType === UserType.NursingInpatient) {
+    //   redirectPoint = 'nursing-inpatient-dashboard?';
+    // }  else if (userType === UserType.SeniorNurse) {
+    //   redirectPoint = this.route.url+`?`;
+    // }
 
-    const queryParams = `patnr=${data.Patnr}&falnr=${data.Falnr}&einri=${data.Einri}&lfdnr=${data.Lfdnr}&nav=Treatmentarea`;
-    const url = redirectPoint + queryParams;
+    // const queryParams = `patnr=${data.Patnr}&falnr=${data.Falnr}&einri=${data.Einri}&lfdnr=${data.Lfdnr}&nav=Treatmentarea`;
+    // const url = redirectPoint + queryParams;
 
     // window.open(url, '_blank');
 

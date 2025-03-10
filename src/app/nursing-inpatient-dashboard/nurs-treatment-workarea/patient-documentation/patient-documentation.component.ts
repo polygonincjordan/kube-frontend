@@ -265,7 +265,7 @@ export class PatientDocumentationComponent implements OnInit {
     // this.getLatestAssessment();
     // this.getEducationAssessment();
     this.getPatientProfile();
-    // this.getLatestAssessmentPA(); not using this document
+    this.getLatestAssessmentPA();
     // this.getTriageLatestDocuments(); not using this document
     // this.getPhyAssessment(); not using this document
     // this.getMedLatestAssessment(); 
@@ -367,7 +367,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
       next: (_success: any) => {
         this.pediatricEarlyWarningList = _success.d.results.find( res => res.Dtid == 'ZSCA_PEWS' )
-        this.pediatricEarlyWarningList = [this.pediatricEarlyWarningList]
+        this.pediatricEarlyWarningList = this.pediatricEarlyWarningList ? this.pediatricEarlyWarningList : [];
         console.log('_success21212121', this.pediatricEarlyWarningList);
 
         // this.nurseEndorsementList = _success.d.results
@@ -1243,7 +1243,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNurseEndorsement()
     this.getPediatricWarningScore();
     this.getSurgicalPass();
-    // this.getLatestAssessmentPA();
+    this.getLatestAssessmentPA();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingDischargeDocDeatils();

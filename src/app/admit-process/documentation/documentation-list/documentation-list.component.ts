@@ -167,10 +167,11 @@ export class DocumentationListComponent implements OnInit {
     });
 
     this.admissionService.documentTypeDrop.subscribe((res: any) => {
+      debugger
       if (res.documentType || res.dateRange || res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
-        let filterValue = this.documentTypeFilterValueClone;
+        this.documentTypeFilterValue = this.documentTypeFilterValueClone;
         if (res.documentType) {
-          filterValue = filterValue.filter((element) => {
+          this.documentTypeFilterValue = this.documentTypeFilterValue.filter((element) => {
             if (res.documentType == element.Dtid) {
               return element;
             }
@@ -180,13 +181,21 @@ export class DocumentationListComponent implements OnInit {
         if (res.dateRange) {
           this.filterFromDate = res.dateRange[0];
           this.filterToDate = res.dateRange[1];
-          filterValue=filterValue.filter(item =>{
-            let itemDate = new Date(this.dateFormate(this.getDate(item.Dodat)));
+        
+          this.documentTypeFilterValue = this.documentTypeFilterValue.filter(item => {
+            let timestamp = parseInt(item.Dodat.replace(/\/Date\((\d+)\)\//, '$1'));
+            let itemDate = new Date(timestamp);
             let fromDate = new Date(this.filterFromDate);
             let toDate = new Date(this.filterToDate);
+        
+            // Set time to midnight to compare only dates
+            itemDate.setHours(0, 0, 0, 0);
+            fromDate.setHours(0, 0, 0, 0);
+            toDate.setHours(0, 0, 0, 0);        
             return itemDate >= fromDate && itemDate <= toDate;
-          })
+          });
         }
+        
         if(res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
           this.selectedCreatedBy =  res.selectedCreatedBy;
           this.previousPeriodValue =  res.previousPeriodValue;
@@ -194,7 +203,7 @@ export class DocumentationListComponent implements OnInit {
           // this.documentType =  res.documentType;
           this.filterByPeriod();
         }
-        // filterValue = this.documentTypeFilterValue
+        // this.documentTypeFilterValue = filterValue;
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
       } else {
         this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValueClone, 'Dodat');

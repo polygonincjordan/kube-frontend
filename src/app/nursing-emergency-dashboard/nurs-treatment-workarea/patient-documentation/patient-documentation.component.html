@@ -156,10 +156,14 @@
                   {{getDate(latestEmergencyNursingDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{latestEmergencyNursingDocList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;" title="View PDF"
                     *ngIf="latestEmergencyNursingDocList[0]?.StatusTxt == 'Released'"
                     (click)="getScaleDetails(latestEmergencyNursingDocList[0], RedirectionType.TRASM$)"></i>
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestEmergencyNursingDocList[0]?.Dockey, latestEmergencyNursingDocList[0])">
+                      <select *ngIf="latestEmergencyNursingDocList.length && latestEmergencyNursingDocList[0]?.StatusTxt !='N/A' && latestEmergencyNursingDocList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
               <!-- Glasgow Coma Scale -->
@@ -238,10 +242,14 @@
                   {{getDate(educationAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{educationAssList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
+                      <select *ngIf="educationAssList.length && educationAssList[0]?.StatusTxt !='N/A' && educationAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
               <!-- Attachments Documents -->
@@ -298,10 +306,14 @@
               {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
             </div>
             <div class="col-md-3">{{painAssessmentLaestDoc[0]?.PhyNm || '-'}}</div>
-            <div class="col-md-1">
+            <div class="col-md-1 d-flex">
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openPainAssessmentPdf(painAssessmentLaestDoc[0].Dockey)"
                 *ngIf="painAssessmentLaestDoc[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(painAssessmentLaestDoc[0]?.Dockey, painAssessmentLaestDoc[0])">
+                  <select *ngIf="painAssessmentLaestDoc.length && painAssessmentLaestDoc[0]?.StatusTxt !='N/A' && painAssessmentLaestDoc[0]?.Zversion != '00'" class="mr-2" name=""
+                    id=""></select>
+                </div>
             </div>
           </div>
           <!-- pediatric early warning scale -->
@@ -315,10 +327,14 @@
             {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
           </div>
           <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
-          <div class="col-md-1">
+          <div class="col-md-1 d-flex">
             <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
             (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
             *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>
+            <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(pediatricEarlyWarningList[0]?.Dockey, pediatricEarlyWarningList[0])">
+              <select *ngIf="pediatricEarlyWarningList.length && pediatricEarlyWarningList[0]?.StatusTxt !='N/A' && pediatricEarlyWarningList[0]?.Zversion != '00'" class="mr-2" name=""
+                id=""></select>
+            </div>
           </div>
         </div>
 
@@ -332,13 +348,17 @@
           {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
         </div>
         <div class="col-md-3">{{latestCprList[0]?.PhyNm || '-'}}</div>
-        <div class="col-md-1">
+        <div class="col-md-1 d-flex">
           <!-- <img src="assets/img/document-html.png" width="18px" height="18px"
             (click)="getScaleDetails(latestCprList[0],RedirectionType.BRADEN$)"
             *ngIf="latestCprList[0]?.StatusTxt == 'Released'" /> -->
             <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
           (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
           *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
+          <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
+            <select *ngIf="latestCprList.length && latestCprList[0]?.StatusTxt !='N/A' && latestCprList[0]?.Zversion != '00'" class="mr-2" name=""
+              id=""></select>
+          </div>
         </div>
       </div>
 
@@ -399,8 +419,16 @@
               <div class="mt-3 pl-2" style="width: 100px; font-weight: bold;">{{ item.date | date: "dd-MM-y" }}</div>
               <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
                 *ngFor="let member of item.documents">
+                <!-- <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
+                  {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div> -->
                 <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
-                  {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :</div>
+                  <div>
+                    {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :
+                  </div>
+                  <div *ngIf="member.DtidText == 'Document Attachment'">
+                    {{ member.Dktxt }}
+                  </div>
+                </div>
                 <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
                   {{ member.DokstText ? member.DokstText : "N/A" }}</div>
                 <div class="col-md-2" (click)="getPatientProfileData(member)">

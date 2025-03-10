@@ -117,7 +117,7 @@
         <!-- 17 -->
         <td *ngIf="showColumnsListView.Case">{{ item?.CaseNumber || ""  }}</td>
         <!-- 18 -->
-        <td *ngIf="showColumnsListView.VIP">{{ item?.VipIcon || "" }}</td>
+        <td *ngIf="showColumnsListView.VIP">{{ item.VipIcon ? 'VIP' : "" }}</td>
         <!-- 19 -->
         <td *ngIf="showColumnsListView.Emergency_Admission">{{ item?.EmergencyAdmInd }}</td>
         <!-- 20 -->

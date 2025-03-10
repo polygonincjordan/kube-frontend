@@ -816,7 +816,7 @@
                 <td *ngIf="Treatment_diagnosis" class="allergy">
                   {{ item.DiagnosisTreatment }}
                 </td>
-                <td *ngIf="VIP">{{ item.VipIcon || "" }}</td>
+                <td *ngIf="VIP">{{ item.VipIcon ? 'VIP' : "" }}</td>
 
                 <td style="text-align: center; overflow: visible !important">
                   <div *ngIf="setModule == 'home'">
@@ -1137,7 +1137,7 @@
                 <td *ngIf="Treatment_diagnosis">
                   {{ item.DiagnosisTreatment }}
                 </td>
-                <td *ngIf="VIP">{{ item.VipIcon || "" }}</td>
+                <td *ngIf="VIP">{{ item.VipIcon ? 'VIP' : "" }}</td>
                 <!-- <td >{{item.Mrn }}</td>
                 <td >{{item.PatientName}}</td>
                 <td >{{item.Floor}}</td>

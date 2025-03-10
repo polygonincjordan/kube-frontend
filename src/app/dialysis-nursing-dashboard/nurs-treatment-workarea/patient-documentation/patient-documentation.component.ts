@@ -308,6 +308,7 @@ export class PatientDocumentationComponent implements OnInit {
         if(data){          
           this.latestHemoCatheterData = {...data.d.results[0], AttMimeType: 'PDF'};
           this.patientDocService.latestHemoCatheterData = this.latestHemoCatheterData;
+          console.log(this.latestHemoCatheterData)
         }
       },
       error : (error)=>{

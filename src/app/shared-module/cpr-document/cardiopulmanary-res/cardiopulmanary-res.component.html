@@ -20,7 +20,7 @@
                     </ng-select>
                 </div>
                 <div class="col-md-5">
-                    <input class="form-control" formControlName="TypeArrestTxt" />
+                    <input class="form-control" formControlName="TypeArrestTxt" [disabled]="cprForm.get('TypeArrest')?.value != '4'" [readOnly]="cprForm.get('TypeArrest')?.value != '4'" />
                 </div>
             </div>
         </div>
