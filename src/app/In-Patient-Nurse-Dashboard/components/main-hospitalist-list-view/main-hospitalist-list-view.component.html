@@ -108,7 +108,7 @@
         <!-- 12 -->
         <td *ngIf="showColumnsListView.Planned_discharge && listType != '05'">{{ item?.PatientstatusPlandischarg }}</td>
         <!-- 13 -->
-        <td data-bs-toggle="tooltip" data-bs-placement="right" title="{{ item.IsolationType }}" *ngIf="showColumnsListView.Isolation">{{ item?.IsolationInd || ""  }}</td>
+        <td data-bs-toggle="tooltip" data-bs-placement="right" title="{{ item.IsolationType ? item.IsolationType : 'No Isolation' }}" *ngIf="showColumnsListView.Isolation">{{ item?.IsolationInd || ""  }}</td>
         <!-- 14 -->
         <!-- 15 -->
         <td *ngIf="showColumnsListView.LOS">{{ item?.AdmissionDays }}</td>

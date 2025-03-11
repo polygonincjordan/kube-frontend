@@ -2,72 +2,45 @@
   <div class="e-order-history-panel">
     <div class="e-order-title">
       <h4>Fees History</h4>
+      <button type="button" class="btn btn-secondary rounded-sm ml-2 w-20" (click)="openServiceHistory(serviceHistoryRef)">Services History</button>
     </div>
     <div class="e-order-info">
       <accordion [closeOthers]="true" [isAnimated]="true">
-        <accordion-group
-          *ngFor="let order of orderHistory"
-          [panelClass]="'border'"
-        >
+        <accordion-group *ngFor="let order of orderHistory" [panelClass]="'border'">
           <div accordion-heading>{{ order.UsrNm }} - {{ order.date }}</div>
           <div class="history-table table-responsive">
             <table class="table">
               <tbody>
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     order.TOORDLISTSET.results &&
                     order.TOORDLISTSET.results.length
-                  "
-                >
+                  ">
                   <tr *ngFor="let item of order.TOORDLISTSET.results">
                     <td class="align-middle border-0 w-30">
                       <span class="d-flex align-items-center p-0">
-                        <span
-                          class="checkbox-input mr-2 d-inline-block align-top"
-                        >
-                          <input
-                            type="checkbox"
-                            (change)="
+                        <span class="checkbox-input mr-2 d-inline-block align-top">
+                          <input type="checkbox" (change)="
                               eorderService.onFeeOrderCheck($event, item)
-                            "
-                            [(ngModel)]="item.isSelected"
-                          />
+                            " [(ngModel)]="item.isSelected" />
                         </span>
-                        <span
-                          class="input-text-field d-inline-block align-top w-100"
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="item.text"
-                            disabled="true"
-                          />
+                        <span class="input-text-field d-inline-block align-top w-100">
+                          <input type="text" class="form-control" [(ngModel)]="item.text" disabled="true" />
                         </span>
                       </span>
                     </td>
                     <td class="align-middle border-0">
                       <span class="d-inline-block align-top w-100">
-                        <input
-                          type="date"
-                          class="form-control"
-                          [(ngModel)]="item.date"
-                          disabled="true"
-                        />
+                        <input type="date" class="form-control" [(ngModel)]="item.date" disabled="true" />
                       </span>
                     </td>
                     <td class="align-middle border-0">
                       <span class="d-inline-block align-top w-100">
                         <div class="d-flex">
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="item.newprice"
-                            [disabled]="
+                          <input type="text" class="form-control" [(ngModel)]="item.newprice" [disabled]="
                               item.pricewithUnit !== 'Manual Fees JOD'
                                 ? true
                                 : false
-                            "
-                          />
+                            " />
                           <div class="unite-text">
                             <label class="m-0">{{ item.Unit }}</label>
                             <!-- <input type="text" class="form-control" [(ngModel)]="element.Unit" [disabled]="true"/> -->
@@ -83,12 +56,7 @@
                     </td>
                     <td class="align-middle border-0">
                       <span class="d-inline-block align-top w-100">
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="item.note"
-                          disabled="true"
-                        />
+                        <input type="text" class="form-control" [(ngModel)]="item.note" disabled="true" />
                       </span>
                     </td>
                   </tr>
@@ -102,3 +70,79 @@
   </div>
 </div>
 <!-- <h6 style="margin-left:1.2em !important;" class="muted-text">eOrder ID: {{lt.orderId}}</h6> -->
+<ng-template #serviceHistoryRef>
+  <div class="service-form">
+    <div class="card">
+      <div class="infoModel-title" style="background-color: #0056b0;display: flex;
+      justify-content: space-between;">
+        <h4 class="m-0 pl-3">Services History</h4>
+        <div style="    display: flex;
+        gap: 10px;">
+        <li class="close-icon"><img src="assets/img/CloseTab.svg" class="img-size c-pointer" (click)="modalRef?.hide()" style="width: 75%;"> </li> 
+      </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th colspan="4" scope="col">Service Description</th>
+              <th colspan="1" scope="col">Date</th>
+              <!-- <th colspan="1" scope="col">Time</th> -->
+              <th colspan="1" scope="col">Status</th>
+              <th colspan="1" scope="col">Comment</th>
+              <th colspan="1" scope="col">Created By</th>
+              <th colspan="1" scope="col">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>Action</div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor=" let item of feeListService.historyOrders let i = index">
+              <tr [id]="i">
+                <td colspan="4">
+                  <input class="form-control " [value]="item.Ktxt1" type="text" [disabled]="true"
+                    [title]="item.Ktxt1" />
+                </td>
+                <td colspan="1">
+                  <input class="form-control " [value]="getDate(item.date)" type="text" [disabled]="true"
+                    [title]="item.date" />
+                </td>
+                <!-- <td colspan="1">
+                  <input class="form-control " [value]="item.time" type="text" [disabled]="true" [title]="item.time"/>
+                </td> -->
+                <td colspan="1">
+                  <input class="form-control " [value]="getStatusValue(item.Planned)" type="text" [disabled]="true"
+                    [title]="getStatusValue(item.Planned)" />
+                </td>
+                <td colspan="1">
+                  <input class="form-control " [value]="item.Remarks" type="text" [disabled]="true"
+                    [title]="item.Remarks" />
+                </td>
+                <td colspan="1">
+                  <input class="form-control " [value]="item.Erusr" type="text" [disabled]="true"
+                    [title]="item.Erusr" />
+                </td>
+                <td class="align-middle border-0">
+                  <div class="trash-icon">
+                    <img src="./assets/img/Delete.svg">
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <tfoot *ngIf="feeListService.historyOrders.length <= 0">
+            <tr>
+              <td colspan="11">
+                <div class="pagination-container text-center p-3">
+                  No Record Found!
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>

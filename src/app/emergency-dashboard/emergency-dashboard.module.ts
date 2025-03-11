@@ -125,6 +125,7 @@ import { PastSurgicalComponent } from './treatment-workarea/history-assessment/p
 import { HistoryAssessmentComponent } from './treatment-workarea/history-assessment/history-assessment.component';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { FeeListService } from '@services/fee-service/fee-list.service';
 
 
 
@@ -197,7 +198,7 @@ export const emergencyDashboard: Routes = [
     PastSurgicalComponent,
     HistoryAssessmentComponent
   ],
-  providers: [EmergencyService, EPrescriptionService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService,PatientHistoryService,OrdersDashboardService,UserConfigurationService],
+  providers: [EmergencyService, EPrescriptionService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService,PatientHistoryService,OrdersDashboardService,UserConfigurationService, FeeListService],
   imports: [
     CommonModule,
     FormsModule,

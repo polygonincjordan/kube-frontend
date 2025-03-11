@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { Subject, catchError, debounceTime, of } from 'rxjs';
 import { Patient } from '@services/e-kardex/interfaces/patient';
+import { DatePipe } from '@angular/common';
+import { FeeListService } from '@services/fee-service/fee-list.service';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +35,7 @@ export class EOrderMainComponent implements OnInit {
   patient: Patient = {} as Patient;
   encounterId: any;
   constructor(public CpoeService: CpoeService, public eprescriptionService: EPrescriptionService, public eOrderService: eOrderService,
-    private patientService: PatientService, private route: ActivatedRoute,
+    private patientService: PatientService, private route: ActivatedRoute, private datePipe: DatePipe, public feeListService: FeeListService,
     private storageService:StorageService) {
     this.CpoeService.isFilterDataPopup.subscribe((data) => {
       this.organizationUnit.showPopup(data)
@@ -57,6 +59,7 @@ export class EOrderMainComponent implements OnInit {
   ngOnInit(): void {
     this.encounterId = this.paramsObj.einri+ this.paramsObj.falnr + this.paramsObj.lfdnr;
     this.getDataPatient();
+    this.feeListService.onNavigationClick('Fees');
   }
 
   getDataPatient() {
@@ -78,4 +81,21 @@ export class EOrderMainComponent implements OnInit {
 
       });
   }
+
+  getStatusValue(item: any) {
+    if (item == "") {
+      return "Released";
+    } else if (item == "X") {
+      return "Planned";
+    } else {
+      return "";
+    }
+  }
+
+  getDate(item) {
+    let dateParts = item.split('-');
+    let dateObject = new Date(Number(dateParts[0]), Number(dateParts[1] - 1), Number(dateParts[2]));
+    return this.datePipe.transform(dateObject, 'dd-MM-yyyy');
+  }
+
 }

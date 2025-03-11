@@ -129,6 +129,7 @@ export class CheckInComponent implements OnInit {
     },
   ]
   activelabLabelData: any;
+  userConfiguration: any;
   pdfData: any;
   modalRefForLab: BsModalRef;
   printUrl: any;
@@ -787,12 +788,13 @@ export class CheckInComponent implements OnInit {
   // }
 
   getHospitalList() {
+    this.userConfiguration = JSON.parse(localStorage.getItem('UserConfiguration'));
     // this.dataOnTableForMissedDoses = _success.result.d.results;
     let admittedFrom = '';
     let admittedTo = '';
     let wardNo = '';
-    let physician = '';
-    let speciality = '';
+    let physician = this.userConfiguration?.results[0]?.AttendPhy;
+    let speciality = this.userConfiguration?.results[0]?.SpecialityCode;
     // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
 
     this.hospitalistService.getInPatientAdmittedList('02', admittedFrom, admittedTo, wardNo, physician, speciality, '')
@@ -1794,22 +1796,22 @@ export class CheckInComponent implements OnInit {
   public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
     this.admissionStatusModel = data;
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-md add-habit-size',
+      class: 'modal-dialog-centered modal-xl',
       initialState: {
         admissionStatusModel: this.admissionStatusModel // Pass data into the modal
       }
     };
     this.modalRefForRisk = this.modalService.show(template, config);
     this.changeStatusForm = this.formBuilder.group({
-      Einri: [this.admissionStatusModel?.Einri],
-      Falnr: [this.admissionStatusModel?.Falnr],
+      Einri: [this.admissionStatusModel?.Institute],
+      Falnr: [this.admissionStatusModel?.CaseNumber],
       Lfdnr: [this.admissionStatusModel?.Lfdnr],
       AdmStatusCode: [''],
       Bwidt: [new Date()],
       Bwizt: [''],
       Kztxt: [''],
       Bwart: [''],
-      Pernr: [this.admissionStatusModel?.BehArztName],
+      Pernr: [this.admissionStatusModel?.AttendingDoctorName],
     });
 
     this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
@@ -1862,15 +1864,15 @@ export class CheckInComponent implements OnInit {
     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     const json = {
-      Einri: this.admissionStatusModel.Einri,
-      Falnr: this.admissionStatusModel.Falnr,
-      Lfdnr: this.admissionStatusModel.Lfdnr,
+      Einri: this.changeStatusForm.value.Einri,
+      Falnr: this.changeStatusForm.value.Falnr,
+      Lfdnr: this.changeStatusForm.value.Lfdnr,
       AdmStatusCode: visitStatCode.toString(),
       Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
       Bwizt: createTime,
       Kztxt: this.changeStatusForm.value.Kztxt,
       Bwart: this.changeStatusForm.value.Bwart,
-      Pernr: this.admissionStatusModel.BehArzt,
+      Pernr: this.admissionStatusModel.AttendingDoctor,
     };
 
     if (!json?.Bwart) {
@@ -1879,7 +1881,7 @@ export class CheckInComponent implements OnInit {
 
     this.emergencyService.changeAdmissionStatus(json).subscribe({
       next: (_success: any) => {
-        this.getErList()
+        this.getHospitalList();
         this.modalService.hide();
       },
       error: (err: any) => {

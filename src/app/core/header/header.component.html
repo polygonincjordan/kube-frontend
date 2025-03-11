@@ -70,7 +70,7 @@
                 <label for="input1" class="placeholder">
                   Date of Birth
                 </label>
-                <i class="fa-solid fa-calendar"></i>
+                <i class="fa fa-solid fa-calendar"></i>
               </div>
             </div>
           </div>
@@ -486,9 +486,9 @@
               <span class="input-group-text"><i class="fa fa-search fa-lg"></i></span>
             </div>
             <input type="text" [placeholder]="'Quick search'" [(ngModel)]="searchString" id="searchFilter" class="form-control w-70">
-            <div class="input-group-append">
+            <!-- <div class="input-group-append">
               <span class="input-group-text"></span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -558,6 +558,9 @@
           </tbody>
         </table>
       </div>
+    </div>
+    <div class="modal-footer" style="justify-content: start;">
+      <button type="button" class="btn btn-primary" (click)="backPatient()">Back</button>
     </div>
 </ng-template>
 <!-- patient search modal end -->

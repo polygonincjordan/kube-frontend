@@ -1701,13 +1701,17 @@ export class DiagnosesComponent implements OnInit {
   }
 
   onReleaseHistoryData(releaseId: any) {
-    this.inPatientVisitData = {} as InPatientDataResult;
-    this.patientVisitRecord = {} as PatientVisitDataResult;
-    this.userConfigurationService.getReleaseHistoryData(releaseId).subscribe((data) => {
-      if (data && data.length) {
-        this.diagnosisHistory.showPopup(data)
-      }
-    })
+    if(releaseId?.Released == 'X') {
+      this.inPatientVisitData = {} as InPatientDataResult;
+      this.patientVisitRecord = {} as PatientVisitDataResult;
+      this.userConfigurationService.getReleaseHistoryData(releaseId?.DocKey).subscribe((data) => {
+        if (data && data.length) {
+          this.diagnosisHistory.showPopup(data)
+        }
+      })
+    } else {
+      this.modelFormOpen(releaseId, false, this.pdfViewModal)
+    }
   }
   base64Value: string;
   mimetype: any;

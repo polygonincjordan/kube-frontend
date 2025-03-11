@@ -550,6 +550,77 @@
                       </div>
                     </div>
                   </div>
+                  <div class="service-history">
+                    <div class="service-form">
+                      <div class="card">
+                        <div class="card-header">
+                          <h3>Services History</h3>
+                        </div>
+                        <div class="card-body">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th colspan="4" scope="col">Service Description</th>
+                                <th colspan="1" scope="col">Date</th>
+                                <!-- <th colspan="1" scope="col">Time</th> -->
+                                <th colspan="1" scope="col">Status</th>
+                                <th colspan="1" scope="col">Comment</th>
+                                <th colspan="1" scope="col">Created By</th>
+                                <th colspan="1" scope="col">
+                                  <div class="d-flex align-items-center justify-content-between">
+                                    <div>Action</div>
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container *ngFor=" let item of feeListService.historyOrders let i = index">
+                                <tr [id]="i">
+                                  <td colspan="4">
+                                    <input class="form-control " [value]="item.Ktxt1" type="text" [disabled]="true"
+                                      [title]="item.Ktxt1" />
+                                  </td>
+                                  <td colspan="1">
+                                    <input class="form-control " [value]="getDate(item.date)" type="text" [disabled]="true"
+                                      [title]="item.date" />
+                                  </td>
+                                  <!-- <td colspan="1">
+                                    <input class="form-control " [value]="item.time" type="text" [disabled]="true" [title]="item.time"/>
+                                  </td> -->
+                                  <td colspan="1">
+                                    <input class="form-control " [value]="getStatusValue(item.Planned)" type="text" [disabled]="true"
+                                      [title]="getStatusValue(item.Planned)" />
+                                  </td>
+                                  <td colspan="1">
+                                    <input class="form-control " [value]="item.Remarks" type="text" [disabled]="true"
+                                      [title]="item.Remarks" />
+                                  </td>
+                                  <td colspan="1">
+                                    <input class="form-control " [value]="item.Erusr" type="text" [disabled]="true"
+                                      [title]="item.Erusr" />
+                                  </td>
+                                  <td class="align-middle border-0">
+                                    <div class="trash-icon">
+                                      <img src="./assets/img/Delete.svg">
+                                    </div>
+                                  </td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                            <tfoot *ngIf="feeListService.historyOrders.length <= 0">
+                              <tr>
+                                <td colspan="11">
+                                  <div class="pagination-container text-center p-3">
+                                    No Record Found!
+                                  </div>
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
