@@ -444,3 +444,15 @@ h4.top-head-h4 {
     overflow-y: auto;
   }
 }
+
+::ng-deep ngx-extended-pdf-viewer {
+  cursor: default !important;
+}
+
+::ng-deep ngx-extended-pdf-viewer .textLayer {
+  cursor: default !important;
+}
+
+::ng-deep ngx-extended-pdf-viewer .page {
+  cursor: default !important;
+}

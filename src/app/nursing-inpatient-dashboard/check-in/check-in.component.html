@@ -25,6 +25,12 @@
             <th scope="col" style="padding-left: 0px;">
               Vital
             </th>
+            <th scope="col">
+              Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Diagnosis')"></i>
+            </th>
+            <th scope="col" style="padding-left: 0px;">
+              Isolation <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('IsolationType')"></i>
+            </th>
             <th scope="col"  style="padding-left: 0px;">
              Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('patientStatus')"></i>
             </th>
@@ -46,9 +52,6 @@
             <th scope="col" style="padding-left: 0px;">
               Specialty <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DeptouDesc')"></i>
             </th>
-            <th scope="col" style="padding-left: 0px;">
-              Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Diagnosis')"></i>
-            </th>
             <!-- <th scope="col" style="padding-left: 0px;">
               Allergy
             </th> -->
@@ -67,9 +70,6 @@
             <!-- <th scope="col" style="padding-left: 0px;">
               Attachment 
             </th> -->
-            <th scope="col" style="padding-left: 0px;">
-              Isolation <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('IsolationType')"></i>
-            </th>
             <!-- <th scope="col" style="padding-left: 0px">
               Fin.Clearance Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZzfinClear')"></i>
             </th> -->
@@ -101,6 +101,17 @@
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
             </td>
+            <td class="border-left text-center">
+              <span *ngIf="item?.Diagnosis">
+                <img [src]="'assets/img/Diagnosis_black.svg'" class="risk-icon" [title]="item.Diagnosis" />
+              </span>
+              <span *ngIf="!item?.Diagnosis">N/A</span>
+            </td>
+            <td class="border-left text-center">
+              <span>
+                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon" [title]="item.IsolationType ? item.IsolationType : 'No Isolation'" />
+              </span>
+            </td>
             <td style="padding-left: 0px" [title]="item?.patientStatus" class="border-top-none">
               {{ item?.patientStatus }}
             </td>
@@ -116,7 +127,8 @@
             <td style="padding-left: 0px" [title]="item.RoomidText" class="border-top-none">{{ item.RoomidText }}</td>
             <td style="padding-left: 0px" [title]="item.BedidText" class="border-top-none">{{ item.BedidText }}</td>
             <td style="padding-left: 0px" [title]="item.DeptouDesc" class="border-top-none">{{ item.DeptouDesc }}</td>
-            <td style="padding-left: 0px" [title]="item.Diagnosis" class="border-top-none">{{ item.Diagnosis }}</td>
+            <!-- <td style="padding-left: 0px" [title]="item.Diagnosis" class="border-top-none">{{ item.Diagnosis }}</td> -->
+     
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
             <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.FinancialCategory" class="border-top-none">{{ item.FinancialCategory }}</td>
@@ -124,11 +136,6 @@
             <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
             <!-- <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td> -->
             <!-- <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td> -->
-            <td class="border-left text-center">
-              <span>
-                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon" [title]="item.IsolationType" />
-              </span>
-            </td>
             <!-- <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td> -->
             <td colspan="1" style="display: flex; align-items: center; text-align: center; overflow: visible !important">
               <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
@@ -431,8 +438,23 @@
 <ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
   <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
     <h4 class="modal-title" style="color: white">Change Admission Status</h4>
+    <div class="risk-history-main">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item" style="margin-left: 10%">
+          Patient Name : <span>{{ admissionStatusModel.Patname }}</span>
+        </li>
+        <li class="allergy-header-item">MRN: {{ admissionStatusModel.Mrn }}</li>
+        <li class="allergy-header-item">
+          Admission date:
+          {{ getDate(admissionStatusModel.AdmissionDate) | date : "dd.MM.y" }}
+        </li>
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+        </li>
+      </ul>
+    </div>
   </div>
-  <div class="modal-body p-0">
+  <div class="modal-body p-0 pb-3">
     <form [formGroup]="changeStatusForm">
       <div class="p-3">
         <p class="m-0">Are you sure you want to change status to <strong>{{ getStatusValue() }}</strong></p>

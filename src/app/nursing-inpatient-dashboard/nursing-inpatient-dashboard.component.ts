@@ -144,6 +144,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   reservation: boolean = false;
   showConfiguration: boolean = false;
   singleformgroupData: any;
+  wardSelectForConfig: any[] = [];
 
   constructor(
     private orderDashboardService: OrdersDashboardService,
@@ -159,7 +160,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     private dataShareService: DataShareService,
     private consumableService: ConsumableService,
     private modalService: BsModalService,
-    private emergencyService: EmergencyService
+    private emergencyService: EmergencyService,
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -296,6 +297,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getAssignSurgeonList();
     this.getWardList();
     this.countOfNavModules();
     this.getLabExtraction();
@@ -307,9 +309,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.receiveDataFromPhysicianOrdersChild();
     this.getMissedDocsCount();
     this.getNoConsumablesCount();
-
     this.selectModule('checkin');
-    this.getAssignSurgeonList();
     this.dropdownSettingsForLDRAttendPhy = {
       singleSelection: false,
       enableCheckAll: true,
@@ -452,9 +452,28 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
+  
+  onItemSelect(event: any) {
+
+  }
+
+  onSelectAll(event: any) {
+
+  }
+
+  onItemSelect1(event: any) {
+    // console.log(this.form,event, "1234567");
+  }
+  getSpecialityDrodownList() {
+    this.hospitalistService.getSpecialtyList().subscribe((res: any) => {
+      this.specialityList = res?.d?.results;
+      this.clinicConfigGet()
+    })
+  }
   getAssignSurgeonList() {
     this.orderDashboardService.getAssignUsersData().subscribe((data: any) => {
       this.assignUsersList = data?.d?.results;
+      this.getSpecialityDrodownList();
     });
   }
   userConfiguration: any;
@@ -462,6 +481,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   selectedPhysicianConf: any[] = [];
   specialityList: any = [];
   selectedSpecialityConf: any[] = []
+  arraySplit: any[] = [];
 
   clinicConfigGet() {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
@@ -469,11 +489,19 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         this.clinicConfigDetail = resp.body.d.results
         localStorage.setItem('UserConfiguration', JSON.stringify(resp.body.d));
         const attendPhy = this.clinicConfigDetail[0].AttendPhy.split(',')
+        console.log(attendPhy, this.assignUsersList , "this.assignUsersList");
         this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
-
         
+        this.arraySplit = this.clinicConfigDetail[0].Ward.split(',');
+        this.wardSelectForConfig = [];
+        this.getWards.filter((element) => {
+          if (this.arraySplit.includes(element.Ward)) {
+            this.wardSelectForConfig.push(element);
+          }
+        });
       const specialityCode =this.clinicConfigDetail[0].SpecialityCode.split(',');
       this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
+      this.CheckInComponent.getHospitalList();
       }
     });
   }
@@ -1383,5 +1411,39 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       class: 'modal-dialog-centered patient-info-modal-size',
     };
     this.modalRef = this.modalService.show(template, config);
+  }
+
+  commaSeparatForSpecialtyConf(value: any) {
+    return Array.prototype.map.call(value, function (item) { return item.Orgid; }).join(",");
+  }
+
+  createConfig() {
+    const physicianArray = this.selectedPhysicianConf.map(item => item.Gpart);
+    const specialityArray = this.selectedSpecialityConf.map(item => item.Orgid);
+    let wardDetails: any = this.commaSeparat(this.wardSelectForConfig);
+    const userName = this.storageService.getUserProfile().UserName
+    const usrevma = this.storageService.getUserProfile().Gpart
+    let arrayAsString = physicianArray.join(',');
+    let arraysAsString = specialityArray.join(',');
+     let Payload = {
+      d: {
+        Username: userName,
+        Usrevma: usrevma,
+        AttendPhy: arrayAsString ,
+        SpecialityCode: arraysAsString,
+        Ward: wardDetails
+      },
+    };
+    if (!this.clinicConfigDetail) {
+      this.orderDashboardService.updateClinicConfig(Payload).subscribe((res) => {
+        this.showConfiguration = false;
+        this.clinicConfigGet();
+      })
+    } else {
+      this.orderDashboardService.createClinicConfig(Payload).subscribe((res) => {
+        this.showConfiguration = false;
+        this.clinicConfigGet();
+      })
+    }
   }
 }

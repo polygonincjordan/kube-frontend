@@ -147,7 +147,7 @@
       ><span *ngIf="ErPatientCount == 1">Patient</span>)
     </span>
   </div> -->
-  <div *ngIf="showConfiguration" class="card config p-3" style="border: none !important; background: #fff !important; top: 25%"
+  <div *ngIf="showConfiguration" class="card config p-3" style="border: none !important; background: #fff !important; top: 13%"
   id="configurationCard">
   <div class="card-body" style="padding: 7px" (click)="$event.stopPropagation();">
     <div class="mb-2" style="
@@ -158,7 +158,7 @@
       <h5 class="card-title">Configuration Options</h5>
       <span style="position: relative; bottom: 4px">
         <img src="assets/img/refresh.png" style="width: 29px"  />
-        <img src="assets/img/save.png" style="width: 19px" />
+        <img src="assets/img/save.png" style="width: 19px" (click)="createConfig()" />
       </span>
     </div>
 
@@ -177,6 +177,13 @@
             [placeholder]="'Speciality'" [(ngModel)]="selectedSpecialityConf" [data]="specialityList">
           </ng-multiselect-dropdown>
         </div>
+        <!-- <div>
+          <label class="mb-1" for="wardSelect">Speciality</label>
+          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
+            [placeholder]="'Ward'" [(ngModel)]="wardSelectForConfig" [data]="getWards"
+              (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                    </ng-multiselect-dropdown>
+        </div> -->
       </div>
     </div>
   </div>
@@ -354,7 +361,7 @@
     *ngIf="!reservation"
     [ngStyle]="{ display: erSetting ? 'none' : 'flex' }"
   >
-  <!-- <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i> -->
+  <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i>
     <i
       class="fa fa-filter"
       aria-hidden="true"
@@ -1018,7 +1025,7 @@
       </div>
     </div>
   </div>
-  <app-check-in
+  <app-check-in 
     (sendErPatientCount)="collectErPatientCount($event)"
     (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)"

@@ -26,7 +26,7 @@
         <!-- 6 -->
         <th scope="col">Attending Doctor<i (click)="onSortClick($event,'AttendingDoctorName')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 7 -->
-        <th scope="col" *ngIf="showColumnsListView.Speciality">Speciality</th>
+        <th scope="col" *ngIf="showColumnsListView.Speciality">Speciality <i (click)="onSortClick($event,'DeptouDesc')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 8 -->
         <th scope="col" class="allergy" *ngIf="listType != '05'" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Allergy</th>
         <!-- 9 -->
@@ -34,20 +34,20 @@
         <!-- 10 -->
         <th scope="col" *ngIf="showColumnsListView.Admission_diagnosis && listType != '05'" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Admission Diagnosis</th>
         <!-- 11 -->
-        <th scope="col"  *ngIf="showColumnsListView.Financial_Category">Financial Category</th>
+        <th scope="col"  *ngIf="showColumnsListView.Financial_Category">Financial Category <i (click)="onSortClick($event,'FinancialCategory')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 12 -->
-        <th scope="col" *ngIf="showColumnsListView.Planned_discharge && listType != '05'">Planned Discharge</th>
+        <th scope="col" *ngIf="showColumnsListView.Planned_discharge && listType != '05'">Planned Discharge <i (click)="onSortClick($event,'PatientstatusPlandischarg')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 13 -->
         <th scope="col" *ngIf="showColumnsListView.Isolation">Isolation</th>
         <!-- 14 -->
         <!-- 15 -->
-        <th scope="col" *ngIf="showColumnsListView.LOS">LOS</th>
+        <th scope="col" *ngIf="showColumnsListView.LOS">LOS <i (click)="onSortClick($event,'AdmissionDays')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 16 -->
         <th scope="col" *ngIf="showColumnsListView.Days_for_isolation">Days for Isolation</th>
         <!-- 17 -->
-        <th scope="col" *ngIf="showColumnsListView.Case">Case</th>
+        <th scope="col" *ngIf="showColumnsListView.Case">Case <i (click)="onSortClick($event,'CaseNumber')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 18 -->
-        <th scope="col" *ngIf="showColumnsListView.VIP">VIP</th>
+        <th scope="col" *ngIf="showColumnsListView.VIP">VIP <i (click)="onSortClick($event,'VipIcon')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 19 -->
         <th scope="col" *ngIf="showColumnsListView.Emergency_Admission">Emergency admission</th>
         <!-- 20 -->
@@ -108,7 +108,7 @@
         <!-- 12 -->
         <td *ngIf="showColumnsListView.Planned_discharge && listType != '05'">{{ item?.PatientstatusPlandischarg }}</td>
         <!-- 13 -->
-        <td data-bs-toggle="tooltip" data-bs-placement="right" title="{{ item.IsolationType }}" *ngIf="showColumnsListView.Isolation">{{ item?.IsolationInd || ""  }}</td>
+        <td data-bs-toggle="tooltip" data-bs-placement="right" title="{{ item.IsolationType ? item.IsolationType : 'No Isolation' }}" *ngIf="showColumnsListView.Isolation">{{ item?.IsolationInd || ""  }}</td>
         <!-- 14 -->
         <!-- 15 -->
         <td *ngIf="showColumnsListView.LOS">{{ item?.AdmissionDays }}</td>

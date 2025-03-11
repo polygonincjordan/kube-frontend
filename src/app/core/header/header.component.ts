@@ -84,6 +84,10 @@ export class HeaderComponent implements OnInit {
     this.searchString = '';
   }
 
+  backPatient() {
+    this.modalRefForPatientSearch?.hide();
+  }
+
   ngOnInit() {
     this.form = this.formBuilder.group({
       dob: [''],
@@ -304,13 +308,13 @@ export class HeaderComponent implements OnInit {
           });
         });
         this.patientSearchData = _dataArray;
-        this.modalRef.hide();
+        // this.modalRef.hide();
         this.openModalForPatientSearch(template);
         // this.dataCount.emit(this.dataOnTable.length);
       },
       (_error: any) => {
         this.form.reset();
-        this.modalRef.hide();
+        // this.modalRef.hide();
         Swal.fire({
           title: 'No patient found with the specified attributes',
           icon: 'error',
