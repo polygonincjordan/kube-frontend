@@ -26,7 +26,7 @@ import { truncate } from 'fs/promises';
 @Injectable()
 export class EmergencyService {
   formDetailGroup: any;
-
+  public callAgainAPI = false;
   public PhysicianOrders: boolean = false;
   public ProgressNotes: boolean = false;
   public Diagnosis: boolean = false;

@@ -733,7 +733,11 @@
                   Admitted On
                   <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i>
                 </th>
-                <th *ngFor="let col of columnsList">{{ col.Fieldname }}</th>
+                <th scope="col" *ngIf="ipConsultation">
+                  Status
+                  <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i>
+                </th>
+                <th *ngFor="let col of columnsList">{{ col.Fieldname == 'Doctor' ? 'Attending Physician' : col.Fieldname  }}</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -758,6 +762,7 @@
                 <td>{{ item.Floor }}</td>
                 <td>{{ item.RoomidText }}</td>
                 <td>{{ getDate(item.Admdatetime) | date : "dd.MM.y" }}</td>
+                <td *ngIf="ipConsultation">{{ item.VkgidStatus == 'Done' ? 'Completed' : item.VkgidStatus == 'Confirmed' ? 'Requested' : '' }}</td>
                 <td
                   data-bs-toggle="tooltip"
                   data-bs-placement="right"
@@ -811,7 +816,7 @@
                   {{ item.RiskInformation || "" }}
                 </td>
                 <td *ngIf="Special_indicator">{{ item.SpecialInd || "" }}</td>
-                <td *ngIf="Speciality">{{ item.speciality || "" }}</td>
+                <td *ngIf="Speciality">{{ item.DeptouDesc || "" }}</td>
                 <td *ngIf="Study_name">{{ item.StudyFlag || "" }}</td>
                 <td *ngIf="Treatment_diagnosis" class="allergy">
                   {{ item.DiagnosisTreatment }}
@@ -876,7 +881,7 @@
                       <div
                         class="dropdown-menu"
                         aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item c-pointer">Reply</a>
+                        <!-- <a class="dropdown-item c-pointer">Reply</a> -->
                         <a class="dropdown-item c-pointer"
                           (click)="openModalForConsultationCompletion(consultationCompletionTemplate,
                           item)">Completed</a>
@@ -2082,23 +2087,21 @@
           }}</span>
       </p>
     </div>
-    <div class="modal-footer" style="padding: 5px 0 0 0">
+    <div class="modal-footer" style="padding: 5px 0 0 0; display: block;">
       <div>
         <span
           style="
           position: relative;
-          left: -23px;
           top: 0px;
           font-weight: bold;
           color: #82949e;
           ">Note:</span><span style="font-weight: bold;
           color: #82949e;
-          position: relative;
-          left: -20px;">Completing Consultation will remove it from the list</span>
-        <span>
+          position: relative;">Completing Consultation will remove it from the list</span>
+        <span class="d-flex justify-content-end mt-2">
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-primary mr-2"
             style="background-color: #0082c8; border: #0082c8"
             (click)="consultationCompletion()">
             Complete

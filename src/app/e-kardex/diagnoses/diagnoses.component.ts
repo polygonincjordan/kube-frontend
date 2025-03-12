@@ -1124,6 +1124,12 @@ export class DiagnosesComponent implements OnInit {
     };
   })
   }
+
+  openPhysicianAssessment(template?: TemplateRef<any>,){
+    const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+    this.modalRef = this.modalServiceForAllergy.show(template,config);
+  }
+
   openNewForm(type?: string) {
     if(type == 'Correspondence') {
       type = 'out';

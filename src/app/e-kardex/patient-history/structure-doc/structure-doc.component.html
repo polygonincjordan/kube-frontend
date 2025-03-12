@@ -1092,13 +1092,16 @@
 
 <ng-template #specialNotesModal>
   <div class="additional-input additional-input p-3">
-    <label for="additionalInfo w-100">Special Notes</label>
+    <div class="d-flex">
+      <label for="additionalInfo">Personal Note</label>
+      <li class="close-icon allergy-header-item" style="border: none; padding: 0; margin: 0;flex:1">
+        <img src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float:right" (click)="modalRef?.hide()">
+      </li>
+    </div>
     <textarea type="text" class="w-100" [(ngModel)]="specialNote"></textarea>
   </div>
   <div class="button-group d-flex justify-content-end p-3">
-    <button class="d-flex
-      align-items-center mr-2" (click)="saveSpecialNotes()">Save</button>
-    <button class="d-flex align-items-center"
-      (click)="modalRef.hide()">Cancel</button>
+    <button class="d-flex align-items-center mr-2" (click)="saveSpecialNotes()">Save</button>
+    <button class="d-flex align-items-center delete_btn" (click)="confirmDeleteSpecialNotes()">Delete</button>
   </div>
 </ng-template>

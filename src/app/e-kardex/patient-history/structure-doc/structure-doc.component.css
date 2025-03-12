@@ -137,3 +137,7 @@ h4.top-head-h4 {
     border-radius: 5px;
     color: #787474;
 }
+.delete_btn {
+  background: #ff2e29 !important;
+  color: #fff !important;
+}

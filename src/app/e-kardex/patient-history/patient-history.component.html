@@ -9,7 +9,8 @@
       <div [ngClass]="activePastMedical ? 'step':'step current'" (click)="activateTabs('PastMedical')"><span>Past Medical</span></div>
       <div [ngClass]="activePastSurgical ? 'step':'step current'" (click)="activateTabs('PastSurgical')"><span>Past Surgical</span></div>
       <div [ngClass]="activeFamilyHistory ? 'step':'step current'" (click)="activateTabs('FamilyHistory')"><span>Family History</span></div>
-      <div [ngClass]="activeStructuredDoc ? 'step':'step current'" (click)="activateTabs('StructuredDoc')"><span>Structured Doc</span></div>
+      <!-- <div [ngClass]="activeStructuredDoc ? 'step':'step current'" (click)="activateTabs('StructuredDoc')"><span>Structured Doc</span></div> -->
+      <div [ngClass]="activeStructuredDoc ? 'step':'step current'" (click)="activateTabs('StructuredDoc')"><span>Personal Note</span></div>
       <!-- <div class="step current"><span>Immunization</span></div>
       <div class="step current"><span>Family Members</span></div>
       <span><img src="" class="simple-icon-settings" style="    font-size: 16px;
