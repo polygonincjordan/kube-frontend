@@ -151,13 +151,13 @@ export class ErHistoryComponent implements OnInit {
    if (this.storageService.lastPassedDate != undefined) {
     // this.getErList(this.storageService.lastPassedDate);
    }else{
-    this.getErList([new Date()]);
-    // this.getHospitalList();
+    // this.getErList([new Date()]);
+    this.getHospitalList();
    }
     this.dataForTriage();
     this.refreshInterval = setInterval(() => {
-      // this.getHospitalList();
-    this.getErList([this.currentDateObj]);
+      this.getHospitalList();
+    // this.getErList([this.currentDateObj]);
     }, (30 * 60 * 1000));
   }
 
@@ -331,12 +331,12 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl risk-modal-size' };
       this.modalRefForRisk = this.modalService.show(template,config);
       this.selectedERList = data;
-      this.selectedERList["admissionDate"] = this.selectedERList.Bwidt;
-      this.selectedERList["Patname"] = this.selectedERList.Pnamec1;
-      // this.selectedERList.Einri = this.selectedERList.Institute;
-      // this.selectedERList.Falnr = this.selectedERList.CaseNumber;
-      // this.selectedERList.Patnr = this.selectedERList.Mrn;
-      // this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
+      // this.selectedERList["admissionDate"] = this.selectedERList.Bwidt;
+      // this.selectedERList["Patname"] = this.selectedERList.Pnamec1;
+      this.selectedERList.Einri = this.selectedERList.Institute;
+      this.selectedERList.Falnr = this.selectedERList.CaseNumber;
+      this.selectedERList.Patnr = this.selectedERList.Mrn;
+      this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
       // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
       //   this.editDeleteDisable = true;
       // }
@@ -358,12 +358,12 @@ export class ErHistoryComponent implements OnInit {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-xl allergy-modal-size' };
       this.modalRefForAllergy = this.modalService.show(template,config);
       this.selectedERList = data;
-      this.selectedERList["admissionDate"] = this.selectedERList.Bwidt;
-      this.selectedERList["Patname"] = this.selectedERList.Pnamec1;
-      // this.selectedERList.Einri = this.selectedERList.Institute;
-      // this.selectedERList.Falnr = this.selectedERList.CaseNumber;
-      // this.selectedERList.Patnr = this.selectedERList.Mrn;
-      // this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
+      // this.selectedERList["admissionDate"] = this.selectedERList.Bwidt;
+      // this.selectedERList["Patname"] = this.selectedERList.Pnamec1;
+      this.selectedERList.Einri = this.selectedERList.Institute;
+      this.selectedERList.Falnr = this.selectedERList.CaseNumber;
+      this.selectedERList.Patnr = this.selectedERList.Mrn;
+      this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
       // if(this.selectedERList?.AdmissionStatus === "Actual Discharge"){
       //   this.editDeleteDisable = true;
       // }
@@ -495,7 +495,7 @@ export class ErHistoryComponent implements OnInit {
     let speciality = '';
     // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
 
-    this.hospitalistService.getInPatientAdmittedList('02', admittedFrom, admittedTo, wardNo, physician, speciality, '')
+    this.hospitalistService.getInPatientAdmittedList('05', admittedFrom, admittedTo, wardNo, physician, speciality, '')
       .subscribe((data: any) => {
         let patientList: any[] = data?.d?.results[0]?.ToIPList.results;
 
@@ -549,8 +549,8 @@ export class ErHistoryComponent implements OnInit {
     );
   }
   openModalVital(item){
-    item["admissionDate"] = item.Bwidt;
-    item["Patname"] = item.Pnamec1;
+    // item["admissionDate"] = item.Bwidt;
+    // item["Patname"] = item.Pnamec1;
     this.erVitalsModal.openModalForErVital(item,"erHistory");
   }
   public openModalForTriage(

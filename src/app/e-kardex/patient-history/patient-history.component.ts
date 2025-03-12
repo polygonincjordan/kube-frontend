@@ -991,7 +991,7 @@ export class PatientHistoryComponent implements OnInit {
   }
   // structured doc code
   openModalForStructureDoc() {
-    this.structureDocKardex.openModalForStructuredDoc();
+    this.structureDocKardex.openModalForSpecialNotes();
   }
    // progress notes
   openModalForProgressNotes() {

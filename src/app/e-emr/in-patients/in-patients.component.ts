@@ -314,9 +314,18 @@ export class InPatientsComponent implements OnInit {
     template: TemplateRef<any>,
     data: any
   ) {
+    this.consultationData = data;
+    if(this.consultationData.VkgidStatus == 'Confirmed') {
     const config: ModalOptions = { class: 'modal-dialog-centered modal-lg completion-modal' };
     this.modalRef = this.modalService.show(template, config);
-    this.consultationData = data;
+    } else {
+      Swal.fire({
+        title: 'Consultation is Already Completed',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        //preConfirm: () => {},
+      });
+    }
 
   }
   navModule(value) {
@@ -509,6 +518,8 @@ export class InPatientsComponent implements OnInit {
           this.dataOnTable = [];
           if (_success.module == 'home' || _success.module == 'My_IP_consultations') {
             this.dataOnTable = _success.result.d.results;
+            console.log(this.dataOnTable, "this.dataOnTable");
+            
           } else if (_success.module == 'Not_Executed_Physician_Order') {
             this.dataOnTableForPhyOrder = _success.result.d.results;
             this.asc = true;
@@ -624,10 +635,9 @@ export class InPatientsComponent implements OnInit {
         (_success: any) => {
           if (_success) {
             //_success = JSON.parse(_success._body);
-
             //this.showFilterFn();
             this.showfilter = false;
-            if (_success.module == 'home') {
+            if (_success.module == 'home' || _success.module == 'My_IP_consultations') {
               this.dataOnTable = _success.result.d.results;
             } else if (_success.module == 'Not_Executed_Physician_Order') {
               this.dataOnTableForPhyOrder = _success.result.d.results;
@@ -1477,29 +1487,34 @@ export class InPatientsComponent implements OnInit {
   }
 
   consultationCompletion() {
-    const json = {
-      Vkgid: this.consultationData.Vkgid,
-      ActionComplete: "X"
-    }
-    this._dataServices.consultationCompletion(json).subscribe(
-      (_success: any) => {
-        //_success = JSON.parse(_success._body);
-        this.modalRef.hide();
-        //this.navModule(this.setModule)
-        this.refreshModules()
-      },
-      (_error: any) => {
-        this.modalRef.hide();
-        if (_error == 'Bad Request') {
-          Swal.fire({
-            title: 'Case number does not exist for Service',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            //preConfirm: () => {},
-          });
-        }
+      const json = {
+        Vkgid: this.consultationData.Vkgid,
+        ActionComplete: "X"
       }
-    );
+      this._dataServices.consultationCompletion(json).subscribe(
+        (_success: any) => {
+          //_success = JSON.parse(_success._body);
+          this.modalRef.hide();
+          //this.navModule(this.setModule)
+          Swal.fire({
+            title: 'Completed the Consultation Order Successfully',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+          this.inPatientListByFilter();
+        },
+        (_error: any) => {
+          this.modalRef.hide();
+          if (_error == 'Bad Request') {
+            Swal.fire({
+              title: 'Case number does not exist for Service',
+              icon: 'error',
+              confirmButtonText: 'OK',
+              //preConfirm: () => {},
+            });
+          }
+        }
+      );
   }
 
   getProgressNotesData(data) {

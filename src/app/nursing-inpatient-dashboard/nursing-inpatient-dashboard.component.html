@@ -157,33 +157,28 @@
       ">
       <h5 class="card-title">Configuration Options</h5>
       <span style="position: relative; bottom: 4px">
-        <img src="assets/img/refresh.png" style="width: 29px"  />
-        <img src="assets/img/save.png" style="width: 19px" (click)="createConfig()" />
+        <img src="assets/img/refresh.png" style="width: 29px"  (click)="resetConfig()" />
+        <img src="assets/img/save.png" style="width: 19px" (click)="saveConfigTools()" />
       </span>
     </div>
 
     <div class="row">
-      <div class="col-md-12 out-patient-config-select ward-list-select">
+      <div class="col-md-12 ward-list-select">
         <div class="mb-2">
-          <label class="mb-1" for="wardSelect">Physician</label>
-          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForPhysician"
-            [placeholder]="'Physician'" [(ngModel)]="selectedPhysicianConf" [data]="assignUsersList">
-          </ng-multiselect-dropdown>
+          <label class="mb-1" for="wardSelect">Ward</label>
+          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
+            [placeholder]="'Ward'" [(ngModel)]="wardSelectForConfig" [data]="getWards"
+            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+        </ng-multiselect-dropdown>
           <!-- {{jsonString(selectedPhysicianConf)}} -->
         </div>
         <div>
           <label class="mb-1" for="wardSelect">Speciality</label>
-          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpeciality"
-            [placeholder]="'Speciality'" [(ngModel)]="selectedSpecialityConf" [data]="specialityList">
+          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialtyConfig"
+            [placeholder]="'Choose Speciality'" [(ngModel)]="specialtySelectForConfig"
+            [data]="specialtyListConfig" (onSelect)="onItemSelect1($event)">
           </ng-multiselect-dropdown>
         </div>
-        <!-- <div>
-          <label class="mb-1" for="wardSelect">Speciality</label>
-          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
-            [placeholder]="'Ward'" [(ngModel)]="wardSelectForConfig" [data]="getWards"
-              (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-                    </ng-multiselect-dropdown>
-        </div> -->
       </div>
     </div>
   </div>
@@ -1025,7 +1020,7 @@
       </div>
     </div>
   </div>
-  <app-check-in 
+  <app-check-in [getConfigToolWardList]="getConfigToolWardList" [getConfigToolSpecialtyList]="getConfigToolSpecialtyList"
     (sendErPatientCount)="collectErPatientCount($event)"
     (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)"

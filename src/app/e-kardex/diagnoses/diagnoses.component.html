@@ -31,7 +31,7 @@
               <span (click)="openNewForm('Correspondence')" [title]="'Create Correspondence'">
                 <img src="assets/img/edit-ekardex.png" class="mw-15" />
               </span>
-              <span (click)="openNewForm('PhysicianAssessment')" [title]="'Create Physician Assessment'">
+              <span (click)="openPhysicianAssessment(PhysicianAssessment)" [title]="'Create Physician Assessment'">
                 <img src="assets/img/physician-assessment.png" class="mw-15" />
               </span>
               <span (click)="openModalForAttachment(cvisAttachmentmodal)" [title]="'Create CVIS Attachments'">
@@ -125,27 +125,7 @@
               </div>
             </div>
         </ng-container>
-        <ng-container *ngIf="physicianAssessFormDiv">
-          <div class="main_soap">
-            <div class="head physician-head">
-              <div>
-                Physician Assessment
-              </div>
-              <div class="bottom physician-ass">
-                <button type="button" (click)="savePhysicianAssessmentForm('add')">Save</button>
-                <button type="button" (click)="savePhysicianAssessmentForm('release')">Release</button>
-                <!-- <button type="button" *ngIf="isDelete" (click)="savePhysicianAssessmentForm('delete')">Delete</button> -->
-                <button type="button"(click)="updateForm(false)">Close</button>
-              </div>
-            </div>
-            <div class="details">
-              <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>
-            </div>
-              <div class="bottom">
-               
-              </div>
-            </div>
-        </ng-container>
+
     </div>
 
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showIn">
@@ -829,4 +809,26 @@
         </form>
       </div>
     </div>
+  </ng-template>
+
+  <ng-template #PhysicianAssessment>
+    <div class="main_soap">
+      <div class="head physician-head">
+        <div>
+          Physician Assessment
+        </div>
+        <div class="bottom physician-ass">
+          <button type="button" (click)="savePhysicianAssessmentForm('add')">Save</button>
+          <button type="button" (click)="savePhysicianAssessmentForm('release')">Release</button>
+          <!-- <button type="button" *ngIf="isDelete" (click)="savePhysicianAssessmentForm('delete')">Delete</button> -->
+          <button type="button"(click)="updateForm(false)">Close</button>
+        </div>
+      </div>
+      <div class="details">
+        <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>
+      </div>
+        <div class="bottom">
+         
+        </div>
+      </div>
   </ng-template>

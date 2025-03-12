@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 })
 export class StructureDocComponent implements OnInit {
   @ViewChild('structuredDoc', { static: true }) structuredDoc: TemplateRef<any>;
+  @ViewChild('specialNotesModal', { static: true }) specialNotesModal: TemplateRef<any>;
   @ViewChild('releasedocpdfmodal') releasedocpdfmodal: TemplateRef<HTMLDivElement>;
   fileSelected: boolean = false;
   showRedBorder: boolean = false;
@@ -1400,11 +1401,12 @@ uploadDocument(template) {
   }
 
   public openModalForSpecialNotes(
-    template: TemplateRef<any>,
+    template?: TemplateRef<any>,
   ) {
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
-      this.modalRef = this.modalServiceForAllergy.show(template,config);
-      this.modalRefForStrucDoc.hide();
+      this.modalRef = this.modalServiceForAllergy.show(this.specialNotesModal,config);
+      this.getSpecialNotes();
+      this.modalRefForStrucDoc?.hide();
       this.userProfile = this.storageService.getUserProfile();
       this.modalRef.onHide.subscribe((reason: string | any) => {
         if(reason === 'backdrop-click') {
@@ -1463,7 +1465,8 @@ uploadDocument(template) {
     }
     this.patientHistoryService.deleteSpecialNotes(json).subscribe(
       (_success: any) => {
-        this.modalRefForStrucDoc.hide();
+        this.modalRefForStrucDoc?.hide();
+        this.modalRef?.hide();
         Swal.fire({
           title: 'Deleted Successfully',
           icon: 'success',

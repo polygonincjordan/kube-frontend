@@ -6,6 +6,7 @@ import {
   Output,
   ViewChild,
   TemplateRef,
+  Input,
 } from '@angular/core';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ErBedComponent } from './er-bed/er-bed.component';
@@ -26,6 +27,8 @@ import { HelperService } from '@services/helper.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { SharedService } from '@services/shared.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { EEmrService } from '@services/e-emr.service';
+import { WardList } from '@services/e-hospitalist/interfaces/hospitalist';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -50,6 +53,8 @@ export class CheckInComponent implements OnInit {
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() dataToParent = new EventEmitter<any>();
+  @Input() getConfigToolSpecialtyList
+  @Input() getConfigToolWardList
 
   isFormValidError: boolean = false;
   searchString: string = '';
@@ -147,7 +152,8 @@ export class CheckInComponent implements OnInit {
     private helperService: HelperService,
     private dayCaseDashboardService: DayCaseDashboardService,
     public sharedService: SharedService,
-    private hospitalistService: HospitalistService
+    private hospitalistService: HospitalistService,
+    private _EMRServices: EEmrService,
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -184,7 +190,9 @@ export class CheckInComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getHospitalList();
+    if(this.emergencyService.callAgainAPI) {
+      this.getHospitalList();
+    }
     this.refreshInterval = setInterval(() => {
       this.getHospitalList();
     }, (30 * 60 * 1000));
@@ -787,19 +795,23 @@ export class CheckInComponent implements OnInit {
   //     });
   // }
 
-  getHospitalList() {
+  getHospitalList(getConfigToolWardList?, getConfigToolSpecialtyList?) {
+    this.getConfigToolSpecialtyList = getConfigToolSpecialtyList
+    this.getConfigToolWardList = getConfigToolWardList
     this.userConfiguration = JSON.parse(localStorage.getItem('UserConfiguration'));
     // this.dataOnTableForMissedDoses = _success.result.d.results;
     let admittedFrom = '';
     let admittedTo = '';
-    let wardNo = '';
-    let physician = this.userConfiguration?.results[0]?.AttendPhy;
-    let speciality = this.userConfiguration?.results[0]?.SpecialityCode;
+    let wardNo = this.getConfigToolWardList;
+    let physician = '';
+    let speciality = this.getConfigToolSpecialtyList;
     // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
 
     this.hospitalistService.getInPatientAdmittedList('02', admittedFrom, admittedTo, wardNo, physician, speciality, '')
       .subscribe((data: any) => {
         console.log(data, "----");
+        this.inHospitalistList = [];
+        this.inHospitalistListClone = [];
         let patientList: any[] = data?.d?.results[0]?.ToIPList.results;
         patientList = patientList.map(item => ({ ...item, patientStatus: this.admissionStatusCheck(item) }));
 
@@ -812,6 +824,7 @@ export class CheckInComponent implements OnInit {
 
         this.dataToParent.emit(this.inHospitalistListClone);
         this.lastIndex = this.inHospitalistList.length - 1;
+        this.emergencyService.callAgainAPI = true;
       });
   }
 

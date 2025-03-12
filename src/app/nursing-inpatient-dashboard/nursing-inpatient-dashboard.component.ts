@@ -119,6 +119,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   labReceivedData: any;
   filterStatusList: any[];
   dropdownSettings = {};
+  dropdownSettingsForSpecialtyConfig = {};
   filterBehpersonList: any;
   filterBehraumList: any;
   headerLabel: string;
@@ -298,7 +299,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAssignSurgeonList();
-    this.getWardList();
+    this.getSpecialtyConfigList();
     this.countOfNavModules();
     this.getLabExtraction();
     this.receiveDataFromChild();
@@ -365,7 +366,16 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       defaultOpen: false,
       selectAllText: 'All',
     };
-
+    this.dropdownSettingsForSpecialtyConfig = {
+      singleSelection: false,
+      enableCheckAll: true,
+      idField: 'Orgid',
+      textField: 'Orgna',
+      itemsShowLimit: 2,
+      allowSearchFilter: true,
+      defaultOpen: false,
+      selectAllText: 'All',
+    };
     this.dataForStatus();
     this._route.queryParams.subscribe((params) => {
       this.queryNav = params.nav;
@@ -380,6 +390,126 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     } else {
       this.selectModule('checkin');
     }
+  }
+
+  
+  getConfigToolWardList: any;
+  getConfigToolSpecialtyList: any;
+  getWardDataFromApi: any = '';
+  arraySplit: any[] = [];
+  specialtySelectForConfig = [];
+  specialtyListConfig: any;
+  postSelectedCol = [];
+  columnsList = [];
+  specialtyArraySplit: any;
+  Variantid: any;
+
+  getConfigTools() {
+    let jsonObj = {
+      Compid: 'IPHOSP',
+    };
+
+    this._dataServices.getConfigTools(jsonObj).subscribe(
+      (_success: any) => {
+        //_success = JSON.parse(_success._body);
+        this.getConfigToolWardList = _success.d.results[0].Ward;
+        let specialtyData = this.getSpecialtyList(_success.d.results[0].ConfigHeaderItem.results);
+        this.getConfigToolSpecialtyList = specialtyData;
+        // this.loadData(_success.d.results[0].Ward, specialtyData);
+        // this.loadDataWithAttendPhyList();
+        this.Variantid = _success.d.results[0].Variantid;
+
+        this.getWardDataFromApi = _success.d.results[0].Ward;
+        if (_success.d.results != null && _success.d.results.length > 0) {
+          this.arraySplit = _success.d.results[0].Ward.split(',');
+          this.wardSelectForConfig = [];
+          this.getWards.filter((element) => {
+            if (this.arraySplit.includes(element.Ward)) {
+              this.wardSelectForConfig.push(element);
+            }
+          });
+          this.specialtyArraySplit = specialtyData;
+          this.specialtySelectForConfig = [];
+
+          this.specialtyListConfig.filter((element) => {
+            if (this.specialtyArraySplit.includes(element.Orgid)) {
+              this.specialtySelectForConfig.push(element);
+            }
+          });
+          this.columnsList = _success.d.results[0].ConfigHeaderItem.results;
+          this.postSelectedCol = [];
+          this.columnsList.forEach((value) => {
+            this.postSelectedCol.push({
+              Variantid: '',
+              Fieldname: value.Fieldname,
+            });
+          });
+          this.CheckInComponent.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList);
+
+        }
+      },
+      (_error: any) => { }
+    );
+  }
+
+  getSpecialtyList(columnList) {
+    let specialty = '';
+    columnList.forEach((element: any) => {
+      let specialtyConfigSplit = element.Fieldname.split("-");
+      if (specialtyConfigSplit[0] == "SpecialtyConfig") {
+        specialty = specialtyConfigSplit[1];
+      }
+    })
+    return specialty;
+  }
+
+  getSpecialtyConfigList() {
+    this.hospitalistService.getSpecialtyList().subscribe((res: any) => {
+      this.specialtyListConfig = res?.d?.results;
+      this.getWardList();
+    })
+  }
+
+  saveConfigTools() {
+    let wardDetails: any = this.commaSeparat(this.wardSelectForConfig);
+    let el = this.postSelectedCol.find((itm) => {
+      if (itm.Fieldname.includes('SpecialtyConfig')) {
+        return itm;
+      }
+    });
+
+    if (el) this.postSelectedCol.splice(this.postSelectedCol.indexOf(el), 1);
+    let specialtyDetails: any = this.commaSeparatForSpecialtyConf(this.specialtySelectForConfig);
+    this.postSelectedCol.push({ Variantid: '', Fieldname: `SpecialtyConfig-${specialtyDetails}` });
+
+    let jsonObj = {
+      Variantid: this.Variantid,
+      Varianrname: '',
+      Compid: 'IPHOSP',
+      Bedlist: '',
+      Usname: '',
+      DefaultVariant: '',
+      ConfigHeaderItem: this.postSelectedCol,
+      Ward: wardDetails
+    };
+
+    this._dataServices.postConfigTools(jsonObj).subscribe(
+      (_success: any) => {
+        //_success = JSON.parse(_success._body);
+
+        this.showConfiguration = false;
+        //this.modalService.hide();
+        // this.resetColFlags();
+        this.getConfigTools();
+      },
+      (_error: any) => { }
+    );
+  }
+
+  resetConfig() {
+    this.wardSelectForConfig = [];
+    this.specialtySelectForConfig = [];
+    this.saveConfigTools();
   }
 
   showFilterFn($event) {
@@ -446,6 +576,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           // _success = JSON.parse(_success._body);
 
           this.getWards = _success.d.results;
+          this.getConfigTools();
         }
       },
       (_error: any) => {}
@@ -467,7 +598,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   getSpecialityDrodownList() {
     this.hospitalistService.getSpecialtyList().subscribe((res: any) => {
       this.specialityList = res?.d?.results;
-      this.clinicConfigGet()
+      // this.clinicConfigGet()
     })
   }
   getAssignSurgeonList() {
@@ -481,27 +612,27 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   selectedPhysicianConf: any[] = [];
   specialityList: any = [];
   selectedSpecialityConf: any[] = []
-  arraySplit: any[] = [];
 
   clinicConfigGet() {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d) {
         this.clinicConfigDetail = resp.body.d.results
-        localStorage.setItem('UserConfiguration', JSON.stringify(resp.body.d));
-        const attendPhy = this.clinicConfigDetail[0].AttendPhy.split(',')
-        console.log(attendPhy, this.assignUsersList , "this.assignUsersList");
-        this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
-        
-        this.arraySplit = this.clinicConfigDetail[0].Ward.split(',');
-        this.wardSelectForConfig = [];
-        this.getWards.filter((element) => {
-          if (this.arraySplit.includes(element.Ward)) {
-            this.wardSelectForConfig.push(element);
-          }
-        });
-      const specialityCode =this.clinicConfigDetail[0].SpecialityCode.split(',');
-      this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
-      this.CheckInComponent.getHospitalList();
+        if(this.clinicConfigDetail.length) {
+          localStorage.setItem('UserConfiguration', JSON.stringify(resp.body.d));
+          const attendPhy = this.clinicConfigDetail[0]?.AttendPhy?.split(',')
+          console.log(attendPhy, this.assignUsersList , "this.assignUsersList");
+          this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
+          
+          this.arraySplit = this.clinicConfigDetail[0]?.Ward?.split(',');
+          this.wardSelectForConfig = [];
+          this.getWards.filter((element) => {
+            if (this.arraySplit.includes(element.Ward)) {
+              this.wardSelectForConfig.push(element);
+            }
+          });
+        const specialityCode =this.clinicConfigDetail[0]?.SpecialityCode.split(',');
+        this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
+        }
       }
     });
   }

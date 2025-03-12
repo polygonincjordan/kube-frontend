@@ -3489,12 +3489,16 @@ fieldset:disabled a.btn {
   border-color: #007bff;
 }
 
-.btn-primary:hover {
+/* .btn-primary:hover {
   color: #fff;
   background-color: #0069d9;
   border-color: #0062cc;
+} */
+.modal-dialog .modal-footer .btn-primary {
+  color: #fff !important;
+  background-color: #0069d9 !important;
+  border-color: #0062cc !important;
 }
-
 .btn-primary:focus,
 .btn-primary.focus {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
