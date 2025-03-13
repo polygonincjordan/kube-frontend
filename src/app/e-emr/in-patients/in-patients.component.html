@@ -708,18 +708,18 @@
               ">
               <tr>
                 <th scope="col">
+                  Patient Name (Sex/Age) 
+                  <i
+                    class="fa fa-sort"
+                    aria-hidden="true"
+                    (click)="sortPatient()"></i>
+                </th>
+                <th scope="col">
                   MRN
                   <i
                     class="fa fa-sort"
                     aria-hidden="true"
                     (click)="sortMrn()"></i>
-                </th>
-                <th scope="col">
-                  Patient
-                  <i
-                    class="fa fa-sort"
-                    aria-hidden="true"
-                    (click)="sortPatient()"></i>
                 </th>
                 <th scope="col">
                   Ward
@@ -728,7 +728,7 @@
                     aria-hidden="true"
                     (click)="sortWard()"></i>
                 </th>
-                <th scope="col">Room</th>
+                <th scope="col">Room #</th>
                 <th scope="col">
                   Admitted On
                   <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i>
@@ -737,12 +737,21 @@
                   Status
                   <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i>
                 </th>
-                <th *ngFor="let col of columnsList">{{ col.Fieldname == 'Doctor' ? 'Attending Physician' : col.Fieldname  }}</th>
+                <th *ngFor="let col of columnsList">{{ col.Fieldname == 'Doctor' ? 'Attending Physician' : col.Fieldname  }} 
+                  <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i></th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of dataOnTable | filter : searchString">
+                <td class="patient-name"
+                [ngClass]="{
+                'purple-text': item.Bediconcolor == 'Purple',
+                'red-text': item.Bediconcolor == 'Red'
+                }"
+                (click)="openModuleKardex(item)">
+                {{ item.Patname }}
+              </td>
                 <td
                   [ngClass]="{
                   'purple-text': item.Bediconcolor == 'Purple',
@@ -750,14 +759,6 @@
                   }"
                   (click)="openModuleKardex(item)">
                   {{ item.Mrn }}
-                </td>
-                <td
-                  [ngClass]="{
-                  'purple-text': item.Bediconcolor == 'Purple',
-                  'red-text': item.Bediconcolor == 'Red'
-                  }"
-                  (click)="openModuleKardex(item)">
-                  {{ item.Patname }}
                 </td>
                 <td>{{ item.Floor }}</td>
                 <td>{{ item.RoomidText }}</td>

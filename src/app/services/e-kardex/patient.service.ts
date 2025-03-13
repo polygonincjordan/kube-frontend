@@ -31,6 +31,7 @@ export class PatientService {
   public patientapi = new Subject<any>();
   public patient$ = this.patientSubject$.asObservable();
   public HeaderConfigurationData: any;
+  public isAdmitProcessSection: boolean = false;
 
   constructor(private http: HttpClient, private _sanitizer: DomSanitizer) {}
 

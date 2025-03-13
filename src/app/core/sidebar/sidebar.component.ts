@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
   FALNR = this.storageService.falnr;
   EINRI = this.storageService.einri;
   LFDBW = this.storageService.lfdnr;
-
+  isAdmitProcess: any
   // @HostListener('window:resize', ['$event'])
   // handleWindowResize(event: any): void {
   //   if (event && !event.isTrusted) {
@@ -66,6 +66,7 @@ export class SidebarComponent implements OnInit {
     this.currentUrl = this.router.url.split('?')[0];
   }
   ngOnInit(): void {
+    this.isAdmitProcess = localStorage.getItem('admit_process')
   }
   ngAfterViewInit(): void {
     setTimeout(() => {

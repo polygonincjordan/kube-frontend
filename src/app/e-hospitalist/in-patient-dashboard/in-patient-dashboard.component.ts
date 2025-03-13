@@ -13,6 +13,7 @@ import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-med
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { PatientService } from '@services/e-kardex/patient.service';
 @UntilDestroy()
 @Component({
   selector: 'in-patient-dashboard',
@@ -153,6 +154,7 @@ export class InPatientDashboardComponent implements OnInit {
     private formBuilder: FormBuilder,
     public missedMedicationService: MissedMedicationDosesService,
     public ePrescriptionService: EPrescriptionService,
+    public patientService: PatientService,
     private datePipe: DatePipe
 
   ) {
@@ -892,8 +894,11 @@ export class InPatientDashboardComponent implements OnInit {
   }
 
   redirectToeKardex(data) {
+    localStorage.setItem('admit_process', JSON.stringify(false));
     if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03') {
       this.openModuleAdmissionProcess(data, 'admit-process')
+      this.patientService.isAdmitProcessSection = true;
+      localStorage.setItem('admit_process', JSON.stringify(true));
     } else if(this.navTabBoxActiveValue == '04' || this.navTabBoxActiveValue == '05') {
       this.openModuleAdmissionProcess(data, 'discharge-process')
     } else {

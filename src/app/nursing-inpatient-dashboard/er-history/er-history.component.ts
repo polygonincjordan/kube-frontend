@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ErVitalsComponent } from '../check-in/er-vitals/er-vitals.component';
@@ -25,6 +25,8 @@ export class ErHistoryComponent implements OnInit {
   @Output() dataToParent = new EventEmitter<any>();
   @Output() redirectVisitData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
+  @Input() getConfigToolSpecialtyList
+  @Input() getConfigToolWardList
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('patientSearchModal') patientSearchModal: PatientSearchComponent;
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: ERDiagnosisComponent;
@@ -389,7 +391,7 @@ export class ErHistoryComponent implements OnInit {
   getSelectedDates(dates){
   //   console.log("call selected","dates");
     
-  //  this.getErList(dates);
+   this.getHospitalList(dates);
   }
   getDate(value) {
     if (value) {
@@ -486,13 +488,15 @@ export class ErHistoryComponent implements OnInit {
   //       });
   //   }
 
-  getHospitalList() {
+  getHospitalList(getConfigToolWardList?, getConfigToolSpecialtyList?, date?) {
+    // this.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList ? this.getConfigToolSpecialtyList : getConfigToolSpecialtyList
+    // this.getConfigToolWardList = this.getConfigToolWardList ? this.getConfigToolWardList : getConfigToolWardList
     // this.dataOnTableForMissedDoses = _success.result.d.results;
-    let admittedFrom = '';
-    let admittedTo = '';
-    let wardNo = '';
+    let admittedFrom = date ? `${new DatePipe('en-US').transform(date[0], 'yyyy-MM-dd')}T00:00:00` : '';
+    let admittedTo = date ? `${new DatePipe('en-US').transform(date[1], 'yyyy-MM-dd')}T00:00:00` : '';
+    let wardNo =  this.emergencyService.getConfigToolWardList ? this.emergencyService.getConfigToolWardList : '';
     let physician = '';
-    let speciality = '';
+    let speciality = this.emergencyService.getConfigToolSpecialtyList ? this.emergencyService.getConfigToolSpecialtyList : '';
     // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
 
     this.hospitalistService.getInPatientAdmittedList('05', admittedFrom, admittedTo, wardNo, physician, speciality, '')
@@ -725,7 +729,7 @@ export class ErHistoryComponent implements OnInit {
   printLabel(template: TemplateRef<any>) {
     if (this.activelabLabelData) {
       this.emergencyService
-        .patientPrintLabel(this.activelabLabelData.Einri, this.activelabLabelData.Patnr)
+        .patientPrintLabel(this.activelabLabelData.Institute, this.activelabLabelData.Mrn)
         .subscribe(
           (res: any) => {
             if (res?.d?.DataRaw) {

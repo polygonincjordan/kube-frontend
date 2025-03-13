@@ -25,9 +25,9 @@
                 >Medications</a
               >
             </li>
-            <li *ngIf="eorderService.configurationoptionBackup.Quickord">
+            <!-- <li *ngIf="eorderService.configurationoptionBackup.Quickord">
               <a href="javascript:void(0)">Quick Orders</a>
-            </li>
+            </li> -->
             <li *ngIf="eorderService.configurationoptionBackup.Ordset">
               <a href="javascript:void(0)" (click)="eorderService.onNavigationClick('OrderSet')">Orders Sets</a>
             </li>
@@ -185,14 +185,14 @@
               />
               <label for="Clinicord">Clinical Orders</label>
             </div>
-            <div class="checkbox-inner d-flex align-items-center">
+            <!-- <div class="checkbox-inner d-flex align-items-center">
               <input
                 type="checkbox"
                 id="Quickord"
                 [(ngModel)]="eorderService.configurationoption.Quickord"
               />
               <label for="Quickord">Quick Orders</label>
-            </div>
+            </div> -->
             <div class="checkbox-inner d-flex align-items-center">
               <input
                 type="checkbox"

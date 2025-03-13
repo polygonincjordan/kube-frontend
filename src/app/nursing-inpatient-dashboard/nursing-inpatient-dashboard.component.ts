@@ -209,33 +209,18 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           data.DateRange !== null
         ) {
           //this.loadMAREventData(this.formgroupData.DateRange);
-          this.ErHistoryComponent?.getSelectedDates(
-            this.formgroupData.DateRange
-          );
-          this.LabResultsComponent?.getSelectedDates(
-            this.formgroupData.DateRange
-          );
-          this.PhysicianOrdersListComponent?.getErList(
-            this.formgroupData.DateRange
-          );
-          this.AdministeredDosesComponent?.getMedicationAdministrationlist(
-            this.formgroupData.DateRange
-          );
-          this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
-            this.formgroupData.DateRange
-          );
         }
       }
     );
 
-    this.formSubscription = this.singleData.valueChanges.subscribe((data)=>{
-      this.singleformgroupData = data;
-      if(data.fromDate){
-        this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
-         this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.singleformgroupData.fromDate)
+    // this.formSubscription = this.singleData.valueChanges.subscribe((data)=>{
+    //   this.singleformgroupData = data;
+    //   if(data.fromDate){
+    //     this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
+    //      this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.singleformgroupData.fromDate)
 
-      }
-    })
+    //   }
+    // })
     this.filterForm = this.formBuilder.group({
       Physician: [''],
       Status: [''],
@@ -444,7 +429,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
               Fieldname: value.Fieldname,
             });
           });
-          this.CheckInComponent.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList);
+          this.emergencyService.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList;
+          this.emergencyService.getConfigToolWardList = this.getConfigToolWardList;
+          this.CheckInComponent?.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.formgroupData.DateRange);
+          this.ErHistoryComponent?.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.formgroupData.DateRange);
 
         }
       },
@@ -1462,7 +1450,39 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     );
   }
   changeDate(event) {
+    console.log(event, "event");
+    
     this.updatedDate = event;
+    if(this.erhistory) {
+      this.ErHistoryComponent?.getSelectedDates(
+        this.formgroupData.DateRange
+      );
+    }
+    if(this.checkin) {
+      this.CheckInComponent?.getSelectedDates(
+        this.formgroupData.DateRange, this.getConfigToolWardList, this.getConfigToolSpecialtyList
+      );
+    }
+    if(this.LabResults) {
+      this.LabResultsComponent?.getSelectedDates(
+        this.formgroupData.DateRange
+      );
+    }
+    if(this.PhysicianOrder) {
+      this.PhysicianOrdersListComponent?.getErList(
+        this.formgroupData.DateRange
+      );
+    }
+    if(this.AdministeredDoses) {
+      this.AdministeredDosesComponent?.getMedicationAdministrationlist(
+        this.formgroupData.DateRange
+      );
+    }
+    if(this.noConsumables) {
+      this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
+        this.formgroupData.DateRange
+      );
+    }
   }
 
   upcomingDate() {
