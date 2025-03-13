@@ -231,68 +231,344 @@
                     </div>
                 </div>
                 <div>
-                    <div class="row m0">
-                        <div class="col-md-2">
-                            <label>Skin Color</label>
+                    <form action="">
+                        <div *ngIf="selectedTabName === 'Skin'">
+                            <div class="row m0">
+                                <div class="col-md-2">
+                                    <label>Skin Color</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <ng-select>
+                                        <ng-option></ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row m0">
+                                <div class="col-md-2">
+                                    <label>Appearance</label>
+                                </div>
+                                <div class="col-md-1 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2" class="m-0 ml-2">Normal</label>                            
+                                </div>
+                                <div class="col-md-1 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Rash / Milia</label>                            
+                                </div>
+                                <div class="col-md-2 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Bruising Abrasions</label>                            
+                                </div>
+                                <div class="col-md-2 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Lanugo</label>                            
+                                </div>
+                                <div class="col-md-2 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Edema</label>                            
+                                </div>
+                            </div>
+                            <div class="row m0">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-1 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Mongolian Spot</label>                            
+                                </div>
+                                <div class="col-md-1 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Skin Tags</label>                            
+                                </div>
+                                <div class="col-md-2 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Petechia/ Ecchymosis</label>                            
+                                </div>
+                                <div class="col-md-2 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Coatings (Vernix / Meconium)</label>                            
+                                </div>
+                                <div class="col-md-2 row m-0 align-items-center">
+                                    <input type="checkbox" />
+                                    <label class="m-0 ml-2">Edema</label>                            
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <ng-select>
-                                <ng-option></ng-option>
-                            </ng-select>
+
+                        <div class="row neonatal-physical-examination"  *ngIf="selectedTabName === 'Head & Neck'">
+                            <div class="row neonatal-pexamination">
+                                <div class="col-lg-2">
+                                    <div class="naonital-title">
+                                        <label>Shape</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="row pexamination-row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Normal</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Forceps Mark</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Modling Present</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Caput</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Lacerations / Bruising</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Overriding Sutures</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Cephalhematoma</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Other</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input class="form-control" disabled/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row neonatal-pexamination">
+                                <div class="col-lg-2">
+                                    <div class="naonital-title">
+                                        <label>Fontanels</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="row pexamination-row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Anterior</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Open</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Close</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input class="form-control" disabled/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="m-0 ml-2">Size</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input class="form-control" disabled/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Posterior</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Open</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Close</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input class="form-control" disabled/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label class="m-0 ml-2">Size</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input class="form-control" disabled/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row neonatal-pexamination">
+                                <div class="col-lg-2">
+                                    <div class="naonital-title">
+                                        <label>Ears</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="row pexamination-row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Normal</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Low set</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Pre-auricular tags</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Bleeding / discharges</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Other</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input class="form-control" disabled/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            
+                            
+                            <!-- <div class="row neonatal-pexamination">
+                                <div class="col-lg-2">
+                                    <div class="naonital-title">
+                                        <label>Eyes</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="row pexamination-row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Clear</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Scleral hemorrhage</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input type="checkbox" />
+                                                <label class="m-0 ml-2">Edema of eyelids</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Conjunctivitis</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Red Reflex</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="row pexamination-row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" />
+                                                        <label class="m-0 ml-2">Other</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <input class="form-control" disabled/>
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
                         </div>
-                        <div class="col-md-5">
-                            <input class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row m0">
-                        <div class="col-md-2">
-                            <label>Appearance</label>
-                        </div>
-                        <div class="col-md-1 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2" class="m-0 ml-2">Normal</label>                            
-                        </div>
-                        <div class="col-md-1 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Rash / Milia</label>                            
-                        </div>
-                        <div class="col-md-2 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Bruising Abrasions</label>                            
-                        </div>
-                        <div class="col-md-2 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Lanugo</label>                            
-                        </div>
-                        <div class="col-md-2 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Edema</label>                            
-                        </div>
-                    </div>
-                    <div class="row m0">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-1 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Mongolian Spot</label>                            
-                        </div>
-                        <div class="col-md-1 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Skin Tags</label>                            
-                        </div>
-                        <div class="col-md-2 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Petechia/ Ecchymosis</label>                            
-                        </div>
-                        <div class="col-md-2 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Coatings (Vernix / Meconium)</label>                            
-                        </div>
-                        <div class="col-md-2 row m-0 align-items-center">
-                            <input type="checkbox" />
-                            <label class="m-0 ml-2">Edema</label>                            
-                        </div>
-                    </div>
+
+                    </form>
                 </div>
+                
             </div>
         </div>
     </div>
