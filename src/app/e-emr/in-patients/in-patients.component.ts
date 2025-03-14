@@ -188,12 +188,7 @@ export class InPatientsComponent implements OnInit {
     public sharedService: SharedService,
     private datePipe: DatePipe
   ) {
-    this.form = this.formBuilder.group({
-      admittedFrom: [''],
-      admittedTo: [''],
-      wardNo: [''],
-      patientStatus: [''],
-    });
+    this.initForm();
     this.phyOrderform1 = this.formBuilder.group({
       items: new FormArray([]),
       physicianNumber: [''],
@@ -209,6 +204,19 @@ export class InPatientsComponent implements OnInit {
     });
   }
 
+  initForm() {
+    this.form = this.formBuilder.group({
+      admittedFrom: [this.getOneMonthBackDate()],
+      admittedTo: [new Date()],
+      wardNo: [''],
+      patientStatus: [''],
+    });
+  }
+  getOneMonthBackDate(): Date {
+    let date = new Date();
+    date.setMonth(date.getMonth() - 1); // Subtract 1 month
+    return date;
+  }
   ngOnInit() {
     //this.getConfigTools();
     //this.initialPatientList('home');
@@ -875,6 +883,7 @@ export class InPatientsComponent implements OnInit {
             if (value.Fieldname == 'Case') {
               this.Case = true;
               this.Case_model = true;
+              value.Fieldname = 'Case #'
             }
             if (value.Fieldname == 'Days for isolation') {
               this.Days_for_isolation = true;
@@ -1074,7 +1083,7 @@ export class InPatientsComponent implements OnInit {
 
 
   clearFilter() {
-    this.form.reset();
+    this.initForm();
   }
   convertModuleName(str) {
     var i,
@@ -1234,6 +1243,42 @@ export class InPatientsComponent implements OnInit {
   sort() {
     this.dataOnTable.sort((a, b) => 0 - (a > b ? -1 : 1));
   }
+
+  sortingTable(fieldName) {
+    if (!this.asc) {
+      this.asc = true;
+      this.dataOnTable.sort((a, b) => {
+        const nameA = a[fieldName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[fieldName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.dataOnTable.sort((a, b) => {
+        const nameA = a[fieldName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[fieldName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+
+  }
+
   sortMrn() {
     if (!this.asc) {
       this.asc = true;

@@ -45,6 +45,8 @@ export class EmergencyService {
   public rad = false;
   public Consumables = false;
   public Services = false;
+  public getConfigToolWardList: any;
+  public getConfigToolSpecialtyList: any;
   public currentTab: Subject<string> = new Subject<string>();
   private formValuesSubject = new BehaviorSubject<any>(null);
   formValues$ = this.formValuesSubject.asObservable();

@@ -795,16 +795,18 @@ export class CheckInComponent implements OnInit {
   //     });
   // }
 
-  getHospitalList(getConfigToolWardList?, getConfigToolSpecialtyList?) {
-    this.getConfigToolSpecialtyList = getConfigToolSpecialtyList
-    this.getConfigToolWardList = getConfigToolWardList
+  getHospitalList( getConfigToolWardList?, getConfigToolSpecialtyList?, dates?) {
+    console.log(this.emergencyService.getConfigToolWardList,this.emergencyService.getConfigToolSpecialtyList, dates,"---");
+    
+    // this.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList ? this.getConfigToolSpecialtyList : getConfigToolSpecialtyList
+    // this.getConfigToolWardList = this.getConfigToolWardList ? this.getConfigToolWardList : getConfigToolWardList
     this.userConfiguration = JSON.parse(localStorage.getItem('UserConfiguration'));
     // this.dataOnTableForMissedDoses = _success.result.d.results;
-    let admittedFrom = '';
-    let admittedTo = '';
-    let wardNo = this.getConfigToolWardList;
+    let admittedFrom = dates?.length ? `${new DatePipe('en-US').transform(dates[0], 'yyyy-MM-dd')}T00:00:00` : '';
+    let admittedTo = dates?.length ? `${new DatePipe('en-US').transform(dates[1], 'yyyy-MM-dd')}T00:00:00` : '';
+    let wardNo = this.emergencyService.getConfigToolWardList ? this.emergencyService.getConfigToolWardList : '';
     let physician = '';
-    let speciality = this.getConfigToolSpecialtyList;
+    let speciality = this.emergencyService.getConfigToolSpecialtyList ? this.emergencyService.getConfigToolSpecialtyList : '';
     // const resp = this.hospitalistService.getIpListDataSet('02', admittedFrom, admittedTo, wardNo, physician, speciality, '');
 
     this.hospitalistService.getInPatientAdmittedList('02', admittedFrom, admittedTo, wardNo, physician, speciality, '')
@@ -871,8 +873,8 @@ export class CheckInComponent implements OnInit {
     );
   }
 
-  getSelectedDates(dates) {
-    this.getErList(dates);
+  getSelectedDates(dates, getConfigToolWardList?, getConfigToolSpecialtyList?) {
+    this.getHospitalList(getConfigToolWardList, getConfigToolSpecialtyList, dates);
   }
 
   commanSorting(keyName: string) {

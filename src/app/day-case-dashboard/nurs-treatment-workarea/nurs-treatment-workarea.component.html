@@ -81,8 +81,8 @@
       </div>
          <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.HistoryAssessment ? 'tab-change' : 'tab-default'"
         style="cursor: pointer" (click)="tabChange('HistoryAssessment')">
-        <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.HistoryAssessment" />
-        <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.HistoryAssessment"/>
+        <img src="assets/img/history_assessment.jfif" class="tab-img" *ngIf="!this.emergencyService.HistoryAssessment" />
+        <img src="assets/img/history_assessment.jfif" class="tab-img" *ngIf="this.emergencyService.HistoryAssessment"/>
           History Assessment
       </div>
         <span style="margin-left: auto;">
@@ -96,11 +96,11 @@
             <img class="cursor-pointer height-data" src="assets/img/Frame-data.svg" style=" position: sticky;
           z-index: 999;cursor: pointer;" />
           </span>
-          <button type="button" class="btn-show-data p-2" (click)="showhidePatients()"
+          <!-- <button type="button" class="btn-show-data p-2" (click)="showhidePatients()"
             *ngIf="this.showPatients ? false:true">
             <img src="assets/img/Frame.svg" alt="" height="15" class="mr-1">
             Assigned Patients
-          </button>
+          </button> -->
         </span>
       </div>
       <div *ngIf="this.emergencyService.OrderSet">
