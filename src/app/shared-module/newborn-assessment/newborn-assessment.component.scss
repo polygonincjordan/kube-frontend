@@ -863,3 +863,18 @@
   .form-control:focus {
     box-shadow: none !important;
   }
+
+  
+  .neonatal-pexamination{
+    .naonital-title{
+      text-align: center;
+      text-transform: capitalize;
+    }
+
+    .pexamination-row{
+      align-items: baseline;
+    }
+    .form-group{
+      margin-bottom: 10px;
+    }
+  }

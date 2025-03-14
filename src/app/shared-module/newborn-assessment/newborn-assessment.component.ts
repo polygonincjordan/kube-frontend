@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
 export class NewbornAssessmentComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
 
-  selectedTabName: string = 'Gastrontestinal';
+  selectedTabName: string = 'Skin';
   isChecked: any;
   paramsObject: any;
   encounterId: any;
