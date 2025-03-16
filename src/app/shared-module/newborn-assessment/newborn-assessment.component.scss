@@ -878,3 +878,57 @@
       margin-bottom: 10px;
     }
   }
+
+
+
+//   .section {
+//     margin-bottom: 20px;
+// }
+// .section h3 {
+//     margin-bottom: 10px;
+// }
+// .checkbox-group {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 15px;
+// }
+// .checkbox-group label {
+//     display: flex;
+//     align-items: center;
+// }
+// .input-group {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 10px;
+//     align-items: center;
+// }
+// .input-group input[type="text"], .input-group select {
+//     padding: 5px;
+//     // border: 1px solid #ccc;
+//     // border-radius: 4px;
+// }
+// .radio-group {
+//     display: flex;
+//     align-items: center;
+//     gap: 10px;
+// }
+
+.form-check-label {
+  margin-left: 5px;
+}
+.form-section {
+  margin-bottom: 20px;
+}
+.form-section h6 {
+  text-decoration: underline;
+  font-weight: bold;
+}
+.input-group input {
+  width: 100%;
+}
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}

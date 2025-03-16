@@ -1,4 +1,5 @@
 <div>
+    <form action="">
     <div class="row m-0 mb-2">
         <div class="col-md-4 row m-0">
             <div class="col-md-6">
@@ -231,7 +232,6 @@
                     </div>
                 </div>
                 <div>
-                    <form action="">
                         <div *ngIf="selectedTabName === 'Skin'">
                             <div class="row m0">
                                 <div class="col-md-2">
@@ -250,11 +250,11 @@
                                 <div class="col-md-2">
                                     <label>Appearance</label>
                                 </div>
-                                <div class="col-md-1 row m-0 align-items-center">
+                                <div class="col-md-2 row m-0 align-items-center">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2" class="m-0 ml-2">Normal</label>                            
                                 </div>
-                                <div class="col-md-1 row m-0 align-items-center">
+                                <div class="col-md-2 row m-0 align-items-center">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">Rash / Milia</label>                            
                                 </div>
@@ -273,11 +273,11 @@
                             </div>
                             <div class="row m0">
                                 <div class="col-md-2"></div>
-                                <div class="col-md-1 row m-0 align-items-center">
+                                <div class="col-md-2 row m-0 align-items-center">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">Mongolian Spot</label>                            
                                 </div>
-                                <div class="col-md-1 row m-0 align-items-center">
+                                <div class="col-md-2 row m-0 align-items-center">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">Skin Tags</label>                            
                                 </div>
@@ -296,281 +296,1139 @@
                             </div>
                         </div>
 
-                        <div class="row neonatal-physical-examination"  *ngIf="selectedTabName === 'Head & Neck'">
-                            <div class="row neonatal-pexamination">
-                                <div class="col-lg-2">
-                                    <div class="naonital-title">
-                                        <label>Shape</label>
-                                    </div>
+                        <div class="container mt-3" *ngIf="selectedTabName === 'Head & Neck'">
+                            <!-- Shape -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Shape</label>
                                 </div>
-                                <div class="col-lg-10">
-                                    <div class="row pexamination-row">
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Normal</label>
-                                            </div>
+                                <div class="col-10">
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Normal</label>
                                         </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Forceps Mark</label>
-                                            </div>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Forceps Mark</label>
                                         </div>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Molding Present</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Caput</label>
+                                        </div>
+                                </div>
+                            </div>
 
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Modling Present</label>
+                            <div class="mb-3 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label"></label>
+                                </div>
+                                <div class="col-10">
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Lacerations / Bruising</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Overriding Sutures</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Cephalhematoma</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox"> 
+                                             <label class="form-check-label" for="normal">Other</label>
+                                             <input type="text" class="form-control ms-2 d-inline ml-3">
+                                        </div>
+                                </div>
+                            </div>
+                        
+                            <!-- Fontanels -->
+                            <div class="mb-2 mt- d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Fontanels</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="checkbox-group">
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="normal">
+                                                <label class="form-check-label" for="normal">Posterior</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" id="normal">
+                                                <label class="form-check-label" for="normal">Open</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" id="normal">
+                                                <label class="form-check-label" for="normal">Closed</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <label class="form-check-label" for="hypotonic">Hypotonic</label>
+                                                <input class="form-control ms-2 d-inline ml-3" type="text" id="hypotonic">
                                             </div>
                                         </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Caput</label>
+                                        <div class="mt-4">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="normal">
+                                                <label class="form-check-label" for="normal">Posterior</label>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Lacerations / Bruising</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" id="normal">
+                                                <label class="form-check-label" for="normal">Open</label>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Overriding Sutures</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" id="normal">
+                                                <label class="form-check-label" for="normal">Closed</label>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Cephalhematoma</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Other</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <input class="form-control" disabled/>
-                                                </div>   
+                                            <div class="form-check form-check-inline">
+                                                <label class="form-check-label" for="hypotonic">Hypotonic</label>
+                                                <input class="form-control ms-2 d-inline ml-3" type="text" id="hypotonic">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row neonatal-pexamination">
-                                <div class="col-lg-2">
-                                    <div class="naonital-title">
-                                        <label>Fontanels</label>
-                                    </div>
+                        
+                            <!-- Ears -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Ears</label>
                                 </div>
-                                <div class="col-lg-10">
-                                    <div class="row pexamination-row">
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Anterior</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Open</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Close</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input class="form-control" disabled/>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <label class="m-0 ml-2">Size</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <input class="form-control" disabled/>
-                                                </div>   
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Posterior</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Open</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Close</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input class="form-control" disabled/>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <label class="m-0 ml-2">Size</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <input class="form-control" disabled/>
-                                                </div>   
-                                            </div>
-                                        </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Low set</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal"> Pre-auricular tags</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Bleeding / discharges</label>
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="row neonatal-pexamination">
-                                <div class="col-lg-2">
-                                    <div class="naonital-title">
-                                        <label>Ears</label>
-                                    </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label"></label>
                                 </div>
-                                <div class="col-lg-10">
-                                    <div class="row pexamination-row">
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Normal</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Low set</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Pre-auricular tags</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Bleeding / discharges</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Other</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <input class="form-control" disabled/>
-                                                </div>   
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            
-                            
-                            <!-- <div class="row neonatal-pexamination">
-                                <div class="col-lg-2">
-                                    <div class="naonital-title">
-                                        <label>Eyes</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-10">
-                                    <div class="row pexamination-row">
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Clear</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Scleral hemorrhage</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3">
-                                            <div class="form-group">
-                                                <input type="checkbox" />
-                                                <label class="m-0 ml-2">Edema of eyelids</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Conjunctivitis</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Red Reflex</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="row pexamination-row">
-                                                <div class="col-lg-4">
-                                                    <div class="form-group">
-                                                        <input type="checkbox" />
-                                                        <label class="m-0 ml-2">Other</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <input class="form-control" disabled/>
-                                                </div>   
-                                            </div>
-                                        </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
                                     </div>
                                 </div>
                             </div>
-                            -->
+                        
+                            <!-- Eyes -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Eyes</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Clear</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Scleral hemorrhage</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Edema of eyelids</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal"> Red Reflex</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Nose -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Nose</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal"> Patent nostrils</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Closed</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Mouth -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Mouth</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Clear</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Movement</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Symmetry</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Asymmetry</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Cleft lip</label>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal"> Cleft Palate</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Neck -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="form-label">Neck</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Short</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Straight</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Webbing of the neck</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                    </form>
-                </div>
+                        <div class="" *ngIf="selectedTabName === 'Chest and Thoracic'">
+                            <div class="mb-3 d-flex">
+                                <div class="col-2">
+                                    <label class="fw-bold">Chest</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="chest" id="symmetrical">
+                                        <label class="form-check-label" for="symmetrical">Symmetrical</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="chest" id="asymmetrical">
+                                        <label class="form-check-label" for="asymmetrical">Asymmetrical</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="breastNode">
+                                        <label class="form-check-label" for="breastNode">Other</label>
+                                        <input type="text" class="form-control ml-3" placeholder="">
+                                    </div>
+
+                                </div>
+                            </div>
+                    
+                            <!-- Cardiovascular -->
+                            <div class="mb-3 d-flex">
+                                <div class="col-2">
+                                    <label class="fw-bold">Cardiovascular</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="regHeartRate">
+                                                <label class="form-check-label" for="regHeartRate">Regular Heart Rate</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="arrhythmia">
+                                                <label class="form-check-label" for="arrhythmia">Arrhythmia</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="brachialPulse">
+                                                <label class="form-check-label" for="brachialPulse">Brachial Pulse</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="irregHeartRate">
+                                                <label class="form-check-label" for="irregHeartRate">Irregular Heart Rate</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="murmurs">
+                                                <label class="form-check-label" for="murmurs">Murmurs</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="radialPulse">
+                                                <label class="form-check-label" for="radialPulse">Radial Pulse</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="bradycardia">
+                                                <label class="form-check-label" for="bradycardia">Bradycardia</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="tachycardia">
+                                                <label class="form-check-label" for="tachycardia">Tachycardia</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="breastNode">
+                                                <label class="form-check-label" for="breastNode">Other</label>
+                                                <input type="text" class="form-control ml-3" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Respiratory -->
+                            <div class="mb-3 d-flex">
+                                <div class="col-2">
+                                    <label class="fw-bold">Respiratory</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="regRespRate">
+                                                <label class="form-check-label" for="regRespRate">Regular Respiratory Rate</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="irregRespRate">
+                                                <label class="form-check-label" for="irregRespRate">Irregular Respiratory Rate</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="grunt">
+                                                <label class="form-check-label" for="grunt">Grunt</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="irregRespRate">
+                                                <label class="form-check-label" for="irregRespRate">Bradpnea</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="nasalFlaring">
+                                                <label class="form-check-label" for="nasalFlaring">Nasal Flaring</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="nasalFlaring">
+                                                <label class="form-check-label" for="nasalFlaring">Apnea</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="irregRespRate">
+                                                <label class="form-check-label" for="irregRespRate">Tachypnea</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="nasalFlaring">
+                                                <label class="form-check-label" for="nasalFlaring">Recession</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="breastNode">
+                                                <label class="form-check-label" for="breastNode">Other</label>
+                                                <input type="text" class="form-control ml-3" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Intubation -->
+                            <div class="mb-3 d-flex">
+                                <div class="col-2"></div>
+                                <div class="col-12">
+                                    <div class="d-flex">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="otherResp">
+                                            <label class="fw-bold">Intubation</label>
+                                        </div>
+                                        <div style="display: flex;align-items: center;width: 210px;justify-content: space-around;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="intubation" id="intubNo" checked>
+                                                <label class="form-check-label" for="intubNo">No</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="intubation" id="intubYes">
+                                                <label class="form-check-label" for="intubYes">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                           <div class="col-2"><label class="form-check-label" for="intubYes">Tube Size</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Tube Level</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Date of Intubation</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Date of Extubation</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 d-flex">
+                                <div class="col-2"></div>
+                                <div class="col-12">
+                                    <div class="d-flex">
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" id="otherResp">
+                                            <label class="fw-bold">Reintubation</label>
+                                        </div>
+                                        <div style="display: flex;align-items: center;width: 210px;justify-content: space-around;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="intubation" id="intubNo" checked>
+                                                <label class="form-check-label" for="intubNo">No</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="intubation" id="intubYes">
+                                                <label class="form-check-label" for="intubYes">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                           <div class="col-2"><label class="form-check-label" for="intubYes">Tube Size</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Tube Level</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Date of Intubation</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                        <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Date of Extubation</label></div> 
+                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Breast -->
+                            <div class="mb-3 d-flex">
+                                <div class="col-2">
+                                    <label class="fw-bold">Breast</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="accessoryNipple">
+                                        <label class="form-check-label" for="accessoryNipple">Accessory Nipple</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="breastNode">
+                                        <label class="form-check-label" for="breastNode">Breast Node</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="breastNode">
+                                        <label class="form-check-label" for="breastNode">Other</label>
+                                        <input type="text" class="form-control ml-3" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedTabName === 'Abdomen'">
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Abdominal Appearance</span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="abdominal" id="abdominalNormal">
+                                        <label class="form-check-label" for="abdominalNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="abdominal" id="abdominalAbnormal">
+                                        <label class="form-check-label" for="abdominalAbnormal">Abnormal</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Liver -->
+                            <div class="mb-2  d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Liver</span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="liver" id="liverNormal">
+                                        <label class="form-check-label" for="liverNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="liver" id="liverAbnormal">
+                                        <label class="form-check-label" for="liverAbnormal">Abnormal</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Spleen -->
+                            <div class="mb-2  d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Spleen</span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="spleen" id="spleenNormal">
+                                        <label class="form-check-label" for="spleenNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="spleen" id="spleenAbnormal">
+                                        <label class="form-check-label" for="spleenAbnormal">Abnormal</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Kidney -->
+                            <div class="mb-2  d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Kidney</span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="kidney" id="kidneyNormal">
+                                        <label class="form-check-label" for="kidneyNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="kidney" id="kidneyAbnormal">
+                                        <label class="form-check-label" for="kidneyAbnormal">Abnormal</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Hernia -->
+                            <div class="mb-2  d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Hernia</span>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="hernia" id="herniaNo">
+                                        <label class="form-check-label" for="herniaNo">No</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="hernia" id="herniaYes">
+                                        <label class="form-check-label" for="herniaYes">Yes</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Umbilical Cord -->
+                            <div class="mb-2  d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Umbilical Cord</span>
+                                </div>
+                                <div class="10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="arteries">
+                                        <label class="form-check-label" for="arteries">Arteries</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="shape">
+                                        <label class="form-check-label" for="shape">Shape</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="umbilical" id="umbilicalNormal">
+                                        <label class="form-check-label" for="umbilicalNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="umbilical" id="umbilicalAbnormal">
+                                        <label class="form-check-label" for="umbilicalAbnormal">Abnormal</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="veins">
+                                        <label class="form-check-label" for="veins">Veins</label>
+                                        <input type="text" class="form-control ml-3">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Lines -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <span class="label-text">Lines</span>
+                                </div>
+                                <div class="col-10">
+                                    <div>
+                                        <input class="form-check-input" type="checkbox" id="uvc">
+                                        <label class="form-check-label" for="uvc">UVC</label>
+                                        <div class="form-check form-check-inline">
+                                            <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                                <div><label class="form-check-label" for="intubYes">Date of Insertion</label></div> 
+                                                 <div><input type="text" class="form-control" placeholder=""></div>
+                                             </div>
+                                             <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                                <div class=""><label class="form-check-label" for="intubYes">Date of Remova</label></div> 
+                                                 <div class=""><input type="text" class="form-control" placeholder=""></div>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex;justify-content:space-between;margin-top:20px;width: 80%;">
+                                        <div>
+                                            <label class="form-check-label" for="uac">Complication</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="uvcComplication" id="uvcNo">
+                                                <label class="form-check-label" for="uvcNo">No</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="uvcComplication" id="uvcYes">
+                                                <label class="form-check-label" for="uvcYes">Yes</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div>
+                                        <input class="form-check-input" type="checkbox" id="uvc">
+                                        <label class="form-check-label" for="uvc">UVC</label>
+                                        <div class="form-check form-check-inline">
+                                            <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                                <div><label class="form-check-label" for="intubYes">Date of Insertion</label></div> 
+                                                 <div><input type="text" class="form-control" placeholder=""></div>
+                                             </div>
+                                             <div style="display: flex;gap: 15px;padding-left: 5px;">
+                                                <div class=""><label class="form-check-label" for="intubYes">Date of Remova</label></div> 
+                                                 <div class=""><input type="text" class="form-control" placeholder=""></div>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex;justify-content:space-between;margin-top:20px;width: 80%;">
+                                        <div>
+                                            <label class="form-check-label" for="uac">Complication</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="uvcComplication" id="uvcNo">
+                                                <label class="form-check-label" for="uvcNo">No</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="uvcComplication" id="uvcYes">
+                                                <label class="form-check-label" for="uvcYes">Yes</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <input type="text" class="form-control" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Comment -->
+                            <div class="mb-2">
+                                <div class="col-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="comment">
+                                        <label class="form-check-label" for="comment">Comment</label>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedTabName === 'Genitalia'">
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="fw-bold">Male</label><br>
+                                </div>
+                                <div class="col-10">
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="maleNormal">
+                                        <label class="form-check-label" for="maleNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hypospadias">
+                                        <label class="form-check-label" for="hypospadias">Hypospadias</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="edema">
+                                        <label class="form-check-label" for="edema">Edema of scrotum / ecchymosis</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hydrocele">
+                                        <label class="form-check-label" for="hydrocele">Hydrocele</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="testes">
+                                        <label class="form-check-label" for="testes">Testes, undescended</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="maleOther">
+                                        <label class="form-check-label" for="maleOther">Other</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Female Section -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="fw-bold">Female</label><br>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="femaleNormal">
+                                        <label class="form-check-label" for="femaleNormal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="vaginalDischarge">
+                                        <label class="form-check-label" for="vaginalDischarge">Vaginal Discharge</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hymenalTag">
+                                        <label class="form-check-label" for="hymenalTag">Hymenal tag</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="edemaEcchymosis">
+                                        <label class="form-check-label" for="edemaEcchymosis">Edema/ecchymosis</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="femaleOther">
+                                        <label class="form-check-label" for="femaleOther">Other</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Anus Section -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="fw-bold">Anus</label><br>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="anusPatent">
+                                        <label class="form-check-label" for="anusPatent">Patent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hemorrhoidalTags">
+                                        <label class="form-check-label" for="hemorrhoidalTags">Hemorrhoidal tags</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="anusOther">
+                                        <label class="form-check-label" for="anusOther">Other</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Trunk/Spine Section -->
+                            <div class="mb-2 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="fw-bold">Trunks/Spine</label><br>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="pilonidalSinus">
+                                        <label class="form-check-label" for="pilonidalSinus">Pilonidal sinus / dimple</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="spineOther">
+                                        <label class="form-check-label" for="spineOther">Other</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Comments Section -->
+                            <div class="mb-3 d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="fw-bold">Comments</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedTabName === 'Musculoskeletal / Neuromuscular'">
+                            <div class="d-flex align-items-center">
+                                <div class="col-2">
+                                    <label class="fw-bold">Muscle Tone</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="tremors">
+                                        <label class="form-check-label" for="tremors">Tremors</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hypotonic">
+                                        <label class="form-check-label" for="hypotonic">Hypotonic</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hypertonic">
+                                        <label class="form-check-label" for="hypertonic">Hypertonic</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Reflexes -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <label class="fw-bold">Reflexes</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="moro">
+                                        <label class="form-check-label" for="moro">Moro reflex</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <ng-select style="width: 200px;">
+                                            <option>1</option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="sucking">
+                                        <label class="form-check-label" for="sucking">Rooting</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="grasp">
+                                        <label class="form-check-label" for="grasp">Grasp Reflex</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="normal">
+                                        <label class="form-check-label" for="normal">Sucking</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="tremors">
+                                        <label class="form-check-label" for="tremors">Grasp Reflex</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="hypotonic">
+                                        <label class="form-check-label" for="hypotonic">Stepping</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Cry -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <label class="fw-bold">Cry</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="cry-normal">
+                                        <label class="form-check-label" for="cry-normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="cry-weak">
+                                        <label class="form-check-label" for="cry-weak">Weak</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="cry-weak">
+                                        <label class="form-check-label" for="cry-weak">High Pitch</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="cry-weak">
+                                        <label class="form-check-label" for="cry-weak">Absent</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Activity -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <label class="fw-bold">Activity</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="active">
+                                        <label class="form-check-label" for="active">Active</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="lethargic">
+                                        <label class="form-check-label" for="lethargic">Lethargic</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="lethargic">
+                                        <label class="form-check-label" for="lethargic">No Responce</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="lethargic">
+                                        <label class="form-check-label" for="lethargic">Hypooactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="lethargic">
+                                        <label class="form-check-label" for="lethargic">Hyperactive</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Extremities -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <label class="fw-bold">Extremities</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="extremities-normal">
+                                        <label class="form-check-label" for="extremities-normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="fractures">
+                                        <label class="form-check-label" for="fractures">Fractures</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="fractures">
+                                        <label class="form-check-label" for="fractures">Syndactyly</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="fractures">
+                                        <label class="form-check-label" for="fractures">Polydactyly</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="lethargic">
+                                        <label class="form-check-label" for="lethargic">Clavide Fracture</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <label class="fw-bold">Lower</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="extremities-normal">
+                                        <label class="form-check-label" for="extremities-normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="fractures">
+                                        <label class="form-check-label" for="fractures">Fractures</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="fractures">
+                                        <label class="form-check-label" for="fractures">Syndactyly</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="fractures">
+                                        <label class="form-check-label" for="fractures">Polydactyly</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="col-2"></div>
+                                <div class="col-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="lethargic">
+                                        <label class="form-check-label" for="lethargic">Clavide Fracture</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                        <input type="text" class="form-control ms-2 d-inline" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
                 
+                
+                            <!-- Palmar Creases -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <input class="form-check-input" type="checkbox" id="palmar">
+                                    <label class="fw-bold">Palmar Creases</label>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-check">
+                                        <input type="text" class="form-control ms-2 d-inline" style="width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Comments -->
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="col-2">
+                                    <label class="fw-bold">Comments</label>
+                                </div>
+                                <div class="col-10">
+                                    <textarea class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedTabName === 'Malformation'">
+                            <div class="container mt-3">
+                                <div class="row">
+                                    <div class="col-md-4 custom-box">
+                                        <div class="label-box">Malformation</div>
+                                        <div class="radio-group">
+                                            <input type="radio" id="no" name="malformation" checked>
+                                            <label for="no" class="mb-0">No</label>
+                                            <input type="radio" id="yes" name="malformation">
+                                            <label class="mb-0" for="yes">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 text-area-container">
+                                        <textarea class="form-control"></textarea>
+
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div *ngIf="selectedTabName === 'General Impression'">
+                            <div class="container mt-3">
+                                <div class="row">
+                                    <div class="col-md-12 text-area-container">
+                                        <textarea class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                </div>    
             </div>
         </div>
     </div>
+</form>
 </div>
 <app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>
