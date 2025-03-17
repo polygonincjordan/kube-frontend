@@ -1440,6 +1440,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     console.log('Upcomming');
     this.formDetailGroup.get('DateRange').patchValue([new Date(), new Date()]);
     this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
+    this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
     this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange);
     this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange);
     this.AdministeredDosesComponent?.getMedicationAdministrationlist(

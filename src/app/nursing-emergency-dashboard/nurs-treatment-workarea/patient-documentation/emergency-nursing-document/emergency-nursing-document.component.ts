@@ -403,6 +403,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   public formDetails: any;
   public functionalAssessmentTab: boolean = true;
   public nutritionalAssessmentTab: boolean = false;
+  public communicableAssessmentTab: boolean = false;
 
   public isNeedSupervision: boolean = true;
   public isProblemIdentify: boolean = true;
@@ -2095,9 +2096,15 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     if (tab == 'Functional') {
       this.functionalAssessmentTab = true;
       this.nutritionalAssessmentTab = false;
-    } else {
+      this.communicableAssessmentTab = false;
+    } else if(tab == 'Nutritional') {
       this.functionalAssessmentTab = false;
       this.nutritionalAssessmentTab = true;
+      this.communicableAssessmentTab = false;
+    } else {
+      this.communicableAssessmentTab = true;
+      this.functionalAssessmentTab = false;
+      this.nutritionalAssessmentTab = false;
     }
   }
 

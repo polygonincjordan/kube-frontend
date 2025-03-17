@@ -366,8 +366,7 @@ export class PatientDocumentationComponent implements OnInit {
   getPediatricWarningScore() {
     this.emergencyService.getLatestAssesmentResult(this.apiJson).subscribe({
       next: (_success: any) => {
-        this.pediatricEarlyWarningList = _success.d.results.find( res => res.Dtid == 'ZSCA_PEWS' )
-        this.pediatricEarlyWarningList = this.pediatricEarlyWarningList ? this.pediatricEarlyWarningList : [];
+        this.pediatricEarlyWarningList = _success.d.results.filter(res => res.Dtid == 'ZSCA_PEWS' );
         console.log('_success21212121', this.pediatricEarlyWarningList);
 
         // this.nurseEndorsementList = _success.d.results
@@ -2942,7 +2941,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openPediatricEarlyWarningScale) {
-        this.PediatricWarningScaleComp.savePediatricEarlyWarningScale('copy').then((formValue: any) => {
+        this.PediatricWarningScaleComp.copyPediatricEarlyWarningScale('copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
