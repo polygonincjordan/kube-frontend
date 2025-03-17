@@ -78,7 +78,7 @@ export class SurgicalPassportComponent implements OnInit {
       }
       this.storageService.setEinri(this.paramsObject.einri);
       this.storageService.setFalnr(this.paramsObject.falnr);
-      this.storageService.setLfdnr(this.paramsObject.lfdnr);
+      this.storageService.setLfdnr(this.paramsObject.lfdnr) ;
       this.storageService.setPatnr(this.paramsObject.patnr);
       this.getPatinetDetails(this.encounterId);
     });

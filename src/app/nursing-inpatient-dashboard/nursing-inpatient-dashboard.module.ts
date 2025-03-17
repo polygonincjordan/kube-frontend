@@ -138,6 +138,9 @@ import { NursingAssessmentModule } from '../shared-module/nursing-assessment/nur
 import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
+import { SharedModuleModule } from '../shared-module/shared-module.module';
+import { NewbornAssessmentModule } from "../shared-module/newborn-assessment/newborn-assessment.module";
+
 
 const route: Routes = [
   {
@@ -289,7 +292,9 @@ const route: Routes = [
     VitalSignModule,
     PreCardiacCathModule,
     CprDocumentModule,
-    CorrespondenceDocumentModule
-  ],
+    CorrespondenceDocumentModule,
+    SharedModuleModule,
+    NewbornAssessmentModule
+],
 })
 export class NursingInpatientDashboardModule {}

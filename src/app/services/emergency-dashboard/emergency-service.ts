@@ -1137,6 +1137,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  getNewBornDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getNewBornLesDoc', json, {
+      withCredentials: true,
+    });
+  }
   createSurgicalPassDetail(json): Observable<any> {
     return this.http.post(this.url + 'postOfSurgicalPassp', json, {
       withCredentials: true,
