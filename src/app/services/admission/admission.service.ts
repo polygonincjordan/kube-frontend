@@ -1410,8 +1410,24 @@ export class AdmissionService {
     const url = `${environment.eKardexApiUrl}/eHospitalist/deleteTransferDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    });
+    }); 
   }
 
+  getNewBornDocument(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getNewBornDocument?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  createNewBorn(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createNewBornPhysicalDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    }); 
+  }
 
 }

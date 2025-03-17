@@ -38,6 +38,7 @@ import { NursingAssessmentComponent } from 'src/app/shared-module/nursing-assess
 import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
+import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -51,6 +52,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(PatientEducationDetailsComponent) educationAssessmentComp: PatientEducationDetailsComponent;
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
+  @ViewChild(NewbornAssessmentComponent) newBornComp: NewbornAssessmentComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
@@ -92,6 +94,7 @@ export class PatientDocumentationComponent implements OnInit {
 
 
   public isSurgicalPassport: boolean = false;
+  public isNewBorn: boolean = false;
   public isEducationAssement: boolean = false;
   public isNursingCarePlan: boolean = false;
   public isNursingDischarge: boolean = false;
@@ -138,7 +141,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestNursingInitialList = [];
   latestObstetricsList = [];
   latestCorrespondenceList = [];
-
+  newBornList = []
   educationAssList = [];
   documentTypeFilter = []
   createDate: any;
@@ -171,6 +174,7 @@ export class PatientDocumentationComponent implements OnInit {
   openNurseEndorsement: boolean = false;
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
+  openNewBorn: boolean = false;
   openNursingCarePlans: boolean = false;
   openDischargeSummery: boolean = false;
   openPreCardiacCath: boolean = false;
@@ -271,6 +275,7 @@ export class PatientDocumentationComponent implements OnInit {
     // this.getMedLatestAssessment(); 
     this.getNurseEndorsement()
     this.getSurgicalPass()
+    this.getNewBorn();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingAssessmentDocDetails();
@@ -383,6 +388,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.surgicalPassportList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getNewBorn() {
+    this.emergencyService.getNewBornDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.newBornList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -776,6 +793,14 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NAA$) {
       this.getPatientProfileData(this.latestNurAdmissionList[0]);
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.NEWBORN$) {
+      this.selectAssessment('isNewBorn', this.newBornList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.NEWBORN$) {
+      this.selectAssessment('isNewBorn', this.newBornList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NEWBORN$) {
+      this.getPatientProfileData(this.newBornList[0]);
     }
     this.dayCaseDashboardService.isRedirectToSelectedDoc = false;
   }
@@ -793,6 +818,7 @@ export class PatientDocumentationComponent implements OnInit {
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
+      'isNewBorn': { isNewBorn: true, selectedDocName: 'Newborn Physician Assessment Doc' },
       'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
@@ -819,6 +845,7 @@ export class PatientDocumentationComponent implements OnInit {
 
     // Reset all flags to false initially
     this.isSurgicalPassport = false;
+    this.isNewBorn = false;
     this.isEducationAssement = false;
     this.isNursingCarePlan = false;
     this.isNursingDischarge = false;
@@ -1144,6 +1171,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.educationAssessment = false;
     this.nurseEndorsement = false;
     this.isSurgicalPassport = false;
+    this.isNewBorn = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
@@ -1167,6 +1195,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEmergencyNursingDoc = false;
     this.openNurseEndorsement = false
     this.openSurgicsalPassport = false
+    this.openNewBorn = false
     this.openPediatricEarlyWarningScale = false
     this.openNursingCarePlans = false;
     this.isNursingCarePlan = false;
@@ -1200,6 +1229,9 @@ export class PatientDocumentationComponent implements OnInit {
     }
     if (this.openSurgicsalPassport) {
       this.SurgicalPassComp?.ngOnDestroy();
+    }
+    if (this.openNewBorn) {
+      this.newBornComp?.ngOnDestroy();
     }
     if (this.openNursingCarePlans) {
       this.NursingCarePlansComp?.ngOnDestroy();
@@ -1243,6 +1275,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNurseEndorsement()
     this.getPediatricWarningScore();
     this.getSurgicalPass();
+    this.getNewBorn();
     this.getLatestAssessmentPA();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
@@ -1402,6 +1435,22 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.attachments) {
       if (action == 'create') {
         this.openModalForAttachment();
+      }
+    }
+
+
+    if (this.isNewBorn) {
+      if (action == 'create') {
+        this.openNewBorn = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNewBorn = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
       }
     }
 
@@ -2447,6 +2496,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+      if (this.openNewBorn) {
+        let docStatus = '1';
+        this.newBornComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
 
       if (this.openNursingCarePlans) {
         let docStatus = '1';
@@ -2709,6 +2769,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
+      if (this.openNewBorn) {
+        this.newBornComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
 
       if (this.openNursingCarePlans) {
         let docStatus = '1';
@@ -2879,6 +2948,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
+      if (this.openNewBorn) {
+        this.newBornComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
 
       if (this.openNursingCarePlans) {
         this.NursingCarePlansComp.createNursingCarePlan('3', 'copy').then((formValue: any) => {
@@ -3027,6 +3105,15 @@ export class PatientDocumentationComponent implements OnInit {
       });
     } else if (this.openSurgicsalPassport) {
       this.SurgicalPassComp.createSurgicalPassDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openNewBorn) {
+      this.newBornComp.createDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
