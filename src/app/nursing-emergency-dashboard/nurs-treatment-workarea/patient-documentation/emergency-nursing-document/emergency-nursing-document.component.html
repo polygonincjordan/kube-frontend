@@ -420,6 +420,11 @@
                 <img src="./assets/img/grid-icon.svg" />
                 <p class="d-inline-block m-0">Nutritional</p>
               </li>
+              <li class="d-flex m-0 align-items-center" (click)="changeAssessment('Communicable')"
+                [ngClass]="communicableAssessmentTab ? 'active' : ''">
+                <img src="./assets/img/grid-icon.svg" />
+                <p class="d-inline-block m-0">Communicable Disease Alert</p>
+              </li>
             </ul>
           </div>
         </div>
@@ -767,6 +772,82 @@
                           <div class="scale-box-list">
                             <ng-select class="drop-down-list" formControlName="NutNotified">
                               <ng-option *ngFor="let item of notication" [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="communicableAssessmentTab" class="psychological-main">
+            <div class="notice-bar">
+              <p>Requires Physician to be notified for physiotherapy referral</p>
+            </div>
+            <form [formGroup]="triageForm">
+              <div class="main-tab-contant">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="option-box">
+                      <label class="box-label-inner">Communicable Disease Alert</label>
+                      <div class="row option-section">
+                        <div class="use-of-box col-md-2 ">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician">Cough over 2 weeks</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-4">
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list">
+                              <ng-option *ngFor="let item of doctorNotication"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row option-section">
+                        <div class="use-of-box col-md-2 ">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician">Fever</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-4">
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list">
+                              <ng-option *ngFor="let item of doctorNotication"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row option-section">
+                        <div class="use-of-box col-md-2 ">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician">Night Sweats</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-4">
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list">
+                              <ng-option *ngFor="let item of doctorNotication"
+                                [value]="item.value">{{item.label}}</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row option-section">
+                        <div class="use-of-box col-md-2 ">
+                          <div class="scale-box-list">
+                            <label class="admitting-physician">Weight Loss</label>
+                          </div>
+                        </div>
+                        <div class="use-of-box col-md-4">
+                          <div class="scale-box-list">
+                            <ng-select class="drop-down-list">
+                              <ng-option *ngFor="let item of doctorNotication"
+                                [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
                           </div>
                         </div>

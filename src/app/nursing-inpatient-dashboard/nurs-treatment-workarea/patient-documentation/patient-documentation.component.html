@@ -372,7 +372,7 @@
                 {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
               </div>
               <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
                 *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>

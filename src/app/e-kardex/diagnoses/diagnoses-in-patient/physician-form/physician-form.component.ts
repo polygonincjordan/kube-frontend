@@ -117,6 +117,8 @@ export class PhysicianFormComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes.soapFormEvent, "Changes");
+    
     if (changes.soapFormEvent.currentValue == 'add') {
       this.createPhysicianForm(false);
     }
@@ -597,7 +599,7 @@ export class PhysicianFormComponent implements OnInit {
 
   getPhysicianData() {
     let json = {
-      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
+      Dockey: this.admissionService.selectedCurrentDocDetails.DocKey ? this.admissionService.selectedCurrentDocDetails.DocKey : this.admissionService.selectedCurrentDocDetails.Dockey,
     };
     this.admissionService.getPhysicianData(json).subscribe((patientResult) => {
       this.toAllergyArr = patientResult?.results[0].TOALLERGIES?.results;

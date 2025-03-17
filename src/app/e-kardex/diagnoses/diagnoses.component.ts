@@ -39,6 +39,7 @@ import { ActionType, RedirectionType, WordType } from '@services/interfaces/comm
 })
 export class DiagnosesComponent implements OnInit {
   @ViewChild('pdfViewModalForOhysician') pdfViewModalForOhysician?: TemplateRef<any>;
+  @ViewChild('PhysicianAssessment') PhysicianAssessment?: TemplateRef<any>;
   @ViewChild('pdfViewModal') pdfViewModal?: TemplateRef<any>;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
 
@@ -750,6 +751,14 @@ export class DiagnosesComponent implements OnInit {
   }
 
   modelOpenProcess(paitentData:any, oldversion?: boolean, template?: TemplateRef<any>) {
+    if(paitentData?.Dtid == "ZMED_PHASM") {
+      if(!paitentData.Released) {
+        this.admissionService.isEditPhysicianForm = true;
+        this.admissionService.selectedCurrentDocDetails = paitentData;
+        this.openPhysicianAssessment(this.PhysicianAssessment);
+        return
+      }
+    }
     this.oldversion = oldversion;
     this.soapPdf={};
     this.closeAllForm();
@@ -862,6 +871,14 @@ export class DiagnosesComponent implements OnInit {
   physicianAssPDFURL: any;
   selectedPatient: any;
   modelFormOpenInPatient(paitentData,oldversion?: boolean,template?: TemplateRef<any>) {
+    // if(paitentData?.Dtid == "ZMED_PHASM") {
+    //   if(!paitentData.Released) {
+    //     this.admissionService.isEditPhysicianForm = true;
+    //     this.admissionService.selectedCurrentDocDetails = paitentData;
+    //     this.openPhysicianAssessment(this.PhysicianAssessment);
+    //     return
+    //   }
+    // }
     this.oldversion = oldversion;
     this.closeAllForm();
     this.soapPdf={};
@@ -875,13 +892,14 @@ export class DiagnosesComponent implements OnInit {
       this.admissionService.selectedCurrentDocDetails = paitentData;
 
       if (paitentData.DokstText == 'Released' || paitentData.Released) {
-        this.InOutPatientViewValue = {
-         showBoth: true,
-         showIn: false,
-         showOut: false,
-       };
+      //   this.InOutPatientViewValue = {
+      //    showBoth: true,
+      //    showIn: false,
+      //    showOut: false,
+      //  };
+        this.openPhysicianAssessment(this.PhysicianAssessment);
         const json = {
-          Dockey: paitentData.Dockey,
+          Dockey: paitentData.Dockey ? paitentData.Dockey : paitentData?.DocKey,
         };
         this.admissionService
           .getPhysicianAssessDocPDF(json)
@@ -909,7 +927,8 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientForm = "PhysicianAssessment";
       this.admissionService.educationAddForm('edit');
       this.admissionService.selectedCurrentDocDetails = paitentData;
-      this.showInDiv();
+      // this.showInDiv();
+      this.openPhysicianAssessment(this.PhysicianAssessment);
       return; 
     }
 
@@ -1422,11 +1441,12 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientShow = true;
     this.inPatientForm = "PhysicianAssessment";
     this.admissionService.educationAddForm('clone');
-    this.InOutPatientViewValue = {
-      showBoth: false,
-      showIn: true,
-      showOut: false,
-    };
+    this.openPhysicianAssessment(this.PhysicianAssessment)
+    // this.InOutPatientViewValue = {
+    //   showBoth: false,
+    //   showIn: true,
+    //   showOut: false,
+    // };
     this.modalRef?.hide();
   }
 
@@ -1453,6 +1473,13 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientDischargeData = {};
     this.isCopy = true;
     if (releaseData.DataType === "in-patient") {
+      if(releaseData?.Dtid === "ZMED_PHASM") {
+        this.admissionService.isClonePhysicianForm = true;
+        this.admissionService.isEditPhysicianForm = false;
+        this.admissionService.selectedCurrentDocDetails = releaseData;
+        this.openPhysicianAssessment(this.PhysicianAssessment)
+        return
+      }
       this.InOutPatientViewValue = {
         showBoth: false,
         showIn: true,
@@ -1497,6 +1524,13 @@ export class DiagnosesComponent implements OnInit {
         }
       }
     } else {
+      if(releaseData?.Dtid === "ZMED_PHASM") {
+        this.admissionService.isEditPhysicianForm = false;
+        this.admissionService.isClonePhysicianForm = true;
+        this.admissionService.selectedCurrentDocDetails = releaseData;
+        this.openPhysicianAssessment(this.PhysicianAssessment);
+        return;
+      }
       this.InOutPatientViewValue = {
         showBoth: false,
         showIn: false,
@@ -1706,18 +1740,32 @@ export class DiagnosesComponent implements OnInit {
       });
   }
 
+  // onReleaseHistoryData(releaseId: any) {
+  //   if(releaseId?.Released == 'X') {
+  //     if(releaseId?.Dokvr > 0) {
+  //       this.inPatientVisitData = {} as InPatientDataResult;
+  //       this.patientVisitRecord = {} as PatientVisitDataResult;
+  //       this.userConfigurationService.getReleaseHistoryData(releaseId?.DocKey).subscribe((data) => {
+  //         if (data && data.length) {
+  //           this.diagnosisHistory.showPopup(data)
+  //         }
+  //       })
+  //     } else {
+  //       this.modelFormOpenInPatient(releaseId, false, this.pdfViewModal)
+  //     }
+  //   } else {
+  //     this.modelFormOpen(releaseId, false, this.pdfViewModal)
+  //   }
+  // }
+
   onReleaseHistoryData(releaseId: any) {
-    if(releaseId?.Released == 'X') {
-      this.inPatientVisitData = {} as InPatientDataResult;
-      this.patientVisitRecord = {} as PatientVisitDataResult;
-      this.userConfigurationService.getReleaseHistoryData(releaseId?.DocKey).subscribe((data) => {
-        if (data && data.length) {
-          this.diagnosisHistory.showPopup(data)
-        }
-      })
-    } else {
-      this.modelFormOpen(releaseId, false, this.pdfViewModal)
-    }
+    this.inPatientVisitData = {} as InPatientDataResult;
+    this.patientVisitRecord = {} as PatientVisitDataResult;
+    this.userConfigurationService.getReleaseHistoryData(releaseId).subscribe((data) => {
+      if (data && data.length) {
+        this.diagnosisHistory.showPopup(data)
+      }
+    })
   }
   base64Value: string;
   mimetype: any;

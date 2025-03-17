@@ -387,7 +387,8 @@ export class PatientDocumentationComponent implements OnInit {
         this.latestFacePainScaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_FAC');
         this.latestNumericratingscaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_NMRTSC');
         this.latestBridentScaleList = latestAssessmentResponse.d.results.filter(ele => ele.Dtid === 'SCA_BRADEN');
-        this.pediatricEarlyWarningList = latestAssessmentResponse.d.results.filter((ele) => ele.Dtid == 'ZSCA_PEWS');
+        // this.pediatricEarlyWarningList = latestAssessmentResponse.d.results.filter((ele) => ele.Dtid == 'ZSCA_PEWS');
+        this.pediatricEarlyWarningList = latestAssessmentResponse.d.results.filter(res => res.Dtid == 'ZSCA_PEWS' );
 
         // Handle education assessment response
         this.educationAssList = educationAssessmentResponse.d.results;
@@ -982,6 +983,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSurgicalPass();
     this.getLatestAssessmentPA();
     this.getSurgicalPass()
+    this.fetchLatestDetails();
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
