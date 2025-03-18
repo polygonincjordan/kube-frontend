@@ -289,6 +289,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
               }
             });
             this.drugArray.controls[event.index].patchValue({
+              Agentid:resp.body.d.results[0].Agentid ? resp.body.d.results[0].Agentid : event.data.Agentid,
               AgentidResult: resp.body.d.results,
               Quanunit: resp.body.d.results[0].Meinh,
               Quan: resp.body.d.results[0].Quant && parseInt(resp.body.d.results[0].Quant) === Number(resp.body.d.results[0].Quant) ? parseInt(resp.body.d.results[0].Quant) : Number(resp.body.d.results[0].Quant)
