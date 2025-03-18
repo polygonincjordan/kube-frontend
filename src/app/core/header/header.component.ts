@@ -28,6 +28,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 })
 export class HeaderComponent implements OnInit {
   @Output() StatusOfTab: EventEmitter<any> = new EventEmitter<any>();
+  @Input() navTabBoxActiveValue;
   vitalsService: any;
   hospitalistdate: boolean = true;
   outpatientlistdata: boolean = false;
@@ -363,8 +364,21 @@ export class HeaderComponent implements OnInit {
   }
   redirectToTreatment(data) {
     const userType = this.storageService.getKubeRule();
-
-    let redirectPoint = `/${this.urlPath}?`;
+    let redirectPoint: any;
+    localStorage.setItem('admit_process', JSON.stringify(false));
+    if(this.urlPath == 'emr') {
+      redirectPoint = `/e-kardex?`;
+    } else if(this.urlPath == 'e-hospitalist') {
+      if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03') {
+        redirectPoint = `/admit-process?`;
+        localStorage.setItem('admit_process', JSON.stringify(true));
+      } else {
+        redirectPoint = `/discharge-process?`;
+        localStorage.setItem('admit_process', JSON.stringify(true));
+      }
+    } else {
+      redirectPoint = `/${this.urlPath}?`;
+    }
 
     // if (userType === UserType.opnurse) {
     //   redirectPoint = 'out-patient-nursing?';

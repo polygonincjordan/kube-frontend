@@ -507,6 +507,20 @@
           </div>
         </div>
       </div>
+      <table class="table table-bordered mt-3" *ngIf="selectedDislikes">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient's Dislike</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let food of selectedDislikes; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ food.FooddprefTxt }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="d-flex flex-row align-items-center justify-content-end">
       <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
@@ -515,20 +529,7 @@
       <button type="submit" class="btn btn-primary mr-2" (click)="createAndDeleteDislikeOrder('I')">Save</button>
     </div>
   </form>
-  <table class="table table-bordered mt-3" *ngIf="selectedDislikes">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Patient's Dislike</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let food of selectedDislikes; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ food.FooddprefTxt }}</td>
-      </tr>
-    </tbody>
-  </table>
+
 </div>
 <div class="table-responsive">
   <table class="table table-bordered">
@@ -580,17 +581,17 @@
           </div>
         </td>
         <td class="width-110" [title]="item.Orderstatusdesc">{{ item.Orderstatusdesc ? item.Orderstatusdesc : 'Canceled' }}</td>
-        <td [title]="convertNursingIndicators(item.NursingIndicators)" class="text-ellipsis">{{ convertNursingIndicators(item?.NursingIndicators) }}</td>
+        <!-- <td [title]="convertNursingIndicators(item.NursingIndicators)" class="text-ellipsis">{{ convertNursingIndicators(item?.NursingIndicators) }}</td> -->
         <td>{{ dateFormate(item?.Createdon) }} {{ convertTime(item?.Createdat) }}</td>
         <td [title]="item.Createdby">{{ item?.Createdby }}</td>
         <td [title]="item.Comments" class="text-ellipsis">{{ item?.Comments }}</td>
         <td class="width-100">
           <div>
             <!-- <img class="mr-2" src="assets/makassed-img/deal-view.svg" [tooltip]="'Display Order Details'" /> -->
-            <img src="assets/makassed-img/deal-cancel.svg" (click)="cancelOrder(item)" [tooltip]="'Cancel Order'" />
-            <img class="mr-2" src="assets/makassed-img/deal-edit.svg" (click)="editAndReferOrder(item, 'Edited')" [tooltip]="'Edit Order'" />
-            <img class="mr-2" src="assets/makassed-img/deal-confirm.svg" [tooltip]="'Confirm Order'" (click)="confirmOrder(item)" />
-            <img class="mr-2" src="assets/icon-img/copy-icon.svg" (click)="editAndReferOrder(item, 'Referred')" [tooltip]="'Refer Order'" />
+            <img src="assets/img/deal-cancel.svg" (click)="cancelOrder(item)" [tooltip]="'Cancel Order'" />
+            <img class="mr-2" src="assets/img/deal-edit.svg" (click)="editAndReferOrder(item, 'Edited')" [tooltip]="'Edit Order'" />
+            <img class="mr-2" src="assets/img/deal-confirm.svg" [tooltip]="'Confirm Order'" (click)="confirmOrder(item)" />
+            <img class="mr-2" src="assets/img/copy-icon.svg" (click)="editAndReferOrder(item, 'Referred')" [tooltip]="'Refer Order'" />
           </div>
         </td>
       </tr>

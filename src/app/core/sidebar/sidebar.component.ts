@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { SidebarService } from '@services/sidebar.service';
@@ -12,7 +12,8 @@ import { UserType } from '@services/interfaces/common.enum';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnChanges {
+  @Input() navTabBoxActiveValue: any
   sidebarSubscription: Subscription;
   currentUrl: string;
   urlParts: string[];
@@ -23,7 +24,8 @@ export class SidebarComponent implements OnInit {
   FALNR = this.storageService.falnr;
   EINRI = this.storageService.einri;
   LFDBW = this.storageService.lfdnr;
-  isAdmitProcess: any
+  isAdmitProcess: any;
+  redirectUrl : string;
   // @HostListener('window:resize', ['$event'])
   // handleWindowResize(event: any): void {
   //   if (event && !event.isTrusted) {
@@ -67,6 +69,13 @@ export class SidebarComponent implements OnInit {
   }
   ngOnInit(): void {
     this.isAdmitProcess = localStorage.getItem('admit_process')
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes?.navTabBoxActiveValue.currentValue == '02' || changes?.navTabBoxActiveValue.currentValue == '03') {
+      this.redirectUrl = '/admit-process';
+    } else if(changes?.navTabBoxActiveValue.currentValue == '04' || changes?.navTabBoxActiveValue.currentValue == '05') {
+      this.redirectUrl = '/discharge-process';
+    }
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
