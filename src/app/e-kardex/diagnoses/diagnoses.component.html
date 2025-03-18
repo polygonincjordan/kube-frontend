@@ -174,6 +174,9 @@
                   <span class="dropdown-item c-pointer d-flex align-items-center"
                   (click)="openNewFormForInPatient('CorrespondenceDocument')"><img src="assets/img/in-patient-dropdown.png"
                         class="mr-1">Correspondence Document</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatients(newborndocument)"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Newborn Assessment Document</span>
                 </div>
               </span>
             </div>
@@ -675,8 +678,8 @@
   <div class="Pdf_modal">
     <iframe width="100%" height="800" [src]="physicianAssPDFURL" frameborder="0" allowfullscreen></iframe>
     <div class="bottom">
-      <button (click)="copyReleaseFormForPhysician()">Copy</button
-      ><button (click)="updateForm(false)">Close</button>
+      <button (click)="copyReleaseFormForPhysician()">Copy</button>
+      <button (click)="updateForm(false)">Close</button>
     </div>
   </div>  
 </ng-template>
@@ -831,3 +834,5 @@
         </div>
       </div>
   </ng-template>
+
+ 

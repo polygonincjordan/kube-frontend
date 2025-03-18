@@ -61,6 +61,9 @@ import { PhysicianFamilyHistoryComponent } from './diagnoses/diagnoses-in-patien
 import { PhysicianPastMedicalComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-past-medical/physician-past-medical.component';
 import { PhysicianPastSurgicalComponent } from './diagnoses/diagnoses-in-patient/physician-form/physician-past-surgical/physician-past-surgical.component';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
+import { SharedModuleModule } from '../shared-module/shared-module.module';
+import { NewbornAssessmentModule } from '../shared-module/newborn-assessment/newborn-assessment.module';
+import { NewBornPopupComponent } from './diagnoses/diagnoses-in-patient/new-born-popup/new-born-popup.component';
 
 export const eKardexRoutes: Routes = [
   { path: '**', component: EKardexComponent },
@@ -83,7 +86,9 @@ export const eKardexRoutes: Routes = [
     Ng2SearchPipeModule,
     NgxMaterialTimepickerModule,
     NgxExtendedPdfViewerModule,
-    CorrespondenceDocumentModule
+    CorrespondenceDocumentModule,
+    SharedModuleModule,
+    NewbornAssessmentModule
   ],
   providers: [
     eOrderService,
@@ -135,7 +140,8 @@ export const eKardexRoutes: Routes = [
     PhysicianErVitalsComponent,
     PhysicianFamilyHistoryComponent,
     PhysicianPastMedicalComponent,
-    PhysicianPastSurgicalComponent
+    PhysicianPastSurgicalComponent,
+    NewBornPopupComponent
   ],
 })
 export class EKardexModule { }

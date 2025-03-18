@@ -1,0 +1,50 @@
+.physician-head {
+    justify-content: space-between !important;
+    display: flex;
+    align-items: center;
+  }
+  
+  .bottom {
+    padding: 5px;
+    // border: 1px solid;
+    text-align: center;
+  
+    button {
+      border: 1px solid;
+      background: #3b82f6;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin: 0 2px;
+      font-weight: bold;
+    }
+  }
+  ::ng-deep .modal-dialog {
+    max-width: 85% !important;
+}
+
+::ng-deep .modal .modal-content {
+   padding: 10px !important;
+}
+  .main_soap {
+    display: block;
+    margin-bottom: 30px;
+    background-color: #fff;
+  
+    .head {
+      background-color: #3b82f6;
+      border: 1px solid black;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      justify-content: center;
+    }
+    .details {
+      padding: 10px;
+      border: 1px solid;
+      margin-bottom: 10px;
+    }
+  }

@@ -28,8 +28,7 @@
                 <label>Mode of Delivery</label>
             </div>
             <div class="col-md-6">
-                <ng-select formControlName="ModeDelivery">
-                    <ng-option></ng-option>
+                <ng-select formControlName="ModeDelivery" [items]="modeOfDeliveryList" bindLabel="label" bindValue="value">
                 </ng-select>
             </div>
         </div>
@@ -39,7 +38,8 @@
             </div>
             <div class="col-md-6">
                 <ng-select formControlName="AssessmentDone">
-                    <ng-option></ng-option>
+                    <ng-option value="0">Yes</ng-option>
+                    <ng-option value="1">No</ng-option>
                 </ng-select>
             </div>
         </div>
@@ -91,8 +91,8 @@
                                     <input class="form-control" formControlName="BirthWeight" />
                                 </div>
                                 <div class="col-md-3">
-                                    <ng-select formControlName="WeightUnit">
-                                        <ng-option></ng-option>
+                                    <ng-select formControlName="WeightUnit" [items]="weight" bindLabel="label" bindValue="value">
+                                       
                                     </ng-select>
                                 </div>
                             </div>
@@ -238,8 +238,7 @@
                                     <label>Skin Color</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <ng-select formControlName="SSkincolor">
-                                        <ng-option></ng-option>
+                                    <ng-select formControlName="SSkincolor" [items]="skinColorList" bindLabel="label" bindValue="value">
                                     </ng-select>
                                 </div>
                                 <div class="col-md-5">
@@ -754,12 +753,20 @@
                                             <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size" formControlName="CrItubeLevel"></div>
                                         </div>
                                         <div style="display: flex;gap: 15px;padding-left: 5px;">
-                                            <div class="col-2"><label class="form-check-label" for="intubYes">Date of Intubation</label></div> 
-                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size" formControlName="CrIintubation"></div>
+                                            <div class="col-2"><label class="form-check-label" for="intubYes">Date of Intubation</label></div>                                            
+                                            <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="CrIintubation"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                         </div>
                                         <div style="display: flex;gap: 15px;padding-left: 5px;">
                                             <div class="col-2"><label class="form-check-label" for="intubYes">Date of Extubation</label></div> 
-                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size" formControlName="CrIextubation"></div>
+                                            <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="CrIextubation"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -795,11 +802,19 @@
                                         </div>
                                         <div style="display: flex;gap: 15px;padding-left: 5px;">
                                             <div class="col-2"><label class="form-check-label" for="intubYes">Date of Intubation</label></div> 
-                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size" formControlName="CrRdate"></div>
+                                           <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="CrRdate"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                         </div>
                                         <div style="display: flex;gap: 15px;padding-left: 5px;">
                                             <div class="col-2"><label class="form-check-label" for="intubYes">Date of Extubation</label></div> 
-                                            <div class="col-md-3"><input type="text" class="form-control" placeholder="Tube Size" formControlName="CrRentryDate"></div>
+                                           <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="CrRentryDate"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -969,12 +984,20 @@
                                         <label class="form-check-label" for="uvc">UVC</label>
                                         <div class="form-check form-check-inline">
                                             <div style="display: flex;gap: 15px;padding-left: 5px;">
-                                                <div><label class="form-check-label" for="intubYes">Date of Insertion</label></div> 
                                                  <div><input type="text" class="form-control" placeholder="" formControlName="AUinsertion"></div>
+                                                 <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="AUinsertion"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                              </div>
                                              <div style="display: flex;gap: 15px;padding-left: 5px;">
                                                 <div class=""><label class="form-check-label" for="intubYes">Date of Remova</label></div> 
-                                                 <div class=""><input type="text" class="form-control" placeholder="" formControlName="AUremoval"></div>
+                                                 <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="AUremoval"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                              </div>
                                         </div>
                                     </div>
@@ -1005,11 +1028,20 @@
                                         <div class="form-check form-check-inline">
                                             <div style="display: flex;gap: 15px;padding-left: 5px;">
                                                 <div><label class="form-check-label" for="intubYes">Date of Insertion</label></div> 
-                                                 <div><input type="text" class="form-control" placeholder="" formControlName="AUainsertion"></div>
+                                                 <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="AUainsertion"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
+                                                
                                              </div>
                                              <div style="display: flex;gap: 15px;padding-left: 5px;">
                                                 <div class=""><label class="form-check-label" for="intubYes">Date of Remova</label></div> 
-                                                 <div class=""><input type="text" class="form-control" placeholder="" formControlName="AUaremoval"></div>
+                                                 <div>
+                                                    <input class="form-control" style="color: #000; border-radius: 8px" type="text" placeholder="" formControlName="AUaremoval"
+                                                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false,
+                                                          dateInputFormat: 'DD.MM.YYYY' }" />
+                                                </div>
                                              </div>
                                         </div>
                                     </div>
@@ -1453,7 +1485,8 @@
                                     <div class="form-check form-check-inline">
                                         <label class="form-check-label" >Vit.K</label>
                                         <ng-select formControlName="VitK">
-                                            <ng-option></ng-option>
+                                            <ng-option value="0">Yes</ng-option>
+                                            <ng-option value="1">No</ng-option>
                                         </ng-select>
                                     </div>
                                 </div>
@@ -1461,7 +1494,8 @@
                                     <div class="form-check form-check-inline">
                                         <label class="form-check-label" >Hep.B</label>
                                         <ng-select formControlName="HepB">
-                                            <ng-option></ng-option>
+                                            <ng-option value="0">Yes</ng-option>
+                                            <ng-option value="1">No</ng-option>
                                         </ng-select>
                                     </div>
                                 </div>

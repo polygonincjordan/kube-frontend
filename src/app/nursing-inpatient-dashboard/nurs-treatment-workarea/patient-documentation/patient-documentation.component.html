@@ -211,7 +211,7 @@
                 <div class="col-md-3">{{newBornList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                    (click)="openSurgicalAssPdf(newBornList[0]?.Dockey)"
+                    (click)="openNewBornPdf(newBornList[0]?.Dockey)"
                     *ngIf="newBornList[0]?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(newBornList[0]?.Dockey, newBornList[0])">
                       <select *ngIf="newBornList.length && newBornList[0]?.StatusTxt !='N/A' && newBornList[0]?.Zversion != '00'" class="mr-2" name=""

@@ -37,6 +37,12 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+  getNewBornPDF(dockey: string) {
+    const url = `${this.url}getNewBornPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
 
   // Nursing Care Plan Document
   createNursingCarePlan(json): Observable<any> {

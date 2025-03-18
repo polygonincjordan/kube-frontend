@@ -30,6 +30,8 @@ import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspon
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { DataShareService } from '@services/data-share.service';
 import { ActionType, RedirectionType, WordType } from '@services/interfaces/common.enum';
+import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
+import { NewBornPopupComponent } from './diagnoses-in-patient/new-born-popup/new-born-popup.component';
 
 @UntilDestroy()
 @Component({
@@ -40,9 +42,12 @@ import { ActionType, RedirectionType, WordType } from '@services/interfaces/comm
 export class DiagnosesComponent implements OnInit {
   @ViewChild('pdfViewModalForOhysician') pdfViewModalForOhysician?: TemplateRef<any>;
   @ViewChild('PhysicianAssessment') PhysicianAssessment?: TemplateRef<any>;
+  @ViewChild('newborndocument') newborndocument?: TemplateRef<any>;
   @ViewChild('pdfViewModal') pdfViewModal?: TemplateRef<any>;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
-
+  @ViewChild('newBornComp', { static: false }) newBornComp!: NewbornAssessmentComponent;
+  // @ViewChild('familyHistoryKardexId')familyHistoryKardex: PhysicianFamilyHistoryComponent;
+  
   modalRef: BsModalRef;
   userProfile: any;
   attachmentList: any;
@@ -971,6 +976,43 @@ export class DiagnosesComponent implements OnInit {
       return; 
     }
 
+
+    if(paitentData?.Dtid == 'ZMED_NBASM') {
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+
+      if (paitentData.DokstText == 'Released' || paitentData.Released) {
+        this.InOutPatientViewValue = {
+         showBoth: true,
+         showIn: false,
+         showOut: false,
+       };
+        const json = {
+          Dockey: paitentData.Dockey,
+        };
+       
+      this.dayCaseDashboardService
+        .getNewBornPDF(paitentData.Dockey)
+        .subscribe((data: any) => {
+          this.physicianAssPDFURL =  this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:application/pdf;base64, ${data?.d?.AttachmentData}`
+          );
+          this.soapPdf = data?.d
+          this.patientVisitRecord = data;
+          const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+          this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModalForOhysician,config);
+        });
+        return;
+      }
+      this.openNewFormForInPatients(this.newborndocument)
+      let valueObj = {
+        type: WordType.EditBS,
+        docKey: paitentData.Dockey
+      }
+      this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+      return; 
+    }
+
     if (paitentData?.Dtid !== 'ZMED_SOAP'&& paitentData?.Dtid !== 'ZMED_VISIT') {
       this.inPatientConfigurationService
         .getPatientVisitDataByDocKey(paitentData.Dockey)
@@ -1147,6 +1189,30 @@ export class DiagnosesComponent implements OnInit {
   openPhysicianAssessment(template?: TemplateRef<any>,){
     const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
     this.modalRef = this.modalServiceForAllergy.show(template,config);
+  }
+  isComponentLoaded = false;
+  openNewFormForInPatients(template?: TemplateRef<any>,){
+    const modalRef = this.modalService.open(NewBornPopupComponent, { ariaLabelledBy: 'modal-dialog-centered pdfviewmodal' })
+    modalRef.componentInstance.selectedItemClicked.subscribe((item: any) => {
+      if (item == 'Success') {
+        modalRef.close();
+        this.updateForm(true);
+      }
+    })
+  }
+
+  saveNewBornDocument(status?){
+    this.newBornComp.createDoc(status)
+  }
+
+  releaseNewborn(status?){
+    this.newBornComp.createDoc(status);
+  }
+
+  reloadList(event){
+    if(event){
+     this.updateForm(true)
+    }
   }
 
   openNewForm(type?: string) {
@@ -1437,6 +1503,10 @@ export class DiagnosesComponent implements OnInit {
       this.copyReleaseCorrespondence();
       return;
     }
+    if(this.selectedPatient?.Dtid == 'ZMED_NBASM') {
+      this.copyReleaseNewBorn();
+      return;
+    }
     this.admissionService.isClonePhysicianForm = true;
     this.inPatientShow = true;
     this.inPatientForm = "PhysicianAssessment";
@@ -1464,6 +1534,16 @@ export class DiagnosesComponent implements OnInit {
       showIn: true,
       showOut: false,
     };
+    this.modalRef?.hide();
+  }
+  copyReleaseNewBorn() {
+    this.admissionService.isClonePhysicianForm = true;
+    let valueObj = {
+      type: WordType.CopyBS,
+      docKey: this.selectedPatient.Dockey
+    }
+    this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+   this.openNewFormForInPatients(this.newborndocument)
     this.modalRef?.hide();
   }
 
