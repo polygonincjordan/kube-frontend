@@ -1,5 +1,5 @@
 <div (click)="hideShowConfiguration()">
-  <app-header></app-header>
+  <app-header [navTabBoxActiveValue]="navTabBoxActiveValue"></app-header>
   <div class="icon-nav-cont-style">
     <div style="display: flex; flex: 1">
       <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '02' ? 'active-tab':''" title="Admitted"

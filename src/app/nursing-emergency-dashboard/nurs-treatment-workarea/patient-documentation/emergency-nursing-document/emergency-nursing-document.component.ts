@@ -157,38 +157,38 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   ];
 
   public appetiteList: commonKeyValuePair[] = [
-    { value: '1', label: 'Good' },
-    { value: '2', label: 'Fair' },
-    { value: '3', label: 'Poor' },
-    { value: '4', label: 'Other' },
+    { value: '0', label: 'Good' },
+    { value: '1', label: 'Fair' },
+    { value: '2', label: 'Poor' },
+    { value: '3', label: 'Other' },
   ];
 
   public generalApperianceList: commonKeyValuePair[] = [
-    { value: '1', label: 'Normal' },
-    { value: '2', label: 'Obese' },
-    { value: '3', label: 'Emaciated' },
-    { value: '4', label: 'Other' },
+    { value: '0', label: 'Normal' },
+    { value: '1', label: 'Obese' },
+    { value: '2', label: 'Emaciated' },
+    { value: '3', label: 'Other' },
   ];
 
   public feedingDefficulties: commonKeyValuePair[] = [
-    { value: '1', label: 'No difficulty' },
-    { value: '2', label: 'Chewing Abnormal' },
-    { value: '3', label: 'Swollen' },
-    { value: '4', label: 'Unable to feed self' },
-    { value: '5', label: 'Other, Specity' },
+    { value: '0', label: 'No difficulty' },
+    { value: '1', label: 'Chewing Abnormal' },
+    { value: '2', label: 'Swollen' },
+    { value: '3', label: 'Unable to feed self' },
+    { value: '4', label: 'Other, Specity' },
   ];
 
   public nutritionalSupportList: commonKeyValuePair[] = [
-    { value: '1', label: 'None' },
-    { value: '2', label: 'TPN' },
-    { value: '3', label: 'Tube feeding' },
-    { value: '4', label: 'Other' },
+    { value: '0', label: 'None' },
+    { value: '1', label: 'TPN' },
+    { value: '2', label: 'Tube feeding' },
+    { value: '3', label: 'Other' },
   ];
 
   public dietList: commonKeyValuePair[] = [
-    { value: '1', label: 'Normal' },
-    { value: '2', label: 'Special' },
-    { value: '3', label: 'Other' },
+    { value: '0', label: 'Normal' },
+    { value: '1', label: 'Special' },
+    { value: '2', label: 'Other' },
   ];
 
   public reviewSystemTabList: commonKeyValuePair[] = [
