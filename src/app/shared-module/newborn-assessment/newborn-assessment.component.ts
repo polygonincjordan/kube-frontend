@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '@services/storage.service';
@@ -18,6 +18,8 @@ import { ActionType } from '@services/interfaces/common.enum';
 })
 export class NewbornAssessmentComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
+    @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Input () callFunction :any
   newBornForm:FormGroup
   selectedTabName: string = 'Skin';
   isChecked: any;
@@ -33,6 +35,31 @@ export class NewbornAssessmentComponent implements OnInit {
     'Musculoskeletal / Neuromuscular',
     'Malformation',
     'General Impression',
+  ];
+  public modeOfDeliveryList = [
+    { value: '0', label: 'Vaginal' },
+    { value: '1', label: 'C-Section' },
+    { value: '2', label: 'Forceps' },
+    { value: '3', label: 'Ventouse' },
+    { value: '4', label: 'Head Pres.' },
+    { value: '5', label: 'Breech' },
+    { value: '6', label: 'Others' }
+  ];
+
+  public weight = [
+    {value : '0',label:'0 gm'},
+    {value : '1',label:'1 kg'}
+  ]
+
+  public skinColorList = [
+    { value: '0', label: 'Normal' },
+    { value: '1', label: 'Pale' },
+    { value: '2', label: 'Jaundice' },
+    { value: '3', label: 'Mottled' },
+    { value: '4', label: 'Flushed' },
+    { value: '5', label: 'Petechiae' },
+    { value: '6', label: 'Cyanotic' },
+    { value: '7', label: 'Others' }
   ];
   docKey: any;
    private subscription: Subscription;
@@ -67,7 +94,7 @@ export class NewbornAssessmentComponent implements OnInit {
             }  else {
             // for after code
             }
-          })
+    })
 
   }
 
@@ -87,126 +114,126 @@ export class NewbornAssessmentComponent implements OnInit {
 
   initForm(data?){
     this.newBornForm = this.formBuilder.group({
-        Datee : [data?.Datee ||''],
-        Timee : [data?.Timee ||'PT12H30M07S'],
+        Datee : [this.getDate(data?.Datee) || null],
+        Timee : [this.parseTime(data?.Timee) || null],
         ModeDelivery : [data?.ModeDelivery || ''],
         AssessmentDone : [data?.AssessmentDone || ''],
         AssessedBy : [data?.AssessedBy || ''],
-        BirthDate : [data?.BirthDate || ''],
-        BirthTime : [data?.BirthTime || 'PT15H21M29S'],
-        BirthWeight : [data?.BirthWeight || ''],
+        BirthDate : [this.getDate(data?.BirthDate) || null],
+        BirthTime : [this.parseTime(data?.BirthTime) || null],
+        BirthWeight : [data?.BirthWeight || null],
         WeightUnit : [data?.WeightUnit || ''],
         HeadCircum : [data?.HeadCircum || ''],
-        BabyLength : [data?.BabyLength || ''],
-        ChestCircum : [data?.ChestCircum || ''],
-        Gestation : [data?.Gestation || ''],
+        BabyLength : [data?.BabyLength || null],
+        ChestCircum : [data?.ChestCircum || null],
+        Gestation : [data?.Gestation || null],
         Gender : [data?.Gender || ''],
         SSkincolor : [data?.SSkincolor || ''],
         SSkincolorT : [data?.SSkincolorT || ''],
-        SaNormal : [data?.SaNormal || ''],
-        SaRash : [data?.SaRash || ''],
-        SaBruising : [data?.SaBruising || ''],
-        SaLanugo : [data?.SaLanugo || ''],
-        SaEdema : [data?.SaEdema || ''],
-        SaDry : [data?.SaDry || ''],
-        SaMongolian : [data?.SaMongolian || ''],
-        SaSkinTags : [data?.SaSkinTags || ''],
-        SaPetechia : [data?.SaPetechia || ''],
-        SaCoatings : [data?.SaCoatings || ''],
+        SaNormal : [data?.SaNormal || false],
+        SaRash : [data?.SaRash || false],
+        SaBruising : [data?.SaBruising || false],
+        SaLanugo : [data?.SaLanugo || false],
+        SaEdema : [data?.SaEdema || false],
+        SaDry : [data?.SaDry || false],
+        SaMongolian : [data?.SaMongolian || false],
+        SaSkinTags : [data?.SaSkinTags || false],
+        SaPetechia : [data?.SaPetechia || false],
+        SaCoatings : [data?.SaCoatings || false],
         SaComments : [data?.SaComments || ''],
-        HsNormal : [data?.HsNormal || ''],
-        HsForceps : [data?.HsForceps || ''],
-        HsMolding : [data?.HsMolding || ''],
-        HsCaput : [data?.HsCaput || ''],
-        HsLacerations : [data?.HsLacerations || ''],
-        HsOverriding : [data?.HsOverriding || ''],
-        HsCephalhema : [data?.HsCephalhema || ''],
-        HsOther : [data?.HsOther || ''],
+        HsNormal : [data?.HsNormal || false],
+        HsForceps : [data?.HsForceps || false],
+        HsMolding : [data?.HsMolding || false],
+        HsCaput : [data?.HsCaput || false],
+        HsLacerations : [data?.HsLacerations || false],
+        HsOverriding : [data?.HsOverriding || false],
+        HsCephalhema : [data?.HsCephalhema || false],
+        HsOther : [data?.HsOther || false],
         HsOtherT : [data?.HsOtherT || ''],
-        HfAnterior : [data?.HfAnterior || ''],
-        HfAnteriorOc : [data?.HfAnteriorOc || ''],
+        HfAnterior : [data?.HfAnterior || false],
+        HfAnteriorOc : [data?.HfAnteriorOc || ''],  
         HfAother : [data?.HfAother || ''],
         HfAsize : [data?.HfAsize || ''],
-        HfPosterior : [data?.HfPosterior || ''],
+        HfPosterior : [data?.HfPosterior || false],
         HfPosteriorOc : [data?.HfPosteriorOc || ''],
         HfPother : [data?.HfPother || ''],
         HfPsize : [data?.HfPsize || ''],
-        HeNormal : [data?.HeNormal || ''],
-        HeLowSet : [data?.HeLowSet || ''],
-        HePreauricular : [data?.HePreauricular || ''],
-        HeBleeding : [data?.HeBleeding || ''],
-        HeOther : [data?.HeOther || ''],
+        HeNormal : [data?.HeNormal || false],
+        HeLowSet : [data?.HeLowSet || false],
+        HePreauricular : [data?.HePreauricular || false],
+        HeBleeding : [data?.HeBleeding || false],
+        HeOther : [data?.HeOther || false],
         HeOtherT : [data?.HeOtherT || ''],
-        HeyClear : [data?.HeyClear || ''],
-        HeyScleral : [data?.HeyScleral || ''],
-        HeyEdema : [data?.HeyEdema || ''],
-        HeyConjunct : [data?.HeyConjunct || ''],
-        HeyRed : [data?.HeyRed || ''],
-        HeyOther : [data?.Datee || ''],
+        HeyClear : [data?.HeyClear || false],
+        HeyScleral : [data?.HeyScleral || false],
+        HeyEdema : [data?.HeyEdema || false],
+        HeyConjunct : [data?.HeyConjunct || false],
+        HeyRed : [data?.HeyRed || false],
+        HeyOther : [data?.HeyOther || false],
         HeyOtherT : [data?.HeyOther || ''],
-        HnNostrils : [data?.HnNostrils || ''],
-        HnClosed : [data?.HnClosed || ''],
-        HnOther : [data?.HnOther || ''],
+        HnNostrils : [data?.HnNostrils || false],
+        HnClosed : [data?.HnClosed || false],
+        HnOther : [data?.HnOther || false],
         HnOtherT : [data?.HnOtherT || ''],
-        HmNormal : [data?.HmNormal || ''],
-        HmMovement : [data?.HmMovement || ''],
-        HmSymmetry : [data?.HmSymmetry || ''],
-        HmAsymmetry : [data?.HmAsymmetry || ''],
-        HmCleftLip : [data?.HmCleftLip || ''],
-        HmCleftPalate : [data?.HmCleftPalate || ''],
-        HmOther : [data?.HmOther || ''],
+        HmNormal : [data?.HmNormal || false],
+        HmMovement : [data?.HmMovement || false],
+        HmSymmetry : [data?.HmSymmetry || false],
+        HmAsymmetry : [data?.HmAsymmetry || false],
+        HmCleftLip : [data?.HmCleftLip || false],
+        HmCleftPalate : [data?.HmCleftPalate || false],
+        HmOther : [data?.HmOther || false],
         HmOtherT : [data?.HmOtherT || ''],
-        HnNormal : [data?.HnNormal || ''],
-        HnShort : [data?.HnShort || ''],
-        HnStraight : [data?.HnStraight || ''],
-        HnWebbing : [data?.HnWebbing || ''],
-        HnNother : [data?.HnNother || ''],
+        HnNormal : [data?.HnNormal || false],
+        HnShort : [data?.HnShort || false],
+        HnStraight : [data?.HnStraight || false],
+        HnWebbing : [data?.HnWebbing || false],
+        HnNother : [data?.HnNother || false],
         HnNotherT : [data?.HnNotherT || ''],
-        CcSymmetrical : [data?.CcSymmetrical || ''],
-        CcAssymetrical : [data?.CcAssymetrical || ''],
-        CcOther : [data?.CcOther || ''],
+        CcSymmetrical : [data?.CcSymmetrical || false],
+        CcAssymetrical : [data?.CcAssymetrical || false],
+        CcOther : [data?.CcOther || false],
         CcOtherT : [data?.CcOtherT || ''],
-        CcaRegularHr : [data?.CcaRegularHr || ''],
-        CcaIrregularHr : [data?.CcaIrregularHr || ''],
-        CcaBradycardia : [data?.CcaBradycardia || ''],
-        CcaTachycardia : [data?.CcaTachycardia || ''],
-        CcaArrhythmia : [data?.CcaArrhythmia || ''],
-        CcaMurmurs : [data?.CcaMurmurs || ''],
-        CcaCapillary : [data?.CcaCapillary || ''],
-        CcaFemoral : [data?.CcaFemoral || ''],
-        CcaBrachial : [data?.CcaBrachial || ''],
-        CcaRadial : [data?.CcaRadial || ''],
-        CcaOther : [data?.CcaOther || ''],
+        CcaRegularHr : [data?.CcaRegularHr || false],
+        CcaIrregularHr : [data?.CcaIrregularHr || false],
+        CcaBradycardia : [data?.CcaBradycardia || false],
+        CcaTachycardia : [data?.CcaTachycardia || false],
+        CcaArrhythmia : [data?.CcaArrhythmia || false],
+        CcaMurmurs : [data?.CcaMurmurs || false],
+        CcaCapillary : [data?.CcaCapillary || false],
+        CcaFemoral : [data?.CcaFemoral || false],
+        CcaBrachial : [data?.CcaBrachial || false],
+        CcaRadial : [data?.CcaRadial || false],
+        CcaOther : [data?.CcaOther || false],
         CcaOtherT : [data?.CcaOtherT || ''],
-        CrRegularRr : [data?.CrRegularRr || ''],
-        CrIrregularRr : [data?.CrIrregularRr || ''],
-        CrGrunt : [data?.CrGrunt || ''],
-        CrBradypnea : [data?.CrBradypnea || ''],
-        CrTachypnea : [data?.CrTachypnea || ''],
-        CrNasal : [data?.CrNasal || ''],
-        CrApnea : [data?.CrApnea || ''],
-        CrRecession : [data?.CrRecession || ''],
-        CrOther : [data?.CrOther || ''],
+        CrRegularRr : [data?.CrRegularRr || false],
+        CrIrregularRr : [data?.CrIrregularRr || false],
+        CrGrunt : [data?.CrGrunt || false],
+        CrBradypnea : [data?.CrBradypnea || false],
+        CrTachypnea : [data?.CrTachypnea || false],
+        CrNasal : [data?.CrNasal || false],
+        CrApnea : [data?.CrApnea || false],
+        CrRecession : [data?.CrRecession || false],
+        CrOther : [data?.CrOther || false],
         CrOtherT : [data?.CrOtherT || ''],
-        CrBreathSound : [data?.CrBreathSound || ''],
+        CrBreathSound : [data?.CrBreathSound || false],
         CrBreathSounds : [data?.CrBreathSounds || ''],
         CrBreathSoundt : [data?.CrBreathSoundt || ''],
-        CrIntubated : [data?.CrIntubated || ''],
+        CrIntubated : [data?.CrIntubated || false],
         CrIntubatedYn : [data?.CrIntubatedYn || ''],
         CrItubeSize : [data?.CrItubeSize || ''],
         CrItubeLevel : [data?.CrItubeLevel || ''],
-        CrIintubation : [data?.CrIintubation || ''],
-        CrIextubation : [data?.CrIextubation || ''],
-        CrReintubation : [data?.CrReintubation || ''],
+        CrIintubation : [data?.CrIintubation || null],
+        CrIextubation : [data?.CrIextubation || null],
+        CrReintubation : [data?.CrReintubation || false],
         CrReintubationYn : [data?.CrReintubationYn || ''],
         CrRtubeSize : [data?.CrRtubeSize || ''],
         CrRtubeLevel : [data?.CrRtubeLevel || ''],
-        CrRdate : [data?.CrRdate || ''],
-        CrRentryDate : [data?.CrRentryDate || ''],
-        CbNormal : [data?.CbNormal || ''],
-        CbAccessory : [data?.CbAccessory || ''],
-        CbNodule : [data?.CbNodule || ''],
-        CbOther : [data?.CbOther || ''],
+        CrRdate : [data?.CrRdate || null],
+        CrRentryDate : [data?.CrRentryDate || null],
+        CbNormal : [data?.CbNormal || false],
+        CbAccessory : [data?.CbAccessory || false],
+        CbNodule : [data?.CbNodule || false],
+        CbOther : [data?.CbOther || false],
         CbOtherT : [data?.CbOtherT || ''],
         AAbdominal : [data?.AAbdominal || ''],
         AAbdominalT : [data?.AAbdominalT || ''],
@@ -218,90 +245,90 @@ export class NewbornAssessmentComponent implements OnInit {
         AKidneyT : [data?.AKidneyT || ''],
         AHernia : [data?.AHernia || ''],
         AHerniaT : [data?.AHerniaT || ''],
-        AArteries : [data?.AArteries || ''],
+        AArteries : [data?.AArteries || false],
         AArteriesT : [data?.AArteriesT || ''],
-        AShape : [data?.AShape || ''],
+        AShape : [data?.AShape || false],
         AShapeNa : [data?.AShapeNa || ''],
         AShapeT : [data?.AShapeT || ''],
-        AVeins : [data?.AVeins || ''],
+        AVeins : [data?.AVeins || false],
         AVeinsT : [data?.AVeinsT || ''],
-        AUvc : [data?.AUvc || ''],
-        AUinsertion : [data?.AUinsertion || ''],
-        AUremoval : [data?.AUremoval || ''],
+        AUvc : [data?.AUvc || false],
+        AUinsertion : [data?.AUinsertion || null],
+        AUremoval : [data?.AUremoval || null],
         AUcomplication : [data?.AUcomplication || ''],
         AUcomplicationT : [data?.AUcomplicationT || ''],
-        AUac : [data?.AUac || ''],
-        AUainsertion : [data?.AUainsertion || ''],
-        AUaremoval : [data?.AUaremoval || ''],
+        AUac : [data?.AUac || false],
+        AUainsertion : [data?.AUainsertion || null],
+        AUaremoval : [data?.AUaremoval || null],
         AUacomplication : [data?.AUacomplication || ''],
         AUacomplicationsT : [data?.AUacomplicationsT || ''],
-        AComment : [data?.AComment || ''],
+        AComment : [data?.AComment || false],
         ACommentT : [data?.ACommentT || ''],
-        GmNormal : [data?.GmNormal || ''],
-        GmEdema : [data?.GmEdema || ''],
-        GmHydrocele : [data?.GmHydrocele || ''],
-        GmTestes : [data?.GmTestes || ''],
-        GmHypoxemia : [data?.GmHypoxemia || ''],
-        GmOther : [data?.GmOther || ''],
+        GmNormal : [data?.GmNormal || false],
+        GmEdema : [data?.GmEdema || false],
+        GmHydrocele : [data?.GmHydrocele || false],
+        GmTestes : [data?.GmTestes || false],
+        GmHypoxemia : [data?.GmHypoxemia || false],
+        GmOther : [data?.GmOther || false],
         GmOtherT : [data?.GmOtherT || ''],
-        GfNormal : [data?.GfNormal || ''],
-        GfVaginal : [data?.GfVaginal || ''],
-        GfHymenal : [data?.GfHymenal || ''],
-        GfEdema : [data?.GfEdema || ''],
-        GfOther : [data?.GfOther || ''],
+        GfNormal : [data?.GfNormal || false],
+        GfVaginal : [data?.GfVaginal || false],
+        GfHymenal : [data?.GfHymenal || false],
+        GfEdema : [data?.GfEdema || false],
+        GfOther : [data?.GfOther || false],
         GfOtherT : [data?.GfOtherT || ''],
-        GaPatent : [data?.GaPatent || ''],
-        GaHemorrh : [data?.GaHemorrh || ''],
-        GaOther : [data?.GaOther || ''],
+        GaPatent : [data?.GaPatent || false],
+        GaHemorrh : [data?.GaHemorrh || false],
+        GaOther : [data?.GaOther || false],
         GaOtherT : [data?.GaOtherT || ''],
-        GtDimple : [data?.GtDimple || ''],
-        GtOther : [data?.GtOther || ''],
+        GtDimple : [data?.GtDimple || false],
+        GtOther : [data?.GtOther || false],
         GtOtherT : [data?.GtOtherT || ''],
         GComment : [data?.GComment || ''],
-        MmNormal : [data?.MmNormal || ''],
-        MmTremors : [data?.MmTremors || ''],
-        MmHypotonic : [data?.MmHypotonic || ''],
-        MmHypertonic : [data?.MmHypertonic || ''],
-        MmOther : [data?.MmOther || ''],
+        MmNormal : [data?.MmNormal || false],
+        MmTremors : [data?.MmTremors || false],
+        MmHypotonic : [data?.MmHypotonic || false],
+        MmHypertonic : [data?.MmHypertonic || false],
+        MmOther : [data?.MmOther || false],
         MmOtherT : [data?.MmOtherT || ''],
-        MrMoro : [data?.MrMoro || ''],
+        MrMoro : [data?.MrMoro || false],
         MrMoroV : [data?.MrMoroV || ''],
-        MrRooting : [data?.MrRooting || ''],
-        MrStepping : [data?.MrStepping || ''],
-        MrGag : [data?.MrGag || ''],
-        MrSucking : [data?.MrSucking || ''],
-        MrGrasp : [data?.MrGrasp || ''],
-        MrOther : [data?.MrOther || ''],
+        MrRooting : [data?.MrRooting || false],
+        MrStepping : [data?.MrStepping || false],
+        MrGag : [data?.MrGag || false],
+        MrSucking : [data?.MrSucking || false],
+        MrGrasp : [data?.MrGrasp || false],
+        MrOther : [data?.MrOther || false],
         MrOtherT : [data?.MrOtherT || ''],
-        McNormal : [data?.McNormal || ''],
-        McWeak : [data?.McWeak || ''],
-        McHigh : [data?.McHigh || ''],
-        McAbsent : [data?.McAbsent || ''],
-        McOther : [data?.McOther || ''],
+        McNormal : [data?.McNormal || false],
+        McWeak : [data?.McWeak || false],
+        McHigh : [data?.McHigh || false],
+        McAbsent : [data?.McAbsent || false],
+        McOther : [data?.McOther || false],
         McOtherT : [data?.McOtherT || ''],
-        MaActive : [data?.MaActive || ''],
-        MaLethargic : [data?.MaLethargic || ''],
-        MaNoResponse : [data?.MaNoResponse || ''],
-        MaHypooactive : [data?.MaHypooactive || ''],
-        MaHyperactive : [data?.MaHyperactive || ''],
-        MaOther : [data?.MaOther || ''],
+        MaActive : [data?.MaActive || false],
+        MaLethargic : [data?.MaLethargic || false],
+        MaNoResponse : [data?.MaNoResponse || false],
+        MaHypooactive : [data?.MaHypooactive || false],
+        MaHyperactive : [data?.MaHyperactive || false],
+        MaOther : [data?.MaOther || false],
         MaOtherT : [data?.MaOtherT || ''],
-        MuNormal : [data?.MuNormal || ''],
-        MuFractures : [data?.MuFractures || ''],
-        MuClavicle : [data?.MuClavicle || ''],
-        MuSyndactyly : [data?.MuSyndactyly || ''],
-        MuPolydactyly : [data?.MuPolydactyly || ''],
-        MuOther : [data?.MuOther || ''],
+        MuNormal : [data?.MuNormal || false],
+        MuFractures : [data?.MuFractures || false],
+        MuClavicle : [data?.MuClavicle || false],
+        MuSyndactyly : [data?.MuSyndactyly || false],
+        MuPolydactyly : [data?.MuPolydactyly || false],
+        MuOther : [data?.MuOther || false],
         MuOtherT : [data?.MuOtherT || ''],
-        MlNormal : [data?.MlNormal || ''],
-        MlHipClick : [data?.MlHipClick || ''],
-        MlFractures : [data?.MlFractures || ''],
-        MlSyndactyly : [data?.MlSyndactyly || ''],
-        MlPolydactyly : [data?.MlPolydactyly || ''],
-        MlTalipes : [data?.MlTalipes || ''],
-        MlOther : [data?.MlOther || ''],
+        MlNormal : [data?.MlNormal || false],
+        MlHipClick : [data?.MlHipClick || false],
+        MlFractures : [data?.MlFractures || false],
+        MlSyndactyly : [data?.MlSyndactyly || false],
+        MlPolydactyly : [data?.MlPolydactyly || false],
+        MlTalipes : [data?.MlTalipes || false],
+        MlOther : [data?.MlOther || false],
         MlOtherT : [data?.MlOtherT || ''],
-        MPalmarCreases : [data?.MPalmarCreases || ''],
+        MPalmarCreases : [data?.MPalmarCreases || false],
         MPalmarCreasesT : [data?.MPalmarCreasesT || ''],
         MComment : [data?.MComment || ''],
         MMalformation : [data?.MMalformation || ''],
@@ -318,13 +345,12 @@ export class NewbornAssessmentComponent implements OnInit {
 
   getDocument(data){
     this.admissionService
-    .getNewBornDocument('MED000000000000001000000085000000' )
+    .getNewBornDocument(data)
     .subscribe({
       next: (data: any) => {
-        if(data && data?.length){
-          this.initForm(data.d.results[0]);
-          this.toVitalsArr = data.d.results[0].TOVITALSIGNS.results
-
+        if(data){
+          this.initForm(data?.results[0]);
+          this.toVitalsArr = data?.results[0].TOVITALSIGNS.results
         }
       },
       error: (err: any) => {
@@ -333,7 +359,7 @@ export class NewbornAssessmentComponent implements OnInit {
     });
   }
 
-  createDoc(status?:any,actionType?:any){
+  public createDoc(status?:any,actionType?:any){
     return new Promise((resolve, reject) => {
       let formData = this.newBornForm.value;
    const convertDateFormat = (dateString: string): string => {
@@ -476,7 +502,13 @@ export class NewbornAssessmentComponent implements OnInit {
     delete res.value;
      return res;
   });
-
+  if(formData.BirthTime){
+   formData.BirthTime= this.convertTimeToDuration(formData.BirthTime)
+  }
+  if(formData.Timee){
+   formData.Timee= this.convertTimeToDuration(formData.Timee)
+  }
+  formData.Gestation = formData.Gestation ? Number(formData.Gestation) : null;
     let payload = {
       ...formData,
       Dockey : actionType === 'edit' ? this.docKey : '',
@@ -505,6 +537,7 @@ export class NewbornAssessmentComponent implements OnInit {
           }else{
             this.sharedService.successSwallModel('new born created successfully');
           }
+          this.successEvent.emit(true)
         }
       });
     })   
@@ -645,15 +678,22 @@ export class NewbornAssessmentComponent implements OnInit {
     }
   }
 
+  convertMicrosoftDate(msDateString: string): Date | null {
+    const match = msDateString.match(/\/Date\((\d+)\)\//);
+    return match ? new Date(Number(match[1])) : null;
+  }
+
   
   convertTimeToDuration(timeString: string): string {
-    
-    const [hours, minutes] = timeString.split(':').map(Number);
-
-    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-
-    const durationString = `PT${formattedHours}H${formattedMinutes}M00S`;
-    return timeString ? durationString : '';
-}
+    if (!timeString) return '';
+  
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+  
+    // Ensure values are properly formatted
+    const formattedHours = hours ? `PT${hours}H` : 'PT00H';
+    const formattedMinutes = minutes ? `${minutes}M` : '00M';
+    const formattedSeconds = seconds ? `${seconds}S` : '00S';
+  
+    return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
+  }
 }

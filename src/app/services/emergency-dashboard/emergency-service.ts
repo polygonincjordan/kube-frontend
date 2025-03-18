@@ -1111,6 +1111,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteNewBornDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteNewBornPassDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   getNurseEndDetail(json): Observable<any> {
     return this.http.get(this.url + `getNurseEndsormentDetail?Dockey=${json}`, {
       withCredentials: true,
@@ -1132,6 +1137,14 @@ export class EmergencyService {
       }
     );
   }
+  getNewBornDetail(json): Observable<any> {
+    return this.http.get(
+      this.url + `getNewBornDetail?Dockey=${json}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
   getSurgicalPasportDoc(json): Observable<any> {
     return this.http.post(this.url + 'getSurgicalPassportDoc', json, {
       withCredentials: true,
@@ -1144,6 +1157,11 @@ export class EmergencyService {
   }
   createSurgicalPassDetail(json): Observable<any> {
     return this.http.post(this.url + 'postOfSurgicalPassp', json, {
+      withCredentials: true,
+    });
+  }
+  postOfNewBornDetail(json): Observable<any> {
+    return this.http.post(this.url + 'postOfNewBorn', json, {
       withCredentials: true,
     });
   }
