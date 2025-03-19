@@ -112,7 +112,7 @@
                           </span>
                         </span>
                       </td>
-                      <td class="align-middle border-0 w-18 p-1" *ngIf="!item.value.IsFrequencyDeftim">
+                      <td class="align-middle border-0 w-22 p-1" *ngIf="!item.value.IsFrequencyDeftim">
                         <span class="d-flex align-items-center p-0 fontsize
                           position-relative pt-2">
                           <span class="input-title z-indexlabel">Dosage Unit</span>
@@ -125,7 +125,7 @@
                               'ep-error-message': ''" [readonly]="item.value.Complex" [disabled]="item.value.Complex" (change)="onChangeDosageUnit(item.get('AgentidResult').value,
                               $event, i)">
                               <ng-option *ngFor=" let medicationDosageUnit of
-                                item.get('AgentidResult').value" [value]="medicationDosageUnit.Meinh">
+                                item.get('AgentidResult').value" [value]="medicationDosageUnit">
                                 {{ medicationDosageUnit.OptionField }}
                               </ng-option>
                             </ng-select>
