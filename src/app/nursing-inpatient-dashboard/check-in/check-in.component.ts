@@ -1896,6 +1896,12 @@ export class CheckInComponent implements OnInit {
 
     this.emergencyService.changeAdmissionStatus(json).subscribe({
       next: (_success: any) => {
+        Swal.fire({
+          text: 'Change Status Successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
         this.getHospitalList();
         this.modalService.hide();
       },

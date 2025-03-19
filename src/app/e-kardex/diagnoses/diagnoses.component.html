@@ -25,7 +25,7 @@
         max-height: 100%;">
           <!-- end---------------------- -->
           <div class="head patient-table">
-            <title clas="patient-title">Out-Patient Documents</title>
+            <title clas="patient-title">Outpatient Documents</title>
             <div class="right_icons">
               <!-- onclick this open patient doc modal -->
               <span (click)="openNewForm('Correspondence')" [title]="'Create Correspondence'">
@@ -35,7 +35,7 @@
                 <img src="assets/img/physician-assessment.png" class="mw-15" />
               </span>
               <span (click)="openModalForAttachment(cvisAttachmentmodal)" [title]="'Create CVIS Attachments'">
-                <img src="assets/img/civic-ekardex-copy.jpg" class="mw-15" />
+                <img src="assets/img/cvis-attechment.webp" class="mw-15" />
               </span>
               <span (click)="openModalForAttachment(attachmentmodal)" [title]="'Create Attachments'">
                 <img src="assets/img/attachment-icon.jpg" class="mw-15" style="height: 20px;" />
@@ -319,7 +319,7 @@
       <div class="inner_box">
         <div class="main_bg">
           <div class="head">
-            <title>Out-Patient Documents</title>
+            <title>Outpatient Documents</title>
           </div>
           <div class="input_fields">
             <input type="search" [(ngModel)]="searchTextValue"

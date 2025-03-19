@@ -467,10 +467,10 @@ export class PatientsDietMealComponentNew implements OnInit {
           mealType: formValues.mealType,
           dietType: formValues.dietType,
           dietConsistency: formValues.dietConsistency,
-          carbohydrates: formValues.carbohydrates,
-          proteins: formValues.proteins,
-          calories: formValues.calories,
-          sodium: formValues.sodium,
+          // carbohydrates: formValues.carbohydrates,
+          // proteins: formValues.proteins,
+          // calories: formValues.calories,
+          // sodium: formValues.sodium,
           duration: formValues.duration,
           startDate: formValues.startDate,
           startTime: formValues.startTime,
@@ -605,7 +605,11 @@ export class PatientsDietMealComponentNew implements OnInit {
     payload.DietType = payload.DietType ? payload.DietType.join(', ') : '';
     this.ReferOrEditOrder === 'Referred' ? delete payload?.Orderno : delete payload?.Referorderno;
     payload.NursingIndicators = payload.NursingIndicators ? payload.NursingIndicators.join(',') : '';
-
+    delete payload.carbohydrates
+    delete payload.proteins
+    delete payload.calories
+    delete payload.sodium
+    delete payload.Irradiated
     this.emergencyService.saveDeitMealOrder(payload).subscribe((res: any) => {
       this.savedDietMealOrderDetails = res?.d;
       this.getOrderDetails();

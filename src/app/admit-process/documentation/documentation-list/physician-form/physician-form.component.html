@@ -509,6 +509,10 @@
         <button class="personal-history">Medication and Patient Own </button>
         <button class="create-diagnosis" (click)="openModal(medicationOrderCase)">Import</button>
       </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" style="width: 36px; height: 22px;" [attr.disabled]="medicationImportDrugArray.length >0 ? true:null"/>
+        <label class="admitting-physician">No medication order applicable</label>
+      </div>
       <table class="table table-bordered past-table">
         <thead style="background-color: #e4edf5; color: black; text-align: center;">
           <tr>
