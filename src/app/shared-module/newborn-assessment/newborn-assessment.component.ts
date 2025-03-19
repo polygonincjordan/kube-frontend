@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -121,12 +121,12 @@ export class NewbornAssessmentComponent implements OnInit {
         AssessedBy : [data?.AssessedBy || ''],
         BirthDate : [this.getDate(data?.BirthDate) || null],
         BirthTime : [this.parseTime(data?.BirthTime) || null],
-        BirthWeight : [data?.BirthWeight || null],
+        BirthWeight : [data?.BirthWeight || null,Validators.required],
         WeightUnit : [data?.WeightUnit || ''],
-        HeadCircum : [data?.HeadCircum || ''],
-        BabyLength : [data?.BabyLength || null],
-        ChestCircum : [data?.ChestCircum || null],
-        Gestation : [data?.Gestation || null],
+        HeadCircum : [data?.HeadCircum || '',Validators.required],
+        BabyLength : [data?.BabyLength || null,Validators.required],
+        ChestCircum : [data?.ChestCircum || null,Validators.required],
+        Gestation : [data?.Gestation || null,Validators.required],
         Gender : [data?.Gender || ''],
         SSkincolor : [data?.SSkincolor || ''],
         SSkincolorT : [data?.SSkincolorT || ''],
@@ -340,7 +340,15 @@ export class NewbornAssessmentComponent implements OnInit {
     })
   }
 
-  
+  isInvalid(field: string): boolean {
+    return this.newBornForm.get(field)?.invalid && (this.newBornForm.get(field)?.dirty || this.newBornForm.get(field)?.touched);
+  }
+
+  toggleRadio(controlName: string, value: string) {
+    if (this.newBornForm.get(controlName)?.value === value) {
+      this.newBornForm.get(controlName)?.setValue(null);
+    }
+  }
 
 
   getDocument(data){
@@ -360,6 +368,10 @@ export class NewbornAssessmentComponent implements OnInit {
   }
 
   public createDoc(status?:any,actionType?:any){
+    if (this.newBornForm.invalid) {
+      this.newBornForm.markAllAsTouched(); // Mark all fields as touched to show errors
+      return;
+    }
     return new Promise((resolve, reject) => {
       let formData = this.newBornForm.value;
    const convertDateFormat = (dateString: string): string => {
@@ -511,7 +523,7 @@ export class NewbornAssessmentComponent implements OnInit {
   formData.Gestation = formData.Gestation ? Number(formData.Gestation) : null;
     let payload = {
       ...formData,
-      Dockey : actionType === 'edit' ? this.docKey : '',
+      Dockey : actionType === 'edit' ||  actionType === 'copy' ? this.docKey : '',
       Dtid : 'ZMED_NBASM',
       Einri: this.paramsObject.einri,
       Patnr: this.paramsObject.patnr,
