@@ -18,7 +18,7 @@
 <div id="mySidenav" class="sidenav" [ngStyle]="{ width: sidenavWidth }">
   <form *ngIf="modalType == 'dietMeal'" [formGroup]="dietMealOrderForm" (ngSubmit)="saveForm()">
     <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-      <div class="title">Diet Meal Ordering Details</div>
+      <div class="title white-color">Diet Meal Ordering Details</div>
       <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">
         <img src="./assets/icon-img/red-cross.svg" width="20" alt="close">
       </a> -->
@@ -275,7 +275,7 @@
   </form>
   <form *ngIf="modalType == 'assessment'" [formGroup]="assessmentForm" (ngSubmit)="assessmentSetOrder()">
     <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-      <div class="title">Assessment</div>
+      <div class="title white-color">Assessment</div>
     </div>
     <div class="container p-4">
       <div class="d-flex flex-column mb-2 mt-3">
@@ -367,7 +367,7 @@
 
   <form *ngIf="modalType == 'snackOrder'" [formGroup]="snackOrderForm" (ngSubmit)="saveSnackOrder()">
     <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-      <div class="title">Snack Order Details</div>
+      <div class="title white-color">Snack Order Details</div>
       <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()"> <img src="./assets/icon-img/red-cross.svg"
           width="20" alt="close"></a> -->
     </div>
@@ -473,10 +473,10 @@
   </form>
 
   <form *ngIf="modalType == 'dislikes'" [formGroup]="dislikeFoodForm">
-    <div class="modal-header p-3">
-      <div class="d-flex justify-content-between w-100">
-        <h4 class="modal-title">Dislikes Details</h4>
-      </div>
+    <div class="modal-header p-0">
+      <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2 w-100">
+        <div class="title white-color">Dislikes Details</div>
+    </div>
     </div>
     <div class="modal-body p-0">
       <div class="container p-4">
@@ -543,9 +543,9 @@
         <th>Dietary Specificaitons</th>
         <th style="white-space: nowrap;">Order Status</th>
         <!-- <th>Nursing Indicators</th> -->
-        <th>Date & Time</th>
-        <th>Username</th>
         <th>Comment</th>
+        <th>Created on</th>
+        <th>Created  by</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -563,35 +563,37 @@
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <label for="">Carbohydrates</label>
-            <div>{{ item?.carbohydrates }}</div>
+            <div>{{ item?.carbohydrates }} /Grams</div>
           </div>
           <div
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <label for="">Proteins</label>
-            <div>{{ item?.proteins }}</div>
+            <div>{{ item?.proteins }} /Grams</div>
           </div>
           <div
             class="d-flex flex-row align-items-center justify-content-between"
           >
             <label for="">Calories</label>
-            <b>( {{ item?.calories }} mg)</b>
+            <b> {{ item?.calories }} /Kcal</b>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between">
             <label for="">Sodium</label>
-            <b>( {{ item?.sodium }} mg )</b>
+            <b> {{ item?.sodium }} /mg </b>
           </div>
         </td>
         <td class="width-110" [title]="item.Orderstatusdesc">{{ item.Orderstatusdesc ? item.Orderstatusdesc : 'Canceled' }}</td>
         <!-- <td [title]="convertNursingIndicators(item.NursingIndicators)" class="text-ellipsis">{{ convertNursingIndicators(item?.NursingIndicators) }}</td> -->
+        <td [title]="item.Comments" class="text-ellipsis">{{ item?.Comments }}</td>
         <td>{{ dateFormate(item?.Createdon) }} {{ convertTime(item?.Createdat) }}</td>
         <td [title]="item.Createdby">{{ item?.Createdby }}</td>
-        <td [title]="item.Comments" class="text-ellipsis">{{ item?.Comments }}</td>
         <td class="width-100">
           <div>
             <!-- <img class="mr-2" src="assets/makassed-img/deal-view.svg" [tooltip]="'Display Order Details'" /> -->
-            <img src="assets/img/deal-cancel.svg" (click)="cancelOrder(item)" [tooltip]="'Cancel Order'" />
-            <img class="mr-2" src="assets/img/deal-edit.svg" (click)="editAndReferOrder(item, 'Edited')" [tooltip]="'Edit Order'" />
             <img class="mr-2" src="assets/img/deal-confirm.svg" [tooltip]="'Confirm Order'" (click)="confirmOrder(item)" />
+            <img class="mr-2" src="assets/img/deal-edit.svg" (click)="editAndReferOrder(item, 'Edited')" [tooltip]="'Edit Order'" />
             <img class="mr-2" src="assets/img/copy-icon.svg" (click)="editAndReferOrder(item, 'Referred')" [tooltip]="'Refer Order'" />
+            <img src="assets/img/deal-cancel.svg" (click)="cancelOrder(item)" [tooltip]="'Cancel Order'" />
           </div>
         </td>
       </tr>

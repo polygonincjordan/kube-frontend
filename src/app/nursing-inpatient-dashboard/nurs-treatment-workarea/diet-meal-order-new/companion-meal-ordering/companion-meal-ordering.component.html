@@ -12,7 +12,7 @@
 <div id="mySidenav" class="sidenav" [ngStyle]="{ width: sidenavWidth }">
     <form class="comparion-order" *ngIf="modalType == 'dietMeal'" [formGroup]="dietOrderForm" (ngSubmit)="saveForm()">
         <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-            <div class="title">Companion’s Meal Ordering Details</div>
+            <div class="title white-color">Companion’s Meal Ordering Details</div>
         </div>
         <div class="container p-4">
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
@@ -143,7 +143,7 @@
     </form>
     <form class="comparion-order" *ngIf="modalType == 'snackOrder'" [formGroup]="snckOrderForm" (ngSubmit)="saveForm()">
         <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-            <div class="title">Companion Snack Order Details</div>
+            <div class="title white-color">Companion Snack Order Details</div>
         </div>
         <div class="container p-4">
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
@@ -256,9 +256,9 @@
                 <th>Diet Description</th>
                 <th>Quantity</th>
                 <th>Status</th>
-                <th>Date & Time</th>
-                <th>Username</th>
                 <th>Comment</th>
+                <th>Created on</th>
+                <th>Created by</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -269,9 +269,9 @@
                 <td>{{ item.Diettype }}</td>
                 <td>{{ item.Quantity }}</td>
                 <td>{{ item.Servicestatustext }}</td>
+                <td>{{ item.Comments }}</td>
                 <td>{{ dateFormate(item?.Createdon) }} {{ convertTime(item?.Createdat) }}</td>
                 <td [title]="item.Createdby">{{ item?.Createdby }}</td>
-                <td>{{ item.Comments }}</td>
                 <td class="width-100">
                     <div>
                         <!-- <img class="mr-2" src="assets/makassed-img/deal-view.svg" [tooltip]="'Display Order Details'" /> -->

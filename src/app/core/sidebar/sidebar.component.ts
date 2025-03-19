@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   EINRI = this.storageService.einri;
   LFDBW = this.storageService.lfdnr;
   isAdmitProcess: any;
-  redirectUrl : string;
+  redirectUrl : string = '/admit-process';
   // @HostListener('window:resize', ['$event'])
   // handleWindowResize(event: any): void {
   //   if (event && !event.isTrusted) {
@@ -75,7 +75,11 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.redirectUrl = '/admit-process';
     } else if(changes?.navTabBoxActiveValue.currentValue == '04' || changes?.navTabBoxActiveValue.currentValue == '05') {
       this.redirectUrl = '/discharge-process';
+    } else {
+      this.redirectUrl = '/admit-process';
     }
+    console.log(this.redirectUrl);
+    
   }
   ngAfterViewInit(): void {
     setTimeout(() => {

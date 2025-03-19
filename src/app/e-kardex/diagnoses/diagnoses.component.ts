@@ -707,6 +707,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   modelFormOpen(paitentData: any, oldversion?: boolean, template?: TemplateRef<any>) {
+    this.selectedPatient = paitentData;
     if (this.editing) {
       Swal.fire({
         text: "Are you sure you want to close without saving?",
@@ -770,6 +771,25 @@ export class DiagnosesComponent implements OnInit {
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.inPatientVisitData = {} as InPatientDataResult;
     this.inPatientSoapData = {};
+
+    if(paitentData?.Dtid == 'ZMED_CORES' && !paitentData.Released) {
+      this.correspondenceFormDiv = true;
+      this.copyReleaseCorrespondence();
+      this.selectedPatient = paitentData;
+      this.InOutPatientViewValue = {
+        showBoth: false,
+        showIn: false,
+        showOut: true,
+      };
+      this.inPatientShow = false;
+      let valueObj = {
+        type: WordType.EditBS,
+        docKey: this.selectedPatient.Dockey ? this.selectedPatient.Dockey : this.selectedPatient.DocKey
+      }
+      this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+      return
+    }
 
     if (paitentData?.Dtid != DocType.ZMED_SOAP) {
       this.userConfigurationService
@@ -1388,7 +1408,7 @@ export class DiagnosesComponent implements OnInit {
     }
   saveCorrespondenceDocument() {
     let docStatus = '1';
-    // if(this.selectedDocData?.Dockey) docStatus = '3';
+    if(this.selectedPatient?.Dockey || this.selectedPatient?.DocKey) docStatus = '3';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
       if (formValue) {
         // this.refresh();
@@ -1610,6 +1630,24 @@ export class DiagnosesComponent implements OnInit {
         this.admissionService.selectedCurrentDocDetails = releaseData;
         this.openPhysicianAssessment(this.PhysicianAssessment);
         return;
+      }
+      if(releaseData?.Dtid == 'ZMED_CORES') {
+        this.correspondenceFormDiv = true;
+        this.copyReleaseCorrespondence();
+        this.selectedPatient = releaseData;
+        this.InOutPatientViewValue = {
+          showBoth: false,
+          showIn: false,
+          showOut: true,
+        };
+        this.inPatientShow = false;
+        let valueObj = {
+          type: WordType.CopyBS,
+          docKey: this.selectedPatient.Dockey ? this.selectedPatient.Dockey : this.selectedPatient.DocKey
+        }
+        this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        this.admissionService.selectedCurrentDocDetails = releaseData;
+        return
       }
       this.InOutPatientViewValue = {
         showBoth: false,
@@ -1839,6 +1877,7 @@ export class DiagnosesComponent implements OnInit {
   // }
 
   onReleaseHistoryData(releaseId: any) {
+    this.selectedPatient = releaseId;
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.userConfigurationService.getReleaseHistoryData(releaseId).subscribe((data) => {

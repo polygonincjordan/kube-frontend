@@ -366,9 +366,9 @@ export class HeaderComponent implements OnInit {
     const userType = this.storageService.getKubeRule();
     let redirectPoint: any;
     localStorage.setItem('admit_process', JSON.stringify(false));
-    if(this.urlPath == 'emr') {
+    if(this.urlPath.includes('emr')) {
       redirectPoint = `/e-kardex?`;
-    } else if(this.urlPath == 'e-hospitalist') {
+    } else if(this.urlPath.includes('e-hospitalist')) {
       if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03') {
         redirectPoint = `/admit-process?`;
         localStorage.setItem('admit_process', JSON.stringify(true));

@@ -1227,6 +1227,7 @@ export class InPatientsComponent implements OnInit {
     );
   }
   openModuleKardex(data) {
+    localStorage.setItem('admit_process', JSON.stringify(true));
     window.open(
       'e-kardex?patnr=' +
       data.Mrn +
