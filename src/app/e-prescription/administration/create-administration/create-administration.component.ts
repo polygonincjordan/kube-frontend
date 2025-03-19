@@ -289,9 +289,10 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
               }
             });
             this.drugArray.controls[event.index].patchValue({
-              Agentid:resp.body.d.results[0].Agentid ? resp.body.d.results[0].Agentid : event.data.Agentid,
+              Agentid:resp.body.d.results[0].Agentid ? resp.body.d.results[0].Agentid : '',
               AgentidResult: resp.body.d.results,
-              Quanunit: resp.body.d.results[0].Meinh,
+              Quanunit: resp.body.d.results[0],
+              // Quanunit: resp.body.d.results[0]Meinh,
               Quan: resp.body.d.results[0].Quant && parseInt(resp.body.d.results[0].Quant) === Number(resp.body.d.results[0].Quant) ? parseInt(resp.body.d.results[0].Quant) : Number(resp.body.d.results[0].Quant)
             });
           }
@@ -307,7 +308,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   }
 
   onChangeDosageUnit(data: any, event: any, index: number) {
-    const selectedDosage = data.find(d => d.Meinh === event)
+    // const selectedDosage = data.find(d => d.Meinh === event)
+    const selectedDosage = data.find(d => d.Agentid === event.Agentid)
+
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
       this.drugArray.controls[index].patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
@@ -315,7 +318,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       })
     } else {
       this.drugArray.controls[index].patchValue({
-        Agentid: this.defaultAgentId
+        Agentid: ""
+        // Agentid: this.defaultAgentId
       })
     }
   }
@@ -363,12 +367,12 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           defineDoses.forEach((element) => {
             const quanUnitDescription = element.split("(")[0];
             const defineTime = element.match(/\(([^)]+)\)/)[1];
-            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
+            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
             this.drugArray.controls[index].get('deftimcycleData').setValue(deftimDcycleData)
           });
           deftimDcycleData = [];
         } else {
-          this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[index].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
+          this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[index].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
         }
         const selectedData = [];
         if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
@@ -624,6 +628,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.Orgfa = this.addministrationService.medicationAdministrative.OrderingDept,
             element.Orgpf = this.addministrationService.medicationAdministrative.OrderingTo,
             element.Dosdef = element.deftimcycleData && element.deftimcycleData.length ? element.Dosdef : "";
+            element.Quanunit = element?.Quanunit?.Meinh ? element?.Quanunit?.Meinh : element?.Quanunit;
           delete element.Formatdescr;
           delete element.Result_Drug_Name;
           delete element.IsmoDetails;
@@ -889,7 +894,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
                     Drugid: validData.Drugid,
                     Seqno: "1",
                     Quan: validData.Quan,
-                    Quanunit: validData.Quanunit,
+                    Quanunit: validData?.Quanunit?.Meinh ? validData?.Quanunit?.Meinh : validData?.Quanunit,
+                    // Quanunit: validData.Quanunit,
                     N1znr: validData.N1znr,
                     Pdur: validData.Pdur,
                     Pduru: validData.Pduru !== null ? validData.Pduru : null,
@@ -912,7 +918,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
                   Drugid: validData.Drugid,
                   Seqno: "1",
                   Quan: validData.Quan,
-                  Quanunit: validData.Quanunit,
+                  Quanunit: validData?.Quanunit?.Meinh ? validData?.Quanunit?.Meinh : validData?.Quanunit,
+                  // Quanunit: validData.Quanunit,
                   N1znr: validData.N1znr,
                   Pdur: validData.Pdur,
                   Pduru: validData.Pduru !== null ? validData.Pduru : null,
