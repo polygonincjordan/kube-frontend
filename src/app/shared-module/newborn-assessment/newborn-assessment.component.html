@@ -6,16 +6,36 @@
           <label>Date</label>
         </div>
         <div class="col-md-6">
-            <div class="header-date">
-                <span _ngcontent-ufq-c103="" style="position: relative;top: 30px; right: 4px;float: right; margin-top: -26px;font-size: 18px;">
-                  <img src="assets/img/Calender.svg" alt="" />
-                </span>
-                <input formControlName="Datee" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                  placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                    showWeekNumbers: false,
-                    dateInputFormat: 'DD.MM.YYYY'
-                  }" />
-              </div>
+          <div class="header-date">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                right: 4px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              formControlName="Datee"
+              class="form-control"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              #dp="bsDatepicker"
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+          </div>
         </div>
       </div>
       <div class="col-md-4 row m-0"></div>
@@ -76,25 +96,37 @@
         <div class="col-md-6">
           <label>Date of Birth</label>
         </div>
-         <div class="col-md-6">
+        <div class="col-md-6">
           <div class="header-date">
-            <span _ngcontent-ufq-c103="" style="
-                    position: relative;
-                    top: 30px;
-      right: 4px;
-      float: right;
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                right: 4px;
+                float: right;
                 margin-top: -26px;
                 font-size: 18px;
-                
-              ">
+              "
+            >
               <img src="assets/img/Calender.svg" alt="" />
             </span>
-  
-            <input formControlName="BirthDate" class="form-control" style="color: #000; border-radius: 8px" type="text"
-              placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+
+            <input
+              formControlName="BirthDate"
+              class="form-control"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              #dp="bsDatepicker"
+              bsDatepicker
+              [bsConfig]="{
                 showWeekNumbers: false,
                 dateInputFormat: 'DD.MM.YYYY'
-              }" />
+              }"
+            />
           </div>
         </div>
       </div>
@@ -127,7 +159,11 @@
                     <label>Birth Weight</label>
                   </div>
                   <div class="col-md-3">
-                    <input class="form-control" formControlName="BirthWeight"   [ngClass]="{'is-invalid': isInvalid('BirthWeight')}"  />
+                    <input
+                      class="form-control"
+                      formControlName="BirthWeight"
+                      [ngClass]="{ 'is-invalid': isInvalid('BirthWeight') }"
+                    />
                   </div>
                   <div class="col-md-3">
                     <ng-select
@@ -144,7 +180,11 @@
                     <label>Head Circumference</label>
                   </div>
                   <div class="col-md-3">
-                    <input class="form-control" formControlName="HeadCircum"   [ngClass]="{'is-invalid': isInvalid('HeadCircum')}"  />
+                    <input
+                      class="form-control"
+                      formControlName="HeadCircum"
+                      [ngClass]="{ 'is-invalid': isInvalid('HeadCircum') }"
+                    />
                   </div>
                   <div class="col-md-3">
                     <label>CM</label>
@@ -157,7 +197,11 @@
                     <label>Length of the Baby</label>
                   </div>
                   <div class="col-md-3">
-                    <input class="form-control" formControlName="BabyLength"   [ngClass]="{'is-invalid': isInvalid('BabyLength')}" />
+                    <input
+                      class="form-control"
+                      formControlName="BabyLength"
+                      [ngClass]="{ 'is-invalid': isInvalid('BabyLength') }"
+                    />
                   </div>
                   <div class="col-md-3">
                     <label>CM</label>
@@ -168,7 +212,11 @@
                     <label>Chest Circumference</label>
                   </div>
                   <div class="col-md-3">
-                    <input class="form-control" formControlName="ChestCircum"   [ngClass]="{'is-invalid': isInvalid('ChestCircum')}"  />
+                    <input
+                      class="form-control"
+                      formControlName="ChestCircum"
+                      [ngClass]="{ 'is-invalid': isInvalid('ChestCircum') }"
+                    />
                   </div>
                   <div class="col-md-3">
                     <label>CM</label>
@@ -181,7 +229,11 @@
                     <label>Gestation</label>
                   </div>
                   <div class="col-md-3">
-                    <input class="form-control" formControlName="Gestation"   [ngClass]="{'is-invalid': isInvalid('Gestation')}" />
+                    <input
+                      class="form-control"
+                      formControlName="Gestation"
+                      [ngClass]="{ 'is-invalid': isInvalid('Gestation') }"
+                    />
                   </div>
                   <div class="col-md-3">
                     <label>Weeks</label>
@@ -371,9 +423,9 @@
               <div class="row m0">
                 <div class="col-md-2"></div>
                 <div class="col-md-2 row m-0 align-items-center">
-                    <input type="checkbox" formControlName="SaDry" />
-                    <label class="m-0 ml-2">Dry/Peeling</label>
-                  </div>
+                  <input type="checkbox" formControlName="SaDry" />
+                  <label class="m-0 ml-2">Dry/Peeling</label>
+                </div>
                 <div class="col-md-2 row m-0 align-items-center">
                   <input type="checkbox" formControlName="SaMongolian" />
                   <label class="m-0 ml-2">Mongolian Spot</label>
@@ -1287,7 +1339,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  placeholder="Tube Size"
+                                  placeholder="Tube Level"
                                   formControlName="CrItubeLevel"
                                 />
                               </div>
@@ -1306,24 +1358,36 @@
                               </div>
                               <div class="col-md-3">
                                 <div class="header-date">
-                                    <span _ngcontent-ufq-c103="" style="
-                                            position: relative;
-                                            top: 30px;
-                              right: 4px;
-                              float: right;
-                                        margin-top: -26px;
-                                        font-size: 18px;
-                                        
-                                      ">
-                                      <img src="assets/img/Calender.svg" alt="" />
-                                    </span>
-                          
-                                    <input formControlName="CrIintubation" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                        showWeekNumbers: false,
-                                        dateInputFormat: 'DD.MM.YYYY'
-                                      }" />
-                                  </div>
+                                  <span
+                                    _ngcontent-ufq-c103=""
+                                    style="
+                                      position: relative;
+                                      top: 30px;
+                                      right: 4px;
+                                      float: right;
+                                      margin-top: -26px;
+                                      font-size: 18px;
+                                    "
+                                  >
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input
+                                    formControlName="CrIintubation"
+                                    class="form-control"
+                                    style="color: #000; border-radius: 8px"
+                                    type="text"
+                                    placeholder=""
+                                    [minDate]=""
+                                    [maxDate]=""
+                                    #dp="bsDatepicker"
+                                    bsDatepicker
+                                    [bsConfig]="{
+                                      showWeekNumbers: false,
+                                      dateInputFormat: 'DD.MM.YYYY'
+                                    }"
+                                  />
+                                </div>
                               </div>
                             </div>
                             <div
@@ -1340,33 +1404,44 @@
                               </div>
                               <div class="col-md-3">
                                 <div class="header-date">
-                                    <span _ngcontent-ufq-c103="" style="
-                                            position: relative;
-                                            top: 30px;
-                              right: 4px;
-                              float: right;
-                                        margin-top: -26px;
-                                        font-size: 18px;
-                                        
-                                      ">
-                                      <img src="assets/img/Calender.svg" alt="" />
-                                    </span>
-                          
-                                    <input formControlName="CrIextubation" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                        showWeekNumbers: false,
-                                        dateInputFormat: 'DD.MM.YYYY'
-                                      }" />
-                                  </div>
-                                
+                                  <span
+                                    _ngcontent-ufq-c103=""
+                                    style="
+                                      position: relative;
+                                      top: 30px;
+                                      right: 4px;
+                                      float: right;
+                                      margin-top: -26px;
+                                      font-size: 18px;
+                                    "
+                                  >
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input
+                                    formControlName="CrIextubation"
+                                    class="form-control"
+                                    style="color: #000; border-radius: 8px"
+                                    type="text"
+                                    placeholder=""
+                                    [minDate]=""
+                                    [maxDate]=""
+                                    #dp="bsDatepicker"
+                                    bsDatepicker
+                                    [bsConfig]="{
+                                      showWeekNumbers: false,
+                                      dateInputFormat: 'DD.MM.YYYY'
+                                    }"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    </div>
-                    <div class="row">
+                  </div>
+                  <div class="row">
                     <div class="px-3 mb-3 d-flex w-100">
                       <div class="w-100">
                         <!-- <div class="col-2"></div> -->
@@ -1453,7 +1528,7 @@
                                 <input
                                   type="text"
                                   class="form-control"
-                                  placeholder="Tube Size"
+                                  placeholder="Tube Level"
                                   formControlName="CrRtubeLevel"
                                 />
                               </div>
@@ -1472,25 +1547,36 @@
                               </div>
                               <div class="col-md-3">
                                 <div class="header-date">
-                                    <span _ngcontent-ufq-c103="" style="
-                                            position: relative;
-                                            top: 30px;
-                              right: 4px;
-                              float: right;
-                                        margin-top: -26px;
-                                        font-size: 18px;
-                                        
-                                      ">
-                                      <img src="assets/img/Calender.svg" alt="" />
-                                    </span>
-                          
-                                    <input formControlName="CrRdate" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                        showWeekNumbers: false,
-                                        dateInputFormat: 'DD.MM.YYYY'
-                                      }" />
-                                  </div>
-                                  
+                                  <span
+                                    _ngcontent-ufq-c103=""
+                                    style="
+                                      position: relative;
+                                      top: 30px;
+                                      right: 4px;
+                                      float: right;
+                                      margin-top: -26px;
+                                      font-size: 18px;
+                                    "
+                                  >
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input
+                                    formControlName="CrRdate"
+                                    class="form-control"
+                                    style="color: #000; border-radius: 8px"
+                                    type="text"
+                                    placeholder=""
+                                    [minDate]=""
+                                    [maxDate]=""
+                                    #dp="bsDatepicker"
+                                    bsDatepicker
+                                    [bsConfig]="{
+                                      showWeekNumbers: false,
+                                      dateInputFormat: 'DD.MM.YYYY'
+                                    }"
+                                  />
+                                </div>
                               </div>
                             </div>
                             <div
@@ -1506,26 +1592,37 @@
                                 >
                               </div>
                               <div class="col-md-3">
-
                                 <div class="header-date">
-                                    <span _ngcontent-ufq-c103="" style="
-                                            position: relative;
-                                            top: 30px;
-                              right: 4px;
-                              float: right;
-                                        margin-top: -26px;
-                                        font-size: 18px;
-                                        
-                                      ">
-                                      <img src="assets/img/Calender.svg" alt="" />
-                                    </span>
-                          
-                                    <input formControlName="CrRentryDate" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                        showWeekNumbers: false,
-                                        dateInputFormat: 'DD.MM.YYYY'
-                                      }" />
-                                  </div>
+                                  <span
+                                    _ngcontent-ufq-c103=""
+                                    style="
+                                      position: relative;
+                                      top: 30px;
+                                      right: 4px;
+                                      float: right;
+                                      margin-top: -26px;
+                                      font-size: 18px;
+                                    "
+                                  >
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input
+                                    formControlName="CrRentryDate"
+                                    class="form-control"
+                                    style="color: #000; border-radius: 8px"
+                                    type="text"
+                                    placeholder=""
+                                    [minDate]=""
+                                    [maxDate]=""
+                                    #dp="bsDatepicker"
+                                    bsDatepicker
+                                    [bsConfig]="{
+                                      showWeekNumbers: false,
+                                      dateInputFormat: 'DD.MM.YYYY'
+                                    }"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -1603,483 +1700,589 @@
               </div>
             </div>
 
-            <div *ngIf="selectedTabName === 'Abdomen'" >
-                <div class="abdomencontainer">
-
-                
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Abdominal Appearance</span>
-                </div>
-                <div class="col-10">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id=""
-                      formControlName="AAbdominal"
-                      value="0"
-                      (click)="toggleRadio('AAbdominal', '0')"
-                    />
-                    <label class="form-check-label" for="abdominalNormal"
-                      >Normal</label
-                    >
+            <div *ngIf="selectedTabName === 'Abdomen'">
+              <div class="abdomencontainer">
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Abdominal Appearance</span>
                   </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id=""
-                      formControlName="AAbdominal"
-                      value="1"
-                      (click)="toggleRadio('AAbdominal', '1')"
-                    />
-                    <label class="form-check-label" for="abdominalAbnormal"
-                      >Abnormal</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control ml-3"
-                      formControlName="AAbdominalT"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Liver -->
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Liver</span>
-                </div>
-                <div class="col-10">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="liverNormal"
-                      formControlName="ALiver"
-                      value="0"
-                      (click)="toggleRadio('ALiver', '0')"
-                    />
-                    <label class="form-check-label" for="liverNormal"
-                      >Normal</label
-                    >
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="liverAbnormal"
-                      formControlName="ALiver"
-                      value="1"
-                      (click)="toggleRadio('ALiver', '1')"
-                    />
-                    <label class="form-check-label" for="liverAbnormal"
-                      >Abnormal</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control ml-3"
-                      formControlName="ALiverT"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Spleen -->
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Spleen</span>
-                </div>
-                <div class="col-10">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="spleenNormal"
-                      formControlName="ASpleen"
-                      value="0"
-                      (click)="toggleRadio('ASpleen', '0')"
-                    />
-                    <label class="form-check-label" for="spleenNormal"
-                      >Normal</label
-                    >
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="spleenAbnormal"
-                      formControlName="ASpleen"
-                      value="1"
-                      (click)="toggleRadio('ASpleen', '1')"
-                    />
-                    <label class="form-check-label" for="spleenAbnormal"
-                      >Abnormal</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control ml-3"
-                      formControlName="ASpleenT"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Kidney -->
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Kidney</span>
-                </div>
-                <div class="col-10">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id=""
-                      formControlName="AKidney"
-                      value="0"
-                      (click)="toggleRadio('AKidney', '0')"
-                    />
-                    <label class="form-check-label" for="kidneyNormal"
-                      >Normal</label
-                    >
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id=""
-                      formControlName="AKidney"
-                      value="1"
-                      (click)="toggleRadio('AKidney', '1')"
-                    />
-                    <label class="form-check-label" for="kidneyAbnormal"
-                      >Abnormal</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control ml-3"
-                      formControlName="AKidneyT"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Hernia -->
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Hernia</span>
-                </div>
-                <div class="col-10">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="herniaNo"
-                      formControlName="AHernia"
-                      value="1"
-                      (click)="toggleRadio('AHernia', '1')"
-                    />
-                    <label class="form-check-label" for="herniaNo">No</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="herniaYes"
-                      formControlName="AHernia"
-                      value="0"
-                      (click)="toggleRadio('AHernia', '0')"
-                    />
-                    <label class="form-check-label" for="herniaYes">Yes</label>
-                    <input
-                      type="text"
-                      class="form-control ml-3"
-                      formControlName="AHerniaT"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Umbilical Cord -->
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Umbilical Cord</span>
-                </div>
-                <div class="col-10">
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-check form-check-inline">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  id="arteries"
-                                  formControlName="AArteries"
-                                />
-                                <label class="form-check-label" for="arteries"
-                                  >Arteries</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control ml-3"
-                                  formControlName="AArteriesT"
-                                />
-                              </div>
-                        </div>
-                        <div class="col-6 d-flex w-100">
-                            <div class="form-check form-check-inline">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  id="shape"
-                                  formControlName="AShape"
-                                />
-                                <label class="form-check-label" for="shape">Shape</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input
-                                  class="form-check-input"
-                                  type="radio"
-                                  name=""
-                                  id="umbilicalNormal"
-                                  formControlName="AShapeNa"
-                                  value="0"
-                                  (click)="toggleRadio('AShapeNa', '0')"
-                                />
-                                <label class="form-check-label" for="umbilicalNormal"
-                                  >Normal</label
-                                >
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input
-                                  class="form-check-input"
-                                  type="radio"
-                                  name=""
-                                  id="umbilicalAbnormal"
-                                  formControlName="AShapeNa"
-                                  value="1"
-                                  (click)="toggleRadio('AShapeNa', '1')"
-                                />
-                                <label class="form-check-label" for="umbilicalAbnormal"
-                                  >Abnormal</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control ml-3"
-                                  formControlName="AShapeT"
-                                />
-                              </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="mb-2 d-flex align-items-center">
-                                <!-- <div class="col-2"></div> -->
-                                <div class="col-12 pl-0">
-                                  <div class="form-check form-check-inline">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      id="veins"
-                                      formControlName="AVeins"
-                                    />
-                                    <label class="form-check-label" for="veins">Veins</label>
-                                    <input
-                                      type="text"
-                                      class="form-control ml-3"
-                                      formControlName="AVeinsT"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id=""
+                        formControlName="AAbdominal"
+                        value="0"
+                        (click)="toggleRadio('AAbdominal', '0')"
+                      />
+                      <label class="form-check-label" for="abdominalNormal"
+                        >Normal</label
+                      >
                     </div>
-                
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id=""
+                        formControlName="AAbdominal"
+                        value="1"
+                        (click)="toggleRadio('AAbdominal', '1')"
+                      />
+                      <label class="form-check-label" for="abdominalAbnormal"
+                        >Abnormal</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control ml-3"
+                        formControlName="AAbdominalT"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              
-              <!-- Lines -->
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2">
-                  <span class="label-text">Lines</span>
+
+                <!-- Liver -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Liver</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id="liverNormal"
+                        formControlName="ALiver"
+                        value="0"
+                        (click)="toggleRadio('ALiver', '0')"
+                      />
+                      <label class="form-check-label" for="liverNormal"
+                        >Normal</label
+                      >
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id="liverAbnormal"
+                        formControlName="ALiver"
+                        value="1"
+                        (click)="toggleRadio('ALiver', '1')"
+                      />
+                      <label class="form-check-label" for="liverAbnormal"
+                        >Abnormal</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control ml-3"
+                        formControlName="ALiverT"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div class="col-10">
-                                    <div>
-                                        <input class="form-check-input" type="checkbox" id="uvc" formControlName="AUvc">
-                          <label class="form-check-label" for="uvc">UVC</label>
-                                        <div class="form-check form-check-inline">
-                                            <div style="display: flex;gap: 15px;padding-left: 5px;">
-                                                 <div><input type="text" class="form-control" placeholder="" formControlName="AUinsertion"></div>
-                          <div>
-                                                    
-                                                          <div class="header-date">
-                                                            <span _ngcontent-ufq-c103="" style="
-                                                                    position: relative;
-                                                                    top: 30px;
-                                                      right: 4px;
-                                                      float: right;
-                                                                margin-top: -26px;
-                                                                font-size: 18px;
-                                                                
-                                                              ">
-                                                              <img src="assets/img/Calender.svg" alt="" />
-                                                            </span>
-                                                  
-                                                            <input formControlName="AUinsertion" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                                              placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                                                showWeekNumbers: false,
-                                                                dateInputFormat: 'DD.MM.YYYY'
-                                                              }" />
-                                                          </div>
-                                                  </div>
-                                             </div>
-                                             <div style="display: flex;gap: 15px;padding-left: 5px;">
-                                                <div class=""><label class="form-check-label" for="intubYes">Date of Remova</label></div> 
-                          <div>
-                                                          <div class="header-date">
-                                                            <span _ngcontent-ufq-c103="" style="
-                                                                    position: relative;
-                                                                    top: 30px;
-                                                      right: 4px;
-                                                      float: right;
-                                                                margin-top: -26px;
-                                                                font-size: 18px;
-                                                                
-                                                              ">
-                                                              <img src="assets/img/Calender.svg" alt="" />
-                                                            </span>
-                                                  
-                                                            <input formControlName="AUremoval" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                                              placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                                                showWeekNumbers: false,
-                                                                dateInputFormat: 'DD.MM.YYYY'
-                                                              }" />
-                                                          </div>
+
+                <!-- Spleen -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Spleen</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id="spleenNormal"
+                        formControlName="ASpleen"
+                        value="0"
+                        (click)="toggleRadio('ASpleen', '0')"
+                      />
+                      <label class="form-check-label" for="spleenNormal"
+                        >Normal</label
+                      >
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id="spleenAbnormal"
+                        formControlName="ASpleen"
+                        value="1"
+                        (click)="toggleRadio('ASpleen', '1')"
+                      />
+                      <label class="form-check-label" for="spleenAbnormal"
+                        >Abnormal</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control ml-3"
+                        formControlName="ASpleenT"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Kidney -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Kidney</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id=""
+                        formControlName="AKidney"
+                        value="0"
+                        (click)="toggleRadio('AKidney', '0')"
+                      />
+                      <label class="form-check-label" for="kidneyNormal"
+                        >Normal</label
+                      >
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id=""
+                        formControlName="AKidney"
+                        value="1"
+                        (click)="toggleRadio('AKidney', '1')"
+                      />
+                      <label class="form-check-label" for="kidneyAbnormal"
+                        >Abnormal</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control ml-3"
+                        formControlName="AKidneyT"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Hernia -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Hernia</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id="herniaNo"
+                        formControlName="AHernia"
+                        value="1"
+                        (click)="toggleRadio('AHernia', '1')"
+                      />
+                      <label class="form-check-label" for="herniaNo">No</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        id="herniaYes"
+                        formControlName="AHernia"
+                        value="0"
+                        (click)="toggleRadio('AHernia', '0')"
+                      />
+                      <label class="form-check-label" for="herniaYes"
+                        >Yes</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control ml-3"
+                        formControlName="AHerniaT"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Umbilical Cord -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Umbilical Cord</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="arteries"
+                            formControlName="AArteries"
+                          />
+                          <label class="form-check-label" for="arteries"
+                            >Arteries</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control ml-3"
+                            formControlName="AArteriesT"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-6 d-flex w-100">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="shape"
+                            formControlName="AShape"
+                          />
+                          <label class="form-check-label" for="shape"
+                            >Shape</label
+                          >
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name=""
+                            id="umbilicalNormal"
+                            formControlName="AShapeNa"
+                            value="0"
+                            (click)="toggleRadio('AShapeNa', '0')"
+                          />
+                          <label class="form-check-label" for="umbilicalNormal"
+                            >Normal</label
+                          >
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name=""
+                            id="umbilicalAbnormal"
+                            formControlName="AShapeNa"
+                            value="1"
+                            (click)="toggleRadio('AShapeNa', '1')"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="umbilicalAbnormal"
+                            >Abnormal</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control ml-3"
+                            formControlName="AShapeT"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="mb-2 d-flex align-items-center">
+                          <!-- <div class="col-2"></div> -->
+                          <div class="col-12 pl-0">
+                            <div class="form-check form-check-inline">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="veins"
+                                formControlName="AVeins"
+                              />
+                              <label class="form-check-label" for="veins"
+                                >Veins</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control ml-3"
+                                formControlName="AVeinsT"
+                              />
+                            </div>
                           </div>
                         </div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex;justify-content:space-between;margin-top:20px;width: 80%;">
-                          <div>
-                                            <label class="form-check-label" for="uac">Complication</label>
-                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="" id="uvcNo" formControlName="AUcomplication">
-                              <label class="form-check-label" for="uvcNo">No</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="" id="uvcYes" formControlName="AUcomplication">
-                              <label class="form-check-label" for="uvcYes">Yes</label>
-                            </div>
-                                  </div>
-                                  <div>
-                                            <input type="text" class="form-control" placeholder="" formControlName="AUcomplicationT">
-                                  </div>
-                                </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="mb-2 d-flex align-items-center">
-                <div class="col-2"></div>
-                <div class="col-10">
-                  <div>
-                                        <input class="form-check-input" type="checkbox" id="uvc" formControlName="AUac">
-                    <label class="form-check-label" for="uvc">UVC</label>
-                    <div class="form-check form-check-inline">
-                                            <div style="display: flex;gap: 15px;padding-left: 5px;">
-                                                <div><label class="form-check-label" for="intubYes">Date of Insertion</label></div> 
-                        <div>
-                                                
-                                                            <div class="header-date">
-                            
-                                                                <span _ngcontent-ufq-c103="" style="
-                                                                        position: relative;
-                                                                        top: 30px;
-                                                          right: 4px;
-                                                          float: right;
-                                                                    margin-top: -26px;
-                                                                    font-size: 18px;
-                                                                    
-                                                                  ">
-                                                                  <img src="assets/img/Calender.svg" alt="" />
-                                                                </span>
-                                                      
-                                                                <input formControlName="AUainsertion" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                                                  placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                                                                    showWeekNumbers: false,
-                                                                    dateInputFormat: 'DD.MM.YYYY'
-                                                                  }" />
-                                                              </div>
-                        </div>
-                                                
-                        </div>
-                                             <div style="display: flex;gap: 15px;padding-left: 5px;">
-                                                <div class=""><label class="form-check-label" for="intubYes">Date of Remova</label></div> 
-                        <div>
-                            <div class="header-date">
-                                <span _ngcontent-ufq-c103="" style="
+
+                <!--new Lines -->
+                <div class="mb-2 d-flex align-items-start">
+                  <div class="col-2">
+                    <span class="label-text">Lines</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="d-flex flex-wrap">
+                      <div class="col-6 d-flex">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="uvc"
+                          formControlName="AUvc"
+                        />
+                        <label class="form-check-label" for="uvc" >UVC</label>
+                        <div class="">
+                            <div class="d-flex">
+                                <label class="form-check-label mx-3" for="uvc" style="min-width: 115px;">Date of Insertion</label>
+                                <div class="header-date">
+                                    <span
+                                      _ngcontent-ufq-c103=""
+                                      style="
                                         position: relative;
                                         top: 30px;
-                          right: 4px;
-                          float: right;
+                                        right: 4px;
+                                        float: right;
+                                        margin-top: -26px;
+                                        font-size: 18px;
+                                      "
+                                    >
+                                      <img src="assets/img/Calender.svg" alt="" />
+                                    </span>
+      
+                                    <input
+                                      formControlName="AUinsertion"
+                                      class="form-control"
+                                      style="color: #000; border-radius: 8px"
+                                      type="text"
+                                      placeholder=""
+                                      [minDate]=""
+                                      [maxDate]=""
+                                      #dp="bsDatepicker"
+                                      bsDatepicker
+                                      [bsConfig]="{
+                                        showWeekNumbers: false,
+                                        dateInputFormat: 'DD.MM.YYYY'
+                                      }"
+                                    />
+                                  </div>
+                            </div>
+                            <div class="d-flex mt-2">
+                                <label class="form-check-label mx-3" for="uac" style="min-width: 115px;">Complication</label>
+                                <div class="form-check form-check-inline">
+                                  <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name=""
+                                    id="uvcNo"
+                                    formControlName="AUcomplication"
+                                    value="1"
+                                    (click)="toggleRadio('AUcomplication', '1')"
+                                  />
+                                  <label class="form-check-label" for="uvcNo"
+                                    >No</label
+                                  >
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name=""
+                                    id="uvcYes"
+                                    formControlName="AUcomplication"
+                                    value="0"
+                                    (click)="toggleRadio('AUcomplication', '0')"
+                                  />
+                                  <label class="form-check-label" for="uvcYes"
+                                    >Yes</label
+                                  >
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="col-5 d-flex justify-content-end">
+                        <div class="">
+                          <label class="form-check-label mx-3" for="intubYes"
+                            >Date of Remova</label
+                          >
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div class="header-date">
+                                <span
+                                  _ngcontent-ufq-c103=""
+                                  style="
+                                    position: relative;
+                                    top: 30px;
+                                    right: 4px;
+                                    float: right;
                                     margin-top: -26px;
                                     font-size: 18px;
-                                    
-                                  ">
+                                  "
+                                >
                                   <img src="assets/img/Calender.svg" alt="" />
                                 </span>
-                      
-                                <input formControlName="AUaremoval" class="form-control" style="color: #000; border-radius: 8px" type="text"
-                                  placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+  
+                                <input
+                                  formControlName="AUremoval"
+                                  class="form-control"
+                                  style="color: #000; border-radius: 8px"
+                                  type="text"
+                                  placeholder=""
+                                  [minDate]=""
+                                  [maxDate]=""
+                                  #dp="bsDatepicker"
+                                  bsDatepicker
+                                  [bsConfig]="{
                                     showWeekNumbers: false,
                                     dateInputFormat: 'DD.MM.YYYY'
-                                  }" />
+                                  }"
+                                />
                               </div>
-                                                    
+                          <input
+                            type="text"
+                            class="form-control mt-2"
+                            style="width:250px;"
+                            placeholder=""
+                            formControlName="AUcomplicationT"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- new UAC -->
+                    <div class="d-flex flex-wrap mt-2">
+                      <div class="col-6 d-flex">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="uvc"
+                          formControlName="AUac"
+                        />
+                        <label class="form-check-label" for="uvc" >UAC</label>
+                        <div class="">
+                            <div class="d-flex">
+                                <label class="form-check-label mx-3" for="uvc" style="min-width: 115px;">Date of Insertion</label>
+                                <div class="header-date">
+                                    <span
+                                      _ngcontent-ufq-c103=""
+                                      style="
+                                        position: relative;
+                                        top: 30px;
+                                        right: 4px;
+                                        float: right;
+                                        margin-top: -26px;
+                                        font-size: 18px;
+                                      "
+                                    >
+                                      <img src="assets/img/Calender.svg" alt="" />
+                                    </span>
+      
+                                    <input
+                                      formControlName="AUainsertion"
+                                      class="form-control"
+                                      style="color: #000; border-radius: 8px"
+                                      type="text"
+                                      placeholder=""
+                                      [minDate]=""
+                                      [maxDate]=""
+                                      #dp="bsDatepicker"
+                                      bsDatepicker
+                                      [bsConfig]="{
+                                        showWeekNumbers: false,
+                                        dateInputFormat: 'DD.MM.YYYY'
+                                      }"
+                                    />
+                                  </div>
+                            </div>
+                            <div class="d-flex mt-2">
+                                <label class="form-check-label mx-3" for="uac" style="min-width: 115px;">Complication</label>
+                                <div class="form-check form-check-inline">
+                                  <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name=""
+                                    id="uvcNo"
+                                    formControlName="AUacomplication"
+                                    value="1"
+                                    (click)="toggleRadio('AUacomplication', '1')"
+                                  />
+                                  <label class="form-check-label" for="uvcNo"
+                                    >No</label
+                                  >
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name=""
+                                    id="uvcYes"
+                                    formControlName="AUacomplication"
+                                    value="0"
+                                    (click)="toggleRadio('AUacomplication', '0')"
+                                  />
+                                  <label class="form-check-label" for="uvcYes"
+                                    >Yes</label
+                                  >
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="col-5 d-flex justify-content-end">
+                        <div class="">
+                          <label class="form-check-label mx-3" for="intubYes"
+                            >Date of Remova</label
+                          >
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div class="header-date">
+                                <span
+                                  _ngcontent-ufq-c103=""
+                                  style="
+                                    position: relative;
+                                    top: 30px;
+                                    right: 4px;
+                                    float: right;
+                                    margin-top: -26px;
+                                    font-size: 18px;
+                                  "
+                                >
+                                  <img src="assets/img/Calender.svg" alt="" />
+                                </span>
+  
+                                <input
+                                  formControlName="AUaremoval"
+                                  class="form-control"
+                                  style="color: #000; border-radius: 8px"
+                                  type="text"
+                                  placeholder=""
+                                  [minDate]=""
+                                  [maxDate]=""
+                                  #dp="bsDatepicker"
+                                  bsDatepicker
+                                  [bsConfig]="{
+                                    showWeekNumbers: false,
+                                    dateInputFormat: 'DD.MM.YYYY'
+                                  }"
+                                />
+                              </div>
+                          <input
+                            type="text"
+                            class="form-control mt-2"
+                            style="width:250px;"
+                            placeholder=""
+                            formControlName="AUacomplicationsT"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
-                                    <div style="display: flex;justify-content:space-between;margin-top:20px;width: 80%;">
-                    <div>
-                                            <label class="form-check-label" for="uac">Complication</label>
-                      <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="" id="uvcNo" formControlName="AUacomplication">
-                        <label class="form-check-label" for="uvcNo">No</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="" id="uvcYes" formControlName="AUacomplication">
-                        <label class="form-check-label" for="uvcYes">Yes</label>
-                      </div>
-                    </div>
-                    <div>
-                                            <input type="text" class="form-control" placeholder="" formControlName="AUacomplicationsT">
-                    </div>
-                  </div>
                 </div>
-              </div>
 
-              <!-- Comment -->
-              <div class="mb-2 row">
-                <div class="col-2">
-                  <div class="form-check form-check-inline">
+                <!-- Comment -->
+                <div class="mb-2 row">
+                  <div class="col-2">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="comment"
+                        formControlName="AComment"
+                      />
+                      <label class="form-check-label" for="comment"
+                        >Comment</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-10">
                     <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="comment"
-                      formControlName="AComment"
+                      type="text"
+                      class="form-control"
+                      formControlName="ACommentT"
                     />
-                    <label class="form-check-label" for="comment"
-                      >Comment</label
-                    >
                   </div>
                 </div>
-                <div class="col-10">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="ACommentT"
-                  />
-                </div>
               </div>
-            </div>
             </div>
 
             <div *ngIf="selectedTabName === 'Genitalia'">
@@ -2902,8 +3105,10 @@
                 </div>
                 <div class="row mt-2">
                   <div class="form-check form-check-inline">
-                    <label class="form-check-label" style="min-width:100px">Vit.K</label>
-                    <ng-select formControlName="VitK" style="width:100%;">
+                    <label class="form-check-label" style="min-width: 100px"
+                      >Vit.K</label
+                    >
+                    <ng-select formControlName="VitK" style="width: 100%">
                       <ng-option value="0">Yes</ng-option>
                       <ng-option value="1">No</ng-option>
                     </ng-select>
@@ -2911,8 +3116,10 @@
                 </div>
                 <div class="row my-2">
                   <div class="form-check form-check-inline">
-                    <label class="form-check-label" style="min-width:100px">Hep.B</label>
-                    <ng-select formControlName="HepB" style="width:100%;">
+                    <label class="form-check-label" style="min-width: 100px"
+                      >Hep.B</label
+                    >
+                    <ng-select formControlName="HepB" style="width: 100%">
                       <ng-option value="0">Yes</ng-option>
                       <ng-option value="1">No</ng-option>
                     </ng-select>
@@ -2920,7 +3127,9 @@
                 </div>
                 <div class="row">
                   <div class="form-check d-flex w-100">
-                    <label class="form-check-label" style="min-width:100px">Comment</label>
+                    <label class="form-check-label" style="min-width: 100px"
+                      >Comment</label
+                    >
                     <textarea
                       class="form-control w-100"
                       formControlName="Comments"
