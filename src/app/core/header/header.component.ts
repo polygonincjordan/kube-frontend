@@ -367,15 +367,18 @@ export class HeaderComponent implements OnInit {
     let redirectPoint: any;
     localStorage.setItem('admit_process', JSON.stringify(false));
     if(this.urlPath.includes('emr')) {
-      redirectPoint = `/e-kardex?`;
+      // redirectPoint = `/e-kardex?`;
+      redirectPoint = `/${this.urlPath.replace("emr", "e-kardex?")}`;
     } else if(this.urlPath.includes('e-hospitalist')) {
-      if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03') {
-        redirectPoint = `/admit-process?`;
+      // if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03') {
+        redirectPoint = `/${this.urlPath.replace("e-hospitalist", "admit-process?")}`;
         localStorage.setItem('admit_process', JSON.stringify(true));
-      } else {
-        redirectPoint = `/discharge-process?`;
-        localStorage.setItem('admit_process', JSON.stringify(true));
-      }
+      // }
+      //  else {
+      //   // redirectPoint = `/discharge-process?`;
+      //   redirectPoint = `/${this.urlPath.replace("e-hospitalist", "discharge-process?")}`;
+      //   localStorage.setItem('admit_process', JSON.stringify(true));
+      // }
     } else {
       redirectPoint = `/${this.urlPath}?`;
     }

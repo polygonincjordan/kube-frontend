@@ -130,7 +130,7 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
   selectedDislike() {
     // this.dislikeFoodForm.get('Foodid')?.valueChanges.subscribe((selectedIds: any) => {
-      this.selectedDislikes = this.dislikeList.filter(food => this.dislikeFoodForm.get('Foodid').value.includes(food.FoodprefId));
+    this.selectedDislikes = this.dislikeList.filter(food => this.dislikeFoodForm.get('Foodid').value.includes(food.FoodprefId));
     // });
   }
 
@@ -318,7 +318,7 @@ export class PatientsDietMealComponentNew implements OnInit {
   foodPrefDetails() {
     this.emergencyService.fetchFoodPrefList().subscribe((res: any) => {
       // this.dislikeList = res?.d?.results;
-  
+
     })
   }
   dietMealOrderDetails() {
@@ -610,6 +610,50 @@ export class PatientsDietMealComponentNew implements OnInit {
     delete payload.calories
     delete payload.sodium
     delete payload.Irradiated
+    payload.ToDietSpecs = [
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "DietarySchema": "DEFA",
+        "DietaryCode": "A010",
+        "Specificartion": "Carbohydrates",
+        "Value": payload.carbohydrates
+      },
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "DietarySchema" : "DEFA",
+        "DietaryCode" : "A020",
+        "Specificartion" : "Proteins",
+        "Value": payload.proteins
+      },
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "DietarySchema" : "DEFA",
+        "DietaryCode" : "A030",
+        "Specificartion" : "Calories",
+        "Value": payload.calories
+      },
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "DietarySchema" : "DEFA",
+        "DietaryCode" : "A040",
+        "Specificartion" : "Sodium",
+        "Value": payload.sodium
+      },
+    ]
+    console.log(payload, "payload");
+
     this.emergencyService.saveDeitMealOrder(payload).subscribe((res: any) => {
       this.savedDietMealOrderDetails = res?.d;
       this.getOrderDetails();
@@ -849,12 +893,12 @@ export class PatientsDietMealComponentNew implements OnInit {
       }, (error) => {
 
       })
-    } else if(item?.Orderstatusdesc === 'Saved'){
+    } else if (item?.Orderstatusdesc === 'Saved') {
       Swal.fire({
         text: 'Order Cannot be Cancelled',
         icon: 'warning',
       })
-    } else if(item?.Orderstatusdesc === 'Cancelled'){
+    } else if (item?.Orderstatusdesc === 'Cancelled') {
       Swal.fire({
         text: 'The Order is Already Cancelled',
         icon: 'warning',

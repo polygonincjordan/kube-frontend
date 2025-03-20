@@ -23,7 +23,7 @@
         <img src="assets/img/grid-icon.svg">
         Correspondence Document
       </span>
-      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment' && inPatientFormInput !== 'Correspondence Document'">
+      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment' && inPatientFormInput !== 'Correspondence Document' && inPatientFormInput != 'visitnote'">
         <button type="button" (click)="saveForm()">Save</button>
         <button type="button" (click)="releaseForm()">Release</button>
         <button type="button" *ngIf="isDelete" (click)="deleteForm()">Delete</button>
@@ -44,7 +44,7 @@
       <div class="right-button-group" *ngIf="inPatientFormInput === 'Correspondence Document'">
         <button type="button" (click)="saveCorrespondenceDocument()">Save</button>
         <button type="button" (click)="releaseCorresponde()">Release</button>
-        <button type="button" *ngIf="isDelete" (click)="deletePhdisForm()">Delete</button>
+        <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
         <button type="button"(click)="closeInPatientForm()">Close</button>
       </div>
 
@@ -407,9 +407,10 @@
               <label for="surgery-date" class="col-form-label">Discharge Date</label>
             </div>
             <div class="col-md-3 pl-0 mb-2">
-              <input #drp="bsDatepicker" bsDatepicker [bsConfig]="{
-                dateInputFormat: 'DD.MM.YYYY',showWeekNumbers: false}"
-                class="form-control height-normal" formControlName="Date">
+              <div class="date-function mr-4" style=" border-radius: 8px; position: relative; top: -8px; min-width: 61%;">
+                    <img src="assets/img/Calender.svg" alt="" style="position: relative; top: 37px; right: 6px; float: right; transform: translateY(-50%);" />
+                    <input #drp="bsDatepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY',showWeekNumbers: false}" class="form-control height-normal" formControlName="Date">
+              </div>
             </div>
             <div class="col-md-6 p-0"></div>
             <div class="col-md-3 pl-0">
@@ -478,6 +479,9 @@
           </div>
         </div>
       </form>
+    </ng-container>
+    <ng-container *ngIf="inPatientFormInput === 'visitnote'">
+      <app-visit-form  [patientVisitData]="patientVisitRecord" (updateEvent)="updateForm($event)"></app-visit-form>
     </ng-container>
     <ng-container *ngIf="inPatientFormInput === 'PhysicianAssessment'">
       <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>

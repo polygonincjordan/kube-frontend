@@ -595,11 +595,14 @@
 }
 
 .complex-table-container {
-  height: 130px;
+  height: 180px;
   overflow: auto;
   padding-left: 20px;
   table th {
-    padding: 5px;
+    padding: 5px !important;
+  }
+  td {
+    padding: 5px !important;
   }
 }
 .update-risk-save-btn {

@@ -117,16 +117,11 @@
           </div>
           <div class="col-md-9 pl-0 mb-2 d-flex">
             <div class="col-md-6 pl-0">
-              <input
-                #drp="bsDatepicker"
-                bsDatepicker
-                [bsConfig]="{
-                  dateInputFormat: 'DD.MM.YYYY',
-                  showWeekNumbers: false
-                }"
-                class="form-control height-normal"
-                formControlName="Date"
-              />
+              <div class="date-function mr-4" style=" border-radius: 8px; position: relative; top: -8px; min-width: 61%;">
+                    <span class="pn-input-title z-indexlabel">Date </span>
+                    <img src="assets/img/Calender.svg" alt="" style="position: relative; top: 37px; right: 6px; float: right; transform: translateY(-50%);" />
+                    <input #drp="bsDatepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" class="form-control height-normal" formControlName="Date" />
+                </div>
             </div>
             <div class="col-md-6 pl-0">
               <input

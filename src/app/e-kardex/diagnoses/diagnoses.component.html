@@ -3,11 +3,12 @@
     <!-- in patient form start -->
     <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
       inPatientShow && !inPatientSoapForm">
-      <diagnoses-in-patient (onClose)="loadinPatientPanel($event)"
+      <diagnoses-in-patient (onClose)="loadinPatientPanel($event)" [patientVisitRecord]="patientVisitRecord"
         [userConfigSet]="userconfig"
         (updateEvent)="updateInPatientForm($event)"
         [inPatientVisitData]="inPatientVisitData" [inPatientDischargeData]="inPatientDischargeData" [selectedPatient]="selectedPatient"
         [inPatientForm]="inPatientForm"></diagnoses-in-patient>
+
     </div>
     <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
       inPatientSoapForm">
@@ -119,7 +120,7 @@
               <div class="bottom">
                 <button (click)="saveCorrespondenceDocument()" >Save</button>
                 <button (click)="releaseCorresponde()">Release</button>
-                <!-- <button (click)="deleteCorrespondeDoc()">Delete</button> -->
+                <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
                 <button (click)="updateForm(false)">Close</button>
               </div>
             </div>
