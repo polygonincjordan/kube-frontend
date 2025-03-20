@@ -174,6 +174,9 @@ export class DocumentationComponent implements OnInit {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_PHASM') {
             this.deletePhysicianAssessDoc();
           }
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NBASM') {
+            this.deleteNewBornPassDoc();
+          }
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_VISIT') {
             console.log(this.admissionService.selectedCurrentDocDetails);
             this.deleteVisitNoteDocument();
@@ -322,6 +325,9 @@ export class DocumentationComponent implements OnInit {
     }
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_VISIT') {
       this.releaseVisitNoteDoc();
+    }
+    if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NBASM') {
+      this.releaseNewBorn();
     }
   }
 
@@ -647,6 +653,13 @@ getOperationReport() {
         this.admissionService.isRealoadData.next(true);
       });
   }
+  deleteNewBornPassDoc() {
+    this.emergencyService
+      .deleteNewBornDoc(this.admissionService.selectedCurrentDocDetails.Dockey)
+      .subscribe(() => {
+        this.admissionService.isRealoadData.next(true);
+      });
+  }
 
   deleteVisitNoteDocument() {
     this.admissionService
@@ -701,6 +714,20 @@ getOperationReport() {
       .subscribe((patientResult: any) => {
         this.admissionService.isRealoadData.next(true);
       });
+}
+
+releaseNewBorn() {
+  this.emergencyService.getNewBornDetail(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
+    let d: any = {
+      d: res?.d?.results[0],
+    };
+    d.d.DocStatus = '2';
+    this.admissionService.createNewBorn(d).subscribe(
+      (result) => {
+        this.admissionService.isRealoadData.next(true);
+      }
+    );
+  })
 }
   //
 }

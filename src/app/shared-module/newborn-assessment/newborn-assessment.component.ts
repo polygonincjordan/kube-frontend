@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '@services/storage.service';
@@ -16,10 +16,12 @@ import { ActionType } from '@services/interfaces/common.enum';
   templateUrl: './newborn-assessment.component.html',
   styleUrls: ['./newborn-assessment.component.scss']
 })
-export class NewbornAssessmentComponent implements OnInit {
+export class NewbornAssessmentComponent implements OnInit ,OnChanges {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
     @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output() realodEducationList = new EventEmitter();
     @Input () callFunction :any
+    @Input() soapFormEvent: string = '';
   newBornForm:FormGroup
   selectedTabName: string = 'Skin';
   isChecked: any;
@@ -47,8 +49,19 @@ export class NewbornAssessmentComponent implements OnInit {
   ];
 
   public weight = [
-    {value : '0',label:'0 gm'},
-    {value : '1',label:'1 kg'}
+    {value : '0',label:'gm'},
+    {value : '1',label:'kg'}
+  ]
+  public Breath = [
+    {value : '0',label:'Equal'},
+    {value : '1',label:' Wheezes/Rales'},
+    {value : '2',label:'Diminished'},
+    {value : '3',label:'Others'},
+  ]
+  public Moro = [
+    {value : '0',label:'Complete'},
+    {value : '1',label:'InComplete'},
+    {value : '2',label:'Absent'},
   ]
 
   public skinColorList = [
@@ -77,7 +90,6 @@ export class NewbornAssessmentComponent implements OnInit {
       this.storageService.setPatnr(this.paramsObject.patnr);
       // this.getPatinetDetails(this.encounterId);
     });
-
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {      
           if (data != null) {
             if (data.type == ActionType.Add$ && data.value == '') {
@@ -98,8 +110,144 @@ export class NewbornAssessmentComponent implements OnInit {
 
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+      if (changes.soapFormEvent.currentValue == 'add') {
+       this.createDoc('1','add')
+      }
+      if (changes.soapFormEvent.currentValue == 'edit') {
+        this.createDoc('1','edit')
+      }
+      if (changes.soapFormEvent.currentValue == 'release') {
+        this.createDoc('2','edit')
+      }
+      if (
+        this.admissionService.isEditBornForm ||
+        this.admissionService.isCloneNewBornForm
+      ) {
+        this.getDocument();
+      }
+    }
+
   ngOnInit(): void {
-   this.initForm()
+    this.initForm()
+    this.newBornForm.get('SSkincolorT')?.disable();
+    this.newBornForm.get('SSkincolor')?.valueChanges.subscribe(value => {
+      if (value === '7') {
+        this.newBornForm.get('SSkincolorT')?.enable();
+    } else {
+      this.newBornForm.get('SSkincolorT')?.disable();
+      this.newBornForm.get('SSkincolorT')?.setValue(''); // Clear input if disabled
+    }
+  });
+  
+    this.newBornForm.get('CrBreathSounds')?.valueChanges.subscribe(value => {
+    if (value === '3') {
+      this.newBornForm.get('CrBreathSoundt')?.enable();
+    } else {
+      this.newBornForm.get('CrBreathSoundt')?.disable();
+      this.newBornForm.get('CrBreathSoundt')?.setValue(''); // Clear input if disabled
+    }
+   });
+
+   let storedPatientStr = localStorage.getItem('myPatient')
+   if (storedPatientStr) {
+    let storedPatient = JSON.parse(storedPatientStr); 
+    let genderString = storedPatient.gender;
+    if (genderString.includes('Female')) {
+      this.newBornForm.get('Gender')?.setValue('Female'); 
+    } else if (genderString.includes('Male')) {
+      this.newBornForm.get('Gender')?.setValue('Male');
+    }
+  }
+  
+  }
+
+  toggleInput(checkboxName: string, inputName: string) {
+    const checkboxControl = this.newBornForm.get(checkboxName);
+    const inputControl = this.newBornForm.get(inputName);
+    if (checkboxControl?.value) {
+      inputControl?.enable();
+      if(checkboxName == 'AShape'){
+        this.newBornForm.get('AShapeNa')?.setValue('0');
+      }
+      if(checkboxName == 'AUvc'){
+        this.newBornForm.get('AUcomplication')?.setValue('1');
+        this.newBornForm.get('AUinsertion')?.enable();
+        this.newBornForm.get('AUremoval')?.enable();
+      }
+      if(checkboxName == 'AUac'){
+        this.newBornForm.get('AUacomplication')?.setValue('1');
+        this.newBornForm.get('AUainsertion')?.enable();
+        this.newBornForm.get('AUaremoval')?.enable();
+      }
+      if(checkboxName == 'CrIntubated'){
+        this.newBornForm.get('CrIntubatedYn')?.setValue('1');
+      }
+      if(checkboxName == 'CrReintubation'){
+        this.newBornForm.get('CrReintubationYn')?.setValue('1');
+      }
+      if(checkboxName == 'HfAnterior'){
+        this.newBornForm.get('HfAnteriorOc')?.setValue('0');
+      }
+      if(checkboxName == 'HfPosterior'){
+        this.newBornForm.get('HfPosteriorOc')?.setValue('0');
+      }
+    } else {
+      inputControl?.disable();
+      inputControl?.setValue('');
+      if(checkboxName == 'AShape'){
+        this.newBornForm.get('AShapeT')?.disable();
+      }
+      if(checkboxName == 'AUvc'){
+        this.newBornForm.get('AUcomplication')?.disable();
+        this.newBornForm.get('AUinsertion')?.disable();
+        this.newBornForm.get('AUremoval')?.disable();
+        this.newBornForm.get('AUcomplicationT')?.disable();
+      }
+      if(checkboxName == 'AUac'){
+        this.newBornForm.get('AUacomplicationsT')?.disable();
+        this.newBornForm.get('AUacomplication')?.disable();
+        this.newBornForm.get('AUainsertion')?.disable();
+        this.newBornForm.get('AUaremoval')?.disable();
+      }
+      if(checkboxName == 'HfAnterior'){
+        this.newBornForm.get('HfAnteriorOc')?.disable();
+        this.newBornForm.get('HfAother')?.disable();
+        this.newBornForm.get('HfAsize')?.disable();
+        this.newBornForm.get('HfAother')?.setValue('');
+        this.newBornForm.get('HfAsize')?.setValue('');
+      }
+      if(checkboxName == 'HfPosterior'){
+        this.newBornForm.get('HfPosteriorOc')?.disable();
+        this.newBornForm.get('HfPother')?.disable();
+        this.newBornForm.get('HfPsize')?.disable();
+        this.newBornForm.get('HfPother')?.setValue('');
+        this.newBornForm.get('HfPsize')?.setValue('');
+      }
+      if(checkboxName == 'CrIntubated'){
+        this.newBornForm.get('CrIntubatedYn')?.disable();
+        this.newBornForm.get('CrItubeSize')?.disable();
+        this.newBornForm.get('CrItubeLevel')?.disable();
+        this.newBornForm.get('CrIintubation')?.disable();
+        this.newBornForm.get('CrIextubation')?.disable();
+        this.newBornForm.get('CrIntubatedYn')?.setValue('');
+        this.newBornForm.get('CrItubeSize')?.setValue('');
+        this.newBornForm.get('CrItubeLevel')?.setValue('');
+        this.newBornForm.get('CrIintubation')?.setValue('');
+        this.newBornForm.get('CrIextubation')?.setValue('');
+
+      }
+      if(checkboxName == 'CrReintubation'){
+        this.newBornForm.get('CrRtubeSize')?.disable();
+        this.newBornForm.get('CrRtubeLevel')?.disable();
+        this.newBornForm.get('CrRdate')?.disable();
+        this.newBornForm.get('CrRentryDate')?.disable();
+        this.newBornForm.get('CrRtubeSize')?.setValue('');
+        this.newBornForm.get('CrRtubeLevel')?.setValue('');
+        this.newBornForm.get('CrRdate')?.setValue('');
+        this.newBornForm.get('CrRentryDate')?.setValue('');
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -121,15 +269,15 @@ export class NewbornAssessmentComponent implements OnInit {
         AssessedBy : [data?.AssessedBy || ''],
         BirthDate : [this.getDate(data?.BirthDate) || null],
         BirthTime : [this.parseTime(data?.BirthTime) || null],
-        BirthWeight : [data?.BirthWeight || null,Validators.required],
+        BirthWeight : [data?.BirthWeight || null,[Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
         WeightUnit : [data?.WeightUnit || ''],
-        HeadCircum : [data?.HeadCircum || '',Validators.required],
-        BabyLength : [data?.BabyLength || null,Validators.required],
-        ChestCircum : [data?.ChestCircum || null,Validators.required],
-        Gestation : [data?.Gestation || null,Validators.required],
-        Gender : [data?.Gender || ''],
+        HeadCircum : [data?.HeadCircum || '',[Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
+        BabyLength : [data?.BabyLength || null,[Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
+        ChestCircum : [data?.ChestCircum || null,[Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
+        Gestation : [data?.Gestation || null,[Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
+        Gender : [''],
         SSkincolor : [data?.SSkincolor || ''],
-        SSkincolorT : [data?.SSkincolorT || ''],
+        SSkincolorT : [data?.SSkincolorT ||''],
         SaNormal : [data?.SaNormal || false],
         SaRash : [data?.SaRash || false],
         SaBruising : [data?.SaBruising || false],
@@ -149,32 +297,32 @@ export class NewbornAssessmentComponent implements OnInit {
         HsOverriding : [data?.HsOverriding || false],
         HsCephalhema : [data?.HsCephalhema || false],
         HsOther : [data?.HsOther || false],
-        HsOtherT : [data?.HsOtherT || ''],
+        HsOtherT : [data?.HsOtherT || { value: '', disabled: true }],
         HfAnterior : [data?.HfAnterior || false],
-        HfAnteriorOc : [data?.HfAnteriorOc || ''],  
-        HfAother : [data?.HfAother || ''],
-        HfAsize : [data?.HfAsize || ''],
+        HfAnteriorOc : [data?.HfAnteriorOc ||  { value: '', disabled: true }],  
+        HfAother : [data?.HfAother ||  { value: '', disabled: true }],
+        HfAsize : [data?.HfAsize ||  { value: '', disabled: true }],
         HfPosterior : [data?.HfPosterior || false],
-        HfPosteriorOc : [data?.HfPosteriorOc || ''],
-        HfPother : [data?.HfPother || ''],
-        HfPsize : [data?.HfPsize || ''],
+        HfPosteriorOc : [data?.HfPosteriorOc || { value: '', disabled: true }],
+        HfPother : [data?.HfPother ||{ value: '', disabled: true }],
+        HfPsize : [data?.HfPsize || { value: '', disabled: true }],
         HeNormal : [data?.HeNormal || false],
         HeLowSet : [data?.HeLowSet || false],
         HePreauricular : [data?.HePreauricular || false],
         HeBleeding : [data?.HeBleeding || false],
         HeOther : [data?.HeOther || false],
-        HeOtherT : [data?.HeOtherT || ''],
+        HeOtherT : [data?.HeOtherT || { value: '', disabled: true }],
         HeyClear : [data?.HeyClear || false],
         HeyScleral : [data?.HeyScleral || false],
         HeyEdema : [data?.HeyEdema || false],
         HeyConjunct : [data?.HeyConjunct || false],
         HeyRed : [data?.HeyRed || false],
         HeyOther : [data?.HeyOther || false],
-        HeyOtherT : [data?.HeyOther || ''],
+        HeyOtherT : [data?.HeyOtherT || { value: '', disabled: true }],
         HnNostrils : [data?.HnNostrils || false],
         HnClosed : [data?.HnClosed || false],
         HnOther : [data?.HnOther || false],
-        HnOtherT : [data?.HnOtherT || ''],
+        HnOtherT : [data?.HnOtherT ||{ value: '', disabled: true }],
         HmNormal : [data?.HmNormal || false],
         HmMovement : [data?.HmMovement || false],
         HmSymmetry : [data?.HmSymmetry || false],
@@ -182,17 +330,17 @@ export class NewbornAssessmentComponent implements OnInit {
         HmCleftLip : [data?.HmCleftLip || false],
         HmCleftPalate : [data?.HmCleftPalate || false],
         HmOther : [data?.HmOther || false],
-        HmOtherT : [data?.HmOtherT || ''],
+        HmOtherT : [data?.HmOtherT || { value: '', disabled: true }],
         HnNormal : [data?.HnNormal || false],
         HnShort : [data?.HnShort || false],
         HnStraight : [data?.HnStraight || false],
         HnWebbing : [data?.HnWebbing || false],
         HnNother : [data?.HnNother || false],
-        HnNotherT : [data?.HnNotherT || ''],
+        HnNotherT : [data?.HnNotherT || { value: '', disabled: true }],
         CcSymmetrical : [data?.CcSymmetrical || false],
         CcAssymetrical : [data?.CcAssymetrical || false],
         CcOther : [data?.CcOther || false],
-        CcOtherT : [data?.CcOtherT || ''],
+        CcOtherT : [data?.CcOtherT || { value: '', disabled: true }],
         CcaRegularHr : [data?.CcaRegularHr || false],
         CcaIrregularHr : [data?.CcaIrregularHr || false],
         CcaBradycardia : [data?.CcaBradycardia || false],
@@ -204,7 +352,7 @@ export class NewbornAssessmentComponent implements OnInit {
         CcaBrachial : [data?.CcaBrachial || false],
         CcaRadial : [data?.CcaRadial || false],
         CcaOther : [data?.CcaOther || false],
-        CcaOtherT : [data?.CcaOtherT || ''],
+        CcaOtherT : [data?.CcaOtherT || { value: '', disabled: true }],
         CrRegularRr : [data?.CrRegularRr || false],
         CrIrregularRr : [data?.CrIrregularRr || false],
         CrGrunt : [data?.CrGrunt || false],
@@ -214,54 +362,54 @@ export class NewbornAssessmentComponent implements OnInit {
         CrApnea : [data?.CrApnea || false],
         CrRecession : [data?.CrRecession || false],
         CrOther : [data?.CrOther || false],
-        CrOtherT : [data?.CrOtherT || ''],
+        CrOtherT : [data?.CrOtherT || { value: '', disabled: true }],
         CrBreathSound : [data?.CrBreathSound || false],
-        CrBreathSounds : [data?.CrBreathSounds || ''],
-        CrBreathSoundt : [data?.CrBreathSoundt || ''],
+        CrBreathSounds : [data?.CrBreathSounds || { value: '', disabled: true }],
+        CrBreathSoundt : [data?.CrBreathSoundt || { value: '', disabled: true }],
         CrIntubated : [data?.CrIntubated || false],
-        CrIntubatedYn : [data?.CrIntubatedYn || ''],
-        CrItubeSize : [data?.CrItubeSize || ''],
-        CrItubeLevel : [data?.CrItubeLevel || ''],
-        CrIintubation : [data?.CrIintubation || null],
-        CrIextubation : [data?.CrIextubation || null],
+        CrIntubatedYn : [data?.CrIntubatedYn ||{ value: '', disabled: true }],
+        CrItubeSize : [data?.CrItubeSize || { value: '', disabled: true }],
+        CrItubeLevel : [data?.CrItubeLevel || { value: '', disabled: true }],
+        CrIintubation : [data?.CrIintubation || { value: null, disabled: true }],
+        CrIextubation : [data?.CrIextubation || { value: null, disabled: true }],
         CrReintubation : [data?.CrReintubation || false],
         CrReintubationYn : [data?.CrReintubationYn || ''],
-        CrRtubeSize : [data?.CrRtubeSize || ''],
-        CrRtubeLevel : [data?.CrRtubeLevel || ''],
-        CrRdate : [data?.CrRdate || null],
-        CrRentryDate : [data?.CrRentryDate || null],
+        CrRtubeSize : [data?.CrRtubeSize || { value: '', disabled: true }],
+        CrRtubeLevel : [data?.CrRtubeLevel || { value: '', disabled: true }],
+        CrRdate : [data?.CrRdate || { value: null, disabled: true }],
+        CrRentryDate : [data?.CrRentryDate || { value: null, disabled: true }],
         CbNormal : [data?.CbNormal || false],
         CbAccessory : [data?.CbAccessory || false],
         CbNodule : [data?.CbNodule || false],
         CbOther : [data?.CbOther || false],
-        CbOtherT : [data?.CbOtherT || ''],
+        CbOtherT : [data?.CbOtherT || { value: '', disabled: true }],
         AAbdominal : [data?.AAbdominal || ''],
-        AAbdominalT : [data?.AAbdominalT || ''],
+        AAbdominalT : [data?.AAbdominalT || { value: '', disabled: true }],
         ALiver : [data?.ALiver || ''],
-        ALiverT : [data?.ALiverT || ''],
+        ALiverT : [data?.ALiverT || { value: '', disabled: true }],
         ASpleen : [data?.ASpleen || ''],
-        ASpleenT : [data?.ASpleenT || ''],
+        ASpleenT : [data?.ASpleenT ||{ value: '', disabled: true }],
         AKidney : [data?.AKidney || ''],
-        AKidneyT : [data?.AKidneyT || ''],
+        AKidneyT : [data?.AKidneyT || { value: '', disabled: true }],
         AHernia : [data?.AHernia || ''],
-        AHerniaT : [data?.AHerniaT || ''],
+        AHerniaT : [data?.AHerniaT ||{ value: '', disabled: true }],
         AArteries : [data?.AArteries || false],
-        AArteriesT : [data?.AArteriesT || ''],
+        AArteriesT : [data?.AArteriesT || { value: '', disabled: true }],
         AShape : [data?.AShape || false],
-        AShapeNa : [data?.AShapeNa || ''],
-        AShapeT : [data?.AShapeT || ''],
+        AShapeNa : [data?.AShapeNa || { value: '', disabled: true }],
+        AShapeT : [data?.AShapeT || { value: '', disabled: true }],
         AVeins : [data?.AVeins || false],
-        AVeinsT : [data?.AVeinsT || ''],
+        AVeinsT : [data?.AVeinsT || { value: '', disabled: true }],
         AUvc : [data?.AUvc || false],
-        AUinsertion : [data?.AUinsertion || null],
-        AUremoval : [data?.AUremoval || null],
-        AUcomplication : [data?.AUcomplication || ''],
-        AUcomplicationT : [data?.AUcomplicationT || ''],
+        AUinsertion : [data?.AUinsertion || { value: null, disabled: true }],
+        AUremoval : [data?.AUremoval || { value: null, disabled: true }],
+        AUcomplication : [data?.AUcomplication || { value: '', disabled: true }],
+        AUcomplicationT : [data?.AUcomplicationT || { value: '', disabled: true }],
         AUac : [data?.AUac || false],
-        AUainsertion : [data?.AUainsertion || null],
-        AUaremoval : [data?.AUaremoval || null],
-        AUacomplication : [data?.AUacomplication || ''],
-        AUacomplicationsT : [data?.AUacomplicationsT || ''],
+        AUainsertion : [data?.AUainsertion || { value: null, disabled: true }],
+        AUaremoval : [data?.AUaremoval || { value: null, disabled: true }],
+        AUacomplication : [data?.AUacomplication || { value: '', disabled: true }],
+        AUacomplicationsT : [data?.AUacomplicationsT || { value: '', disabled: true }],
         AComment : [data?.AComment || false],
         ACommentT : [data?.ACommentT || ''],
         GmNormal : [data?.GmNormal || false],
@@ -270,56 +418,56 @@ export class NewbornAssessmentComponent implements OnInit {
         GmTestes : [data?.GmTestes || false],
         GmHypoxemia : [data?.GmHypoxemia || false],
         GmOther : [data?.GmOther || false],
-        GmOtherT : [data?.GmOtherT || ''],
+        GmOtherT : [data?.GmOtherT || { value: '', disabled: true }],
         GfNormal : [data?.GfNormal || false],
         GfVaginal : [data?.GfVaginal || false],
         GfHymenal : [data?.GfHymenal || false],
         GfEdema : [data?.GfEdema || false],
         GfOther : [data?.GfOther || false],
-        GfOtherT : [data?.GfOtherT || ''],
+        GfOtherT : [data?.GfOtherT || { value: '', disabled: true }],
         GaPatent : [data?.GaPatent || false],
         GaHemorrh : [data?.GaHemorrh || false],
         GaOther : [data?.GaOther || false],
-        GaOtherT : [data?.GaOtherT || ''],
+        GaOtherT : [data?.GaOtherT || { value: '', disabled: true }],
         GtDimple : [data?.GtDimple || false],
         GtOther : [data?.GtOther || false],
-        GtOtherT : [data?.GtOtherT || ''],
+        GtOtherT : [data?.GtOtherT || { value: '', disabled: true }],
         GComment : [data?.GComment || ''],
         MmNormal : [data?.MmNormal || false],
         MmTremors : [data?.MmTremors || false],
         MmHypotonic : [data?.MmHypotonic || false],
         MmHypertonic : [data?.MmHypertonic || false],
         MmOther : [data?.MmOther || false],
-        MmOtherT : [data?.MmOtherT || ''],
+        MmOtherT : [data?.MmOtherT || { value: '', disabled: true }],
         MrMoro : [data?.MrMoro || false],
-        MrMoroV : [data?.MrMoroV || ''],
+        MrMoroV : [data?.MrMoroV || { value: '', disabled: true }],
         MrRooting : [data?.MrRooting || false],
         MrStepping : [data?.MrStepping || false],
         MrGag : [data?.MrGag || false],
         MrSucking : [data?.MrSucking || false],
         MrGrasp : [data?.MrGrasp || false],
         MrOther : [data?.MrOther || false],
-        MrOtherT : [data?.MrOtherT || ''],
+        MrOtherT : [data?.MrOtherT ||{ value: '', disabled: true }],
         McNormal : [data?.McNormal || false],
         McWeak : [data?.McWeak || false],
         McHigh : [data?.McHigh || false],
         McAbsent : [data?.McAbsent || false],
         McOther : [data?.McOther || false],
-        McOtherT : [data?.McOtherT || ''],
+        McOtherT : [data?.McOtherT || { value: '', disabled: true }],
         MaActive : [data?.MaActive || false],
         MaLethargic : [data?.MaLethargic || false],
         MaNoResponse : [data?.MaNoResponse || false],
         MaHypooactive : [data?.MaHypooactive || false],
         MaHyperactive : [data?.MaHyperactive || false],
         MaOther : [data?.MaOther || false],
-        MaOtherT : [data?.MaOtherT || ''],
+        MaOtherT : [data?.MaOtherT || { value: '', disabled: true }],
         MuNormal : [data?.MuNormal || false],
         MuFractures : [data?.MuFractures || false],
         MuClavicle : [data?.MuClavicle || false],
         MuSyndactyly : [data?.MuSyndactyly || false],
         MuPolydactyly : [data?.MuPolydactyly || false],
         MuOther : [data?.MuOther || false],
-        MuOtherT : [data?.MuOtherT || ''],
+        MuOtherT : [data?.MuOtherT || { value: '', disabled: true }],
         MlNormal : [data?.MlNormal || false],
         MlHipClick : [data?.MlHipClick || false],
         MlFractures : [data?.MlFractures || false],
@@ -327,12 +475,12 @@ export class NewbornAssessmentComponent implements OnInit {
         MlPolydactyly : [data?.MlPolydactyly || false],
         MlTalipes : [data?.MlTalipes || false],
         MlOther : [data?.MlOther || false],
-        MlOtherT : [data?.MlOtherT || ''],
+        MlOtherT : [data?.MlOtherT || { value: '', disabled: true }],
         MPalmarCreases : [data?.MPalmarCreases || false],
-        MPalmarCreasesT : [data?.MPalmarCreasesT || ''],
+        MPalmarCreasesT : [data?.MPalmarCreasesT ||{ value: '', disabled: true }],
         MComment : [data?.MComment || ''],
         MMalformation : [data?.MMalformation || ''],
-        MMalformationT : [data?.MMalformationT || ''],
+        MMalformationT : [data?.MMalformationT || { value: '', disabled: true }],
         GeneralImpression : [data?.GeneralImpression || ''],
         VitK : [data?.VitK || ''],
         HepB : [data?.HepB || ''],
@@ -344,16 +492,120 @@ export class NewbornAssessmentComponent implements OnInit {
     return this.newBornForm.get(field)?.invalid && (this.newBornForm.get(field)?.dirty || this.newBornForm.get(field)?.touched);
   }
 
-  toggleRadio(controlName: string, value: string) {
+  restrictToNumeric(event: any) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode < 48 || charCode > 57) && // Allow numbers 0-9
+      charCode !== 46 // Allow decimal point
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  toggleRadio(controlName: string, value: string,textinput?:string) {
     if (this.newBornForm.get(controlName)?.value === value) {
       this.newBornForm.get(controlName)?.setValue(null);
+    }
+    if (value === '1') {
+      if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia'){
+        this.newBornForm.get(textinput)?.disable();
+        this.newBornForm.get(textinput)?.setValue('');
+        if(controlName == 'CrIntubatedYn'){
+          this.newBornForm.get('CrItubeSize')?.disable();
+          this.newBornForm.get('CrItubeLevel')?.disable();
+          this.newBornForm.get('CrIintubation')?.disable();
+          this.newBornForm.get('CrIextubation')?.disable();
+          this.newBornForm.get('CrItubeSize')?.setValue('');
+          this.newBornForm.get('CrItubeLevel')?.setValue('');
+          this.newBornForm.get('CrIintubation')?.setValue('');
+          this.newBornForm.get('CrIextubation')?.setValue('');
+        }
+        if(controlName == 'CrReintubationYn'){
+          this.newBornForm.get('CrRtubeSize')?.disable();
+          this.newBornForm.get('CrRtubeLevel')?.disable();
+          this.newBornForm.get('CrRdate')?.disable();
+          this.newBornForm.get('CrRentryDate')?.disable();
+          this.newBornForm.get('CrRtubeSize')?.setValue('');
+          this.newBornForm.get('CrRtubeLevel')?.setValue('');
+          this.newBornForm.get('CrRdate')?.setValue('');
+          this.newBornForm.get('CrRentryDate')?.setValue('');
+        }
+        if(controlName == 'AHernia'){
+          this.newBornForm.get('AHerniaT')?.disable();
+          this.newBornForm.get('AHerniaT')?.setValue('');
+        }
+      }else{
+        this.newBornForm.get(textinput)?.enable(); // Enable input when abnormal (Yes)
+        if(controlName == 'HfAnteriorOc'){
+          this.newBornForm.get('HfAsize')?.enable();
+        }
+        if(controlName == 'HfPosteriorOc'){
+          this.newBornForm.get('HfPsize')?.enable();
+        }
+      }
+    } else {
+      if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia'){
+        this.newBornForm.get(textinput)?.enable();
+        if(controlName == 'CrIntubatedYn'){
+          this.newBornForm.get('CrItubeSize')?.enable();
+          this.newBornForm.get('CrItubeLevel')?.enable();
+          this.newBornForm.get('CrIintubation')?.enable();
+          this.newBornForm.get('CrIextubation')?.enable();
+        }
+        if(controlName == 'CrReintubationYn'){
+          this.newBornForm.get('CrRtubeSize')?.enable();
+          this.newBornForm.get('CrRtubeLevel')?.enable();
+          this.newBornForm.get('CrRdate')?.enable();
+          this.newBornForm.get('CrRentryDate')?.enable();
+        }
+
+        if(controlName == 'AHernia'){
+          this.newBornForm.get('AHerniaT')?.enable
+        }
+        
+      }else{
+        this.newBornForm.get(textinput)?.disable(); // Disable input when normal (No)
+        this.newBornForm.get(textinput)?.setValue(''); // Clear input if disable
+        if(controlName == 'HfAnteriorOc'){
+          this.newBornForm.get('HfAsize')?.disable();
+          this.newBornForm.get('HfAsize')?.setValue('');
+        }
+        if(controlName == 'HfPosteriorOc'){
+          this.newBornForm.get('HfPsize')?.disable();
+          this.newBornForm.get('HfPsize')?.setValue('');
+        }
+        if(controlName == 'CrIntubatedYn'){
+          this.newBornForm.get('CrItubeSize')?.disable();
+          this.newBornForm.get('CrItubeLevel')?.disable();
+          this.newBornForm.get('CrIintubation')?.disable();
+          this.newBornForm.get('CrIextubation')?.disable();
+          this.newBornForm.get('CrItubeSize')?.setValue('');
+          this.newBornForm.get('CrItubeLevel')?.setValue('');
+          this.newBornForm.get('CrIintubation')?.setValue('');
+          this.newBornForm.get('CrIextubation')?.setValue('');
+        }
+        if(controlName == 'CrReintubationYn'){
+          this.newBornForm.get('CrRtubeSize')?.disable();
+          this.newBornForm.get('CrRtubeLevel')?.disable();
+          this.newBornForm.get('CrRdate')?.disable();
+          this.newBornForm.get('CrRentryDate')?.disable();
+          this.newBornForm.get('CrRtubeSize')?.setValue('');
+          this.newBornForm.get('CrRtubeLevel')?.setValue('');
+          this.newBornForm.get('CrRdate')?.setValue('');
+          this.newBornForm.get('CrRentryDate')?.setValue('');
+        }
+      }
     }
   }
 
 
-  getDocument(data){
+  getDocument(data?){
+    this.docKey = this.admissionService.selectedCurrentDocDetails.Dockey;
+    let json = {
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
+    };
     this.admissionService
-    .getNewBornDocument(data)
+    .getNewBornDocument(json.Dockey)
     .subscribe({
       next: (data: any) => {
         if(data){
@@ -368,6 +620,10 @@ export class NewbornAssessmentComponent implements OnInit {
   }
 
   public createDoc(status?:any,actionType?:any){
+    if(this.admissionService.isCloneNewBornForm){
+      status = '3',
+      actionType='copy'
+    }
     if (this.newBornForm.invalid) {
       this.newBornForm.markAllAsTouched(); // Mark all fields as touched to show errors
       return;
@@ -537,6 +793,10 @@ export class NewbornAssessmentComponent implements OnInit {
    
       this.subscription = this.admissionService.createNewBorn(payload).subscribe({
         next: (data: any) => {
+          this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
