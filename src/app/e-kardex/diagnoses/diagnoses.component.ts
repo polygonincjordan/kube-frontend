@@ -912,7 +912,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientDischargeData = {}
     this.inPatientSoapData = {}
     this.selectedPatient = paitentData;
-    
+    console.log(this.selectedPatient, "this.selectedPatient")
     if(paitentData?.Dtid == 'ZMED_PHASM') {
       this.admissionService.selectedCurrentDocDetails = paitentData;
 
@@ -1141,6 +1141,7 @@ export class DiagnosesComponent implements OnInit {
         .subscribe((patientResult: any) => {
 
           this.patientVisitRecord = patientResult;
+          this.inPatientForm = 'visitnote'
           if(this.isEnlarge){
             if(paitentData.Released){
               this.isInPatientSoap = true;
@@ -1407,8 +1408,7 @@ export class DiagnosesComponent implements OnInit {
       this.createCVISAttachmentForm.reset();
     }
   saveCorrespondenceDocument() {
-    let docStatus = '1';
-    if(this.selectedPatient?.Dockey || this.selectedPatient?.DocKey) docStatus = '3';
+    let docStatus = this.selectedPatient?.DokstText == 'Released' ? '3' : '1';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
       if (formValue) {
         // this.refresh();
@@ -1421,7 +1421,8 @@ export class DiagnosesComponent implements OnInit {
   }
 
   releaseCorresponde() {
-    this.CorrespondenceComp.createCorrespondenceDocument('4').then((formValue) => {
+    let docStatus = this.selectedPatient?.DocKey ? this.selectedPatient?.Released == 'X' ? '5' : '2' : '4';
+    this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue) => {
       if (formValue) {
         // this.refresh();
       this.updateForm(true);
@@ -1455,6 +1456,7 @@ export class DiagnosesComponent implements OnInit {
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
             })
+            this.updateForm(true);
             // this.refresh();
           },
           (_error: any) => {

@@ -161,4 +161,21 @@
       }
     }
   }
-  
+
+  .date-function {
+    span.pn-input-title {
+      position: absolute !important;
+      top: 17px;
+      left: 7px;
+      cursor: text;
+      font-size: 12px;
+      opacity: 1;
+      left: 7;
+      z-index: 3;
+      line-height: 2px !important;
+      // font-weight: bold;
+      color: #0056b0;
+      padding: 0 10px;
+      background-color: white;
+    }
+  }

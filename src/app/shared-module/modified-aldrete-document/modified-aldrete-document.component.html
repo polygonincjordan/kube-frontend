@@ -1,0 +1,146 @@
+<div class="haemodialysis-main">
+    <form [formGroup]="MorsefallForm">
+        <div class="haemodialysis-info">
+            <div class="container-fluid" style="padding: 0px;">
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
+                    <label for="" class="title-text m-0">Scale Information</label>
+                    <div class=" my-3">
+                        <div class="d-flex align-items-center">
+                            <div class="col-6 px-0 mb-2">
+                                <div class="row align-items-center w-100 custom-input">
+                                    <label for="" class="text-nowrap m-0 col-2">Scale Name</label>
+                                    <input type="text" class="col-6" value="Morse Fall Scale (MFS)" style="width: 100%;"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="col-6 px-0 ">
+                                <div class="row align-items-center w-100 custom-input">
+                                    <label for="" class="text-nowrap m-0 col-2">Realized by</label>
+                                    <input type="text" class="col-2" readonly>
+                                    <input type="text" class="col-4" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-2">Date</label>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" disabled>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
+                    <label for="" class="title-text m-0">Modified Aldrete Score [Post Anesthetic Recovery Scoring System
+                        (PAS)] Information</label>
+                    <div class=" my-3">
+                        <div class="row m-0 modified-header mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Characteristics</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Score</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Description</label>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Consciousness</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Respiration</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">O2 Saturation</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Circulation</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Activity</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
+                    <label for="" class="title-text m-0">Scale Result</label>
+                    <div class=" my-3">
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Total Score</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row m-0 mb-3">
+                            <div class="col-md-3">
+                                <label for="" class="text-nowrap m-0">Comments</label>
+                            </div>
+                            <div class="col-md-7">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

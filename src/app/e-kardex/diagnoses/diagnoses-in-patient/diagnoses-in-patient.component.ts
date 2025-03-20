@@ -50,12 +50,12 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   soapFormEvent: string;
 
   dischargeDispositionList: any = [
-    { Desc: "Discharge Home", Value: "1" },
-    { Desc: "DAMA", Value: "2" },
-    { Desc: "Deceased", Value: "3" },
-    { Desc: "Others", Value: "4" },
-    { Desc: "Admitted to hospital", Value: "5" },
-    { Desc: "Transferred to another hospital", Value: "6" }
+    { Desc: "Discharge Home", Value: "0" },
+    { Desc: "DAMA", Value: "1" },
+    { Desc: "Deceased", Value: "2" },
+    { Desc: "Others", Value: "3" },
+    { Desc: "Admitted to hospital", Value: "4" },
+    { Desc: "Transferred to another hospital", Value: "5" }
   ]
 
   NeedTransport: any = [
@@ -75,6 +75,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     this.inPatientFormInput = data;
   }
   @Input() selectedPatient: any;
+  @Input() patientVisitRecord: any;
 
   @Input() set inPatientVisitData(data) {
     this.inPatientDataObj = data
@@ -383,7 +384,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     });
   }
 
-  async deleteCorrespondenceDoc(docKey: string) {
+  deleteCorrespondenceDoc(docKey: string) {
     Swal.fire({
       title: 'Confirm',
       text: 'Do you want to delete?',
@@ -392,10 +393,11 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.value) {
-        (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
+        (this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
           (_success: any) => {
+            this.updateEvent.emit(true);
             Swal.fire({
               text: "Document is deleted successfully",
               icon: 'success',
@@ -645,6 +647,10 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  updateForm(event) {
+    this.updateEvent.next(true);
   }
 }
 
