@@ -24,6 +24,7 @@ import Swal from 'sweetalert2';
 import { StorageService } from '@services/storage.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation-list',
@@ -111,7 +112,8 @@ export class DocumentationListComponent implements OnInit {
     private userConfigurationService: UserConfigurationService,
     private inPatientConfigurationService: InPatientConfigurationService,
     private emergencyService: EmergencyService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dayCaseDashboardService: DayCaseDashboardService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -167,7 +169,6 @@ export class DocumentationListComponent implements OnInit {
     });
 
     this.admissionService.documentTypeDrop.subscribe((res: any) => {
-      debugger
       if (res.documentType || res.dateRange || res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
         this.documentTypeFilterValue = this.documentTypeFilterValueClone;
         if (res.documentType) {
@@ -625,6 +626,20 @@ export class DocumentationListComponent implements OnInit {
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
     }
+   else if (item.Dtid == 'ZMED_NBASM') {
+      this.dayCaseDashboardService
+        .getNewBornPDF(item.Dockey)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((_success: any) => {
+          this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
+          this.pdfTemplateRef = this.modalService.show(template, config);
+        });
+    }
     // Discharge Summary
     else if (item.Dtid == 'ZMED_PHDIS') {
       this.admissionService
@@ -929,7 +944,9 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddEditNeonatalMR &&
       !this.admissionService.isAddEditDocVisitForm&&
       !this.admissionService.isAddEditTransferAssestForm &&
-      !this.admissionService.isAddEditNewbornAssessment
+      !this.admissionService.isAddEditNewbornAssessment &&
+      !this.admissionService.isAddNicuForm &&
+      !this.admissionService.isNewBornForm 
     ) {
       return true;
     }

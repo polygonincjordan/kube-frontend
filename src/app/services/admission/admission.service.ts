@@ -106,6 +106,12 @@ export class AdmissionService {
   public isAddEditNewbornAssessment: boolean = false;
   public isCloneTransferAssestForm: boolean = false;
   public isEditTransferAssestForm: boolean = false;
+  public isEditNicuForm: boolean = false;
+  public isAddNicuForm: boolean = false;
+  public isCloneNicuForm: boolean = false;
+  public isNewBornForm: boolean = false;
+  public isEditBornForm: boolean = false;
+  public isCloneNewBornForm: boolean = false;
   public document = new BehaviorSubject(false);
   constructor(
     private http: HttpClient,
@@ -720,7 +726,44 @@ export class AdmissionService {
         } else {
           this.isCloneTransferAssestForm = false;
         }
-      } else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_ATCHM') {
+      } else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_NICAD') {
+        if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') {
+          return;
+        }
+
+        if (actionType == 'edit') {
+          this.isEditNicuForm = true;
+        } else {
+          this.isCloneNicuForm = false;
+        }
+
+        if (actionType == 'clone' && this.selectedCurrentDocDetails.DokstText != 'Released') return;
+        this.isAddNicuForm = !this.isAddNicuForm;
+        if (actionType == 'clone') {
+          this.isCloneNicuForm = true;
+        } else {
+          this.isCloneNicuForm = false;
+        }
+      } else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_NBASM') {
+        if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') {
+          return;
+        }
+
+        if (actionType == 'edit') {
+          this.isEditBornForm = true;
+        } else {
+          this.isCloneNewBornForm = false;
+        }
+
+        if (actionType == 'clone' && this.selectedCurrentDocDetails.DokstText != 'Released') return;
+        this.isNewBornForm = !this.isNewBornForm;
+        if (actionType == 'clone') {
+          this.isCloneNewBornForm = true;
+        } else {
+          this.isCloneNewBornForm = false;
+        }
+      } 
+       else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_ATCHM') {
         this.document.next(true);
       }
     }
@@ -771,6 +814,13 @@ export class AdmissionService {
     this.isAddEditTransferAssestForm=false;
     this.isEditTransferAssestForm=false;
     this.isCloneTransferAssestForm=false;
+    this.isAddNicuForm=false;
+    this.isEditNicuForm=false;
+    this.isCloneNicuForm=false;
+
+     this.isNewBornForm = false;
+     this.isEditBornForm = false;
+     this.isCloneNewBornForm = false;
 
   }
 
