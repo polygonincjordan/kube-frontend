@@ -123,6 +123,10 @@ export class PatientDocumentationComponent implements OnInit {
   public openModifiedAldreteDocument: boolean = false;
   latestModifiedAldreteList = [];
 
+  public isNeonatalDisch: boolean = false;
+  public openNeonatalDischDocument: boolean = false;
+  latestNeonatalDischList = [];
+
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -291,6 +295,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestMFSSet();
     this.getNursingAdmissionLatestDoc();
     this.fetchLatestDetails();
+    this.getModifiedAldreteDocument();
   }
 
   LatestMFSSet() {
@@ -365,6 +370,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getNurseEndorsementDetail(this.apiJson).subscribe({
       next: (_success: any) => {
         this.nurseEndorsementList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  getModifiedAldreteDocument() {
+    this.dayCaseDashboardService.ModifiedAldretSetDocumentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestModifiedAldreteList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -844,7 +862,8 @@ export class PatientDocumentationComponent implements OnInit {
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
-      'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete' },
+      'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete Score (MAS) Scale' },
+      'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Disch' },
     };
 
 
@@ -877,6 +896,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openNumericRatingScale = false;
     this.isModifiedAldreteDocument = false;
     this.openModifiedAldreteDocument = false;
+    this.isNeonatalDisch = false;
+    this.openNeonatalDischDocument = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
       const assessment = assessments[name];
@@ -1216,7 +1237,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.attachments = false;
     this.morsefallScale = false;
     this.openPainAssement = false;
-
+    this.isModifiedAldreteDocument = false;
+    this.openModifiedAldreteDocument = false;
+    this.latestModifiedAldreteList = [];
 
     this.latestMorseFallScaleData = null;
     this.searchString = '';
@@ -1224,7 +1247,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.documentType = undefined;
     this.patientProfileDocumet = this.documentTypeFilterValue;
     this.medDocList = [];
-
+    if (this.openModifiedAldreteDocument) {
+      this.ModifiedAldreteComp?.ngOnDestroy();
+    }
     if (this.openBradenScale) {
       this.BradenScaleComp?.ngOnDestroy();
     }
@@ -1293,6 +1318,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getCPRDocDetails();
     this.getCorrespondenceDocDetails();
     this.LatestMFSSet();
+    this.getModifiedAldreteDocument();
   }
 
   openDocument(action) {
@@ -2169,7 +2195,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseNursingCarePlanDoc();
+          this.directReleaseModifiedAldretePlanDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2182,7 +2208,58 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openModifiedAldreteDocument = true;
-        this.NursingCarePlansComp.createNursingCarePlan('4').then((formValue) => {
+        this.ModifiedAldreteComp.createModifiedAldreteDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
+
+    else if (this.isNeonatalDisch) {
+      if (action == 'create') {
+        this.openNeonatalDischDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNeonatalDischDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseModifiedAldretePlanDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNeonatalDischDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNeonatalDischDocument = true;
+        this.ModifiedAldreteComp.createModifiedAldreteDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()
           }
@@ -2237,6 +2314,34 @@ export class PatientDocumentationComponent implements OnInit {
             },
             complete: () => {
               this.sharedService.successSwallModel('Nursing care plan released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+  directReleaseModifiedAldretePlanDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcModifiedAldreteSetDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveModifiedAldreteDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Modified Aldrete Score (MAS) Scale released successfully');
               this.refresh();
             }
           });
@@ -2752,6 +2857,19 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // ModifiedAldrete Document Create API
+      if (this.openModifiedAldreteDocument) {
+        let docStatus = '1';
+        this.ModifiedAldreteComp.createModifiedAldreteDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Modified Aldrete Score (MAS) Scale:', error);
+        })
+      }
+
       // Pre Cardiec Cath Document Create API
       if (this.openPreCardiacCath) {
         let docStatus = '1';
@@ -2931,6 +3049,18 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+    // ModifiedAldrete Document edit API
+      if (this.openModifiedAldreteDocument) {
+        let docStatus = '1';
+        this.ModifiedAldreteComp.createModifiedAldreteDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating nursing assessment:', error);
+        })
+      }
       if (this.openNurseAssissment) {
         let docStatus = '1';
         this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
@@ -3080,6 +3210,19 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      // ModifiedAldrete Document edit API
+      if (this.openModifiedAldreteDocument) {
+        let docStatus = '3';
+        this.ModifiedAldreteComp.createModifiedAldreteDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating nursing assessment:', error);
         })
       }
       
@@ -3293,7 +3436,16 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating CPR Document:', error);
       });
-    } 
+    } else if (this.openModifiedAldreteDocument) {
+      this.ModifiedAldreteComp.createModifiedAldreteDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
   }
 
   newVersionDirectReleased() {
@@ -4165,6 +4317,18 @@ export class PatientDocumentationComponent implements OnInit {
   // Copy + Release Nursing Assessment Document
   copyDirectReleaseNursingAssessmentDoc() {
     this.NursingAssessmentComp.createNursingAssessmentDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing assessment document:', error);
+    });
+  }
+
+  // Copy + Release Nursing Assessment Document
+  copyDirectReleaseModifiedAldreteDoc() {
+    this.ModifiedAldreteComp.createModifiedAldreteDocument('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }

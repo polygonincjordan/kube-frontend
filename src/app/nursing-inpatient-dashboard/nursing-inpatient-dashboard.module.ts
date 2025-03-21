@@ -141,6 +141,7 @@ import { CorrespondenceDocumentModule } from '../shared-module/correspondence-do
 import { SharedModuleModule } from '../shared-module/shared-module.module';
 import { NewbornAssessmentModule } from "../shared-module/newborn-assessment/newborn-assessment.module";
 import { ModifiedAldreteDocumentModule } from '../shared-module/modified-aldrete-document/modified-aldrete-document.module';
+import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
 
 
 const route: Routes = [
@@ -296,7 +297,8 @@ const route: Routes = [
     CorrespondenceDocumentModule,
     SharedModuleModule,
     NewbornAssessmentModule,
-    ModifiedAldreteDocumentModule
+    ModifiedAldreteDocumentModule,
+    NeonatalDischDocumentModule
 ],
 })
 export class NursingInpatientDashboardModule {}

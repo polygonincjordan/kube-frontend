@@ -276,6 +276,7 @@ export class HeaderComponent implements OnInit {
         //Gbdav:this.f.dob.value,
         Telnr: this.f.telephone.value,
         New: 'X',
+        // Falnr: this.f.idNumber.value || ""
       };
     }
     this._dataServices.widgetDataFilter(jsonObj).subscribe(

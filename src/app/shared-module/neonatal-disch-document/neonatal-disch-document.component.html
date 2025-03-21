@@ -1,0 +1,1846 @@
+<div>
+  <form [formGroup]="newBornForm">
+    <div class="row m-0 mb-2">
+      <div class="col-md-4 row m-0">
+        <div class="col-md-6">
+          <label>Date</label>
+        </div>
+        <div class="col-md-6">
+          <div class="header-date">
+            <span _ngcontent-ufq-c103="" style="
+                  position: relative;
+                  top: 30px;
+                  right: 4px;
+                  float: right;
+                  margin-top: -26px;
+                  font-size: 18px;
+                ">
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input formControlName="Datee" class="form-control" style="color: #000; border-radius: 8px" type="text"
+              placeholder="" [minDate]="" [maxDate]="" readonly #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                  showWeekNumbers: false,
+                  dateInputFormat: 'DD.MM.YYYY'
+                }" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 row m-0"></div>
+      <div class="col-md-4 row m-0">
+        <div class="col-md-4">
+          <label>Time</label>
+        </div>
+        <div class="col-md-6">
+          <input type="time" step="2" class="form-control" min="08:00:00" max="17:00:00" formControlName="Timee" />
+        </div>
+      </div>
+    </div>
+    <div class="row m-0 mb-2">
+      <div class="col-md-8 row m-0">
+        <div class="col-md-3">
+          <label>Name</label>
+        </div>
+        <div class="col-md-6">
+          <input class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="row m-0 mb-2">
+      <div class="col-md-8 row m-0">
+        <div class="col-md-3">
+          <label>Father Name</label>
+        </div>
+        <div class="col-md-6">
+          <input class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="row m-0 mb-2">
+      <div class="col-md-6 row m-0">
+        <div class="col-md-3">
+          <label>Date of Admission</label>
+        </div>
+        <div class="col-md-6">
+          <input class="form-control" />
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <div class="col-md-3">
+          <label>Time of Admission</label>
+        </div>
+        <div class="col-md-6">
+          <input type="time" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="row m-0 mb-2">
+      <div class="col-md-4 row m-0"></div>
+      <div class="col-md-4 row m-0">
+        <div class="col-md-6">
+          <label>Date of Birth</label>
+        </div>
+        <div class="col-md-6">
+          <div class="header-date">
+            <span _ngcontent-ufq-c103="" style="
+                  position: relative;
+                  top: 30px;
+                  right: 4px;
+                  float: right;
+                  margin-top: -26px;
+                  font-size: 18px;
+                ">
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+
+            <input formControlName="BirthDate" class="form-control" style="color: #000; border-radius: 8px" type="text"
+              placeholder="" [minDate]="" readonly [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                  showWeekNumbers: false,
+                  dateInputFormat: 'DD.MM.YYYY'
+                }" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 row m-0">
+        <div class="col-md-4">
+          <label>Time of Birth</label>
+        </div>
+        <div class="col-md-6">
+          <input type="time" step="2" class="form-control" min="08:00:00" max="17:00:00" formControlName="BirthTime" />
+        </div>
+      </div>
+    </div>
+
+    <!-- vital section -->
+    <div class="end-container">
+      <div class="scale-box-main">
+        <label class="box-label">Vitals</label>
+        <div class="container-fluid">
+          <div class="tab-navigation-part p-0">
+            <div class="container-fluid">
+              <div class="allergy-box d-flex justify-content-between py-3">
+                <div class="allergy-checkbox-section d-flex align-items-center">
+                  <input type="checkbox" id="noVitalSignsApplicable" (change)="handleCheckboxVitals($event)"
+                    style="width: 24px; height: 20px" [attr.disabled]="toVitalsArr?.length > 0 ? true : null" />
+                  <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No Vitals Signs
+                    Applicable</label>
+                </div>
+                <div class="secound-bar-vital-sign" (click)="openModalVital()">
+                  <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                </div>
+              </div>
+              <div style="max-height: 296px; overflow: auto">
+                <table class="table table-bordered past-table">
+                  <thead style="background-color: #e4edf5; color: black">
+                    <tr>
+                      <th scope="col">Description</th>
+                      <th scope="col">Measured Value</th>
+                      <th scope="col">Normal Range</th>
+                      <th scope="col">Date/Time</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: #fbfcff">
+                    <tr class="past-med-input" *ngFor="let item of toVitalsArr; let i = index">
+                      <td style="
+                            padding: 10px !important;
+                            width: 15%;
+                            pointer-events: none;
+                          ">
+                        {{ item.Vdescription }}
+                      </td>
+                      <td style="
+                            padding: 10px !important;
+                            width: 15%;
+                            pointer-events: none;
+                          ">
+                        {{ item.MeasuredValue }} {{ item.Vunit }}
+                      </td>
+                      <td style="
+                            padding: 10px !important;
+                            width: 15%;
+                            pointer-events: none;
+                          ">
+                        {{ item.NormalRange }}
+                      </td>
+                      <td style="
+                            padding: 10px !important;
+                            width: 15%;
+                            pointer-events: none;
+                          ">
+                        {{ item.DateTime }}
+                      </td>
+                      <td style="
+                            padding: 10px !important;
+                            width: 3%;
+                            text-align: center;
+                          " (click)="deleteVitalsFromTable(i)">
+                        <img src="assets/img/Delete.svg" />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="end-container">
+      <div class="scale-box-main">
+        <label class="box-label">Neonatal Physical Examination</label>
+        <div class="container-fluid">
+          <div class="tab-navigation-part p-0">
+            <div class="tab-navigate">
+              <div class="tab-nav w-100">
+                <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                  <li *ngFor="let tab of tabList" class="d-flex m-0 align-items-center"
+                    (click)="assessmentTabSelect(tab)" [ngClass]="selectedTabName == tab ? 'active' : ''">
+                    <img src="./assets/img/grid-icon.svg" />
+                    <p class="d-inline-block m-0">{{ tab }}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div *ngIf="selectedTabName === 'Skin'">
+              <div class="row m0">
+                <div class="col-md-2">
+                  <label>Skin Color</label>
+                </div>
+                <div class="col-md-3">
+                  <ng-select formControlName="SSkincolor" [items]="skinColorList" bindLabel="label" bindValue="value">
+                  </ng-select>
+                </div>
+                <div class="col-md-5">
+                  <input class="form-control" formControlName="SSkincolorT"
+                    [disabled]="newBornForm.get('SSkincolor')?.disabled" />
+                </div>
+              </div>
+              <div class="row m0">
+                <div class="col-md-2">
+                  <label>Appearance</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaNormal" />
+                  <label class="m-0 ml-2" class="m-0 ml-2">Normal</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaRash" />
+                  <label class="m-0 ml-2">Rash / Milia</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaBruising" />
+                  <label class="m-0 ml-2">Bruising Abrasions</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaLanugo" />
+                  <label class="m-0 ml-2">Lanugo</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaEdema" />
+                  <label class="m-0 ml-2">Edema</label>
+                </div>
+              </div>
+              <div class="row m0">
+                <div class="col-md-2"></div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaDry" />
+                  <label class="m-0 ml-2">Dry/Peeling</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaMongolian" />
+                  <label class="m-0 ml-2">Mongolian Spot</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaSkinTags" />
+                  <label class="m-0 ml-2">Skin Tags</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaPetechia" />
+                  <label class="m-0 ml-2">Petechia/ Ecchymosis</label>
+                </div>
+                <div class="col-md-2 row m-0 align-items-center">
+                  <input type="checkbox" formControlName="SaCoatings" />
+                  <label class="m-0 ml-2">Coatings (Vernix / Meconium)</label>
+                </div>
+              </div>
+              <div class="row m0 mt-3">
+                <div class="col-md-2"></div>
+                <div class="col-md-10 text-area-container">
+                  <textarea class="form-control" formControlName="SaComments"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3" *ngIf="selectedTabName === 'Head & Neck'">
+              <!-- Shape -->
+              <div class="mb-2 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Shape</label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsNormal" />
+                    <label class="form-check-label">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsForceps" />
+                    <label class="form-check-label">Forceps Mark</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsMolding" />
+                    <label class="form-check-label">Molding Present</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsCaput" />
+                    <label class="form-check-label">Caput</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label"></label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsLacerations" />
+                    <label class="form-check-label">Lacerations / Bruising</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsOverriding" />
+                    <label class="form-check-label">Overriding Sutures</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsCephalhema" />
+                    <label class="form-check-label">Cephalhematoma</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HsOther"
+                      (change)="toggleInput('HsOther', 'HsOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" formControlName="HsOtherT"
+                      [disabled]="!newBornForm.get('HsOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fontanels -->
+              <div class="mb-2 mt- d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Fontanels</label>
+                </div>
+                <div class="col-11">
+                  <div class="checkbox-group">
+                    <div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="HfAnterior"
+                          (change)="toggleInput('HfAnterior', 'HfAnteriorOc')" />
+                        <label class="form-check-label">Anterior</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="HfAnteriorOc" value="0"
+                          (click)="toggleRadio('HfAnteriorOc', '0','HfAother')"
+                          [disabled]="!newBornForm.get('HfAnterior')?.value" />
+                        <label class="form-check-label">Open</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="HfAnteriorOc" value="1"
+                          (click)="toggleRadio('HfAnteriorOc', '1','HfAother')"
+                          [disabled]="!newBornForm.get('HfAnterior')?.value" />
+                        <label class="form-check-label">Closed</label>
+                        <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfAother"
+                          [disabled]="!newBornForm.get('HfAnteriorOc')?.value" />
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="hypotonic">Size</label>
+                        <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfAsize"
+                          [disabled]="!newBornForm.get('HfAnteriorOc')?.value" />
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="HfPosterior"
+                          (change)="toggleInput('HfPosterior', 'HfPosteriorOc')" />
+                        <label class="form-check-label">Posterior</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="HfPosteriorOc" value="0"
+                          (click)="toggleRadio('HfPosteriorOc', '0','HfPother')"
+                          [disabled]="!newBornForm.get('HfPosterior')?.value" />
+                        <label class="form-check-label">Open</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="HfPosteriorOc" value="1"
+                          (click)="toggleRadio('HfPosteriorOc', '1','HfPother')"
+                          [disabled]="!newBornForm.get('HfPosterior')?.value" />
+                        <label class="form-check-label">Closed</label>
+                        <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfPother"
+                          [disabled]="!newBornForm.get('HfPosteriorOc')?.value" />
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label" for="hypotonic">Size</label>
+                        <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfPsize"
+                          [disabled]="!newBornForm.get('HfPosteriorOc')?.value" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ears -->
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Ears</label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeNormal" />
+                    <label class="form-check-label">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeLowSet" />
+                    <label class="form-check-label">Low set</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HePreauricular" />
+                    <label class="form-check-label"> Pre-auricular tags</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeBleeding" />
+                    <label class="form-check-label">Bleeding / discharges</label>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label"></label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeOther"
+                      (change)="toggleInput('HeOther', 'HeOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="HeOtherT" [disabled]="!newBornForm.get('HeOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Eyes -->
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Eyes</label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeyClear" />
+                    <label class="form-check-label">Clear</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeyScleral" />
+                    <label class="form-check-label">Scleral hemorrhage</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeyEdema" />
+                    <label class="form-check-label">Edema of eyelids</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeyConjunct" />
+                    <label class="form-check-label"> Red Reflex</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeyRed" />
+                    <label class="form-check-label"> Red Reflex</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HeyOther"
+                      (change)="toggleInput('HeyOther', 'HeyOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="HeyOtherT" [disabled]="!newBornForm.get('HeyOther')?.value" />
+                  </div>
+                </div>
+              </div>
+              <!-- Nose -->
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Nose</label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnNostrils" />
+                    <label class="form-check-label"> Patent nostrils</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnClosed" />
+                    <label class="form-check-label">Closed</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnOther"
+                      (change)="toggleInput('HnOther', 'HnOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="HnOtherT" [disabled]="!newBornForm.get('HnOther')?.value" />
+                  </div>
+                </div>
+              </div>
+              <!-- Mouth -->
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Mouth</label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmNormal" />
+                    <label class="form-check-label">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmMovement" />
+                    <label class="form-check-label">Movement</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmSymmetry" />
+                    <label class="form-check-label">Symmetry</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmAsymmetry" />
+                    <label class="form-check-label">Asymmetry</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmCleftLip" />
+                    <label class="form-check-label">Cleft lip</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmCleftPalate" />
+                    <label class="form-check-label"> Cleft Palate</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HmOther"
+                      (change)="toggleInput('HmOther', 'HmOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="HmOtherT" [disabled]="!newBornForm.get('HmOther')?.value" />
+                  </div>
+                </div>
+              </div>
+              <!-- Neck -->
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-1">
+                  <label class="form-label">Neck</label>
+                </div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnNormal" />
+                    <label class="form-check-label">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnShort" />
+                    <label class="form-check-label">Short</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnStraight" />
+                    <label class="form-check-label">Straight</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnWebbing" />
+                    <label class="form-check-label">Webbing of the neck</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="HnNother"
+                      (change)="toggleInput('HnNother', 'HnNotherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="HnNotherT" [disabled]="!newBornForm.get('HnNother')?.value" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="" *ngIf="selectedTabName === 'Chest and Thoracic'">
+              <div class="mb-3 d-flex">
+                <div class="col-1">
+                  <label class="fw-bold">Chest</label>
+                </div>
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="CcSymmetrical" />
+                        <label class="form-check-label" for="symmetrical">Symmetrical</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="CcAssymetrical" />
+                        <label class="form-check-label" for="asymmetrical">Asymmetrical</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="CcOther"
+                          (change)="toggleInput('CcOther', 'CcOtherT')" />
+                        <label class="form-check-label" for="breastNode">Other</label>
+                        <input type="text" class="form-control ml-3" placeholder="" formControlName="CcOtherT"
+                          [disabled]="!newBornForm.get('CcOther')?.value" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cardiovascular -->
+              <div class="mb-3 d-flex">
+                <div class="col-1">
+                  <label class="fw-bold">Cardiovascular</label>
+                </div>
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaRegularHr" />
+                        <label class="form-check-label">Regular Heart Rate</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaArrhythmia" />
+                        <label class="form-check-label">Arrhythmia</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaBradycardia" />
+                        <label class="form-check-label">Brachial Pulse</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaIrregularHr" />
+                        <label class="form-check-label" for="">Irregular Heart Rate</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaMurmurs" />
+                        <label class="form-check-label" for="">Murmurs</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaRadial" />
+                        <label class="form-check-label" for="">Radial Pulse</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaBradycardia" />
+                        <label class="form-check-label" for="">Bradycardia</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaCapillary" />
+                        <label class="form-check-label" for="">Capillary Refil</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaOther"
+                          (change)="toggleInput('CcaOther', 'CcaOtherT')" />
+                        <label class="form-check-label" for="">Other</label>
+                        <input type="text" class="form-control ml-3" placeholder="" formControlName="CcaOtherT"
+                          [disabled]="!newBornForm.get('CcaOther')?.value" />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaTachycardia" />
+                        <label class="form-check-label" for="">Tachycardia</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="CcaFemoral" />
+                        <label class="form-check-label" for="">Femoral Pulse</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Respiratory -->
+              <div class="mb-3 d-flex">
+                <div class="col-1">
+                  <label class="fw-bold">Respiratory</label>
+                </div>
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrRegularRr" />
+                        <label class="form-check-label" for="regRespRate">Regular Respiratory Rate</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrIrregularRr" />
+                        <label class="form-check-label" for="">Irregular Respiratory Rate</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrGrunt" />
+                        <label class="form-check-label" for="">Grunt</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrBradypnea" />
+                        <label class="form-check-label" for="irregRespRate">Bradpnea</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrNasal" />
+                        <label class="form-check-label" for="nasalFlaring">Nasal Flaring</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrApnea" />
+                        <label class="form-check-label" for="nasalFlaring">Apnea</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrTachypnea" />
+                        <label class="form-check-label" for="irregRespRate">Tachypnea</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrRecession" />
+                        <label class="form-check-label" for="nasalFlaring">Recession</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrOther"
+                          (change)="toggleInput('CrOther', 'CrOtherT')" />
+                        <label class="form-check-label" for="breastNode">Other</label>
+                        <input type="text" class="form-control ml-3" placeholder="" formControlName="CrOtherT"
+                          [disabled]="!newBornForm.get('CrOther')?.value" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center mt-3">
+                    <div class="col-10 p-0">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CrBreathSound"
+                          (change)="toggleInput('CrBreathSound', 'CrBreathSounds')" />
+                        <label class="form-check-label" for="">Breath Sounds</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <ng-select style="width: 200px" formControlName="CrBreathSounds" [items]="Breath"
+                          bindLabel="label" bindValue="value">
+                        </ng-select>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-control" type="text" id="sucking" formControlName="CrBreathSoundt"
+                          [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <!-- Intubation -->
+                    <div class="px-3 mb-3 d-flex w-100">
+                      <div class="w-100">
+                        <div class="col-12 w-100">
+                          <div class="d-flex">
+                            <div>
+                              <input class="form-check-input" type="checkbox" id="" formControlName="CrIntubated"
+                                (change)="toggleInput('CrIntubated', 'CrIntubatedYn')" />
+                              <label class="fw-bold">Intubation</label>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  align-items: center;
+                                  width: 260px;
+                                  justify-content: space-around;
+                                ">
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="CrIntubatedYn" value="1"
+                                  (click)="toggleRadio('CrIntubatedYn', '1','CrItubeSize')"
+                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                <label class="form-check-label" for="intubNo">No</label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="CrIntubatedYn" value="0"
+                                  (click)="toggleRadio('CrIntubatedYn', '0','CrItubeSize')"
+                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                <label class="form-check-label" for="intubYes">Yes</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="">
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Tube Size</label>
+                              </div>
+                              <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Tube Size"
+                                  formControlName="CrItubeSize"
+                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                              </div>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Tube Level</label>
+                              </div>
+                              <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Tube Level"
+                                  formControlName="CrItubeLevel"
+                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                              </div>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Date of Intubation</label>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="header-date">
+                                  <span _ngcontent-ufq-c103="" style="
+                                        position: relative;
+                                        top: 30px;
+                                        right: 4px;
+                                        float: right;
+                                        margin-top: -26px;
+                                        font-size: 18px;
+                                      ">
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input formControlName="CrIintubation" class="form-control"
+                                    style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                                    [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                        showWeekNumbers: false,
+                                        dateInputFormat: 'DD.MM.YYYY'
+                                      }" [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                </div>
+                              </div>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Date of Extubation</label>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="header-date">
+                                  <span _ngcontent-ufq-c103="" style="
+                                        position: relative;
+                                        top: 30px;
+                                        right: 4px;
+                                        float: right;
+                                        margin-top: -26px;
+                                        font-size: 18px;
+                                      ">
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input formControlName="CrIextubation" class="form-control"
+                                    style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                                    [maxDate]="" #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                                        showWeekNumbers: false,
+                                        dateInputFormat: 'DD.MM.YYYY'
+                                      }" [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="px-3 mb-3 d-flex w-100">
+                      <div class="w-100">
+                        <!-- <div class="col-2"></div> -->
+                        <div class="col-12 w-100">
+                          <div class="d-flex">
+                            <div>
+                              <input class="form-check-input" type="checkbox" id="" formControlName="CrReintubation"
+                                (change)="toggleInput('CrReintubation', 'CrReintubationYn')" />
+                              <label class="fw-bold">Reintubation</label>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  align-items: center;
+                                  width: 260px;
+                                  justify-content: space-around;
+                                ">
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="CrReintubationYn"
+                                  value="1" (click)="toggleRadio('CrReintubationYn', '1','CrRtubeSize')"
+                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                <label class="form-check-label" for="intubNo">No</label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" formControlName="CrReintubationYn"
+                                  value="0" (click)="toggleRadio('CrReintubationYn', '0','CrRtubeSize')"
+                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                <label class="form-check-label" for="intubYes">Yes</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="">
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Tube Size</label>
+                              </div>
+                              <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Tube Size"
+                                  formControlName="CrRtubeSize"
+                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                              </div>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Tube Level</label>
+                              </div>
+                              <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Tube Level"
+                                  formControlName="CrRtubeLevel"
+                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                              </div>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Date of Intubation</label>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="header-date">
+                                  <span _ngcontent-ufq-c103="" style="
+                                        position: relative;
+                                        top: 30px;
+                                        right: 4px;
+                                        float: right;
+                                        margin-top: -26px;
+                                        font-size: 18px;
+                                      ">
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input formControlName="CrRdate" class="form-control"
+                                    style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                                    [maxDate]="" #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                                        showWeekNumbers: false,
+                                        dateInputFormat: 'DD.MM.YYYY'
+                                      }" [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                </div>
+                              </div>
+                            </div>
+                            <div style="
+                                  display: flex;
+                                  gap: 15px;
+                                  padding-left: 5px;
+                                ">
+                              <div class="col-2">
+                                <label class="form-check-label" for="intubYes">Date of Extubation</label>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="header-date">
+                                  <span _ngcontent-ufq-c103="" style="
+                                        position: relative;
+                                        top: 30px;
+                                        right: 4px;
+                                        float: right;
+                                        margin-top: -26px;
+                                        font-size: 18px;
+                                      ">
+                                    <img src="assets/img/Calender.svg" alt="" />
+                                  </span>
+
+                                  <input formControlName="CrRentryDate" class="form-control"
+                                    style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                                    [maxDate]="" #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                                        showWeekNumbers: false,
+                                        dateInputFormat: 'DD.MM.YYYY'
+                                      }" [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Breast -->
+              <div class="mb-3 d-flex">
+                <div class="col-1">
+                  <label class="fw-bold">Breast</label>
+                </div>
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" formControlName="CbNormal" />
+                        <label class="form-check-label">Normal</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="" formControlName="CbAccessory" />
+                        <label class="form-check-label" for="accessoryNipple">Accessory Nipple</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="breastNode" formControlName="CbNodule" />
+                        <label class="form-check-label" for="breastNode">Breast Node</label>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="breastNode" formControlName="CbOther"
+                          (change)="toggleInput('CbOther', 'CbOtherT')" />
+                        <label class="form-check-label" for="breastNode">Other</label>
+                        <input type="text" class="form-control ml-3" placeholder="" formControlName="CbOtherT"
+                          [disabled]="!newBornForm.get('CbOther')?.value" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedTabName === 'Abdomen'">
+              <div class="abdomencontainer">
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Abdominal Appearance</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="" formControlName="AAbdominal" value="0"
+                        (click)="toggleRadio('AAbdominal', '0','AAbdominalT')" />
+                      <label class="form-check-label" for="abdominalNormal">Normal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="" formControlName="AAbdominal" value="1"
+                        (click)="toggleRadio('AAbdominal', '1','AAbdominalT')" />
+                      <label class="form-check-label" for="abdominalAbnormal">Abnormal</label>
+                      <input type="text" class="form-control ml-3" formControlName="AAbdominalT"
+                        [disabled]="!newBornForm.get('AAbdominal')?.value" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Liver -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Liver</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="liverNormal" formControlName="ALiver" value="0"
+                        (click)="toggleRadio('ALiver', '0','ALiverT')" />
+                      <label class="form-check-label" for="liverNormal">Normal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="liverAbnormal" formControlName="ALiver" value="1"
+                        (click)="toggleRadio('ALiver', '1','ALiverT')" />
+                      <label class="form-check-label" for="liverAbnormal">Abnormal</label>
+                      <input type="text" class="form-control ml-3" formControlName="ALiverT"
+                        [disabled]="!newBornForm.get('ALiver')?.value" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Spleen -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Spleen</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="spleenNormal" formControlName="ASpleen" value="0"
+                        (click)="toggleRadio('ASpleen', '0','ASpleenT')" />
+                      <label class="form-check-label" for="spleenNormal">Normal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="spleenAbnormal" formControlName="ASpleen"
+                        value="1" (click)="toggleRadio('ASpleen', '1','ASpleenT')" />
+                      <label class="form-check-label" for="spleenAbnormal">Abnormal</label>
+                      <input type="text" class="form-control ml-3" formControlName="ASpleenT"
+                        [disabled]="!newBornForm.get('ASpleen')?.value" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Kidney -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Kidney</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="" formControlName="AKidney" value="0"
+                        (click)="toggleRadio('AKidney', '0','AKidneyT')" />
+                      <label class="form-check-label" for="kidneyNormal">Normal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="" formControlName="AKidney" value="1"
+                        (click)="toggleRadio('AKidney', '1','AKidneyT')" />
+                      <label class="form-check-label" for="kidneyAbnormal">Abnormal</label>
+                      <input type="text" class="form-control ml-3" formControlName="AKidneyT"
+                        [disabled]="!newBornForm.get('AKidney')?.value" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Hernia -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Hernia</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="herniaNo" formControlName="AHernia" value="1"
+                        (click)="toggleRadio('AHernia', '1','AHerniaT')" />
+                      <label class="form-check-label" for="herniaNo">No</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" id="herniaYes" formControlName="AHernia" value="0"
+                        (click)="toggleRadio('AHernia', '0','AHerniaT')" />
+                      <label class="form-check-label" for="herniaYes">Yes</label>
+                      <input type="text" class="form-control ml-3" formControlName="AHerniaT"
+                        [disabled]="!newBornForm.get('AHernia')?.value" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Umbilical Cord -->
+                <div class="mb-2 d-flex align-items-center">
+                  <div class="col-2">
+                    <span class="label-text">Umbilical Cord</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" id="arteries" formControlName="AArteries"
+                            (change)="toggleInput('AArteries', 'AArteriesT')" />
+                          <label class="form-check-label" for="arteries">Arteries</label>
+                          <input type="text" class="form-control ml-3" formControlName="AArteriesT"
+                            [disabled]="!newBornForm.get('AArteries')?.value" />
+                        </div>
+                      </div>
+                      <div class="col-6 d-flex w-100">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" id="shape" formControlName="AShape"
+                            (change)="toggleInput('AShape', 'AShapeNa')" />
+                          <label class="form-check-label" for="shape">Shape</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="" id="umbilicalNormal"
+                            formControlName="AShapeNa" [disabled]="!newBornForm.get('AShape')?.value" value="0"
+                            (click)="toggleRadio('AShapeNa', '0','AShapeT')" />
+                          <label class="form-check-label" for="umbilicalNormal">Normal</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="" id="umbilicalAbnormal"
+                            formControlName="AShapeNa" [disabled]="!newBornForm.get('AShape')?.value" value="1"
+                            (click)="toggleRadio('AShapeNa', '1','AShapeT')" />
+                          <label class="form-check-label" for="umbilicalAbnormal">Abnormal</label>
+                          <input type="text" class="form-control ml-3" formControlName="AShapeT"
+                            [disabled]="!newBornForm.get('AArteries')?.value" />
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="mb-2 d-flex align-items-center">
+                          <!-- <div class="col-2"></div> -->
+                          <div class="col-12 pl-0">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="checkbox" id="veins" formControlName="AVeins"
+                                (change)="toggleInput('AVeins', 'AVeinsT')" />
+                              <label class="form-check-label" for="veins">Veins</label>
+                              <input type="text" class="form-control ml-3" formControlName="AVeinsT"
+                                [disabled]="!newBornForm.get('AVeins')?.value" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--new Lines -->
+                <div class="mb-2 d-flex align-items-start">
+                  <div class="col-2">
+                    <span class="label-text">Lines</span>
+                  </div>
+                  <div class="col-10">
+                    <div class="d-flex flex-wrap">
+                      <div class="col-6 d-flex">
+                        <input class="form-check-input" type="checkbox" id="uvc" formControlName="AUvc"
+                          (change)="toggleInput('AUvc', 'AUcomplication')" />
+                        <label class="form-check-label" for="uvc">UVC</label>
+                        <div class="">
+                          <div class="d-flex">
+                            <label class="form-check-label mx-3" for="uvc" style="min-width: 115px;">Date of
+                              Insertion</label>
+                            <div class="header-date">
+                              <span _ngcontent-ufq-c103="" style="
+                                          position: relative;
+                                          top: 30px;
+                                          right: 4px;
+                                          float: right;
+                                          margin-top: -26px;
+                                          font-size: 18px;
+                                        ">
+                                <img src="assets/img/Calender.svg" alt="" />
+                              </span>
+
+                              <input formControlName="AUinsertion" class="form-control"
+                                style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                                [maxDate]="" #dp="bsDatepicker" bsDatepicker readonly [bsConfig]="{
+                                          showWeekNumbers: false,
+                                          dateInputFormat: 'DD.MM.YYYY'
+                                        }" [disabled]="!newBornForm.get('AUvc')?.value" />
+                            </div>
+                          </div>
+                          <div class="d-flex mt-2">
+                            <label class="form-check-label mx-3" for="uac"
+                              style="min-width: 115px;">Complication</label>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="" id="uvcNo"
+                                formControlName="AUcomplication" value="1"
+                                (click)="toggleRadio('AUcomplication', '1','AUcomplicationT')"
+                                [disabled]="!newBornForm.get('AUvc')?.value" />
+                              <label class="form-check-label" for="uvcNo">No</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="" id="uvcYes"
+                                formControlName="AUcomplication" value="0"
+                                (click)="toggleRadio('AUcomplication', '0','AUcomplicationT')"
+                                [disabled]="!newBornForm.get('AUvc')?.value" />
+                              <label class="form-check-label" for="uvcYes">Yes</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-5 d-flex justify-content-end">
+                        <div class="">
+                          <label class="form-check-label mx-3" for="intubYes">Date of Removal</label>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <div class="header-date">
+                            <span _ngcontent-ufq-c103="" style="
+                                      position: relative;
+                                      top: 30px;
+                                      right: 4px;
+                                      float: right;
+                                      margin-top: -26px;
+                                      font-size: 18px;
+                                    ">
+                              <img src="assets/img/Calender.svg" alt="" />
+                            </span>
+
+                            <input formControlName="AUremoval" class="form-control"
+                              style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                              [maxDate]="" #dp="bsDatepicker" bsDatepicker readonly [bsConfig]="{
+                                      showWeekNumbers: false,
+                                      dateInputFormat: 'DD.MM.YYYY'
+                                    }" [disabled]="!newBornForm.get('AUvc')?.value" />
+                          </div>
+                          <input type="text" class="form-control mt-2" style="width:250px;" placeholder=""
+                            formControlName="AUcomplicationT" [disabled]="!newBornForm.get('AUcomplication')?.value" />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- new UAC -->
+                    <div class="d-flex flex-wrap mt-2">
+                      <div class="col-6 d-flex">
+                        <input class="form-check-input" type="checkbox" id="uvc" formControlName="AUac"
+                          (change)="toggleInput('AUac', 'AUacomplication')" />
+                        <label class="form-check-label" for="uvc">UAC</label>
+                        <div class="">
+                          <div class="d-flex">
+                            <label class="form-check-label mx-3" for="uvc" style="min-width: 115px;">Date of
+                              Insertion</label>
+                            <div class="header-date">
+                              <span _ngcontent-ufq-c103="" style="
+                                          position: relative;
+                                          top: 30px;
+                                          right: 4px;
+                                          float: right;
+                                          margin-top: -26px;
+                                          font-size: 18px;
+                                        ">
+                                <img src="assets/img/Calender.svg" alt="" />
+                              </span>
+
+                              <input formControlName="AUainsertion" class="form-control"
+                                style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                                [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                          showWeekNumbers: false,
+                                          dateInputFormat: 'DD.MM.YYYY'
+                                        }" [disabled]="!newBornForm.get('AUac')?.value" />
+                            </div>
+                          </div>
+                          <div class="d-flex mt-2">
+                            <label class="form-check-label mx-3" for="uac"
+                              style="min-width: 115px;">Complication</label>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="" id="uvcNo"
+                                formControlName="AUacomplication" value="1"
+                                (click)="toggleRadio('AUacomplication', '1','AUacomplicationsT')"
+                                [disabled]="!newBornForm.get('AUac')?.value" />
+                              <label class="form-check-label" for="uvcNo">No</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="" id="uvcYes"
+                                formControlName="AUacomplication" value="0"
+                                (click)="toggleRadio('AUacomplication', '0','AUacomplicationsT')"
+                                [disabled]="!newBornForm.get('AUac')?.value" />
+                              <label class="form-check-label" for="uvcYes">Yes</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-5 d-flex justify-content-end">
+                        <div class="">
+                          <label class="form-check-label mx-3" for="intubYes">Date of Removal</label>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <div class="header-date">
+                            <span _ngcontent-ufq-c103="" style="
+                                      position: relative;
+                                      top: 30px;
+                                      right: 4px;
+                                      float: right;
+                                      margin-top: -26px;
+                                      font-size: 18px;
+                                    ">
+                              <img src="assets/img/Calender.svg" alt="" />
+                            </span>
+
+                            <input formControlName="AUaremoval" class="form-control"
+                              style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
+                              [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                      showWeekNumbers: false,
+                                      dateInputFormat: 'DD.MM.YYYY'
+                                    }" [disabled]="!newBornForm.get('AUac')?.value" />
+                          </div>
+                          <input type="text" class="form-control mt-2" style="width:250px;" placeholder=""
+                            formControlName="AUacomplicationsT"
+                            [disabled]="!newBornForm.get('AUacomplication')?.value" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Comment -->
+                <div class="mb-2 row">
+                  <div class="col-2">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="comment" formControlName="AComment" />
+                      <label class="form-check-label" for="comment">Comment</label>
+                    </div>
+                  </div>
+                  <div class="col-10">
+                    <input type="text" class="form-control" formControlName="ACommentT" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedTabName === 'Genitalia'">
+              <div class="mb-2 d-flex align-items-center">
+                <div class="col-2">
+                  <label class="fw-bold">Male</label><br />
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="maleNormal" formControlName="GmNormal" />
+                    <label class="form-check-label" for="maleNormal">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="hypospadias" formControlName="GmHypoxemia" />
+                    <label class="form-check-label" for="hypospadias">Hypospadias</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="edema" formControlName="GmEdema" />
+                    <label class="form-check-label" for="edema">Edema of scrotum / ecchymosis</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="hydrocele" formControlName="GmHydrocele" />
+                    <label class="form-check-label" for="hydrocele">Hydrocele</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="testes" formControlName="GmTestes" />
+                    <label class="form-check-label" for="testes">Testes, undescended</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="maleOther" formControlName="GmOther"
+                      (change)="toggleInput('GmOther', 'GmOtherT')" />
+                    <label class="form-check-label" for="maleOther">Other</label>
+                    <input type="text" class="form-control" formControlName="GmOtherT"
+                      [disabled]="!newBornForm.get('GmOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Female Section -->
+              <div class="mb-2 d-flex align-items-center">
+                <div class="col-2">
+                  <label class="fw-bold">Female</label><br />
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="femaleNormal" formControlName="GfNormal" />
+                    <label class="form-check-label" for="femaleNormal">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="vaginalDischarge" formControlName="GfVaginal" />
+                    <label class="form-check-label" for="vaginalDischarge">Vaginal Discharge</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="hymenalTag" formControlName="GfHymenal" />
+                    <label class="form-check-label" for="hymenalTag">Hymenal tag</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="edemaEcchymosis" formControlName="GfEdema" />
+                    <label class="form-check-label" for="edemaEcchymosis">Edema/ecchymosis</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="femaleOther" formControlName="GfOther"
+                      (change)="toggleInput('GfOther', 'GfOtherT')" />
+                    <label class="form-check-label" for="femaleOther">Other</label>
+                    <input type="text" class="form-control" formControlName="GfOtherT"
+                      [disabled]="!newBornForm.get('GfOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Anus Section -->
+              <div class="mb-2 d-flex align-items-center">
+                <div class="col-2">
+                  <label class="fw-bold">Anus</label><br />
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="anusPatent" formControlName="GaPatent" />
+                    <label class="form-check-label" for="anusPatent">Patent</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="hemorrhoidalTags" formControlName="GaHemorrh" />
+                    <label class="form-check-label" for="hemorrhoidalTags">Hemorrhoidal tags</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="anusOther" formControlName="GaOther"
+                      (change)="toggleInput('GaOther', 'GaOtherT')" />
+                    <label class="form-check-label" for="anusOther">Other</label>
+                    <input type="text" class="form-control" formControlName="GaOtherT"
+                      [disabled]="!newBornForm.get('GaOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Trunk/Spine Section -->
+              <div class="mb-2 d-flex align-items-center">
+                <div class="col-2">
+                  <label class="fw-bold">Trunks/Spine</label><br />
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="pilonidalSinus" formControlName="GtDimple" />
+                    <label class="form-check-label" for="pilonidalSinus">Pilonidal sinus / dimple</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="spineOther" formControlName="GtOther"
+                      (change)="toggleInput('GtOther', 'GtOther')" />
+                    <label class="form-check-label" for="spineOther">Other</label>
+                    <input type="text" class="form-control" formControlName="GtOtherT"
+                      [disabled]="!newBornForm.get('GtOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comments Section -->
+              <div class="mb-3 d-flex align-items-center">
+                <div class="col-2">
+                  <label class="fw-bold">Comments</label>
+                </div>
+                <div class="col-10">
+                  <input type="text" class="form-control" formControlName="GComment" />
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedTabName === 'Musculoskeletal / Neuromuscular'">
+              <div class="d-flex align-items-center">
+                <div class="col-2">
+                  <label class="fw-bold">Muscle Tone</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MmNormal" />
+                    <label class="form-check-label">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tremors" formControlName="MmTremors" />
+                    <label class="form-check-label" for="tremors">Tremors</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MmHypotonic" />
+                    <label class="form-check-label" for="hypotonic">Hypotonic</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="hypertonic" formControlName="MmHypertonic" />
+                    <label class="form-check-label" for="hypertonic">Hypertonic</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-2"></div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MmOther"
+                      (change)="toggleInput('MmOther', 'MmOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="MmOtherT" [disabled]="!newBornForm.get('MmOther')?.value" />
+                  </div>
+                </div>
+              </div>
+              <!-- Reflexes -->
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <label class="fw-bold">Reflexes</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="moro" formControlName="MrMoro"
+                      (change)="toggleInput('MrMoro', 'MrMoroV')" />
+                    <label class="form-check-label" for="moro">Moro reflex</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <ng-select style="width: 200px" formControlName="MrMoroV" [items]="Moro" bindLabel="label"
+                      bindValue="value">
+                    </ng-select>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="sucking" formControlName="MrRooting" />
+                    <label class="form-check-label" for="sucking">Rooting</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="grasp" formControlName="MrGag" />
+                    <label class="form-check-label" for="grasp">Gas Reflex</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-2"></div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MrSucking" />
+                    <label class="form-check-label">Sucking</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tremors" formControlName="MrGrasp" />
+                    <label class="form-check-label" for="tremors">Grasp Reflex</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MrStepping" />
+                    <label class="form-check-label" for="hypotonic">Stepping</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MrOther"
+                      (change)="toggleInput('MrOther', 'MrOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="MrOtherT" [disabled]="!newBornForm.get('MrOther')?.value" />
+                  </div>
+                </div>
+              </div>
+              <!-- Cry -->
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <label class="fw-bold">Cry</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="cry-normal" formControlName="McNormal" />
+                    <label class="form-check-label" for="cry-normal">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="cry-weak" formControlName="McWeak" />
+                    <label class="form-check-label" for="cry-weak">Weak</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="cry-weak" formControlName="McHigh" />
+                    <label class="form-check-label" for="cry-weak">High Pitch</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="cry-weak" formControlName="McAbsent" />
+                    <label class="form-check-label" for="cry-weak">Absent</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-2"></div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="McOther"
+                      (change)="toggleInput('McOther', 'McOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="McOtherT" [disabled]="!newBornForm.get('McOther')?.value" />
+                  </div>
+                </div>
+              </div>
+              <!-- Activity -->
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <label class="fw-bold">Activity</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="active" formControlName="MaActive" />
+                    <label class="form-check-label" for="active">Active</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MaLethargic" />
+                    <label class="form-check-label" for="lethargic">Lethargic</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MaNoResponse" />
+                    <label class="form-check-label" for="lethargic">No Responce</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MaHypooactive" />
+                    <label class="form-check-label" for="lethargic">Hypooactive</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-2"></div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MaHyperactive" />
+                    <label class="form-check-label" for="lethargic">Hyperactive</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MaOther"
+                      (change)="toggleInput('MaOther', 'MaOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
+                      formControlName="MaOtherT" [disabled]="!newBornForm.get('MaOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Extremities -->
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <label class="fw-bold">Extremities</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="extremities-normal"
+                      formControlName="MuNormal" />
+                    <label class="form-check-label" for="extremities-normal">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fractures" formControlName="MuFractures" />
+                    <label class="form-check-label" for="fractures">Fractures</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fractures" formControlName="MuSyndactyly" />
+                    <label class="form-check-label" for="fractures">Syndactyly</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fractures" formControlName="MuPolydactyly" />
+                    <label class="form-check-label" for="fractures">Polydactyly</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-2"></div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MuClavicle" />
+                    <label class="form-check-label" for="lethargic">Clavide Fracture</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MuOther"
+                      (change)="toggleInput('MuOther', 'MuOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline" style="width: 200px"
+                      formControlName="MuOtherT" [disabled]="!newBornForm.get('MuOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <label class="fw-bold">Lower</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="extremities-normal"
+                      formControlName="MlNormal" />
+                    <label class="form-check-label" for="extremities-normal">Normal</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fractures" formControlName="MlFractures" />
+                    <label class="form-check-label" for="fractures">Fractures</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fractures" formControlName="MlSyndactyly" />
+                    <label class="form-check-label" for="fractures">Syndactyly</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="fractures" formControlName="MlPolydactyly" />
+                    <label class="form-check-label" for="fractures">Polydactyly</label>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="col-2"></div>
+                <div class="col-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MlTalipes" />
+                    <label class="form-check-label" for="lethargic">Talipes</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="lethargic" formControlName="MlHipClick" />
+                    <label class="form-check-label" for="lethargic">Hip click</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" formControlName="MlOther"
+                      (change)="toggleInput('MlOther', 'MlOtherT')" />
+                    <label class="form-check-label">Other</label>
+                    <input type="text" class="form-control ms-2 d-inline" style="width: 200px"
+                      formControlName="MlOtherT" [disabled]="!newBornForm.get('MlOther')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Palmar Creases -->
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <input class="form-check-input" type="checkbox" id="palmar" formControlName="MPalmarCreases"
+                    (change)="toggleInput('MPalmarCreases', 'MPalmarCreasesT')" />
+                  <label class="fw-bold">Palmar Creases</label>
+                </div>
+                <div class="col-10">
+                  <div class="form-check">
+                    <input type="text" class="form-control ms-2 d-inline" style="width: 200px"
+                      formControlName="MPalmarCreasesT" [disabled]="!newBornForm.get('MPalmarCreases')?.value" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comments -->
+              <div class="d-flex align-items-center mt-3">
+                <div class="col-2">
+                  <label class="fw-bold">Comments</label>
+                </div>
+                <div class="col-10">
+                  <textarea class="form-control" rows="2" formControlName="MComment"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedTabName === 'Malformation'">
+              <div class="container mt-3">
+                <div class="row">
+                  <div class="col-md-4 custom-box">
+                    <div class="label-box">Malformation</div>
+                    <div class="radio-group">
+                      <input type="radio" id="no" name="" formControlName="MMalformation" value="0"
+                        (click)="toggleRadio('MMalformation', '1','MMalformationT')" />
+                      <label for="no" class="mb-0">No</label>
+                      <input type="radio" id="yes" name="" formControlName="MMalformation" value="1"
+                        (click)="toggleRadio('MMalformation', '0','MMalformationT')" />
+                      <label class="mb-0" for="yes">Yes</label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 text-area-container">
+                    <textarea class="form-control" formControlName="MMalformationT"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedTabName === 'General Impression'">
+              <div class="container mt-3">
+                <div class="row">
+                  <div class="col-md-12 text-area-container">
+                    <textarea class="form-control" formControlName="GeneralImpression"></textarea>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" style="min-width: 100px">Vit.K</label>
+                    <ng-select formControlName="VitK" style="width: 100%">
+                      <ng-option value="0">Yes</ng-option>
+                      <ng-option value="1">No</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row my-2">
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" style="min-width: 100px">Hep.B</label>
+                    <ng-select formControlName="HepB" style="width: 100%">
+                      <ng-option value="0">Yes</ng-option>
+                      <ng-option value="1">No</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-check d-flex w-100">
+                    <label class="form-check-label" style="min-width: 100px">Comment</label>
+                    <textarea class="form-control w-100" formControlName="Comments"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>

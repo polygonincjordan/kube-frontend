@@ -16,17 +16,17 @@
                             <div class="col-6 px-0 ">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Realized by</label>
-                                    <input type="text" class="col-2" readonly>
-                                    <input type="text" class="col-4" disabled>
+                                    <input type="text" class="col-2" [value]="this.userProfile?.Gpart" readonly>
+                                    <input type="text" class="col-4" [value]="this.userProfile?.GpartName" disabled>
                                 </div>
                             </div>
                         </div>
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-2">Date</label>
-                                <input type="text" class="col-2" bsDatepicker
+                                <input type="text" class="col-2" bsDatepicker [bsValue]="date"
                                     [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" disabled>
-                                <input type="text" class="col-2" bsDatepicker
+                                <input type="text" class="col-2" bsDatepicker [bsValue]="time"
                                     [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" disabled>
                             </div>
                         </div>
@@ -52,11 +52,12 @@
                                 <label for="" class="text-nowrap m-0">Consciousness</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="Consciousness" [disabled]="true"/>
                             </div>
                             <div class="col-md-3">
-                                <ng-select>
-                                    <ng-option></ng-option>
+                                <ng-select formControlName="ConsciousnessScore" (change)="totalScore()">
+                                    <ng-option *ngFor="let item of consciousnessList" [value]="item.value">{{ item.label
+                                        }}</ng-option>
                                 </ng-select>
                             </div>
                         </div>
@@ -65,11 +66,12 @@
                                 <label for="" class="text-nowrap m-0">Respiration</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="Respiration" [disabled]="true"/>
                             </div>
                             <div class="col-md-3">
-                                <ng-select>
-                                    <ng-option></ng-option>
+                                <ng-select formControlName="RespirationScore" (change)="totalScore()">
+                                    <ng-option *ngFor="let item of respirationList" [value]="item.value">{{ item.label
+                                        }}</ng-option>
                                 </ng-select>
                             </div>
                         </div>
@@ -78,11 +80,12 @@
                                 <label for="" class="text-nowrap m-0">O2 Saturation</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="O2Saturation" [disabled]="true"/>
                             </div>
                             <div class="col-md-3">
-                                <ng-select>
-                                    <ng-option></ng-option>
+                                <ng-select formControlName="O2SaturationScore" (change)="totalScore()">
+                                    <ng-option *ngFor="let item of saturationList" [value]="item.value">{{ item.label
+                                        }}</ng-option>
                                 </ng-select>
                             </div>
                         </div>
@@ -91,11 +94,12 @@
                                 <label for="" class="text-nowrap m-0">Circulation</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="Circulation" [disabled]="true"/>
                             </div>
                             <div class="col-md-3">
-                                <ng-select>
-                                    <ng-option></ng-option>
+                                <ng-select formControlName="CirculationScore" (change)="totalScore()">
+                                    <ng-option *ngFor="let item of circulationList" [value]="item.value">{{ item.label
+                                        }}</ng-option>
                                 </ng-select>
                             </div>
                         </div>
@@ -104,11 +108,12 @@
                                 <label for="" class="text-nowrap m-0">Activity</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="Activity" [disabled]="true"/>
                             </div>
                             <div class="col-md-3">
-                                <ng-select>
-                                    <ng-option></ng-option>
+                                <ng-select formControlName="ActivityScore" (change)="totalScore()">
+                                    <ng-option *ngFor="let item of activityList" [value]="item.value">{{ item.label
+                                        }}</ng-option>
                                 </ng-select>
                             </div>
                         </div>
@@ -121,13 +126,11 @@
                             <div class="col-md-3">
                                 <label for="" class="text-nowrap m-0">Total Score</label>
                             </div>
-                            <div class="col-md-3">
-                                <input class="form-control" />
+                            <div class="col-md-1">
+                                <input class="form-control" formControlName="TotalScore" [disabled]="true" />
                             </div>
                             <div class="col-md-3">
-                                <ng-select>
-                                    <ng-option></ng-option>
-                                </ng-select>
+                                <input class="form-control" formControlName="TotalScoreDesc" [disabled]="true"/>
                             </div>
                         </div>
                         <div class="row m-0 mb-3">
@@ -135,7 +138,7 @@
                                 <label for="" class="text-nowrap m-0">Comments</label>
                             </div>
                             <div class="col-md-7">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="Comments" />
                             </div>
                         </div>
                     </div>
