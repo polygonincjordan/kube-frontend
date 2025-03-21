@@ -41,7 +41,7 @@
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
                 <label class="w-30" for="">Diet Description</label>
                 <div class="w-70">
-                    <input type="checkbox" formCOntrolName="Dietconsistency" value="X" [checked]="true"
+                    <input type="checkbox" formControlName="Dietconsistency" value="X" [checked]="true"
                         (change)="dietConsistencySelect('X', $event)" />
                     <label class="ml-2 m-0">Companion Meal</label>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="w-70 flex-row mt-1">
                     <div class="row m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formCOntrolName="Mealtype" value="B"
+                            <input type="checkbox" formControlName="Mealtype" value="B"
                                 (change)="selectMeal('B', $event, 'BreakFastQuantity')"
                                 [checked]="dietOrderForm.get('Mealtype')?.value?.includes('B')" />
                             <label class="ml-2 m-0">Breakfast</label>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="row mt-3 m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formCOntrolName="Mealtype" value="L"
+                            <input type="checkbox" formControlName="Mealtype" value="L"
                                 (change)="selectMeal('L', $event, 'LunchQuantity')"
                                 [checked]="dietOrderForm.get('Mealtype')?.value?.includes('L')" />
                             <label class="ml-2 m-0">Lunch</label>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="row mt-3 m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formCOntrolName="Mealtype" value="D"
+                            <input type="checkbox" formControlName="Mealtype" value="D"
                                 (change)="selectMeal('D', $event, 'DinnerQuantity')"
                                 [checked]="dietOrderForm.get('Mealtype')?.value?.includes('D')" />
                             <label class="ml-2 m-0">Dinner</label>
@@ -197,7 +197,7 @@
                 <label class="w-30" for="">Snack Consistency</label>
                 <div class="w-70 d-flex flex-column">
                     <div>
-                        <input type="checkbox" formCOntrolName="snackConsistency" value="X" [checked]="true"
+                        <input type="checkbox" formControlName="snackConsistency" value="X" [checked]="true"
                             (change)="dietConsistencySelect('X', $event)" />
                         <label class="ml-2 m-0">Snack</label>
                     </div>
@@ -211,7 +211,7 @@
                 <label class="w-30" for="">Snack Description</label>
                 <div class="w-70 d-flex flex-column">
                     <div>
-                        <input type="checkbox" formCOntrolName="snackDescription" value="X" [checked]="true"
+                        <input type="checkbox" formControlName="snackDescription" value="X" [checked]="true"
                             (change)="dietConsistencySelect('X', $event)" />
                         <label class="ml-2 m-0">Companion Meal</label>
                     </div>

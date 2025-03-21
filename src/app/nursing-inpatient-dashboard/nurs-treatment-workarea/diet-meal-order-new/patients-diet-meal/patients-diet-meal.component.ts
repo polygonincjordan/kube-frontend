@@ -99,22 +99,6 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
   selectedDislikes: any = [];
   ngOnInit(): void {
-
-    let staticList = [
-      {
-        FooddprefTxt: 'Banana',
-        FoodprefId: '1',
-      },
-      {
-        FooddprefTxt: 'Apple',
-        FoodprefId: '2',
-      },
-      {
-        FooddprefTxt: 'Mango',
-        FoodprefId: '3',
-      },
-    ]
-    this.dislikeList = staticList;
     this.createForm();
     this.initForm();
     this.onStartDateChange(null);
@@ -124,7 +108,7 @@ export class PatientsDietMealComponentNew implements OnInit {
     this.foodPrefDetails();
     this.dietMealOrderDetails()
     this.getOrderDetails();
-    // this.getDislikeDetails();
+    this.getDislikeDetails();
     this.initAssessmentForm();
 
   }
@@ -317,7 +301,7 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
   foodPrefDetails() {
     this.emergencyService.fetchFoodPrefList().subscribe((res: any) => {
-      // this.dislikeList = res?.d?.results;
+      this.dislikeList = res?.d?.results;
 
     })
   }
@@ -610,48 +594,48 @@ export class PatientsDietMealComponentNew implements OnInit {
     delete payload.calories
     delete payload.sodium
     delete payload.Irradiated
-    payload.ToDietSpecs = [
-      {
-        "Institution": payload.Institution,
-        "Mrn": payload.Mrn,
-        "Dietday": payload.Dietday,
-        "Caseno": payload.Caseno,
-        "DietarySchema": "DEFA",
-        "DietaryCode": "A010",
-        "Specificartion": "Carbohydrates",
-        "Value": payload.carbohydrates
-      },
-      {
-        "Institution": payload.Institution,
-        "Mrn": payload.Mrn,
-        "Dietday": payload.Dietday,
-        "Caseno": payload.Caseno,
-        "DietarySchema" : "DEFA",
-        "DietaryCode" : "A020",
-        "Specificartion" : "Proteins",
-        "Value": payload.proteins
-      },
-      {
-        "Institution": payload.Institution,
-        "Mrn": payload.Mrn,
-        "Dietday": payload.Dietday,
-        "Caseno": payload.Caseno,
-        "DietarySchema" : "DEFA",
-        "DietaryCode" : "A030",
-        "Specificartion" : "Calories",
-        "Value": payload.calories
-      },
-      {
-        "Institution": payload.Institution,
-        "Mrn": payload.Mrn,
-        "Dietday": payload.Dietday,
-        "Caseno": payload.Caseno,
-        "DietarySchema" : "DEFA",
-        "DietaryCode" : "A040",
-        "Specificartion" : "Sodium",
-        "Value": payload.sodium
-      },
-    ]
+    // payload.ToDietSpecs = [
+    //   {
+    //     "Institution": payload.Institution,
+    //     "Mrn": payload.Mrn,
+    //     "Dietday": payload.Dietday,
+    //     "Caseno": payload.Caseno,
+    //     "DietarySchema": "DEFA",
+    //     "DietaryCode": "A010",
+    //     "Specificartion": "Carbohydrates",
+    //     "Value": payload.carbohydrates
+    //   },
+    //   {
+    //     "Institution": payload.Institution,
+    //     "Mrn": payload.Mrn,
+    //     "Dietday": payload.Dietday,
+    //     "Caseno": payload.Caseno,
+    //     "DietarySchema" : "DEFA",
+    //     "DietaryCode" : "A020",
+    //     "Specificartion" : "Proteins",
+    //     "Value": payload.proteins
+    //   },
+    //   {
+    //     "Institution": payload.Institution,
+    //     "Mrn": payload.Mrn,
+    //     "Dietday": payload.Dietday,
+    //     "Caseno": payload.Caseno,
+    //     "DietarySchema" : "DEFA",
+    //     "DietaryCode" : "A030",
+    //     "Specificartion" : "Calories",
+    //     "Value": payload.calories
+    //   },
+    //   {
+    //     "Institution": payload.Institution,
+    //     "Mrn": payload.Mrn,
+    //     "Dietday": payload.Dietday,
+    //     "Caseno": payload.Caseno,
+    //     "DietarySchema" : "DEFA",
+    //     "DietaryCode" : "A040",
+    //     "Specificartion" : "Sodium",
+    //     "Value": payload.sodium
+    //   },
+    // ]
     console.log(payload, "payload");
 
     this.emergencyService.saveDeitMealOrder(payload).subscribe((res: any) => {
@@ -761,9 +745,13 @@ export class PatientsDietMealComponentNew implements OnInit {
 
     this.isInvalidForm = false;
     let formValue = { ...this.dislikeFoodForm.value };
-    let unmatchedFoodids = this.dislikeDetails
-      .map(item => item.Foodprefid)
-      .filter(foodid => !formValue.Foodid.includes(foodid));
+    delete formValue.NoDislike
+    let unmatchedFoodids: any;
+    if(this.dislikeDetails) {
+      unmatchedFoodids = this.dislikeDetails
+        .map(item => item.Foodprefid)
+        .filter(foodid => !formValue.Foodid.includes(foodid));
+    }
 
     // Create payload
     let payloadDeleted = {
@@ -771,7 +759,7 @@ export class PatientsDietMealComponentNew implements OnInit {
       "Mrn": formValue.Mrn,
       "Operation": "D",
       "Foodcomment": formValue.Foodcomment,
-      "Foodid": unmatchedFoodids.join(', ')
+      "Foodid": unmatchedFoodids ? unmatchedFoodids.join(', ') : formValue.Foodid.join(', ')
     };
 
     console.log(payloadDeleted);
@@ -868,7 +856,7 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
 
   cancelOrder(item?) {
-    if (item?.Orderstatusdesc === 'Confirmed') {
+    if (item?.Orderstatusdesc === 'Confirmed' || item?.Orderstatusdesc === 'Saved') {
       const payload = {
         "Institution": item?.Institution,
         "UpdateType": "C",
@@ -893,12 +881,14 @@ export class PatientsDietMealComponentNew implements OnInit {
       }, (error) => {
 
       })
-    } else if (item?.Orderstatusdesc === 'Saved') {
-      Swal.fire({
-        text: 'Order Cannot be Cancelled',
-        icon: 'warning',
-      })
-    } else if (item?.Orderstatusdesc === 'Cancelled') {
+    }
+    //  else if (item?.Orderstatusdesc === 'Saved') {
+    //   Swal.fire({
+    //     text: 'Order Cannot be Cancelled',
+    //     icon: 'warning',
+    //   })
+    // } 
+    else if (item?.Orderstatusdesc === 'Cancelled') {
       Swal.fire({
         text: 'The Order is Already Cancelled',
         icon: 'warning',

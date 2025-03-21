@@ -225,6 +225,26 @@ export class DayCaseDashboardService {
     });
   }
 
+  // Modified Aldrete document
+  saveModifiedAldreteDocument(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveModifiedAldreteDocument`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  ModifiedAldretSetDocumentLatestDoc(json: any) {
+    const url = `${this.url}ModifiedAldretSetDocumentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcModifiedAldreteSetDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcModifiedAldreteSetDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
   // Correspondence Document
   saveCorrespondenceDocument(payload: any): Observable<any> {
     return this.http.post(this.url + `saveCorrespondenceDocument`, payload, {
