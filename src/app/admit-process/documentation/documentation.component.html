@@ -86,6 +86,18 @@
     </div>
   </div>
 
+  <div class="education-assess" *ngIf="admissionService.isAddNicuForm">
+    <strong>NICU Admission Assessment</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditNicuForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditNicuForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
+
   <!-- Medication Form Header -->
   <div class="education-assess" *ngIf="admissionService.isAddEditMedicalForm">
     <strong>Medical report</strong>

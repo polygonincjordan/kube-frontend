@@ -177,6 +177,9 @@ export class DocumentationComponent implements OnInit {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NBASM') {
             this.deleteNewBornPassDoc();
           }
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NICAD') {
+            this.deleteNicuDoc();
+          }
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_VISIT') {
             console.log(this.admissionService.selectedCurrentDocDetails);
             this.deleteVisitNoteDocument();
@@ -328,6 +331,9 @@ export class DocumentationComponent implements OnInit {
     }
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NBASM') {
       this.releaseNewBorn();
+    }
+    if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NICAD') {
+      this.releaseNicu();
     }
   }
 
@@ -660,6 +666,13 @@ getOperationReport() {
         this.admissionService.isRealoadData.next(true);
       });
   }
+  deleteNicuDoc() {
+    this.emergencyService
+      .deleteNicuDoc(this.admissionService.selectedCurrentDocDetails.Dockey)
+      .subscribe(() => {
+        this.admissionService.isRealoadData.next(true);
+      });
+  }
 
   deleteVisitNoteDocument() {
     this.admissionService
@@ -723,6 +736,19 @@ releaseNewBorn() {
     };
     d.d.DocStatus = '2';
     this.admissionService.createNewBorn(d).subscribe(
+      (result) => {
+        this.admissionService.isRealoadData.next(true);
+      }
+    );
+  })
+}
+releaseNicu() {
+  this.emergencyService.getNicuDetail(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
+    let d: any = {
+      d: res?.d?.results[0],
+    };
+    d.d.DocStatus = '2';
+    this.admissionService.createNicuSet(d).subscribe(
       (result) => {
         this.admissionService.isRealoadData.next(true);
       }
