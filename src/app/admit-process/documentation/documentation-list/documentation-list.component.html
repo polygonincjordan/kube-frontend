@@ -129,9 +129,9 @@
 <div *ngIf="admissionService.isNewBornForm">
   <app-newborn-assessment [soapFormEvent]="soapFormEvent"  (realodEducationList)="realodEducationList($event)"></app-newborn-assessment>
 </div>
-<!-- <div *ngIf="admissionService.isAddNicuForm">
-  <app-nicu-assessment-document></app-nicu-assessment-document>
-</div> -->
+<div *ngIf="admissionService.isAddNicuForm">
+  <app-nicu-assessment-document [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-nicu-assessment-document>
+</div>
 
 <ng-template #labpdfmodal>
   <div class="modal-body">

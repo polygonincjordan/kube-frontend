@@ -57,6 +57,8 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { TransferAssessmentComponent } from './documentation/documentation-list/transfer-assessment/transfer-assessment.component';
 import { NewbornAssessmentModule } from '../shared-module/newborn-assessment/newborn-assessment.module';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { NicuAssessmentDocumentComponent } from './documentation/documentation-list/nicu-assessment-document/nicu-assessment-document.component';
+import { NicuErVitalsComponent } from './documentation/documentation-list/nicu-assessment-document/er-vitals/er-vitals.component';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -99,7 +101,9 @@ export const ePrescriptionRoutes: Routes = [
     PhysicianPastMedicalComponent,
     PhysicianPastSurgicalComponent,
     DocVisitNoteComponent,
-    TransferAssessmentComponent
+    TransferAssessmentComponent,
+    NicuAssessmentDocumentComponent,
+    NicuErVitalsComponent
   ],
   imports: [
     CommonModule,

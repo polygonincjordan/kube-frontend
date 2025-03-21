@@ -1472,9 +1472,24 @@ export class AdmissionService {
       })
     );
   }
+  getNicuDocument(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getNicuDocument?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
 
   createNewBorn(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createNewBornPhysicalDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    }); 
+  }
+  createNicuSet(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createNicuSet`;
     return this.http.post(url, json, {
       withCredentials: true,
     }); 
