@@ -12,7 +12,7 @@
 <div id="mySidenav" class="sidenav" [ngStyle]="{ width: sidenavWidth }">
     <form class="comparion-order" *ngIf="modalType == 'dietMeal'" [formGroup]="dietOrderForm" (ngSubmit)="saveForm()">
         <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
-            <div class="title white-color">Companion’s Meal Ordering Details</div>
+            <div class="title">Companion’s Meal Ordering Details</div>
         </div>
         <div class="container p-4">
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
@@ -39,27 +39,24 @@
                 </div>
             </div>
             <div class="d-flex flex-row align-items-center justify-content-between mb-2">
-                <label class="w-30" for="">Diet Description</label>
+                <label class="w-30" for="">Diet Consistency</label>
                 <div class="w-70">
-                    <input type="checkbox" formControlName="Dietconsistency" value="X" [checked]="true"
-                        (change)="dietConsistencySelect('X', $event)" />
+                    <input type="checkbox" formControlName="Dietconsistency" value="X" [checked]="true" [readOnly]="true" (change)="dietConsistencySelect('X', $event)"/>
                     <label class="ml-2 m-0">Companion Meal</label>
                 </div>
             </div>
             <div class="d-flex flex-row justify-content-between mb-2 mt-3">
-                <label class="w-30" for="">Diet Consistency</label>
+                <label class="w-30" for="">Diet Description</label>
                 <div class="w-70 flex-row mt-1">
                     <div class="row m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formControlName="Mealtype" value="B"
-                                (change)="selectMeal('B', $event, 'BreakFastQuantity')"
-                                [checked]="dietOrderForm.get('Mealtype')?.value?.includes('B')" />
+                            <input type="checkbox" formControlName="Mealtype" value="B" (change)="selectMeal('B', $event, 'BreakFastQuantity')" 
+                            [checked]="dietOrderForm.get('Mealtype')?.value?.includes('B')" />
                             <label class="ml-2 m-0">Breakfast</label>
                         </div>
                         <div class="col-md-6 ml-3">
-                            <input type="number" placeholder="quantity" class="form-control w-100" min="1"
-                                (input)="validateNumber($event)" formControlName="BreakFastQuantity"
-                                (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
+                            <input type="number" placeholder="quantity" class="form-control w-100" min="1" (input)="validateNumber($event)"
+                                formControlName="BreakFastQuantity" (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
                         dietOrderForm?.get('BreakFastQuantity')?.invalid && isInvalidForm
                       " />
                             <div *ngIf="
@@ -71,15 +68,13 @@
                     </div>
                     <div class="row mt-3 m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formControlName="Mealtype" value="L"
-                                (change)="selectMeal('L', $event, 'LunchQuantity')"
-                                [checked]="dietOrderForm.get('Mealtype')?.value?.includes('L')" />
+                            <input type="checkbox" formControlName="Mealtype" value="L" (change)="selectMeal('L', $event, 'LunchQuantity')" 
+                            [checked]="dietOrderForm.get('Mealtype')?.value?.includes('L')" />
                             <label class="ml-2 m-0">Lunch</label>
                         </div>
                         <div class="col-md-6 ml-3">
-                            <input type="number" placeholder="quantity" class="form-control w-100" min="1"
-                                (input)="validateNumber($event)" formControlName="LunchQuantity"
-                                (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
+                            <input type="number" placeholder="quantity" class="form-control w-100" min="1" (input)="validateNumber($event)"
+                                formControlName="LunchQuantity" (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
                         dietOrderForm?.get('LunchQuantity')?.invalid && isInvalidForm
                       " />
                             <div *ngIf="
@@ -91,15 +86,13 @@
                     </div>
                     <div class="row mt-3 m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formControlName="Mealtype" value="D"
-                                (change)="selectMeal('D', $event, 'DinnerQuantity')"
-                                [checked]="dietOrderForm.get('Mealtype')?.value?.includes('D')" />
+                            <input type="checkbox" formControlName="Mealtype" value="D" (change)="selectMeal('D', $event, 'DinnerQuantity')" 
+                            [checked]="dietOrderForm.get('Mealtype')?.value?.includes('D')"/>
                             <label class="ml-2 m-0">Dinner</label>
                         </div>
                         <div class="col-md-6 ml-3">
-                            <input type="number" placeholder="quantity" class="form-control w-100" min="1"
-                                (input)="validateNumber($event)" formControlName="DinnerQuantity"
-                                (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
+                            <input type="number" placeholder="quantity" class="form-control w-100" min="1" (input)="validateNumber($event)"
+                                formControlName="DinnerQuantity" (keydown)="blockInvalidKeys($event)" [class.is-invalid]="
                         dietOrderForm?.get('DinnerQuantity')?.invalid && isInvalidForm
                       " />
                             <div *ngIf="

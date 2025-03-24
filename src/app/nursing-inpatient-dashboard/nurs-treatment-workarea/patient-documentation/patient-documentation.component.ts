@@ -862,7 +862,7 @@ export class PatientDocumentationComponent implements OnInit {
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
-      'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete Score (MAS) Scale' },
+      'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete Score (MAS)' },
       'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Disch' },
     };
 
@@ -2341,7 +2341,7 @@ export class PatientDocumentationComponent implements OnInit {
               this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
             },
             complete: () => {
-              this.sharedService.successSwallModel('Modified Aldrete Score (MAS) Scale released successfully');
+              this.sharedService.successSwallModel('Modified Aldrete Score (MAS) released successfully');
               this.refresh();
             }
           });
@@ -2866,7 +2866,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating Modified Aldrete Score (MAS) Scale:', error);
+          console.error('Error creating Modified Aldrete Score (MAS):', error);
         })
       }
 

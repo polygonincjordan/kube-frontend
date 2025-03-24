@@ -1379,13 +1379,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
   previousDate() {
     if(this.erhistory) {
-      if(this.singleData.get('fromDate').value){
-        const currentDate = this.singleData.get('fromDate').value;
-        const previousDate = new Date(currentDate);
-        previousDate.setDate(previousDate.getDate() - 1);
-        this.singleData.patchValue({ fromDate: previousDate });
-        // this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
-      }
+      var date1 = this.formDetailGroup.get('DateRange').value[0];
+      var date2 = this.formDetailGroup.get('DateRange').value[1];
+      this.formDetailGroup.get('DateRange').patchValue([new Date(date1.setDate(date1.getDate() - 1)), new Date(date2.setDate(date2.getDate() - 1)),]);
+      this.ErHistoryComponent?.getHospitalList(this.formgroupData.DateRange);
       return;
     }
     if (
@@ -1488,14 +1485,21 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
   upcomingDate() {
     if(this.erhistory) {
-      if(this.singleData.get('fromDate').value){
-        const currentDate = this.singleData.get('fromDate').value;
-        const nextDate = new Date(currentDate);
-        nextDate.setDate(nextDate.getDate() + 1);
-        this.singleData.patchValue({ fromDate: nextDate });
-        // this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
-      }
-      return;
+      // if (
+      //   +this.formDetailGroup.get('DateRange').value[0] ==
+      //   +this.formDetailGroup.get('DateRange').value[1]
+      // ) {
+        var date1 = this.formDetailGroup.get('DateRange').value[0];
+        var date2 = this.formDetailGroup.get('DateRange').value[1];
+        this.formDetailGroup
+          .get('DateRange')
+          .patchValue([
+            new Date(date1.setDate(date1.getDate() + 1)),
+            new Date(date2.setDate(date2.getDate() + 1)),
+          ]);
+          this.ErHistoryComponent?.getHospitalList(this.formgroupData.DateRange);
+        return;
+      // }
     }
     console.log('Upcomming');
     this.formDetailGroup.get('DateRange').patchValue([new Date(), new Date()]);

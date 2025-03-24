@@ -9,7 +9,7 @@
                             <div class="col-6 px-0 mb-2">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Scale Name</label>
-                                    <input type="text" class="col-6" value="Morse Fall Scale (MFS)" style="width: 100%;"
+                                    <input type="text" class="col-6" value="Modified Aldrete Score (MAS)" style="width: 100%;"
                                         disabled>
                                 </div>
                             </div>
@@ -26,7 +26,7 @@
                                 <label for="" class="text-nowrap m-0 col-2">Date</label>
                                 <input type="text" class="col-2" bsDatepicker [bsValue]="date"
                                     [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" disabled>
-                                <input type="text" class="col-2" bsDatepicker [bsValue]="time"
+                                <input type="text" class="col-2" bsDatepicker [bsValue]="date"
                                     [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" disabled>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                             <div class="col-md-3">
                                 <label for="" class="text-nowrap m-0">Characteristics</label>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-1 text-center">
                                 <label for="" class="text-nowrap m-0">Score</label>
                             </div>
                             <div class="col-md-3">
@@ -52,7 +52,7 @@
                                 <label for="" class="text-nowrap m-0">Consciousness</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" formControlName="Consciousness" [disabled]="true"/>
+                                <input class="form-control" formControlName="Consciousness" [disabled]="true" [readOnly]="true"/>
                             </div>
                             <div class="col-md-3">
                                 <ng-select formControlName="ConsciousnessScore" (change)="totalScore()">
@@ -66,7 +66,7 @@
                                 <label for="" class="text-nowrap m-0">Respiration</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" formControlName="Respiration" [disabled]="true"/>
+                                <input class="form-control" formControlName="Respiration" [disabled]="true" [readOnly]="true"/>
                             </div>
                             <div class="col-md-3">
                                 <ng-select formControlName="RespirationScore" (change)="totalScore()">
@@ -80,7 +80,7 @@
                                 <label for="" class="text-nowrap m-0">O2 Saturation</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" formControlName="O2Saturation" [disabled]="true"/>
+                                <input class="form-control" formControlName="O2Saturation" [disabled]="true" [readOnly]="true"/>
                             </div>
                             <div class="col-md-3">
                                 <ng-select formControlName="O2SaturationScore" (change)="totalScore()">
@@ -94,7 +94,7 @@
                                 <label for="" class="text-nowrap m-0">Circulation</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" formControlName="Circulation" [disabled]="true"/>
+                                <input class="form-control" formControlName="Circulation" [disabled]="true" [readOnly]="true"/>
                             </div>
                             <div class="col-md-3">
                                 <ng-select formControlName="CirculationScore" (change)="totalScore()">
@@ -108,7 +108,7 @@
                                 <label for="" class="text-nowrap m-0">Activity</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" formControlName="Activity" [disabled]="true"/>
+                                <input class="form-control" formControlName="Activity" [disabled]="true" [readOnly]="true"/>
                             </div>
                             <div class="col-md-3">
                                 <ng-select formControlName="ActivityScore" (change)="totalScore()">
@@ -127,10 +127,10 @@
                                 <label for="" class="text-nowrap m-0">Total Score</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" formControlName="TotalScore" [disabled]="true" />
+                                <input class="form-control" formControlName="TotalScore" [disabled]="true" [readOnly]="true" />
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control" formControlName="TotalScoreDesc" [disabled]="true"/>
+                                <input class="form-control" formControlName="TotalScoreDesc" [disabled]="true" [readOnly]="true"/>
                             </div>
                         </div>
                         <div class="row m-0 mb-3">

@@ -218,6 +218,7 @@ export class ModifiedAldreteDocumentComponent implements OnInit {
 
   isFormValidError: boolean = false;
   createModifiedAldreteDocument(docStatus: any, actiontype?: string) {
+    debugger
     return new Promise((resolve, reject) => {
       this.isFormValidError = true;
       if (this.MorsefallForm.invalid) {
@@ -225,7 +226,7 @@ export class ModifiedAldreteDocumentComponent implements OnInit {
       }
       this.MorsefallForm.value.DocStatus = docStatus;
       let paylaod = this.MorsefallForm.value;
-
+      paylaod.TotalScore = paylaod.TotalScore.toString(); 
       paylaod.Orgdo = this.storageService?.patientData?.deptOrgUnit;
       this.subscription = this.dayCaseDashboard
         .saveModifiedAldreteDocument(paylaod)
@@ -241,11 +242,11 @@ export class ModifiedAldreteDocumentComponent implements OnInit {
             resolve(true);
             if (actiontype === 'edit') {
               this.sharedService.successSwallModel(
-                'Modified Aldrete Score (MAS) Scale document updated successfully'
+                'Modified Aldrete Score (MAS) document updated successfully'
               );
             } else {
               this.sharedService.successSwallModel(
-                'Modified Aldrete Score (MAS) Scale document created successfully'
+                'Modified Aldrete Score (MAS) document created successfully'
               );
             }
           },
