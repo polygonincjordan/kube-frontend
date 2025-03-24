@@ -594,48 +594,44 @@ export class PatientsDietMealComponentNew implements OnInit {
     delete payload.calories
     delete payload.sodium
     delete payload.Irradiated
-    // payload.ToDietSpecs = [
-    //   {
-    //     "Institution": payload.Institution,
-    //     "Mrn": payload.Mrn,
-    //     "Dietday": payload.Dietday,
-    //     "Caseno": payload.Caseno,
-    //     "DietarySchema": "DEFA",
-    //     "DietaryCode": "A010",
-    //     "Specificartion": "Carbohydrates",
-    //     "Value": payload.carbohydrates
-    //   },
-    //   {
-    //     "Institution": payload.Institution,
-    //     "Mrn": payload.Mrn,
-    //     "Dietday": payload.Dietday,
-    //     "Caseno": payload.Caseno,
-    //     "DietarySchema" : "DEFA",
-    //     "DietaryCode" : "A020",
-    //     "Specificartion" : "Proteins",
-    //     "Value": payload.proteins
-    //   },
-    //   {
-    //     "Institution": payload.Institution,
-    //     "Mrn": payload.Mrn,
-    //     "Dietday": payload.Dietday,
-    //     "Caseno": payload.Caseno,
-    //     "DietarySchema" : "DEFA",
-    //     "DietaryCode" : "A030",
-    //     "Specificartion" : "Calories",
-    //     "Value": payload.calories
-    //   },
-    //   {
-    //     "Institution": payload.Institution,
-    //     "Mrn": payload.Mrn,
-    //     "Dietday": payload.Dietday,
-    //     "Caseno": payload.Caseno,
-    //     "DietarySchema" : "DEFA",
-    //     "DietaryCode" : "A040",
-    //     "Specificartion" : "Sodium",
-    //     "Value": payload.sodium
-    //   },
-    // ]
+    payload.ToDietSpecs = [
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "Schem": "DEFA",
+        "DietCode": "A010",
+        "Value": payload.carbohydrates
+      },
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "Schem" : "DEFA",
+        "DietCode" : "A020",
+        "Value": payload.proteins
+      },
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "Schem" : "DEFA",
+        "DietCode" : "A030",
+        "Value": payload.calories
+      },
+      {
+        "Institution": payload.Institution,
+        "Mrn": payload.Mrn,
+        "Dietday": payload.Dietday,
+        "Caseno": payload.Caseno,
+        "Schem" : "DEFA",
+        "DietCode" : "A040",
+        "Value": payload.sodium
+      },
+    ]
     console.log(payload, "payload");
 
     this.emergencyService.saveDeitMealOrder(payload).subscribe((res: any) => {

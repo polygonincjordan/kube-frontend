@@ -915,14 +915,14 @@ export class DiagnosesComponent implements OnInit {
     console.log(this.selectedPatient, "this.selectedPatient")
     if(paitentData?.Dtid == 'ZMED_PHASM') {
       this.admissionService.selectedCurrentDocDetails = paitentData;
-
+      this.modalService.dismissAll();
       if (paitentData.DokstText == 'Released' || paitentData.Released) {
       //   this.InOutPatientViewValue = {
       //    showBoth: true,
       //    showIn: false,
       //    showOut: false,
       //  };
-        this.openPhysicianAssessment(this.PhysicianAssessment);
+        // this.openPhysicianAssessment(this.PhysicianAssessment);
         const json = {
           Dockey: paitentData.Dockey ? paitentData.Dockey : paitentData?.DocKey,
         };
@@ -1579,6 +1579,7 @@ export class DiagnosesComponent implements OnInit {
         this.admissionService.isClonePhysicianForm = true;
         this.admissionService.isEditPhysicianForm = false;
         this.admissionService.selectedCurrentDocDetails = releaseData;
+        this.modalRef?.hide();
         this.openPhysicianAssessment(this.PhysicianAssessment)
         return
       }

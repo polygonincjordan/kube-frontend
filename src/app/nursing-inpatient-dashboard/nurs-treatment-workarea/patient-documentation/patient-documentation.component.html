@@ -136,7 +136,7 @@
               Release
             </button>
           </div>
-          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Modified Aldrete Score (MAS) Scale'">
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Modified Aldrete Score (MAS)'">
             <button type="button" class="action-doc" (click)="copyDirectReleaseModifiedAldreteDoc()">
               Release
             </button>
@@ -573,7 +573,7 @@
              [ngClass]="isModifiedAldreteDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
              style="font-weight: bold;"
              (click)="selectAssessment('isModifiedAldreteDocument',latestModifiedAldreteList[0])">
-             <div class="col-md-4">Modified Aldrete Score (MAS) Scale {{latestModifiedAldreteList[0]?.Zversion ?
+             <div class="col-md-4">Modified Aldrete Score (MAS) {{latestModifiedAldreteList[0]?.Zversion ?
                   dockVer(latestModifiedAldreteList[0]?.Zversion) : ''}}:</div>
              <div class="col-md-2 status-color">{{latestModifiedAldreteList[0]?.StatusTxt || 'N/A'}}</div>
              <div class="col-md-2" title="{{getTime(latestModifiedAldreteList[0]?.DocTime)}}">

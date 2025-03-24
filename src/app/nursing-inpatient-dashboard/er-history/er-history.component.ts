@@ -154,7 +154,7 @@ export class ErHistoryComponent implements OnInit {
     // this.getErList(this.storageService.lastPassedDate);
    }else{
     // this.getErList([new Date()]);
-    this.getHospitalList();
+    this.getHospitalList([new Date(), new Date()]);
    }
     this.dataForTriage();
     this.refreshInterval = setInterval(() => {
@@ -488,7 +488,7 @@ export class ErHistoryComponent implements OnInit {
   //       });
   //   }
 
-  getHospitalList(getConfigToolWardList?, getConfigToolSpecialtyList?, date?) {
+  getHospitalList(date?) {
     // this.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList ? this.getConfigToolSpecialtyList : getConfigToolSpecialtyList
     // this.getConfigToolWardList = this.getConfigToolWardList ? this.getConfigToolWardList : getConfigToolWardList
     // this.dataOnTableForMissedDoses = _success.result.d.results;
