@@ -22,11 +22,13 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
     @Output() realodEducationList = new EventEmitter();
     @Input () callFunction :any
     @Input() soapFormEvent: string = '';
+    @Input() isExpanded: string = '';
   newBornForm:FormGroup
   selectedTabName: string = 'Skin';
   isChecked: any;
   paramsObject: any;
   encounterId: any;
+  genderString:any
   public toVitalsArr: any = [];
   tabList = [
     'Skin',
@@ -77,6 +79,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
   docKey: any;
    private subscription: Subscription;
    private actionTypeSubscription$: Subscription;
+  isFemale: boolean;
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService,
     private modalService: BsModalService) {
     this._route.queryParams.subscribe((params) => {
@@ -148,18 +151,45 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
       this.newBornForm.get('CrBreathSoundt')?.setValue(''); // Clear input if disabled
     }
    });
-
    let storedPatientStr = localStorage.getItem('myPatient')
    if (storedPatientStr) {
     let storedPatient = JSON.parse(storedPatientStr); 
-    let genderString = storedPatient.gender;
-    if (genderString.includes('Female')) {
+    this.genderString = storedPatient.gender;
+    if (this.genderString.includes('Female')) {
+      this.isFemale = true;
       this.newBornForm.get('Gender')?.setValue('Female'); 
-    } else if (genderString.includes('Male')) {
+    } else if (this.genderString.includes('Male')) {
+      this.isFemale = false;
       this.newBornForm.get('Gender')?.setValue('Male');
+    }
+
+    if(this.isFemale){
+      this.newBornForm.get('GfNormal')?.enable();
+      this.newBornForm.get('GfVaginal')?.enable();
+      this.newBornForm.get('GfHymenal')?.enable();
+      this.newBornForm.get('GfEdema')?.enable();
+      this.newBornForm.get('GfOther')?.enable();
+      this.newBornForm.get('GmTestes')?.enable();
+    
+    }else{
+      this.newBornForm.get('GmNormal')?.enable();
+      this.newBornForm.get('GmHypoxemia')?.enable();
+      this.newBornForm.get('GmEdema')?.enable();
+      this.newBornForm.get('GmHydrocele')?.enable();
+      this.newBornForm.get('GmTestes')?.enable();
+      this.newBornForm.get('GmOther')?.enable();
     }
   }
   
+  }
+
+  selecteDrop(data){
+    if (data?.value === '7') {
+      this.newBornForm.get('SSkincolorT')?.enable();
+  } else {
+    this.newBornForm.get('SSkincolorT')?.disable();
+    this.newBornForm.get('SSkincolorT')?.setValue(''); // Clear input if disabled
+  }
   }
 
   toggleInput(checkboxName: string, inputName: string) {
@@ -230,6 +260,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         this.newBornForm.get('CrItubeLevel')?.disable();
         this.newBornForm.get('CrIintubation')?.disable();
         this.newBornForm.get('CrIextubation')?.disable();
+
         this.newBornForm.get('CrIntubatedYn')?.setValue('');
         this.newBornForm.get('CrItubeSize')?.setValue('');
         this.newBornForm.get('CrItubeLevel')?.setValue('');
@@ -241,11 +272,13 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         this.newBornForm.get('CrRtubeSize')?.disable();
         this.newBornForm.get('CrRtubeLevel')?.disable();
         this.newBornForm.get('CrRdate')?.disable();
+        this.newBornForm.get('CrReintubationYn')?.disable();
         this.newBornForm.get('CrRentryDate')?.disable();
         this.newBornForm.get('CrRtubeSize')?.setValue('');
         this.newBornForm.get('CrRtubeLevel')?.setValue('');
         this.newBornForm.get('CrRdate')?.setValue('');
         this.newBornForm.get('CrRentryDate')?.setValue('');
+        this.newBornForm.get('CrReintubationYn')?.setValue('');
       }
     }
   }
@@ -277,7 +310,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         Gestation : [data?.Gestation || null,[Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
         Gender : [''],
         SSkincolor : [data?.SSkincolor || ''],
-        SSkincolorT : [data?.SSkincolorT ||''],
+        SSkincolorT : [data?.SSkincolorT || { value: '', disabled: true }],
         SaNormal : [data?.SaNormal || false],
         SaRash : [data?.SaRash || false],
         SaBruising : [data?.SaBruising || false],
@@ -373,7 +406,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         CrIintubation : [data?.CrIintubation || { value: null, disabled: true }],
         CrIextubation : [data?.CrIextubation || { value: null, disabled: true }],
         CrReintubation : [data?.CrReintubation || false],
-        CrReintubationYn : [data?.CrReintubationYn || ''],
+        CrReintubationYn : [data?.CrReintubationYn || { value: '', disabled: true }],
         CrRtubeSize : [data?.CrRtubeSize || { value: '', disabled: true }],
         CrRtubeLevel : [data?.CrRtubeLevel || { value: '', disabled: true }],
         CrRdate : [data?.CrRdate || { value: null, disabled: true }],
@@ -412,18 +445,18 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         AUacomplicationsT : [data?.AUacomplicationsT || { value: '', disabled: true }],
         AComment : [data?.AComment || false],
         ACommentT : [data?.ACommentT || ''],
-        GmNormal : [data?.GmNormal || false],
-        GmEdema : [data?.GmEdema || false],
-        GmHydrocele : [data?.GmHydrocele || false],
-        GmTestes : [data?.GmTestes || false],
-        GmHypoxemia : [data?.GmHypoxemia || false],
-        GmOther : [data?.GmOther || false],
+        GmNormal : [data?.GmNormal || { value: false, disabled: true }],
+        GmEdema : [data?.GmEdema || { value: false, disabled: true }],
+        GmHydrocele : [data?.GmHydrocele || { value: false, disabled: true }],
+        GmTestes : [data?.GmTestes || { value: false, disabled: true }],
+        GmHypoxemia : [data?.GmHypoxemia || { value: false, disabled: true }],
+        GmOther : [data?.GmOther || { value: false, disabled: true }],
         GmOtherT : [data?.GmOtherT || { value: '', disabled: true }],
-        GfNormal : [data?.GfNormal || false],
-        GfVaginal : [data?.GfVaginal || false],
-        GfHymenal : [data?.GfHymenal || false],
-        GfEdema : [data?.GfEdema || false],
-        GfOther : [data?.GfOther || false],
+        GfNormal : [data?.GfNormal || { value: false, disabled: true }],
+        GfVaginal : [data?.GfVaginal || { value: false, disabled: true }],
+        GfHymenal : [data?.GfHymenal || { value: false, disabled: true }],
+        GfEdema : [data?.GfEdema || { value: false, disabled: true }],
+        GfOther : [data?.GfOther || { value: false, disabled: true }],
         GfOtherT : [data?.GfOtherT || { value: '', disabled: true }],
         GaPatent : [data?.GaPatent || false],
         GaHemorrh : [data?.GaHemorrh || false],
@@ -797,6 +830,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
+        this.successEvent.next(true)
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
@@ -809,7 +843,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
           }else{
             this.sharedService.successSwallModel('new born created successfully');
           }
-          this.successEvent.emit(true)
+          this.successEvent.next(true)
         }
       });
     })   

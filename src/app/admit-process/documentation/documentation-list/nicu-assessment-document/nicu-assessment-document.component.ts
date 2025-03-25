@@ -19,6 +19,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
    @ViewChild('erVitalsModal') erVitalsModal: NicuErVitalsComponent;
    @Output() realodEducationList = new EventEmitter();
    @Input() soapFormEvent:any
+   @Input() isExpanded:any
   nicuForm:FormGroup;
   paramsObject: any;
   encounterId: any;
@@ -99,9 +100,29 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     {value : '2',label:'Female'},
     {value : '3',label:'UnKnown'}
   ]
+  bloodGroupOptions = [
+    { label: 'A-', value: '0' },
+    { label: 'A+', value: '1' },
+    { label: 'B-', value: '2' },
+    { label: 'B+', value: '3' },
+    { label: 'O-', value: '4' },
+    { label: 'O+', value: '5' },
+    { label: 'AB-', value: '6' },
+    { label: 'AB+', value: '7' }
+  ];
+  public anti = [
+    {value : '0',label:'No'},
+    {value : '1',label:'Yes'},
+    {value : '2',label:'UnKnown'}
+  ]
+  public motherAgeOptions = Array.from({ length: 51 }, (_, i) => ({ label: (0 + i).toString(), value: 0 + i }));
+
+  
   docKey: any;
   toVitalsArr: any;
   isChecked: any;
+  genderString: any;
+  isFemale: boolean;
   constructor(private _route: ActivatedRoute,public storageService: StorageService,private formBuilder: FormBuilder,public admissionService:AdmissionService,private sharedService: SharedService) { }
 
   ngOnInit(): void {
@@ -136,17 +157,57 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       this.nicuForm.get('CrBreathSoundt')?.setValue(''); // Clear input if disabled
     }
    });
+    this.nicuForm.get('Conception')?.valueChanges.subscribe(value => {
+    if (value === '3') {
+      this.nicuForm.get('ConceptionT')?.enable();
+    } else {
+      this.nicuForm.get('ConceptionT')?.disable();
+      this.nicuForm.get('ConceptionT')?.setValue(''); // Clear input if disabled
+    }
+   });
+    this.nicuForm.get('TransferPlace')?.valueChanges.subscribe(value => {
+    if (value === '4') {
+      this.nicuForm.get('TransferPlaceT')?.enable();
+    } else {
+      this.nicuForm.get('TransferPlaceT')?.disable();
+      this.nicuForm.get('TransferPlaceT')?.setValue(''); // Clear input if disabled
+    }
+   });
+    this.nicuForm.get('TypeDelivery')?.valueChanges.subscribe(value => {
+    if (value === '3') {
+      this.nicuForm.get('TypeDeliveryT')?.enable();
+    } else {
+      this.nicuForm.get('TypeDeliveryT')?.disable();
+      this.nicuForm.get('TypeDeliveryT')?.setValue(''); // Clear input if disabled
+    }
+   });
 
    let storedPatientStr = localStorage.getItem('myPatient')
    if (storedPatientStr) {
     let storedPatient = JSON.parse(storedPatientStr); 
-    let genderString = storedPatient.gender;
-    if (genderString.includes('Female')) {
-      this.nicuForm.get('Gender')?.setValue('Female'); 
-    } else if (genderString.includes('Male')) {
-      this.nicuForm.get('Gender')?.setValue('Male');
+    this.genderString = storedPatient.gender;
+    if (this.genderString.includes('Female')) {
+      this.isFemale = true;
+    } else if (this.genderString.includes('Male')) {
+      this.isFemale = false;
     }
   }
+    if(this.isFemale){
+      this.nicuForm.get('GfNormal')?.enable();
+      this.nicuForm.get('GfVaginal')?.enable();
+      this.nicuForm.get('GfHymenal')?.enable();
+      this.nicuForm.get('GfEdema')?.enable();
+      this.nicuForm.get('GfOther')?.enable();
+      this.nicuForm.get('GmTestes')?.enable();
+    
+    }else{
+      this.nicuForm.get('GmNormal')?.enable();
+      this.nicuForm.get('GmHypoxemia')?.enable();
+      this.nicuForm.get('GmEdema')?.enable();
+      this.nicuForm.get('GmHydrocele')?.enable();
+      this.nicuForm.get('GmTestes')?.enable();
+      this.nicuForm.get('GmOther')?.enable();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -197,18 +258,18 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       Min10 : [''],
       Unavailable : [false],
       TypeDelivery : [''],
-      TypeDeliveryT : [''],
+      TypeDeliveryT : [{ value: '', disabled: true }],
       Conception : [''],
-      ConceptionT : [''],
+      ConceptionT : [{ value: '', disabled: true }],
       TransferPlace : [''],
-      TransferPlaceT : [''],
+      TransferPlaceT : [{ value: '', disabled: true }],
       AttendingPhy : [''],
       ObgyPhy : [''],
       MotherAge :[''],
       MotherBg : [''],
       FatherBg : [''],
       AntiD : [''],
-      AntiDT : [''],
+      AntiDT : [{ value: '', disabled: true }],
       Gravida : [''],
       Para : [''],
       Abortion : [''],
@@ -216,53 +277,53 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       Lmp : [null],
       Edd : [null],
       Stds : [false],
-      StdYn : [''],
-      StdT : [''],
+      StdYn : [{ value: '', disabled: true }],
+      StdT : [{ value: '', disabled: true }],
       Rupture : [false],
-      RuptureYn : [''],
-      RuptureT : [''],
+      RuptureYn : [{ value: '', disabled: true }],
+      RuptureT : [{ value: '', disabled: true }],
       Steroids : [false],
-      SteroidsYn : [''],
-      SteroidsT : [''],
+      SteroidsYn : [{ value: '', disabled: true }],
+      SteroidsT : [{ value: '', disabled: true }],
       Smoking : [false],
-      SmokingYn : [''],
-      SmokingT : [''],
+      SmokingYn : [{ value: '', disabled: true }],
+      SmokingT : [{ value: '', disabled: true }],
       Gbs : [false],
-      GbsPn : [''],
-      GbsT : [''],
+      GbsPn : [{ value: '', disabled: true }],
+      GbsT : [{ value: '', disabled: true }],
       HepatitisB : [false],
-      HepatitisBPn : [''],
-      HepatitisBT : [''],
+      HepatitisBPn : [{ value: '', disabled: true }],
+      HepatitisBT : [{ value: '', disabled: true }],
       HepatitisC : [false],
-      HepatitisCPn : [''],
-      HepatitisCT : [''],
+      HepatitisCPn : [{ value: '', disabled: true }],
+      HepatitisCT : [{ value: '', disabled: true }],
       Hiv : [false],
-      HivPn : [''],
-      HivT : [''],
+      HivPn : [{ value: '', disabled: true }],
+      HivT : [{ value: '', disabled: true }],
       MaternalDisea : [false],
-      Dm : [false],
-      Htn : [false],
-      Thyroid : [false],
-      Hematology : [false],
-      Uti : [false],
-      Cardiac : [false],
-      Neurological : [false],
-      Others : [false],
-      OthersT : [''],
+      Dm : [{ value: false, disabled: true }],
+      Htn : [{ value: false, disabled: true }],
+      Thyroid : [{ value: false, disabled: true }],
+      Hematology : [{ value: false, disabled: true }],
+      Uti : [{ value: false, disabled: true }],
+      Cardiac : [{ value: false, disabled: true }],
+      Neurological : [{ value: false, disabled: true }],
+      Others : [{ value: false, disabled: true }],
+      OthersT : [{ value: '', disabled: true }],
       MaternalMed : [false],
       MaternalMedT : [''],
       DetailAnomaly : [false],
-      DetailAnomalyYn : [''],
-      DetailAnomalyT : [''],
+      DetailAnomalyYn : [{ value: '', disabled: true }],
+      DetailAnomalyT : [{ value: '', disabled: true }],
       General : [false],
-      GeneralYn : [''],
-      GeneralT : [''],
+      GeneralYn : [{ value: '', disabled: true }],
+      GeneralT : [{ value: '', disabled: true }],
       Labs : [false],
-      LabsT : [''],
+      LabsT : [{ value: '', disabled: true }],
       Family : [false],
-      FamilyT : [''],
+      FamilyT : [{ value: '', disabled: true }],
       Iothers : [false],
-      IothersT : [''],
+      IothersT : [{ value: '', disabled: true }],
       CourseNicu : [''],
       Assessment : [''],
       Plan : [''],
@@ -400,20 +461,20 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         AUaremoval : [data?.AUaremoval || { value: null, disabled: true }],
         AUacomplication : [data?.AUacomplication || { value: '', disabled: true }],
         AUacomplicationsT : [data?.AUacomplicationsT || { value: '', disabled: true }],
-        AComment : [data?.AComment || false],
-        ACommentT : [data?.ACommentT || ''],
-        GmNormal : [data?.GmNormal || false],
-        GmEdema : [data?.GmEdema || false],
-        GmHydrocele : [data?.GmHydrocele || false],
-        GmTestes : [data?.GmTestes || false],
-        GmHypoxemia : [data?.GmHypoxemia || false],
-        GmOther : [data?.GmOther || false],
+        AComment : [data?.AComment || ''],
+        // ACommentT : [data?.ACommentT || ''],
+        GmNormal : [data?.GmNormal || { value: false, disabled: true }],
+        GmEdema : [data?.GmEdema || { value: false, disabled: true }],
+        GmHydrocele : [data?.GmHydrocele || { value: false, disabled: true }],
+        GmTestes : [data?.GmTestes || { value: false, disabled: true }],
+        GmHypoxemia : [data?.GmHypoxemia || { value: false, disabled: true }],
+        GmOther : [data?.GmOther || { value: false, disabled: true }],
         GmOtherT : [data?.GmOtherT || { value: '', disabled: true }],
-        GfNormal : [data?.GfNormal || false],
-        GfVaginal : [data?.GfVaginal || false],
-        GfHymenal : [data?.GfHymenal || false],
-        GfEdema : [data?.GfEdema || false],
-        GfOther : [data?.GfOther || false],
+        GfNormal : [data?.GfNormal || { value: false, disabled: true }],
+        GfVaginal : [data?.GfVaginal || { value: false, disabled: true }],
+        GfHymenal : [data?.GfHymenal || { value: false, disabled: true }],
+        GfEdema : [data?.GfEdema || { value: false, disabled: true }],
+        GfOther : [data?.GfOther || { value: false, disabled: true }],
         GfOtherT : [data?.GfOtherT || { value: '', disabled: true }],
         GaPatent : [data?.GaPatent || false],
         GaHemorrh : [data?.GaHemorrh || false],
@@ -472,9 +533,9 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         MMalformation : [data?.MMalformation || ''],
         MMalformationT : [data?.MMalformationT || { value: '', disabled: true }],
         GeneralImpression : [data?.GeneralImpression || ''],
-        VitK : [data?.VitK || ''],
-        HepB : [data?.HepB || ''],
-        Comments : [data?.Comments || ''],
+        // VitK : [data?.VitK || ''],
+        // HepB : [data?.HepB || ''],
+        // Comments : [data?.Comments || ''],
     })
   }
 
@@ -485,6 +546,45 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       inputControl?.enable();
       if(checkboxName == 'AShape'){
         this.nicuForm.get('AShapeNa')?.setValue('0');
+      }
+      if(checkboxName == 'Stds'){
+        this.nicuForm.get('StdYn')?.setValue('0');
+      }
+      if(checkboxName == 'Rupture'){
+        this.nicuForm.get('RuptureYn')?.setValue('0');
+      }
+      if(checkboxName == 'Steroids'){
+        this.nicuForm.get('SteroidsYn')?.setValue('0');
+      }
+      if(checkboxName == 'Smoking'){
+        this.nicuForm.get('SmokingYn')?.setValue('0');
+      }
+      if(checkboxName == 'Rupture'){
+        this.nicuForm.get('RuptureYn')?.setValue('0');
+      }
+      if(checkboxName == 'Gbs'){
+        this.nicuForm.get('GbsPn')?.setValue('0');
+      
+      }
+      if(checkboxName == 'HepatitisB'){
+        this.nicuForm.get('HepatitisBPn')?.setValue('0');
+      
+      }
+      if(checkboxName == 'HepatitisC'){
+        this.nicuForm.get('HepatitisCPn')?.setValue('0');
+       
+      }
+      if(checkboxName == 'Hiv'){
+        this.nicuForm.get('HivPn')?.setValue('0');
+       
+      }
+      if(checkboxName == 'DetailAnomaly'){
+        this.nicuForm.get('DetailAnomalyYn')?.setValue('0');
+      
+      }
+      if(checkboxName == 'General'){
+        this.nicuForm.get('GeneralYn')?.setValue('0');
+      
       }
       if(checkboxName == 'AUvc'){
         this.nicuForm.get('AUcomplication')?.setValue('1');
@@ -508,11 +608,72 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       if(checkboxName == 'HfPosterior'){
         this.nicuForm.get('HfPosteriorOc')?.setValue('0');
       }
+      if(checkboxName == 'MaternalDisea'){
+        this.nicuForm.get('Dm')?.enable();
+        this.nicuForm.get('Htn')?.enable();
+        this.nicuForm.get('Thyroid')?.enable();
+        this.nicuForm.get('Hematology')?.enable();
+        this.nicuForm.get('Uti')?.enable();
+        this.nicuForm.get('Cardiac')?.enable();
+        this.nicuForm.get('Neurological')?.enable();
+        this.nicuForm.get('Others')?.enable();
+      }
     } else {
       inputControl?.disable();
       inputControl?.setValue('');
       if(checkboxName == 'AShape'){
         this.nicuForm.get('AShapeT')?.disable();
+      }
+      // ********************?
+      if(checkboxName == 'Stds'){
+        this.nicuForm.get('StdYn')?.disable();
+        this.nicuForm.get('StdT')?.disable();
+        this.nicuForm.get('StdT')?.setValue('');
+      }
+      if(checkboxName == 'Rupture'){
+        this.nicuForm.get('RuptureYn')?.disable();
+        this.nicuForm.get('RuptureT')?.disable();
+        this.nicuForm.get('RuptureT')?.setValue('');
+      }
+      if(checkboxName == 'Steroids'){
+        this.nicuForm.get('SteroidsYn')?.disable();
+        this.nicuForm.get('SteroidsT')?.disable();
+        this.nicuForm.get('SteroidsT')?.setValue('');
+      }
+      if(checkboxName == 'DetailAnomaly'){
+        this.nicuForm.get('DetailAnomalyYn')?.disable();
+        this.nicuForm.get('DetailAnomalyT')?.disable();
+        this.nicuForm.get('DetailAnomalyT')?.setValue('');
+      }
+      if(checkboxName == 'Smoking'){
+        this.nicuForm.get('SmokingYn')?.disable();
+        this.nicuForm.get('SmokingT')?.disable();
+        this.nicuForm.get('SmokingT')?.setValue('');
+      }
+      if(checkboxName == 'Gbs'){
+        this.nicuForm.get('GbsPn')?.disable();
+        this.nicuForm.get('GbsT')?.disable();
+        this.nicuForm.get('GbsT')?.setValue('');
+      }
+      if(checkboxName == 'HepatitisB'){
+        this.nicuForm.get('HepatitisBPn')?.disable();
+        this.nicuForm.get('HepatitisBT')?.disable();
+        this.nicuForm.get('HepatitisBT')?.setValue('');
+      }
+      if(checkboxName == 'HepatitisC'){
+        this.nicuForm.get('HepatitisCPn')?.disable();
+        this.nicuForm.get('HepatitisCT')?.disable();
+        this.nicuForm.get('HepatitisCT')?.setValue('');
+      }
+      if(checkboxName == 'Hiv'){
+        this.nicuForm.get('HivPn')?.disable();
+        this.nicuForm.get('HivT')?.disable();
+        this.nicuForm.get('HivT')?.setValue('');
+      }
+      if(checkboxName == 'General'){
+        this.nicuForm.get('GeneralYn')?.disable();
+        this.nicuForm.get('HepatitisBT')?.disable();
+        this.nicuForm.get('GeneralT')?.setValue('');
       }
       if(checkboxName == 'AUvc'){
         this.nicuForm.get('AUcomplication')?.disable();
@@ -563,6 +724,21 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         this.nicuForm.get('CrRdate')?.setValue('');
         this.nicuForm.get('CrRentryDate')?.setValue('');
       }
+
+      if(checkboxName == 'MaternalDisea'){
+        this.nicuForm.get('OthersT')?.disable();
+        this.nicuForm.get('OthersT')?.setValue('');
+        this.nicuForm.get('Others')?.disable();
+        this.nicuForm.get('Others')?.setValue(false);
+        this.nicuForm.get('Dm')?.disable();
+        this.nicuForm.get('Htn')?.disable();
+        this.nicuForm.get('Thyroid')?.disable();
+        this.nicuForm.get('Hematology')?.disable();
+        this.nicuForm.get('Uti')?.disable();
+        this.nicuForm.get('Cardiac')?.disable();
+        this.nicuForm.get('Neurological')?.disable();
+        
+      }
     }
   }
 
@@ -571,7 +747,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     if (this.nicuForm.get(controlName)?.value === value) {
       this.nicuForm.get(controlName)?.setValue(null);
     }
-    if (value === '1') {
+    if (value === '1') {  
       if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia'){
         this.nicuForm.get(textinput)?.disable();
         this.nicuForm.get(textinput)?.setValue('');
@@ -661,6 +837,30 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         }
       }
     }
+  }
+  toggleRadioMulti(controlName: string, value: string,textinput?:string) {
+    if (this.nicuForm.get(controlName)?.value === value) {
+      this.nicuForm.get(controlName)?.setValue(null);
+    }
+    if (value === '3') {  
+      this.nicuForm.get(textinput)?.enable(); // Enable input when abnormal (Yes)
+    } else {
+        this.nicuForm.get(textinput)?.disable(); // Disable input when normal (No)
+        this.nicuForm.get(textinput)?.setValue(''); // Clear input if disable
+  
+      }
+  }
+  toggleRadioMultiple(controlName: string, value: string,textinput?:string) {
+    if (this.nicuForm.get(controlName)?.value === value) {
+      this.nicuForm.get(controlName)?.setValue(null);
+    }
+    if (value === '2') {  
+      this.nicuForm.get(textinput)?.enable(); // Enable input when abnormal (Yes)
+    } else {
+        this.nicuForm.get(textinput)?.disable(); // Disable input when normal (No)
+        this.nicuForm.get(textinput)?.setValue(''); // Clear input if disable
+  
+      }
   }
 
   ngOnDestroy() {
@@ -785,7 +985,6 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   if(formData.Timee){
    formData.Timee= this.convertTimeToDuration(formData.Timee)
   }
-  formData.Gestation = formData.Gestation ? Number(formData.Gestation) : null;
     let payload = {
       ...formData,
       Dockey : actionType === 'edit' ||  actionType === 'copy' ? this.docKey : '',
@@ -800,7 +999,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       TOVITALSIGNS:checkVitalList
     }
    
-      this.subscription = this.admissionService.createNewBorn(payload).subscribe({
+      this.subscription = this.admissionService.createNicuSet(payload).subscribe({
         next: (data: any) => {
           this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
