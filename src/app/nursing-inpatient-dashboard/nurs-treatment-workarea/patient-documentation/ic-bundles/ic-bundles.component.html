@@ -1,0 +1,392 @@
+<!--New One-->
+<!--Step - 1-->
+<div class="uninery-cath">
+    <div class="row d-flex">
+        <label class="col-md-1 p-0">Patient Name</label>
+        <input class="form-control col-md-3 " type="text" value="vijay" />
+        <div class="col-md-1"></div>
+        <label class="col-md-1 p-0">MRN</label>
+        <input class="form-control col-md-1" type="text" value="125784" />
+    </div>
+
+    <div class="row d-flex">
+        <label class="col-md-1 p-0">DOB</label>
+        <div class="header-date">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                    right: 30px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              class="form-control ml-0"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              readonly  
+              #dp="bsDatepicker"
+              style="min-width: 200px;"
+              readonly
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+        </div>
+        <div class="col-md-2"></div>
+        <label class="col-md-1 p-0 mrgrht10 mrl18" >Gender</label>
+        <select class="col-md-1">
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+
+    <div class="row d-flex">
+        <label class="col-md-1 p-0">Location</label>
+        <input class="form-control col-md-3" type="text" value="9th floor ahem" />
+        <div class="col-md-1"></div>
+        <label class="col-md-1 p-0">Case</label>
+        <input class="form-control col-md-1" type="text" value="103704" />
+    </div>
+</div>
+<!--Step - 2-->
+<div class="uninery-cath">
+    <h3>Urinary Catheter Inserction</h3>
+
+    <div class="row d-flex">
+        <label class="col-md-2 p-0">Inserction Date</label>
+        <div class="header-date">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                    right: 30px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              class="form-control ml-0"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              readonly  
+              #dp="bsDatepicker"
+              style="min-width: 200px;"
+              readonly
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+        </div>
+        <!--space-->
+        <div class="col-md-1"></div>
+        <label class="col-md-2 p-0">Inserction Time</label>
+        <input
+        type="time"
+        step="2"
+        class="form-control"
+        min="08:00:00"
+        max="17:00:00"
+       style="min-width: 200px;"
+       />
+        <!--space-->
+        <div class="col-md-1"></div>
+        <span class="mr-2"> Type of Catheter</span>
+        <select class="col-md-1">
+            <option>0 indeveling sort term</option>
+            <option>1 GM long term</option>
+        </select>
+    </div>
+    <div class="mt-2 d-flex">
+        <label class="col-md-2 p-0 mrgrht10">Catheter Removel Date</label>
+        <div class="header-date">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                    right: 30px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              class="form-control"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              readonly  
+              #dp="bsDatepicker"
+              style="min-width: 200px;"
+              readonly
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+        </div>
+    </div>
+    <div class="d-flex mt-2">
+        <label class="col-md-2 p-0 mr-3">Urinary Catheter Day</label>
+        <input class="form-control col-md-2 p-0 hgt38" type="text" /> 
+     </div>
+       <div class="d-flex mt-2">
+        <label class="col-md-4 p-0">Catheter Change Due date as per policy</label>
+        <div class="header-date">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                    right: 30px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              class="form-control ml-0"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              readonly  
+              #dp="bsDatepicker"
+              style="min-width: 200px;"
+              readonly
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+        </div>
+       </div>
+       <div class="d-flex mt-2">
+        <label class="col-md-4 p-0">Patient Location when Catheter was inserted</label>
+        <input class="form-control col-md-4 hgt38 ml-0" type="text" />
+       </div>
+        
+    
+</div>
+<!--Step-3-->
+<div class="container mt-5">
+    <!-- Left Section -->
+    <div class="left-section d-flex">
+        <div class="d-flex" style="width: 385px;">
+            <span style="position: relative; right: 3px;">1. </span>
+            <h6 class="">Was the need for urinary catheter insertion discussed during rounds avoiding unnecessary
+                insertion?</h6>
+        </div>
+        <div class="radio-group">
+            <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
+            <label><input type="radio" name="discussion" value="no"> No</label>
+            <div class="d-flex">
+                <label style="width: 160px;"><input type="radio" name="discussion" value="na"> Not Applicable</label>
+                <input class="form-control" type="text"><br>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <div class="checkbox-group">
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Preop insertion for selected surgical
+                procedures</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Urine output monitoring in critically
+                ill
+                patients</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Management of acute urinary retention
+                and
+                urinary obstruction</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Assistance in healing open sacral or
+                perineal wounds in incontinent patients</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Patient requires prolonged
+                immobilization
+                (e.g., unstable spine, multiple traumatic injuries)</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> As an exception at patient request to
+                improve comfort (SHEA-IDSA) or for end-of-life care (CDC)</label>
+            <div class="d-flex">
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox">Others</label><input class="form-control" type="text">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Step-4-->
+<div class="container mt-5">
+    <!-- Left Section -->
+    <div class="left-section d-flex">
+        <div class="d-flex" style="width: 385px;">
+            <span style="position: relative; right: 3px;">2. </span>
+            <h6 class="">Was aseptic technique maintained during insertion? </h6>
+        </div>
+        <div class="radio-group">
+            <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
+            <label><input type="radio" name="discussion" value="no"> No</label>
+            <div class="d-flex">
+                <label style="width: 160px;"><input type="radio" name="discussion" value="na"> Not Applicable</label>
+                <input class="form-control" type="text"><br>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <div class="checkbox-group">
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox">Perform hand bygine immedieatily
+                before anf after</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox">sterlise, gloves, drape, spenges
+                used</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> sterlise or....</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Smallest possible caether size used
+                to prevent ....</label>
+            <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Singel-use of packet ...</label>
+        </div>
+    </div>
+</div>
+
+<!--Step-5-->
+<div class="uninery-cath">
+    <h3>Urinary Catheter Maintenance</h3>
+    <div class="row d-flex">
+        <label class="col-md-2 p-0">Maintenance Date</label>
+        <div class="header-date">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                    right: 30px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              class="form-control"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              readonly  
+              #dp="bsDatepicker"
+              style="min-width: 200px;"
+              readonly
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+        </div>
+        <!--space-->
+        <div class="col-md-4"></div>
+        <label class="col-md-2 p-0">Maintenance Time</label>
+        <input
+        type="time"
+        step="2"
+        class="form-control"
+        min="08:00:00"
+        max="17:00:00"
+       />
+    </div>
+
+    <div class="container mt-3">
+        <!-- Left Section -->
+        <div class="left-section d-flex">
+            <div class="d-flex" style="width: 385px;">
+                <span style="position: relative; right: 3px;">3. </span>
+                <h6 class="">Was binary Catheter maintenance Appropiriatly? </h6>
+            </div>
+            <div class="radio-group">
+                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
+                <label><input type="radio" name="discussion" value="no"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" name="discussion" value="na"> Not
+                        Applicable</label>
+                    <input type="text" class="form-control"><br>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox">Sterlie ....</label>
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox">Catheter .....</label>
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Collection....</label>
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Flow check...</label>
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> bag...</label>
+                <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"> Maintaine...</label>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <!-- Left Section -->
+        <div class="left-section d-flex">
+            <div class="d-flex" style="width: 385px;">
+                <span style="position: relative; right: 3px;">3. </span>
+                <h6 class="">Was need for.....? </h6>
+            </div>
+            <div class="radio-group">
+                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
+                <label><input type="radio" name="discussion" value="no"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" name="discussion" value="na"> Not
+                        Applicable</label>
+                    <input type="text" class="form-control"><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Step-6-->
+<div class="row">
+    <label class="col-md-2 p-0">CAUTI Prevensions score</label>
+    <input class="col-md-3 p-0 form-control" type="text" value="" />
+</div>
+
+<div class="row">
+    <label class="col-md-2 p-0">Stage of Catheter Site Infection </label>
+    <input class="col-md-8 p-0 form-control" type="text" />
+    <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+</div>
+
+<div class="row">
+    <label class="col-md-2 p-0">Comments </label>
+    <input class="col-md-8 p-0 form-control" type="text" />
+    <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+</div>

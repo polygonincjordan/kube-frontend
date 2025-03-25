@@ -1168,6 +1168,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  getBundlesLetDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getBundlesDoc', json, {
+      withCredentials: true,
+    });
+  }
   createSurgicalPassDetail(json): Observable<any> {
     return this.http.post(this.url + 'postOfSurgicalPassp', json, {
       withCredentials: true,

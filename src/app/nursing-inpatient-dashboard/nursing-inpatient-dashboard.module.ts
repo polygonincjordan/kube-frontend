@@ -142,6 +142,7 @@ import { SharedModuleModule } from '../shared-module/shared-module.module';
 import { NewbornAssessmentModule } from "../shared-module/newborn-assessment/newborn-assessment.module";
 import { ModifiedAldreteDocumentModule } from '../shared-module/modified-aldrete-document/modified-aldrete-document.module';
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
+import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 
 
 const route: Routes = [
@@ -249,7 +250,8 @@ const route: Routes = [
     HistoryAssessmentComponent,
     PastSurgicalComponent,
     PastMedicalComponent,
-    FamilyHistoryComponent
+    FamilyHistoryComponent,
+    ICBundlesComponent
   ],
   providers: [
     EmergencyService,
