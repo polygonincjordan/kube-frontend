@@ -129,6 +129,12 @@ export class PatientsDietMealComponentNew implements OnInit {
     })
   }
 
+  getDietSpecValue(dietSpecs: any[], dietCode: string): string {
+    if (!dietSpecs || dietSpecs.length === 0) return '0'; // Default to 0 if no data
+    const spec = dietSpecs.find(spec => spec.DietCode === dietCode);
+    return spec ? spec.Value || '0' : '0'; // Return value or default to 0
+  }
+
   parseSapDate(sapDate) {
     const timestamp = parseInt(sapDate.replace(/\/Date\((\d+)\)\//, '$1'));
     return new Date(timestamp);
@@ -557,6 +563,25 @@ export class PatientsDietMealComponentNew implements OnInit {
           Orderno: item?.Orderno,
           Referorderno: item?.Orderno
         });
+        if (item?.ToDietSpecs?.results) {
+          const specs = item.ToDietSpecs.results;
+          
+          // Mapping DietCode to form controls
+          const dietSpecsMap: { [key: string]: string } = {
+            'A010': 'carbohydrates',
+            'A020': 'proteins',
+            'A030': 'calories',
+            'A040': 'sodium'
+          };
+      
+          // Loop through the results and update the form
+          specs.forEach(spec => {
+            const formControlName = dietSpecsMap[spec.DietCode];
+            if (formControlName) {
+              this.dietMealOrderForm.get(formControlName)?.patchValue(parseFloat(spec.Value));
+            }
+          });
+        }
         this.modalType = "dietMeal";
         this.openNav();
       }
@@ -589,11 +614,7 @@ export class PatientsDietMealComponentNew implements OnInit {
     payload.DietType = payload.DietType ? payload.DietType.join(', ') : '';
     this.ReferOrEditOrder === 'Referred' ? delete payload?.Orderno : delete payload?.Referorderno;
     payload.NursingIndicators = payload.NursingIndicators ? payload.NursingIndicators.join(',') : '';
-    delete payload.carbohydrates
-    delete payload.proteins
-    delete payload.calories
-    delete payload.sodium
-    delete payload.Irradiated
+
     payload.ToDietSpecs = [
       {
         "Institution": payload.Institution,
@@ -602,7 +623,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         "Caseno": payload.Caseno,
         "Schem": "DEFA",
         "DietCode": "A010",
-        "Value": payload.carbohydrates
+        "Value": payload.carbohydrates.toString()
       },
       {
         "Institution": payload.Institution,
@@ -611,7 +632,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         "Caseno": payload.Caseno,
         "Schem" : "DEFA",
         "DietCode" : "A020",
-        "Value": payload.proteins
+        "Value": payload.proteins.toString()
       },
       {
         "Institution": payload.Institution,
@@ -620,7 +641,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         "Caseno": payload.Caseno,
         "Schem" : "DEFA",
         "DietCode" : "A030",
-        "Value": payload.calories
+        "Value": payload.calories.toString()
       },
       {
         "Institution": payload.Institution,
@@ -629,9 +650,16 @@ export class PatientsDietMealComponentNew implements OnInit {
         "Caseno": payload.Caseno,
         "Schem" : "DEFA",
         "DietCode" : "A040",
-        "Value": payload.sodium
+        "Value": payload.sodium.toString()
       },
     ]
+
+    delete payload.carbohydrates
+    delete payload.proteins
+    delete payload.calories
+    delete payload.sodium
+    delete payload.Irradiated
+    
     console.log(payload, "payload");
 
     this.emergencyService.saveDeitMealOrder(payload).subscribe((res: any) => {
@@ -790,8 +818,8 @@ export class PatientsDietMealComponentNew implements OnInit {
     let payload = { ...this.snackOrderForm.value }
     payload.Dietday = this.getFormattedDate(payload?.Dietday);
     payload.DietdayTo = this.getFormattedDate(payload?.DietdayTo);
-    payload.Dietdesc = payload.Dietdesc.join(', ');
-
+    // payload.Dietdesc = payload.Dietdesc.join(', ');
+    payload.ToDietSpecs = [];
     this.emergencyService.saveDeitMealOrder(payload).subscribe((res: any) => {
       Swal.fire({
         text: 'Snack Order Saved Successfully!',
@@ -852,7 +880,7 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
 
   cancelOrder(item?) {
-    if (item?.Orderstatusdesc === 'Confirmed' || item?.Orderstatusdesc === 'Saved') {
+    if (item?.Orderstatusdesc === 'Confirmed') {
       const payload = {
         "Institution": item?.Institution,
         "UpdateType": "C",
@@ -878,12 +906,12 @@ export class PatientsDietMealComponentNew implements OnInit {
 
       })
     }
-    //  else if (item?.Orderstatusdesc === 'Saved') {
-    //   Swal.fire({
-    //     text: 'Order Cannot be Cancelled',
-    //     icon: 'warning',
-    //   })
-    // } 
+     else if (item?.Orderstatusdesc === 'Saved') {
+      Swal.fire({
+        text: 'No Complete Order to Cancel',
+        icon: 'warning',
+      })
+    } 
     else if (item?.Orderstatusdesc === 'Cancelled') {
       Swal.fire({
         text: 'The Order is Already Cancelled',
