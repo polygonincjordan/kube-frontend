@@ -97,6 +97,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   public isSurgicalPassport: boolean = false;
   public isNewBorn: boolean = false;
+  public isNewBundles: boolean = false;
   public isEducationAssement: boolean = false;
   public isNursingCarePlan: boolean = false;
   public isNursingDischarge: boolean = false;
@@ -155,6 +156,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestObstetricsList = [];
   latestCorrespondenceList = [];
   newBornList = []
+  bundlesList = []
   educationAssList = [];
   documentTypeFilter = []
   createDate: any;
@@ -188,6 +190,7 @@ export class PatientDocumentationComponent implements OnInit {
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
   openNewBorn: boolean = false;
+  openBundles : boolean = false;
   openNursingCarePlans: boolean = false;
   openDischargeSummery: boolean = false;
   openPreCardiacCath: boolean = false;
@@ -289,6 +292,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNurseEndorsement()
     this.getSurgicalPass()
     this.getNewBorn();
+    this.getBundlesLetDoc();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingAssessmentDocDetails();
@@ -426,6 +430,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getNewBornDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.newBornList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getBundlesLetDoc() {
+    this.emergencyService.getBundlesLetDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.bundlesList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -827,6 +843,14 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NEWBORN$) {
       this.getPatientProfileData(this.newBornList[0]);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Bundles$) {
+      this.selectAssessment('isNewBundles', this.bundlesList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Bundles$) {
+      this.selectAssessment('isNewBundles', this.bundlesList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Bundles$) {
+      this.getPatientProfileData(this.bundlesList[0]);
     }
     this.dayCaseDashboardService.isRedirectToSelectedDoc = false;
   }
@@ -845,6 +869,7 @@ export class PatientDocumentationComponent implements OnInit {
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
       'isNewBorn': { isNewBorn: true, selectedDocName: 'Newborn Physician Assessment Doc' },
+      'isNewBundles': { isNewBundles: true, selectedDocName: 'IC Bundles for Urinary Catheter' },
       'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
@@ -875,6 +900,7 @@ export class PatientDocumentationComponent implements OnInit {
     // Reset all flags to false initially
     this.isSurgicalPassport = false;
     this.isNewBorn = false;
+    this.isNewBundles = false;
     this.isEducationAssement = false;
     this.isNursingCarePlan = false;
     this.isNursingDischarge = false;
@@ -1207,6 +1233,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.nurseEndorsement = false;
     this.isSurgicalPassport = false;
     this.isNewBorn = false;
+    this.isNewBundles = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
@@ -1231,6 +1258,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openNurseEndorsement = false
     this.openSurgicsalPassport = false
     this.openNewBorn = false
+    this.openBundles = false
     this.openPediatricEarlyWarningScale = false
     this.openNursingCarePlans = false;
     this.isNursingCarePlan = false;
@@ -1316,6 +1344,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPediatricWarningScore();
     this.getSurgicalPass();
     this.getNewBorn();
+    this.getBundlesLetDoc();
     this.getLatestAssessmentPA();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
@@ -1486,6 +1515,52 @@ export class PatientDocumentationComponent implements OnInit {
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openNewBorn = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      }else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNewBornPassDoc();
+        } else {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseNewBorn();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNewBorn = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNewBorn = true;
+        this.newBornComp.createDoc('4').then((formValue: any) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating education assessment:', error);
+        });
+      }
+    }
+
+    if (this.isNewBundles) {
+      if (action == 'create') {
+        this.openBundles = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openBundles = true;;
           let valueObj = {
             type: WordType.EditNE,
             docKey: this.selectedDocData.Dockey

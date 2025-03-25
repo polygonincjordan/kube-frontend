@@ -11,11 +11,11 @@
                           style="
                             position: relative;
                             top: 30px;
-                            right: 4px;
                             float: right;
                             margin-top: -26px;
                             font-size: 18px;
                           "
+                          [ngStyle]="isExpanded ? {'right': '25px'} : {'right': '10px'}"
                         >
                           <img src="assets/img/Calender.svg" alt="" />
                         </span>
@@ -37,7 +37,7 @@
                             dateInputFormat: 'DD.MM.YYYY'
                           }"
                         />
-                      </div>
+                    </div>
                 </div>
                 <div class="col-md-10 p-0" style="display: flex;align-items: center;">
                     <label class="mr-2">Time:</label>
@@ -289,34 +289,48 @@
             <h3>Mother's Profile</h3>
             <div class="form-group">
                 <label class="col-md-2 p-0">Mother's Age</label>
-                <select class="hgt38 col-md-1 p-0"  formControlName="MotherAge" >
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                </select>
+                <ng-select
+                    class="hgt38 col-md-1 p-0"
+                    [items]="motherAgeOptions"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="MotherAge" 
+                   >
+                    </ng-select>
             </div>
             <div class="form-group">
                 <label class="col-md-2 p-0">Mother's Blood Group</label>
-                <select class="hgt38 col-md-1 p-0"  formControlName="MotherBg" >
-                    <option>A+</option>
-                    <option>B+</option>
-                    <option>O+</option>
-                </select>
+                <ng-select
+                class="hgt38 col-md-1 p-0"
+                [items]="bloodGroupOptions"
+                bindLabel="label"
+                bindValue="value"
+                formControlName="MotherBg" 
+               >
+                </ng-select>
             </div>
             <div class="form-group">
                 <label class="col-md-2 p-0">Father's Blood Group</label>
-                <select class="hgt38 col-md-1 p-0"  formControlName="FatherBg" >
-                    <option>A+</option>
-                    <option>B+</option>
-                    <option>O+</option>
-                </select>
+                <ng-select
+                class="hgt38 col-md-1 p-0"
+                [items]="bloodGroupOptions"
+                bindLabel="label"
+                bindValue="value"
+                formControlName="FatherBg" 
+               >
+                </ng-select>
             </div>
             <div class="form-group">
                 <label class="col-md-2 p-0">Anti D</label>
-                <select class="hgt38 mr-2 col-md-1 p-0"  formControlName="AntiD" >
-                    <option></option>
-                </select>
-                <input class="col-md-3 mr-1" type="text"   formControlName="AntiDT" />
+                <ng-select
+                class="hgt38 col-md-1 p-0"
+                [items]="bloodGroupOptions"
+                bindLabel="label"
+                bindValue="value"
+                formControlName="anti" 
+               >
+                </ng-select>
+                <input class="col-md-3 mr-1" type="text"   formControlName="AntiD" />
             </div>
     
             <div class="form-group">
@@ -340,134 +354,134 @@
     
             <h3>Investigations Review</h3>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Stds"  />
+                <input type="checkbox"  formControlName="Stds" (change)="toggleInput('Stds', 'StdYn')" />
                 <label class="mb-0">STDs</label>
-                <input type="radio"  formControlName="StdYn"  /> No
-                <input type="radio"  formControlName="StdYn"  /> Yes
+                <input type="radio"  formControlName="StdYn" value="0" (click)="toggleRadio('StdYn', '0','StdT')"   [disabled]="!nicuForm.get('Stds')?.value"/> No
+                <input type="radio"  formControlName="StdYn" value="1" (click)="toggleRadio('StdYn', '1','StdT')"  [disabled]="!nicuForm.get('Stds')?.value"/> Yes
                 <div class="col-md-2"></div>
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="StdT" />
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="StdT"   [disabled]="!nicuForm.get('StdYn')?.value"/>
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Rupture"  />
+                <input type="checkbox"  formControlName="Rupture"  (change)="toggleInput('Rupture', 'RuptureYn')"/>
                 <label class="mb-0">Rupture of Membranes</label>
-                <input type="radio"  formControlName="RuptureYn"   /> No
-                <input type="radio"  formControlName="RuptureYn" /> Yes
+                <input type="radio"  formControlName="RuptureYn"  value="0" (click)="toggleRadio('RuptureYn', '0','RuptureT')" [disabled]="!nicuForm.get('Rupture')?.value" /> No
+                <input type="radio"  formControlName="RuptureYn" value="1" (click)="toggleRadio('RuptureYn', '1','RuptureT')" [disabled]="!nicuForm.get('Rupture')?.value" /> Yes
                 <div class="col-md-2"></div>
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="RuptureT" />
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="RuptureT" [disabled]="!nicuForm.get('RuptureYn')?.value" />
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Steroids"  />
+                <input type="checkbox"  formControlName="Steroids" (change)="toggleInput('Steroids', 'SteroidsYn')" />
                 <label class="mb-0">Steroids</label>
-                <input type="radio"  formControlName="SteroidsYn"  /> No
-                <input type="radio"  formControlName="SteroidsYn"  /> Yes
+                <input type="radio"  formControlName="SteroidsYn" value="0" (click)="toggleRadio('SteroidsYn', '0','SteroidsT')" [disabled]="!nicuForm.get('Steroids')?.value" /> No
+                <input type="radio"  formControlName="SteroidsYn" value="1" (click)="toggleRadio('SteroidsYn', '1','SteroidsT')"[disabled]="!nicuForm.get('Steroids')?.value" /> Yes
                 <div class="col-md-2"></div>
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="SteroidsT" />
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="SteroidsT" [disabled]="!nicuForm.get('SteroidsYn')?.value" />
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Smoking"  />
+                <input type="checkbox"  formControlName="Smoking" (change)="toggleInput('Smoking', 'SmokingYn')" />
                 <label class="mb-0">Smoking</label>
-                <input type="radio"  formControlName="SmokingYn"  /> No
-                <input type="radio"  formControlName="SmokingYn"  /> Yes
+                <input type="radio"  formControlName="SmokingYn" value="0" (click)="toggleRadio('SmokingYn', '0','SmokingT')" [disabled]="!nicuForm.get('Smoking')?.value" /> No
+                <input type="radio"  formControlName="SmokingYn" value="1" (click)="toggleRadio('SmokingYn', '1','SmokingT')" [disabled]="!nicuForm.get('Smoking')?.value" /> Yes
                 <div class="col-md-2"></div>
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="SmokingT" />
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="SmokingT" [disabled]="!nicuForm.get('SmokingYn')?.value" />
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Gbs"  />
+                <input type="checkbox"  formControlName="Gbs" (change)="toggleInput('Gbs', 'GbsPn')" />
                 <label class="col-md-2 mb-0 p-0">High Veginal Swab for GBS</label>
-                <input type="radio"  formControlName="GbsPn"  /> Not Done
-                <input type="radio"  formControlName="GbsPn"  /> Negative
-                <input type="radio"  formControlName="GbsPn"  /> Positive
-                <input type="radio"  formControlName="GbsPn"  /> Unknown
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="GbsT" />
+                <input type="radio"  formControlName="GbsPn"  value="0" (click)="toggleRadioMulti('GbsPn', '0','GbsT')" [disabled]="!nicuForm.get('Gbs')?.value"/> Not Done
+                <input type="radio"  formControlName="GbsPn"  value="1" (click)="toggleRadioMulti('GbsPn', '1','GbsT')" [disabled]="!nicuForm.get('Gbs')?.value"/> Negative
+                <input type="radio"  formControlName="GbsPn"  value="2" (click)="toggleRadioMulti('GbsPn', '2','GbsT')" [disabled]="!nicuForm.get('Gbs')?.value"/> Positive
+                <input type="radio"  formControlName="GbsPn"  value="3" (click)="toggleRadioMulti('GbsPn', '3','GbsT')" [disabled]="!nicuForm.get('Gbs')?.value"/> Unknown
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="GbsT" [disabled]="!nicuForm.get('GbsPn')?.value" />
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="HepatitisB"  />
+                <input type="checkbox"  formControlName="HepatitisB"  (change)="toggleInput('HepatitisB', 'HepatitisBPn')"/>
                 <label class="col-md-2 mb-0 p-0">Hepatitis B</label>
-                <input type="radio"  formControlName="HepatitisBPn"  /> Not Done
-                <input type="radio"  formControlName="HepatitisBPn"  /> Negative
-                <input type="radio"  formControlName="HepatitisBPn"  /> Positive
-                <input type="radio"  formControlName="HepatitisBPn"  /> Unknown
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="HepatitisBT" />
+                <input type="radio"  formControlName="HepatitisBPn" value="0" (click)="toggleRadioMulti('HepatitisBPn', '0','HepatitisBT')" [disabled]="!nicuForm.get('HepatitisB')?.value" /> Not Done
+                <input type="radio"  formControlName="HepatitisBPn" value="1" (click)="toggleRadioMulti('HepatitisBPn', '1','HepatitisBT')" [disabled]="!nicuForm.get('HepatitisB')?.value" /> Negative
+                <input type="radio"  formControlName="HepatitisBPn"  value="2" (click)="toggleRadioMulti('HepatitisBPn', '2','HepatitisBT')" [disabled]="!nicuForm.get('HepatitisB')?.value"/> Positive
+                <input type="radio"  formControlName="HepatitisBPn"  value="3" (click)="toggleRadioMulti('HepatitisBPn', '3','HepatitisBT')" [disabled]="!nicuForm.get('HepatitisB')?.value"/> Unknown
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="HepatitisBT" [disabled]="!nicuForm.get('HepatitisBPn')?.value"/>
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="HepatitisC"  />
+                <input type="checkbox"  formControlName="HepatitisC" (change)="toggleInput('HepatitisC', 'HepatitisCPn')" />
                 <label class="col-md-2 mb-0 p-0">Hepatitis C</label>
-                <input type="radio"  formControlName="HepatitisCPn"  /> Not Done
-                <input type="radio"  formControlName="HepatitisCPn"  /> Negative
-                <input type="radio"  formControlName="HepatitisCPn"  /> Positive
-                <input type="radio"  formControlName="HepatitisCPn"  /> Unknown
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="HepatitisCT" />
+                <input type="radio"  formControlName="HepatitisCPn"  value="0" (click)="toggleRadioMulti('HepatitisCPn', '0','HepatitisCT')" [disabled]="!nicuForm.get('HepatitisC')?.value" /> Not Done
+                <input type="radio"  formControlName="HepatitisCPn" value="1" (click)="toggleRadioMulti('HepatitisCPn', '1','HepatitisCT')" [disabled]="!nicuForm.get('HepatitisC')?.value" /> Negative
+                <input type="radio"  formControlName="HepatitisCPn" value="2" (click)="toggleRadioMulti('HepatitisCPn', '2','HepatitisCT')" [disabled]="!nicuForm.get('HepatitisC')?.value"/> Positive
+                <input type="radio"  formControlName="HepatitisCPn" value="3" (click)="toggleRadioMulti('HepatitisCPn', '3','HepatitisCT')" [disabled]="!nicuForm.get('HepatitisC')?.value" /> Unknown
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="HepatitisCT" [disabled]="!nicuForm.get('HepatitisCPn')?.value"/>
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Hiv"  />
+                <input type="checkbox"  formControlName="Hiv" (change)="toggleInput('Hiv', 'HivPn')" />
                 <label class="col-md-2 p-0 mb-0">HIV</label>
-                <input type="radio"  formControlName="HivPn"  /> Not Done
-                <input type="radio"  formControlName="HivPn"  /> Negative
-                <input type="radio"  formControlName="HivPn"  /> Positive
-                <input type="radio"  formControlName="HivPn"  /> Unknown
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="HivT" />
+                <input type="radio"  formControlName="HivPn" value="0" (click)="toggleRadioMulti('HivPn', '0','HivT')" [disabled]="!nicuForm.get('Hiv')?.value"/> Not Done
+                <input type="radio"  formControlName="HivPn" value="1" (click)="toggleRadioMulti('HivPn', '1','HivT')" [disabled]="!nicuForm.get('Hiv')?.value"/> Negative
+                <input type="radio"  formControlName="HivPn" value="2" (click)="toggleRadioMulti('HivPn', '2','HivT')" [disabled]="!nicuForm.get('Hiv')?.value"/> Positive
+                <input type="radio"  formControlName="HivPn" value="3" (click)="toggleRadioMulti('HivPn', '3','HivT')" [disabled]="!nicuForm.get('Hiv')?.value"/> Unknown
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="HivT" [disabled]="!nicuForm.get('HivPn')?.value"/>
             </div>
     
             <div class="radio-group">
-                <input type="checkbox"  formControlName="MaternalDisea"  />
+                <input type="checkbox"  formControlName="MaternalDisea"  (change)="toggleInput('MaternalDisea', 'Dm')" />
                 <label class="col-md-2 p-0 mb-0">Maternal Diseases</label>
-                <input type="checkbox"  formControlName="Dm"  /> DM
-                <input type="checkbox"  formControlName="Htn"  /> HTN
-                <input type="checkbox"  formControlName="Thyroid"  /> Thyroid
-                <input type="checkbox"  formControlName="Hematology"  /> Hematology
+                <input type="checkbox"  formControlName="Dm"  [disabled]="!nicuForm.get('MaternalDisea')?.value"/> DM
+                <input type="checkbox"  formControlName="Htn"  [disabled]="!nicuForm.get('MaternalDisea')?.value"/> HTN
+                <input type="checkbox"  formControlName="Thyroid"  [disabled]="!nicuForm.get('MaternalDisea')?.value"/> Thyroid
+                <input type="checkbox"  formControlName="Hematology"  [disabled]="!nicuForm.get('MaternalDisea')?.value"/> Hematology
             </div>
     
             <div class="radio-group">
                 <div class="col-md-2 mr-4 p-0"></div>
-                <input type="checkbox"  formControlName="Uti"  /> UTI
-                <input type="checkbox"  formControlName="Cardiac"  /> Cardiac
-                <input type="checkbox"  formControlName="Neurological"  /> Neurological
-                <input type="checkbox"  formControlName="Others"  /> Others
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="OthersT" />
+                <input type="checkbox"  formControlName="Uti" [disabled]="!nicuForm.get('MaternalDisea')?.value" /> UTI
+                <input type="checkbox"  formControlName="Cardiac" [disabled]="!nicuForm.get('MaternalDisea')?.value" /> Cardiac
+                <input type="checkbox"  formControlName="Neurological" [disabled]="!nicuForm.get('MaternalDisea')?.value" /> Neurological
+                <input type="checkbox"  formControlName="Others" (change)="toggleInput('Others', 'OthersT')"  [disabled]="!nicuForm.get('MaternalDisea')?.value"/> Others
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="OthersT" [disabled]="!nicuForm.get('Others')?.value"/>
             </div>
     
             <div class="radio-group">
-                <input type="checkbox"  formControlName="MaternalMed"  />
+                <input type="checkbox"  formControlName="MaternalMed" (change)="toggleInput('MaternalMed', 'MaternalMedT')" />
                 <span class="col-md-2 p-0"> Maternal Medications </span>
-                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="MaternalMedT" />
+                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="MaternalMedT" [disabled]="!nicuForm.get('MaternalMed')?.value" />
                 <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
             </div>
     
             <div class="radio-group">
-                <input type="checkbox"  formControlName="DetailAnomaly"  />
+                <input type="checkbox"  formControlName="DetailAnomaly"  (change)="toggleInput('DetailAnomaly', 'DetailAnomalyYn')" />
                 <label class="col-md-2 mb-0 p-0">Detailed Anomaly Fetal Scan</label>
-                <input type="radio"  formControlName="DetailAnomalyYn"  /> No
-                <input type="radio"  formControlName="DetailAnomalyYn"  /> Yes
-                <input type="radio"  formControlName="DetailAnomalyYn"  /> Unknown
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="DetailAnomalyT" />
+                <input type="radio"  formControlName="DetailAnomalyYn" value="0" (click)="toggleRadioMultiple('DetailAnomalyYn', '0','DetailAnomalyT')"  [disabled]="!nicuForm.get('DetailAnomaly')?.value"/> No
+                <input type="radio"  formControlName="DetailAnomalyYn" value="1" (click)="toggleRadioMultiple('DetailAnomalyYn', '1','DetailAnomalyT')"  [disabled]="!nicuForm.get('DetailAnomaly')?.value"/> Yes
+                <input type="radio"  formControlName="DetailAnomalyYn" value="2" (click)="toggleRadioMultiple('DetailAnomalyYn', '2','DetailAnomalyT')" [disabled]="!nicuForm.get('DetailAnomaly')?.value"/> Unknown
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="DetailAnomalyT" [disabled]="!nicuForm.get('DetailAnomalyYn')?.value"/>
             </div>
     
             <div class="radio-group">
-                <input type="checkbox"  formControlName="General"  />
+                <input type="checkbox"  formControlName="General" (change)="toggleInput('General', 'GeneralYn')" />
                 <label class="col-md-2 mb-0 p-0">General Fetal Scan</label>
-                <input type="radio"  formControlName="GeneralYn"  /> No
-                <input type="radio"  formControlName="GeneralYn"  /> Yes
+                <input type="radio"  formControlName="GeneralYn" value="0" (click)="toggleRadio('GeneralYn', '0','GeneralT')" [disabled]="!nicuForm.get('General')?.value"/> No
+                <input type="radio"  formControlName="GeneralYn" value="1" (click)="toggleRadio('GeneralYn', '1','GeneralT')" [disabled]="!nicuForm.get('General')?.value"/> Yes
                 <div class="col-md-1 p-0" style="max-width: 7.5% !important;"></div>
-                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="GeneralT" />
+                <input class="col-md-3 p-0 hgt38 pl-2 brdr" type="text"   formControlName="GeneralT" [disabled]="!nicuForm.get('GeneralYn')?.value"/>
             </div>
     
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Labs"  />
+                <input type="checkbox"  formControlName="Labs" (change)="toggleInput('Labs', 'LabsT')" />
                 <span class="col-md-2 p-0"> Labs </span>
-                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="LabsT" />
+                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="LabsT" [disabled]="!nicuForm.get('Labs')?.value" />
                 <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
             </div>
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Family"  />
+                <input type="checkbox"  formControlName="Family" (change)="toggleInput('Family', 'FamilyT')" />
                 <span class="col-md-2 p-0"> Family and Social History </span>
-                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="FamilyT" />
+                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="FamilyT" [disabled]="!nicuForm.get('Family')?.value"/>
                 <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
             </div>
     
             <div class="radio-group">
-                <input type="checkbox"  formControlName="Iothers"  />
+                <input type="checkbox"  formControlName="Iothers" (change)="toggleInput('Iothers', 'IothersT')" />
                 <span class="col-md-2 p-0"> Others </span>
-                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="IothersT" />
+                <input class="col-md-5 p-0 hgt38 pl-2 brdr" type="text"   formControlName="IothersT" [disabled]="!nicuForm.get('Iothers')?.value" />
                 <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
             </div>
         </div>
@@ -572,7 +586,7 @@
           </div>
         </div>
       </div>
-
+      <!-- Tab Section -->
       <div class="end-container">
         <div class="scale-box-main">
           <label class="box-label">Anthropometric Measurements</label>
@@ -656,10 +670,23 @@
                     <input type="checkbox" formControlName="SaPetechia" />
                     <label class="m-0 ml-2">Petechia/ Ecchymosis</label>
                   </div>
-                  <div class="col-md-2 row m-0 align-items-center">
+                  <!-- <div class="col-md-2 row m-0 align-items-center">
                     <input type="checkbox" formControlName="SaCoatings" />
                     <label class="m-0 ml-2">Coatings (Vernix / Meconium)</label>
-                  </div>
+                  </div> -->
+                  <div class="col-md-3 wdth" *ngIf="!isExpanded"></div>
+                <div 
+  class="row mt-1 align-items-center" 
+  [ngClass]="{
+    'col-md-3': !isExpanded, 
+    'col-md-2': isExpanded,
+    'padding-expanded': isExpanded,
+    'padding-collapsed': !isExpanded
+  }"
+>
+  <input type="checkbox" formControlName="SaCoatings" />
+                <label class="m-0 ml-2">Coatings (Vernix/Meconium)</label>
+              </div>
                 </div>
                 <div class="row m0 mt-3">
                   <div class="col-md-2"></div>
@@ -2297,7 +2324,11 @@
                                 >
                                 <input
                                   type="text"
-                                  class="form-control ml-3"
+                                  class="form-control ml-3 mt-2"
+                                  [ngClass]="{
+                                    'col-md-6': !isExpanded, 
+                                    '': isExpanded
+                                  }"
                                   formControlName="AVeinsT"
                                   [disabled]="!nicuForm.get('AVeins')?.value"
                                 />
@@ -2589,12 +2620,12 @@
                   <div class="mb-2 row">
                     <div class="col-2">
                       <div class="form-check form-check-inline">
-                        <input
+                        <!-- <input
                           class="form-check-input"
                           type="checkbox"
                           id="comment"
                           formControlName="AComment"
-                        />
+                        /> -->
                         <label class="form-check-label" for="comment"
                           >Comment</label
                         >
@@ -2604,7 +2635,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        formControlName="ACommentT"
+                        formControlName="AComment"
                       />
                     </div>
                   </div>
@@ -3475,7 +3506,7 @@
                       </ng-select>
                     </div>
                   </div>
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="form-check d-flex w-100">
                       <label class="form-check-label" style="min-width: 100px"
                         >Comment</label
@@ -3485,11 +3516,29 @@
                         formControlName="Comments"
                       ></textarea>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <!-- End Section -->
+      <div class="baby-profile-container">
+        <div class="section d-flex">
+          <label class="col-md-2 p-0 mr-2">Course In NICU</label>
+          <textarea class="col-md-8 p-0"   formControlName="CourseNicu"></textarea>
+          <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        </div>
+        <div class="section d-flex">
+          <label class="col-md-2 p-0 mr-2">Assessment</label>
+          <textarea class="col-md-8 p-0"   formControlName="Assessment"></textarea>
+          <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        </div>
+        <div class="section d-flex">
+          <label class="col-md-2 p-0 mr-2">Plan</label>
+          <textarea class="col-md-8 p-0"   formControlName="Plan"></textarea>
+          <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
         </div>
       </div>
     </form>

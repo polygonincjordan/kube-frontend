@@ -77,7 +77,8 @@ export enum RedirectionType {
   NURDS$="NURDS",//Nursing Discharge Summary
   NCP$="NCP", //, Nursing Care Plan (
   PRECATH$="NCP",//, Nursing Care Plan (
-  NEWBORN$ = 'NEWBORN$'
+  NEWBORN$ = 'NEWBORN$',
+  Bundles$ = 'Bundles$'
 }
 
 export enum AssessmentType {

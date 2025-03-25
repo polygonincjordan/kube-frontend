@@ -47,7 +47,7 @@
 .baby-profile h3 {
     margin-top: 15px;
     font-size: 18px;
-    border-bottom: 2px solid #f0ad4e;
+    border-bottom: 2px solid #0056b0;
     padding-bottom: 5px;
 }
 
@@ -113,7 +113,7 @@
 h3 {
     margin-top: 20px;
     font-size: 18px;
-    border-bottom: 2px solid #f0ad4e;
+    border-bottom: 2px solid #0056b0;
     padding-bottom: 5px;
 }
 
@@ -1125,4 +1125,16 @@ h3 {
 
 .is-invalid{
   border-color: red;
+}
+
+.wdth {
+  max-width : 17%; 
+  padding-left: 21px !important;
+}
+
+.padding-expanded {
+  padding-left: 21px !important;
+}
+.padding-collapsed {
+  padding-left: 17px !important;
 }
