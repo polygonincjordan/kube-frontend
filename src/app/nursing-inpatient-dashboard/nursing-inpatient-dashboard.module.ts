@@ -143,6 +143,8 @@ import { NewbornAssessmentModule } from "../shared-module/newborn-assessment/new
 import { ModifiedAldreteDocumentModule } from '../shared-module/modified-aldrete-document/modified-aldrete-document.module';
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
 import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
+import { TimeOutChecklistModule } from '../shared-module/time-out-checklist/time-out-checklist.module';
+
 
 
 const route: Routes = [
@@ -300,7 +302,8 @@ const route: Routes = [
     SharedModuleModule,
     NewbornAssessmentModule,
     ModifiedAldreteDocumentModule,
-    NeonatalDischDocumentModule
+    NeonatalDischDocumentModule,
+    TimeOutChecklistModule
 ],
 })
 export class NursingInpatientDashboardModule {}

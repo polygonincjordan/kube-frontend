@@ -168,8 +168,8 @@ export class CompanionMealOrderingComponentNew implements OnInit {
       Caseno: [this.paramsObj?.falnr],
       snackTime: ["", Validators.required],
       Quantity: ["", Validators.required],
-      snackConsistency: ['', Validators.required],
-      snackDescription: ['',Validators.required],
+      snackConsistency: [true, Validators.required],
+      snackDescription: [true,Validators.required],
       Comments: ""
     });
 
@@ -375,6 +375,10 @@ export class CompanionMealOrderingComponentNew implements OnInit {
         this.resetForm();
       });
     }
+  }
+
+  saveSnackOrder() {
+    console.log(this.snckOrderForm, "--")
   }
 
   public openIndicatorsModal(template: TemplateRef<any>) {

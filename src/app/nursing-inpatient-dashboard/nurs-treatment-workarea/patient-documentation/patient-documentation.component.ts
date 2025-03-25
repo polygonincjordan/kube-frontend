@@ -128,6 +128,10 @@ export class PatientDocumentationComponent implements OnInit {
   public openNeonatalDischDocument: boolean = false;
   latestNeonatalDischList = [];
 
+  public isTimeoutCheck: boolean = false;
+  public openTimeoutCheckDocument: boolean = false;
+  latestTimeoutCheckList = [];
+
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -887,8 +891,9 @@ export class PatientDocumentationComponent implements OnInit {
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
-      'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete Score (MAS) Scale' },
+      'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete Score (MAS)' },
       'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Disch' },
+      'isTimeoutCheck': { isTimeoutCheck: true, selectedDocName: 'Time-out Checklist' },
     };
 
 
@@ -923,7 +928,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.isModifiedAldreteDocument = false;
     this.openModifiedAldreteDocument = false;
     this.isNeonatalDisch = false;
+    this.isTimeoutCheck = false;
     this.openNeonatalDischDocument = false;
+    this.openTimeoutCheckDocument = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
       const assessment = assessments[name];
@@ -1268,7 +1275,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.isModifiedAldreteDocument = false;
     this.openModifiedAldreteDocument = false;
     this.latestModifiedAldreteList = [];
-
+    this.openTimeoutCheckDocument = false;
+    this.isTimeoutCheck = false;
     this.latestMorseFallScaleData = null;
     this.searchString = '';
     this.dateRange = '';
@@ -2345,6 +2353,57 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
+
+    else if (this.isTimeoutCheck) {
+      if (action == 'create') {
+        this.openTimeoutCheckDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openTimeoutCheckDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseModifiedAldretePlanDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openTimeoutCheckDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openTimeoutCheckDocument = true;
+        this.ModifiedAldreteComp.createModifiedAldreteDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
   }
   private subscription: Subscription;
   directReleasePainAss() {
@@ -2416,7 +2475,7 @@ export class PatientDocumentationComponent implements OnInit {
               this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
             },
             complete: () => {
-              this.sharedService.successSwallModel('Modified Aldrete Score (MAS) Scale released successfully');
+              this.sharedService.successSwallModel('Modified Aldrete Score (MAS) released successfully');
               this.refresh();
             }
           });
@@ -2941,7 +3000,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating Modified Aldrete Score (MAS) Scale:', error);
+          console.error('Error creating Modified Aldrete Score (MAS):', error);
         })
       }
 

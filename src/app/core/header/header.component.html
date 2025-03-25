@@ -542,7 +542,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let data of item['CaseList']; let i = index" (click)="openPatientSearch(data, 'caseList')">
+                        <tr *ngFor="let data of item['CaseList']; let i = index" (click)="openPatientSearch(data, 'caseList', item)">
                           <td class="font-12">{{ data?.Case }}</td>
                           <td  class="font-12">{{ data?.PersonName }} </td>
                           <td  class="font-12"> {{ data?.CaseType === '1' ? 'IP' : (data?.CaseType === '2' ? 'OP' : '') }}</td>

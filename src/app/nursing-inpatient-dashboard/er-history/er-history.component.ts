@@ -154,7 +154,7 @@ export class ErHistoryComponent implements OnInit {
     // this.getErList(this.storageService.lastPassedDate);
    }else{
     // this.getErList([new Date()]);
-    this.getHospitalList();
+    this.getHospitalList([new Date(), new Date()]);
    }
     this.dataForTriage();
     this.refreshInterval = setInterval(() => {
@@ -488,7 +488,7 @@ export class ErHistoryComponent implements OnInit {
   //       });
   //   }
 
-  getHospitalList(getConfigToolWardList?, getConfigToolSpecialtyList?, date?) {
+  getHospitalList(date?) {
     // this.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList ? this.getConfigToolSpecialtyList : getConfigToolSpecialtyList
     // this.getConfigToolWardList = this.getConfigToolWardList ? this.getConfigToolWardList : getConfigToolWardList
     // this.dataOnTableForMissedDoses = _success.result.d.results;
@@ -1995,10 +1995,10 @@ export class ErHistoryComponent implements OnInit {
     }
     redirectToTreatByName(data){
       const json = {
-        Patnr:data.Patnr,
-        Einri:data.Einri,
-        Falnr:data.Falnr,
-        Lfdnr:data.Lfdbw
+        Patnr:data.Mrn,
+        Einri:data.Institute,
+        Falnr:data.CaseNumber,
+        Lfdnr:data.Lfdnr
       }
       this.storageService.setCheckinData(data);
       localStorage.setItem('checkindata',JSON.stringify(data));
