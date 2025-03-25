@@ -1,0 +1,254 @@
+<div class="time-out-check-main">
+    <div class="tab-navigation-part p-0 mb-3">
+        <div class="tab-navigate">
+            <div class="tab-nav w-100">
+                <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                    <li *ngFor="let tab of tabList" class="d-flex m-0 align-items-center"
+                        (click)="assessmentTabSelect(tab)" [ngClass]="selectedTabName == tab ? 'active' : ''">
+                        <img src="./assets/img/grid-icon.svg" />
+                        <p class="d-inline-block m-0">{{ tab }}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="pre-procedure-tab" style="padding: 0px 25px">
+        <div class="pl-3" *ngIf="selectedTabName === 'Procedure Details'">
+            <div class="row mb-2">
+                <div class="col-md-4 row">
+                    <div class="col-md-6">
+                        <label>Procedure Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="header-date">
+                            <span>
+                                <img src="assets/img/Calender.svg" alt="" />
+                            </span>
+                            <input class="form-control" style="color: #000; border-radius: 8px" type="text"
+                                placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                  showWeekNumbers: false,
+                                  dateInputFormat: 'DD.MM.YYYY'
+                                }" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 row">
+                    <div class="col-md-2">
+                        <label>Time (hr)</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-2">
+                    <label>Procedure Name</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label>Indication for Procedure/Diagnosis</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" />
+                </div>
+            </div>
+            <div class="mb-3 pre-procedure-tab">
+                <h4 class="mb-3 border-bottom w-30">Pre-Procedure Time Out Process for the following departments</h4>
+                <div class="row m-0">
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">ICU</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">IDU</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Urology Procedures Unit</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">IP</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">OPD</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Labor and Delivery</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">ER</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Others</label>
+                        <input class="form-control" />
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Cath Lab</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Radiology</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Endoscopy</label>
+                    </div>
+                    <div class="col-md-3 mb-2"></div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">NICU</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">VIP Nursery</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Infusion Bays</label>
+                    </div>
+                    <div class="col-md-3 mb-2"></div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Nursery</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Day Care</label>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-2">Homodialysis</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3 mb-3 w-70 department-footer">
+                <h5><span>The Timeout/Final verification is completed just before starting the procedure</span> <br>
+                    <span>The entire procedure team involved using active communication </span>
+                </h5>
+            </div>
+        </div>
+
+        <div class="mb-3 pl-3" *ngIf="selectedTabName === 'Following were verified'">
+            <h4>The following were verified, if applicable:</h4>
+            <div class="row m-0 mb-2">
+                <input type="checkbox" />
+                <label class="m-0 ml-3"> Equipment (Machines and/or Consumables) are in place and functional</label>
+            </div>
+            <div class="row m-0 mb-2">
+                <input type="checkbox" />
+                <label class="m-0 ml-3"> Privileged Practitioner</label>
+            </div>
+            <div class="row m-0 mb-2">
+                <div class="col-md-4 p-0">
+                    <div class="row m-0 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-3"> Correct Patient Identification</label>
+                    </div>
+                    <div class="row m-0 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-3"> Consent for Procedure</label>
+                    </div>
+                    <div class="row m-0 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-3"> Correct Procedure</label>
+                    </div>
+                    <div class="row m-0 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-3"> Correct Procedure Site/Side</label>
+                    </div>
+                    <div class="row m-0 mb-2">
+                        <input type="checkbox" />
+                        <label class="m-0 ml-3"> Correct Patient Position</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4>Site Marking</h4>
+                    <div class="row m-0 mb-2">
+                        <input type="radio" />
+                        <label class="m-0 ml-3">N/A</label>
+                    </div>
+                    <div class="row m-0 mb-2">
+                        <input type="radio" />
+                        <label class="m-0 ml-3">Yes</label>
+                    </div>
+                    <div class="row m-0 mb-2">
+                        <input type="radio" />
+                        <label class="m-0 ml-3">No</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mb-3 pl-3" *ngIf="selectedTabName === 'For Dental Department'">
+            <div class="row m-0 mb-3">
+                <div class="col-md-4 row m-0">
+                    <input type="checkbox" />
+                    <label class="m-0 ml-2">Equipment are in place & Functional</label>
+                </div>
+                <div class="col-md-4 row m-0">
+                    <input type="checkbox" />
+                    <label class="m-0 ml-2">Correct Patient position (Final Verification)</label>
+                </div>
+            </div>
+            <h4 class="ml-2">Important: </h4>
+            <div class="container m-0">
+                <div class="row m-0 mb-3">
+                    <div class="col-md-12">
+                        <label class="m-0 font-weight-bold">1. Please verify correct Patient Identification using two
+                            identifiers:</label>
+                        <ul class="pl-3">
+                            <li>Patient’s full Name & Medical Record No. or Date of Birth</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="m-0 font-weight-bold">2. Verify all information with the following whenever
+                            applicable
+                            with the patient:</label>
+                        <ul class="pl-3">
+                            <li>Consent</li>
+                            <li>Site Marking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mb-4 pl-5">
+        <h4 class="border-bottom w-12">Time Out Participants</h4>
+
+        <div class="row m-0 mb-3">
+            <div class="col-md-1">Physicjan</div>
+            <div class="col-md-4">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="row m-0 mb-3">
+            <div class="col-md-1">Attending Nurse</div>
+            <div class="col-md-4">
+                <input class="form-control" />
+            </div>
+        </div>
+        <div class="row m-0">
+            <div class="col-md-1">Anesthetist</div>
+            <div class="col-md-4">
+                <input class="form-control" />
+            </div>
+        </div>
+    </div>
+</div>

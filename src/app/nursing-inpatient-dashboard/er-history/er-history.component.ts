@@ -1995,10 +1995,10 @@ export class ErHistoryComponent implements OnInit {
     }
     redirectToTreatByName(data){
       const json = {
-        Patnr:data.Patnr,
-        Einri:data.Einri,
-        Falnr:data.Falnr,
-        Lfdnr:data.Lfdbw
+        Patnr:data.Mrn,
+        Einri:data.Institute,
+        Falnr:data.CaseNumber,
+        Lfdnr:data.Lfdnr
       }
       this.storageService.setCheckinData(data);
       localStorage.setItem('checkindata',JSON.stringify(data));

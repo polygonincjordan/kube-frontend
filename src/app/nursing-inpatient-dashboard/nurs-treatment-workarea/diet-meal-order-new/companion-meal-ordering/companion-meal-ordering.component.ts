@@ -377,6 +377,10 @@ export class CompanionMealOrderingComponentNew implements OnInit {
     }
   }
 
+  saveSnackOrder() {
+    console.log(this.snckOrderForm, "--")
+  }
+
   public openIndicatorsModal(template: TemplateRef<any>) {
     const config: ModalOptions = {
       class: 'modal-dialog-centered',

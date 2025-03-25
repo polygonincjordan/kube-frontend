@@ -957,3 +957,8 @@
 .is-invalid{
   border-color: red;
 }
+
+input[type="radio"] {
+  width: 15px;
+  height: 15px;
+}

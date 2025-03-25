@@ -50,7 +50,7 @@
                 <div class="w-70 flex-row mt-1">
                     <div class="row m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formControlName="Mealtype" value="B" (change)="selectMeal('B', $event, 'BreakFastQuantity')" 
+                            <input type="checkbox" formCOntrolName="Mealtype" (change)="selectMeal('B', $event, 'BreakFastQuantity')" 
                             [checked]="dietOrderForm.get('Mealtype')?.value?.includes('B')" />
                             <label class="ml-2 m-0">Breakfast</label>
                         </div>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="row mt-3 m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formControlName="Mealtype" value="L" (change)="selectMeal('L', $event, 'LunchQuantity')" 
+                            <input type="checkbox"  value="L" formCOntrolName="Mealtype" (change)="selectMeal('L', $event, 'LunchQuantity')" 
                             [checked]="dietOrderForm.get('Mealtype')?.value?.includes('L')" />
                             <label class="ml-2 m-0">Lunch</label>
                         </div>
@@ -86,7 +86,7 @@
                     </div>
                     <div class="row mt-3 m-0">
                         <div class="col-md-4 pl-0">
-                            <input type="checkbox" formControlName="Mealtype" value="D" (change)="selectMeal('D', $event, 'DinnerQuantity')" 
+                            <input type="checkbox" formCOntrolName="Mealtype" value="D" (change)="selectMeal('D', $event, 'DinnerQuantity')" 
                             [checked]="dietOrderForm.get('Mealtype')?.value?.includes('D')"/>
                             <label class="ml-2 m-0">Dinner</label>
                         </div>
@@ -134,7 +134,7 @@
             </div>
         </div>
     </form>
-    <form class="comparion-order" *ngIf="modalType == 'snackOrder'" [formGroup]="snckOrderForm" (ngSubmit)="saveForm()">
+    <form class="comparion-order" *ngIf="modalType == 'snackOrder'" [formGroup]="snckOrderForm">
         <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
             <div class="title white-color">Companion Snack Order Details</div>
         </div>
@@ -233,7 +233,7 @@
                 <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
                     Cancel
                 </button>
-                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <button type="submit" class="btn btn-primary mr-2" (click)="saveSnackOrder()">Save</button>
                 <button type="submit" class="btn btn-primary mr-2">Confirm</button>
             </div>
         </div>
