@@ -720,6 +720,13 @@ export class PatientsDietMealComponentNew implements OnInit {
       }, (error) => {
 
       })
+    } else if(item?.Orderstatusdesc == "Confirmed") {
+      Swal.fire({
+        text: 'Order Already Confirmed',
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup',
+      })
     } else {
       Swal.fire({
         text: 'Cannot Confirm a Cancelled Order',
@@ -835,7 +842,17 @@ export class PatientsDietMealComponentNew implements OnInit {
   }
 
   confirmOrderBtn() {
-    if (this.dietMealOrderForm?.value.Orderno) {
+    if(this.ReferOrEditOrder == 'Referred') {
+      Swal.fire({
+        text: 'Please save your order before confirming.',
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup',
+      });
+
+      return
+    }
+    if (this.dietMealOrderForm?.value.Orderno ) {
       console.log(this.dietMealOrderForm?.value.Dietday)
       const payload = {
         "Institution": this.dietMealOrderForm?.value.Institution,
