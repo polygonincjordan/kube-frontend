@@ -1116,6 +1116,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteBundlesDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteBundlesDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   deleteNicuDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteNicuDoc?Dockey=${json}`, {
       withCredentials: true,
@@ -1145,6 +1150,14 @@ export class EmergencyService {
   getNewBornDetail(json): Observable<any> {
     return this.http.get(
       this.url + `getNewBornDetail?Dockey=${json}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  getUrinaryDetail(json): Observable<any> {
+    return this.http.get(
+      this.url + `getBundlesDetail?Dockey=${json}`,
       {
         withCredentials: true,
       }

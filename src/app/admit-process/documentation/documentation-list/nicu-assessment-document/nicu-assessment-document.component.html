@@ -327,10 +327,10 @@
                 [items]="bloodGroupOptions"
                 bindLabel="label"
                 bindValue="value"
-                formControlName="anti" 
+                formControlName="AntiD" 
                >
                 </ng-select>
-                <input class="col-md-3 mr-1" type="text"   formControlName="AntiD" />
+                <input class="col-md-3 mr-1" type="text"   formControlName="AntiDT" />
             </div>
     
             <div class="form-group">
@@ -1586,7 +1586,7 @@
                                     formControlName="CrIntubatedYn"
                                     value="1"
                                     (click)="toggleRadio('CrIntubatedYn', '1','CrItubeSize')"
-                                    [disabled]="!nicuForm.get('CrBreathSounds')?.value"
+                                    [disabled]="!nicuForm.get('CrIntubated')?.value"
                                   />
                                   <label class="form-check-label" for="intubNo"
                                     >No</label
@@ -1599,7 +1599,7 @@
                                     formControlName="CrIntubatedYn"
                                     value="0"
                                     (click)="toggleRadio('CrIntubatedYn', '0','CrItubeSize')"
-                                    [disabled]="!nicuForm.get('CrBreathSounds')?.value"
+                                    [disabled]="!nicuForm.get('CrIntubated')?.value"
                                   />
                                   <label class="form-check-label" for="intubYes"
                                     >Yes</label
@@ -1626,7 +1626,7 @@
                                     class="form-control"
                                     placeholder="Tube Size"
                                     formControlName="CrItubeSize"
-                                    [disabled]="!nicuForm.get('CrBreathSounds')?.value"
+                                    [disabled]="!nicuForm.get('CrIntubated')?.value"
                                   />
                                 </div>
                               </div>
@@ -1648,7 +1648,7 @@
                                     class="form-control"
                                     placeholder="Tube Level"
                                     formControlName="CrItubeLevel"
-                                    [disabled]="!nicuForm.get('CrBreathSounds')?.value"
+                                    [disabled]="!nicuForm.get('CrIntubated')?.value"
                                   />
                                 </div>
                               </div>
@@ -1695,7 +1695,7 @@
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
                                       }"
-                                       [disabled]="!nicuForm.get('CrBreathSounds')?.value"
+                                       [disabled]="!nicuForm.get('CrIntubated')?.value"
                                     />
                                   </div>
                                 </div>
@@ -1743,7 +1743,7 @@
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
                                       }"
-                                       [disabled]="!nicuForm.get('CrBreathSounds')?.value"
+                                       [disabled]="!nicuForm.get('CrIntubated')?.value"
                                     />
                                   </div>
                                 </div>

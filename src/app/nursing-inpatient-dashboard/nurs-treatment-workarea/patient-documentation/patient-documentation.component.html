@@ -248,7 +248,7 @@
                 <div class="col-md-3">{{bundlesList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                    (click)="openNewBornPdf(bundlesList[0]?.Dockey)"
+                    (click)="openBundlesPdf(bundlesList[0]?.Dockey)"
                     *ngIf="bundlesList[0]?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(bundlesList[0]?.Dockey, bundlesList[0])">
                       <select *ngIf="bundlesList.length && bundlesList[0]?.StatusTxt !='N/A' && bundlesList[0]?.Zversion != '00'" class="mr-2" name=""
@@ -761,7 +761,7 @@
     <app-patient-education-details *ngIf="openEducationAssessment" (reloadTableList)="reloadDoc($event)"></app-patient-education-details>
     <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
     <app-newborn-assessment *ngIf="openNewBorn"></app-newborn-assessment>
-    <app-ic-bundles *ngIf="openBundles"></app-ic-bundles>
+    <app-ic-bundles *ngIf="openBundles" (successEvent)="reloadDoc($event)"></app-ic-bundles>
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
