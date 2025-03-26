@@ -1,5 +1,5 @@
 <div>
-  <form [formGroup]="newBornForm">
+  <form [formGroup]="neonatalDischarge">
     <div class="row m-0 mb-2">
       <div class="col-md-4 row m-0">
         <div class="col-md-3">
@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 row m-0"></div>
+      <!-- <div class="col-md-4 row m-0"></div> -->
       <div class="col-md-4 row m-0">
         <div class="col-md-3">
           <label>Time</label>
@@ -41,7 +41,7 @@
           <label>Name</label>
         </div>
         <div class="col-md-4">
-          <input class="form-control" />
+          <input class="form-control" formControlName="Name" />
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
           <label>Father Name</label>
         </div>
         <div class="col-md-4">
-          <input class="form-control" />
+          <input class="form-control" formControlName="Fname" />
         </div>
       </div>
     </div>
@@ -61,7 +61,11 @@
           <label>Date of Admission</label>
         </div>
         <div class="col-md-6">
-          <input class="form-control" />
+          <div class="header-date">
+            <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
+            <input formControlName="AdmDate" class="form-control" style="color: #000; border-radius: 8px" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                  showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
         </div>
       </div>
       <div class="col-md-6 row m-0">
@@ -69,7 +73,7 @@
           <label>Time of Admission</label>
         </div>
         <div class="col-md-3">
-          <input type="time" class="form-control" />
+          <input type="time" step="2" class="form-control" min="08:00:00" max="17:00:00" formControlName="AdmTime" />
         </div>
       </div>
     </div>
@@ -80,7 +84,11 @@
           <label>Date of Discharge</label>
         </div>
         <div class="col-md-4">
-          <input class="form-control" />
+          <div class="header-date">
+            <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
+            <input formControlName="DischDate" class="form-control" style="color: #000; border-radius: 8px" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                  showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
         </div>
       </div>
     </div>
@@ -90,13 +98,13 @@
           <label>GA</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="Ga" />
         </div>
         <div class="col-md-1">
           <label>Weeks</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="GaDays" />
         </div>
         <div class="col-md-1">
           <label>Days</label>
@@ -109,13 +117,13 @@
           <label>CGA</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="Cga" />
         </div>
         <div class="col-md-1">
           <label>Weeks</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="CgaDays" />
         </div>
         <div class="col-md-1">
           <label>Days</label>
@@ -129,7 +137,7 @@
           <label>Chronological Age</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="ChronoAge" />
         </div>
         <div class="col-md-1">
           <label>Days</label>
@@ -142,11 +150,11 @@
           <label>Birth Weight</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="BirthWeight" />
         </div>
         <div class="col-md-2">
-          <ng-select>
-            <ng-option></ng-option>
+          <ng-select formControlName="BirthWgtUnit">
+            <ng-option *ngFor="let item of weight" [value]="item.value">{{ item.label }}</ng-option>
           </ng-select>
         </div>
       </div>
@@ -158,10 +166,10 @@
           <label>Admission Weight</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="AdmWeight" />
         </div>
         <div class="col-md-2">
-          <ng-select>
+          <ng-select formControlName="AdmWgtUnit">
             <ng-option></ng-option>
           </ng-select>
         </div>
@@ -171,11 +179,11 @@
           <label>Discharge Weight</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="DischWeight" />
         </div>
         <div class="col-md-2">
-          <ng-select>
-            <ng-option></ng-option>
+          <ng-select formControlName="DischWgtUnit">
+            <ng-option *ngFor="let item of weight" [value]="item.value">{{ item.label }}</ng-option>
           </ng-select>
         </div>
       </div>
@@ -187,11 +195,11 @@
         </div>
         <div class="col-md-3" style="display: flex; gap: 15px; align-items: center;">
           <div class="d-flex">
-            <input type="radio" />
+            <input type="radio" formControlName="Transfer" />
             <label class="m-0 ml-2">No</label>
           </div>
           <div class="d-flex">
-            <input type="radio" />
+            <input type="radio" formControlName="Transfer" />
             <label class="m-0 ml-2">Yes</label>
           </div>
         </div>
@@ -199,7 +207,11 @@
           <label>Date of Transfer</label>
         </div>
         <div class="col-md-2">
-          <input class="form-control" />
+          <div class="header-date">
+            <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
+            <input formControlName="TransferDate" class="form-control" style="color: #000; border-radius: 8px" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                  showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
         </div>
       </div>
       <div class="col-md-6 row m-0">
@@ -207,7 +219,7 @@
           <label>Place of Transfer</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" />
+          <input class="form-control" formControlName="TransferPlace" />
         </div>
       </div>
     </div>
@@ -218,7 +230,7 @@
           <label>Attending Physician</label>
         </div>
         <div class="col-md-7">
-          <input class="form-control" />
+          <input class="form-control" formControlName="AttendingPhy" />
         </div>
       </div>
     </div>
@@ -228,8 +240,7 @@
           <label>Reason for Admission</label>
         </div>
         <div class="col-md-7">
-          <input class="form-control" />
-          <textarea></textarea>
+          <textarea class="form-control" formControlName="AdmReason"></textarea>
         </div>
       </div>
     </div>
@@ -239,7 +250,7 @@
           <label>Course in NICU</label>
         </div>
         <div class="col-md-7">
-          <textarea></textarea>
+          <textarea class="form-control" formControlName="CourseNicu"></textarea>
         </div>
       </div>
     </div>
@@ -349,7 +360,7 @@
                 </div>
                 <div class="col-md-5">
                   <input class="form-control" formControlName="SSkincolorT"
-                    [disabled]="newBornForm.get('SSkincolor')?.disabled" />
+                    [disabled]="neonatalDischarge.get('SSkincolor')?.disabled" />
                 </div>
               </div>
               <div class="row m0">
@@ -401,7 +412,7 @@
                 </div>
               </div>
               <div class="row m0 mt-3">
-                <div class="col-md-2"></div>
+                <div class="col-md-2">Comments</div>
                 <div class="col-md-10 text-area-container">
                   <textarea class="form-control" formControlName="SaComments"></textarea>
                 </div>
@@ -456,7 +467,7 @@
                       (change)="toggleInput('HsOther', 'HsOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" formControlName="HsOtherT"
-                      [disabled]="!newBornForm.get('HsOther')?.value" />
+                      [disabled]="!neonatalDischarge.get('HsOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -477,21 +488,21 @@
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" formControlName="HfAnteriorOc" value="0"
                           (click)="toggleRadio('HfAnteriorOc', '0','HfAother')"
-                          [disabled]="!newBornForm.get('HfAnterior')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfAnterior')?.value" />
                         <label class="form-check-label">Open</label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" formControlName="HfAnteriorOc" value="1"
                           (click)="toggleRadio('HfAnteriorOc', '1','HfAother')"
-                          [disabled]="!newBornForm.get('HfAnterior')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfAnterior')?.value" />
                         <label class="form-check-label">Closed</label>
                         <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfAother"
-                          [disabled]="!newBornForm.get('HfAnteriorOc')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfAnteriorOc')?.value" />
                       </div>
                       <div class="form-check form-check-inline">
                         <label class="form-check-label" for="hypotonic">Size</label>
                         <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfAsize"
-                          [disabled]="!newBornForm.get('HfAnteriorOc')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfAnteriorOc')?.value" />
                       </div>
                     </div>
                     <div class="mt-4">
@@ -503,21 +514,21 @@
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" formControlName="HfPosteriorOc" value="0"
                           (click)="toggleRadio('HfPosteriorOc', '0','HfPother')"
-                          [disabled]="!newBornForm.get('HfPosterior')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfPosterior')?.value" />
                         <label class="form-check-label">Open</label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" formControlName="HfPosteriorOc" value="1"
                           (click)="toggleRadio('HfPosteriorOc', '1','HfPother')"
-                          [disabled]="!newBornForm.get('HfPosterior')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfPosterior')?.value" />
                         <label class="form-check-label">Closed</label>
                         <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfPother"
-                          [disabled]="!newBornForm.get('HfPosteriorOc')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfPosteriorOc')?.value" />
                       </div>
                       <div class="form-check form-check-inline">
                         <label class="form-check-label" for="hypotonic">Size</label>
                         <input class="form-control ms-2 d-inline ml-3" type="text" formControlName="HfPsize"
-                          [disabled]="!newBornForm.get('HfPosteriorOc')?.value" />
+                          [disabled]="!neonatalDischarge.get('HfPosteriorOc')?.value" />
                       </div>
                     </div>
                   </div>
@@ -558,7 +569,7 @@
                       (change)="toggleInput('HeOther', 'HeOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="HeOtherT" [disabled]="!newBornForm.get('HeOther')?.value" />
+                      formControlName="HeOtherT" [disabled]="!neonatalDischarge.get('HeOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -599,7 +610,7 @@
                       (change)="toggleInput('HeyOther', 'HeyOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="HeyOtherT" [disabled]="!newBornForm.get('HeyOther')?.value" />
+                      formControlName="HeyOtherT" [disabled]="!neonatalDischarge.get('HeyOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -627,7 +638,7 @@
                       (change)="toggleInput('HnOther', 'HnOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="HnOtherT" [disabled]="!newBornForm.get('HnOther')?.value" />
+                      formControlName="HnOtherT" [disabled]="!neonatalDischarge.get('HnOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -671,7 +682,7 @@
                       (change)="toggleInput('HmOther', 'HmOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="HmOtherT" [disabled]="!newBornForm.get('HmOther')?.value" />
+                      formControlName="HmOtherT" [disabled]="!neonatalDischarge.get('HmOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -708,7 +719,7 @@
                       (change)="toggleInput('HnNother', 'HnNotherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="HnNotherT" [disabled]="!newBornForm.get('HnNother')?.value" />
+                      formControlName="HnNotherT" [disabled]="!neonatalDischarge.get('HnNother')?.value" />
                   </div>
                 </div>
               </div>
@@ -739,7 +750,7 @@
                           (change)="toggleInput('CcOther', 'CcOtherT')" />
                         <label class="form-check-label" for="breastNode">Other</label>
                         <input type="text" class="form-control ml-3" placeholder="" formControlName="CcOtherT"
-                          [disabled]="!newBornForm.get('CcOther')?.value" />
+                          [disabled]="!neonatalDischarge.get('CcOther')?.value" />
                       </div>
                     </div>
                   </div>
@@ -795,7 +806,7 @@
                           (change)="toggleInput('CcaOther', 'CcaOtherT')" />
                         <label class="form-check-label" for="">Other</label>
                         <input type="text" class="form-control ml-3" placeholder="" formControlName="CcaOtherT"
-                          [disabled]="!newBornForm.get('CcaOther')?.value" />
+                          [disabled]="!neonatalDischarge.get('CcaOther')?.value" />
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -861,7 +872,7 @@
                           (change)="toggleInput('CrOther', 'CrOtherT')" />
                         <label class="form-check-label" for="breastNode">Other</label>
                         <input type="text" class="form-control ml-3" placeholder="" formControlName="CrOtherT"
-                          [disabled]="!newBornForm.get('CrOther')?.value" />
+                          [disabled]="!neonatalDischarge.get('CrOther')?.value" />
                       </div>
                     </div>
                   </div>
@@ -879,7 +890,7 @@
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-control" type="text" id="sucking" formControlName="CrBreathSoundt"
-                          [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                          [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                       </div>
                     </div>
                   </div>
@@ -903,13 +914,13 @@
                               <div class="form-check">
                                 <input class="form-check-input" type="radio" formControlName="CrIntubatedYn" value="1"
                                   (click)="toggleRadio('CrIntubatedYn', '1','CrItubeSize')"
-                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                                 <label class="form-check-label" for="intubNo">No</label>
                               </div>
                               <div class="form-check">
                                 <input class="form-check-input" type="radio" formControlName="CrIntubatedYn" value="0"
                                   (click)="toggleRadio('CrIntubatedYn', '0','CrItubeSize')"
-                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                                 <label class="form-check-label" for="intubYes">Yes</label>
                               </div>
                             </div>
@@ -926,7 +937,7 @@
                               <div class="col-md-3">
                                 <input type="text" class="form-control" placeholder="Tube Size"
                                   formControlName="CrItubeSize"
-                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                               </div>
                             </div>
                             <div style="
@@ -940,7 +951,7 @@
                               <div class="col-md-3">
                                 <input type="text" class="form-control" placeholder="Tube Level"
                                   formControlName="CrItubeLevel"
-                                  [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                               </div>
                             </div>
                             <div style="
@@ -966,10 +977,10 @@
 
                                   <input formControlName="CrIintubation" class="form-control"
                                     style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                    [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                    [maxDate]=""  #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
-                                      }" [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                      }" [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                                 </div>
                               </div>
                             </div>
@@ -996,10 +1007,10 @@
 
                                   <input formControlName="CrIextubation" class="form-control"
                                     style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                    [maxDate]="" #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                                    [maxDate]="" #dp="bsDatepicker"  bsDatepicker [bsConfig]="{
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
-                                      }" [disabled]="!newBornForm.get('CrBreathSounds')?.value" />
+                                      }" [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
                                 </div>
                               </div>
                             </div>
@@ -1028,13 +1039,13 @@
                               <div class="form-check">
                                 <input class="form-check-input" type="radio" formControlName="CrReintubationYn"
                                   value="1" (click)="toggleRadio('CrReintubationYn', '1','CrRtubeSize')"
-                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrReintubationYn')?.value" />
                                 <label class="form-check-label" for="intubNo">No</label>
                               </div>
                               <div class="form-check">
                                 <input class="form-check-input" type="radio" formControlName="CrReintubationYn"
                                   value="0" (click)="toggleRadio('CrReintubationYn', '0','CrRtubeSize')"
-                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrReintubationYn')?.value" />
                                 <label class="form-check-label" for="intubYes">Yes</label>
                               </div>
                             </div>
@@ -1051,7 +1062,7 @@
                               <div class="col-md-3">
                                 <input type="text" class="form-control" placeholder="Tube Size"
                                   formControlName="CrRtubeSize"
-                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrReintubationYn')?.value" />
                               </div>
                             </div>
                             <div style="
@@ -1065,7 +1076,7 @@
                               <div class="col-md-3">
                                 <input type="text" class="form-control" placeholder="Tube Level"
                                   formControlName="CrRtubeLevel"
-                                  [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                  [disabled]="!neonatalDischarge.get('CrReintubationYn')?.value" />
                               </div>
                             </div>
                             <div style="
@@ -1091,10 +1102,10 @@
 
                                   <input formControlName="CrRdate" class="form-control"
                                     style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                    [maxDate]="" #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                                    [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
-                                      }" [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                      }" [disabled]="!neonatalDischarge.get('CrReintubationYn')?.value" />
                                 </div>
                               </div>
                             </div>
@@ -1121,10 +1132,10 @@
 
                                   <input formControlName="CrRentryDate" class="form-control"
                                     style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                    [maxDate]="" #dp="bsDatepicker" readonly bsDatepicker [bsConfig]="{
+                                    [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
-                                      }" [disabled]="!newBornForm.get('CrReintubationYn')?.value" />
+                                      }" [disabled]="!neonatalDischarge.get('CrReintubationYn')?.value" />
                                 </div>
                               </div>
                             </div>
@@ -1167,7 +1178,7 @@
                           (change)="toggleInput('CbOther', 'CbOtherT')" />
                         <label class="form-check-label" for="breastNode">Other</label>
                         <input type="text" class="form-control ml-3" placeholder="" formControlName="CbOtherT"
-                          [disabled]="!newBornForm.get('CbOther')?.value" />
+                          [disabled]="!neonatalDischarge.get('CbOther')?.value" />
                       </div>
                     </div>
                   </div>
@@ -1192,7 +1203,7 @@
                         (click)="toggleRadio('AAbdominal', '1','AAbdominalT')" />
                       <label class="form-check-label" for="abdominalAbnormal">Abnormal</label>
                       <input type="text" class="form-control ml-3" formControlName="AAbdominalT"
-                        [disabled]="!newBornForm.get('AAbdominal')?.value" />
+                        [disabled]="!neonatalDischarge.get('AAbdominal')?.value" />
                     </div>
                   </div>
                 </div>
@@ -1213,7 +1224,7 @@
                         (click)="toggleRadio('ALiver', '1','ALiverT')" />
                       <label class="form-check-label" for="liverAbnormal">Abnormal</label>
                       <input type="text" class="form-control ml-3" formControlName="ALiverT"
-                        [disabled]="!newBornForm.get('ALiver')?.value" />
+                        [disabled]="!neonatalDischarge.get('ALiver')?.value" />
                     </div>
                   </div>
                 </div>
@@ -1234,7 +1245,7 @@
                         value="1" (click)="toggleRadio('ASpleen', '1','ASpleenT')" />
                       <label class="form-check-label" for="spleenAbnormal">Abnormal</label>
                       <input type="text" class="form-control ml-3" formControlName="ASpleenT"
-                        [disabled]="!newBornForm.get('ASpleen')?.value" />
+                        [disabled]="!neonatalDischarge.get('ASpleen')?.value" />
                     </div>
                   </div>
                 </div>
@@ -1255,7 +1266,7 @@
                         (click)="toggleRadio('AKidney', '1','AKidneyT')" />
                       <label class="form-check-label" for="kidneyAbnormal">Abnormal</label>
                       <input type="text" class="form-control ml-3" formControlName="AKidneyT"
-                        [disabled]="!newBornForm.get('AKidney')?.value" />
+                        [disabled]="!neonatalDischarge.get('AKidney')?.value" />
                     </div>
                   </div>
                 </div>
@@ -1276,7 +1287,7 @@
                         (click)="toggleRadio('AHernia', '0','AHerniaT')" />
                       <label class="form-check-label" for="herniaYes">Yes</label>
                       <input type="text" class="form-control ml-3" formControlName="AHerniaT"
-                        [disabled]="!newBornForm.get('AHernia')?.value" />
+                        [disabled]="!neonatalDischarge.get('AHernia')?.value" />
                     </div>
                   </div>
                 </div>
@@ -1294,7 +1305,7 @@
                             (change)="toggleInput('AArteries', 'AArteriesT')" />
                           <label class="form-check-label" for="arteries">Arteries</label>
                           <input type="text" class="form-control ml-3" formControlName="AArteriesT"
-                            [disabled]="!newBornForm.get('AArteries')?.value" />
+                            [disabled]="!neonatalDischarge.get('AArteries')?.value" />
                         </div>
                       </div>
                       <div class="col-6 d-flex w-100">
@@ -1305,17 +1316,17 @@
                         </div>
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" name="" id="umbilicalNormal"
-                            formControlName="AShapeNa" [disabled]="!newBornForm.get('AShape')?.value" value="0"
+                            formControlName="AShapeNa" [disabled]="!neonatalDischarge.get('AShape')?.value" value="0"
                             (click)="toggleRadio('AShapeNa', '0','AShapeT')" />
                           <label class="form-check-label" for="umbilicalNormal">Normal</label>
                         </div>
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" name="" id="umbilicalAbnormal"
-                            formControlName="AShapeNa" [disabled]="!newBornForm.get('AShape')?.value" value="1"
+                            formControlName="AShapeNa" [disabled]="!neonatalDischarge.get('AShape')?.value" value="1"
                             (click)="toggleRadio('AShapeNa', '1','AShapeT')" />
                           <label class="form-check-label" for="umbilicalAbnormal">Abnormal</label>
                           <input type="text" class="form-control ml-3" formControlName="AShapeT"
-                            [disabled]="!newBornForm.get('AArteries')?.value" />
+                            [disabled]="!neonatalDischarge.get('AArteries')?.value" />
                         </div>
                       </div>
                       <div class="col-4">
@@ -1327,7 +1338,7 @@
                                 (change)="toggleInput('AVeins', 'AVeinsT')" />
                               <label class="form-check-label" for="veins">Veins</label>
                               <input type="text" class="form-control ml-3" formControlName="AVeinsT"
-                                [disabled]="!newBornForm.get('AVeins')?.value" />
+                                [disabled]="!neonatalDischarge.get('AVeins')?.value" />
                             </div>
                           </div>
                         </div>
@@ -1365,10 +1376,10 @@
 
                               <input formControlName="AUinsertion" class="form-control"
                                 style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                [maxDate]="" #dp="bsDatepicker" bsDatepicker readonly [bsConfig]="{
+                                [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                           showWeekNumbers: false,
                                           dateInputFormat: 'DD.MM.YYYY'
-                                        }" [disabled]="!newBornForm.get('AUvc')?.value" />
+                                        }" [disabled]="!neonatalDischarge.get('AUvc')?.value" />
                             </div>
                           </div>
                           <div class="d-flex mt-2">
@@ -1378,14 +1389,14 @@
                               <input class="form-check-input" type="radio" name="" id="uvcNo"
                                 formControlName="AUcomplication" value="1"
                                 (click)="toggleRadio('AUcomplication', '1','AUcomplicationT')"
-                                [disabled]="!newBornForm.get('AUvc')?.value" />
+                                [disabled]="!neonatalDischarge.get('AUvc')?.value" />
                               <label class="form-check-label" for="uvcNo">No</label>
                             </div>
                             <div class="form-check form-check-inline">
                               <input class="form-check-input" type="radio" name="" id="uvcYes"
                                 formControlName="AUcomplication" value="0"
                                 (click)="toggleRadio('AUcomplication', '0','AUcomplicationT')"
-                                [disabled]="!newBornForm.get('AUvc')?.value" />
+                                [disabled]="!neonatalDischarge.get('AUvc')?.value" />
                               <label class="form-check-label" for="uvcYes">Yes</label>
                             </div>
                           </div>
@@ -1410,13 +1421,14 @@
 
                             <input formControlName="AUremoval" class="form-control"
                               style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                              [maxDate]="" #dp="bsDatepicker" bsDatepicker readonly [bsConfig]="{
+                              [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                       showWeekNumbers: false,
                                       dateInputFormat: 'DD.MM.YYYY'
-                                    }" [disabled]="!newBornForm.get('AUvc')?.value" />
+                                    }" [disabled]="!neonatalDischarge.get('AUvc')?.value" />
                           </div>
                           <input type="text" class="form-control mt-2" style="width:250px;" placeholder=""
-                            formControlName="AUcomplicationT" [disabled]="!newBornForm.get('AUcomplication')?.value" />
+                            formControlName="AUcomplicationT"
+                            [disabled]="!neonatalDischarge.get('AUcomplication')?.value" />
                         </div>
                       </div>
                     </div>
@@ -1444,10 +1456,10 @@
 
                               <input formControlName="AUainsertion" class="form-control"
                                 style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                           showWeekNumbers: false,
                                           dateInputFormat: 'DD.MM.YYYY'
-                                        }" [disabled]="!newBornForm.get('AUac')?.value" />
+                                        }" [disabled]="!neonatalDischarge.get('AUac')?.value" />
                             </div>
                           </div>
                           <div class="d-flex mt-2">
@@ -1457,14 +1469,14 @@
                               <input class="form-check-input" type="radio" name="" id="uvcNo"
                                 formControlName="AUacomplication" value="1"
                                 (click)="toggleRadio('AUacomplication', '1','AUacomplicationsT')"
-                                [disabled]="!newBornForm.get('AUac')?.value" />
+                                [disabled]="!neonatalDischarge.get('AUac')?.value" />
                               <label class="form-check-label" for="uvcNo">No</label>
                             </div>
                             <div class="form-check form-check-inline">
                               <input class="form-check-input" type="radio" name="" id="uvcYes"
                                 formControlName="AUacomplication" value="0"
                                 (click)="toggleRadio('AUacomplication', '0','AUacomplicationsT')"
-                                [disabled]="!newBornForm.get('AUac')?.value" />
+                                [disabled]="!neonatalDischarge.get('AUac')?.value" />
                               <label class="form-check-label" for="uvcYes">Yes</label>
                             </div>
                           </div>
@@ -1489,14 +1501,14 @@
 
                             <input formControlName="AUaremoval" class="form-control"
                               style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                              [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                              [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                       showWeekNumbers: false,
                                       dateInputFormat: 'DD.MM.YYYY'
-                                    }" [disabled]="!newBornForm.get('AUac')?.value" />
+                                    }" [disabled]="!neonatalDischarge.get('AUac')?.value" />
                           </div>
                           <input type="text" class="form-control mt-2" style="width:250px;" placeholder=""
                             formControlName="AUacomplicationsT"
-                            [disabled]="!newBornForm.get('AUacomplication')?.value" />
+                            [disabled]="!neonatalDischarge.get('AUacomplication')?.value" />
                         </div>
                       </div>
                     </div>
@@ -1549,7 +1561,7 @@
                       (change)="toggleInput('GmOther', 'GmOtherT')" />
                     <label class="form-check-label" for="maleOther">Other</label>
                     <input type="text" class="form-control" formControlName="GmOtherT"
-                      [disabled]="!newBornForm.get('GmOther')?.value" />
+                      [disabled]="!neonatalDischarge.get('GmOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1581,7 +1593,7 @@
                       (change)="toggleInput('GfOther', 'GfOtherT')" />
                     <label class="form-check-label" for="femaleOther">Other</label>
                     <input type="text" class="form-control" formControlName="GfOtherT"
-                      [disabled]="!newBornForm.get('GfOther')?.value" />
+                      [disabled]="!neonatalDischarge.get('GfOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1605,7 +1617,7 @@
                       (change)="toggleInput('GaOther', 'GaOtherT')" />
                     <label class="form-check-label" for="anusOther">Other</label>
                     <input type="text" class="form-control" formControlName="GaOtherT"
-                      [disabled]="!newBornForm.get('GaOther')?.value" />
+                      [disabled]="!neonatalDischarge.get('GaOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1625,7 +1637,7 @@
                       (change)="toggleInput('GtOther', 'GtOther')" />
                     <label class="form-check-label" for="spineOther">Other</label>
                     <input type="text" class="form-control" formControlName="GtOtherT"
-                      [disabled]="!newBornForm.get('GtOther')?.value" />
+                      [disabled]="!neonatalDischarge.get('GtOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1673,7 +1685,7 @@
                       (change)="toggleInput('MmOther', 'MmOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="MmOtherT" [disabled]="!newBornForm.get('MmOther')?.value" />
+                      formControlName="MmOtherT" [disabled]="!neonatalDischarge.get('MmOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1723,7 +1735,7 @@
                       (change)="toggleInput('MrOther', 'MrOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="MrOtherT" [disabled]="!newBornForm.get('MrOther')?.value" />
+                      formControlName="MrOtherT" [disabled]="!neonatalDischarge.get('MrOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1759,7 +1771,7 @@
                       (change)="toggleInput('McOther', 'McOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="McOtherT" [disabled]="!newBornForm.get('McOther')?.value" />
+                      formControlName="McOtherT" [disabled]="!neonatalDischarge.get('McOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1799,7 +1811,7 @@
                       (change)="toggleInput('MaOther', 'MaOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline ml-3" style="width: 200px"
-                      formControlName="MaOtherT" [disabled]="!newBornForm.get('MaOther')?.value" />
+                      formControlName="MaOtherT" [disabled]="!neonatalDischarge.get('MaOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1841,7 +1853,7 @@
                       (change)="toggleInput('MuOther', 'MuOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline" style="width: 200px"
-                      formControlName="MuOtherT" [disabled]="!newBornForm.get('MuOther')?.value" />
+                      formControlName="MuOtherT" [disabled]="!neonatalDischarge.get('MuOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1886,7 +1898,7 @@
                       (change)="toggleInput('MlOther', 'MlOtherT')" />
                     <label class="form-check-label">Other</label>
                     <input type="text" class="form-control ms-2 d-inline" style="width: 200px"
-                      formControlName="MlOtherT" [disabled]="!newBornForm.get('MlOther')?.value" />
+                      formControlName="MlOtherT" [disabled]="!neonatalDischarge.get('MlOther')?.value" />
                   </div>
                 </div>
               </div>
@@ -1901,7 +1913,7 @@
                 <div class="col-10">
                   <div class="form-check">
                     <input type="text" class="form-control ms-2 d-inline" style="width: 200px"
-                      formControlName="MPalmarCreasesT" [disabled]="!newBornForm.get('MPalmarCreases')?.value" />
+                      formControlName="MPalmarCreasesT" [disabled]="!neonatalDischarge.get('MPalmarCreases')?.value" />
                   </div>
                 </div>
               </div>
@@ -1943,30 +1955,6 @@
                 <div class="row">
                   <div class="col-md-12 text-area-container">
                     <textarea class="form-control" formControlName="GeneralImpression"></textarea>
-                  </div>
-                </div>
-                <div class="row mt-2">
-                  <div class="form-check form-check-inline">
-                    <label class="form-check-label" style="min-width: 100px">Vit.K</label>
-                    <ng-select formControlName="VitK" style="width: 100%">
-                      <ng-option value="0">Yes</ng-option>
-                      <ng-option value="1">No</ng-option>
-                    </ng-select>
-                  </div>
-                </div>
-                <div class="row my-2">
-                  <div class="form-check form-check-inline">
-                    <label class="form-check-label" style="min-width: 100px">Hep.B</label>
-                    <ng-select formControlName="HepB" style="width: 100%">
-                      <ng-option value="0">Yes</ng-option>
-                      <ng-option value="1">No</ng-option>
-                    </ng-select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-check d-flex w-100">
-                    <label class="form-check-label" style="min-width: 100px">Comment</label>
-                    <textarea class="form-control w-100" formControlName="Comments"></textarea>
                   </div>
                 </div>
               </div>

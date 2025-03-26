@@ -283,4 +283,58 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+
+  // Time Out CHecklist Document
+  saveTimeoutCheckDocument(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveTimeoutCheckDocument`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  TimeoutCheckDocumentLatestDoc(json: any) {
+    const url = `${this.url}TimeoutCheckDocumentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcTimeoutCheckDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcTimeoutCheckDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  // Neonatal Discharge Document
+  saveNeonatalDischargeDocument(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveNeonatalDischargeDocument`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  NeonatalDischargeDocumentLatestDoc(json: any) {
+    const url = `${this.url}NeonatalDischargeDocumentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcNeonatalDischargeDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcNeonatalDischargeDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  NeonatalDischargeDocPDF(dockey: string): Observable<any> {
+    return this.http.get(this.url + `NeonatalDischargeDocPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  deleteNeonatalDischargeDocument(dockey: any) {
+    const url = `${this.url}deleteNeonatalDischargeDocument?Dockey=${dockey}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
+
 }

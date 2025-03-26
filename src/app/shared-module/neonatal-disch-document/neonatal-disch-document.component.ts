@@ -4,6 +4,11 @@ import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
 import { ErVitalsComponent } from './er-vitals/er-vitals.component';
 import { DatePipe } from '@angular/common';
+import { SharedService } from '@services/shared.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { ActivatedRoute } from '@angular/router';
+import { DataShareService } from '@services/data-share.service';
+import { ActionType } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-neonatal-disch-document',
@@ -13,7 +18,7 @@ import { DatePipe } from '@angular/common';
 export class NeonatalDischDocumentComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
 
-  newBornForm: FormGroup;
+  neonatalDischarge: FormGroup;
   selectedTabName: string = 'Skin';
   isChecked: any;
   paramsObject: any;
@@ -68,28 +73,71 @@ export class NeonatalDischDocumentComponent implements OnInit {
   docKey: any;
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
-  constructor(private formBuilder: FormBuilder, private storageService: StorageService) { }
+  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, private storageService: StorageService, private datePipe: DatePipe,
+    private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService) {
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+    });
+
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getNeonatalDischargeDocDetails(data.value.docKey);
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getNeonatalDischargeDocDetails(data.value.docKey);
+          }
+        }
+      }
+    );
+  }
 
   ngOnInit(): void {
     this.initForm();
   }
 
   initForm(data?) {
-    this.newBornForm = this.formBuilder.group({
-      Datee: [this.getDate(data?.Datee) || null],
-      Timee: [this.parseTime(data?.Timee) || null],
-      ModeDelivery: [data?.ModeDelivery || ''],
-      AssessmentDone: [data?.AssessmentDone || ''],
-      AssessedBy: [data?.AssessedBy || ''],
-      BirthDate: [this.getDate(data?.BirthDate) || null],
-      BirthTime: [this.parseTime(data?.BirthTime) || null],
-      BirthWeight: [data?.BirthWeight || null, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
-      WeightUnit: [data?.WeightUnit || ''],
-      HeadCircum: [data?.HeadCircum || '', [Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
-      BabyLength: [data?.BabyLength || null, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
-      ChestCircum: [data?.ChestCircum || null, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
-      Gestation: [data?.Gestation || null, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)]],
-      Gender: [''],
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+
+    this.neonatalDischarge = this.formBuilder.group({
+      Dockey: [data?.Dockey || ''],
+      Dtid: "ZMED_NEODS",
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: this.storageService?.patientData?.deptOrgUnit,
+      AttendPhy: this.storageService.getUserProfile()?.Gpart,
+      Datee: [this.getDate(data?.Datee) || new Date()],
+      Timee: [this.parseTime(data?.Timee) || currentTime],
+      Name: [data?.Name || ''],
+      Fname: [data?.Fname || ''],
+      Ga: [data?.Ga || ''],
+      GaDays: [data?.GaDays || ''],
+      Cga: [data?.Cga || ''],
+      CgaDays: [data?.CgaDays || ''],
+      ChronoAge: [data?.ChronoAge || ''],
+      DischDate: [this.getDate(data?.DischDate) || ''],
+      AdmDate: [this.getDate(data?.AdmDate) || ''],
+      AdmTime: [this.parseTime(data?.AdmTime) || currentTime],
+      BirthWeight: [data?.BirthWeight || ''],
+      BirthWgtUnit: [data?.BirthWgtUnit || ''],
+      AdmWeight: [data?.AdmWeight || ''],
+      AdmWgtUnit: [data?.AdmWgtUnit || ''],
+      DischWeight: [data?.DischWeight || ''],
+      DischWgtUnit: [data?.DischWgtUnit || ''],
+      Transfer: [data?.Transfer || ''],
+      TransferDate: [this.getDate(data?.TransferDate) || ''],
+      TransferPlace: [data?.TransferPlace || ''],
+      AttendingPhy: [data?.AttendingPhy || ''],
+      AdmReason: [data?.AdmReason || ''],
+      CourseNicu: [data?.CourseNicu || ''],
       SSkincolor: [data?.SSkincolor || ''],
       SSkincolorT: [data?.SSkincolorT || ''],
       SaNormal: [data?.SaNormal || false],
@@ -184,14 +232,14 @@ export class NeonatalDischDocumentComponent implements OnInit {
       CrIntubatedYn: [data?.CrIntubatedYn || { value: '', disabled: true }],
       CrItubeSize: [data?.CrItubeSize || { value: '', disabled: true }],
       CrItubeLevel: [data?.CrItubeLevel || { value: '', disabled: true }],
-      CrIintubation: [data?.CrIintubation || { value: null, disabled: true }],
-      CrIextubation: [data?.CrIextubation || { value: null, disabled: true }],
+      CrIintubation: [this.getDate(data?.CrIintubation) || { value: null, disabled: true }],
+      CrIextubation: [this.getDate(data?.CrIextubation) || { value: null, disabled: true }],
       CrReintubation: [data?.CrReintubation || false],
       CrReintubationYn: [data?.CrReintubationYn || ''],
       CrRtubeSize: [data?.CrRtubeSize || { value: '', disabled: true }],
       CrRtubeLevel: [data?.CrRtubeLevel || { value: '', disabled: true }],
-      CrRdate: [data?.CrRdate || { value: null, disabled: true }],
-      CrRentryDate: [data?.CrRentryDate || { value: null, disabled: true }],
+      CrRdate: [this.getDate(data?.CrRdate) || { value: null, disabled: true }],
+      CrRentryDate: [this.getDate(data?.CrRentryDate) || { value: null, disabled: true }],
       CbNormal: [data?.CbNormal || false],
       CbAccessory: [data?.CbAccessory || false],
       CbNodule: [data?.CbNodule || false],
@@ -215,13 +263,13 @@ export class NeonatalDischDocumentComponent implements OnInit {
       AVeins: [data?.AVeins || false],
       AVeinsT: [data?.AVeinsT || { value: '', disabled: true }],
       AUvc: [data?.AUvc || false],
-      AUinsertion: [data?.AUinsertion || { value: null, disabled: true }],
-      AUremoval: [data?.AUremoval || { value: null, disabled: true }],
+      AUinsertion: [this.getDate(data?.AUinsertion) || { value: null, disabled: true }],
+      AUremoval: [this.getDate(data?.AUremoval) || { value: null, disabled: true }],
       AUcomplication: [data?.AUcomplication || { value: '', disabled: true }],
       AUcomplicationT: [data?.AUcomplicationT || { value: '', disabled: true }],
       AUac: [data?.AUac || false],
-      AUainsertion: [data?.AUainsertion || { value: null, disabled: true }],
-      AUaremoval: [data?.AUaremoval || { value: null, disabled: true }],
+      AUainsertion: [this.getDate(data?.AUainsertion) || { value: null, disabled: true }],
+      AUaremoval: [this.getDate(data?.AUaremoval) || { value: null, disabled: true }],
       AUacomplication: [data?.AUacomplication || { value: '', disabled: true }],
       AUacomplicationsT: [data?.AUacomplicationsT || { value: '', disabled: true }],
       AComment: [data?.AComment || false],
@@ -296,10 +344,34 @@ export class NeonatalDischDocumentComponent implements OnInit {
       MMalformation: [data?.MMalformation || ''],
       MMalformationT: [data?.MMalformationT || { value: '', disabled: true }],
       GeneralImpression: [data?.GeneralImpression || ''],
-      VitK: [data?.VitK || ''],
-      HepB: [data?.HepB || ''],
-      Comments: [data?.Comments || ''],
+      FinalDiagn: "",
+      Substances: "",
+      Consultations: "",
+      ConsultationsT: "",
+      Complications: "",
+      ComplicationsT: "",
+      PatCondition: "",
+      PatConditionT: "",
+      Instructions: "",
+      DocStatus: "1",
     })
+  }
+
+  getNeonatalDischargeDocDetails(docKey?) {
+    this.subscription = this.dayCaseDashboard
+      .fetcNeonatalDischargeDocDetails(docKey)
+      .subscribe({
+        next: (data: any) => {
+          this.initForm(data?.d?.results[0]);
+          this.toVitalsArr = data?.d?.results[0].TOVITALSIGNS.results
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nursing care plans: ${err}`
+          );
+        },
+      });
   }
 
   public openModalVital() {
@@ -326,186 +398,240 @@ export class NeonatalDischDocumentComponent implements OnInit {
   }
 
   toggleInput(checkboxName: string, inputName: string) {
-    const checkboxControl = this.newBornForm.get(checkboxName);
-    const inputControl = this.newBornForm.get(inputName);
+    const checkboxControl = this.neonatalDischarge.get(checkboxName);
+    const inputControl = this.neonatalDischarge.get(inputName);
     if (checkboxControl?.value) {
       inputControl?.enable();
       if (checkboxName == 'AShape') {
-        this.newBornForm.get('AShapeNa')?.setValue('0');
+        this.neonatalDischarge.get('AShapeNa')?.setValue('0');
       }
       if (checkboxName == 'AUvc') {
-        this.newBornForm.get('AUcomplication')?.setValue('1');
-        this.newBornForm.get('AUinsertion')?.enable();
-        this.newBornForm.get('AUremoval')?.enable();
+        this.neonatalDischarge.get('AUcomplication')?.setValue('1');
+        this.neonatalDischarge.get('AUinsertion')?.enable();
+        this.neonatalDischarge.get('AUremoval')?.enable();
       }
       if (checkboxName == 'AUac') {
-        this.newBornForm.get('AUacomplication')?.setValue('1');
-        this.newBornForm.get('AUainsertion')?.enable();
-        this.newBornForm.get('AUaremoval')?.enable();
+        this.neonatalDischarge.get('AUacomplication')?.setValue('1');
+        this.neonatalDischarge.get('AUainsertion')?.enable();
+        this.neonatalDischarge.get('AUaremoval')?.enable();
       }
       if (checkboxName == 'CrIntubated') {
-        this.newBornForm.get('CrIntubatedYn')?.setValue('1');
+        this.neonatalDischarge.get('CrIntubatedYn')?.setValue('1');
       }
       if (checkboxName == 'CrReintubation') {
-        this.newBornForm.get('CrReintubationYn')?.setValue('1');
+        this.neonatalDischarge.get('CrReintubationYn')?.setValue('1');
       }
       if (checkboxName == 'HfAnterior') {
-        this.newBornForm.get('HfAnteriorOc')?.setValue('0');
+        this.neonatalDischarge.get('HfAnteriorOc')?.setValue('0');
       }
       if (checkboxName == 'HfPosterior') {
-        this.newBornForm.get('HfPosteriorOc')?.setValue('0');
+        this.neonatalDischarge.get('HfPosteriorOc')?.setValue('0');
       }
     } else {
       inputControl?.disable();
       inputControl?.setValue('');
       if (checkboxName == 'AShape') {
-        this.newBornForm.get('AShapeT')?.disable();
+        this.neonatalDischarge.get('AShapeT')?.disable();
       }
       if (checkboxName == 'AUvc') {
-        this.newBornForm.get('AUcomplication')?.disable();
-        this.newBornForm.get('AUinsertion')?.disable();
-        this.newBornForm.get('AUremoval')?.disable();
-        this.newBornForm.get('AUcomplicationT')?.disable();
+        this.neonatalDischarge.get('AUcomplication')?.disable();
+        this.neonatalDischarge.get('AUinsertion')?.disable();
+        this.neonatalDischarge.get('AUremoval')?.disable();
+        this.neonatalDischarge.get('AUcomplicationT')?.disable();
       }
       if (checkboxName == 'AUac') {
-        this.newBornForm.get('AUacomplicationsT')?.disable();
-        this.newBornForm.get('AUacomplication')?.disable();
-        this.newBornForm.get('AUainsertion')?.disable();
-        this.newBornForm.get('AUaremoval')?.disable();
+        this.neonatalDischarge.get('AUacomplicationsT')?.disable();
+        this.neonatalDischarge.get('AUacomplication')?.disable();
+        this.neonatalDischarge.get('AUainsertion')?.disable();
+        this.neonatalDischarge.get('AUaremoval')?.disable();
       }
       if (checkboxName == 'HfAnterior') {
-        this.newBornForm.get('HfAnteriorOc')?.disable();
-        this.newBornForm.get('HfAother')?.disable();
-        this.newBornForm.get('HfAsize')?.disable();
-        this.newBornForm.get('HfAother')?.setValue('');
-        this.newBornForm.get('HfAsize')?.setValue('');
+        this.neonatalDischarge.get('HfAnteriorOc')?.disable();
+        this.neonatalDischarge.get('HfAother')?.disable();
+        this.neonatalDischarge.get('HfAsize')?.disable();
+        this.neonatalDischarge.get('HfAother')?.setValue('');
+        this.neonatalDischarge.get('HfAsize')?.setValue('');
       }
       if (checkboxName == 'HfPosterior') {
-        this.newBornForm.get('HfPosteriorOc')?.disable();
-        this.newBornForm.get('HfPother')?.disable();
-        this.newBornForm.get('HfPsize')?.disable();
-        this.newBornForm.get('HfPother')?.setValue('');
-        this.newBornForm.get('HfPsize')?.setValue('');
+        this.neonatalDischarge.get('HfPosteriorOc')?.disable();
+        this.neonatalDischarge.get('HfPother')?.disable();
+        this.neonatalDischarge.get('HfPsize')?.disable();
+        this.neonatalDischarge.get('HfPother')?.setValue('');
+        this.neonatalDischarge.get('HfPsize')?.setValue('');
       }
       if (checkboxName == 'CrIntubated') {
-        this.newBornForm.get('CrIntubatedYn')?.disable();
-        this.newBornForm.get('CrItubeSize')?.disable();
-        this.newBornForm.get('CrItubeLevel')?.disable();
-        this.newBornForm.get('CrIintubation')?.disable();
-        this.newBornForm.get('CrIextubation')?.disable();
-        this.newBornForm.get('CrIntubatedYn')?.setValue('');
-        this.newBornForm.get('CrItubeSize')?.setValue('');
-        this.newBornForm.get('CrItubeLevel')?.setValue('');
-        this.newBornForm.get('CrIintubation')?.setValue('');
-        this.newBornForm.get('CrIextubation')?.setValue('');
+        this.neonatalDischarge.get('CrIntubatedYn')?.disable();
+        this.neonatalDischarge.get('CrItubeSize')?.disable();
+        this.neonatalDischarge.get('CrItubeLevel')?.disable();
+        this.neonatalDischarge.get('CrIintubation')?.disable();
+        this.neonatalDischarge.get('CrIextubation')?.disable();
+        this.neonatalDischarge.get('CrIntubatedYn')?.setValue('');
+        this.neonatalDischarge.get('CrItubeSize')?.setValue('');
+        this.neonatalDischarge.get('CrItubeLevel')?.setValue('');
+        this.neonatalDischarge.get('CrIintubation')?.setValue('');
+        this.neonatalDischarge.get('CrIextubation')?.setValue('');
 
       }
       if (checkboxName == 'CrReintubation') {
-        this.newBornForm.get('CrRtubeSize')?.disable();
-        this.newBornForm.get('CrRtubeLevel')?.disable();
-        this.newBornForm.get('CrRdate')?.disable();
-        this.newBornForm.get('CrRentryDate')?.disable();
-        this.newBornForm.get('CrRtubeSize')?.setValue('');
-        this.newBornForm.get('CrRtubeLevel')?.setValue('');
-        this.newBornForm.get('CrRdate')?.setValue('');
-        this.newBornForm.get('CrRentryDate')?.setValue('');
+        this.neonatalDischarge.get('CrRtubeSize')?.disable();
+        this.neonatalDischarge.get('CrRtubeLevel')?.disable();
+        this.neonatalDischarge.get('CrRdate')?.disable();
+        this.neonatalDischarge.get('CrRentryDate')?.disable();
+        this.neonatalDischarge.get('CrRtubeSize')?.setValue('');
+        this.neonatalDischarge.get('CrRtubeLevel')?.setValue('');
+        this.neonatalDischarge.get('CrRdate')?.setValue('');
+        this.neonatalDischarge.get('CrRentryDate')?.setValue('');
       }
     }
   }
   toggleRadio(controlName: string, value: string, textinput?: string) {
-    if (this.newBornForm.get(controlName)?.value === value) {
-      this.newBornForm.get(controlName)?.setValue(null);
+    if (this.neonatalDischarge.get(controlName)?.value === value) {
+      this.neonatalDischarge.get(controlName)?.setValue(null);
     }
     if (value === '1') {
       if (controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia') {
-        this.newBornForm.get(textinput)?.disable();
-        this.newBornForm.get(textinput)?.setValue('');
+        this.neonatalDischarge.get(textinput)?.disable();
+        this.neonatalDischarge.get(textinput)?.setValue('');
         if (controlName == 'CrIntubatedYn') {
-          this.newBornForm.get('CrItubeSize')?.disable();
-          this.newBornForm.get('CrItubeLevel')?.disable();
-          this.newBornForm.get('CrIintubation')?.disable();
-          this.newBornForm.get('CrIextubation')?.disable();
-          this.newBornForm.get('CrItubeSize')?.setValue('');
-          this.newBornForm.get('CrItubeLevel')?.setValue('');
-          this.newBornForm.get('CrIintubation')?.setValue('');
-          this.newBornForm.get('CrIextubation')?.setValue('');
+          this.neonatalDischarge.get('CrItubeSize')?.disable();
+          this.neonatalDischarge.get('CrItubeLevel')?.disable();
+          this.neonatalDischarge.get('CrIintubation')?.disable();
+          this.neonatalDischarge.get('CrIextubation')?.disable();
+          this.neonatalDischarge.get('CrItubeSize')?.setValue('');
+          this.neonatalDischarge.get('CrItubeLevel')?.setValue('');
+          this.neonatalDischarge.get('CrIintubation')?.setValue('');
+          this.neonatalDischarge.get('CrIextubation')?.setValue('');
         }
         if (controlName == 'CrReintubationYn') {
-          this.newBornForm.get('CrRtubeSize')?.disable();
-          this.newBornForm.get('CrRtubeLevel')?.disable();
-          this.newBornForm.get('CrRdate')?.disable();
-          this.newBornForm.get('CrRentryDate')?.disable();
-          this.newBornForm.get('CrRtubeSize')?.setValue('');
-          this.newBornForm.get('CrRtubeLevel')?.setValue('');
-          this.newBornForm.get('CrRdate')?.setValue('');
-          this.newBornForm.get('CrRentryDate')?.setValue('');
+          this.neonatalDischarge.get('CrRtubeSize')?.disable();
+          this.neonatalDischarge.get('CrRtubeLevel')?.disable();
+          this.neonatalDischarge.get('CrRdate')?.disable();
+          this.neonatalDischarge.get('CrRentryDate')?.disable();
+          this.neonatalDischarge.get('CrRtubeSize')?.setValue('');
+          this.neonatalDischarge.get('CrRtubeLevel')?.setValue('');
+          this.neonatalDischarge.get('CrRdate')?.setValue('');
+          this.neonatalDischarge.get('CrRentryDate')?.setValue('');
         }
         if (controlName == 'AHernia') {
-          this.newBornForm.get('AHerniaT')?.disable();
-          this.newBornForm.get('AHerniaT')?.setValue('');
+          this.neonatalDischarge.get('AHerniaT')?.disable();
+          this.neonatalDischarge.get('AHerniaT')?.setValue('');
         }
       } else {
-        this.newBornForm.get(textinput)?.enable(); // Enable input when abnormal (Yes)
+        this.neonatalDischarge.get(textinput)?.enable(); // Enable input when abnormal (Yes)
         if (controlName == 'HfAnteriorOc') {
-          this.newBornForm.get('HfAsize')?.enable();
+          this.neonatalDischarge.get('HfAsize')?.enable();
         }
         if (controlName == 'HfPosteriorOc') {
-          this.newBornForm.get('HfPsize')?.enable();
+          this.neonatalDischarge.get('HfPsize')?.enable();
         }
       }
     } else {
       if (controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia') {
-        this.newBornForm.get(textinput)?.enable();
+        this.neonatalDischarge.get(textinput)?.enable();
         if (controlName == 'CrIntubatedYn') {
-          this.newBornForm.get('CrItubeSize')?.enable();
-          this.newBornForm.get('CrItubeLevel')?.enable();
-          this.newBornForm.get('CrIintubation')?.enable();
-          this.newBornForm.get('CrIextubation')?.enable();
+          this.neonatalDischarge.get('CrItubeSize')?.enable();
+          this.neonatalDischarge.get('CrItubeLevel')?.enable();
+          this.neonatalDischarge.get('CrIintubation')?.enable();
+          this.neonatalDischarge.get('CrIextubation')?.enable();
         }
         if (controlName == 'CrReintubationYn') {
-          this.newBornForm.get('CrRtubeSize')?.enable();
-          this.newBornForm.get('CrRtubeLevel')?.enable();
-          this.newBornForm.get('CrRdate')?.enable();
-          this.newBornForm.get('CrRentryDate')?.enable();
+          this.neonatalDischarge.get('CrRtubeSize')?.enable();
+          this.neonatalDischarge.get('CrRtubeLevel')?.enable();
+          this.neonatalDischarge.get('CrRdate')?.enable();
+          this.neonatalDischarge.get('CrRentryDate')?.enable();
         }
 
         if (controlName == 'AHernia') {
-          this.newBornForm.get('AHerniaT')?.enable
+          this.neonatalDischarge.get('AHerniaT')?.enable
         }
 
       } else {
-        this.newBornForm.get(textinput)?.disable(); // Disable input when normal (No)
-        this.newBornForm.get(textinput)?.setValue(''); // Clear input if disable
+        this.neonatalDischarge.get(textinput)?.disable(); // Disable input when normal (No)
+        this.neonatalDischarge.get(textinput)?.setValue(''); // Clear input if disable
         if (controlName == 'HfAnteriorOc') {
-          this.newBornForm.get('HfAsize')?.disable();
-          this.newBornForm.get('HfAsize')?.setValue('');
+          this.neonatalDischarge.get('HfAsize')?.disable();
+          this.neonatalDischarge.get('HfAsize')?.setValue('');
         }
         if (controlName == 'HfPosteriorOc') {
-          this.newBornForm.get('HfPsize')?.disable();
-          this.newBornForm.get('HfPsize')?.setValue('');
+          this.neonatalDischarge.get('HfPsize')?.disable();
+          this.neonatalDischarge.get('HfPsize')?.setValue('');
         }
         if (controlName == 'CrIntubatedYn') {
-          this.newBornForm.get('CrItubeSize')?.disable();
-          this.newBornForm.get('CrItubeLevel')?.disable();
-          this.newBornForm.get('CrIintubation')?.disable();
-          this.newBornForm.get('CrIextubation')?.disable();
-          this.newBornForm.get('CrItubeSize')?.setValue('');
-          this.newBornForm.get('CrItubeLevel')?.setValue('');
-          this.newBornForm.get('CrIintubation')?.setValue('');
-          this.newBornForm.get('CrIextubation')?.setValue('');
+          this.neonatalDischarge.get('CrItubeSize')?.disable();
+          this.neonatalDischarge.get('CrItubeLevel')?.disable();
+          this.neonatalDischarge.get('CrIintubation')?.disable();
+          this.neonatalDischarge.get('CrIextubation')?.disable();
+          this.neonatalDischarge.get('CrItubeSize')?.setValue('');
+          this.neonatalDischarge.get('CrItubeLevel')?.setValue('');
+          this.neonatalDischarge.get('CrIintubation')?.setValue('');
+          this.neonatalDischarge.get('CrIextubation')?.setValue('');
         }
         if (controlName == 'CrReintubationYn') {
-          this.newBornForm.get('CrRtubeSize')?.disable();
-          this.newBornForm.get('CrRtubeLevel')?.disable();
-          this.newBornForm.get('CrRdate')?.disable();
-          this.newBornForm.get('CrRentryDate')?.disable();
-          this.newBornForm.get('CrRtubeSize')?.setValue('');
-          this.newBornForm.get('CrRtubeLevel')?.setValue('');
-          this.newBornForm.get('CrRdate')?.setValue('');
-          this.newBornForm.get('CrRentryDate')?.setValue('');
+          this.neonatalDischarge.get('CrRtubeSize')?.disable();
+          this.neonatalDischarge.get('CrRtubeLevel')?.disable();
+          this.neonatalDischarge.get('CrRdate')?.disable();
+          this.neonatalDischarge.get('CrRentryDate')?.disable();
+          this.neonatalDischarge.get('CrRtubeSize')?.setValue('');
+          this.neonatalDischarge.get('CrRtubeLevel')?.setValue('');
+          this.neonatalDischarge.get('CrRdate')?.setValue('');
+          this.neonatalDischarge.get('CrRentryDate')?.setValue('');
         }
       }
     }
+  }
+  isFormValidError: boolean = false;
+  createNeonatalDischargeDocument(docStatus: any, actiontype?: string) {
+    return new Promise((resolve, reject) => {
+      this.isFormValidError = true;
+      this.neonatalDischarge.value.DocStatus = docStatus;
+      let paylaod = this.neonatalDischarge.value;
+      paylaod.Datee = paylaod.Datee ? this.dateFormateString(paylaod.Datee) : '';
+      paylaod.DischDate = paylaod.DischDate ? this.dateFormateString(paylaod.DischDate) : '';
+      paylaod.AdmDate = paylaod.AdmDate ? this.dateFormateString(paylaod.AdmDate) : '';
+      paylaod.TransferDate = paylaod.TransferDate ? this.dateFormateString(paylaod.TransferDate) : '';
+      paylaod.CrIintubation = paylaod.CrIintubation ? this.dateFormateString(paylaod.CrIintubation) : '';
+      paylaod.CrRdate = paylaod.CrRdate ? this.dateFormateString(paylaod.CrRdate) : '';
+      paylaod.CrRentryDate = paylaod.CrRentryDate ? this.dateFormateString(paylaod.CrRentryDate) : '';
+      paylaod.AUinsertion = paylaod.AUinsertion ? this.dateFormateString(paylaod.AUinsertion) : '';
+      paylaod.AUremoval = paylaod.AUremoval ? this.dateFormateString(paylaod.AUremoval) : '';
+      paylaod.CrIextubation = paylaod.CrIextubation ? this.dateFormateString(paylaod.CrIextubation) : '';
+      paylaod.AUainsertion = paylaod.AUainsertion ? this.dateFormateString(paylaod.AUainsertion) : '';
+      paylaod.AUaremoval = paylaod.AUaremoval ? this.dateFormateString(paylaod.AUaremoval) : '';
+
+
+      paylaod.AdmTime = paylaod.AdmTime ? this.convertTimeToDuration(paylaod.AdmTime) : '';
+      paylaod.Timee = paylaod.Timee ? this.convertTimeToDuration(paylaod.Timee) : '';
+      paylaod['TOHOSPMED'] = []
+      paylaod['TODISCHMED'] = []
+      paylaod['TOVITALSIGNS'] = this.toVitalsArr;
+
+
+      console.log(this.neonatalDischarge, "neonatalDischarge");
+      // return
+      this.subscription = this.dayCaseDashboard
+        .saveNeonatalDischargeDocument(paylaod)
+        .subscribe({
+          next: (data: any) => { },
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(
+              `PUT Error at Neonatal Discharge document : ${err}`
+            );
+          },
+          complete: () => {
+            resolve(true);
+            if (actiontype === 'edit') {
+              this.sharedService.successSwallModel(
+                'Neonatal Discharge document updated successfully'
+              );
+            } else {
+              this.sharedService.successSwallModel(
+                'Neonatal Discharge document created successfully'
+              );
+            }
+          },
+        });
+    });
   }
 
   public importVitalsData(data) {
@@ -569,4 +695,38 @@ export class NeonatalDischDocumentComponent implements OnInit {
       return date;
     }
   }
+
+  dateFormateString(dateString: any) {
+    const convertDateFormat = (dateString: string): string => {
+      const [day, month, year] = dateString.split('-').map(Number);
+      const date = new Date(year, month - 1, day);
+      return date.toString();
+    };
+    if (typeof dateString === 'string') {
+      if (/\d{2}-\d{2}-\d{4}/.test(dateString)) {
+        dateString = convertDateFormat(dateString);
+      }
+    }
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T00:00:00`;
+  }
+
+  convertTimeToDuration(timeString: string): string {
+    if (!timeString) return '';
+
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    // Ensure values are properly formatted
+    const formattedHours = hours ? `PT${hours}H` : 'PT00H';
+    const formattedMinutes = minutes ? `${minutes}M` : '00M';
+    const formattedSeconds = seconds ? `${seconds}S` : '00S';
+
+    return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
+  }
+
+
 }

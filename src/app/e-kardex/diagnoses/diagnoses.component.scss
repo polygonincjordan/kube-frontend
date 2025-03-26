@@ -668,6 +668,9 @@ input[type="date"]::-webkit-datetime-edit-year-field {
         font-size: 10px !important;
       }
     }
+    &::-webkit-scrollbar{
+      width: 3px;
+    }
   }
 
 }
@@ -785,10 +788,19 @@ input[type="date"]::-webkit-datetime-edit-year-field {
   border: 2px solid #999999;
   border-radius: 10px;
   cursor: pointer;
-  padding: 0px 15px !important;
+  padding: 5px 15px !important;
+  margin-top: 10px !important;
   // margin: 8px 0px !important;
   // margin: 10px 0 !important;
+  line-height: normal;
 
+}
+.text-elips{
+  width: 180px;
+  max-width: 190px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .white-space {
   overflow: hidden;
