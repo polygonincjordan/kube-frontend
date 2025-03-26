@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 12px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument">
         <div class="search-functionality col-md-2 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -141,6 +141,16 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Time Out Checklist in Non-OR Settings'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseTimeOutDoc()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Neonatal Discharge Summary'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseNeonatalDischarge()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
@@ -169,7 +179,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -505,7 +515,6 @@
               </div>
             </div>
 
-            
             <!--  Pediatrics Admission Assessment -->
             <!-- <div
               [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -614,7 +623,7 @@
              [ngClass]="isNeonatalDisch ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
              style="font-weight: bold;"
              (click)="selectAssessment('isNeonatalDisch',latestNeonatalDischList[0])">
-             <div class="col-md-4">Neonatal Disch {{latestNeonatalDischList[0]?.Zversion ?
+             <div class="col-md-4">Neonatal Discharge Summary {{latestNeonatalDischList[0]?.Zversion ?
                   dockVer(latestNeonatalDischList[0]?.Zversion) : ''}}:</div>
              <div class="col-md-2 status-color">{{latestNeonatalDischList[0]?.StatusTxt || 'N/A'}}</div>
              <div class="col-md-2" title="{{getTime(latestNeonatalDischList[0]?.DocTime)}}">
@@ -622,12 +631,34 @@
              </div>
              <div class="col-md-3">{{latestNeonatalDischList[0]?.PhyNm || '-'}}</div>
              <div class="col-md-1">
-               <img src="assets/img/document-html.png" width="18px" height="18px"
-                 (click)="getScaleDetails(latestNeonatalDischList[0],RedirectionType.NMRTSC$)"
-                 *ngIf="latestNeonatalDischList[0]?.StatusTxt == 'Released'" />
+              <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;" (click)="openNeonatalDocPdf(latestNeonatalDischList[0]?.Dockey)"
+                *ngIf="latestNeonatalDischList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNeonatalDischList[0]?.Dockey, latestNeonatalDischList[0])">
+                  <select *ngIf="latestNeonatalDischList.length && latestNeonatalDischList[0]?.StatusTxt !='N/A' && latestNeonatalDischList[0]?.Zversion != '00'" class="mr-2" name=""
+                    id=""></select>
+                </div>
              </div>
            </div>
 
+            <!-- Time-out Checklist -->
+            <div
+             [ngClass]="isTimeoutCheck ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+             style="font-weight: bold;"
+             (click)="selectAssessment('isTimeoutCheck',latestTimeoutCheckList[0])">
+             <div class="col-md-4">Time-out Checklist {{latestTimeoutCheckList[0]?.Zversion ?
+                  dockVer(latestTimeoutCheckList[0]?.Zversion) : ''}}:</div>
+             <div class="col-md-2 status-color">{{latestTimeoutCheckList[0]?.StatusTxt || 'N/A'}}</div>
+             <div class="col-md-2" title="{{getTime(latestTimeoutCheckList[0]?.DocTime)}}">
+               {{getDate(latestTimeoutCheckList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+             </div>
+             <div class="col-md-3">{{latestTimeoutCheckList[0]?.PhyNm || '-'}}</div>
+             <div class="col-md-1">
+               <img src="assets/img/document-html.png" width="18px" height="18px"
+                 (click)="getScaleDetails(latestTimeoutCheckList[0],RedirectionType.NMRTSC$)"
+                 *ngIf="latestTimeoutCheckList[0]?.StatusTxt == 'Released'" />
+             </div>
+           </div>
+            
           <!--  Correspondence Document -->
             <!-- <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -748,6 +779,7 @@
     <app-correspondence-document *ngIf="openCorrespondenceDocument"></app-correspondence-document>
     <app-modified-aldrete-document *ngIf="openModifiedAldreteDocument"></app-modified-aldrete-document>
     <app-neonatal-disch-document *ngIf="openNeonatalDischDocument"></app-neonatal-disch-document>
+    <app-time-out-checklist *ngIf="openTimeoutCheckDocument"></app-time-out-checklist>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <ng-template #releasepdfmodal>

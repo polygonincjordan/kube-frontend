@@ -40,6 +40,8 @@ import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-doc
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
 import { ModifiedAldreteDocumentComponent } from 'src/app/shared-module/modified-aldrete-document/modified-aldrete-document.component';
+import { TimeOutChecklistComponent } from 'src/app/shared-module/time-out-checklist/time-out-checklist.component';
+import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -69,6 +71,8 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NumericRatingScaleComponent) NumericRatingScaleComp: NumericRatingScaleComponent;
   @ViewChild(ModifiedAldreteDocumentComponent) ModifiedAldreteComp: ModifiedAldreteDocumentComponent;
   @ViewChild(FacePainScaleComponent) FacePainScaleComp: FacePainScaleComponent;
+  @ViewChild(TimeOutChecklistComponent) TimeOutCheckListComp: TimeOutChecklistComponent;
+  @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -126,7 +130,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   public isNeonatalDisch: boolean = false;
   public openNeonatalDischDocument: boolean = false;
-  latestNeonatalDischList = [];
+  latestNeonatalDischList: any = [];
 
   public isTimeoutCheck: boolean = false;
   public openTimeoutCheckDocument: boolean = false;
@@ -304,6 +308,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingAdmissionLatestDoc();
     this.fetchLatestDetails();
     this.getModifiedAldreteDocument();
+    this.getTimeOutCheckDocDetails();
+    this.getNeonatalDischargeDocDetails();
   }
 
   LatestMFSSet() {
@@ -508,6 +514,32 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService.correspondenceSetDocumentLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestCorrespondenceList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Time Out CheckList Latest
+  getTimeOutCheckDocDetails() {
+    this.dayCaseDashboardService.TimeoutCheckDocumentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestTimeoutCheckList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Neonatal Discharge Summary
+  getNeonatalDischargeDocDetails() {
+    this.dayCaseDashboardService.NeonatalDischargeDocumentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestNeonatalDischList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -892,8 +924,8 @@ export class PatientDocumentationComponent implements OnInit {
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
       'isModifiedAldreteDocument': { isModifiedAldreteDocument: true, selectedDocName: 'Modified Aldrete Score (MAS)' },
-      'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Disch' },
-      'isTimeoutCheck': { isTimeoutCheck: true, selectedDocName: 'Time-out Checklist' },
+      'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Discharge Summary' },
+      'isTimeoutCheck': { isTimeoutCheck: true, selectedDocName: 'Time Out Checklist in Non-OR Settings' },
     };
 
 
@@ -1277,7 +1309,10 @@ export class PatientDocumentationComponent implements OnInit {
     this.latestModifiedAldreteList = [];
     this.openTimeoutCheckDocument = false;
     this.isTimeoutCheck = false;
-    this.latestMorseFallScaleData = null;
+    this.latestMorseFallScaleData = [];
+    this.openNeonatalDischDocument = false;
+    this.isNeonatalDisch = false;
+    this.latestNeonatalDischList = [];
     this.searchString = '';
     this.dateRange = '';
     this.documentType = undefined;
@@ -1334,6 +1369,12 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openCorrespondenceDocument) {
       this.CorrespondenceComp.ngOnDestroy();
     }
+    // if (this.openNeonatalDischDocument) {
+    //   this.neo.ngOnDestroy();
+    // }
+    if (this.openTimeoutCheckDocument) {
+      this.TimeOutCheckListComp.ngOnDestroy();
+    }
     this.getPatientProfile();
     this.getLatestAssessment();
     // this.getPhyAssessment();
@@ -1356,6 +1397,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getCorrespondenceDocDetails();
     this.LatestMFSSet();
     this.getModifiedAldreteDocument();
+    this.getTimeOutCheckDocDetails();
+    this.getNeonatalDischargeDocDetails();
   }
 
   openDocument(action) {
@@ -2323,13 +2366,13 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+          this.deleteNeonatalDischarge(this.selectedDocData.Dockey);
         }
       } else if (action == 'release') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseModifiedAldretePlanDoc();
+          this.directReleaseNeonatalDischargeDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2342,7 +2385,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openNeonatalDischDocument = true;
-        this.ModifiedAldreteComp.createModifiedAldreteDocument('4').then((formValue) => {
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()
           }
@@ -2380,7 +2423,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseModifiedAldretePlanDoc();
+          this.directReleaseTimeOutCheckListDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2392,15 +2435,15 @@ export class PatientDocumentationComponent implements OnInit {
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
-        this.openTimeoutCheckDocument = true;
-        this.ModifiedAldreteComp.createModifiedAldreteDocument('4').then((formValue) => {
-          if (formValue) {
-            this.refresh()
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        });
+        // this.openTimeoutCheckDocument = true;
+        // this.NeonatalDischDocumentComp.createTimeOutDocument('4').then((formValue) => {
+        //   if (formValue) {
+        //     this.refresh()
+        //   }
+        // }).catch((error: any) => {
+        //   console.error('Error scale:', error);
+        //   console.error('Error creating Glasgow coma scale:', error);
+        // });
       }
 
     }
@@ -2476,6 +2519,62 @@ export class PatientDocumentationComponent implements OnInit {
             },
             complete: () => {
               this.sharedService.successSwallModel('Modified Aldrete Score (MAS) released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+  directReleaseTimeOutCheckListDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcTimeoutCheckDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveTimeoutCheckDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Time Out Checklist released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+  directReleaseNeonatalDischargeDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcNeonatalDischargeDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.saveNeonatalDischargeDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Neonatal Discharge Summary released successfully');
               this.refresh();
             }
           });
@@ -3030,6 +3129,33 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+
+      // Time Out Check Document
+      if (this.openTimeoutCheckDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.TimeOutCheckListComp.createTimeOutDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+      // Time Out Check Document
+      if (this.openNeonatalDischDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -3221,6 +3347,33 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
 
+      // Time Out Check Document
+      if (this.openTimeoutCheckDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.TimeOutCheckListComp.createTimeOutDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+      // Time Out Check Document
+      if (this.openNeonatalDischDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
     else if (this.actionType == 'copy') {
       if (this.openGlasgowComaScale) {
@@ -3420,6 +3573,34 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      // Time Out Check Document
+      if (this.openTimeoutCheckDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.TimeOutCheckListComp.createTimeOutDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+      // Time Out Check Document
+      if (this.openNeonatalDischDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
       if (this.openMorseFallScale) {
         const formData = {
           ...this.morseFallScaleC.getFormData(),
@@ -3572,6 +3753,24 @@ export class PatientDocumentationComponent implements OnInit {
       });
     } else if (this.openModifiedAldreteDocument) {
       this.ModifiedAldreteComp.createModifiedAldreteDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openTimeoutCheckDocument) {
+      this.TimeOutCheckListComp.createTimeOutDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }  else if (this.openNeonatalDischDocument) {
+      this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -4107,6 +4306,42 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  // Delete Neonatal Discharge Document
+  async deleteNeonatalDischarge(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteNeonatalDischargeDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
   // Delete Nursing Care Plan Document
   async deleteNursingDischarge(docKey: string) {
     Swal.fire({
@@ -4472,6 +4707,30 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  // Copy + Release Time Out Check Document
+  copyDirectReleaseTimeOutDoc() {
+    this.TimeOutCheckListComp.createTimeOutDocument('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing assessment document:', error);
+    });
+  }
+
+  // Copy + Release Neonatal Discharge Summary Document
+  copyDirectReleaseNeonatalDischarge() {
+    this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing assessment document:', error);
+    });
+  }
+
   // Copy + Release Nursing Admission Document
   copyDirectReleaseEducationAssessment() {
     // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
@@ -4578,6 +4837,23 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .preCardiacCathDocPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+  openNeonatalDocPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .NeonatalDischargeDocPDF(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
