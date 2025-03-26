@@ -1472,6 +1472,15 @@ export class AdmissionService {
       })
     );
   }
+  geturinaryDocument(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getBundlesDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
   getNicuDocument(Dockey) {
     return this.http.get(`${environment.eKardexApiUrl}/getNicuDocument?Dockey=${Dockey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
@@ -1484,6 +1493,12 @@ export class AdmissionService {
 
   createNewBorn(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createNewBornPhysicalDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    }); 
+  }
+  createUrinary(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createBundlesDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
     }); 

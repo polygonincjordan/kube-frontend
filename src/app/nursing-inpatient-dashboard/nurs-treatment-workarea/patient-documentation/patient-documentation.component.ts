@@ -40,6 +40,7 @@ import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-doc
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
 import { ModifiedAldreteDocumentComponent } from 'src/app/shared-module/modified-aldrete-document/modified-aldrete-document.component';
+import { ICBundlesComponent } from './ic-bundles/ic-bundles.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -54,6 +55,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(BradenScaleComponent) BradenScaleComp: BradenScaleComponent;
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
   @ViewChild(NewbornAssessmentComponent) newBornComp: NewbornAssessmentComponent;
+  @ViewChild(ICBundlesComponent) ICBundlesComp: ICBundlesComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
@@ -1301,6 +1303,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openNewBorn) {
       this.newBornComp?.ngOnDestroy();
     }
+    if (this.openBundles) {
+      this.ICBundlesComp?.ngOnDestroy();
+    }
     if (this.openNursingCarePlans) {
       this.NursingCarePlansComp?.ngOnDestroy();
     }
@@ -1569,7 +1574,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       }else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNewBornPassDoc();
+          this.deleteBundlesDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -1577,11 +1582,11 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNewBorn();
+          this.releaseUrinaryDetail();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
-          this.openNewBorn = true;;
+          this.openBundles = true;;
           let valueObj = {
             type: WordType.CopyEA,
             docKey: this.selectedDocData.Dockey
@@ -1589,8 +1594,8 @@ export class PatientDocumentationComponent implements OnInit {
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
-        this.openNewBorn = true;
-        this.newBornComp.createDoc('4').then((formValue: any) => {
+        this.openBundles = true;
+        this.ICBundlesComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
@@ -2836,6 +2841,18 @@ export class PatientDocumentationComponent implements OnInit {
         })
       }
 
+      if (this.openBundles) {
+        let docStatus = '1';
+        this.ICBundlesComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
       if (this.openNursingCarePlans) {
         let docStatus = '1';
         this.NursingCarePlansComp.createNursingCarePlan(docStatus).then((formValue: any) => {
@@ -3119,6 +3136,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
+      if (this.openBundles) {
+        this.ICBundlesComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
 
       if (this.openNursingCarePlans) {
         let docStatus = '1';
@@ -3310,6 +3336,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
+      if (this.openBundles) {
+        this.ICBundlesComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
 
       if (this.openNursingCarePlans) {
         this.NursingCarePlansComp.createNursingCarePlan('3', 'copy').then((formValue: any) => {
@@ -3480,6 +3515,15 @@ export class PatientDocumentationComponent implements OnInit {
       });
     } else if (this.openNewBorn) {
       this.newBornComp.createDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }else if (this.openBundles) {
+      this.ICBundlesComp.createDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -4034,6 +4078,40 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  async deleteBundlesDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteBundlesDoc(this.bundlesList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
 
   async deletePainAssessmentDocument(docKey: string) {
     Swal.fire({
@@ -4400,6 +4478,19 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  releaseUrinaryDetail() {
+    this.emergencyService.getUrinaryDetail(this.bundlesList[0].Dockey).subscribe((res: any) => {
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.admissionService.createUrinary(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
 
   newVersionDirectReleasedSurgical() {
     this.SurgicalPassComp.copySurgicalPassDoc('5', 'copy').then((formValue: any) => {
@@ -4561,6 +4652,22 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .getNewBornPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+  openBundlesPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getBundlesPdf(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
