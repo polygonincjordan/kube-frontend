@@ -22,7 +22,8 @@
     <div class="col-lg-6 2"  *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showOut">
       <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
-        /* overflow: auto; */
+        overflow: auto;
+        padding-bottom: 0px;
         max-height: 100%;">
           <!-- end---------------------- -->
           <div class="head patient-table">
@@ -66,7 +67,7 @@
                     -
                     {{ paitentData.Orgdo }}
                   </p>
-                  <span class="fix-width mw-135 version-class">{{
+                  <span class="fix-width text-elips d-inline-block mw-135 version-class" [title]="paitentData.DtidText">{{
                     paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
                 </div>
                 <div class="d-flex align-items-center" >
@@ -131,7 +132,7 @@
     <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showIn">
       <div class="inner_box main_inner_box_table">
         <div class="main_bg main_diagnoses_table" style="min-height: 100%;
-        /* overflow: auto; */
+        overflow: auto;
         max-height: 100%;">
   
           <!-- end---------------------- -->
@@ -216,7 +217,7 @@
                 </div> -->
                <!-- {{item.value|json}} -->
               
-                <div class="w-100 mt-2 ml-1 document-list mr-0 ml-0 align-items-center row m-0 py-1 px-2" *ngFor="let member of item.value ; let ind = index" [ngClass]="i > 0 ? 'mt-1':''">
+                <div class="w-100 ml-1 document-list mr-0 ml-0 align-items-center row m-0 py-1 px-2" *ngFor="let member of item.value ; let ind = index" [ngClass]="i > 0 ? 'mt-1':''">
                   <ng-container>
                 
                     <div class="col-md-2 p-0"  (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
@@ -227,8 +228,8 @@
                         -
                         {{ member.Orgdo }}</span>
                     </div>
-                    <div class="col-md-3 p-0" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
-                      <span class="in-line" style="font-weight:700" [title]="member.Dktxt"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
+                    <div class="col-md-3 p-0 d-flex" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
+                      <span class="in-line d-inline-block text-elips" style="font-weight:700" [title]="member.Dktxt"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
                     </div>
                     <div class="col-md-2 pl-0" (click)="modelFormOpenInPatient(member,false, pdfViewModal)">
                       <span class="" style="font-weight:700" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</span>
@@ -358,7 +359,7 @@
                     -
                     {{ paitentData.Orgdo }}
                   </p>
-                  <span class="fix-width mw-135">{{
+                  <span class="fix-width text-elips d-inline-block mw-135" [title]="paitentData.DtidText">{{
                     paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
                 </div>
                 <div class="d-flex align-items-center">
@@ -448,7 +449,7 @@
                     -
                     {{ paitentData.Orgdo }}
                   </p>
-                  <span class="fix-width mw-135 version-class">{{
+                  <span class="fix-width text-elips d-inline-block mw-135 version-class" [title]="paitentData.DtidText">{{
                     paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
                 </div>
                 <div class="d-flex align-items-center">
