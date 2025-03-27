@@ -352,7 +352,7 @@ export class HeaderComponent implements OnInit {
           const json = {
             Patnr: patnr,
             Einri: einri,
-            Falnr: type == 'caseList' ?  formattedCaseNumber : data?.Case,
+            Falnr: type == 'caseList' ?  formattedCaseNumber : falnr,
             Lfdnr: lfdnr,
           };
           this.storageService.setCheckinData(json);

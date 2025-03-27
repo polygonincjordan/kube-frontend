@@ -32,15 +32,15 @@
         class="mr-3 cursor-pointer"
         src="assets/img/copyImg.jfif"
       />
-      <img *ngIf="userProfileDetail.UserName != item.CreationUserName"
+      <!-- <img *ngIf="userProfileDetail.UserName != item.CreationUserName"
         width="25px"
         class="cursor-pointer mr-2"
         src="assets/img/delete-icon-gray.svg"
-      />
-      <img *ngIf="userProfileDetail.UserName == item.CreationUserName" (click)="deleteProgressNotePopup(deleteProgressNoteModal,item)"
+      /> -->
+      <img (click)="deleteProgressNotePopup(deleteProgressNoteModal,item)"
         width="20px"
         class="cursor-pointer mr-2"
-        src="assets/img/delete-icon.svg"
+        src="assets/img/Delete.svg"
       />
     </div>
   </div>

@@ -12,6 +12,7 @@ export class OrganizationUnitComponent {
 
   public modalRef: BsModalRef;
   public configurationdata: any;
+  public searchByDescri: any;
   @Output() onClosetempl: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('templatecontent', { static: true }) templatecontent: TemplateRef<any>;
   constructor(private modalService: BsModalService) {}
@@ -20,6 +21,7 @@ export class OrganizationUnitComponent {
     if (data && data.TOFILLERSET && data.TOFILLERSET.length) {
       if (data && data.TOFILLERSET.length) {
         this.configurationdata = data.TOFILLERSET;
+        this.configurationdata.sort((a, b) => a.TrtoeDescr.localeCompare(b.TrtoeDescr));
         if(this.configurationdata && this.configurationdata.length){
           this.modalRef = this.modalService.show(this.templatecontent, { backdrop: true, ignoreBackdropClick: false, class: 'organizationpopup'});
         }

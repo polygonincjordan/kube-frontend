@@ -32,7 +32,9 @@ export class DocumentationComponent implements OnInit {
   dateRange: any;
   selectedDocType: any;
   userConfig: UserConfig = {} as UserConfig;
-
+  previousPeriodsList = [
+    "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
+  ];
   constructor(
     public ePrescriptionService: EPrescriptionService,
     public admissionService: AdmissionService,
@@ -105,6 +107,18 @@ export class DocumentationComponent implements OnInit {
       previousPeriodValue: '',
       selectedCreatedBy: '',
       selectedDocumentOU: '',
+    });
+  }
+
+  filterPeriodDate() {
+    // this.filterByPeriod();
+    // this.sort();
+    this.admissionService.documentTypeDrop.next({
+      documentType: this.selectedDocType,
+      dateRange: this.dateRange,
+      previousPeriodValue: this.formDetailGroup.value.previousPeriodValue,
+      selectedCreatedBy: this.formDetailGroup.value.selectedCreatedBy,
+      selectedDocumentOU: this.formDetailGroup.value.selectedDocumentOU,
     });
   }
 

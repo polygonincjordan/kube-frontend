@@ -106,3 +106,8 @@
   margin-top: 5px;
   padding: 5px;
 }
+
+::selection {
+  background-color: #007bff; /* Change background color */
+  color: #fff; /* Change text color */
+}
