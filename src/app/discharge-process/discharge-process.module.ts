@@ -72,6 +72,7 @@ import { PhysicianFamilyHistoryComponent } from './documentation/documentation-l
 import { PhysicianPastMedicalComponent } from './documentation/documentation-list/physician-form/physician-past-medical/physician-past-medical.component';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { DocVisitNoteComponent } from './documentation/documentation-list/doc-visit-note/doc-visit-note.component';
+import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -145,7 +146,8 @@ export const ePrescriptionRoutes: Routes = [
     QuillModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     NgbCollapseModule,
-    NgxExtendedPdfViewerModule
+    NgxExtendedPdfViewerModule,
+    VitalSignModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService,
     ErDischargeordersService, AddministrationService, PatientService, PatientHistoryService,

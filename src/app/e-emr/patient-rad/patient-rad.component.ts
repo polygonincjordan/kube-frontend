@@ -177,9 +177,9 @@ export class PatientRadComponent implements OnInit {
               datasets: [
                 {
                   label: '',
-                  borderColor: ['green','red','orange'],
+                  borderColor: ['green','red','orange', 'blue'],
                   backgroundColor: [
-                    'green','red','orange'
+                    'green','red','orange', 'blue'
                   ],
                   borderWidth: 2,
                   data: [this.completedArr.length, this.completedCriticalArr.length, this.PartiallyAbnormalArr.length ,this.notDoneArr.length]
@@ -264,9 +264,9 @@ export class PatientRadComponent implements OnInit {
               datasets: [
                 {
                   label: '',
-                  borderColor: ['green','red','orange'],
+                  borderColor: ['green','red','blue'],
                   backgroundColor: [
-                    'green','red','orange'
+                    'green','red','blue'
                   ],
                   borderWidth: 2,
                   data: [this.completedArr.length, this.completedCriticalArr.length ,this.notDoneArr.length]

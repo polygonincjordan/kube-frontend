@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output, TemplateRef } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import * as _ from 'lodash';
 import * as converter from 'xml-js';
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-my-clinic',
@@ -41,7 +42,7 @@ export class MyClinicComponent implements OnInit {
   Case: boolean = false;
   VisitType: boolean = false;
   comment: boolean = false;
-  
+  modalRef: BsModalRef;
   selectedItemsForStatusConf = '';
   defaultSelectedItemsForStatusConf = [];
   selectedItemsForMovTypeConf = '';
@@ -78,7 +79,7 @@ export class MyClinicComponent implements OnInit {
   dateorder = '';
   maxDate = new Date()
   constructor(
-    private _dataServices: EEmrService,
+    private _dataServices: EEmrService, private modalService: BsModalService,
     private storageService: StorageService,private datePipe: DatePipe) { 
 
       
@@ -181,6 +182,18 @@ export class MyClinicComponent implements OnInit {
       // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
     }
     
+  }
+  checkedOutList: any = [];
+  openCheckoutList(template: TemplateRef<any>) {
+    const config: ModalOptions = { class: 'modal-dialog-centered checkout_list' };
+    this.modalRef = this.modalService.show(template, config);
+    this.checkedOutList = this.dataOnTable.filter(res => res.BESSTATTEXT == 'Checked Out');
+    this.checkedOutList.sort((a, b) => {
+      const timeA = new Date(`1970-01-01T${a.ZEIT_INTERN}`).getTime();
+      const timeB = new Date(`1970-01-01T${b.ZEIT_INTERN}`).getTime();
+      return timeA - timeB; // Sort by time only
+    });
+    console.log(this.checkedOutList, "this.checkedOutList")
   }
 
   showConfigFn($event) {
@@ -659,6 +672,40 @@ export class MyClinicComponent implements OnInit {
       this.dataOnTable.sort((a, b) => {
         const nameA = a.BESUCHSARTTEXT.toUpperCase(); // ignore upper and lowercase
         const nameB = b.BESUCHSARTTEXT.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
+  sortCommanModeule(fieldName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.checkedOutList.sort((a, b) => {
+        const nameA = a[fieldName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[fieldName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.checkedOutList.sort((a, b) => {
+        const nameA = a[fieldName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[fieldName].toUpperCase(); // ignore upper and lowercase
         if (nameA < nameB) {
           return 1;
         }

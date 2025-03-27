@@ -387,6 +387,8 @@ export class DischargeProcessComponent implements OnInit {
     } else if (tabName == 'discharge') {
       this._admissionservice.tabPanelNavigation('discharge');
       this.ePrescriptionService.loadDischargePanelData();
+    }  else if (tabName == 'vitalSign') {
+      this._admissionservice.tabPanelNavigation('vitalSign');
     }
     this.onSearchChange('');
     this.ProgressNotesList = this.ProgressNotesListFilterValue;

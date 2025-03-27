@@ -21,10 +21,10 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable, ReplaySubject, catchError, of } from 'rxjs';
 import { DiagnosisHistoryPopupComponent } from 'src/app/e-kardex/diagnoses/dignosis-history-popup/diagnosis-history-popup.component';
 import { DatePipe } from '@angular/common';
-
 import Swal from 'sweetalert2';
 import { StorageService } from '@services/storage.service';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation-list',
@@ -36,8 +36,8 @@ export class DocumentationListComponent implements OnInit {
   diagnosisHistory: DiagnosisHistoryPopupComponent;
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
   @ViewChild('currentDocPdfVer', { static: true }) currentDocPdfVer: TemplateRef<any>;
-  @ViewChild('attachmentmodal') attachmentmodal:any;
-
+  @ViewChild('attachmentmodal') attachmentModal: any;
+  modalRef: BsModalRef;
   @Input() searchString: string;
   @Input() soapFormEvent: string = '';
   @Input() filterDateValue: string;
@@ -66,6 +66,17 @@ export class DocumentationListComponent implements OnInit {
   selectedIconPdf: BsModalRef;
   currentDocVersionRef: BsModalRef;
 
+  createAttachmentForm:FormGroup;
+  attachmentList: any;
+  modalRefForStrucDoc:BsModalRef;
+  userProfile: any;
+  base64Value: string;
+  mimetype: any;
+  filename: any;
+  file: File;
+  selectedFile: File | null = null;
+  documentUrl: SafeResourceUrl | null = null;
+
   documentTypeFilterValue: any[] = [];
   filterFromDate: any;
   filterToDate: any;
@@ -80,21 +91,20 @@ export class DocumentationListComponent implements OnInit {
   pdfUrlType = ''
   htmlData: any;
   isImageFrame: boolean = false;
-  //attachment
-  createAttachmentForm: FormGroup;
-  mimetype: any;
-  filename: any;
-  base64Value: string;
-  modalRef: BsModalRef;
-  modalRefForStrucDoc:BsModalRef
-  attachmentList: any;
-  fileSelected: boolean = false;
-  showRedBorder: boolean = false;
-  userProfile: any;
-  file: File;
-  documentUrl: SafeResourceUrl | null = null;
-
+  previousPeriodValue: any = 'Overall';
+  documentTypeFilterValueClone: any[] = [];
+  createdDocumentUserList: any = [];
+  departmentOUList = [
+    "CARMDAMC", "", "F21IUAMC"
+  ];
+  selectedCreatedBy: any;
+  documentType: any;
+  sortedDocuments: any;
+  asc: boolean = true;
+  desc: boolean = false;
   constructor(
+    private patientHistoryService:PatientHistoryService,
+    private storageService:StorageService,
     public admissionService: AdmissionService,
     private route: ActivatedRoute,
     public modalService: BsModalService,
@@ -103,11 +113,7 @@ export class DocumentationListComponent implements OnInit {
     private inPatientConfigurationService: InPatientConfigurationService,
     private emergencyService: EmergencyService,
     private formBuilder: FormBuilder,
-    private storageService: StorageService,
-    private patientHistoryService: PatientHistoryService,
-
-
-
+    private dayCaseDashboardService: DayCaseDashboardService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -122,15 +128,16 @@ export class DocumentationListComponent implements OnInit {
       attachmentType: [null, Validators.required],
       attachmentFile: [null, Validators.required],
     });
-    admissionService.document.subscribe((res)=>{
+   admissionService.document.subscribe((res)=>{
       if(res) {
-       this.openModalForSpecialNotes()
+       this.openModalForAttachment();
       }
     });
     // subscription.unsubscribe();
   }
 
   ngOnInit(): void {
+
     this.admissionService.isDeleteEducation.subscribe((res) => {
       if (res) {
         this.deleteSelectData();
@@ -144,7 +151,6 @@ export class DocumentationListComponent implements OnInit {
         this.realodEducationList('');
       }
     });
-
 
     this.admissionService.educationDateFilter.subscribe((res: any) => {
       if (res) {
@@ -161,11 +167,16 @@ export class DocumentationListComponent implements OnInit {
       }
     });
 
+    this.createAttachmentForm= this.formBuilder.group({
+      attachmentType: [null, Validators.required],
+    attachmentFile: [null, Validators.required],
+    });
+
     this.admissionService.documentTypeDrop.subscribe((res: any) => {
-      if (res.documentType || res.dateRange) {
-        let filterValue = this.documentTypeFilterValue;
+      if (res.documentType || res.dateRange || res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
+        this.documentTypeFilterValue = this.documentTypeFilterValueClone;
         if (res.documentType) {
-          filterValue = filterValue.filter((element) => {
+          this.documentTypeFilterValue = this.documentTypeFilterValue.filter((element) => {
             if (res.documentType == element.Dtid) {
               return element;
             }
@@ -175,161 +186,44 @@ export class DocumentationListComponent implements OnInit {
         if (res.dateRange) {
           this.filterFromDate = res.dateRange[0];
           this.filterToDate = res.dateRange[1];
-          filterValue = filterValue.filter(item => {
-            let itemDate = new Date(this.dateFormate(this.getDate(item.Dodat)));
+        
+          this.documentTypeFilterValue = this.documentTypeFilterValue.filter(item => {
+            let timestamp = parseInt(item.Dodat.replace(/\/Date\((\d+)\)\//, '$1'));
+            let itemDate = new Date(timestamp);
             let fromDate = new Date(this.filterFromDate);
             let toDate = new Date(this.filterToDate);
+        
+            // Set time to midnight to compare only dates
+            itemDate.setHours(0, 0, 0, 0);
+            fromDate.setHours(0, 0, 0, 0);
+            toDate.setHours(0, 0, 0, 0);        
             return itemDate >= fromDate && itemDate <= toDate;
-          })
-        }
-        this.patientProfileDocumet = this.groupBy(filterValue, 'Dodat');
-      } else {
-        this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
-      }
-    });
-  }
-  //attachment
-  resetAttachment(_error?: any, p0?: string) {
-    this.modalRef.hide();
-    this.createAttachmentForm.reset();
-  }
-
-  createAttachmentDoc() {
-    this.createAttachmentForm.markAllAsTouched();
-    if (this.createAttachmentForm.valid) {
-      const json = {
-        "DocNr": "",
-        "Version": "",
-        "Dtid": "ZMED_ATCHM",
-        "Einri": this.storageService.einri,
-        "Patnr": this.storageService.patnr,
-        "Falnr": this.storageService.falnr,
-        "Orgdo": this.storageService.patientData.deptOrgUnit,
-        "AttendPhy": this.storageService.getUserProfile().Gpart,
-        "DocType": this.createAttachmentForm.controls.attachmentType.value,
-        "FileName": this.filename,
-        "Mimetype": this.mimetype,
-        "AttachmentDataStr": this.base64Value
-      }
-      this.patientHistoryService.createAttachmentDoc(json).subscribe(
-        (_success: any) => {
-          this.resetAttachment();
-          this.createAttachmentForm.reset();
-
-          Swal.fire({
-            title: 'Created Successfully',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          }).then(() => {
-            this.file = null;
-            this.filename = '';
-            this.mimetype = '';
-            this.base64Value = '';
-            this.createAttachmentForm.reset();
-            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
-            this.userConfigurationService.getListOfPatientVisitDataSet()
           });
-        },
-        (_error: any) => {
-          this.showErrorPopup("", _error.error.error.message.value, "Error")
         }
-      );
-    }
-  }
+        
+        if(res.selectedDocumentOU || res.selectedCreatedBy || res.previousPeriodValue) {
+          this.selectedCreatedBy =  res.selectedCreatedBy;
+          this.previousPeriodValue =  res.previousPeriodValue;
+          this.selectedDocumentOU =  res.selectedDocumentOU;
+          // this.documentType =  res.documentType;
+          this.filterByPeriod();
+        }
+        // this.documentTypeFilterValue = filterValue;
+        this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+      } else {
+        this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValueClone, 'Dodat');
+      }
 
-  showErrorPopup(title: any, text: any, messageType) {
-    return Swal.fire({
-      title: title ? title : '',
-      text: text ? text : '',
-      showCancelButton: messageType === 'Conform' ? true : false,
-      confirmButtonColor: '#0890c5',
-      cancelButtonColor: '#84898c',
-      confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
-      cancelButtonText: 'No',
-      customClass: 'myalertpopup',
-      icon: 'error'
+      this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
+        date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
+        documents: this.patientProfileDocumet[key]
+      }));
     });
-  }
-
-
-  getAttachmentsList() {
-    this.patientHistoryService.getAttachmentsList().subscribe(
-      (_success: any) => {
-        this.attachmentList = _success.d.results;
-
-      },
-      (_error: any) => { }
-    );
-  }
-
-  convertFile(file: File): Observable<string> {
-    const result = new ReplaySubject<string>(1);
-    const reader = new FileReader();
-    reader.readAsBinaryString(file);
-    reader.onload = (event) =>
-      result.next(btoa(event.target.result.toString()));
-    return result;
-  }
-
-
-  handleFileChange(event) {
-    this.file = event.target.files[0];
-    this.filename = event.target.files[0].name;
-    this.mimetype = event.target.files[0].type;
-    this.convertFile(event.target.files[0]).subscribe((base64) => {
-      this.base64Value = base64;
-    });
-
-    this.fileSelected = true;
-    // Reset the showRedBorder variable
-    this.showRedBorder = false;
-  }
-
-  removeFile() {
-    this.file = null;
-    this.filename = '';
-    this.mimetype = '';
-    this.base64Value = '';
-
-  }
-
-  onFileSelected(template: TemplateRef<any>): void {
-    this.uploadDocument(template);
-  }
-  uploadDocument(template) {
-    if (this.file) {
-      const config: ModalOptions = { class: 'document' };
-      this.modalService.show(template, config);
-      const fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          ((e.target as FileReader).result as string)
-        );
-      };
-      fileReader.readAsDataURL(this.file);
-    }
-  }
-
-  public openModalForSpecialNotes() {
-      const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
-      this.createAttachmentForm.reset();
-      this.file = null;
-       this.filename = '';
-        this.modalRef = this.modalService.show(this.attachmentmodal,config);
-        this.getAttachmentsList()
-        this.modalRef.hide();
-        this.userProfile = this.storageService.getUserProfile();
-        this.modalRef.onHide.subscribe((reason: string | any) => {
-          if(reason === 'backdrop-click') {
-          }
-        });
   }
 
   dateFormate(dt: any) {
     return dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
   }
-
-
 
   onReleaseHistoryData(releaseId: any, item) {
     this.seletcedCurrentDoc = item;
@@ -404,38 +298,39 @@ export class DocumentationListComponent implements OnInit {
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
     if (attachmentId.Mimetype == 'PDF' || attachmentId.Mimetype == 'url' || attachmentId.Mimetype == 'image/bmp' || attachmentId.Mimetype == 'HTML') {
-      this.admissionService
-        .getPatientProfilePDF(attachmentId.DocKey)
-        .subscribe((_success: any) => {
-          if (_success) {
-            this.patientVisitRecord = {
-              ..._success,
-              DOCCATTOATTACHMENTS: { results: [_success] },
-            };
+    this.admissionService
+      .getPatientProfilePDF(attachmentId.DocKey)
+      .subscribe((_success: any) => {
+        if (_success) {
+          this.patientVisitRecord = {
+            ..._success,
+            DOCCATTOATTACHMENTS: { results: [_success] },
+          };
 
-            this.InOutPatientViewValue = {
-              showBoth: false,
-              showIn: false,
-              showOut: true,
-            };
+          this.InOutPatientViewValue = {
+            showBoth: false,
+            showIn: false,
+            showOut: true,
+          };
 
-            if (attachmentId.Mimetype == 'PDF') {
+          if(attachmentId.Mimetype == 'PDF') {
               this.pdfUrlConvertToBlob(_success.d.AttachmentData);
+              console.log(this.pdfUrl, "--");
               this.pdfUrlType = 'pdf';
               this.pdfFormOpen();
-            } else if (attachmentId.Mimetype == 'url') {
-              window.open(_success.d.Url);
-            } else if (attachmentId.Mimetype == 'image/bmp') {
-              this.pdfUrlType = 'image';
-              this.pdfFormOpen();
-              this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
-            } else if (attachmentId.Mimetype == 'HTML') {
-              this.pdfUrlType = 'html';
-              this.pdfFormOpen();
-              this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
-            }
+          } else if(attachmentId.Mimetype == 'url') {
+            window.open(_success.d.Url);
+          } else if(attachmentId.Mimetype == 'image/bmp'){
+            this.pdfUrlType = 'image';
+            this.pdfFormOpen();
+            this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
+          } else if(attachmentId.Mimetype == 'HTML') {
+            this.pdfUrlType = 'html';
+            this.pdfFormOpen();
+            this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
           }
-        });
+        }
+      });
     }
   }
 
@@ -510,6 +405,99 @@ export class DocumentationListComponent implements OnInit {
     this.pdfFormDiv = true;
   }
 
+  removeDuplicates(array: any[]): any[] {
+    return [...new Set(array)];
+  }
+
+  sort() {
+    this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+    this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
+      date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
+      documents: this.patientProfileDocumet[key]
+    }));
+    console.log(this.sortedDocuments, "sortedDocuments");
+
+    // Sort the array based on the date property
+    if (this.asc) {
+      this.asc = false;
+      this.desc = true;
+      this.sortedDocuments.sort((a, b) => b.date - a.date);
+    } else {
+      this.asc = true;
+      this.desc = false;
+      this.sortedDocuments.sort((a, b) => a.date - b.date);
+    }
+    // this.documentTypeFilterValue.sort((a, b) => 0 - (a > b ? -1 : 1));
+  }
+  selectedDocumentOU: any;
+
+  filterByPeriod() {
+    let currentDate = new Date();
+    let startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
+    let yesterday = new Date(startOfDay);
+    yesterday.setDate(startOfDay.getDate() - 1);
+  
+    let filteredArray = [];
+    
+    switch (this.previousPeriodValue) {
+      case "Current Day":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.isSameDate(this.parseODataDate(item.Dodat), startOfDay));
+        break;
+      case "Since Yesterday":
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= yesterday);
+        break;
+      case "In Past 3 Days":
+        let past3Days = new Date(startOfDay);
+        past3Days.setDate(startOfDay.getDate() - 3);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= past3Days);
+        break;
+      case "In Past Week":
+        let pastWeek = new Date(startOfDay);
+        pastWeek.setDate(startOfDay.getDate() - 7);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastWeek);
+        break;
+      case "In Past Month":
+        let pastMonth = new Date(startOfDay);
+        pastMonth.setMonth(startOfDay.getMonth() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastMonth);
+        break;
+      case "In Past Years":
+        let pastYear = new Date(startOfDay);
+        pastYear.setFullYear(startOfDay.getFullYear() - 1);
+        filteredArray = this.documentTypeFilterValueClone.filter(item => this.parseODataDate(item.Dodat) >= pastYear);
+        break;
+      case "Overall":
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+        break;
+      default:
+        filteredArray = this.documentTypeFilterValueClone; // No filtering needed
+    }
+
+    // Filter based on the selected options
+    this.documentTypeFilterValue = filteredArray.filter((item) => {
+      const itemDate = new Date(parseInt(item.Dodat.match(/\d+/)[0]));
+      const isDateInRange = itemDate >= currentDate;
+
+      const isCreatedByMatch =
+        !this.selectedCreatedBy || item.MitarbName === this.selectedCreatedBy;
+
+      const isDepartmentMatch =
+        !this.selectedDocumentOU || item.Orgdo === this.selectedDocumentOU;
+
+      return isCreatedByMatch && isDepartmentMatch;
+    });
+    console.log(this.documentTypeFilterValue, "filterByPeriod");
+  }
+  parseODataDate(odataDate: string): Date {
+    // Extract timestamp from the OData date format
+    let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
+    return new Date(timestamp);
+  }
+  
+  isSameDate(date1: Date, date2: Date): boolean {
+    return date1.toDateString() === date2.toDateString();
+  }
+
   getCurrentVisitDetails(type: string) {
     this.admissionService
       .getDicumentDetails(
@@ -529,19 +517,27 @@ export class DocumentationListComponent implements OnInit {
         if (type == '2') {
           this.currentVisitDocumet = data?.d.results;
         } else {
-          this.documentTypeFilterValue = data?.d.results;
-          this.patientProfileDocumet = this.groupBy(data?.d?.results, 'Dodat');
-          this.documentTypeFilterValue.forEach((element) => {
-            let checkPatinet = this.admissionService.documentTypeFilter.find(
-              (el) => el.Dtid === element.Dtid
-            );
-            if (!checkPatinet) {
-              this.admissionService.documentTypeFilter.push({
-                Dtid: element.Dtid,
-                DtidText: element.DtidText,
+          this.documentTypeFilterValueClone = data?.d.results;
+          // this.documentTypeFilterValue = _success.d.results;
+          this.filterByPeriod();
+          this.sort();
+          this.admissionService.departmentOUList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
+          this.admissionService.createdDocumentUserList = this.removeDuplicates(this.admissionService.departmentOUList);
+          this.admissionService.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
+          this.admissionService.departmentOUList = this.removeDuplicates(this.admissionService.departmentOUList);
+          if (this.documentTypeFilterValue.length) {
+            this.documentTypeFilterValue.forEach((element) => {
+                let checkPatinet = this.admissionService.documentTypeFilter.find(
+                  (el) => el.Dtid === element.Dtid
+                );
+                if (!checkPatinet) {
+                  this.admissionService.documentTypeFilter.push({
+                    Dtid: element.Dtid,
+                    DtidText: element.DtidText,
+                  });
+                }
               });
-            }
-          });
+          }
         }
       });
   }
@@ -588,9 +584,7 @@ export class DocumentationListComponent implements OnInit {
     } else {
       this.selectedIndex = index;
       this.admissionService.selectedCurrentDocDetails = item;
-
     }
-
   }
 
   dockVer(value) {
@@ -625,6 +619,20 @@ export class DocumentationListComponent implements OnInit {
     if (item.Dtid == 'ZMED_SOAP') {
       this.admissionService
         .getSoapPDF(item.Dockey)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((_success: any) => {
+          this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
+          this.pdfTemplateRef = this.modalService.show(template, config);
+        });
+    }
+   else if (item.Dtid == 'ZMED_NBASM') {
+      this.dayCaseDashboardService
+        .getNewBornPDF(item.Dockey)
         .pipe(
           untilDestroyed(this),
           catchError((err) => {
@@ -672,9 +680,10 @@ export class DocumentationListComponent implements OnInit {
               } else {
                 this.isImageFrame = true;
                 postFileData = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  `data:application/image;base64, ${patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
-                    return obj.FileId === '';
-                  }).AttachmentData
+                  `data:application/image;base64, ${
+                    patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+                      return obj.FileId === '';
+                    }).AttachmentData
                   }`
                 );
               }
@@ -739,46 +748,47 @@ export class DocumentationListComponent implements OnInit {
     }
 
     // Operation report
-    else if (item.Dtid == 'ZMED_ORRPT') {
+    else if(item.Dtid == 'ZMED_ORRPT') {
       this.admissionService
-        .getPatientVisitDataByDocKey(item.Dockey, this.paramsObject.einri, this.paramsObject.patnr)
-        .pipe(
-          untilDestroyed(this),
-          catchError((err) => {
-            return of([]);
-          })
-        )
-        .subscribe((patientResult: InPatientDataResult) => {
-          let postFileData;
-          if (patientResult && patientResult.DOCCATTOATTACHMENTS) {
+      .getPatientVisitDataByDocKey(item.Dockey, this.paramsObject.einri, this.paramsObject.patnr)
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((patientResult: InPatientDataResult) => {
+        let postFileData;
+        if (patientResult && patientResult.DOCCATTOATTACHMENTS) {
+          if (
+            patientResult.DOCCATTOATTACHMENTS?.results.length > 0 &&
+            patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
+              return obj.FileId === '';
+            }) != null
+          )
             if (
-              patientResult.DOCCATTOATTACHMENTS?.results.length > 0 &&
               patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
-                return obj.FileId === '';
+                return obj.AttMimeType === 'PDF';
               }) != null
-            )
-              if (
-                patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
-                  return obj.AttMimeType === 'PDF';
-                }) != null
-              ) {
-                let pdfAttechemnt = patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
-                  return obj.FileId === '';
-                }).AttachmentData
-                this.pdfUrlConvertToBlob(pdfAttechemnt);
-              } else {
-                this.isImageFrame = true;
-                postFileData = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  `data:application/image;base64, ${patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+            ) {
+              let pdfAttechemnt =  patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+                return obj.FileId === '';
+              }).AttachmentData
+              this.pdfUrlConvertToBlob(pdfAttechemnt);
+            } else {
+              this.isImageFrame = true;
+              postFileData = this.sanitizer.bypassSecurityTrustResourceUrl(
+                `data:application/image;base64, ${
+                  patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
                     return obj.FileId === '';
                   }).AttachmentData
-                  }`
-                );
-              }
-          }
-          // this.pdfUrl = postFileData;
-          this.pdfTemplateRef = this.modalService.show(template, config);
-        });
+                }`
+              );
+            }
+        }
+        // this.pdfUrl = postFileData;
+        this.pdfTemplateRef = this.modalService.show(template, config);
+      });
     }
     // Neonatal Progress Note
     else if (item.Dtid == 'ZMED_NEOPN') {
@@ -816,7 +826,7 @@ export class DocumentationListComponent implements OnInit {
           this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
-    } else if (item.Dtid == 'ZMED_PHASM') {
+    }else if (item.Dtid == 'ZMED_PHASM') {
       const json = {
         Dockey: item.Dockey,
       };
@@ -832,13 +842,13 @@ export class DocumentationListComponent implements OnInit {
           this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
-    } else if (item.Dtid == 'ZMED_VISIT') {
+    } else if(item.Dtid == 'ZMED_VISIT') {
       this.admissionService
-        .getPatientProfilePDF(item.Dockey)
-        .subscribe((_success: any) => {
-          this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
-          this.pdfTemplateRef = this.modalService.show(template, config);
-        })
+      .getPatientProfilePDF(item.Dockey)
+      .subscribe((_success: any) => {
+        this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
+        this.pdfTemplateRef = this.modalService.show(template, config);
+      })
     }
   }
 
@@ -893,34 +903,34 @@ export class DocumentationListComponent implements OnInit {
   }
   getReleasedPdf(item, template: TemplateRef<any>) {
     this.releaseDocumentImage = ''
-    this.admissionService
-      .getPatientProfilePDF(item.Dockey)
-      .subscribe((_success: any) => {
-        if (item.AttMimeType == 'PDF') {
-          this.pdfUrlConvertToBlob(_success.d.AttachmentData);
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.pdfTemplateRef = this.modalService.show(template, config);
-          this.pdfUrlType = 'pdf';
-        } else if (item.AttMimeType == 'url') {
-          window.open(_success.d.Url);
-        } else if (item.AttMimeType == 'image/bmp') {
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.pdfTemplateRef = this.modalService.show(template, config);
-          this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
-          this.pdfUrlType = 'image';
-        } else if (item.AttMimeType == 'HTML') {
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.pdfTemplateRef = this.modalService.show(template, config);
-          this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
-          this.pdfUrlType = 'html';
-        }
-      });
+      this.admissionService
+        .getPatientProfilePDF(item.Dockey)
+        .subscribe((_success: any) => {
+          if(item.AttMimeType == 'PDF') {
+            this.pdfUrlConvertToBlob(_success.d.AttachmentData);
+            const config: ModalOptions = {
+              class: 'modal-dialog-centered modal-xl pdfmodal-size',
+            };
+            this.pdfTemplateRef = this.modalService.show(template, config);
+            this.pdfUrlType = 'pdf';
+          } else if(item.AttMimeType == 'url') {
+            window.open(_success.d.Url);
+          } else if(item.AttMimeType == 'image/bmp') {
+            const config: ModalOptions = {
+              class: 'modal-dialog-centered modal-xl pdfmodal-size',
+            };
+            this.pdfTemplateRef = this.modalService.show(template, config);
+            this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
+            this.pdfUrlType = 'image';
+          } else if(item.AttMimeType == 'HTML') {
+            const config: ModalOptions = {
+              class: 'modal-dialog-centered modal-xl pdfmodal-size',
+            };
+            this.pdfTemplateRef = this.modalService.show(template, config);
+            this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
+            this.pdfUrlType = 'html';
+          }
+        });
   }
 
   showDocumentList() {
@@ -936,7 +946,11 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddEditOperationReport &&
       !this.admissionService.isAddEditNeonatal &&
       !this.admissionService.isAddEditNeonatalMR &&
-      !this.admissionService.isAddEditDocVisitForm
+      !this.admissionService.isAddEditDocVisitForm&&
+      !this.admissionService.isAddEditTransferAssestForm &&
+      !this.admissionService.isAddEditNewbornAssessment &&
+      !this.admissionService.isAddNicuForm &&
+      !this.admissionService.isNewBornForm 
     ) {
       return true;
     }
@@ -977,11 +991,12 @@ export class DocumentationListComponent implements OnInit {
         } else {
           this.isImageFrame = true;
           this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-            `data:application/image;base64, ${this.inPatientVisitData.DOCCATTOATTACHMENTS.results.find(
-              (obj) => {
-                return obj.FileId === '';
-              }
-            ).AttachmentData
+            `data:application/image;base64, ${
+              this.inPatientVisitData.DOCCATTOATTACHMENTS.results.find(
+                (obj) => {
+                  return obj.FileId === '';
+                }
+              ).AttachmentData
             }`
           );
         }
@@ -1003,13 +1018,14 @@ export class DocumentationListComponent implements OnInit {
           let pdfAttechemnt = this.patientVisitRecord.VISITTOATTACHMENTS.results.find((obj) => {
             return obj.FileID === '';
           }).AttachmentData
-          return this.pdfUrlConvertToBlob(pdfAttechemnt);
+         return this.pdfUrlConvertToBlob(pdfAttechemnt);
         } else {
           this.isImageFrame = true;
           this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-            `data:application/image;base64, ${this.patientVisitRecord.VISITTOATTACHMENTS.results.find((obj) => {
-              return obj.FileID === '';
-            }).AttachmentData
+            `data:application/image;base64, ${
+              this.patientVisitRecord.VISITTOATTACHMENTS.results.find((obj) => {
+                return obj.FileID === '';
+              }).AttachmentData
             }`
           );
         }
@@ -1039,11 +1055,12 @@ export class DocumentationListComponent implements OnInit {
         } else {
           this.isImageFrame = true;
           this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-            `data:application/image;base64, ${this.patientVisitRecord.DOCCATTOATTACHMENTS.results.find(
-              (obj) => {
-                return obj.FileID === '';
-              }
-            ).AttachmentData
+            `data:application/image;base64, ${
+              this.patientVisitRecord.DOCCATTOATTACHMENTS.results.find(
+                (obj) => {
+                  return obj.FileID === '';
+                }
+              ).AttachmentData
             }`
           );
         }
@@ -1055,5 +1072,130 @@ export class DocumentationListComponent implements OnInit {
     //     `data:application/pdf;base64, ${this.soapPdf?.AttachmentData}`
     //   );
     // }
+  }
+
+  openModalForAttachment() {
+      this.removeFile();
+      const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
+      this.getAttachmentsList();
+      this.createAttachmentForm.reset();
+      this.modalRef = this.modalService.show(this.attachmentModal,config);
+        this.modalRef.hide();
+        this.userProfile = this.storageService.getUserProfile();
+        this.modalRef.onHide.subscribe((reason: string | any) => {
+          if(reason === 'backdrop-click') {
+          }
+        });
+   }
+
+  getAttachmentsList() {
+    this.patientHistoryService.getAttachmentsList().subscribe(
+      (_success: any) => {
+       this.attachmentList = _success.d.results;
+
+      },
+      (_error: any) => {}
+    );
+  }
+
+  resetAttachment(){
+    this.modalRef.hide();
+    this.createAttachmentForm.reset();
+  }
+
+  handleFileChange(event){
+  this.file = event.target.files[0];
+  this.filename = event.target.files[0].name;
+  this.mimetype = event.target.files[0].type;
+  this.convertFile(event.target.files[0]).subscribe((base64) => {
+    this.base64Value = base64;
+  });
+  }
+  removeFile() {
+  this.file = null;
+  this.filename = '';
+  this.mimetype = '';
+  this.base64Value = '';
+  }
+
+  onFileSelected(template: TemplateRef<any>): void {
+  this.uploadDocument(template);
+  }
+  uploadDocument(template) {
+  if (this.file) {
+    const config: ModalOptions = { class: 'document' };
+    this.modalService.show(template, config);
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        ((e.target as FileReader).result as string)
+      );
+    };
+    fileReader.readAsDataURL(this.file);
+  }
+  }
+
+  convertFile(file: File): Observable<string> {
+    const result = new ReplaySubject<string>(1);
+    const reader = new FileReader();
+    reader.readAsBinaryString(file);
+    reader.onload = (event) =>
+      result.next(btoa(event.target.result.toString()));
+    return result;
+  }
+
+  createAttachmentDoc(){
+    this.createAttachmentForm.markAllAsTouched();
+    if(this.createAttachmentForm.valid){
+      const json = {
+        "DocNr": "",
+        "Version": "",
+        "Dtid": "ZMED_ATCHM",
+        "Einri": this.storageService.einri,
+        "Patnr": this.storageService.patnr,
+        "Falnr": this.storageService.falnr,
+        "Orgdo": this.storageService.patientData.deptOrgUnit,
+        "AttendPhy": this.storageService.getUserProfile().Gpart,
+        "DocType": this.createAttachmentForm.controls.attachmentType.value,
+        "FileName": this.filename,
+        "Mimetype": this.mimetype,
+        "AttachmentDataStr":this.base64Value
+      }
+      this.patientHistoryService.createAttachmentDoc(json).subscribe(
+        (_success: any) => {
+          this.resetAttachment();
+          this.createAttachmentForm.reset();
+          Swal.fire({
+            title: 'Created Successfully',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          }).then(() => {
+            this.file = null;
+            this.filename = '';
+            this.mimetype = '';
+            this.base64Value = '';
+            // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
+            this.userConfigurationService.getListOfPatientVisitDataSet()
+          });
+        },
+        (_error: any) => {
+          this.showErrorPopup("", _error.error.error.message.value, "Error")
+        }
+        );
+      }
+  }
+
+  showErrorPopup(title: any, text: any, messageType) {
+    return Swal.fire({
+      title: title ? title : '',
+      text: text ? text : '',
+      showCancelButton: messageType === 'Conform' ? true : false,
+      confirmButtonColor: '#0890c5',
+      cancelButtonColor: '#84898c',
+      confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup',
+      icon: 'error'
+    });
   }
 }
