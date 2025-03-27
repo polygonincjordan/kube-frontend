@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
+  private messageSource = new BehaviorSubject<boolean>(false);
+  currentMessage = this.messageSource.asObservable(); // Expose as Observable
   constructor() {}
 
   getDateRangeFormat(from: Date) {
@@ -19,6 +22,10 @@ export class SharedService {
     // )}T00:00:00`;
 
     return formatDate;
+  }
+
+  changeMessage(newMessage: boolean) {
+    this.messageSource.next(newMessage);
   }
 
   successSwallModel(message: string) {

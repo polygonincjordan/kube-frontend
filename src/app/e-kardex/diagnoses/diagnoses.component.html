@@ -229,7 +229,7 @@
                         {{ member.Orgdo }}</span>
                     </div>
                     <div class="col-md-3 p-0 d-flex" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
-                      <span class="in-line d-inline-block text-elips" style="font-weight:700" [title]="member.Dktxt"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
+                      <span class="in-line d-inline-block text-elips" style="font-weight:700" [title]="(member.Dktxt ? member.Dktxt + ' ' : '') + (member.Dokvr ? dockVer(member.Dokvr) : '')"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
                     </div>
                     <div class="col-md-2 pl-0" (click)="modelFormOpenInPatient(member,false, pdfViewModal)">
                       <span class="" style="font-weight:700" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</span>
