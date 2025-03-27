@@ -161,7 +161,7 @@
                 <label><input type="radio" value="1"  formControlName="Uci1UnnecessaryInsertion" (click)="toggleRadio('Uci1UnnecessaryInsertion', '1','Uci1NaTxt')"> No</label>
                 <div class="d-flex">
                     <label style="width: 160px;"><input type="radio" value="2"  formControlName="Uci1UnnecessaryInsertion" (click)="toggleRadio('Uci1UnnecessaryInsertion', '2','Uci1NaTxt')"> Not Applicable</label>
-                    <input class="form-control" type="text"  formControlName="Uci1NaTxt"  [disabled]="!urinaryForm.get('Uci1UnnecessaryInsertion')?.value"><br>
+                    <input class="form-control" type="text"  formControlName="Uci1NaTxt"  [readOnly]="urinaryForm.get('Uci1UnnecessaryInsertion')?.value != '2'"><br>
                 </div>
             </div>
         </div>
@@ -185,7 +185,7 @@
                 <label class="checkbox-item"><input class="mr-2 top5" type="checkbox"  formControlName="Uci1AsAnException"> As an exception at patient request to
                     improve comfort (SHEA-IDSA) or for end-of-life care (CDC)</label>
                 <div class="d-flex">
-                    <label class="checkbox-item"><input class="mr-2 top5" type="checkbox" formControlName="Uci1OtherReason" (change)="toggleInput('Uci1OtherReason', 'Uci1OtherReasonTxt')">Others</label><input class="form-control" type="text"  formControlName="Uci1OtherReasonTxt" [disabled]="!urinaryForm.get('Uci1OtherReason')?.value">
+                    <label class="checkbox-item"><input class="mr-2 top5" type="checkbox" formControlName="Uci1OtherReason" (change)="toggleInput('Uci1OtherReason', 'Uci1OtherReasonTxt')">Others</label><input class="form-control" type="text"  formControlName="Uci1OtherReasonTxt" [readOnly]="!urinaryForm.get('Uci1OtherReason')?.value">
                 </div>
             </div>
         </div>
@@ -206,7 +206,7 @@
                     <label style="width: 160px;">
                     <input type="radio" value="2"  formControlName="Uci2WasAsepticTechnique"  (click)="toggleRadio('Uci2WasAsepticTechnique', '2','Uci2NaTxt')" />
                      Not Applicable</label>
-                    <input class="form-control" type="text"  formControlName="Uci2NaTxt"  [disabled]="!urinaryForm.get('Uci2WasAsepticTechnique')?.value" /><br>
+                    <input class="form-control" type="text"  formControlName="Uci2NaTxt"  [readOnly]="urinaryForm.get('Uci2WasAsepticTechnique')?.value != '2'" /><br>
                 </div>
             </div>
         </div>
@@ -290,7 +290,7 @@
                     <div class="d-flex">
                         <label style="width: 160px;"><input type="radio" value="2"  formControlName="Ucm3WasUrinary" (click)="toggleRadio('Ucm3WasUrinary', '2','Ucm3NaTxt')"> Not
                             Applicable</label>
-                        <input type="text" class="form-control"  formControlName="Ucm3NaTxt" [disabled]="!urinaryForm.get('Ucm3WasUrinary')?.value" /><br>
+                        <input type="text" class="form-control"  formControlName="Ucm3NaTxt" [readOnly]="urinaryForm.get('Ucm3WasUrinary')?.value != '2'" /><br>
                     </div>
                 </div>
             </div>
@@ -320,7 +320,7 @@
                     <div class="d-flex">
                         <label style="width: 160px;"><input type="radio" value="2"  formControlName="Ucm4WasNeed" (click)="toggleRadio('Ucm4WasNeed', '2','Ucm4NaTxt')"> Not
                             Applicable</label>
-                        <input type="text" class="form-control"  formControlName="Ucm4NaTxt" [disabled]="!urinaryForm.get('Ucm4WasNeed')?.value" /><br>
+                        <input type="text" class="form-control"  formControlName="Ucm4NaTxt" [readOnly]="urinaryForm.get('Ucm4WasNeed')?.value != '2'" /><br>
                     </div>
                 </div>
             </div>

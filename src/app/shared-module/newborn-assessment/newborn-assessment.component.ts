@@ -633,7 +633,6 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
 
 
   getDocument(data?){
-    this.docKey = this.admissionService.selectedCurrentDocDetails.Dockey;
     let json = {
       Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
     };
@@ -656,6 +655,10 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
     if(this.admissionService.isCloneNewBornForm){
       status = '3',
       actionType='copy'
+    }
+    if(this.admissionService.isEditBornForm){
+      status = '1',
+      actionType='edit'
     }
     if (this.newBornForm.invalid) {
       this.newBornForm.markAllAsTouched(); // Mark all fields as touched to show errors
@@ -830,7 +833,7 @@ export class NewbornAssessmentComponent implements OnInit ,OnChanges {
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
-        this.successEvent.next(true)
+        this.sharedService.changeMessage(true);
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);

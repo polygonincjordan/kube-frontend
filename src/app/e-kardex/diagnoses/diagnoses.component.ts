@@ -32,6 +32,7 @@ import { DataShareService } from '@services/data-share.service';
 import { ActionType, RedirectionType, WordType } from '@services/interfaces/common.enum';
 import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
 import { NewBornPopupComponent } from './diagnoses-in-patient/new-born-popup/new-born-popup.component';
+import { SharedService } from '@services/shared.service';
 
 @UntilDestroy()
 @Component({
@@ -146,7 +147,8 @@ export class DiagnosesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private patientHistoryService:PatientHistoryService,
     private dayCaseDashboardService: DayCaseDashboardService,
-    private dataShareService: DataShareService
+    private dataShareService: DataShareService,
+    private sharedService:SharedService
   ) {
 
     this.createAttachmentForm= this.formBuilder.group({
@@ -219,6 +221,12 @@ export class DiagnosesComponent implements OnInit {
         this.limitItems();        
       }
     
+    });
+
+    this.sharedService.currentMessage.subscribe((res)=>{
+      if(res){
+        this.updateForm(true)
+      }
     });
 
 
@@ -1023,13 +1031,14 @@ export class DiagnosesComponent implements OnInit {
         });
         return;
       }
-      this.openNewFormForInPatients(this.newborndocument)
       let valueObj = {
         type: WordType.EditBS,
         docKey: paitentData.Dockey
       }
+      this.admissionService.educationAddForm('edit');
       this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
       this.admissionService.selectedCurrentDocDetails = paitentData;
+      this.openNewFormForInPatients(this.newborndocument)
       return; 
     }
 
@@ -1559,14 +1568,14 @@ export class DiagnosesComponent implements OnInit {
     this.modalRef?.hide();
   }
   copyReleaseNewBorn() {
-    this.admissionService.isClonePhysicianForm = true;
     let valueObj = {
       type: WordType.CopyBS,
       docKey: this.selectedPatient.Dockey
     }
     this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
-   this.openNewFormForInPatients(this.newborndocument)
+    this.admissionService.isCloneNewBornForm = true;
     this.modalRef?.hide();
+    this.openNewFormForInPatients(this.newborndocument)
   }
 
   copyReleaseForm(releaseData: any) {

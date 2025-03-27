@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdmissionService } from '@services/admission/admission.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
 
@@ -9,10 +10,10 @@ import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assess
   styleUrls: ['./new-born-popup.component.scss']
 })
 export class NewBornPopupComponent implements OnInit {
-  @ViewChild('newBornComp', { static: false }) newBornComp: NewbornAssessmentComponent;
+  @ViewChild('newBornComp') newBornComp: NewbornAssessmentComponent;
   @Output() selectedItemClicked = new EventEmitter<any>();
-     modalRef: BsModalRef;
-  constructor(public activeModal: NgbActiveModal) { }
+  modalRef: BsModalRef;
+  constructor(public activeModal: NgbActiveModal,public admissionService:AdmissionService) { }
 
   ngOnInit(): void {
   }
@@ -22,6 +23,7 @@ export class NewBornPopupComponent implements OnInit {
   }
 
   releaseNewborn(status?){
+    this.admissionService.isEditBornForm = false
     this.newBornComp.createDoc(status,'edit');
   }
 
