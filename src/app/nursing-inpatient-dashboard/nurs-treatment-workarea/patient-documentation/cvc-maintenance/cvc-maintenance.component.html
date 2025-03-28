@@ -1,0 +1,391 @@
+<!--New One-->
+<!--Step - 1-->
+<!-- <div class="uninery-cath">
+    <div class="row d-flex">
+        <label class="col-md-2 p-0">Patient Name</label>
+        <input class="col-md-4" type="text" value="vijay" />
+        <div class="col-md-1"></div>
+        <label class="col-md-1 p-0">MRN</label>
+        <input class="col-md-1" type="text" value="125784" />
+    </div>
+
+    <div class="row d-flex">
+        <label class="col-md-2 p-0">DOB</label>
+        <input class="col-md-1" type="text" value="25.02.2025" />
+        <div class="col-md-3 p-0"></div>
+        <div class="col-md-1"></div>
+        <label class="col-md-1 p-0 mrleft10">Gender</label>
+        <select class="col-md-1 mrlrft13">
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+
+    <div class="row d-flex">
+        <label class="col-md-2 p-0">Days since admission</label>
+        <input class="col-md-1" type="text" value="9th floor ahem" />
+        <div class="col-md-2 p-0"></div>
+        <div class="col-md-2"></div>
+        <label class="col-md-1 p-0 mrleft10">Case</label>
+        <input class="col-md-1 mrlrft13" type="text" value="103704" />
+
+    </div>
+</div> -->
+<!--Step - 2-->
+<form [formGroup]="cvcMainForm">
+    <div class="uninery-cath">
+        <h3>CVC Insertion data</h3>
+    
+        <div class="row d-flex">
+            <label class="col-md-3 p-0">CVC Insertion Date</label>
+            <div class="header-date p-0">
+                <span
+                  _ngcontent-ufq-c103=""
+                  style="
+                    position: relative;
+                    top: 30px;
+                        right: 30px;
+                    float: right;
+                    margin-top: -26px;
+                    font-size: 18px;
+                  "
+                >
+                  <img src="assets/img/Calender.svg" alt="" />
+                </span>
+                <input
+                  class="form-control ml-0"
+                  style="color: #000; border-radius: 8px"
+                  type="text"
+                  placeholder=""
+                  [minDate]=""
+                  [maxDate]=""
+                  readonly  
+                  #dp="bsDatepicker"
+                  style="min-width: 200px;"
+                  formControlName="CvcInsertionDate"
+                  readonly
+                  bsDatepicker
+                  [bsConfig]="{
+                    showWeekNumbers: false,
+                    dateInputFormat: 'DD.MM.YYYY'
+                  }"
+                />
+            </div>
+            <!--space-->
+            <div class="col-md-1"></div>
+            <label class="col-md-2 p-0">CVC Insertion time</label>
+            <input class="col-md-1 p-0" type="time"  formControlName="CvcInsertionTime" />
+        </div>
+        <div class="row mt-3">
+            <label class="col-md-3 p-0"> Patient Location when CVC Inserted</label>
+            <input class="col-md-3 p-0 m-0" type="text"  formControlName="PatientLocation"/>
+        </div>
+        <div class="row mt-3">
+            <label class="col-md-3 p-0">Anatomical Site of Catheter</label>
+            <ng-select  class="col-md-1 p-0" [items]="anatomicalSites" bindLabel="name" bindValue="value"  formControlName="AnatomicalSite">
+            </ng-select>
+        </div>
+        <div class="row mt-3">
+            <label class="col-md-3 p-0">Type of Central Venous Catheter</label>
+            <ng-select  class="col-md-1 p-0" [items]="cvcTypes" bindLabel="name" bindValue="value"  formControlName="TypeCentralVenous">
+            </ng-select>
+        </div>
+        <div class="row mt-3">
+            <label class="col-md-3 p-0">Number of CVC Lemenes</label>
+            <ng-select  class="col-md-1 p-0" [items]="cvcLumens" bindLabel="name" bindValue="value"  formControlName="NumberCvcLumens">
+            </ng-select>
+        </div>
+        <div class="row mt-3">
+            <label class="col-md-3 p-0">CVC Removal Date</label>
+           <div class="header-date p-0">
+                    <span
+                      _ngcontent-ufq-c103=""
+                      style="
+                        position: relative;
+                        top: 30px;
+                            right: 30px;
+                        float: right;
+                        margin-top: -26px;
+                        font-size: 18px;
+                      "
+                    >
+                      <img src="assets/img/Calender.svg" alt="" />
+                    </span>
+                    <input
+                      class="form-control ml-0"
+                      style="color: #000; border-radius: 8px"
+                      type="text"
+                      placeholder=""
+                      [minDate]=""
+                      [maxDate]=""
+                      readonly  
+                      formControlName="CvcRemovalDate"
+                      #dp="bsDatepicker"
+                      style="min-width: 200px;"
+                      readonly
+                      bsDatepicker
+                      [bsConfig]="{
+                        showWeekNumbers: false,
+                        dateInputFormat: 'DD.MM.YYYY'
+                      }"
+                    />
+                </div>
+        </div>
+        <div class="row mt-3">
+            <label class="col-md-3 p-0">CVC Days</label>
+            <input class="col-md-1 p-0 m-0" type="text"  formControlName="CvcDays"/>
+        </div>
+    </div>
+    
+    <!--Step-3-->
+    <div class="uninery-cath">
+        <h3>Central Venous Catheter Maintenance</h3>
+    
+        <div class="row d-flex">
+            <label class="col-md-2 p-0">Maintenance Date</label>
+           <div class="header-date p-0">
+                    <span
+                      _ngcontent-ufq-c103=""
+                      style="
+                        position: relative;
+                        top: 30px;
+                            right: 30px;
+                        float: right;
+                        margin-top: -26px;
+                        font-size: 18px;
+                      "
+                    >
+                      <img src="assets/img/Calender.svg" alt="" />
+                    </span>
+                    <input
+                      class="form-control ml-0"
+                      style="color: #000; border-radius: 8px"
+                      type="text"
+                      placeholder=""
+                      [minDate]=""
+                      [maxDate]=""
+                      readonly  
+                      formControlName="MaintenanceDate"
+                      #dp="bsDatepicker"
+                      style="min-width: 200px;"
+                      readonly
+                      bsDatepicker
+                      [bsConfig]="{
+                        showWeekNumbers: false,
+                        dateInputFormat: 'DD.MM.YYYY'
+                      }"
+                    />
+                </div>
+            <!--space-->
+            <div class="col-md-2"></div>
+            <label class="col-md-2 p-0">CVC Insertion time</label>
+            <input class="col-md-1 p-0" type="time"  formControlName="MaintenanceTime"/>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <!-- Left Section -->
+        <div class="col-md-4 ml-3 p-0 d-flex">
+            <span style="position: relative; top:0px; right: 3px;">1. </span>
+            <h6 class="">Was the need for a central line for this patient discussed during rounds?</h6>
+        </div>
+        <div class="left-section d-flex ml-3">
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc1"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc1"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc1"> Not Applicable</label>
+                   <br>
+                </div>
+            </div>
+        </div>
+        <div class="right-section"></div>
+    </div>
+    
+    
+    <div class="row d-flex ml-2">
+        <label class="col-md-3 p-0">Date of last dressing</label>
+        <div class="header-date pl-2">
+            <span
+              _ngcontent-ufq-c103=""
+              style="
+                position: relative;
+                top: 30px;
+                    right: 30px;
+                float: right;
+                margin-top: -26px;
+                font-size: 18px;
+              "
+            >
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input
+              class="form-control ml-0"
+              style="color: #000; border-radius: 8px"
+              type="text"
+              placeholder=""
+              [minDate]=""
+              [maxDate]=""
+              readonly  
+              formControlName="Cvc1LastDressing"
+              #dp="bsDatepicker"
+              style="min-width: 200px;"
+              readonly
+              bsDatepicker
+              [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }"
+            />
+        </div>
+    </div>
+    <div class="row d-flex ml-2">
+        <label class="col-md-3 p-0">Type of dressing</label>
+        <ng-select class="col-md-2 p-0 mrlrft10" [items]="dressingTypes" bindLabel="name" bindValue="value"  formControlName="Cvc1TypeDressing">
+        </ng-select>
+        <input class="col-md-3 p-0" type="text"  formControlName="Cvc1TypeDressingTxt" [readOnly]=" this.cvcMainForm.get('Cvc1TypeDressing')?.value != 3"/>
+    </div>
+    <div class="row d-flex  ml-2">
+        <label class="col-md-3 p-0">Reason for dressing</label>
+        <input class="col-md-8 p-0" type="text"  formControlName="Cvc1ReasonDressing"/>
+    </div>
+    
+    <!--Step-4-->
+    <div class="container mt-5">
+        <div class="col-md-4 ml-3 p-0 d-flex">
+            <span style="position: relative; top:0px; right: 3px;">2</span>
+            <h6>Changing IV sets according to policy.</h6>
+        </div>
+        <div class="left-section d-flex ml-3">
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc2"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc2"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc2"> Not Applicable</label>
+                </div>
+            </div>
+        </div>
+        <div class="right-section"></div>
+    </div>
+    <!--1-->
+    <div class="container mt-5">
+        <div class="col-md-4 ml-3 p-0 d-flex">
+            <span style="position: relative; top:0px; right: 3px;">2.1 </span>
+            <h6>Where IV sets are used for the administration
+                of boold products changed every 4 hours?
+            </h6>
+        </div>
+        <div class="left-section d-flex ml-3">
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc21"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc21"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc21"> Not Applicable</label>
+                </div>
+                <label style="width: 180px;"><input type="radio" value="3"  formControlName="Cvc21"> Not
+                    Documented</label>
+            </div>
+        </div>
+        <div class="right-section"></div>
+    </div>
+    <!--2-->
+    <div class="container mt-5">
+        <div class="col-md-4 ml-3 p-0 d-flex">
+            <span style="position: relative; top:0px; right: 3px;">2.2 </span>
+            <h6>Where IV sets are used for the administration
+                of lipid emulsions changed every 24 hours?
+            </h6>
+        </div>
+        <div class="left-section d-flex ml-3">
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc22"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc22"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc22"> Not Applicable</label>
+                </div>
+                <label style="width: 180px;"><input type="radio" value="3"  formControlName="Cvc22"> Not
+                    Documented</label>
+            </div>
+        </div>
+        <div class="right-section"></div>
+    </div>
+    <!--3-->
+    <div class="container mt-5">
+        <div class="col-md-4 ml-3 p-0 d-flex">
+            <span style="position: relative; top:0px; right: 3px;">2.3 </span>
+            <h6>Where IV sets are used to administer TPN
+                changed every 24 hours of initiating the infusion?
+            </h6>
+        </div>
+        <div class="left-section d-flex ml-3">
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc23"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc23"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc23"> Not Applicable</label>
+                </div>
+                <label style="width: 180px;"><input type="radio" value="3"  formControlName="Cvc23"> Not
+                    Documented</label>
+            </div>
+        </div>
+        <div class="right-section"></div>
+    </div>
+    <!--4-->
+    <div class="container mt-5">
+        <div class="col-md-4 ml-3 p-0 d-flex">
+            <span style="position: relative; top:0px; right: 3px;">2.4 </span>
+            <h6>Where IV sets (used for infusions other than blood,
+                blood products or fat emulsions) changed every 96 hours?
+            </h6>
+        </div>
+        <div class="left-section d-flex ml-3">
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc24"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc24"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc24"> Not Applicable</label>
+                </div>
+                <label style="width: 180px;"><input type="radio" value="3"  formControlName="Cvc24"> Not
+                    Documented</label>
+            </div>
+        </div>
+    </div>
+    <div class="ml-3">
+        <label>Others (Specify) : </label>
+        <input class="col-md-6 p-0 form-control m-0" type="text"  formControlName="Cvc24Others">
+    </div>
+    <!-- step-5 -->
+    <div class="container mt-5">
+        <!-- Left Section -->
+        <div class="left-section d-flex">
+            <div class="col-md-6 p-0 d-flex">
+                <span style="position: relative; top:0px; right: 3px;">3. </span>
+                <h6 class="">Where the catheter hubs, needleless connectors and injections ports disinfected
+                    every time before the catheter was accessed during my shift?</h6>
+            </div>
+            <div class="radio-group">
+                <label><input type="radio" value="0"  formControlName="Cvc3"> Yes</label><br>
+                <label><input type="radio" value="1"  formControlName="Cvc3"> No</label>
+                <div class="d-flex">
+                    <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc3"> Not Applicable</label>
+                </div>
+                <label style="width: 180px;"><input type="radio" value="3" formControlName="Cvc3"> Not
+                    Documented</label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <span class="col-md-2 p-0"> Signs of Catheter Site Infection</span>
+        <input class="col-md-6 p-0" type="text"  formControlName="Cvc3SignsCatheterSite"/>
+        <!-- <i class="fa fa-copy pl-2" style="vertical-align: top;"></i> -->
+    </div>
+    
+    <div class="row">
+        <span class="col-md-2 p-0"> Comments </span>
+        <input class="col-md-6 p-0" type="text"  formControlName="Cvc3Comments"/>
+        <!-- <i class="fa fa-copy pl-2" style="vertical-align: top;"></i> -->
+    </div>
+</form>
+
+
+<!--end-->

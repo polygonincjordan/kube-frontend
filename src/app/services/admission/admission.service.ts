@@ -1481,6 +1481,15 @@ export class AdmissionService {
       })
     );
   }
+  getCvcMainDetail(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getCvcMainDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
   getNicuDocument(Dockey) {
     return this.http.get(`${environment.eKardexApiUrl}/getNicuDocument?Dockey=${Dockey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
@@ -1499,6 +1508,12 @@ export class AdmissionService {
   }
   createUrinary(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createBundlesDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    }); 
+  }
+  createCvcMainDoc(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createCvcMainDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
     }); 

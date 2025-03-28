@@ -1,0 +1,147 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px;
+    padding: 0px;
+}
+
+.right-section {
+    width: 55%;
+}
+
+.question {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.radio-group {
+    margin-left: 20px;
+    margin-right: 25px;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    margin-left: 10px;
+    padding: 5px;
+    width: 250px;
+    display: block;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.hgt38 {
+    height: 38px;
+}
+
+.uninery-cath h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 0px 15px;
+}
+
+.row label {
+    font-weight: bold;
+    min-width: 120px;
+}
+
+.row input,
+.row select {
+    border: 1px solid #ccc;
+    padding: 5px !important;
+    flex: 1;
+}
+
+.row span {
+    font-weight: bold;
+}
+
+.top5 {
+    top: 5px;
+    position: relative;
+}
+
+//other css
+.mxwdth60 {
+    max-width: 60px !important;
+}
+
+.hgt38 {
+    height: 38px;
+}
+
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header label {
+    font-weight: bold;
+}
+
+.header input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    width: 100px;
+}
+
+.section {
+    margin-top: 10px;
+}
+
+.section textarea {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    resize: none;
+}
+
+.mrleft10 {
+    margin-left: -10px;
+}
+
+.mrlrft13 {
+    margin-left: 13px;
+}
+.mrlrft10 {
+    margin-left: 10px;
+}

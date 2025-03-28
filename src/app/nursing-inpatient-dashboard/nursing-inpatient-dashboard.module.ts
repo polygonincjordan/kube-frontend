@@ -144,6 +144,7 @@ import { ModifiedAldreteDocumentModule } from '../shared-module/modified-aldrete
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
 import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 import { TimeOutChecklistModule } from '../shared-module/time-out-checklist/time-out-checklist.module';
+import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
 
 
 
@@ -253,7 +254,8 @@ const route: Routes = [
     PastSurgicalComponent,
     PastMedicalComponent,
     FamilyHistoryComponent,
-    ICBundlesComponent
+    ICBundlesComponent,
+    CvcMaintenanceComponent
   ],
   providers: [
     EmergencyService,
