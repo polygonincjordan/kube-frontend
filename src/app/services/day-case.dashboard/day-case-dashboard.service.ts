@@ -343,4 +343,37 @@ export class DayCaseDashboardService {
     });
   }
 
+  // IC Bundles for CVC Insertion Document
+  saveCVCInsertionDocument(payload: any): Observable<any> {
+    return this.http.post(this.url + `saveCVCInsertionDocument`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  CVCInsertionDocumentLatestDoc(json: any) {
+    const url = `${this.url}CVCInsertionDocumentLatestDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcCVCInsertionDocDetails(dockey: string): Observable<any> {
+    return this.http.get(this.url + `fetcCVCInsertionDocDetails?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  CVCInsertionDocPDF(dockey: string): Observable<any> {
+    return this.http.get(this.url + `CVCInsertionDocPDF?Dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  deleteCVCInsertionDocument(dockey: any) {
+    const url = `${this.url}deleteCVCInsertionDocument?Dockey=${dockey}`;
+    return this.http.delete(url, {
+      withCredentials: true,
+    });
+  }
+
 }

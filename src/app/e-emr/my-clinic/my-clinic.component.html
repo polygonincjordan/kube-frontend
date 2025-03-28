@@ -5,41 +5,43 @@
         <span style="margin-left: 11px">My Clinic</span>
         <div class="table-icon" style="display: flex;justify-content: end; width: 50%;">
           <span style="display: flex; align-items: center;margin-right: 15px">
-            
-            <div  style="font-size: 15px;
+
+            <div style="font-size: 15px;
             font-weight: bold;padding: 0;text-align: center;display: flex;
                 align-items: baseline;gap:10px"><i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px;
                 font-size: 18px;cursor: pointer;" (click)="previousDate()"></i>
-                <form [formGroup]="formDetailGroup">
+              <form [formGroup]="formDetailGroup">
                 <div class="date-function" style="background: #dee5ea;
                 
                 border-radius: 8px;
                 display: flex;
                ">
-                  <input #drp="bsDaterangepicker" bsDaterangepicker
-                    [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+                  <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
                     'DD.MM.YYYY', containerClass: ' ', showWeekNumbers:
-                    false}" class="form-control" formControlName="DateRange" (ngModelChange)="handleGetChangeDate($event)"/>
-                  <p class="m-0"
-                    (click)="onTodayEventData()" style="padding: 8px 30px;
+                    false}" class="form-control" formControlName="DateRange"
+                    (ngModelChange)="handleGetChangeDate($event)" />
+                  <p class="m-0" (click)="onTodayEventData()" style="padding: 8px 30px;
                     color: #7f9abf;
                     cursor: pointer;">Today</p>
                 </div>
               </form>
-               
-            
-                <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
+
+
+              <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
                             font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingDate()"></i>
-                            
+
             </div>
-        </span>
-        <span style="margin-right: 15px">
-          <img src="assets/img/discharge_checkout_list.jpg" alt="" style="width: 20px;" title="Checked-out List" (click)="openCheckoutList(checkedoutList)">
-         </span> 
-        <span style="margin-right: 15px">
-          <img src="assets/img/excel.png" alt="" style="width: 20px;" (click)="exportToExcel()" title="Export to excel">
-         </span> 
-          <span style="margin-right: 15px"><i class="fa fa-cog" aria-hidden="true" style="font-size: 18px;" title="User's Settings" (click)="showConfigFn($event)"></i></span>
+          </span>
+          <span style="margin-right: 15px">
+            <img src="assets/img/discharge_checkout_list.jpg" alt="" style="width: 20px;" title="Checked-out List"
+              (click)="openCheckoutList(checkedoutList)">
+          </span>
+          <span style="margin-right: 15px">
+            <img src="assets/img/excel.png" alt="" style="width: 20px;" (click)="exportToExcel()"
+              title="Export to excel">
+          </span>
+          <span style="margin-right: 15px"><i class="fa fa-cog" aria-hidden="true" style="font-size: 18px;"
+              title="User's Settings" (click)="showConfigFn($event)"></i></span>
 
 
           <div class="card config my-clinic-configuation" *ngIf="showconfig" (click)="$event.stopPropagation()">
@@ -60,7 +62,8 @@
                 <div class="col-md-6" *ngFor="let item of ColumnType;
                   let i= index">
                   <div class="form-check" style="font-size: 10px; display: flex">
-                    <input class="form-check-input" type="checkbox" id="ColumnType{{i}}" [(ngModel)]="item.isSelected" />
+                    <input class="form-check-input" type="checkbox" id="ColumnType{{i}}"
+                      [(ngModel)]="item.isSelected" />
                     <label class="form-check-label" for="ColumnType{{i}}">
                       {{item.Desc}}
                     </label>
@@ -70,25 +73,29 @@
               <div class="" *ngIf="selectedView == 1">
                 <div class="ward-list-select">
                   <p style="margin: auto; margin-top: 5px">Movement Type</p>
-                  <ng-multiselect-dropdown class="multiselect-adjust movmentType" [settings]="dropdownSettings" [placeholder]="'Movement Type'"
-                    [(ngModel)]="defaultSelectedItemsForMovTypeConf" [data]="movementTypeConfig" (onSelect)="onItemSelectForMovTypeConf($event)"
+                  <ng-multiselect-dropdown class="multiselect-adjust movmentType" [settings]="dropdownSettings"
+                    [placeholder]="'Movement Type'" [(ngModel)]="defaultSelectedItemsForMovTypeConf"
+                    [data]="movementTypeConfig" (onSelect)="onItemSelectForMovTypeConf($event)"
                     (onDeSelect)="onDeselectForMovTypeConf($event)">
                   </ng-multiselect-dropdown>
                 </div>
                 <div class="ward-list-select">
                   <p style="margin: auto; margin-top: 5px">Status</p>
-                  <ng-multiselect-dropdown class="multiselect-adjust movmentType" [placeholder]="'Status'" [settings]="dropdownSettingsForStatus"
-                    [data]="statustypeConfig" [(ngModel)]="defaultSelectedItemsForStatusConf" (onSelect)="onItemSelectForStatusConf($event)"
+                  <ng-multiselect-dropdown class="multiselect-adjust movmentType" [placeholder]="'Status'"
+                    [settings]="dropdownSettingsForStatus" [data]="statustypeConfig"
+                    [(ngModel)]="defaultSelectedItemsForStatusConf" (onSelect)="onItemSelectForStatusConf($event)"
                     (onDeSelect)="onDeselectForStatusConf($event)"></ng-multiselect-dropdown>
                 </div>
               </div>
             </div>
           </div>
-          
 
-          
-          <span style="margin-right: 15px"><i class="fa fa-refresh" aria-hidden="true" style="font-size: 18px;" title="Refresh List" (click)="resetfilterData()"></i></span>
-          <span style="margin-right: 15px"><i class="fa fa-filter" aria-hidden="true" style="font-size: 18px;" title="Filter List" (click)="showFilterFn($event)"></i></span>
+
+
+          <span style="margin-right: 15px"><i class="fa fa-refresh" aria-hidden="true" style="font-size: 18px;"
+              title="Refresh List" (click)="resetfilterData()"></i></span>
+          <span style="margin-right: 15px"><i class="fa fa-filter" aria-hidden="true" style="font-size: 18px;"
+              title="Filter List" (click)="showFilterFn($event)"></i></span>
           <div class="card" style="
             width: 15rem;
             position: absolute;
@@ -119,14 +126,16 @@
                   }" /> -->
                 <p style="margin: auto; margin-top: 5px">Movement Type</p>
                 <!-- <input class="form-control" type="text" placeholder="" /> -->
-                <ng-multiselect-dropdown class="multiselect-adjust" [placeholder]="'Movement Type'" [settings]="dropdownSettings"
-                  [data]="dropdownListForMovType" [(ngModel)]="defaultSelectedItemsForMovType" (onSelect)="onItemSelectForMovType($event)"
+                <ng-multiselect-dropdown class="multiselect-adjust" [placeholder]="'Movement Type'"
+                  [settings]="dropdownSettings" [data]="dropdownListForMovType"
+                  [(ngModel)]="defaultSelectedItemsForMovType" (onSelect)="onItemSelectForMovType($event)"
                   (onDeSelect)="onDeselectForMovType($event)">
                 </ng-multiselect-dropdown>
                 <p style="margin: auto; margin-top: 5px">Status</p>
                 <!-- <input class="form-control" type="text" placeholder="" /> -->
-                <ng-multiselect-dropdown class="multiselect-adjust" [placeholder]="'Status'" [settings]="dropdownSettingsForStatus"
-                  [data]="dropdownListForStatus" [(ngModel)]="defaultSelectedItemsForStatus" (onSelect)="onItemSelectForStatus($event)"
+                <ng-multiselect-dropdown class="multiselect-adjust" [placeholder]="'Status'"
+                  [settings]="dropdownSettingsForStatus" [data]="dropdownListForStatus"
+                  [(ngModel)]="defaultSelectedItemsForStatus" (onSelect)="onItemSelectForStatus($event)"
                   (onDeSelect)="onDeselectForStatus($event)">
                 </ng-multiselect-dropdown>
                 <div class="d-flex mt-2">
@@ -169,11 +178,16 @@
               top: 0;z-index: 9 !important
               ">
               <tr>
-                <th scope="col" style="text-align: center;width: 6%;">Date <i class="fa fa-sort" aria-hidden="true" (click)="sort()"></i></th>
-                <th scope="col" style="text-align: center;width: 4%;">Time <i class="fa fa-sort" aria-hidden="true" (click)="sortTime()"></i></th>
-                <th scope="col" *ngIf="VisitType">Visit Type <i class="fa fa-sort" aria-hidden="true" (click)="sortVisitType()"></i></th>
-                <th scope="col">Visit Status <i class="fa fa-sort" aria-hidden="true" (click)="sortVisitStatus()"></i></th>
-                <th scope="col" style="text-align: center;width: 5%;">MRN <i class="fa fa-sort" aria-hidden="true" (click)="sortMrn()"></i></th>
+                <th scope="col" style="text-align: center;width: 6%;">Date <i class="fa fa-sort" aria-hidden="true"
+                    (click)="sort()"></i></th>
+                <th scope="col" style="text-align: center;width: 4%;">Time <i class="fa fa-sort" aria-hidden="true"
+                    (click)="sortTime()"></i></th>
+                <th scope="col" *ngIf="VisitType">Visit Type <i class="fa fa-sort" aria-hidden="true"
+                    (click)="sortVisitType()"></i></th>
+                <th scope="col">Visit Status <i class="fa fa-sort" aria-hidden="true" (click)="sortVisitStatus()"></i>
+                </th>
+                <th scope="col" style="text-align: center;width: 5%;">MRN <i class="fa fa-sort" aria-hidden="true"
+                    (click)="sortMrn()"></i></th>
                 <th scope="col" style="text-align: center;width: 1%;" *ngIf="Case">Case</th>
                 <th scope="col">Patient <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i></th>
                 <th scope="col" *ngIf="AttendingPhysician">Attn. Phy.</th>
@@ -187,7 +201,7 @@
               <tr *ngFor="let item of dataOnTable | filter : searchString">
                 <td>{{ item.DATUM | date : "dd.MM.yyyy" }}</td>
                 <td>{{ item.ZEIT_INTERN }}</td>
-                <td  *ngIf="VisitType" >{{ item.BESUCHSARTTEXT }}</td>
+                <td *ngIf="VisitType">{{ item.BESUCHSARTTEXT }}</td>
                 <td>{{ item.BESSTATTEXT }}</td>
                 <td (click)="openModuleKardex(item)">{{ item.PATNR }}</td>
                 <td *ngIf="Case">{{item.FALNR}}</td>
@@ -200,8 +214,9 @@
 
                   <div class="dropdown" [hidden]="item.BESSTATTEXT ==
                     'Planned' && !item.PATNR">
-                    <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="getDataOnAction(item)"></i>
+                    <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer"
+                      id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                      (click)="getDataOnAction(item)"></i>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item c-pointer" target="_blank" routerLink="/e-order" [queryParams]="{
                         patnr: PATNR,
@@ -233,10 +248,10 @@
                       <a class="dropdown-item c-pointer" (click)="openModuleRad(item)">Radiology</a>
                       <a [hidden]="(item.BESSTATTEXT ==
                       'Checked Out'||item.BESSTATTEXT ==
-                      'Planned') && item.PATNR" class="dropdown-item c-pointer" (click)="confirmationForDelete(item)">Check Out</a>
+                      'Planned') && item.PATNR" class="dropdown-item c-pointer"
+                        (click)="confirmationForDelete(item)">Check Out</a>
                       <a [hidden]="item.BESSTATTEXT ==
-                      'Planned' && item.PATNR"
-                        class="dropdown-item c-pointer"
+                      'Planned' && item.PATNR" class="dropdown-item c-pointer"
                         (click)="openModuleVisitNote(item)">Visit Note</a>
                     </div>
                   </div>
@@ -257,6 +272,30 @@
   <div class="modal-header">
     <h3>Checked-out Patients List</h3>
   </div>
+  <div style="font-size: 15px;
+  font-weight: bold;padding: 0;text-align: center;display: flex;
+      align-items: baseline;gap:10px"><i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px;
+      font-size: 18px;cursor: pointer;" (click)="previousDateForCheckout()"></i>
+    <form [formGroup]="checkOutForm">
+      <div class="date-function" style="background: #dee5ea;
+      
+      border-radius: 8px;
+      display: flex;
+     ">
+        <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+          'DD.MM.YYYY', containerClass: ' ', showWeekNumbers:
+          false}" class="form-control" formControlName="DateRange" (ngModelChange)="handleGetChangeDateForCheckOut($event)" />
+        <p class="m-0" (click)="onTodayEventDataForCheckout()" style="padding: 8px 30px;
+          color: #7f9abf;
+          cursor: pointer;">Today</p>
+      </div>
+    </form>
+
+
+    <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
+                  font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingDateForCheckout()"></i>
+
+  </div>
   <div class="modal-body row m-0 p-2">
     <div class="col-lg-12 col-md-6 col-sm-12" style="overflow: auto; max-height: 61vh;min-height: 61vh;">
       <!-- {{dataTable.finalArray}} -->
@@ -268,13 +307,20 @@
           top: 0;z-index: 9 !important
           ">
           <tr>
-            <th scope="col" style="text-align: center;width: 6%;">Date <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('DATUM')"></i></th>
-            <th scope="col" style="text-align: center;width: 4%;">Time <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('ZEIT_INTERN')"></i></th>
-            <th scope="col" *ngIf="VisitType">Visit Type <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('BESUCHSARTTEXT')"></i></th>
-            <th scope="col">Visit Status <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('BESSTATTEXT')"></i></th>
-            <th scope="col" style="text-align: center;width: 5%;">MRN <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('PATNR')"></i></th>
-            <th scope="col" style="text-align: center;width: 1%;" *ngIf="Case" (click)="sortCommanModeule('FALNR')">Case</th>
-            <th scope="col">Patient <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('PATIENT')"></i></th>
+            <th scope="col" style="text-align: center;width: 6%;">Date <i class="fa fa-sort" aria-hidden="true"
+                (click)="sortCommanModeule('DATUM')"></i></th>
+            <th scope="col" style="text-align: center;width: 4%;">Time <i class="fa fa-sort" aria-hidden="true"
+                (click)="sortCommanModeule('ZEIT_INTERN')"></i></th>
+            <th scope="col" *ngIf="VisitType">Visit Type <i class="fa fa-sort" aria-hidden="true"
+                (click)="sortCommanModeule('BESUCHSARTTEXT')"></i></th>
+            <th scope="col">Visit Status <i class="fa fa-sort" aria-hidden="true"
+                (click)="sortCommanModeule('BESSTATTEXT')"></i></th>
+            <th scope="col" style="text-align: center;width: 5%;">MRN <i class="fa fa-sort" aria-hidden="true"
+                (click)="sortCommanModeule('PATNR')"></i></th>
+            <th scope="col" style="text-align: center;width: 1%;" *ngIf="Case" (click)="sortCommanModeule('FALNR')">Case
+            </th>
+            <th scope="col">Patient <i class="fa fa-sort" aria-hidden="true" (click)="sortCommanModeule('PATIENT')"></i>
+            </th>
             <th scope="col" *ngIf="AttendingPhysician">Attn. Phy.</th>
             <th scope="col" style="width: 8%;">Financial Category</th>
             <th scope="col" *ngIf="Diagnosis">Diagnosis</th>
@@ -283,10 +329,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of checkedOutList | filter : searchString">
+          <tr *ngFor="let item of dataOnTableForCheckOut | filter : searchString">
             <td>{{ item.DATUM | date : "dd.MM.yyyy" }}</td>
             <td>{{ item.ZEIT_INTERN }}</td>
-            <td  *ngIf="VisitType" >{{ item.BESUCHSARTTEXT }}</td>
+            <td *ngIf="VisitType">{{ item.BESUCHSARTTEXT }}</td>
             <td>{{ item.BESSTATTEXT }}</td>
             <td (click)="openModuleKardex(item)">{{ item.PATNR }}</td>
             <td *ngIf="Case">{{item.FALNR}}</td>
@@ -299,8 +345,9 @@
 
               <div class="dropdown" [hidden]="item.BESSTATTEXT ==
                 'Planned' && !item.PATNR">
-                <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer" id="dropdownMenuButton"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="getDataOnAction(item)"></i>
+                <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer"
+                  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  (click)="getDataOnAction(item)"></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item c-pointer" target="_blank" routerLink="/e-order" [queryParams]="{
                     patnr: PATNR,
@@ -332,11 +379,11 @@
                   <a class="dropdown-item c-pointer" (click)="openModuleRad(item)">Radiology</a>
                   <a [hidden]="(item.BESSTATTEXT ==
                   'Checked Out'||item.BESSTATTEXT ==
-                  'Planned') && item.PATNR" class="dropdown-item c-pointer" (click)="confirmationForDelete(item)">Check Out</a>
+                  'Planned') && item.PATNR" class="dropdown-item c-pointer" (click)="confirmationForDelete(item)">Check
+                    Out</a>
                   <a [hidden]="item.BESSTATTEXT ==
-                  'Planned' && item.PATNR"
-                    class="dropdown-item c-pointer"
-                    (click)="openModuleVisitNote(item)">Visit Note</a>
+                  'Planned' && item.PATNR" class="dropdown-item c-pointer" (click)="openModuleVisitNote(item)">Visit
+                    Note</a>
                 </div>
               </div>
             </td>
