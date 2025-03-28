@@ -144,6 +144,7 @@ import { ModifiedAldreteDocumentModule } from '../shared-module/modified-aldrete
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
 import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 import { TimeOutChecklistModule } from '../shared-module/time-out-checklist/time-out-checklist.module';
+import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
 
 
 
@@ -303,7 +304,8 @@ const route: Routes = [
     NewbornAssessmentModule,
     ModifiedAldreteDocumentModule,
     NeonatalDischDocumentModule,
-    TimeOutChecklistModule
+    TimeOutChecklistModule,
+    CvcInsertionModule
 ],
 })
 export class NursingInpatientDashboardModule {}

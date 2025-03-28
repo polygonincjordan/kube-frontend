@@ -123,8 +123,8 @@ export class NeonatalDischDocumentComponent implements OnInit {
       Cga: [data?.Cga || ''],
       CgaDays: [data?.CgaDays || ''],
       ChronoAge: [data?.ChronoAge || ''],
-      DischDate: [this.getDate(data?.DischDate) || ''],
-      AdmDate: [this.getDate(data?.AdmDate) || ''],
+      DischDate: [this.getDate(data?.DischDate) || new Date()],
+      AdmDate: [this.getDate(data?.AdmDate) || new Date()],
       AdmTime: [this.parseTime(data?.AdmTime) || currentTime],
       BirthWeight: [data?.BirthWeight || ''],
       BirthWgtUnit: [data?.BirthWgtUnit || ''],
@@ -133,7 +133,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       DischWeight: [data?.DischWeight || ''],
       DischWgtUnit: [data?.DischWgtUnit || ''],
       Transfer: [data?.Transfer || ''],
-      TransferDate: [this.getDate(data?.TransferDate) || ''],
+      TransferDate: [this.getDate(data?.TransferDate) || new Date()],
       TransferPlace: [data?.TransferPlace || ''],
       AttendingPhy: [data?.AttendingPhy || ''],
       AdmReason: [data?.AdmReason || ''],
@@ -227,19 +227,19 @@ export class NeonatalDischDocumentComponent implements OnInit {
       CrOtherT: [data?.CrOtherT || { value: '', disabled: true }],
       CrBreathSound: [data?.CrBreathSound || false],
       CrBreathSounds: [data?.CrBreathSounds || { value: '', disabled: true }],
-      CrBreathSoundt: [data?.CrBreathSoundt || { value: '', disabled: true }],
+      CrBreathSoundt: [data?.CrBreathSoundt || ''],
       CrIntubated: [data?.CrIntubated || false],
       CrIntubatedYn: [data?.CrIntubatedYn || { value: '', disabled: true }],
       CrItubeSize: [data?.CrItubeSize || { value: '', disabled: true }],
       CrItubeLevel: [data?.CrItubeLevel || { value: '', disabled: true }],
-      CrIintubation: [this.getDate(data?.CrIintubation) || { value: null, disabled: true }],
-      CrIextubation: [this.getDate(data?.CrIextubation) || { value: null, disabled: true }],
+      CrIintubation: [this.getDate(data?.CrIintubation) || { value: new Date(), disabled: true }],
+      CrIextubation: [this.getDate(data?.CrIextubation) || { value: new Date(), disabled: true }],
       CrReintubation: [data?.CrReintubation || false],
       CrReintubationYn: [data?.CrReintubationYn || ''],
       CrRtubeSize: [data?.CrRtubeSize || { value: '', disabled: true }],
       CrRtubeLevel: [data?.CrRtubeLevel || { value: '', disabled: true }],
-      CrRdate: [this.getDate(data?.CrRdate) || { value: null, disabled: true }],
-      CrRentryDate: [this.getDate(data?.CrRentryDate) || { value: null, disabled: true }],
+      CrRdate: [this.getDate(data?.CrRdate) || { value: new Date(), disabled: true }],
+      CrRentryDate: [this.getDate(data?.CrRentryDate) || { value: new Date(), disabled: true }],
       CbNormal: [data?.CbNormal || false],
       CbAccessory: [data?.CbAccessory || false],
       CbNodule: [data?.CbNodule || false],
@@ -263,13 +263,13 @@ export class NeonatalDischDocumentComponent implements OnInit {
       AVeins: [data?.AVeins || false],
       AVeinsT: [data?.AVeinsT || { value: '', disabled: true }],
       AUvc: [data?.AUvc || false],
-      AUinsertion: [this.getDate(data?.AUinsertion) || { value: null, disabled: true }],
-      AUremoval: [this.getDate(data?.AUremoval) || { value: null, disabled: true }],
+      AUinsertion: [this.getDate(data?.AUinsertion) || { value: new Date(), disabled: true }],
+      AUremoval: [this.getDate(data?.AUremoval) || { value: new Date(), disabled: true }],
       AUcomplication: [data?.AUcomplication || { value: '', disabled: true }],
       AUcomplicationT: [data?.AUcomplicationT || { value: '', disabled: true }],
       AUac: [data?.AUac || false],
-      AUainsertion: [this.getDate(data?.AUainsertion) || { value: null, disabled: true }],
-      AUaremoval: [this.getDate(data?.AUaremoval) || { value: null, disabled: true }],
+      AUainsertion: [this.getDate(data?.AUainsertion) || { value: new Date(), disabled: true }],
+      AUaremoval: [this.getDate(data?.AUaremoval) || { value: new Date(), disabled: true }],
       AUacomplication: [data?.AUacomplication || { value: '', disabled: true }],
       AUacomplicationsT: [data?.AUacomplicationsT || { value: '', disabled: true }],
       AComment: [data?.AComment || false],
@@ -585,6 +585,65 @@ export class NeonatalDischDocumentComponent implements OnInit {
       this.isFormValidError = true;
       this.neonatalDischarge.value.DocStatus = docStatus;
       let paylaod = this.neonatalDischarge.value;
+      paylaod['HsOtherT'] = this.neonatalDischarge.getRawValue().HsOtherT;
+      paylaod['HfAnteriorOc'] = this.neonatalDischarge.getRawValue().HfAnteriorOc;
+      paylaod['HfAother'] = this.neonatalDischarge.getRawValue().HfAother;
+      paylaod['HfAsize'] = this.neonatalDischarge.getRawValue().HfAsize;
+      paylaod['HfPosteriorOc'] = this.neonatalDischarge.getRawValue().HfPosteriorOc;
+      paylaod['HfPother'] = this.neonatalDischarge.getRawValue().HfPother;
+      paylaod['HfPsize'] = this.neonatalDischarge.getRawValue().HfPsize;
+      paylaod['HeOtherT'] = this.neonatalDischarge.getRawValue().HeOtherT;
+      paylaod['HeyOtherT'] = this.neonatalDischarge.getRawValue().HeyOtherT;
+      paylaod['HnOtherT'] = this.neonatalDischarge.getRawValue().HnOtherT;
+      paylaod['HmOtherT'] = this.neonatalDischarge.getRawValue().HmOtherT;
+      paylaod['HnNotherT'] = this.neonatalDischarge.getRawValue().HnNotherT;
+      paylaod['CcOtherT'] = this.neonatalDischarge.getRawValue().CcOtherT;
+      paylaod['CcaOtherT'] = this.neonatalDischarge.getRawValue().CcaOtherT;
+      paylaod['CrOtherT'] = this.neonatalDischarge.getRawValue().CrOtherT;
+      paylaod['CrBreathSounds'] = this.neonatalDischarge.getRawValue().CrBreathSounds;
+      // paylaod['CrBreathSoundt'] = this.neonatalDischarge.getRawValue().CrBreathSoundt;
+      paylaod['CrIntubatedYn'] = this.neonatalDischarge.getRawValue().CrIntubatedYn;
+      paylaod['CrItubeSize'] = this.neonatalDischarge.getRawValue().CrItubeSize;
+      paylaod['CrItubeLevel'] = this.neonatalDischarge.getRawValue().CrItubeLevel;
+      paylaod['CrIintubation'] = this.neonatalDischarge.getRawValue().CrIintubation;
+      paylaod['CrIextubation'] = this.neonatalDischarge.getRawValue().CrIextubation;
+      paylaod['CrRtubeSize'] = this.neonatalDischarge.getRawValue().CrRtubeSize;
+      paylaod['CrRtubeLevel'] = this.neonatalDischarge.getRawValue().CrRtubeLevel;
+      paylaod['CrRdate'] = this.neonatalDischarge.getRawValue().CrRdate;
+      paylaod['CrRentryDate'] = this.neonatalDischarge.getRawValue().CrRentryDate;
+      paylaod['CbOtherT'] = this.neonatalDischarge.getRawValue().CbOtherT;
+      paylaod['AAbdominalT'] = this.neonatalDischarge.getRawValue().AAbdominalT;
+      paylaod['ALiverT'] = this.neonatalDischarge.getRawValue().ALiverT;
+      paylaod['ASpleenT'] = this.neonatalDischarge.getRawValue().ASpleenT;
+      paylaod['AKidneyT'] = this.neonatalDischarge.getRawValue().AKidneyT;
+      paylaod['AHerniaT'] = this.neonatalDischarge.getRawValue().AHerniaT;
+      paylaod['AArteriesT'] = this.neonatalDischarge.getRawValue().AArteriesT;
+      paylaod['AShapeNa'] = this.neonatalDischarge.getRawValue().AShapeNa;
+      paylaod['AShapeT'] = this.neonatalDischarge.getRawValue().AShapeT;
+      paylaod['AVeinsT'] = this.neonatalDischarge.getRawValue().AVeinsT;
+      paylaod['AKidneyT'] = this.neonatalDischarge.getRawValue().AKidneyT;
+      paylaod['AUinsertion'] = this.neonatalDischarge.getRawValue().AUinsertion;
+      paylaod['AUremoval'] = this.neonatalDischarge.getRawValue().AUremoval;
+      paylaod['AUcomplication'] = this.neonatalDischarge.getRawValue().AUcomplication;
+      paylaod['AUcomplicationT'] = this.neonatalDischarge.getRawValue().AUcomplicationT;
+      paylaod['AUainsertion'] = this.neonatalDischarge.getRawValue().AUainsertion;
+      paylaod['AUaremoval'] = this.neonatalDischarge.getRawValue().AUaremoval;
+      paylaod['AUacomplication'] = this.neonatalDischarge.getRawValue().AUacomplication;
+      paylaod['AUacomplicationsT'] = this.neonatalDischarge.getRawValue().AUacomplicationsT;
+      paylaod['GmOtherT'] = this.neonatalDischarge.getRawValue().GmOtherT;
+      paylaod['GfOtherT'] = this.neonatalDischarge.getRawValue().GfOtherT;
+      paylaod['GaOtherT'] = this.neonatalDischarge.getRawValue().GaOtherT;
+      paylaod['GtOtherT'] = this.neonatalDischarge.getRawValue().GtOtherT;
+      paylaod['MmOtherT'] = this.neonatalDischarge.getRawValue().MmOtherT;
+      paylaod['MrMoroV'] = this.neonatalDischarge.getRawValue().MrMoroV;
+      paylaod['MrOtherT'] = this.neonatalDischarge.getRawValue().MrOtherT;
+      paylaod['McOtherT'] = this.neonatalDischarge.getRawValue().McOtherT;
+      paylaod['MaOtherT'] = this.neonatalDischarge.getRawValue().MaOtherT;
+      paylaod['MuOtherT'] = this.neonatalDischarge.getRawValue().MuOtherT;
+      paylaod['MlOtherT'] = this.neonatalDischarge.getRawValue().MlOtherT;
+      paylaod['MPalmarCreasesT'] = this.neonatalDischarge.getRawValue().MPalmarCreasesT;
+      paylaod['MMalformationT'] = this.neonatalDischarge.getRawValue().MMalformationT;
+
       paylaod.Datee = paylaod.Datee ? this.dateFormateString(paylaod.Datee) : '';
       paylaod.DischDate = paylaod.DischDate ? this.dateFormateString(paylaod.DischDate) : '';
       paylaod.AdmDate = paylaod.AdmDate ? this.dateFormateString(paylaod.AdmDate) : '';

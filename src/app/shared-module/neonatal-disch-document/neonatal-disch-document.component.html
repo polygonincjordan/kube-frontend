@@ -890,7 +890,7 @@
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-control" type="text" id="sucking" formControlName="CrBreathSoundt"
-                          [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
+                          [disabled]="neonatalDischarge.get('CrBreathSounds')?.value != '3'" [readOnly]="neonatalDischarge.get('CrBreathSounds')?.value != '3'" />
                       </div>
                     </div>
                   </div>

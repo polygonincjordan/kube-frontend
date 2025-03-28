@@ -514,13 +514,13 @@
           <tbody>
             <ng-container *ngFor="let item of patientSearchData | filter : searchString; let i = index;">
               <tr style="font-weight: bold">
-                <td>{{ item.PATNR }}</td>
+                <td (click)="openPatientSearchMainList(item)">{{ item.PATNR }}</td>
                 <!-- <td (click)="openPatientSearch(item)">{{ item.NNAME }}</td>
                 <td (click)="openPatientSearch(item)">{{ item.VNAME }}</td> -->
-                <td>{{ item.PNAME }}</td>
-                <td>{{ item.GBDAT | date : "dd.MM.yyyy" }}</td>
-                <td>{{ item.GSCHLTXT }}</td>
-                <td>{{ item.TELNR }}</td>
+                <td (click)="openPatientSearchMainList(item)">{{ item.PNAME }}</td>
+                <td (click)="openPatientSearchMainList(item)">{{ item.GBDAT | date : "dd.MM.yyyy" }}</td>
+                <td (click)="openPatientSearchMainList(item)">{{ item.GSCHLTXT }}</td>
+                <td (click)="openPatientSearchMainList(item)">{{ item.TELNR }}</td>
                 <td>
                   <!-- <img src="assets/img/accord-arrow-down.svg" width="20"
                     (click)="getPatientCase(item.PATNR, i); !consultation ? showOrder(item) : ''" /> -->

@@ -28,8 +28,9 @@ input[type="checkbox"] {
 
 .department-footer {
     display: flex;
-    justify-content: space-evenly;
-    text-align: center;
+    span {
+        font-weight: bold;
+    }
 }
 
 .tab-navigation-part {

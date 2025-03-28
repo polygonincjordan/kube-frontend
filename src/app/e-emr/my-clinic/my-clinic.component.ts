@@ -49,6 +49,7 @@ export class MyClinicComponent implements OnInit {
   defaultSelectedItemsForMovTypeConf = [];
 
   public formDetailGroup: any;
+  public checkOutForm: any;
 
   statusView = false;
   postSelectedCol = [];
@@ -120,6 +121,9 @@ export class MyClinicComponent implements OnInit {
       'DateRange': new FormControl([new Date(), new Date()]),
       'SelectDropdown': new FormControl(),
     });
+    this.checkOutForm = new FormGroup({
+      'DateRange': new FormControl([new Date(), new Date()]),
+    });
   }
   showFilterFn($event) {
     $event.stopPropagation();
@@ -140,6 +144,13 @@ export class MyClinicComponent implements OnInit {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     }
     this.filterDataConf()    
+  }
+
+  handleGetChangeDateForCheckOut(event){
+    if(!event) {
+      this.checkOutForm.get("DateRange").patchValue([new Date(), new Date()]);
+    }
+    this.forCheckOutList()    
   }
 
   previousDate(){
@@ -165,6 +176,11 @@ export class MyClinicComponent implements OnInit {
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
   }
+
+  onTodayEventDataForCheckout(){
+    this.checkOutForm.get("DateRange").patchValue([new Date(), new Date()]);
+    // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
+  }
   upcomingDate(){
     if(+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]){
       var date1 = this.formDetailGroup.get("DateRange").value[0];
@@ -183,17 +199,50 @@ export class MyClinicComponent implements OnInit {
     }
     
   }
+
+  upcomingDateForCheckout(){
+    if(+this.checkOutForm.get("DateRange").value[0] == +this.checkOutForm.get("DateRange").value[1]){
+      var date1 = this.checkOutForm.get("DateRange").value[0];
+      var date2 = this.checkOutForm.get("DateRange").value[1];
+      this.checkOutForm.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate()+1))), new Date(date2.setDate((date2.getDate()+1)))]);
+      // this.ErHistoryComponent.getErList(this.formgroupData.DateRange);
+    }else{
+      var date1 = this.checkOutForm.get("DateRange").value[0];
+      var date2 = this.checkOutForm.get("DateRange").value[1];
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      date1 = new Date(date1.setDate(date1.getDate()+diffDays));
+      date2 = new Date(date2.setDate(date2.getDate()+diffDays));
+      this.checkOutForm.get("DateRange").patchValue([date1, date2]);
+      // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
+    }
+    
+  }
+
+  previousDateForCheckout(){
+    if(+this.checkOutForm.get("DateRange").value[0] == +this.checkOutForm.get("DateRange").value[1]){
+      var date1 = this.checkOutForm.get("DateRange").value[0];
+      var date2 = this.checkOutForm.get("DateRange").value[1];
+      this.checkOutForm.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate()-1))), new Date(date2.setDate((date2.getDate()-1)))]);
+      // this.ErHistoryComponent.getErList(this.formgroupData.DateRange);
+    }else{
+      var date1 = this.checkOutForm.get("DateRange").value[0];
+      var date2 = this.checkOutForm.get("DateRange").value[1];
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      date1 = new Date(date1.setDate(date1.getDate()-diffDays));
+      date2 = new Date(date2.setDate(date2.getDate()-diffDays));
+      this.checkOutForm.get("DateRange").patchValue([date1, date2]);
+      // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
+    }
+
+
+  }
   checkedOutList: any = [];
   openCheckoutList(template: TemplateRef<any>) {
     const config: ModalOptions = { class: 'modal-dialog-centered checkout_list' };
     this.modalRef = this.modalService.show(template, config);
-    this.checkedOutList = this.dataOnTable.filter(res => res.BESSTATTEXT == 'Checked Out');
-    this.checkedOutList.sort((a, b) => {
-      const timeA = new Date(`1970-01-01T${a.ZEIT_INTERN}`).getTime();
-      const timeB = new Date(`1970-01-01T${b.ZEIT_INTERN}`).getTime();
-      return timeA - timeB; // Sort by time only
-    });
-    console.log(this.checkedOutList, "this.checkedOutList")
+    this.forCheckOutList();
   }
 
   showConfigFn($event) {
@@ -899,6 +948,11 @@ export class MyClinicComponent implements OnInit {
           console.log('asd', _dataArray);
         });
         this.dataOnTable = _dataArray;
+        this.dataOnTable.sort((a, b) => {
+          const timeA = new Date(`1970-01-01T${a.ZEIT_INTERN}`).getTime();
+          const timeB = new Date(`1970-01-01T${b.ZEIT_INTERN}`).getTime();
+          return timeA - timeB;
+        });
         this.dataCount.emit(this.dataOnTable.length);
       },
       (_error: any) => { }
@@ -973,6 +1027,81 @@ export class MyClinicComponent implements OnInit {
     } else {
         return timestamp; // Return the original value if it's not in the expected format
     }
+}
+dataOnTableForCheckOut: any;
+forCheckOutList() {
+  let selectedItemsForStatus='';
+  this.defaultSelectedItemsForStatus.forEach(element => {
+    selectedItemsForStatus = selectedItemsForStatus.concat(
+      ';',
+      element.Valuekey
+    );
+  });
+
+  let selectedItemsForMovType='';
+   this.defaultSelectedItemsForMovType.forEach(element => {
+          selectedItemsForMovType = selectedItemsForMovType.concat(
+            ';',
+            element.Valuekey
+          );
+        });
+
+  let jsonObj = {
+    Widgetid: 'MYCLINIC01',
+    FilterXml:
+      "<?xml version='1.0'?><asx:abap><asx:values><OUTPUT><RSPARAMS><SELNAME>DATE_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>DATE_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>GR_OSTAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>G_SELAKT</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BESANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BPFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BRFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20221027</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20220601</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_EWFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_LSTANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_MAFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_PANUEC</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TEFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TMNANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_VRMANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>235959</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZYKLLE</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEFA</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEPF</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>AM</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>DO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>EA</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FR</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FU</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PD</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PT</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>TL</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>WI</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>SE</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BHPER</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>9000000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>30</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>00</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>58</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOKAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DSPTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_EINRI</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>1000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_ETRGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALL</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CAROPAMC</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTGR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTTX</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_PAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_RAUM</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRPAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRTGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_SEL_AP</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>0</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>1</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>2</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>3</LOW><HIGH/></RSPARAMS></OUTPUT></asx:values></asx:abap>",
+
+    Barnr: this.attendingPerson,
+    Datefrom:this.checkOutForm.get("DateRange").value[0].getFullYear() + '-' + String(this.checkOutForm.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.checkOutForm.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
+    Dateto:this.checkOutForm.get("DateRange").value[1].getFullYear() + '-' + String(this.checkOutForm.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.checkOutForm.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
+    // Datefrom: this.dateFrom.getFullYear() + '-' + String(this.dateFrom.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateFrom.getDate()).padStart(2, '0') + 'T00:00:00',
+    // Dateto: this.dateTo.getFullYear() + '-' + String(this.dateTo.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateTo.getDate()).padStart(2, '0') + 'T00:00:00',
+    Bwart: '',
+    Status: '70',
+    New: "X"
+  };
+  this._dataServices.widgetDataFilter(jsonObj).subscribe(
+    (_success: any) => {
+      this.showfilter = false;
+      let v = converter.xml2js(_success.d.DataXml, { compact: true });
+      let _dataArray = [];
+      let _output = v['asx:abap']['asx:values'].OUTPUT;
+      console.log('_output', typeof _output);
+      let _parsedDataKeys = Object.keys(v['asx:abap']['asx:values'].OUTPUT);
+      _.forEach(_parsedDataKeys, function (dataObj) {
+        let _dataValues = [];
+
+        let outputDataValues = _output[dataObj];
+        if (outputDataValues.length > 0) {
+          _dataValues = outputDataValues;
+        } else if (typeof outputDataValues == 'object') {
+          _dataValues.push(outputDataValues);
+        }
+
+        console.log('data', _dataValues);
+
+        _.forEach(_dataValues, function (dataKeyValue) {
+          let _obj = {};
+          _.forEach(Object.keys(dataKeyValue), function (key) {
+            _obj[key] = _.toString(dataKeyValue[key]._text);
+          });
+          console.log('obj', _obj);
+
+          _dataArray.push(_obj);
+        });
+
+        console.log('asd', _dataArray);
+      });
+      this.dataOnTableForCheckOut = _dataArray;
+      this.dataOnTableForCheckOut.sort((a, b) => {
+        const timeA = new Date(`1970-01-01T${a.ZEIT_INTERN}`).getTime();
+        const timeB = new Date(`1970-01-01T${b.ZEIT_INTERN}`).getTime();
+        return timeA - timeB;
+      });
+      // this.dataCount.emit(this.dataOnTableForCheckOut.length);
+    },
+    (_error: any) => { }
+  );
 }
 }
 
