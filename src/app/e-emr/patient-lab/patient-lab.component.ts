@@ -268,10 +268,8 @@ export class PatientLabComponent implements OnInit {
             datasets: [
               {
                 label: '',
-                borderColor: ['green','red','red','orange'],
-                backgroundColor: [
-                  'green','red','red','orange'
-                ],
+                borderColor: ['green','red','orange','blue'],
+                backgroundColor: ['green','red','orange','blue'],
                 borderWidth: 2,
                 data: [this.completedArr.length, this.completedAbnormalArr.length, this.PartiallyAbnormalArr.length ,this.notDoneArr.length]
               }
