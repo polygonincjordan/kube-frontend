@@ -145,6 +145,7 @@ import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-doc
 import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 import { TimeOutChecklistModule } from '../shared-module/time-out-checklist/time-out-checklist.module';
 import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
+import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
 
 
 
@@ -254,7 +255,8 @@ const route: Routes = [
     PastSurgicalComponent,
     PastMedicalComponent,
     FamilyHistoryComponent,
-    ICBundlesComponent
+    ICBundlesComponent,
+    CvcMaintenanceComponent
   ],
   providers: [
     EmergencyService,

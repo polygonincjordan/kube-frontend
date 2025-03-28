@@ -49,6 +49,12 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+  getCvcMainPdf(dockey: string) {
+    const url = `${this.url}getCvcMainPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
 
   // Nursing Care Plan Document
   createNursingCarePlan(json): Observable<any> {
