@@ -1121,6 +1121,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteCvcMainDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteCvcMainDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   deleteNicuDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteNicuDoc?Dockey=${json}`, {
       withCredentials: true,
@@ -1183,6 +1188,11 @@ export class EmergencyService {
   }
   getBundlesLetDoc(json): Observable<any> {
     return this.http.post(this.url + 'getBundlesDoc', json, {
+      withCredentials: true,
+    });
+  }
+  getCvcMainDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getCvcMainDoc', json, {
       withCredentials: true,
     });
   }
