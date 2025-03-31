@@ -2727,12 +2727,12 @@ export class PatientDocumentationComponent implements OnInit {
 
   directReleaseCVCInsertionDoc() {
     this.subscription = this.dayCaseDashboardService
-      .fetcTimeoutCheckDocDetails(this.selectedDocData.Dockey).subscribe({
+      .fetcCVCInsertionDocDetails(this.selectedDocData.Dockey).subscribe({
         next: (data: any) => {
           let paylaod = data.d.results[0];
           delete paylaod.__metadata
           paylaod.DocStatus = '2';
-          this.subscription = this.dayCaseDashboardService.saveTimeoutCheckDocument({ d: paylaod }).subscribe({
+          this.subscription = this.dayCaseDashboardService.saveCVCInsertionDocument({ d: paylaod }).subscribe({
             next: (data: any) => { },
             error: (err: any) => {
               this.sharedService.waringSwallModel(`Error ${err}`);
@@ -5384,6 +5384,22 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .correspondenceDocPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+  openNeonatalDischargeDocumentPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .NeonatalDischargeDocPDF(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);

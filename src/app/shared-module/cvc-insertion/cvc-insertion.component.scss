@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -139,4 +138,20 @@ input[type="text"] {
 .checkbox-group {
     align-items: center;
     gap: 15px;
+}
+
+.header-date {
+    span {
+        position: relative;
+        top: 30px;
+        right: 4px;
+        float: right;
+        margin-top: -26px;
+        font-size: 18px;
+    }
+
+    input {
+        color: #000;
+        border-radius: 8px
+    }
 }
