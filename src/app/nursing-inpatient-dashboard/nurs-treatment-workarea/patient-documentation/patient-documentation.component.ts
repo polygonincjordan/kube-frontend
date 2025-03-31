@@ -5067,7 +5067,7 @@ export class PatientDocumentationComponent implements OnInit {
         d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
-      this.admissionService.createUrinary(d).subscribe(
+      this.admissionService.createUrinary(d.d).subscribe(
         (result) => {
           this.refresh();
         }
@@ -5076,11 +5076,12 @@ export class PatientDocumentationComponent implements OnInit {
   }
   releaseCvcMainDetail() {
     this.admissionService.getCvcMainDetail(this.cvcMainList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
       let d: any = {
-        d: res?.d?.results[0],
+        d: res?.results[0],
       };
       d.d.DocStatus = '2';
-      this.admissionService.createUrinary(d).subscribe(
+      this.admissionService.createCvcMainDoc(d).subscribe(
         (result) => {
           this.refresh();
         }
@@ -5096,6 +5097,26 @@ export class PatientDocumentationComponent implements OnInit {
     }).catch((error: any) => {
       console.error('Error scale:', error);
       console.error('Error creating Glasgow coma scale:', error);
+    });
+  }
+  newVersionDirectReleasedIcBundle() {
+    this.ICBundlesComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating IC urinary bundle:', error);
+    });
+  }
+  newVersionDirectReleasedIcMain() {
+    this.ICCvcMainComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating IC maintenance:', error);
     });
   }
 

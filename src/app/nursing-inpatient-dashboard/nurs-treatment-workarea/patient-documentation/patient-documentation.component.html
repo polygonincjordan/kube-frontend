@@ -91,6 +91,16 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'IC Bundles for Urinary Catheter'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedIcBundle()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'IC Bundles for CVC Maintenance'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedIcMain()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pain Assesment'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleased()">
               Release

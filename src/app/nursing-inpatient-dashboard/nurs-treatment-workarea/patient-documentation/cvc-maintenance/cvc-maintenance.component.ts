@@ -171,14 +171,14 @@ export class CvcMaintenanceComponent implements OnInit {
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at IC Bundles for Urinary Catheter : ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at IC Bundles for CVC Maintenance : ${err}`);
         },
         complete: () => {
           resolve(true);
           if(status === 'edit'){
-            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter updated successfully');
+            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance updated successfully');
           }else{
-            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter created successfully');
+            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance created successfully');
           }
           this.successEvent.next(true)
         }
