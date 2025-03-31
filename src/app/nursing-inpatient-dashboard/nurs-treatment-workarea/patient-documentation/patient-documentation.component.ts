@@ -5396,10 +5396,10 @@ export class PatientDocumentationComponent implements OnInit {
         this.modalRef = this.modalService.show(this.releasepdfmodal, config);
       });
   }
-  openNeonatalDischargeDocumentPdf(Dockey) {
+  openCVCInsertionDocumentPdf(Dockey) {
     this.pdfUrl = '';
     this.dayCaseDashboardService
-      .NeonatalDischargeDocPDF(Dockey)
+      .CVCInsertionDocPDF(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
