@@ -244,4 +244,14 @@ export class CvcMaintenanceComponent implements OnInit {
     return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
   }
 
+  restrictToNumeric(event: any) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode < 48 || charCode > 57) && // Allow numbers 0-9
+      charCode !== 46 // Allow decimal point
+    ) {
+      event.preventDefault();
+    }
+  }
+
 }
