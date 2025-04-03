@@ -1,36 +1,13 @@
 <!--New One-->
 <!--Step - 1-->
-<!-- <div class="uninery-cath">
-    <div class="row d-flex">
-        <label class="col-md-2 p-0">Patient Name</label>
-        <input class="col-md-4" type="text" value="vijay" />
-        <div class="col-md-1"></div>
-        <label class="col-md-1 p-0">MRN</label>
-        <input class="col-md-1" type="text" value="125784" />
-    </div>
-
-    <div class="row d-flex">
-        <label class="col-md-2 p-0">DOB</label>
-        <input class="col-md-1" type="text" value="25.02.2025" />
-        <div class="col-md-3 p-0"></div>
-        <div class="col-md-1"></div>
-        <label class="col-md-1 p-0 mrleft10">Gender</label>
-        <select class="col-md-1 mrlrft13">
-            <option>Male</option>
-            <option>Female</option>
-        </select>
-    </div>
-
+<div class="uninery-cath">
     <div class="row d-flex">
         <label class="col-md-2 p-0">Days since admission</label>
-        <input class="col-md-1" type="text" value="9th floor ahem" />
+        <input class="col-md-1" type="text"  (keypress)="restrictToNumeric($event)" />
         <div class="col-md-2 p-0"></div>
         <div class="col-md-2"></div>
-        <label class="col-md-1 p-0 mrleft10">Case</label>
-        <input class="col-md-1 mrlrft13" type="text" value="103704" />
-
     </div>
-</div> -->
+</div>
 <!--Step - 2-->
 <form [formGroup]="cvcMainForm">
     <div class="uninery-cath">
@@ -264,7 +241,7 @@
                 </div>
             </div>
         </div>
-        <div class="right-section"></div>
+        <!-- <div class="right-section"></div> -->
     </div>
     <!--1-->
     <div class="container mt-5">
@@ -348,6 +325,7 @@
                     Documented</label>
             </div>
         </div>
+        <div class="right-section"></div>
     </div>
     <div class="ml-3">
         <label>Others (Specify) : </label>

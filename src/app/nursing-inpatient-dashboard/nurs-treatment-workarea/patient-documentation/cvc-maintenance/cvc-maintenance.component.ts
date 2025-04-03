@@ -171,14 +171,14 @@ export class CvcMaintenanceComponent implements OnInit {
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at IC Bundles for Urinary Catheter : ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at IC Bundles for CVC Maintenance : ${err}`);
         },
         complete: () => {
           resolve(true);
           if(status === 'edit'){
-            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter updated successfully');
+            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance updated successfully');
           }else{
-            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter created successfully');
+            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance created successfully');
           }
           this.successEvent.next(true)
         }
@@ -242,6 +242,16 @@ export class CvcMaintenanceComponent implements OnInit {
     const formattedSeconds = seconds ? `${seconds}S` : '00S';
   
     return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
+  }
+
+  restrictToNumeric(event: any) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode < 48 || charCode > 57) && // Allow numbers 0-9
+      charCode !== 46 // Allow decimal point
+    ) {
+      event.preventDefault();
+    }
   }
 
 }

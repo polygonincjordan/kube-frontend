@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
@@ -119,10 +119,24 @@ export class ICBundlesComponent implements OnInit,OnDestroy {
       Ucm3MaintainMeatal : [data?.Ucm3MaintainMeatal || false],
       Ucm4WasNeed : [data?.Ucm4WasNeed || ''],
       Ucm4NaTxt : [data?.Ucm4NaTxt || ''],
-      UcmCautiPreventionScore : [data?.UcmCautiPreventionScore || ''],
+      UcmCautiPreventionScore : [data?.UcmCautiPreventionScore || '', Validators.pattern(/^(0|[1-9]\d*)(\.\d+)?$/)],
       UcmSignsCatheter : [data?.UcmSignsCatheter || ''],
       UcmComments : [data?.UcmComments || '']
     })
+  }
+
+  restrictToNumeric(event: any) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode < 48 || charCode > 57) && // Allow numbers 0-9
+      charCode !== 46 // Allow decimal point
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  isInvalid(field: string): boolean {
+    return this.urinaryForm.get(field)?.invalid && this.urinaryForm.get(field)?.dirty;
   }
   
 

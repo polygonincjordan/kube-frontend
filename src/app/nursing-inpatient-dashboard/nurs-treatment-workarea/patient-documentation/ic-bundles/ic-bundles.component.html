@@ -2,10 +2,10 @@
 <!--Step - 2-->
 <form [formGroup]="urinaryForm">
     <div class="uninery-cath">
-        <h3>Urinary Catheter Inserction</h3>
+        <h3>Urinary Catheter Insertion</h3>
     
         <div class="row d-flex">
-            <label class="col-md-2 p-0">Inserction Date</label>
+            <label class="col-md-2 p-0">Insertion Date</label>
             <div class="header-date">
                 <span
                   _ngcontent-ufq-c103=""
@@ -41,7 +41,7 @@
             </div>
             <!--space-->
             <div class="col-md-1"></div>
-            <label class="col-md-1 p-0">Inserction Time</label>
+            <label class="col-md-1 p-0">Insertion Time</label>
             <input
             type="time"
             formControlName="UciInsertionTime"
@@ -329,19 +329,20 @@
     
     <!--Step-6-->
     <div class="row">
-        <label class="col-md-2 p-0">CAUTI Prevensions score</label>
-        <input class="col-md-3 p-0 form-control" type="text"  formControlName="UcmCautiPreventionScore"/>
+        <label class="col-md-2 p-0">CAUTI Prevention score</label>
+        <input class="col-md-3 p-0 form-control" type="text"  formControlName="UcmCautiPreventionScore" (keypress)="restrictToNumeric($event)"/>
+        <div *ngIf="isInvalid('BirthWeight')" class="invalid-feedback">Invalid value</div>
     </div>
     
     <div class="row">
         <label class="col-md-2 p-0">Stage of Catheter Site Infection </label>
         <input class="col-md-8 p-0 form-control" type="text"  formControlName="UcmSignsCatheter"/>
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <!-- <i class="fa fa-copy pl-2" style="vertical-align: top;"></i> -->
     </div>
     
     <div class="row">
         <label class="col-md-2 p-0">Comments </label>
         <input class="col-md-8 p-0 form-control" type="text"  formControlName="UcmComments"/>
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <!-- <i class="fa fa-copy pl-2" style="vertical-align: top;"></i> -->
     </div>
 </form>
