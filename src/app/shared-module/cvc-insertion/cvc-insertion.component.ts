@@ -87,8 +87,9 @@ export class CvcInsertionComponent implements OnInit {
       value: '3'
     }
   ];
+  genderDetails: any;
 
-  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, private storageService: StorageService,
+  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,
     private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -115,6 +116,8 @@ export class CvcInsertionComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    console.log(this.storageService?.patientData, 'this.storageService?.patientData');
+    this.genderDetails = this.storageService?.patientData?.gender.includes('Female') ? 'Female' : 'Male'
   }
 
   initForm() {
@@ -180,12 +183,11 @@ export class CvcInsertionComponent implements OnInit {
       .fetcCVCInsertionDocDetails(docKey)
       .subscribe({
         next: (data: any) => {
+          this.cvcInsertionForm.patchValue(data.d.results[0])
           this.cvcInsertionForm.patchValue({
-            ChiefComplaint: data.d.results[0]?.ChiefComplaint,
-            Dockey: data.d.results[0]?.Dockey,
-            Orgdo: data.d.results[0]?.Orgdo,
-            AttendPhy: data.d.results[0]?.AttendPhy,
-          })
+            CvcInsertionDate: this.parseDate(data.d.results[0].CvcInsertionDate),
+            CvcInsertionTime: this.parseTime(data.d.results[0].CvcInsertionTime),
+          });
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
@@ -205,9 +207,10 @@ export class CvcInsertionComponent implements OnInit {
       }
       this.cvcInsertionForm.value.DocStatus = docStatus;
       let paylaod = this.cvcInsertionForm.value;
-
+      paylaod.CvcInsertionDate = this.sanitizeSAPDateFormat(paylaod.CvcInsertionDate);
+      paylaod.CvcInsertionTime = this.parsePayloadFormateTime(paylaod.CvcInsertionTime);
       this.subscription = this.dayCaseDashboard
-        .saveCorrespondenceDocument(paylaod)
+        .saveCVCInsertionDocument(paylaod)
         .subscribe({
           next: (data: any) => { },
           error: (err: any) => {
@@ -242,4 +245,72 @@ export class CvcInsertionComponent implements OnInit {
     }
   }
 
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
+  }
+
+  formatDateToMilliseconds(dateString: string): string {
+    console.log(dateString, "--")
+    const [datePart, timePart] = dateString.split('/');
+    const [day, month, year] = datePart.split('.').map(Number);
+    const [hours, minutes, seconds] = timePart.split(':').map(Number);
+    const date = new Date(year, month - 1, day, hours, minutes, seconds);
+    const timeInMillis = date.getTime();
+    return `/Date${timeInMillis}/`;
+  }
+
+  parsePayloadFormateTime(data: string) {
+    if (data && data.length) {
+      const strArr: string[] = data.split(':');
+      if (data && data.length === 8) {
+        return `PT${strArr[0]}H${strArr[1]}M${strArr[2]}S`;
+      }
+    }
+    return null;
+  }
+
+  public parseTime(data: string) {
+    // Check if data is valid and matches the expected format
+    if (
+      !data ||
+      data.length !== 11 ||
+      data[4] !== 'H' ||
+      data[7] !== 'M' ||
+      data[10] !== 'S'
+    ) {
+      return null;
+    }
+
+    // Extract hours, minutes, and seconds from the input string
+    const hours = parseInt(data.slice(2, 4), 10);
+    const minutes = parseInt(data.slice(5, 7), 10);
+    const seconds = parseInt(data.slice(8, 10), 10);
+
+    // Check if extracted values are valid numbers
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return null;
+    }
+
+    // Format hours, minutes, and seconds with leading zeros if necessary
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    // Construct the formatted time string
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    return null;
+  }
+
+  parseDate(date: string) {
+    if (date) {
+      if (new Date(new Date(+(date.replace('/Date(', '').replace(')/', ''))).toLocaleDateString("en-US"))) {
+        return new Date(new Date(+(date.replace('/Date(', '').replace(')/', ''))).toLocaleDateString("en-US"));
+      }
+    }
+  }
 }

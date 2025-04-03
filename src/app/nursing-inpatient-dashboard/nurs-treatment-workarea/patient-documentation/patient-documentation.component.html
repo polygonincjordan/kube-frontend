@@ -656,7 +656,7 @@
                {{getDate(latestNeonatalDischList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
              </div>
              <div class="col-md-3">{{latestNeonatalDischList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1">
+             <div class="col-md-1 d-flex">
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;" (click)="openNeonatalDocPdf(latestNeonatalDischList[0]?.Dockey)"
                 *ngIf="latestNeonatalDischList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNeonatalDischList[0]?.Dockey, latestNeonatalDischList[0])">
@@ -697,9 +697,9 @@
                 </div>
                 <div class="col-md-3">{{latestCVCInsertionList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
-                  (click)="getPatientProfileData(latestCVCInsertionList[0])"
-                  *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openCVCInsertionDocumentPdf(latestCVCInsertionList[0]?.Dockey)"
+                    *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
             

@@ -3,33 +3,30 @@
 <form [formGroup]="cvcInsertionForm">
 
     <div class="uninery-cath">
-        <div class="row d-flex">
+        <!-- <div class="row d-flex">
             <label class="col-md-2 p-0">Patient Name</label>
-            <input class="col-md-4" type="text" />
+            <input class="col-md-4" type="text" [disabled]="true" [value]="this.storageService?.patientData?.name" />
             <div class="col-md-1"></div>
             <label class="col-md-1 p-0">MRN</label>
-            <input class="col-md-1" type="text" />
+            <input class="col-md-1" type="text" [disabled]="true" [value]="this.storageService?.patientData?.id"/>
         </div>
 
         <div class="row d-flex">
             <label class="col-md-2 p-0">DOB</label>
-            <input class="col-md-1" type="text" />
+            <input class="col-md-1" type="text" [disabled]="true" [value]="this.storageService?.patientData?.birthDate"/>
             <div class="col-md-3 p-0"></div>
             <div class="col-md-1"></div>
             <label class="col-md-1 p-0 mrleft10">Gender</label>
-            <select class="col-md-1 mrlrft13">
-                <option>Male</option>
-                <option>Female</option>
-            </select>
-        </div>
+            <input class="col-md-1" type="text" [disabled]="true" [value]="genderDetails"/>
+        </div> -->
 
         <div class="row d-flex">
             <label class="col-md-2 p-0">Days since admission</label>
-            <input class="col-md-1" type="text" />
-            <div class="col-md-2 p-0"></div>
+            <input class="col-md-1" type="text" [disabled]="true"/>
+            <!-- <div class="col-md-2 p-0"></div>
             <div class="col-md-2"></div>
             <label class="col-md-1 p-0 mrleft10">Case</label>
-            <input class="col-md-1 mrlrft13" type="text" />
+            <input class="col-md-1 mrlrft13" type="text" [disabled]="true" [value]="this.storageService?.patientData?.case" /> -->
         </div>
     </div>
     <!--Step - 2-->
@@ -60,15 +57,27 @@
 
     <!--Step - 3-->
     <div class="uninery-cath">
-        <h3>CVC Inserction Data</h3>
+        <h3>CVC Insertion Data</h3>
 
         <div class="row d-flex">
-            <label class="col-md-2 p-0">Inserction Date</label>
-            <input class="col-md-1 p-0" type="date" formControlName="CvcInsertionDate" />
+            <label class="col-md-2 p-0">Insertion Date</label>
+            <!-- <input class="col-md-1 p-0" type="date" formControlName="CvcInsertionDate" /> -->
+            <div class="col-md-1 p-0">
+                <div class="header-date">
+                    <span>
+                        <img src="assets/img/Calender.svg" alt="" />
+                    </span>
+                    <input formControlName="CvcInsertionDate" class="form-control" #dp="bsDatepicker" bsDatepicker
+                        [bsConfig]="{
+                        showWeekNumbers: false,
+                        dateInputFormat: 'DD.MM.YYYY'
+                      }" />
+                </div>
+            </div>
             <!--space-->
             <div class="col-md-1"></div>
             <label class="col-md-2 p-0">Inserction Time</label>
-            <input class="col-md-1 p-0" type="time" formControlName="CvcInsertionTime" />
+            <input class="col-md-1 p-0" type="time" step="2" min="08:00:00" max="17:00:00" formControlName="CvcInsertionTime" />
         </div>
         <div class="row d-flex">
             <label class="col-md-2 p-0">Patient Location When CVC Inserted</label>
@@ -76,12 +85,12 @@
         </div>
         <div class="row d-flex">
             <label class="col-md-2 p-0 m-0">Anatomical Site of Instertion</label>
-            <ng-select class="col-md-2">
+            <ng-select class="col-md-2 p-0" formControlName="AnatomicalSite">
                 <ng-option *ngFor="let item of anatomicalList" [value]="item.value">{{ item.label }}</ng-option>
             </ng-select>
-            <ng-select class="col-md-1">
+            <!-- <ng-select class="col-md-1">
                 <ng-option *ngFor="let item of anatomicalList" [value]="item.value">{{ item.label }}</ng-option>
-            </ng-select>
+            </ng-select> -->
         </div>
     </div>
 
@@ -92,51 +101,51 @@
                 <h6>Ultrasound Used During Insertion?</h6>
             </div>
             <div>
-                <label><input type="radio" name="discussion" value="0" formControlName="UltrasoundUsed"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="1" formControlName="UltrasoundUsed"> No</label>
+                <label><input type="radio" value="0" formControlName="UltrasoundUsed"> Yes</label><br>
+                <label><input type="radio" value="1" formControlName="UltrasoundUsed"> No</label>
                 <div class="d-flex">
                     <label style="width: 160px;">
-                        <input type="radio" name="discussion" value="2" formControlName="UltrasoundUsed">
-                        Not Applicable</label>
+                        <input type="radio" value="2" formControlName="UltrasoundUsed">
+                        Not Applicable
+                    </label>
                 </div>
             </div>
         </div>
     </div>
     <div class="row d-flex">
         <label class="col-md-2 p-0 m-0">Type of Central Venous Catheter </label>
-        <select class="col-md-2">
-            <option></option>
-            <option></option>
-        </select>
+        <ng-select class="col-md-2" formControlName="TypeCentralVenous">
+            <ng-option *ngFor="let item of venousCatheterList" [value]="item.value">{{ item.label }}</ng-option>
+        </ng-select>
     </div>
     <div class="row d-flex">
         <label class="col-md-2 p-0 m-0">Number of CVC Lemens </label>
-        <select class="col-md-1">
-            <option></option>
-            <option></option>
-        </select>
+        <ng-select class="col-md-1" formControlName="NumberCvcLumens">
+            <ng-option *ngFor="let item of cvcLumensList" [value]="item.value">{{ item.label }}</ng-option>
+        </ng-select>
     </div>
 
     <!--Step -- 4-->
     <div class="uninery-cath">
-        <h3>CVC Bundel Elements</h3>
+        <h3>CVC Bundle Elements</h3>
     </div>
 
     <div class="container mt-5">
         <!-- Left Section -->
         <div class="left-section d-flex">
-            <div class="col-md-12 p-0 d-flex">
+            <div class="col-md-8 p-0 d-flex">
                 <span style="position: relative; top: -3px; right: 3px;">1. </span>
                 <h6 class="">The operator and supervisor/assistant performed hand hygiene. <br>
                     Hand washing with antimicrobial soap and water or with an alcohol-based hand rub</h6>
             </div>
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc1" value="0" formControlName="Cvc1"> Yes</label><br>
+                <label><input type="radio" name="Cvc1" value="1" formControlName="Cvc1"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc1" value="2" formControlName="Cvc1">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc1Txt"><br>
                 </div>
             </div>
         </div>
@@ -144,8 +153,7 @@
 
     <div class="row">
         <span class="col-md-2 p-0"> Comments </span>
-        <input class="col-md-6 p-0" type="text" />
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <input class="col-md-6 p-0" type="text" formControlName="Cvc1Comments" />
     </div>
     <!--below Line-->
     <div class="mt-3 mb-3" style="border-bottom: 1px solid #000;"></div>
@@ -159,31 +167,32 @@
                 <h6 class="">Maximal sterile barrier precautions. </h6>
             </div>
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc2" value="0" formControlName="Cvc2"> Yes</label><br>
+                <label><input type="radio" name="Cvc2" value="1" formControlName="Cvc2"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="naApp"> Not
-                        Applicable</label>
-                    <input type="text"><br>
+                    <label style="width: 200px;">
+                        <input type="radio" name="Cvc2" value="2" formControlName="Cvc2"> Not Applicable</label>
+                    <input type="text" formControlName="Cvc2Txt" /><br>
                 </div>
             </div>
         </div>
     </div>
     <!--1-->
     <div class="container mt-5">
-        <div class="col-md-5 ml-3 p-0 d-flex">
+        <div class="col-md-6 ml-3 p-0 d-flex">
             <span style="position: relative; top: -3px; right: 3px;">2.1 </span>
             <h6>The operator and supervisor/assistant wore a cap.
             </h6>
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc21" value="0" formControlName="Cvc21" /> Yes</label><br>
+                <label><input type="radio" name="Cvc21" value="1" formControlName="Cvc21" /> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc21" value="2" formControlName="Cvc21">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc21Txt" /><br>
                 </div>
             </div>
         </div>
@@ -191,19 +200,20 @@
     </div>
     <!--2-->
     <div class="container mt-5">
-        <div class="col-md-5 ml-3 p-0 d-flex">
+        <div class="col-md-6 ml-3 p-0 d-flex">
             <span style="position: relative; top: -3px; right: 3px;">2.2 </span>
             <h6>The operator and supervisor/assistant wore a mask.
             </h6>
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc22" value="0" formControlName="Cvc22"> Yes</label><br>
+                <label><input type="radio" name="Cvc22" value="1" formControlName="Cvc22"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc22" value="2" formControlName="Cvc22">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc22Txt"><br>
                 </div>
             </div>
         </div>
@@ -211,19 +221,20 @@
     </div>
     <!--3-->
     <div class="container mt-5">
-        <div class="col-md-5 ml-3 p-0 d-flex">
+        <div class="col-md-6 ml-3 p-0 d-flex">
             <span style="position: relative; top: -3px; right: 3px;">2.3 </span>
             <h6>The operator and supervisor/assistant wore a sterlie gown.
             </h6>
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc23" value="0" formControlName="Cvc23"> Yes</label><br>
+                <label><input type="radio" name="Cvc23" value="1" formControlName="Cvc23"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc23" value="2" formControlName="Cvc23">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc23Txt" /><br>
                 </div>
             </div>
         </div>
@@ -231,19 +242,20 @@
     </div>
     <!--4-->
     <div class="container mt-5">
-        <div class="col-md-5 ml-3 p-0 d-flex">
+        <div class="col-md-6 ml-3 p-0 d-flex">
             <span style="position: relative; top: -3px; right: 3px;">2.4 </span>
             <h6>The operator and supervisor/assistant wore a sterlie gloves.
             </h6>
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc24" value="0" formControlName="Cvc24"> Yes</label><br>
+                <label><input type="radio" name="Cvc24" value="1" formControlName="Cvc24"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc24" value="2" formControlName="Cvc24">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc24Txt" /><br>
                 </div>
             </div>
         </div>
@@ -251,19 +263,20 @@
     </div>
     <!--5-->
     <div class="container mt-5">
-        <div class="col-md-5 ml-3 p-0 d-flex">
+        <div class="col-md-6 ml-3 p-0 d-flex">
             <span style="position: relative; top: -3px; right: 3px;">2.5 </span>
             <h6>This patient is covered by a large sterlie drape.
             </h6>
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc25" value="0" formControlName="Cvc25" /> Yes</label><br>
+                <label><input type="radio" name="Cvc25" value="1" formControlName="Cvc25" /> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc25" value="2" formControlName="Cvc25" />
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc25Txt" /><br>
                 </div>
             </div>
         </div>
@@ -271,8 +284,7 @@
     </div>
     <div class="row">
         <span class="col-md-2 p-0"> Comments </span>
-        <input class="col-md-6 p-0" type="text" />
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <input class="col-md-6 p-0" type="text" formControlName="CvcComments" />
     </div>
     <!--below Line-->
     <div class="mt-3 mb-3" style="border-bottom: 1px solid #000;"></div>
@@ -286,54 +298,67 @@
             </div>
         </div>
         <div class="d-flex">
-            <span class="col-md-6 ml-3">
+            <span class="col-md-5 ml-3">
                 A concenntration of 2% chlorhelxidine in alcohol for adults, prediatric and <br>
                 neonate > 2 weeks for weighing > 1500 gr at instertion and dressing changes.
             </span>
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc3Skin" value="0" formControlName="Cvc3Skin"> Yes</label><br>
+                <label><input type="radio" name="Cvc3Skin" value="1" formControlName="Cvc3Skin"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc3Skin" value="2"
+                            formControlName="Cvc3Skin">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc3SkinTxt"><br>
                 </div>
             </div>
         </div>
         <div class="d-flex">
-            <span class="col-md-6 ml-3">
+            <span class="col-md-5 ml-3">
                 A preparation containing a concentration of 2% aqueous chlorhelxidine <br>
                 for neonates < 2 weeks weighing < 1500 gr. </span>
         </div>
 
         <div class="d-flex mt-4">
-            <span class="col-md-6 ml-3">
-                <input type="checkbox" name="txt">
+            <span class="col-md-5 ml-3">
+                <input type="checkbox" name="txt" formControlName="Cvc3Contraindication" readonly/>
                 Contraindication / Allergy to chlorhexidine?
             </span>
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Tincture of iodine</label><br>
-                <label><input type="radio" name="discussion" value="no"> iodophor</label><br>
-                <label style="width: 200px;"><input type="radio" name="discussion" value="na"> 70% alcohol</label>
+                <label><input type="radio" name="Cvc3Contraindication1" value="0"
+                        formControlName="Cvc3Contraindication1"> Tincture
+                    of
+                    iodine</label><br>
+                <label><input type="radio" name="Cvc3Contraindication1" value="1"
+                        formControlName="Cvc3Contraindication1">
+                    iodophor</label><br>
+                <label style="width: 200px;"><input type="radio" name="Cvc3Contraindication1" value="2"
+                        formControlName="Cvc3Contraindication1"> 70%
+                    alcohol</label>
             </div>
         </div>
 
         <div class="d-flex mt-4">
-            <span class="col-md-6 ml-3">
+            <span class="col-md-5 ml-3">
                 Antiseptic allowed to dry before making the skin puncture.
             </span>
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label><br>
-                <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not Applicable</label>
+                <label><input type="radio" name="Cvc3Antiseptic" value="0" formControlName="Cvc3Antiseptic">
+                    Yes</label><br>
+                <label><input type="radio" name="Cvc3Antiseptic" value="1" formControlName="Cvc3Antiseptic">
+                    No</label><br>
+                <label style="width: 200px;"><input type="radio" name="Cvc3Antiseptic" value="2"
+                        formControlName="Cvc3Antiseptic"> Not
+                    Applicable</label>
+                <input type="text" formControlName="Cvc3AntisepticTxt"><br>
             </div>
         </div>
     </div>
 
     <div class="row">
         <span class="col-md-2 p-0"> Comments </span>
-        <input class="col-md-6 p-0" type="text" />
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <input class="col-md-6 p-0" type="text" formControlName="Cvc3Comments" />
     </div>
 
     <!--below Line-->
@@ -355,12 +380,16 @@
                 In Prediatric patients, site selection is based on physician preference.
             </span>
             <div class="radio-group">
-                <label><input type="radio" name="discussion" value="yes"> Yes</label><br>
-                <label><input type="radio" name="discussion" value="no"> No</label>
+                <label><input type="radio" name="Cvc4OptimalCatheter" value="0" formControlName="Cvc4OptimalCatheter">
+                    Yes</label><br>
+                <label><input type="radio" name="Cvc4OptimalCatheter" value="1" formControlName="Cvc4OptimalCatheter">
+                    No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="discussion" value="na"> Not
+                    <label style="width: 200px;"><input type="radio" name="Cvc4OptimalCatheter" value="2"
+                            formControlName="Cvc4OptimalCatheter">
+                        Not
                         Applicable</label>
-                    <input type="text"><br>
+                    <input type="text" formControlName="Cvc4OptimalCatheterTxt"><br>
                 </div>
             </div>
         </div>
@@ -368,8 +397,7 @@
 
     <div class="row">
         <span class="col-md-2 p-0"> Comments </span>
-        <input class="col-md-6 p-0" type="text" />
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <input class="col-md-6 p-0" type="text" formControlName="Cvc4Comments" />
     </div>
 
     <!--below Line-->
@@ -377,36 +405,34 @@
 
     <div class="row mb-2">
         <span class="col-md-2 p-0"> CVC Instertion Compliance Score </span>
-        <input class="col-md-1 p-0" type="text" />
+        <input class="col-md-1 p-0" type="text" formControlName="ComplianceScore" />
     </div>
 
     <div class="row mb-2">
         <span class="col-md-3 p-0">Any Complications during insertion : </span>
-        <input class="col-md-4 p-0" type="text" />
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <input class="col-md-4 p-0" type="text" formControlName="AnyComplications" />
     </div>
 
     <div class="row mb-2">
         <span class="col-md-3 p-0">Number of insertion trials (skin punctures) </span>
         <div>
-            <input type="checkbox" class="mr-1" id="one">
+            <input type="checkbox" class="mr-1" id="one" formControlName="InsertionTrials1">
             <label for="one">1</label>
 
-            <input type="checkbox" class="mr-1" id="two">
+            <input type="checkbox" class="mr-1" id="two" formControlName="InsertionTrials2">
             <label for="two">2</label>
 
-            <input type="checkbox" class="mr-1" id="three">
+            <input type="checkbox" class="mr-1" id="three" formControlName="InsertionTrials3">
             <label for="three">3</label>
 
-            <input type="checkbox" class="mr-1" id="four">
+            <input type="checkbox" class="mr-1" id="four" formControlName="InsertionTrials4">
             <label for="four">≥4</label>
         </div>
     </div>
 
     <div class="row mb-2">
         <span class="col-md-2 p-0"> Comments </span>
-        <input class="col-md-6 p-0" type="text" />
-        <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
+        <input class="col-md-6 p-0" type="text" formControlName="Comments" />
     </div>
 
 </form>
