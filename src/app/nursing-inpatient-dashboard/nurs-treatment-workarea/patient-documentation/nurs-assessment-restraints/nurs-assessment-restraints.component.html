@@ -1,0 +1,504 @@
+<form [formGroup]="nurseAssMainForm">
+  <div class="border p-3 rounded">
+    <div class="row mb-3">
+      <div class="col-md-4 d-flex align-items-center">
+        <label class="form-label lablew2">Physician Notified</label>
+        <input
+          type="time"
+          class="form-control"
+          formControlName="PhysicianNotified"
+        />
+      </div>
+      <div class="col-md-4 d-flex align-items-center">
+        <label class="form-label lablew2">RN Supervisor Notified</label>
+        <input
+          type="time"
+          class="form-control"
+          formControlName="SupervisorNotified"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-12">
+        <p>
+          PATIENT RISK FACTORS: Indicate any that could possibly make the
+          patient a higher risk during seclusion/restraints notify the physician
+        </p>
+      </div>
+    </div>
+
+    <h6 class="fw-bold">Psychological Risk Factors</h6>
+    <div class="row mb-2">
+      <div class="col-md-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="abuse"
+            formControlName="PriorHistory"
+          />
+          <label class="form-check-label" for="abuse">
+            Prior history of physical or sexual abuse
+          </label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control mt-2"
+          placeholder="Details"
+          formControlName="PriorHistoryTxt"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-3">
+        <label class="form-label">Patient Behavior</label>
+      </div>
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control mt-2"
+          placeholder="Details"
+          formControlName="PatientBehavior"
+        />
+      </div>
+    </div>
+
+    <label class="fw-bold">Clinical justification for use of device</label>
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="injury"
+            formControlName="PreventInjury"
+          />
+          <label class="form-check-label" for="injury">Prevent Injury</label>
+        </div>
+      </div>
+      <div class="col-md-3 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="fallSelf"
+          formControlName="FallPreventionSelf"
+        />
+        <label class="form-check-label" for="fallSelf"
+          >Fall prevention to self</label
+        >
+      </div>
+      <div class="col-md-3 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="fallOthers"
+          formControlName="FallPreventionOthers"
+        />
+        <label class="form-check-label" for="fallOthers"
+          >Fall prevention to others</label
+        >
+      </div>
+      <div class="col-md-3 form-check">
+        <div class="d-flex">
+          <div class="d-flex">
+            <label style="width: 200px" class="form-check-label"
+              ><input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="Other"
+                (change)="toggleInput('Other', 'OtherTxt')"
+              />Other</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder=""
+              formControlName="OtherTxt"
+              [readOnly]="!nurseAssMainForm.get('Other')?.value"
+            /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="fw-bold">Reasons</h6>
+    <div class="row mb-3 ml-1">
+      <span class="form-check col-md-2 p-0">Reasons explained to patient</span>
+      <ng-select
+        [items]="reasonOptions"
+        bindLabel="label"
+        bindValue="value"
+        formControlName="ReasonsExplained"
+        placeholder="Select"
+        style="min-width: 200px"
+      >
+      </ng-select>
+      <input
+        class="col-md-6 ml-4 form-control"
+        type="text"
+        formControlName="ReasonsExplainedTxt"
+        [readonly]="nurseAssMainForm.get('ReasonsExplained')?.value != '0'"
+      />
+    </div>
+
+    <div class="row mb-3 ml-1">
+      <label class="form-label col-md-2 p-0"
+        >Reason for use of restraint given to</label
+      >
+      <div class="col-md-2 form-check ml-2">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="toPatient"
+          formControlName="ReasonUsePatient"
+        />
+        <label class="form-check-label" for="toPatient">Patient</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="toFamily"
+          formControlName="ReasonUseFamily"
+        />
+        <label class="form-check-label" for="toFamily">Family Member</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="toOther"
+          formControlName="ReasonUseOther"
+          (change)="toggleInput('ReasonUseOther', 'ReasonUseOtherTxt')"
+        />
+        <label class="form-check-label" for="toOther">Other</label>
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control wdth68"
+          placeholder="Specify"
+          formControlName="ReasonUseOtherTxt"
+          [readOnly]="!nurseAssMainForm.get('ReasonUseOther')?.value"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3 ml-1">
+      <label class="form-label form-label col-md-2 p-0 mr-2"
+        >Type of restraint</label
+      >
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="softBandage"
+          formControlName="TypeSoftBandage"
+        />
+        <label class="form-check-label" for="softBandage">Soft bandage</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="restraintKit"
+          formControlName="TypeRestraintKit"
+        />
+        <label class="form-check-label" for="restraintKit">Restraint Kit</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="typeOther"
+          formControlName="TypeOther"
+          (change)="toggleInput('TypeOther', 'TypeOtherTxt')"
+        />
+        <label class="form-check-label" for="typeOther">Other</label>
+      </div>
+      <div class="col-md-2 pr-0">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Specify"
+          formControlName="TypeOtherTxt"
+          [readOnly]="!nurseAssMainForm.get('TypeOther')?.value"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3 ml-1">
+      <label class="form-label col-md-2 p-0 mr-2"
+        >Site of restraint application</label
+      >
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="rightHand"
+          formControlName="SiteRightHand"
+        />
+        <label class="form-check-label" for="rightHand">Right Hand</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="leftHand"
+          formControlName="SiteLeftHand"
+        />
+        <label class="form-check-label" for="leftHand">Left Hand</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="rightFoot"
+          formControlName="SiteRightFoot"
+        />
+        <label class="form-check-label" for="rightFoot">Right Foot</label>
+      </div>
+      <div class="col-md-2 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="leftFoot"
+          formControlName="SiteLeftFoot"
+        />
+        <label class="form-check-label" for="leftFoot">Left Foot</label>
+      </div>
+      <div class="col-md-2 mr-2 mt-2"></div>
+      <div class="col-md-6 d-flex mt-2">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="rightFoot"
+          formControlName="SiteOther"
+          (change)="toggleInput('SiteOther', 'SiteOtherTxt')"
+        />
+        <label class="form-check-label mr-2" for="leftHand">Other</label>
+        <input
+          type="text"
+          class="form-control wdth68"
+          placeholder="Other site"
+          formControlName="SiteOtherTxt"
+          [readOnly]="!nurseAssMainForm.get('SiteOther')?.value"
+        />
+      </div>
+    </div>
+
+    <div class="mb-3 d-flex">
+      <label class="form-label col-md-2 p-0 mr-1"
+        >Less Restrictive Measure attempted</label
+      >
+      <input
+        type="text"
+        class="form-control col-md-8"
+        formControlName="LessRestrictive"
+      />
+    </div>
+
+    <div class="row ml-1">
+      <label class="form-label col-md-2 p-0 mr-2">Safety Measures</label>
+      <div class="col-md-3 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="searched"
+          formControlName="SearchedHarmful"
+        />
+        <label class="form-check-label" for="searched"
+          >Searched for harmful objects, removed</label
+        >
+      </div>
+      <div class="col-md-3 form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="beltShoes"
+          formControlName="BeltShoes"
+        />
+        <label class="form-check-label" for="beltShoes"
+          >Belt / Shoes removed</label
+        >
+      </div>
+    </div>
+  </div>
+  <div class="order-templete-main mt-3">
+    <div class="d-flex align-items-center justify-content-between">
+      <h5 for="">Assessment of Restraints</h5>
+      <div (click)="addNewConsumable()">
+        <img
+          title="Visits & Admissions Timeline"
+          src="assets/img/add-circle.svg"
+          class="ng-star-inserted"
+          width="30px"
+        />
+      </div>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th colspan="1" scope="col">
+            <div class="d-flex align-items-center">
+              <div class="position-relative label-with-check">
+                <input
+                  type="checkbox"
+                  class="position-absolute"
+                  formControlName="isAllSelected"
+                  (change)="isAllchecked($event)"
+                />
+                <span class="d-inline-block bg-white mr-2 align-bottom"></span>
+              </div>
+            </div>
+          </th>
+          <th colspan="2" scope="col">Date</th>
+          <th colspan="1" scope="col">Time</th>
+          <th colspan="1" scope="col">Respiratory Rate</th>
+          <th colspan="1" scope="col">Circulation</th>
+          <th colspan="1" scope="col">Care Given</th>
+          <th colspan="1" scope="col">Behaviour</th>
+          <th colspan="1" scope="col">Signture</th>
+          <th colspan="1" scope="col">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>Action</div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <ng-container formArrayName="TORESTRAINTS">
+        <tbody>
+          <ng-container
+            *ngFor="
+              let product of nurseAssMainForm.get('TORESTRAINTS')['controls'];
+              let i = index
+            "
+            [formGroupName]="i"
+          >
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="position-relative label-with-check">
+                    <input
+                      type="checkbox"
+                      class="position-absolute"
+                      formControlName="checkboxSelected"
+                      (change)="isSelectedItem()"
+                    />
+                    <span
+                      class="d-inline-block bg-white mr-2 align-bottom"
+                    ></span>
+                  </div>
+                </div>
+              </td>
+              <td colspan="2">
+                <div class="header-date">
+                  <span
+                    _ngcontent-ufq-c103=""
+                    style="
+                      position: relative;
+                      top: 30px;
+                      right: 30px;
+                      float: right;
+                      margin-top: -26px;
+                      font-size: 18px;
+                    "
+                  >
+                    <img src="assets/img/Calender.svg" alt="" />
+                  </span>
+                  <input
+                    class="form-control"
+                    style="color: #000; border-radius: 8px"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    readonly
+                    #dp="bsDatepicker"
+                    style="min-width: 200px"
+                    formControlName="Datee"
+                    readonly
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </td>
+              <td colspan="1">
+                <input
+                  type="time"
+                  class="form-control"
+                  step="2"
+                  formControlName="Timee"
+                  class="form-control"
+                  min="08:00:00"
+                  max="17:00:00"
+                />
+              </td>
+              <td colspan="1">
+                <input
+                  class="form-control"
+                  type="text"
+                  formControlName="RespiratoryRate"
+                  (keypress)="restrictToNumeric($event)"
+                />
+              </td>
+              <td colspan="1">
+                <ng-select
+                  [items]="circulationOptions"
+                  class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
+                  bindLabel="label"
+                  bindValue="value"
+                  formControlName="Circulation"
+                  placeholder="Select"
+                >
+                </ng-select>
+              </td>
+              <td colspan="1">
+                <ng-select
+                  [items]="careGivenOptions"
+                  class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
+                  bindLabel="label"
+                  bindValue="value"
+                  formControlName="CareGiven"
+                  placeholder="Select"
+                >
+                </ng-select>
+              </td>
+              <td colspan="1">
+                <ng-select
+                  [items]="behaviourOptions"
+                  class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
+                  bindLabel="label"
+                  bindValue="value"
+                  formControlName="Behaviour"
+                  placeholder="Select"
+                >
+                </ng-select>
+              </td>
+              <td colspan="1">
+                <input
+                  class="form-control"
+                  type="text"
+                  formControlName="Signature"
+                />
+              </td>
+              <td colspan="1">
+                <img
+                  [src]="'assets/img/Delete.svg'"
+                  class="all-notes cursor-pointer"
+                  (click)="removeRow($event, i)"
+                />
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </ng-container>
+    </table>
+  </div>
+</form>

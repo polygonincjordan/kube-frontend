@@ -146,6 +146,8 @@ import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentat
 import { TimeOutChecklistModule } from '../shared-module/time-out-checklist/time-out-checklist.module';
 import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
 import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
+import { NursAssessmentRestraintsComponent } from './nurs-treatment-workarea/patient-documentation/nurs-assessment-restraints/nurs-assessment-restraints.component';
+import { ListFilterPipe } from './list-filter.pipe';
 
 
 
@@ -256,7 +258,9 @@ const route: Routes = [
     PastMedicalComponent,
     FamilyHistoryComponent,
     ICBundlesComponent,
-    CvcMaintenanceComponent
+    CvcMaintenanceComponent,
+    NursAssessmentRestraintsComponent,
+    ListFilterPipe
   ],
   providers: [
     EmergencyService,
