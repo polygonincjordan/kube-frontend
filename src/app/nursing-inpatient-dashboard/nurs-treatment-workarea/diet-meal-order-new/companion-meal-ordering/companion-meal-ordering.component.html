@@ -259,7 +259,7 @@
             <tr *ngFor="let item of companionOrderList">
                 <td [title]="dateFormate(item?.Mealday)">{{ dateFormate(item?.Mealday) }}</td>
                 <td>{{ item.Dietconsistency }}</td>
-                <td>{{ item.Diettype }}</td>
+                <td style="text-wrap: auto !important;">{{ item.Diettype }}</td>
                 <td>{{ item.Quantity }}</td>
                 <td>{{ item.Servicestatustext }}</td>
                 <td>{{ item.Comments }}</td>

@@ -203,7 +203,13 @@ export class FamilyHistoryComponent implements OnInit {
   resetFamilyHistroyForm(): void {
     this.initForm();
   }
+
+  selectCheckBox(formFieldName: string) {
+
+  }
   saveFamilyHistroyForm() {
+    console.log(this.updateSurgForm.value)
+
     if (this.isRiskUpdate) {
       const payload = this.updateSurgForm.value;
       this.patientHistory.updateFamilyHistory(payload).subscribe({
@@ -353,12 +359,14 @@ export class FamilyHistoryComponent implements OnInit {
       if (!checked) {
         this.f[key].enable();
       } else {
-        this.f[key].disable();
+        if(key != 'NoFamilyHistory') {
+          this.f[key].disable();
+        }
       }
     });
   }
    // convenience getter for easy access to form fields
    get f() {
-    return this.registerForm.controls;
+    return this.updateSurgForm.controls;
   }
 }

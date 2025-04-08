@@ -17,6 +17,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 })
 export class ProgressNoteListComponent implements OnInit {
   @Input() ProgressNotesList: any;
+  @Input() searchString: any;
   progressNoteTextInfoModal: any;
   modalRef: BsModalRef;
   modalRefForDelete:BsModalRef;

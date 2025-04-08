@@ -60,14 +60,14 @@ padding: 10px;">
             <ng-option *ngFor="let category of categoryList" [value]="category.CatId">{{ category.CatText }}</ng-option>
           </ng-select>
         </div>
-        <div class="header-template">
+        <!-- <div class="header-template">
           <ng-select (change)="onTempleteSelect()" [ngModelOptions]="{standalone: true}" [(ngModel)]="templteContent"
             placeholder="Template">
             <ng-option *ngFor="let data of templateList" [value]="data">{{
               data.Keyword
               }}</ng-option>
           </ng-select>
-        </div>
+        </div> -->
         <div class="header-btn" (click)="cancelProgressNote()">
           <button type="button" class="create-progress">
             Cancel
@@ -88,6 +88,7 @@ padding: 10px;">
   <div class="progress-notes-list">
     <app-progress-note-list (copyProgressNotes)="copyProgressNotesEvent($event)"
       (reloadPhyOrderList)="reloadPhyOrderListEvent($event)"
-      [ProgressNotesList]="ProgressNotesList | filter : searchString"></app-progress-note-list>
+      [ProgressNotesList]="ProgressNotesList" [searchString]="searchString"></app-progress-note-list>
   </div>
 </div>
+{{searchString}}

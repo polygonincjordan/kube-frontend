@@ -20,14 +20,10 @@
             <input class="col-md-1" type="text" [disabled]="true" [value]="genderDetails"/>
         </div> -->
 
-        <div class="row d-flex">
+        <!-- <div class="row d-flex">
             <label class="col-md-2 p-0">Days since admission</label>
             <input class="col-md-1" type="text" [disabled]="true"/>
-            <!-- <div class="col-md-2 p-0"></div>
-            <div class="col-md-2"></div>
-            <label class="col-md-1 p-0 mrleft10">Case</label>
-            <input class="col-md-1 mrlrft13" type="text" [disabled]="true" [value]="this.storageService?.patientData?.case" /> -->
-        </div>
+        </div> -->
     </div>
     <!--Step - 2-->
     <div class="uninery-cath">
@@ -100,7 +96,7 @@
             <div class="col-md-10 p-0 d-flex">
                 <h6>Ultrasound Used During Insertion?</h6>
             </div>
-            <div>
+            <div class="radio-group">
                 <label><input type="radio" value="0" formControlName="UltrasoundUsed"> Yes</label><br>
                 <label><input type="radio" value="1" formControlName="UltrasoundUsed"> No</label>
                 <div class="d-flex">
@@ -138,14 +134,16 @@
                 <h6 class="">The operator and supervisor/assistant performed hand hygiene. <br>
                     Hand washing with antimicrobial soap and water or with an alcohol-based hand rub</h6>
             </div>
-            <div class="radio-group">
-                <label><input type="radio" name="Cvc1" value="0" formControlName="Cvc1"> Yes</label><br>
-                <label><input type="radio" name="Cvc1" value="1" formControlName="Cvc1"> No</label>
-                <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc1" value="2" formControlName="Cvc1">
-                        Not
-                        Applicable</label>
-                    <input type="text" formControlName="Cvc1Txt"><br>
+            <div class="left-section d-flex ml-3">
+                <div class="radio-group">
+                    <label><input type="radio" name="Cvc1" value="0" formControlName="Cvc1" (change)="calculateComplianceScore()" > Yes</label>
+                    <label><input type="radio" name="Cvc1" value="1" formControlName="Cvc1" (change)="calculateComplianceScore()" > No</label>
+                    <div class="d-flex">
+                        <label style="width: 200px;"><input type="radio" name="Cvc1" value="2" formControlName="Cvc1" (change)="calculateComplianceScore()" >
+                            Not
+                            Applicable</label>
+                        <input type="text" formControlName="Cvc1Txt"><br>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,22 +158,22 @@
 
     <!--Step - 5-->
     <div class="container mt-5">
-        <!-- Left Section -->
-        <div class="left-section d-flex">
-            <div class="col-md-12 p-0 d-flex">
-                <span style="position: relative; top: -3px; right: 3px;">2. </span>
+        <div class="col-md-6 ml-3 p-0 d-flex">
+            <span style="position: relative; top: -3px; right: 3px;">2. </span>
                 <h6 class="">Maximal sterile barrier precautions. </h6>
-            </div>
+        </div>
+        <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="Cvc2" value="0" formControlName="Cvc2"> Yes</label><br>
-                <label><input type="radio" name="Cvc2" value="1" formControlName="Cvc2"> No</label>
+                <label><input type="radio" name="Cvc2" value="0" formControlName="Cvc2" (change)="calculateComplianceScore()"> Yes</label>
+                <label><input type="radio" name="Cvc2" value="1" formControlName="Cvc2" (change)="calculateComplianceScore()"> No</label>
                 <div class="d-flex">
                     <label style="width: 200px;">
-                        <input type="radio" name="Cvc2" value="2" formControlName="Cvc2"> Not Applicable</label>
+                        <input type="radio" name="Cvc2" value="2" formControlName="Cvc2" (change)="calculateComplianceScore()"> Not Applicable</label>
                     <input type="text" formControlName="Cvc2Txt" /><br>
                 </div>
             </div>
         </div>
+        <div class="right-section"></div>
     </div>
     <!--1-->
     <div class="container mt-5">
@@ -186,10 +184,10 @@
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="Cvc21" value="0" formControlName="Cvc21" /> Yes</label><br>
-                <label><input type="radio" name="Cvc21" value="1" formControlName="Cvc21" /> No</label>
+                <label><input type="radio" name="Cvc21" value="0" formControlName="Cvc21" (change)="calculateComplianceScore()" /> Yes</label>
+                <label><input type="radio" name="Cvc21" value="1" formControlName="Cvc21" (change)="calculateComplianceScore()" /> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc21" value="2" formControlName="Cvc21">
+                    <label style="width: 200px;"><input type="radio" name="Cvc21" value="2" formControlName="Cvc21" (change)="calculateComplianceScore()">
                         Not
                         Applicable</label>
                     <input type="text" formControlName="Cvc21Txt" /><br>
@@ -207,10 +205,10 @@
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="Cvc22" value="0" formControlName="Cvc22"> Yes</label><br>
-                <label><input type="radio" name="Cvc22" value="1" formControlName="Cvc22"> No</label>
+                <label><input type="radio" name="Cvc22" value="0" formControlName="Cvc22" (change)="calculateComplianceScore()"> Yes</label>
+                <label><input type="radio" name="Cvc22" value="1" formControlName="Cvc22" (change)="calculateComplianceScore()"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc22" value="2" formControlName="Cvc22">
+                    <label style="width: 200px;"><input type="radio" name="Cvc22" value="2" formControlName="Cvc22" (change)="calculateComplianceScore()">
                         Not
                         Applicable</label>
                     <input type="text" formControlName="Cvc22Txt"><br>
@@ -228,10 +226,10 @@
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="Cvc23" value="0" formControlName="Cvc23"> Yes</label><br>
-                <label><input type="radio" name="Cvc23" value="1" formControlName="Cvc23"> No</label>
+                <label><input type="radio" name="Cvc23" value="0" formControlName="Cvc23" (change)="calculateComplianceScore()"> Yes</label>
+                <label><input type="radio" name="Cvc23" value="1" formControlName="Cvc23" (change)="calculateComplianceScore()"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc23" value="2" formControlName="Cvc23">
+                    <label style="width: 200px;"><input type="radio" name="Cvc23" value="2" formControlName="Cvc23" (change)="calculateComplianceScore()">
                         Not
                         Applicable</label>
                     <input type="text" formControlName="Cvc23Txt" /><br>
@@ -249,10 +247,10 @@
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="Cvc24" value="0" formControlName="Cvc24"> Yes</label><br>
-                <label><input type="radio" name="Cvc24" value="1" formControlName="Cvc24"> No</label>
+                <label><input type="radio" name="Cvc24" value="0" formControlName="Cvc24" (change)="calculateComplianceScore()"> Yes</label>
+                <label><input type="radio" name="Cvc24" value="1" formControlName="Cvc24" (change)="calculateComplianceScore()"> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc24" value="2" formControlName="Cvc24">
+                    <label style="width: 200px;"><input type="radio" name="Cvc24" value="2" formControlName="Cvc24" (change)="calculateComplianceScore()">
                         Not
                         Applicable</label>
                     <input type="text" formControlName="Cvc24Txt" /><br>
@@ -270,10 +268,10 @@
         </div>
         <div class="left-section d-flex ml-3">
             <div class="radio-group">
-                <label><input type="radio" name="Cvc25" value="0" formControlName="Cvc25" /> Yes</label><br>
-                <label><input type="radio" name="Cvc25" value="1" formControlName="Cvc25" /> No</label>
+                <label><input type="radio" name="Cvc25" value="0" formControlName="Cvc25" (change)="calculateComplianceScore()" /> Yes</label>
+                <label><input type="radio" name="Cvc25" value="1" formControlName="Cvc25" (change)="calculateComplianceScore()" /> No</label>
                 <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc25" value="2" formControlName="Cvc25" />
+                    <label style="width: 200px;"><input type="radio" name="Cvc25" value="2" formControlName="Cvc25" (change)="calculateComplianceScore()" />
                         Not
                         Applicable</label>
                     <input type="text" formControlName="Cvc25Txt" /><br>
@@ -297,62 +295,71 @@
                 <h6 class="">Skin prepration was performed according to the policy using: </h6>
             </div>
         </div>
-        <div class="d-flex">
-            <span class="col-md-5 ml-3">
-                A concenntration of 2% chlorhelxidine in alcohol for adults, prediatric and <br>
-                neonate > 2 weeks for weighing > 1500 gr at instertion and dressing changes.
-            </span>
-            <div class="radio-group">
-                <label><input type="radio" name="Cvc3Skin" value="0" formControlName="Cvc3Skin"> Yes</label><br>
-                <label><input type="radio" name="Cvc3Skin" value="1" formControlName="Cvc3Skin"> No</label>
-                <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc3Skin" value="2"
-                            formControlName="Cvc3Skin">
-                        Not
-                        Applicable</label>
-                    <input type="text" formControlName="Cvc3SkinTxt"><br>
+        <div class="container">
+            <div class="col-md-6 ml-3 p-0 d-flex">
+                <span class="col-md-10 ml-3">
+                    A concenntration of 2% chlorhelxidine in alcohol for adults, prediatric and <br>
+                    neonate > 2 weeks for weighing > 1500 gr at instertion and dressing changes.
+                    <span class="col-md-10 ml-3">
+                        A preparation containing a concentration of 2% aqueous chlorhelxidine <br>
+                        for neonates < 2 weeks weighing < 1500 gr. </span>
+                </span>
+            </div>
+            <div class="left-section d-flex ml-3">
+                <div class="radio-group">
+                    <label><input type="radio" name="Cvc3Skin" value="0" formControlName="Cvc3Skin" (change)="calculateComplianceScore()"> Yes</label>
+                    <label><input type="radio" name="Cvc3Skin" value="1" formControlName="Cvc3Skin" (change)="calculateComplianceScore()"> No</label>
+                    <div class="d-flex">
+                        <label style="width: 200px;"><input type="radio" name="Cvc3Skin" value="2"
+                                formControlName="Cvc3Skin" (change)="calculateComplianceScore()">
+                            Not
+                            Applicable</label>
+                        <input type="text" formControlName="Cvc3SkinTxt"><br>
+                    </div>
                 </div>
             </div>
+            <div class="right-section"></div>
         </div>
-        <div class="d-flex">
-            <span class="col-md-5 ml-3">
-                A preparation containing a concentration of 2% aqueous chlorhelxidine <br>
-                for neonates < 2 weeks weighing < 1500 gr. </span>
-        </div>
-
-        <div class="d-flex mt-4">
-            <span class="col-md-5 ml-3">
-                <input type="checkbox" name="txt" formControlName="Cvc3Contraindication" readonly/>
-                Contraindication / Allergy to chlorhexidine?
-            </span>
-            <div class="radio-group">
-                <label><input type="radio" name="Cvc3Contraindication1" value="0"
-                        formControlName="Cvc3Contraindication1"> Tincture
+        <div class="container mt-3">
+            <div class="col-md-6 ml-3 p-0 d-flex">
+                <span class="col-md-10 ml-3">
+                    <input type="checkbox" name="txt" formControlName="Cvc3Contraindication" (change)="changeDisabledchlorhexidine()"/> Contraindication / Allergy to chlorhexidine?
+                </span>
+            </div>
+            <div class="left-section d-flex ml-3">
+                <div class="radio-group">
+                    <label><input type="radio" formControlName="Cvc3Contraindication1"  [value]="'0'" [disabled]="!cvcInsertionForm.get('Cvc3Contraindication')?.value"> Tincture
                     of
-                    iodine</label><br>
-                <label><input type="radio" name="Cvc3Contraindication1" value="1"
-                        formControlName="Cvc3Contraindication1">
-                    iodophor</label><br>
-                <label style="width: 200px;"><input type="radio" name="Cvc3Contraindication1" value="2"
-                        formControlName="Cvc3Contraindication1"> 70%
+                    iodine</label>
+                <label><input type="radio" formControlName="Cvc3Contraindication1" [value]="'1'" [disabled]="!cvcInsertionForm.get('Cvc3Contraindication')?.value">
+                    iodophor</label>
+                <label style="width: 200px;"><input type="radio" formControlName="Cvc3Contraindication1" [value]="'2'" [disabled]="!cvcInsertionForm.get('Cvc3Contraindication')?.value"> 70%
                     alcohol</label>
+                </div>
             </div>
+            <div class="right-section"></div>
         </div>
 
-        <div class="d-flex mt-4">
-            <span class="col-md-5 ml-3">
-                Antiseptic allowed to dry before making the skin puncture.
-            </span>
-            <div class="radio-group">
-                <label><input type="radio" name="Cvc3Antiseptic" value="0" formControlName="Cvc3Antiseptic">
-                    Yes</label><br>
-                <label><input type="radio" name="Cvc3Antiseptic" value="1" formControlName="Cvc3Antiseptic">
-                    No</label><br>
-                <label style="width: 200px;"><input type="radio" name="Cvc3Antiseptic" value="2"
-                        formControlName="Cvc3Antiseptic"> Not
-                    Applicable</label>
-                <input type="text" formControlName="Cvc3AntisepticTxt"><br>
+        <div class="container mt-3">
+            <div class="col-md-6 ml-3 p-0 d-flex">
+                <span class="col-md-10 ml-3">
+                    Antiseptic allowed to dry before making the skin puncture.
+                </span>
             </div>
+            <div class="left-section d-flex ml-3">
+                <div class="radio-group">
+                    <label><input type="radio" name="Cvc3Antiseptic" value="0" formControlName="Cvc3Antiseptic" (change)="calculateComplianceScore()"> Yes</label>
+                    <label><input type="radio" name="Cvc3Antiseptic" value="1" formControlName="Cvc3Antiseptic" (change)="calculateComplianceScore()"> No</label>
+                    <div class="d-flex">
+                        <label style="width: 200px;"><input type="radio" name="Cvc3Antiseptic" value="2"
+                                formControlName="Cvc3Antiseptic" (change)="calculateComplianceScore()">
+                            Not
+                            Applicable</label>
+                            <input type="text" formControlName="Cvc3AntisepticTxt"><br>
+                    </div>
+                </div>
+            </div>
+            <div class="right-section"></div>
         </div>
     </div>
 
@@ -373,25 +380,29 @@
                 <h6>Optimal catheter site selection. <br></h6>
             </div>
         </div>
-        <div class="ml-3 d-flex">
-            <span>Use of a subclavian site in adult parents rather then a jugular or <br>
-                a femoral site. <br>
-                Avoid using the femoral vein in adult patients. <br>
-                In Prediatric patients, site selection is based on physician preference.
-            </span>
-            <div class="radio-group">
-                <label><input type="radio" name="Cvc4OptimalCatheter" value="0" formControlName="Cvc4OptimalCatheter">
-                    Yes</label><br>
-                <label><input type="radio" name="Cvc4OptimalCatheter" value="1" formControlName="Cvc4OptimalCatheter">
-                    No</label>
-                <div class="d-flex">
-                    <label style="width: 200px;"><input type="radio" name="Cvc4OptimalCatheter" value="2"
-                            formControlName="Cvc4OptimalCatheter">
-                        Not
-                        Applicable</label>
-                    <input type="text" formControlName="Cvc4OptimalCatheterTxt"><br>
+        <div class="container mt-3">
+            <div class="col-md-6 ml-3 p-0 d-flex">
+                <span class="col-md-10 ml-3">
+                    Use of a subclavian site in adult parents rather then a jugular or <br>
+                        a femoral site. <br>
+                        Avoid using the femoral vein in adult patients. <br>
+                        In Prediatric patients, site selection is based on physician preference.
+                </span>
+            </div>
+            <div class="left-section d-flex ml-3">
+                <div class="radio-group">
+                    <label><input type="radio" name="Cvc4OptimalCatheter" value="0" formControlName="Cvc4OptimalCatheter" (change)="calculateComplianceScore()"> Yes</label>
+                    <label><input type="radio" name="Cvc4OptimalCatheter" value="1" formControlName="Cvc4OptimalCatheter" (change)="calculateComplianceScore()"> No</label>
+                    <div class="d-flex">
+                        <label style="width: 200px;"><input type="radio" name="Cvc4OptimalCatheter" value="2"
+                                formControlName="Cvc4OptimalCatheter" (change)="calculateComplianceScore()">
+                            Not
+                            Applicable</label>
+                            <input type="text" formControlName="Cvc4OptimalCatheterTxt"><br>
+                    </div>
                 </div>
             </div>
+            <div class="right-section"></div>
         </div>
     </div>
 
@@ -409,24 +420,24 @@
     </div>
 
     <div class="row mb-2">
-        <span class="col-md-3 p-0">Any Complications during insertion : </span>
+        <span class="col-md-2 p-0">Any Complications during insertion : </span>
         <input class="col-md-4 p-0" type="text" formControlName="AnyComplications" />
     </div>
 
     <div class="row mb-2">
-        <span class="col-md-3 p-0">Number of insertion trials (skin punctures) </span>
-        <div>
+        <span class="col-md-2 p-0">Number of insertion trials (skin punctures) </span>
+        <div class="d-flex align-items-center">
             <input type="checkbox" class="mr-1" id="one" formControlName="InsertionTrials1">
-            <label for="one">1</label>
+            <label class="m-0 ml-2" for="one">1</label>
 
             <input type="checkbox" class="mr-1" id="two" formControlName="InsertionTrials2">
-            <label for="two">2</label>
+            <label class="m-0 ml-2" for="two">2</label>
 
             <input type="checkbox" class="mr-1" id="three" formControlName="InsertionTrials3">
-            <label for="three">3</label>
+            <label class="m-0 ml-2" for="three">3</label>
 
             <input type="checkbox" class="mr-1" id="four" formControlName="InsertionTrials4">
-            <label for="four">≥4</label>
+            <label class="m-0 ml-2" for="four">≥4</label>
         </div>
     </div>
 

@@ -53,7 +53,7 @@
         <div class="col-md-12">
           <div style="border-radius: 6px;
             padding: 5px 10px;">
-            <div class="form-check form-check-inline" [formGroup]="registerForm">
+            <div class="form-check form-check-inline">
               
               <div class="d-flex align-items-center position-relative  mr-1" >
             <!-- <input type="text" class="form-control" placeholder="Problem" style="height: 33px;"formControlName="Problem" (dblclick)="openCommonModal(commonColModal)" (keyup.enter)="openCommonModal(commonColModal)"  > -->
@@ -62,7 +62,7 @@
               </div>
               
               <div class="form-check" >
-                <input class="form-check-input" type="checkbox" value="" formControlName="Father"
+                <input class="form-check-input" type="checkbox" [value]="false" formControlName="Father" (change)="selectCheckBox('Father')"
                 >
                 <label class="form-check-label" >
                   Father
@@ -70,7 +70,7 @@
               </div>
               
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" formControlName="Mother"
+                <input class="form-check-input" type="checkbox" [value]="false" formControlName="Mother" (change)="selectCheckBox('Mother')"
                 >
                 <label class="form-check-label" >
                   Mother
@@ -78,7 +78,7 @@
               </div>
               
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" formControlName="Brother"
+                <input class="form-check-input" type="checkbox" [value]="false" formControlName="Brother" (change)="selectCheckBox('Brother')"
                 >
                 <label class="form-check-label" >
                   Brother
@@ -86,7 +86,7 @@
               </div>
               
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" formControlName="Sister"
+                <input class="form-check-input" type="checkbox" [value]="false" formControlName="Sister" (change)="selectCheckBox('Sister')"
                 >
                 <label class="form-check-label" >
                   Sister
@@ -94,19 +94,19 @@
               </div>
               
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" formControlName="Son">
+                <input class="form-check-input" type="checkbox" [value]="false" formControlName="Son" (change)="selectCheckBox('Son')">
                 <label class="form-check-label" >
                   Child
                 </label>
               </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" formControlName="Paternal">
+                  <input class="form-check-input" type="checkbox" [value]="false" formControlName="Paternal" (change)="selectCheckBox('Paternal')">
                   <label class="form-check-label">
                     Paternal
                   </label>
                 </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" formControlName="Maternal">
+                    <input class="form-check-input" type="checkbox" [value]="false" formControlName="Maternal" (change)="selectCheckBox('Maternal')">
                     <label class="form-check-label">
                       Maternal
                     </label>
@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <div [formGroup]="registerForm" style="display: flex;align-items: center;justify-content: space-between;">
+      <div style="display: flex;align-items: center;justify-content: space-between;">
         <div class="d-flex align-items-center position-relative " style="left:9px; width: 373px;">
         <input type="text" class="form-control" style="
         height: 33px;"
