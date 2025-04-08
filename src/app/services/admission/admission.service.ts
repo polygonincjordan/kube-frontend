@@ -1499,6 +1499,24 @@ export class AdmissionService {
       })
     );
   }
+  getCriticalPainDetail(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getCriticalPainDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+  ToGetFieldValues(Zindicator) {
+    return this.http.get(`${environment.eKardexApiUrl}/ToGetFieldValues?Zindicator=${Zindicator}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
   getNicuDocument(Dockey) {
     return this.http.get(`${environment.eKardexApiUrl}/getNicuDocument?Dockey=${Dockey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
@@ -1529,6 +1547,12 @@ export class AdmissionService {
   }
   createNurseAssMainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createNurseAssMainDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    }); 
+  }
+  createCriticalPainDoc(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createCriticalPainDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
     }); 

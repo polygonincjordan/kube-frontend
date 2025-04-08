@@ -80,7 +80,8 @@ export enum RedirectionType {
   NEWBORN$ = 'NEWBORN$',
   Bundles$ = 'Bundles$',
   CvcMain$ = 'CvcMain$',
-  NurseAssRes$ = 'NurseAssRes$'
+  NurseAssRes$ = 'NurseAssRes$',
+  Critical$ = 'Critical$'
 }
 
 export enum AssessmentType {

@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 12px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes &&!openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument">
         <div class="search-functionality col-md-2 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCvcMain || openNurseAssRes || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument || openCVCInsertionDocument"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCvcMain || openNurseAssRes || openCriticalPain || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument || openCVCInsertionDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -103,6 +103,11 @@
           </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nurse Assessment for Restraints'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleasedNurseAssMain()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Critical Care Pain Observation Tool'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedCriticalCarePain()">
               Release
             </button>
           </div>
@@ -199,7 +204,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -314,6 +319,27 @@
                   *ngIf="nurseAssMainList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseAssMainList[0]?.Dockey, nurseAssMainList[0])">
                     <select *ngIf="nurseAssMainList.length && nurseAssMainList[0]?.StatusTxt !='N/A' && nurseAssMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Critical Care Pain Observation Tool -->
+            <div [ngClass]="isCriticalPain ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isCriticalPain',CriticalPainList[0])">
+              <div class="col-md-4">Critical Care Pain Observation Tool {{CriticalPainList[0]?.Zversion ?
+                dockVer(CriticalPainList[0]?.Zversion) : ''}} :</div>
+              <div class="col-md-2 status-color">{{CriticalPainList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(CriticalPainList[0]?.DocTime)}}">
+                {{getDate(CriticalPainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{CriticalPainList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openCriticalPainPdf(CriticalPainList[0]?.Dockey)"
+                  *ngIf="CriticalPainList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(CriticalPainList[0]?.Dockey, CriticalPainList[0])">
+                    <select *ngIf="CriticalPainList.length && CriticalPainList[0]?.StatusTxt !='N/A' && CriticalPainList[0]?.Zversion != '00'" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -806,10 +832,10 @@
           </div>
           <div class="scrollable-div" [style.height.px]="getContentHeight()">
             <div class="m-0" style=" justify-content: right;"
-              *ngFor="let item of sortedDocuments">
+              *ngFor="let item of sortedDocuments| listFilter:searchString">
               <div class="mt-3 pl-2" style="width: 100px; font-weight: bold; color: #00008B;">{{ item.date | date: "dd-MM-y" }}</div>
               <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
-                *ngFor="let member of item.documents | listFilter:searchString;">
+                *ngFor="let member of item.documents ">
                 <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">
                   <div>
                     {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}} :
@@ -844,6 +870,7 @@
     <app-ic-bundles *ngIf="openBundles" (successEvent)="reloadDoc($event)"></app-ic-bundles>
     <app-cvc-maintenance *ngIf="openCvcMain" (successEvent)="reloadDoc($event)"></app-cvc-maintenance>
     <app-nurs-assessment-restraints *ngIf="openNurseAssRes" (successEvent)="reloadDoc($event)"></app-nurs-assessment-restraints>
+    <app-critical-care-pain *ngIf="openCriticalPain" (successEvent)="reloadDoc($event)"></app-critical-care-pain>
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>

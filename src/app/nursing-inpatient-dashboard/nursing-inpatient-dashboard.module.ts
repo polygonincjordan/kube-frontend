@@ -148,6 +148,7 @@ import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion
 import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
 import { NursAssessmentRestraintsComponent } from './nurs-treatment-workarea/patient-documentation/nurs-assessment-restraints/nurs-assessment-restraints.component';
 import { ListFilterPipe } from './list-filter.pipe';
+import { CriticalCarePainComponent } from './nurs-treatment-workarea/patient-documentation/critical-care-pain/critical-care-pain.component';
 
 
 
@@ -260,7 +261,8 @@ const route: Routes = [
     ICBundlesComponent,
     CvcMaintenanceComponent,
     NursAssessmentRestraintsComponent,
-    ListFilterPipe
+    ListFilterPipe,
+    CriticalCarePainComponent
   ],
   providers: [
     EmergencyService,

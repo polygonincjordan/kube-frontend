@@ -5,26 +5,21 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ListFilterPipe implements PipeTransform {
 
-  transform(items: any[], searchText: string): any[] {
-    if (!items) return [];
-    if (!searchText) return items;
+  transform(groups: any[], searchText: string): any[] {
+    if (!searchText) return groups;
 
     searchText = searchText.toLowerCase();
 
-    return items.filter(item => {
-      // Choose which fields to search in (e.g., Dktxt, DtidText, MitarbName, etc.)
-      const dktxt = (item?.Dktxt || '').toLowerCase();
-      const dtidText = (item?.DtidText || '').toLowerCase();
-      const mitarbName = (item?.MitarbName || '').toLowerCase();
-      const DokstText = (item?.DokstText || '').toLowerCase();
-      
-      // Match if search string is in any of the selected fields
-      return (
-        dktxt.includes(searchText) ||
-        dtidText.includes(searchText) ||
-        mitarbName.includes(searchText) ||
-        DokstText.includes(searchText)
-      );
-    });
+    return groups
+      .map(group => {
+        const filteredDocs = group.documents.filter(doc =>
+          doc.Dktxt?.toLowerCase().includes(searchText) ||
+          doc.DtidText?.toLowerCase().includes(searchText) ||
+          doc.DokstText?.toLowerCase().includes(searchText) ||
+          doc.MitarbName?.toLowerCase().includes(searchText) 
+        );
+        return filteredDocs.length ? { ...group, documents: filteredDocs } : null;
+      })
+      .filter(group => group !== null);
   }
 }

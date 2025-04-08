@@ -330,7 +330,7 @@
     <!--Step-6-->
     <div class="row">
         <label class="col-md-2 p-0">CAUTI Prevention score</label>
-        <input class="col-md-3 p-0 form-control" type="text"  formControlName="UcmCautiPreventionScore" (keypress)="restrictToNumeric($event)"/>
+        <input class="col-md-3 p-0 form-control" type="text"  formControlName="UcmCautiPreventionScore" (keypress)="restrictToNumeric($event)" readonly/>
         <div *ngIf="isInvalid('BirthWeight')" class="invalid-feedback">Invalid value</div>
     </div>
     
