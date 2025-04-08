@@ -61,6 +61,12 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+  getCriticalPainPdf(dockey: string) {
+    const url = `${this.url}getCriticalPainPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
 
   // Nursing Care Plan Document
   createNursingCarePlan(json): Observable<any> {

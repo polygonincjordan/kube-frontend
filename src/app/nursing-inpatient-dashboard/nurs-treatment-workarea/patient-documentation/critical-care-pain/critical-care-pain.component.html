@@ -1,0 +1,75 @@
+<form [formGroup]="criticalForm">
+  <div class="scale-container p-2">
+    <h6 class="scale-result">Scale Information</h6>
+    <div class="row">
+      <label>Scale Name</label>
+      <input class="col-md-5 form-control" type="text" value="Critical Care Pain Observation Tool" />
+    </div>
+    <div class="row">
+      <label>Date</label>
+      <input type="text" class="col-2 form-control" bsDatepicker
+      [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
+      [bsValue]="CurrentDateAndTime" disabled>
+  <input type="text" class="col-2 form-control ml-2" bsDatepicker
+      [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"
+      [bsValue]="CurrentDateAndTime" disabled>
+    </div>
+    <div class="row">
+      <label>Realized by </label>
+      <input class="col-md-3 form-control" type="text"  [value]="realized" disabled/>
+      <input class="col-md-5 form-control ml-2" type="text"  [value]="realizedDescription" disabled/>
+    </div>
+
+    <h6 class="scale-result">Critical Care Pain Observation Tool</h6>
+    <div class="row">
+      <label class="col-md-2 p-0">Facial Expressions</label>
+      <ng-select  class="col-md-4 p-0" [items]="facialList" bindLabel="Descr" bindValue="Descr"  formControlName="FacialExpressions">
+      </ng-select>
+    </div>
+    <div class="row">
+      <label class="col-md-2 p-0">Body Movements</label>
+      <ng-select  class="col-md-4 p-0" [items]="bodyList" bindLabel="Descr" bindValue="Descr"  formControlName="BodyMovements">
+      </ng-select>
+    </div>
+    <div class="row">
+      <label class="col-md-2 p-0">Muscle Tension</label>
+      <ng-select  class="col-md-4 p-0" [items]="musicList" bindLabel="Descr" bindValue="Descr"  formControlName="MuscleTension">
+      </ng-select>
+    </div>
+    <div class="row">
+      <label class="col-md-2 p-0 mb-2"
+        >( Evalute w/ passive flexion /extention of arms ) <br />
+        Ventilation</label
+      >
+      <ng-select  class="col-md-4 p-0" [items]="ventilationList" bindLabel="Descr" bindValue="Descr"  formControlName="Ventilation">
+      </ng-select>
+    </div>
+    <div class="row">
+      <label class="col-md-2 p-0">Vocalization (if extubated)</label>
+      <ng-select  class="col-md-4 p-0" [items]="VocalizationList" bindLabel="Descr" bindValue="Descr"  formControlName="Vocalization">
+      </ng-select>
+    </div>
+    <div class="row">
+      <label class="col-md-2 p-0">Pain with Movement</label>
+      <ng-select  class="col-md-4 p-0" [items]="painList" bindLabel="Descr" bindValue="Descr"  formControlName="PainMovement">
+      </ng-select>
+    </div>
+    <p>
+      Evidence of pain (e.g. above behavior or individualized response) while
+      providing usual care (e.g. turning)
+    </p>
+  </div>
+
+  <div class="p-2">
+    <h6 class="scale-result">Scale Result</h6>
+    <div class="row">
+      <label>Total Score</label>
+      <input class="col-md-1 form-control" type="text"  formControlName="TotalScore"/>
+    </div>
+
+    <div class="row">
+      <label>Comments</label>
+      <input class="col-md-6 form-control" type="text"  formControlName="Comments"/>
+    </div>
+  </div>
+</form>

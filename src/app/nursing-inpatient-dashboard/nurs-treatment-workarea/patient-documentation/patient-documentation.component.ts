@@ -46,6 +46,7 @@ import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-d
 import { CvcInsertionComponent } from 'src/app/shared-module/cvc-insertion/cvc-insertion.component';
 import { CvcMaintenanceComponent } from './cvc-maintenance/cvc-maintenance.component';
 import { NursAssessmentRestraintsComponent } from './nurs-assessment-restraints/nurs-assessment-restraints.component';
+import { CriticalCarePainComponent } from './critical-care-pain/critical-care-pain.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -66,6 +67,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(NursingAssessmentComponent) NursingAssessmentComp: NursingAssessmentComponent;
+  @ViewChild(CriticalCarePainComponent) CriticalCarePainComp: CriticalCarePainComponent;
   @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
   @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
@@ -112,6 +114,7 @@ export class PatientDocumentationComponent implements OnInit {
   public isNewBundles: boolean = false;
   public isCvcMain: boolean = false;
   public isNurseAssRes: boolean = false;
+  public isCriticalPain: boolean = false;
   public isEducationAssement: boolean = false;
   public isNursingCarePlan: boolean = false;
   public isNursingDischarge: boolean = false;
@@ -177,6 +180,7 @@ export class PatientDocumentationComponent implements OnInit {
   bundlesList = []
   cvcMainList = []
   nurseAssMainList = []
+  CriticalPainList = []
   educationAssList = [];
   documentTypeFilter = []
   createDate: any;
@@ -213,6 +217,7 @@ export class PatientDocumentationComponent implements OnInit {
   openBundles : boolean = false;
   openCvcMain : boolean = false;
   openNurseAssRes : boolean = false;
+  openCriticalPain : boolean = false;
   openNursingCarePlans: boolean = false;
   openDischargeSummery: boolean = false;
   openPreCardiacCath: boolean = false;
@@ -317,6 +322,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
     this.getNurseAssMainDoc();
+    this.getCriticalPainDoc();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
     this.getNursingAssessmentDocDetails();
@@ -493,6 +499,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getNurseAssMainDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.nurseAssMainList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getCriticalPainDoc() {
+    this.emergencyService.getCriticalPainDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.CriticalPainList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -957,6 +975,14 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.NurseAssRes$) {
       this.getPatientProfileData(this.nurseAssMainList[0]);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isCriticalPain', this.CriticalPainList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isCriticalPain', this.CriticalPainList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.getPatientProfileData(this.CriticalPainList[0]);
     }
     this.dayCaseDashboardService.isRedirectToSelectedDoc = false;
   }
@@ -974,6 +1000,7 @@ export class PatientDocumentationComponent implements OnInit {
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
+      'isCriticalPain': { isCriticalPain: true, selectedDocName: 'Critical Care Pain Observation Tool' },
       'isNewBorn': { isNewBorn: true, selectedDocName: 'Newborn Physician Assessment Doc' },
       'isNewBundles': { isNewBundles: true, selectedDocName: 'IC Bundles for Urinary Catheter' },
       'isCvcMain': { isCvcMain: true, selectedDocName: 'IC Bundles for CVC Maintenance' },
@@ -1012,6 +1039,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNewBundles = false;
     this.isCvcMain = false;
     this.isNurseAssRes = false;
+    this.isCriticalPain = false;
     this.isEducationAssement = false;
     this.isNursingCarePlan = false;
     this.isNursingDischarge = false;
@@ -1349,6 +1377,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNewBundles = false;
     this.isCvcMain = false;
     this.isNurseAssRes = false;
+    this.isCriticalPain = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
@@ -1376,6 +1405,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openBundles = false
     this.openCvcMain = false
     this.openNurseAssRes = false
+    this.openCriticalPain = false
     this.openPediatricEarlyWarningScale = false
     this.openNursingCarePlans = false;
     this.isNursingCarePlan = false;
@@ -1433,6 +1463,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openNurseAssRes) {
       this.NurseAssMainComp?.ngOnDestroy();
     }
+    if (this.openCriticalPain) {
+      this.CriticalCarePainComp?.ngOnDestroy();
+    }
     if (this.openNursingCarePlans) {
       this.NursingCarePlansComp?.ngOnDestroy();
     }
@@ -1488,6 +1521,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
     this.getNurseAssMainDoc();
+    this.getCriticalPainDoc();
     this.getLatestAssessmentPA();
     this.getPediatricWarningScore();
     this.getNursingPlanCareDocDetails();
@@ -1830,6 +1864,51 @@ export class PatientDocumentationComponent implements OnInit {
       } else if (action == 'createandrelease') {
         this.openNurseAssRes = true;
         this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating education assessment:', error);
+        });
+      }
+    }
+    if (this.isCriticalPain) {
+      if (action == 'create') {
+        this.openCriticalPain = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openCriticalPain = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      }else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteCriticalPainDoc();
+        } else {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseCriticalPainDetail();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openCriticalPain = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openCriticalPain = true;
+        this.CriticalCarePainComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
@@ -3242,6 +3321,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+      if (this.openCriticalPain) {
+        let docStatus = '1';
+        this.CriticalCarePainComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
 
       if (this.openNursingCarePlans) {
         let docStatus = '1';
@@ -3594,6 +3684,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
+      if (this.openCriticalPain) {
+        this.CriticalCarePainComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
 
       if (this.openNursingCarePlans) {
         let docStatus = '1';
@@ -3853,6 +3952,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
+      if (this.openCriticalPain) {
+        this.CriticalCarePainComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
 
       if (this.openNursingCarePlans) {
         this.NursingCarePlansComp.createNursingCarePlan('3', 'copy').then((formValue: any) => {
@@ -4094,6 +4202,16 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.openNursingCarePlans) {
     }else if (this.openNurseAssRes) {
       this.NurseAssMainComp.createDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openNursingCarePlans) {
+    }else if (this.openCriticalPain) {
+      this.CriticalCarePainComp.createDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -4777,6 +4895,40 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  async deleteCriticalPainDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteCriticalPainDoc(this.CriticalPainList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
 
   async deletePainAssessmentDocument(docKey: string) {
     Swal.fire({
@@ -5256,6 +5408,20 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  releaseCriticalPainDetail() {
+    this.admissionService.getCriticalPainDetail(this.CriticalPainList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.admissionService.createNurseAssMainDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
 
   newVersionDirectReleasedSurgical() {
     this.SurgicalPassComp.copySurgicalPassDoc('5', 'copy').then((formValue: any) => {
@@ -5289,6 +5455,16 @@ export class PatientDocumentationComponent implements OnInit {
   }
   newVersionDirectReleasedNurseAssMain() {
     this.NurseAssMainComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating IC maintenance:', error);
+    });
+  }
+  newVersionDirectReleasedCriticalCarePain() {
+    this.CriticalCarePainComp.createDoc('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }
@@ -5532,6 +5708,23 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .getNurseAssMainPdf(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+  openCriticalPainPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getCriticalPainPdf(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);

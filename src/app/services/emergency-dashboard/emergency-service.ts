@@ -1131,6 +1131,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteCriticalPainDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteCriticalPainDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   deleteNicuDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteNicuDoc?Dockey=${json}`, {
       withCredentials: true,
@@ -1203,6 +1208,11 @@ export class EmergencyService {
   }
   getNurseAssMainDoc(json): Observable<any> {
     return this.http.post(this.url + 'getNurseAssMainDoc', json, {
+      withCredentials: true,
+    });
+  }
+  getCriticalPainDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getCriticalPainDoc', json, {
       withCredentials: true,
     });
   }
