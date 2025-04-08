@@ -94,7 +94,7 @@
             </td>
             <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"
               [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  ">
-              <img src="assets/img/Allergy.svg" [title]="item.Allergies" style="width: 23px"
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'" style="width: 23px"
                 (click)="openModalForAllergy('', item)" />
             </td>
             <td class="border-right" scope="row" style="padding-left: 0px; text-align: center"

@@ -674,10 +674,29 @@ export class PatientsDietMealComponentNew implements OnInit {
       this.resetForm();
     }, (error) => {
 
-      const messages = error?.error?.error?.innererror?.errordetails
-        .filter(detail => detail.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION')
-        .map((detail, index) => `${index + 1}) ${detail.message}`)
-        .join('<br>');
+      // const messages = error?.error?.error?.innererror?.errordetails
+      //   .filter(detail => detail.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION')
+      //   .map((detail, index) => `${index + 1}) ${detail.message}`)
+      //   .join('<br>');
+      const meals = ['breakfas', 'Lunch', 'Dinner'];
+      const foundMeals: string[] = [];
+      let messages: any;
+      for (let item of error?.error?.error?.innererror?.errordetails) {
+        for (let meal of meals) {
+          // Case insensitive match
+          if (item.message.toLowerCase().includes(meal.toLowerCase())) {
+            if (!foundMeals.includes(meal)) {
+              foundMeals.push(meal);
+            }
+          }
+        }
+      }
+      
+      if (foundMeals.length > 0) {
+        messages = 'Order is already available for ' + foundMeals.join(', ');
+        console.log(messages);
+        // Output: "Order is already available for Breakfast, Lunch, Dinner"
+      }
 
       Swal.fire({
         title: 'Error Details',

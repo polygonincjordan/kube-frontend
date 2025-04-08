@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchTextPipe } from './search-text.pipe';
+import { SearchTextPipe, SearchTextProgressNotePipe } from './search-text.pipe';
 
 
 @NgModule({
   declarations: [
     SearchTextPipe,
+    SearchTextProgressNotePipe
   ],
   exports: [
-    SearchTextPipe
+    SearchTextPipe,
+    SearchTextProgressNotePipe
   ],
   imports: [
     CommonModule

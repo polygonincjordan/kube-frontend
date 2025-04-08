@@ -15,3 +15,19 @@ export class SearchTextPipe implements PipeTransform {
     })
   }
 }
+
+@Pipe({
+  name: 'searchProgress',
+  standalone: false
+})
+export class SearchTextProgressNotePipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    if(!args){
+      return value;
+    }
+    return value.filter((val)=>{
+      let rVal= val?.Text?.toLocaleLowerCase().includes(args);
+      return rVal;
+    })
+  }
+}

@@ -219,11 +219,11 @@
           </div>
         </div>
       </div>
-      <div class="d-flex flex-row align-items-center mt-3 mb-3">
+      <!-- <div class="d-flex flex-row align-items-center mt-3 mb-3">
         <input type="checkbox" id="flexCheckDefault" [checked]="this.dietOrderForm?.get('Irradiated')['controls']['yes'].value"
           (change)="onIrradiatedChange('yes')" />
         <label class="w-50 m-0 ml-2" for="">Irradiated</label>
-      </div>
+      </div> -->
       <div class="d-flex flex-column mb-2">
         <label for="Remarks">Comments</label>
         <input type="text" class="form-control w-100" formControlName="Comments" [class.is-invalid]="
@@ -527,15 +527,15 @@
         <td class="width-110" [title]="dateFormate(item?.Dietday)">{{ dateFormate(item?.Dietday) }}</td>
         <td [title]="item.Mealtypedesc">{{ item.Mealtypedesc }}</td>
         <td [title]="item.DietConsistency">{{ item?.DietConsistency }}</td>
-        <td [title]="item.DietType" class="text-ellipsis">{{ item.DietType }}</td>
+        <td [title]="item.DietType" class="text-ellipsis " style="text-wrap: auto !important;">{{ item.DietType }}</td>
         <td>
           <div class="d-flex flex-row align-items-center justify-content-between">
             <label for="">Carbohydrates</label>
-            <div>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A010') }} /Grams</div>
+            <b>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A010') }} /Grams</b>
           </div>
           <div class="d-flex flex-row align-items-center justify-content-between">
             <label for="">Proteins</label>
-            <div>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A020') }} /Grams</div>
+            <b>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A020') }} /Grams</b>
           </div>
           <div class="d-flex flex-row align-items-center justify-content-between">
             <label for="">Calories</label>

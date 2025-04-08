@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -89,7 +90,7 @@ export class CvcInsertionComponent implements OnInit {
   ];
   genderDetails: any;
 
-  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,
+  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService, private datePipe: DatePipe,
     private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -119,8 +120,10 @@ export class CvcInsertionComponent implements OnInit {
     console.log(this.storageService?.patientData, 'this.storageService?.patientData');
     this.genderDetails = this.storageService?.patientData?.gender.includes('Female') ? 'Female' : 'Male'
   }
-
+  cvcFields: string[] = ['Cvc1', 'Cvc2', 'Cvc21', 'Cvc22', 'Cvc23', 'Cvc24', 'Cvc25', 'Cvc3Skin', 'Cvc3Antiseptic', 'Cvc4OptimalCatheter'];
   initForm() {
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+
     this.cvcInsertionForm = this.formBuilder.group({
       Dockey: "",
       Dtid: "ZMED_CVCI",
@@ -135,8 +138,8 @@ export class CvcInsertionComponent implements OnInit {
       AmEmpowered2: false,
       CvcInsertion3: false,
       CvcInsertionBy: "",
-      CvcInsertionDate: "",
-      CvcInsertionTime: "",
+      CvcInsertionDate: new Date(),
+      CvcInsertionTime: currentTime,
       PatientLocation: "",
       AnatomicalSite: "",
       UltrasoundUsed: "",
@@ -161,7 +164,7 @@ export class CvcInsertionComponent implements OnInit {
       Cvc3Skin: "",
       Cvc3SkinTxt: "",
       Cvc3Contraindication: false,
-      Cvc3Contraindication1: "",
+      Cvc3Contraindication1: [{value: '', disabled: true}],
       Cvc3Antiseptic: "",
       Cvc3AntisepticTxt: "",
       Cvc3Comments: "",
@@ -176,6 +179,28 @@ export class CvcInsertionComponent implements OnInit {
       InsertionTrials4: false,
       Comments: ""
     })
+  }
+
+  calculateComplianceScore() {
+    let total = 0;
+    this.cvcFields.forEach(field => {
+      const value = this.cvcInsertionForm.get(field)?.value;
+      if (!isNaN(value)) {
+        total += +value; // Convert to number and add
+      }
+    });
+    this.cvcInsertionForm.get('ComplianceScore')?.setValue(total.toString());
+  }
+
+  changeDisabledchlorhexidine() {
+    if(this.cvcInsertionForm.get('Cvc3Contraindication')?.value) {
+      this.cvcInsertionForm.get('Cvc3Contraindication1').enable()
+    } else {
+      this.cvcInsertionForm.get('Cvc3Contraindication1').disable();
+      this.cvcInsertionForm.setValue({
+        Cvc3Contraindication1: ''
+      })
+    }
   }
 
   getCvcInsertionDocDetails(docKey?) {
@@ -207,6 +232,8 @@ export class CvcInsertionComponent implements OnInit {
       }
       this.cvcInsertionForm.value.DocStatus = docStatus;
       let paylaod = this.cvcInsertionForm.value;
+      paylaod['Cvc3Contraindication1'] = this.cvcInsertionForm.getRawValue()?.Cvc3Contraindication1;
+
       paylaod.CvcInsertionDate = this.sanitizeSAPDateFormat(paylaod.CvcInsertionDate);
       paylaod.CvcInsertionTime = this.parsePayloadFormateTime(paylaod.CvcInsertionTime);
       this.subscription = this.dayCaseDashboard
