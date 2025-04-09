@@ -88,7 +88,7 @@
               <td class="border-top-none" style="width: 7%;">{{item.DeptouDesc}}</td>
               <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">{{item.FinancialCategory}}</td>
               <td class="border-top-none" style="width: 14%;">{{item.AttendingDoctorName}}</td>
-              <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
+              <td [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
                 <td class="border-top-none"  scope="row" style="max-width: 107px;
                 padding-left: 0px;
                 text-overflow: ellipsis;

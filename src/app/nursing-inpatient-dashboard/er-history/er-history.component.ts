@@ -390,7 +390,6 @@ export class ErHistoryComponent implements OnInit {
   }
   getSelectedDates(dates){
   //   console.log("call selected","dates");
-    
    this.getHospitalList(dates);
   }
   getDate(value) {

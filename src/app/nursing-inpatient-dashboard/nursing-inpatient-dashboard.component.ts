@@ -1449,7 +1449,6 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
   changeDate(event) {
     console.log(event, "event");
-    
     this.updatedDate = event;
     if(this.erhistory) {
       this.ErHistoryComponent?.getSelectedDates(

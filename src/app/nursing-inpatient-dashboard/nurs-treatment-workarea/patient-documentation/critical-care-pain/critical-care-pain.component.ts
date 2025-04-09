@@ -14,21 +14,21 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./critical-care-pain.component.scss']
 })
 export class CriticalCarePainComponent implements OnInit {
-   @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
-   public criticalForm :FormGroup
-    public paramsObject: any
-    private subscription: Subscription;
-    private actionTypeSubscription$: Subscription;
-    docKey: any;
-  facialList: any;
-  painList: any;
-  VocalizationList: any;
-  ventilationList: any;
-  musicList: any;
-  bodyList: any;
-  realized: any;
-  realizedDescription: any;
-  CurrentDateAndTime: Date = new Date();
+  @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
+  public criticalForm :FormGroup
+  public paramsObject: any
+  private subscription: Subscription;
+  private actionTypeSubscription$: Subscription;
+  public docKey: any;
+  public facialList: any;
+  public painList: any;
+  public VocalizationList: any;
+  public ventilationList: any;
+  public musicList: any;
+  public bodyList: any;
+  public realized: any;
+  public realizedDescription: any;
+  public CurrentDateAndTime: Date = new Date();
    constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService) { 
      this._route.queryParams.subscribe((params) => {
            this.paramsObject = params;
@@ -73,12 +73,7 @@ export class CriticalCarePainComponent implements OnInit {
     'Vocalization',
     'PainMovement'
   ];
-
-  controlsToWatch.forEach(control => {
-    this.criticalForm.get(control)?.valueChanges.subscribe(() => {
-      this.calculateTotalScore();
-    });
-  });
+ 
   this.realized = this.storageService.getUserProfile().Gpart;
   this.realizedDescription = this.storageService.getUserProfile().GpartName;
   }
