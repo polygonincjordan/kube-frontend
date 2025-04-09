@@ -73,15 +73,16 @@ export class PdfViewerComponent implements OnInit {
           }`
         );
       }else{
-        return this.sanitizer.bypassSecurityTrustResourceUrl(
-          `data:application/image;base64, ${
-            this.inPatientVisitData.DOCCATTOATTACHMENTS.results.find((obj) => {
-              return obj.FileId === '';
-            }).AttachmentData
-          }`
-        );
+        let itemData=this.patientVisitDataSet.VISITTOATTACHMENTS.results.find((obj) => {
+          return obj.FileID === '';
+          });
+          return this.sanitizer.bypassSecurityTrustResourceUrl(
+          `data:${itemData.AttMimeType}base64, ${
+          itemData.AttachmentData
+          }`)
       }
     }
+    
     else if(this.inPatientVisitData.DOCCATTOATTACHMENTS?.results.length > 0){           
           console.log('Attachment with FileID', this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results);
           if(this.inPatientVisitData.DOCCATTOATTACHMENTS?.results[0].AttMimeType === 'PDF'){
@@ -92,7 +93,7 @@ export class PdfViewerComponent implements OnInit {
           );
         }else{
           return this.sanitizer.bypassSecurityTrustResourceUrl(
-            `data:application/image;base64, ${
+            `data:${ this.inPatientVisitData.DOCCATTOATTACHMENTS.results[0].AttMimeType}, ${
               this.inPatientVisitData.DOCCATTOATTACHMENTS.results[0].AttachmentData
             }`
           );
@@ -119,13 +120,13 @@ export class PdfViewerComponent implements OnInit {
           }`
         );
       }else{
-        return this.sanitizer.bypassSecurityTrustResourceUrl(
-          `data:application/image;base64, ${
-            this.patientVisitDataSet.VISITTOATTACHMENTS.results.find((obj) => {
-              return obj.FileID === '';
-            }).AttachmentData
-          }`
-        );
+        let itemData=this.patientVisitDataSet.VISITTOATTACHMENTS.results.find((obj) => {
+          return obj.FileID === '';
+          });
+          return this.sanitizer.bypassSecurityTrustResourceUrl(
+          `data:${itemData.AttMimeType}base64, ${
+          itemData.AttachmentData
+          }`)
       }
     } else if (this.patientVisitDataSet &&   this.patientVisitDataSet.DOCCATTOATTACHMENTS) {
       this.inOutData = {};
@@ -148,13 +149,13 @@ export class PdfViewerComponent implements OnInit {
           }`
         );
       }else{
-        return this.sanitizer.bypassSecurityTrustResourceUrl(
-          `data:application/image;base64, ${
-            this.patientVisitDataSet.DOCCATTOATTACHMENTS.results.find((obj) => {
-              return obj.FileID === '';
-            }).AttachmentData
-          }`
-        );
+        let itemData=this.patientVisitDataSet.DOCCATTOATTACHMENTS.results.find((obj) => {
+          return obj.FileID === '';
+          });
+          return this.sanitizer.bypassSecurityTrustResourceUrl(
+          `data:${itemData.AttMimeType}base64, ${
+          itemData.AttachmentData
+          }`)
       }
     }    
     else if(this.patientVisitDataSet.DOCCATTOATTACHMENTS?.results.length > 0){ 
@@ -167,8 +168,8 @@ export class PdfViewerComponent implements OnInit {
       );
     }else{
       return this.sanitizer.bypassSecurityTrustResourceUrl(
-        `data:application/image;base64, ${
-          this.patientVisitDataSet.DOCCATTOATTACHMENTS.results[0].AttachmentData
+        `data:${ this.inPatientVisitData.DOCCATTOATTACHMENTS.results[0].AttMimeType}, ${
+          this.inPatientVisitData.DOCCATTOATTACHMENTS.results[0].AttachmentData
         }`
       );
     }
