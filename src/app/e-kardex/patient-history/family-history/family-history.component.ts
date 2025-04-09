@@ -89,6 +89,9 @@ export class FamilyHistoryComponent implements OnInit {
       Problem: [{ value: "", disabled: false }],
       Comments: [{ value: "", disabled: false }],
     });
+    this.getProblemList();
+    this.getFamilyHistory();
+    this.addFamilyHistroyForm();
   }
   initForm() {
     this.updateSurgForm = this.formBuilder.group({
@@ -111,10 +114,13 @@ export class FamilyHistoryComponent implements OnInit {
       TreatOu: ['CAROPAMC'],
       NoFamilyHistory: [false]
     });
+    console.log(this.updateSurgForm, "updateSurgForm")
   }
   getProblemList() {
     this.patientHistory.getProblemList().subscribe((res: any) => {
-      this.problemList = res.d.results
+      this.problemList = res.d.results;
+      console.log(this.problemList, "this.problemList");
+      
     })
   }
 
@@ -161,6 +167,7 @@ export class FamilyHistoryComponent implements OnInit {
 
       }
     });
+
     this.getProblemList();
     this.getFamilyHistory();
     this.addFamilyHistroyForm();
@@ -196,9 +203,20 @@ export class FamilyHistoryComponent implements OnInit {
   resetFamilyHistroyForm(): void {
     this.initForm();
   }
+
+  selectCheckBox(formFieldName: string) {
+
+  }
   saveFamilyHistroyForm() {
+    console.log(this.updateSurgForm.value, this.updateSurgForm.getRawValue())
+
     if (this.isRiskUpdate) {
-      const payload = this.updateSurgForm.value;
+      let payload: any;
+      if(this.updateSurgForm.value.NoFamilyHistory) {
+        payload = this.updateSurgForm.getRawValue()
+      } else {
+        payload = this.updateSurgForm.value;
+      }
       this.patientHistory.updateFamilyHistory(payload).subscribe({
         next: (res: any) => {
           this.initForm();
@@ -212,7 +230,12 @@ export class FamilyHistoryComponent implements OnInit {
         }
       });
     } else {
-      const payload = this.updateSurgForm.value;
+      let payload: any;
+      if(this.updateSurgForm.value.NoFamilyHistory) {
+        payload = this.updateSurgForm.getRawValue()
+      } else {
+        payload = this.updateSurgForm.value;
+      }
       this.patientHistory.createFamilyHistory(payload).subscribe((res: any) => {
         this.initForm();
         this.getFamilyHistory();
@@ -240,6 +263,8 @@ export class FamilyHistoryComponent implements OnInit {
         this.colName = column;
         this.searchString = '';
         if (column == 'Problem') {
+          console.log(this.problemList, "this.problemList Coman");
+          
           this.modalCommonDataArr = this.problemList;
           this.searchString = this.registerForm.controls.Problem.value;
         this.someMethod(this.searchString);
@@ -260,7 +285,7 @@ export class FamilyHistoryComponent implements OnInit {
     }else{
      if (event == "") {
       if (this.colName == 'Problem') {
-        this.modalCommonDataArr = this.allergenValues;
+        this.modalCommonDataArr = this.problemList;
       }else{
         this.modalCommonDataArr = this.riskValues;
       }
@@ -344,12 +369,14 @@ export class FamilyHistoryComponent implements OnInit {
       if (!checked) {
         this.f[key].enable();
       } else {
-        this.f[key].disable();
+        if(key != 'NoFamilyHistory') {
+          this.f[key].disable();
+        }
       }
     });
   }
    // convenience getter for easy access to form fields
    get f() {
-    return this.registerForm.controls;
+    return this.updateSurgForm.controls;
   }
 }

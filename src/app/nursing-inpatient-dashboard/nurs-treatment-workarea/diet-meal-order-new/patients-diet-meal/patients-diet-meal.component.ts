@@ -679,7 +679,7 @@ export class PatientsDietMealComponentNew implements OnInit {
       //   .map((detail, index) => `${index + 1}) ${detail.message}`)
       //   .join('<br>');
       const meals = ['breakfas', 'Lunch', 'Dinner'];
-      const foundMeals: string[] = [];
+      let foundMeals: string[] = [];
       let messages: any;
       for (let item of error?.error?.error?.innererror?.errordetails) {
         for (let meal of meals) {
@@ -691,7 +691,7 @@ export class PatientsDietMealComponentNew implements OnInit {
           }
         }
       }
-      
+      foundMeals = foundMeals.map(meal => meal === 'breakfas' ? 'breakfast' : meal);
       if (foundMeals.length > 0) {
         messages = 'Order is already available for ' + foundMeals.join(', ');
         console.log(messages);
@@ -699,7 +699,7 @@ export class PatientsDietMealComponentNew implements OnInit {
       }
 
       Swal.fire({
-        title: 'Error Details',
+        title: 'Not Allowed',
         html: messages,
         icon: 'error',
         customClass: 'error-details-swal-modal',
