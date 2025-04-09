@@ -78,7 +78,7 @@ export class PdfViewerComponent implements OnInit {
           return obj.FileID === '';
           });
           return this.sanitizer.bypassSecurityTrustResourceUrl(
-          `data:${itemData.AttMimeType}base64, ${
+          `data:${itemData.AttMimeType};base64, ${
           itemData.AttachmentData
           }`)
       }
@@ -125,7 +125,7 @@ export class PdfViewerComponent implements OnInit {
           return obj.FileID === '';
           });
           return this.sanitizer.bypassSecurityTrustResourceUrl(
-          `data:${itemData.AttMimeType}base64, ${
+          `data:${itemData.AttMimeType};base64, ${
           itemData.AttachmentData
           }`)
       }
@@ -154,7 +154,7 @@ export class PdfViewerComponent implements OnInit {
           return obj.FileID === '';
           });
           return this.sanitizer.bypassSecurityTrustResourceUrl(
-          `data:${itemData.AttMimeType}base64, ${
+          `data:${itemData.AttMimeType};base64, ${
           itemData.AttachmentData
           }`)
       }
