@@ -28,8 +28,8 @@ border-spacing: 2px;">
       <td colspan="2">{{ phyOrder?.ProfessionalGroupText }}</td>
       <td colspan="2">{{ phyOrder.EmployeeRespName }}</td>
       <td colspan="4">{{ phyOrder.ZphysOrder }}</td>
-      <td colspan="1" style="text-align: center; overflow: visible !important" *ngIf="phyOrder.StatusText != 'Executed'">
-        <button class="btn btn-primary back_0056b0" (click)="openModalForPhyOrder(phyordertemplate, phyOrder, 'execute')">
+      <td colspan="1" style="text-align: center; overflow: visible !important">
+        <button *ngIf="phyOrder.StatusText != 'Executed'" class="btn btn-primary back_0056b0" (click)="openModalForPhyOrder(phyordertemplate, phyOrder, 'execute')">
           Execute
         </button>
         <!-- <div class="dropdown">

@@ -136,6 +136,8 @@ export class StepperComponent implements OnDestroy {
   }
 
   goback(goback) {
+    location.reload();
+    return
     localStorage.setItem('data', JSON.stringify(false));
     this.selectedData = '';
     this.selectedback = '';

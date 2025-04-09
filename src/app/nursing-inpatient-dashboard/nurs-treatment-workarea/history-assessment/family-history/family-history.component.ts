@@ -208,10 +208,15 @@ export class FamilyHistoryComponent implements OnInit {
 
   }
   saveFamilyHistroyForm() {
-    console.log(this.updateSurgForm.value)
+    console.log(this.updateSurgForm.value, this.updateSurgForm.getRawValue())
 
     if (this.isRiskUpdate) {
-      const payload = this.updateSurgForm.value;
+      let payload: any;
+      if(this.updateSurgForm.value.NoFamilyHistory) {
+        payload = this.updateSurgForm.getRawValue()
+      } else {
+        payload = this.updateSurgForm.value;
+      }
       this.patientHistory.updateFamilyHistory(payload).subscribe({
         next: (res: any) => {
           this.initForm();
@@ -225,7 +230,12 @@ export class FamilyHistoryComponent implements OnInit {
         }
       });
     } else {
-      const payload = this.updateSurgForm.value;
+      let payload: any;
+      if(this.updateSurgForm.value.NoFamilyHistory) {
+        payload = this.updateSurgForm.getRawValue()
+      } else {
+        payload = this.updateSurgForm.value;
+      }
       this.patientHistory.createFamilyHistory(payload).subscribe((res: any) => {
         this.initForm();
         this.getFamilyHistory();
