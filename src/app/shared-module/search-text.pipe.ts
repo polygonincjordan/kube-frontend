@@ -9,10 +9,9 @@ export class SearchTextPipe implements PipeTransform {
     if(!args){
       return value;
     }
-    return value.filter((val)=>{
-      let rVal=(val.N1ztxt.toLocaleLowerCase().includes(args)) || val.Descrlt.toLocaleLowerCase().includes(args);
-      return rVal;
-    })
+    return value.filter(item => {
+      return Object.values(item).some(val => val?.toString().toLowerCase().includes(args));
+      });
   }
 }
 

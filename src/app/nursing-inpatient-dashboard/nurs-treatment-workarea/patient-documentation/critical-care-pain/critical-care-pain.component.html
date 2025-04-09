@@ -3,7 +3,7 @@
     <h6 class="scale-result">Scale Information</h6>
     <div class="row">
       <label>Scale Name</label>
-      <input class="col-md-5 form-control" type="text" value="Critical Care Pain Observation Tool" />
+      <input class="col-md-5 form-control" type="text" value="Critical Care Pain Observation Tool" disabled/>
     </div>
     <div class="row">
       <label>Date</label>
@@ -23,17 +23,17 @@
     <h6 class="scale-result">Critical Care Pain Observation Tool</h6>
     <div class="row">
       <label class="col-md-2 p-0">Facial Expressions</label>
-      <ng-select  class="col-md-4 p-0" [items]="facialList" bindLabel="Descr" bindValue="Descr"  formControlName="FacialExpressions">
+      <ng-select  class="col-md-4 p-0" [items]="facialList" bindLabel="Descr" bindValue="Descr"  formControlName="FacialExpressions" (change)="calculateTotalScore()">
       </ng-select>
     </div>
     <div class="row">
       <label class="col-md-2 p-0">Body Movements</label>
-      <ng-select  class="col-md-4 p-0" [items]="bodyList" bindLabel="Descr" bindValue="Descr"  formControlName="BodyMovements">
+      <ng-select  class="col-md-4 p-0" [items]="bodyList" bindLabel="Descr" bindValue="Descr"  formControlName="BodyMovements" (change)="calculateTotalScore()">
       </ng-select>
     </div>
     <div class="row">
       <label class="col-md-2 p-0">Muscle Tension</label>
-      <ng-select  class="col-md-4 p-0" [items]="musicList" bindLabel="Descr" bindValue="Descr"  formControlName="MuscleTension">
+      <ng-select  class="col-md-4 p-0" [items]="musicList" bindLabel="Descr" bindValue="Descr"  formControlName="MuscleTension" (change)="calculateTotalScore()">
       </ng-select>
     </div>
     <div class="row">
@@ -41,17 +41,17 @@
         >( Evalute w/ passive flexion /extention of arms ) <br />
         Ventilation</label
       >
-      <ng-select  class="col-md-4 p-0" [items]="ventilationList" bindLabel="Descr" bindValue="Descr"  formControlName="Ventilation">
+      <ng-select  class="col-md-4 p-0" [items]="ventilationList" bindLabel="Descr" bindValue="Descr"  formControlName="Ventilation" (change)="calculateTotalScore()">
       </ng-select>
     </div>
     <div class="row">
       <label class="col-md-2 p-0">Vocalization (if extubated)</label>
-      <ng-select  class="col-md-4 p-0" [items]="VocalizationList" bindLabel="Descr" bindValue="Descr"  formControlName="Vocalization">
+      <ng-select  class="col-md-4 p-0" [items]="VocalizationList" bindLabel="Descr" bindValue="Descr"  formControlName="Vocalization" (change)="calculateTotalScore()">
       </ng-select>
     </div>
     <div class="row">
       <label class="col-md-2 p-0">Pain with Movement</label>
-      <ng-select  class="col-md-4 p-0" [items]="painList" bindLabel="Descr" bindValue="Descr"  formControlName="PainMovement">
+      <ng-select  class="col-md-4 p-0" [items]="painList" bindLabel="Descr" bindValue="Descr"  formControlName="PainMovement" (change)="calculateTotalScore()">
       </ng-select>
     </div>
     <p>
@@ -64,7 +64,7 @@
     <h6 class="scale-result">Scale Result</h6>
     <div class="row">
       <label>Total Score</label>
-      <input class="col-md-1 form-control" type="text"  formControlName="TotalScore"/>
+      <input class="col-md-1 form-control" type="text"  formControlName="TotalScore" readonly/>
     </div>
 
     <div class="row">

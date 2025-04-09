@@ -71,7 +71,7 @@
               Cancel
             </button>
           </div>
-          <div class="header-btn">
+          <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool'">
             <button type="button" class="action-doc" (click)="saveDoc()">
               Save
             </button>
@@ -327,7 +327,7 @@
             <!-- Critical Care Pain Observation Tool -->
             <div [ngClass]="isCriticalPain ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
               (click)="selectAssessment('isCriticalPain',CriticalPainList[0])">
-              <div class="col-md-4">Critical Care Pain Observation Tool {{CriticalPainList[0]?.Zversion ?
+              <div class="col-md-4" [title]="'Critical Care Pain Observation Tool ' + dockVer(CriticalPainList[0]?.Zversion)">CPOT {{CriticalPainList[0]?.Zversion ?
                 dockVer(CriticalPainList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{CriticalPainList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(CriticalPainList[0]?.DocTime)}}">
@@ -931,7 +931,7 @@
     <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
     <app-correspondence-document *ngIf="openCorrespondenceDocument"></app-correspondence-document>
     <app-modified-aldrete-document *ngIf="openModifiedAldreteDocument"></app-modified-aldrete-document>
-    <app-neonatal-disch-document *ngIf="openNeonatalDischDocument"></app-neonatal-disch-document>
+    <!-- <app-neonatal-disch-document *ngIf="openNeonatalDischDocument"></app-neonatal-disch-document> -->
     <app-time-out-checklist *ngIf="openTimeoutCheckDocument"></app-time-out-checklist>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
