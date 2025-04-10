@@ -274,7 +274,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           Result_Drug_Name: event.data.Drugname,
           Formatdescr: event.data.Formatdescr,
           // Routedescr: event.data.Routedescr,
-          Agentid: event.data.Agentid,
+          // Agentid: event.data.Agentid,
           Drugid: event.data.Drugid
         });
       })
@@ -333,7 +333,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }
       event.forEach(element => {
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-        this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
+        this.onChangeDosageUnit(data, element, index)
+        // this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
       });
       this.drugArray.controls[index].patchValue({
         Quan: Math.floor(event[0].deftimDose),
@@ -367,12 +368,12 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           defineDoses.forEach((element) => {
             const quanUnitDescription = element.split("(")[0];
             const defineTime = element.match(/\(([^)]+)\)/)[1];
-            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
+            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`), Agentid:this.drugArray.value[index].Agentid });
             this.drugArray.controls[index].get('deftimcycleData').setValue(deftimDcycleData)
           });
           deftimDcycleData = [];
         } else {
-          this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[index].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
+          this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[index].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`), Agentid:this.drugArray.value[index].Agentid }]);
         }
         const selectedData = [];
         if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
