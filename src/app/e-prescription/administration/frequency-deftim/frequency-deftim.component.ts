@@ -49,7 +49,8 @@ export class FrequencyDeftimComponent implements OnInit, OnDestroy {
     return new FormGroup({
       deftimDose: new FormControl('1'),
       deftimDosageUnit: new FormControl(this.defaultData.Quanunit),
-      deftimTime: new FormControl(null)
+      deftimTime: new FormControl(null),
+      Agentid: new FormControl(''),
     })
   }
 
@@ -61,7 +62,8 @@ export class FrequencyDeftimComponent implements OnInit, OnDestroy {
         this.drugArray.controls[i].patchValue({
           deftimDose: data.deftimcycleData[i].deftimDose,
           deftimDosageUnit: data.deftimcycleData[i].deftimDosageUnit,
-          deftimTime: data.deftimcycleData[i].deftimTime
+          deftimTime: data.deftimcycleData[i].deftimTime,
+          Agentid: data.deftimcycleData[i].Agentid
         });
       }
     }
@@ -118,7 +120,8 @@ export class FrequencyDeftimComponent implements OnInit, OnDestroy {
       this.drugArray.push(this.generateDeftimCycle());
       this.drugArray.controls[this.drugArray.value.length - 1].patchValue({
         deftimDosageUnit: this.drugArray.value[this.drugArray.value.length - 2].deftimDosageUnit,
-        deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`)
+        deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`),
+        Agentid: this.drugArray.value[this.drugArray.value.length - 2].Agentid,
       })
       this.disabledosage = true;
     }
