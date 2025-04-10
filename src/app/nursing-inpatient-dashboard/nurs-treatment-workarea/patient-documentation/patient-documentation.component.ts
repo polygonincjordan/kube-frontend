@@ -47,6 +47,8 @@ import { CvcInsertionComponent } from 'src/app/shared-module/cvc-insertion/cvc-i
 import { CvcMaintenanceComponent } from './cvc-maintenance/cvc-maintenance.component';
 import { NursAssessmentRestraintsComponent } from './nurs-assessment-restraints/nurs-assessment-restraints.component';
 import { CriticalCarePainComponent } from './critical-care-pain/critical-care-pain.component';
+import { MaternityEarlyWarningSignComponent } from './maternity-early-warning-sign/maternity-early-warning-sign.component';
+import { IntraOperativeRecordComponent } from './intra-operative-record/intra-operative-record.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -67,7 +69,9 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(NursingAssessmentComponent) NursingAssessmentComp: NursingAssessmentComponent;
-  @ViewChild(CriticalCarePainComponent) CriticalCarePainComp: CriticalCarePainComponent;
+  // @ViewChild(CriticalCarePainComponent) CriticalCarePainComp: CriticalCarePainComponent;
+  // @ViewChild(MaternityEarlyWarningSignComponent) CriticalCarePainComp: MaternityEarlyWarningSignComponent
+  @ViewChild(IntraOperativeRecordComponent) CriticalCarePainComp: IntraOperativeRecordComponent
   @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
   @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
@@ -1000,7 +1004,7 @@ export class PatientDocumentationComponent implements OnInit {
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
-      'isCriticalPain': { isCriticalPain: true, selectedDocName: 'Critical Care Pain Observation Tool' },
+      'isCriticalPain': { isCriticalPain: true, selectedDocName: 'Nursing Intra-Operative Record' },
       'isNewBorn': { isNewBorn: true, selectedDocName: 'Newborn Physician Assessment Doc' },
       'isNewBundles': { isNewBundles: true, selectedDocName: 'IC Bundles for Urinary Catheter' },
       'isCvcMain': { isCvcMain: true, selectedDocName: 'IC Bundles for CVC Maintenance' },

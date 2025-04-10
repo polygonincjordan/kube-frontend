@@ -149,6 +149,9 @@ import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-docum
 import { NursAssessmentRestraintsComponent } from './nurs-treatment-workarea/patient-documentation/nurs-assessment-restraints/nurs-assessment-restraints.component';
 import { ListFilterPipe } from './list-filter.pipe';
 import { CriticalCarePainComponent } from './nurs-treatment-workarea/patient-documentation/critical-care-pain/critical-care-pain.component';
+import { MaternityEarlyWarningSignComponent } from './nurs-treatment-workarea/patient-documentation/maternity-early-warning-sign/maternity-early-warning-sign.component';
+import { IntraOperativeRecordComponent } from './nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 
 
@@ -262,7 +265,9 @@ const route: Routes = [
     CvcMaintenanceComponent,
     NursAssessmentRestraintsComponent,
     ListFilterPipe,
-    CriticalCarePainComponent
+    CriticalCarePainComponent,
+    MaternityEarlyWarningSignComponent,
+    IntraOperativeRecordComponent,
   ],
   providers: [
     EmergencyService,
@@ -293,6 +298,7 @@ const route: Routes = [
     BsDatepickerModule.forRoot(),
     NgxMaterialTimepickerModule,
     AccordionModule.forRoot(),
+    TimepickerModule,
     TooltipModule.forRoot(),
     AlertModule.forRoot(),
     TabsModule.forRoot(),
