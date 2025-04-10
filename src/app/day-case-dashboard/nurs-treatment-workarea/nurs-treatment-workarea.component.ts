@@ -1072,7 +1072,9 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       this.emergencyService.tabPanelNavigation('VitalSign');
     } else if(tabName == 'HistoryAssessment'){
       this.emergencyService.tabPanelNavigation('HistoryAssessment');
-    }
+    }  else if (tabName == 'DietMealOrdering') {
+      this.emergencyService.tabPanelNavigation('DietMealOrdering');
+    } 
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;

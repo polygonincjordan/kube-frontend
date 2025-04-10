@@ -115,6 +115,10 @@ import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { GlasgowComaScaleComponent } from './nurs-treatment-workarea/patient-documentation/glasgow-coma-scale/glasgow-coma-scale.component';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
+import { DietMealOrderComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/diet-meal-order.component';
+import { PatientsDietMealComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/patients-diet-meal/patients-diet-meal.component';
+import { DislikePreferenceComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/dislike-preference/dislike-preference.component';
+import { CompanionMealOrderingComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/companion-meal-ordering/companion-meal-ordering.component';
 
 const route: Routes = [
   {
@@ -199,7 +203,11 @@ const route: Routes = [
     ReservationListComponent,
     HistoryListComponent,
     DrugEventsAdminComponent,
-    GlasgowComaScaleComponent
+    GlasgowComaScaleComponent,
+    DietMealOrderComponentNew,
+    PatientsDietMealComponentNew,
+    DislikePreferenceComponentNew,
+    CompanionMealOrderingComponentNew,
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

@@ -1417,7 +1417,7 @@ export class DiagnosesComponent implements OnInit {
       this.createCVISAttachmentForm.reset();
     }
   saveCorrespondenceDocument() {
-    let docStatus = this.selectedPatient?.DokstText == 'Released' ? '3' : '1';
+    let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '3' : '1';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
       if (formValue) {
         // this.refresh();

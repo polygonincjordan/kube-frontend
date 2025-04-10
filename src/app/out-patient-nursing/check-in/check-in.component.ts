@@ -734,6 +734,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
   }
 
   getSelectedDates(dates) {
+    this.todayDate = dates;
     this.getErList(dates).then((formValue: any) => {
       if (formValue) {
         formValue.forEach((ele: any) => {
@@ -1151,7 +1152,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
         // Handle errors if the request fails
         this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => {
           if (result.value) {
-            this.getSelectedDates(this.todayDate);
+            // this.getSelectedDates(this.todayDate);
             this.modalService.hide();
           }
         })

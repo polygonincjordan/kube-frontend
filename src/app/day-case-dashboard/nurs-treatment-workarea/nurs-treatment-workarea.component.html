@@ -73,6 +73,12 @@
           <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.Consumables">
           Consumables
         </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrdering ? 'tab-change' : 'tab-default'"
+        style="cursor: pointer" (click)="tabChange('DietMealOrdering')">
+        <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrdering" />
+        <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrdering"/>
+          Diet Meal Ordering
+      </div>
         <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.vitalSign?'tab-change' : 'tab-default'"
         style="cursor: pointer;" (click)="tabChange('vitalSign')">
         <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
@@ -877,6 +883,9 @@
         <app-orders-templates (reloadPhyOrderList)="reloadPhyOrderListEvent($event)" [searchString]="searchString"
           [physicianOrderList]="physicianOrderList"></app-orders-templates>
       </div>
+      <ng-container *ngIf="this.emergencyService.DietMealOrdering">
+        <app-diet-meal-order-new></app-diet-meal-order-new>
+      </ng-container>
       <ng-container *ngIf="this.emergencyService.ProgressNotes">
         <app-physician-orders (onSetDateFilterEventForProgressNotes)="
                 progressNotesFilterList($event)

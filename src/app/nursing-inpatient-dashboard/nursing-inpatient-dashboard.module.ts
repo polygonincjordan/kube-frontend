@@ -149,6 +149,7 @@ import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-docum
 import { NursAssessmentRestraintsComponent } from './nurs-treatment-workarea/patient-documentation/nurs-assessment-restraints/nurs-assessment-restraints.component';
 import { ListFilterPipe } from './list-filter.pipe';
 import { CriticalCarePainComponent } from './nurs-treatment-workarea/patient-documentation/critical-care-pain/critical-care-pain.component';
+import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
 
 
 
@@ -313,7 +314,8 @@ const route: Routes = [
     ModifiedAldreteDocumentModule,
     NeonatalDischDocumentModule,
     TimeOutChecklistModule,
-    CvcInsertionModule
+    CvcInsertionModule,
+    PaediatricsAdmDocumentModule
 ],
 })
 export class NursingInpatientDashboardModule {}
