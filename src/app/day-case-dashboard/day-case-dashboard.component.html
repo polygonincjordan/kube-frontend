@@ -634,27 +634,78 @@ font-size: 12px;
 ">Patient Information</span></div>
   <div class="modal-body patient-info">
     <div class="mb-3 row">
-      <label for="staticEmail" class="col-sm-5 col-form-label">Name:</label>
-      <div class="col-sm-7">
-        <span>{{patient?.name}}</span>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Name:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.name}}</span>
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Mobile No.:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.phone || 'N/A'}}</span>
+        </div>
       </div>
     </div>
     <div class="mb-3 row">
-      <label for="staticEmail" class="col-sm-5 col-form-label">Mobile No.:</label>
-      <div class="col-sm-7">
-        <span>{{patient?.phone || 'N/A'}}</span>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Marital Status:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.maritalStatus || 'N/A'}}</span>
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Telephone #:</label>
+        <div class="col-sm-7">
+          <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+        </div>
       </div>
     </div>
     <div class="mb-3 row">
-      <label for="staticEmail" class="col-sm-5 col-form-label">Marital Status:</label>
-      <div class="col-sm-7">
-        <span>{{patient?.maritalStatus || 'N/A'}}</span>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Nationality:</label>
+        <div class="col-sm-7">
+          <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Email:</label>
+        <div class="col-sm-7">
+          <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+        </div>
       </div>
     </div>
     <div class="mb-3 row">
-      <label for="staticEmail" class="col-sm-5 col-form-label">Address:</label>
-      <div class="col-sm-7">
-        <span>{{patient?.address || 'N/A'}}</span>
+      <div class="col-md-10 row m-0">
+        <label for="staticEmail" class="col-sm-3">Address:</label>
+        <div class="col-sm-9">
+          <span>{{patient?.address || 'N/A'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5">
+      <h4 class="information-kin">Next of Kin Information</h4>
+      <div class="mb-3 row">
+        <div class="col-md-6 row m-0">
+          <label for="staticEmail" class="col-sm-5">Name:</label>
+          <div class="col-sm-7">
+            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          </div>
+        </div>
+        <div class="col-md-6 row m-0">
+          <label for="staticEmail" class="col-sm-5">Relationship:</label>
+          <div class="col-sm-7">
+            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="col-md-6 row m-0">
+          <label for="staticEmail" class="col-sm-5">Mobile #:</label>
+          <div class="col-sm-7">
+            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          </div>
+        </div>
       </div>
     </div>
     <div class="button-group p-3" style="text-align: -webkit-center;">

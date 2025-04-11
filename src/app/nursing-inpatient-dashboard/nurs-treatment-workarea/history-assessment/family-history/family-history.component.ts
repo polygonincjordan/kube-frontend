@@ -36,6 +36,7 @@ interface IFamilyHistory {
   RespEmp: string;
   DeptOu: string;
   TreatOu: string;
+  NoFamilyHistory:boolean;
 }
 @Component({
   selector: 'app-family-history',
@@ -131,6 +132,12 @@ export class FamilyHistoryComponent implements OnInit {
     this.patientHistory.getFamilyHistory(json).subscribe((res: any) => {
       console.log(res)
       this.familyHistroyList = res.d.results;
+      if(this.familyHistroyList[0].NoFamilyHistory) {
+        this.disableField(true);
+        this.updateSurgForm.setValue({
+          NoFamilyHistory: true
+        });
+      }
       if (this.familyHistroyList.length > 0) {
         this.familyHistroyList.forEach((element: IFamilyHistory) => {
           this.setFamilyHistoryForm(element)
@@ -219,6 +226,7 @@ export class FamilyHistoryComponent implements OnInit {
       }
       this.patientHistory.updateFamilyHistory(payload).subscribe({
         next: (res: any) => {
+          this.disableField(false);
           this.initForm();
           this.getFamilyHistory();
           this.isRiskUpdate = false;
@@ -237,6 +245,7 @@ export class FamilyHistoryComponent implements OnInit {
         payload = this.updateSurgForm.value;
       }
       this.patientHistory.createFamilyHistory(payload).subscribe((res: any) => {
+        this.disableField(false);
         this.initForm();
         this.getFamilyHistory();
         this.isRiskUpdate = false;

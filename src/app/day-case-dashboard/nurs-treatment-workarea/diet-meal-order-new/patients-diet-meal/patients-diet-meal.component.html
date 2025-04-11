@@ -1,0 +1,564 @@
+<div class="d-flex flex-row align-items-center bg-tab justify-content-between mt-2 p-3">
+  <h4 class="title">Diet Meal Ordering Details</h4>
+  <div>
+    <button class="btn btn-primary mr-2" (click)="createNewDiet('dietMeal')">
+      Create New Diet Order
+    </button>
+    <!-- <button class="btn btn-primary mr-2" (click)="createNewDiet('assessment')">
+      Assessment
+    </button> -->
+    <!-- <button class="btn btn-primary mr-2" (click)="createNewDiet('snackOrder')">
+      Create Snack Order
+    </button> -->
+    <button class="btn btn-primary" (click)="createNewDiet('dislikes')">
+      Dislikes
+    </button>
+  </div>
+</div>
+<div id="mySidenav" class="sidenav" [ngStyle]="{ width: sidenavWidth }">
+  <form *ngIf="modalType == 'dietMeal'" [formGroup]="dietMealOrderForm" (ngSubmit)="saveForm()">
+    <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
+      <div class="title white-color">Diet Meal Ordering Details</div>
+      <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">
+        <img src="./assets/icon-img/red-cross.svg" width="20" alt="close">
+      </a> -->
+    </div>
+    <div class="container p-4">
+      <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label for="">Date</label>
+        <div class="w-70 d-flex flex-column">
+          <div class="date-function mr-2">
+            <input #drp="bsDatepicker" bsDatepicker formControlName="Dietday"
+              (bsValueChange)="onStartDateChange($event)" [bsConfig]="{
+                dateInputFormat: 'DD.MM.YYYY',
+                containerClass: 'datepicker',
+                showWeekNumbers: false,
+                allowedPositions: ['top']
+              }" [class.is-invalid]="
+                dietMealOrderForm?.get('Dietday')?.invalid &&
+                dietMealOrderForm?.get('Dietday')?.touched
+              " class="form-control" style="border-radius: 10px" />
+            <div *ngIf="
+                dietMealOrderForm?.get('Dietday')?.invalid &&
+                dietMealOrderForm?.get('Dietday')?.touched
+              " class="invalid-feedback">
+              Please select a valid date.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Meal Type</label>
+        <div class="w-70 d-flex ">
+          <div class="w-80 d-flex justify-content-between">
+            <div>
+              <input type="checkbox" formCOntrolName="Mealtype" value="B" (change)="selectMeal('B', $event)" 
+                [checked]="dietMealOrderForm.get('Mealtype')?.value?.includes('B')"/>
+              <label class="ml-2 m-0">Breakfast</label>
+            </div>
+            <div>
+              <input type="checkbox" formCOntrolName="Mealtype" value="L" (change)="selectMeal('L', $event)"
+              [checked]="dietMealOrderForm.get('Mealtype')?.value?.includes('L')"/>
+              <label class="ml-2 m-0">Lunch</label>
+            </div>
+            <div>
+              <input type="checkbox" formCOntrolName="Mealtype" value="D" (change)="selectMeal('D', $event)"
+              [checked]="dietMealOrderForm.get('Mealtype')?.value?.includes('D')"/>
+              <label class="ml-2 m-0">Dinner</label>
+            </div>
+          </div>
+          <div *ngIf="
+            dietMealOrderForm?.get('Mealtype')?.invalid &&
+            dietMealOrderForm?.get('Mealtype')?.touched
+          " class="invalid-feedback">
+            Please select a meal type.
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Diet Consistency</label>
+        <div class="w-70 d-flex flex-column">
+          <ng-select formControlName="DietConsistency" [class.is-invalid]="
+            dietMealOrderForm?.get('DietConsistency')?.invalid && dietMealOrderForm?.get('DietConsistency')?.touched">
+            <ng-option *ngFor="let item of trayTypeList" [value]="item.Diettypedesc">{{ item.Diettypedesc }}</ng-option>
+          </ng-select>
+
+          <div *ngIf="
+          dietMealOrderForm?.get('DietConsistency')?.invalid &&
+          dietMealOrderForm?.get('DietConsistency')?.touched
+        " class="invalid-feedback">
+            Please select a diet consistency.
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Diet Description</label>
+        <div class="w-70 d-flex flex-column">
+
+          <ng-select [items]="dietList" [multiple]="true" bindLabel="Diettypedesc" formControlName="DietType"
+            bindValue="Diettypedesc" [closeOnSelect]="false" [class.is-invalid]="
+            dietMealOrderForm?.get('DietType')?.invalid &&
+            dietMealOrderForm?.get('DietType')?.touched
+          ">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-item$="item$">
+              <div class="d-flex flex-row align-items-center">
+                <input id="item-{{ index }}" type="checkbox" class="mr-2" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }" />
+                {{ item["Diettypedesc"] }}
+              </div>
+            </ng-template>
+          </ng-select>
+          <div *ngIf="dietMealOrderForm?.get('DietType')?.invalid && dietMealOrderForm?.get('DietType')?.touched "
+            class="invalid-feedback">
+            Please select a diet description.
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Add-ons</label>
+        <div class="w-70 d-flex flex-column">
+          <ng-select [items]="consistencyList" [multiple]="true" bindLabel="Diettypedesc" formControlName="Dietdesc"
+            bindValue="Diettypedesc" [closeOnSelect]="false" [class.is-invalid]="
+          dietMealOrderForm?.get('Dietdesc')?.invalid &&
+          dietMealOrderForm?.get('Dietdesc')?.touched
+        ">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-item$="item$">
+              <div class="d-flex flex-row align-items-center">
+                <input id="item-{{ index }}" type="checkbox" class="mr-2" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }" />
+                {{ item["Diettypedesc"] }}
+              </div>
+            </ng-template>
+          </ng-select>
+
+          <div *ngIf="
+              dietMealOrderForm?.get('Dietdesc')?.invalid &&
+              dietMealOrderForm?.get('Dietdesc')?.touched
+            " class="invalid-feedback">
+            Please select a add-ons.
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Nursing Indicators</label>
+        <div class="w-70 d-flex flex-column">
+          <ng-select [items]="mealList" [multiple]="true" formControlName="NursingIndicators" bindLabel="IndicatorTxt" (click)="indicatorsSet()"
+            [readonly]="dietMealOrderForm?.get('Operation').value == 'I' && (ReferOrEditOrder == 'Edited' || ReferOrEditOrder == '')" bindValue="IndicatorId"
+            [closeOnSelect]="false">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-item$="item$">
+              <div class="d-flex flex-row align-items-center">
+                <input id="item-{{ index }}" type="checkbox" class="mr-2" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }" />
+                {{ item["IndicatorTxt"] }}
+              </div>
+            </ng-template>
+          </ng-select>
+          <div *ngIf="isIndicators" class="invalid-feedback">
+            Order must be Saved to Add Nursing Indicators.
+          </div>
+        </div>
+      </div> -->
+      <div class="d-flex flex-column mb-2">
+        <label for="">Dietary Specifications</label>
+        <div
+          class="d-flex flex-row align-items-center justify-content-between w-100"
+        >
+          <div class="d-flex flex-column">
+            <div class="input-with-symbol mr-2">
+              <input
+                type="number"
+                class="form-control"
+                formControlName="carbohydrates"
+                placeholder="Carbohydrates"
+                min="0"
+              />
+              <span class="unit-symbol">/ Grams</span>
+            </div>
+          </div>
+          <div class="d-flex flex-column">
+            <div class="input-with-symbol">
+              <input
+                type="number"
+                class="form-control"
+                min="0"
+                formControlName="proteins"
+                placeholder="Proteins"
+              />
+              <span class="unit-symbol">/ Grams</span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="d-flex flex-row align-items-center justify-content-between w-100 mt-2"
+        >
+          <div class="d-flex flex-column">
+            <div class="input-with-symbol mr-2">
+              <input
+                type="number"
+                class="form-control"
+                min="0"
+                placeholder="Calories"
+                formControlName="calories"
+              />
+              <span class="unit-symbol">/ Kcal</span>
+            </div>
+          </div>
+          <div class="d-flex flex-column">
+            <div class="input-with-symbol">
+              <input
+                type="number"
+                class="form-control"
+                min="0"
+                formControlName="sodium"
+                placeholder="Sodium"
+              />
+              <span class="unit-symbol">/ Mg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="d-flex flex-row align-items-center mt-3 mb-3">
+        <input type="checkbox" id="flexCheckDefault" [checked]="this.dietOrderForm?.get('Irradiated')['controls']['yes'].value"
+          (change)="onIrradiatedChange('yes')" />
+        <label class="w-50 m-0 ml-2" for="">Irradiated</label>
+      </div> -->
+      <div class="d-flex flex-column mb-2">
+        <label for="Remarks">Comments</label>
+        <input type="text" class="form-control w-100" formControlName="Comments" [class.is-invalid]="
+            dietMealOrderForm?.get('Comments')?.invalid &&
+            dietMealOrderForm?.get('Comments')?.touched
+          " />
+        <div *ngIf="
+            dietMealOrderForm?.get('Comments')?.invalid &&
+            dietMealOrderForm?.get('Comments')?.touched
+          " class="invalid-feedback">
+          Please enter valid comment.
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-end">
+        <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary mr-2" (click)="saveDietMealOrder()">Save</button>
+        <button type="submit" class="btn btn-primary" (click)="confirmOrderBtn()">Confirm</button>
+      </div>
+    </div>
+  </form>
+  <form *ngIf="modalType == 'assessment'" [formGroup]="assessmentForm" (ngSubmit)="assessmentSetOrder()">
+    <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
+      <div class="title white-color">Assessment</div>
+    </div>
+    <div class="container p-4">
+      <div class="d-flex flex-column mb-2 mt-3">
+        <h6 style="font-weight: 600;" for="">Assessment</h6>
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <div class="date-function mr-2 w-50">
+            <ng-select formControlName="AssessmentStatus"
+              [class.is-invalid]="dietOrderForm?.get('AssessmentStatus')?.invalid && dietOrderForm?.get('AssessmentStatus')?.touched">
+              <ng-option *ngFor="let item of assessmentList" [value]="item.value">{{ item.text }}</ng-option>
+            </ng-select>
+            <div *ngIf="dietOrderForm?.get('AssessmentStatus')?.invalid && dietOrderForm?.get('AssessmentStatus')?.touched"
+              class="invalid-feedback">
+              Please select a valid end date.
+            </div>
+          </div>
+          <div class="header-time">
+            <input #drp="bsDatepicker" bsDatepicker formControlName="AssessmentDate" [bsConfig]="{
+              adaptivePosition: true,
+              dateInputFormat: 'DD.MM.YYYY',
+              containerClass: 'datepicker',
+              showWeekNumbers: false,
+              allowedPositions: ['top']
+            }" class="form-control" [class.is-invalid]="
+              dietOrderForm?.get('AssessmentDate')?.invalid &&
+              dietOrderForm?.get('AssessmentDate')?.touched
+            " style="border-radius: 10px" />
+            <div *ngIf="
+              dietOrderForm?.get('AssessmentDate')?.invalid &&
+              dietOrderForm?.get('AssessmentDate')?.touched
+            " class="invalid-feedback">
+              Please select a valid end date.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column mb-3 mt-3">
+        <h6 style="font-weight: 600;" for="">Re-Assessment</h6>
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <div class="date-function mr-2 w-50">
+            <ng-select formControlName="ReAssessmentStatus"
+              [class.is-invalid]="dietOrderForm?.get('ReAssessmentStatus')?.invalid && dietOrderForm?.get('ReAssessmentStatus')?.touched">
+              <ng-option *ngFor="let item of assessmentList" [value]="item.value">{{ item.text }}</ng-option>
+            </ng-select>
+            <div *ngIf="dietOrderForm?.get('ReAssessmentStatus')?.invalid && dietOrderForm?.get('ReAssessmentStatus')?.touched"
+              class="invalid-feedback">
+              Please select a valid end date.
+            </div>
+          </div>
+          <div class="header-time">
+            <input #drp="bsDatepicker" bsDatepicker formControlName="ReAssessmentDate" [bsConfig]="{
+              adaptivePosition: true,
+              dateInputFormat: 'DD.MM.YYYY',
+              containerClass: 'datepicker',
+              showWeekNumbers: false,
+              allowedPositions: ['top']
+            }" class="form-control" [class.is-invalid]="
+              dietOrderForm?.get('ReAssessmentDate')?.invalid &&
+              dietOrderForm?.get('ReAssessmentDate')?.touched
+            " style="border-radius: 10px" />
+            <div *ngIf="
+              dietOrderForm?.get('ReAssessmentDate')?.invalid &&
+              dietOrderForm?.get('ReAssessmentDate')?.touched
+            " class="invalid-feedback">
+              Please select a valid end date.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column mb-2">
+        <label for="Remarks">Comment</label>
+        <textarea type="text" class="form-control w-100" formControlName="Comment"
+          [class.is-invalid]="dietOrderForm?.get('Comment')?.invalid && dietOrderForm?.get('Comment')?.touched">
+        </textarea>
+        <div *ngIf="
+            dietOrderForm?.get('Comment')?.invalid &&
+            dietOrderForm?.get('Comment')?.touched
+          " class="invalid-feedback">
+          Please enter valid comments.
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-end">
+        <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary mr-2">Save</button>
+      </div>
+    </div>
+  </form>
+
+  <form *ngIf="modalType == 'snackOrder'" [formGroup]="snackOrderForm" (ngSubmit)="saveSnackOrder()">
+    <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2">
+      <div class="title white-color">Snack Order Details</div>
+      <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()"> <img src="./assets/icon-img/red-cross.svg"
+          width="20" alt="close"></a> -->
+    </div>
+    <div class="container p-4">
+      <div class="d-flex flex-column mb-2 mt-3">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <div class="date-function mr-2">
+            <label for="">From</label>
+            <input #drp="bsDatepicker" bsDatepicker formControlName="Dietday" [bsConfig]="{
+                adaptivePosition: true,
+                dateInputFormat: 'DD.MM.YYYY',
+                containerClass: 'datepicker',
+                showWeekNumbers: false,
+                allowedPositions: ['top']
+              }" class="form-control" [class.is-invalid]="
+                dietOrderForm?.get('Dietday')?.invalid &&
+                dietOrderForm?.get('Dietday')?.touched
+              " style="border-radius: 10px" />
+            <div *ngIf="
+                dietOrderForm?.get('Dietday')?.invalid &&
+                dietOrderForm?.get('Dietday')?.touched
+              " class="invalid-feedback">
+              Please select a valid end date.
+            </div>
+          </div>
+          <div class="header-time">
+            <label for="">TO</label>
+            <input #drp="bsDatepicker" bsDatepicker formControlName="DietdayTo" [bsConfig]="{
+              adaptivePosition: true,
+              dateInputFormat: 'DD.MM.YYYY',
+              containerClass: 'datepicker',
+              showWeekNumbers: false,
+              allowedPositions: ['top']
+            }" class="form-control" [class.is-invalid]="
+              dietOrderForm?.get('DietdayTo')?.invalid &&
+              dietOrderForm?.get('DietdayTo')?.touched
+            " style="border-radius: 10px" />
+            <div *ngIf="
+              dietOrderForm?.get('DietdayTo')?.invalid &&
+              dietOrderForm?.get('DietdayTo')?.touched
+            " class="invalid-feedback">
+              Please select a valid end date.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Diet Description</label>
+        <div class="w-70 d-flex flex-column">
+          <ng-select [items]="dietDescription" [multiple]="true" bindLabel="Snacktype" formControlName="Dietdesc"
+            bindValue="Snacktype" [closeOnSelect]="false" [class.is-invalid]="
+            snackOrderForm?.get('Dietdesc')?.invalid &&
+            snackOrderForm?.get('Dietdesc')?.touched
+          ">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-item$="item$">
+              <div class="d-flex flex-row align-items-center">
+                <input id="item-{{ index }}" type="checkbox" class="mr-2" [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }" />
+                {{ item["Snacktype"] }}
+              </div>
+            </ng-template>
+          </ng-select>
+          <div *ngIf="
+            snackOrderForm?.get('Dietdesc')?.invalid &&
+            snackOrderForm?.get('Dietdesc')?.touched
+          " class="invalid-feedback">
+            Please select a Diet description.
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+        <label class="w-30" for="">Snack Time</label>
+        <div class="w-70 d-flex flex-column">
+          <ng-select formControlName="Snacktime"
+            [class.is-invalid]="snackOrderForm?.get('Snacktime')?.invalid && snackOrderForm?.get('Snacktime')?.touched">
+            <ng-option *ngFor="let item of snackTimeList" [value]="item.value">{{ item.text }}</ng-option>
+          </ng-select>
+          <div *ngIf="snackOrderForm?.get('Snacktime')?.invalid && snackOrderForm?.get('Snacktime')?.touched" class="invalid-feedback">
+            Please select a snack time.
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column mb-2">
+        <label for="Remarks">Comment</label>
+        <input type="text" class="form-control w-100" formControlName="Comments" [class.is-invalid]="
+            snackOrderForm?.get('Comments')?.invalid &&
+            snackOrderForm?.get('Comments')?.touched
+          " />
+        <div *ngIf="
+            snackOrderForm?.get('Comments')?.invalid &&
+            snackOrderForm?.get('Comments')?.touched
+          " class="invalid-feedback">
+          Please enter valid comment.
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-end mt-5">
+        <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary mr-2">Save</button>
+      </div>
+    </div>
+  </form>
+
+  <form *ngIf="modalType == 'dislikes'" [formGroup]="dislikeFoodForm">
+    <div class="modal-header p-0">
+      <div class="d-flex flex-row align-items-center header-sidenav justify-content-between p-2 w-100">
+        <div class="title white-color">Dislikes Details</div>
+    </div>
+    </div>
+    <div class="modal-body p-0">
+      <div class="container p-4">
+        <div class="d-flex flex-row align-items-center mb-3">
+          <input type="checkbox" id="flexCheckDefault" formControlName="NoDislike"
+            (change)="onNoDislikeChange($event)" [attr.disabled]="selectedDislikes.length >0 ? true:null" />
+          <label class="w-50 m-0 ml-2" for="">No Dislikes</label>
+        </div>
+        <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+          <label class="w-30" style="font-size: 16px;margin: 0;" for="">Dislikes</label>
+          <div class="w-70 d-flex flex-column">
+            <ng-select [items]="dislikeList" [multiple]="true" bindLabel="FooddprefTxt" formControlName="Foodid" (change)="selectedDislike()"
+              bindValue="FoodprefId" [closeOnSelect]="false" [class.is-invalid]="
+                dislikeFoodForm?.get('Foodid')?.invalid &&
+                dislikeFoodForm?.get('Foodid')?.touched
+              " [readonly]="dislikeFoodForm?.get('NoDislike')?.value">
+              <ng-template ng-option-tmp let-item="item" let-index="index" let-item$="item$">
+                <div class="d-flex flex-row align-items-center">
+                  <input id="item-{{ index }}" type="checkbox" class="mr-2" [ngModel]="item$.selected"
+                    [ngModelOptions]="{ standalone: true }" />
+                  {{ item["FooddprefTxt"] }}
+                </div>
+              </ng-template>
+            </ng-select>
+            <div *ngIf="dislikeFoodForm?.get('Foodid')?.invalid && isInvalidForm" class="invalid-feedback">
+              Please enter valid dislikes.
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-bordered mt-3" *ngIf="selectedDislikes">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient's Dislike</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let food of selectedDislikes; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ food.FooddprefTxt }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex flex-row align-items-center justify-content-end">
+      <button class="btn btn-default mr-2" type="reset" (click)="resetForm()">
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary mr-2" (click)="createAndDeleteDislikeOrder('I')">Save</button>
+    </div>
+  </form>
+
+</div>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="thead">
+      <tr>
+        <!-- <th class="width-10"></th> -->
+        <th style="white-space: nowrap;">Diet Meal Date</th>
+        <th style="white-space: nowrap;">Meal Type</th>
+        <th>Diet Consistency</th>
+        <th>Diet Description</th>
+        <th>Dietary Specificaitons</th>
+        <th style="white-space: nowrap;">Order Status</th>
+        <!-- <th>Nursing Indicators</th> -->
+        <th>Comment</th>
+        <th>Created on</th>
+        <th>Created  by</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class="tbody">
+      <tr *ngFor="let item of dietMealOrderList; let i = index">
+        <td class="width-110" [title]="dateFormate(item?.Dietday)">{{ dateFormate(item?.Dietday) }}</td>
+        <td [title]="item.Mealtypedesc">{{ item.Mealtypedesc }}</td>
+        <td [title]="item.DietConsistency">{{ item?.DietConsistency }}</td>
+        <td [title]="item.DietType" class="text-ellipsis " style="text-wrap: auto !important;">{{ item.DietType }}</td>
+        <td>
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <label for="">Carbohydrates</label>
+            <b>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A010') }} /Grams</b>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <label for="">Proteins</label>
+            <b>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A020') }} /Grams</b>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <label for="">Calories</label>
+            <b>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A030') }} /Kcal</b>
+          </div>
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <label for="">Sodium</label>
+            <b>{{ getDietSpecValue(item.ToDietSpecs?.results, 'A040') }} /mg</b>
+          </div>
+        </td>
+        <td class="width-110" [title]="item.Orderstatusdesc">{{ item.Orderstatusdesc ? item.Orderstatusdesc : 'Canceled' }}</td>
+        <td [title]="item.Comments" class="text-ellipsis">{{ item?.Comments }}</td>
+        <td>{{ dateFormate(item?.Createdon) }} {{ convertTime(item?.Createdat) }}</td>
+        <td [title]="item.Createdby">{{ item?.Createdby }}</td>
+        <td class="width-100">
+          <div>
+            <img class="mr-2" src="assets/img/deal-confirm.svg" [tooltip]="'Confirm Order'" (click)="confirmOrder(item)" />
+            <img class="mr-2" src="assets/img/deal-edit.svg" (click)="editAndReferOrder(item, 'Edited')" [tooltip]="'Edit Order'" />
+            <img class="mr-2" src="assets/img/copy-icon.svg" (click)="editAndReferOrder(item, 'Referred')" [tooltip]="'Refer Order'" />
+            <img src="assets/img/deal-cancel.svg" (click)="cancelOrder(item)" [tooltip]="'Cancel Order'" />
+          </div>
+        </td>
+      </tr>      
+    </tbody>
+  </table>
+</div>

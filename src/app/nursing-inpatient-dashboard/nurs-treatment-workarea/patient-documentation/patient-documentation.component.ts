@@ -157,6 +157,10 @@ export class PatientDocumentationComponent implements OnInit {
   public openCVCInsertionDocument: boolean = false;
   latestCVCInsertionList = [];
 
+  public isPediatricAdmission: boolean = false;
+  public openPediatricAdmissionDocument: boolean = false;
+  latestPediatricAdmissionList = [];
+
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -1034,6 +1038,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Discharge Summary' },
       'isTimeoutCheck': { isTimeoutCheck: true, selectedDocName: 'Time Out Checklist in Non-OR Settings' },
       'isCVCInsertion': { isCVCInsertion: true, selectedDocName: 'IC Bundles for CVC Insertion' },
+      'isPediatricAdmission': { isPediatricAdmission: true, selectedDocName: 'Pediatric Admission Assessment' },
     };
 
 
@@ -1073,6 +1078,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNeonatalDisch = false;
     this.isTimeoutCheck = false;
     this.isCVCInsertion = false;
+    this.isPediatricAdmission = false;
+    this.openPediatricAdmissionDocument = false;
     this.openCVCInsertionDocument = false;
     this.openNeonatalDischDocument = false;
     this.openTimeoutCheckDocument = false;
@@ -1429,6 +1436,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.openTimeoutCheckDocument = false;
     this.isTimeoutCheck = false;
     this.isCVCInsertion = false;
+    this.isPediatricAdmission = false;
+    this.openPediatricAdmissionDocument = false;
+    this.latestPediatricAdmissionList = [];
     this.latestMorseFallScaleData = [];
     this.latestCVCInsertionList = [];
     this.openNeonatalDischDocument = false;
@@ -2765,6 +2775,57 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openCVCInsertionDocument = true;
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
+
+    else if (this.isPediatricsAdmission) {
+      if (action == 'create') {
+        this.openPediatricAdmissionDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPediatricAdmissionDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteCVCInsertionPlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseCVCInsertionDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPediatricAdmissionDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPediatricAdmissionDocument = true;
         this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()

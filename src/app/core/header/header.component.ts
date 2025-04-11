@@ -557,6 +557,9 @@ export class HeaderComponent implements OnInit {
           this.storageService.setCheckinData(json);
           localStorage.setItem('checkindata', JSON.stringify(json));
           this.redirectToTreatment(json);
+          this.modalRef?.hide();
+          this.modalRefForPatientSearch?.hide();
+
         }
       },
       (_error: any) => {}
