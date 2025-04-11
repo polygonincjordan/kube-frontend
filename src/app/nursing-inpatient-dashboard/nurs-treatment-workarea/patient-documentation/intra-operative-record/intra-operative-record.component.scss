@@ -1,0 +1,185 @@
+
+//other design
+
+.scale-result {
+    border-bottom: 3px solid #0056b0;
+    padding-bottom: 10px;
+  }
+  
+  .scale-container {
+    font-family: Arial, sans-serif;
+  }
+  
+  .row {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+  
+  .row label {
+    min-width: 150px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  input[type="text"] {
+    padding: 6px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .section input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .section p {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  //others css
+.mews-container {
+  font-family: Arial, sans-serif;
+}
+
+.form-header h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+  padding: 5px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.mews-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.mews-header,
+.mews-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.scale-result {
+  border-bottom: 3px solid #0056b0;
+  padding-bottom: 10px;
+}
+
+.mews-row.full-width {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.scale-result {
+  padding-top: 15px;
+}
+
+.scale-result textarea {
+  width: 100%;
+  padding: 10px;
+  font-family: monospace;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.position-set {
+  position: relative;
+  left: -65px;
+}
+  
+  #exTab1 .tab-content {
+    color : white;
+    background-color: #428bca;
+    padding : 5px 15px;
+  }
+  
+  #exTab2 h3 {
+    color : white;
+    background-color: #428bca;
+    padding : 5px 15px;
+  }
+  
+  /* remove border radius for the tab */
+  
+  #exTab1 .nav-pills > li > a {
+    border-radius: 0;
+  }
+  
+  /* change border radius for the tab , apply corners on top*/
+  
+  #exTab3 .nav-pills > li > a {
+    border-radius: 4px 4px 0 0 ;
+  }
+  
+  #exTab3 .tab-content {
+    color : white;
+    background-color: #428bca;
+    padding : 5px 15px;
+  }
+  
+  
+  .nav-pills li{
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    padding: 10px;
+    margin-bottom: 0px;
+    border:  1px solid #ccc;
+  }
+  
+  .active{
+    color: #fff;
+    background-color: #0056b0;
+  }
+  .button-Import .action-doc {
+    border: 1px solid;
+    background: #0056b0;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 47px;
+    display: flex;
+    font-weight: 700;
+    height: 40px;
+    width: 80px;
+    align-items: center;
+    justify-content: center;
+}
+.table.table-bordered thead tr th {
+    background: #e4edf5;
+    font-size: 14px;
+    font-weight: bold;
+}
+.table.table-bordered tbody {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.Safety div{
+    font-weight: bold;
+}
+.bordercoloer{
+    border: 1px solid;
+    padding: 10px !important;
+    background: white;
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
+}

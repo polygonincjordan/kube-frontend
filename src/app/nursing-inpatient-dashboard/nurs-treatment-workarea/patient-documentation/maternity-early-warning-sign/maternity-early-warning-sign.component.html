@@ -1,0 +1,123 @@
+<form [formGroup]="criticalForm">
+  <div class="scale-container p-2">
+    <h6 class="scale-result">Scale Information</h6>
+    <div class="row">
+      <label>Scale Name</label>
+      <input class="col-md-5 form-control" type="text" value="Maternity Early Warning Sign" disabled />
+    </div>
+    <div class="row">
+      <label>Date</label>
+      <input type="text" class="col-2 form-control" bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
+      <input type="text" class="col-2 form-control ml-2" bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
+    </div>
+    <div class="row">
+      <label>Realized by </label>
+      <input class="col-md-3 form-control" type="text" [value]="realized" disabled />
+      <input class="col-md-5 form-control ml-2" type="text" [value]="realizedDescription" disabled />
+    </div>
+  </div>
+
+</form>
+<div class="mews-container">
+<!-- MEWS Table -->
+<div class="mews-table">
+  <h6 class="scale-result">News</h6>
+  <div class="mews-header">
+    <div>SCORE/PARAMETER</div>
+    <div>0</div>
+    <div>1</div>
+    <div>3</div>
+  </div>
+  <!-- Example Row: Respiratory Rate -->
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Respiratory Rate/Minute</div>
+    <div class="position-set"><input type="radio" name="resp" /> 10–20</div>
+    <div class="position-set"><input type="radio" name="resp" /> 21–30</div>
+    <div class="position-set"><input type="radio" name="resp" />30 or 10</div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Oxygen Saturation</div>
+    <div class="position-set"><input type="radio" name="resp" /> 90–100</div>
+    <div class="position-set"><input type="radio" name="resp" /> 91–94</div>
+    <div class="position-set"><input type="radio" name="resp" /></div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Heart rate/Minute</div>
+    <div class="position-set"><input type="radio" name="resp" /> 51–90</div>
+    <div class="position-set"><input type="radio" name="resp" /> 100–120 or 40-50</div>
+    <div class="position-set"><input type="radio" name="resp" /> >120 or <40 </div>
+  </div>
+  <div class="mews-row">
+      <div class="col-md-12 p-0">Systolic BP</div>
+      <div class="position-set"><input type="radio" name="resp" /> 100–150</div>
+      <div class="position-set"><input type="radio" name="resp" /> 151-159 or 90-99</div>
+      <div class="position-set"><input type="radio" name="resp" /> >159 or <90 </div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Diastolic BP</div>
+    <div class="position-set"><input type="radio" name="resp" /> 41-89 </div>
+    <div class="position-set"><input type="radio" name="resp" /> 90-109</div>
+    <div class="position-set"><input type="radio" name="resp" /> >109 or <= 40 </div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Temperature</div>
+    <div class="position-set"><input type="radio" name="resp" /> 96-97.9 </div>
+    <div class="position-set"><input type="radio" name="resp" /> 35-35.9 or 38-38.9</div>
+    <div class="position-set"><input type="radio" name="resp" /> >38.9 </div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">level of Consciousness</div>
+    <div class="position-set"></div>
+    <div class="position-set"><input type="radio" name="resp" /> Responds to Voice</div>
+    <div class="position-set"><input type="radio" name="resp" /> Respond to pain/unresponsive </div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Urine Output ml/hour</div>
+    <div class="position-set"><input type="radio" name="resp" /> Not measured</div>
+    <div class="position-set"><input type="radio" name="resp" /> <30 </div>
+    <div class="position-set"><input type="radio" name="resp" /></div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Amniotic fluid (if rupture of membrane)</div>
+    <div class="position-set"><input type="radio" name="resp" /> Clear; Odorless</div>
+    <div class="position-set"></div>
+    <div class="position-set"><input type="radio" name="resp" /> Red / Pink / Green; Offensive </div>
+  </div>
+  <div class="mews-row">
+    <div class="col-md-12 p-0">Lochia(note: only for post-natal patients</div>
+    <div class="position-set"><input type="radio" name="resp" /> Normal / Moderate</div>
+    <div class="position-set"></div>
+    <div class="position-set"><input type="radio" name="resp" /> Heavy or Foul</div>
+  </div>
+   <!-- Scale Result and Recommendations -->
+   <h6 class="scale-result">Scale Result</h6>
+   <div class="row p-3">
+     <div class="mr-2">
+       <strong>Total Score:</strong> <input class="ml-2" type="text" value="12" />
+     </div>
+     <input type="text" class="col-md-4" value="High level Response" />
+   </div>
+   <div class="row">
+    <label class="col-md-1" style="top: -91px">Recommendations</label>
+    <ul>
+      <li>
+        Continuous monitoring and document every 15 minutes
+      </li> <br>
+      <li>
+        Notify charge nurse/supervisor
+      </li><br>
+      <li>
+        Activate Rapid Response Team (Obstetric)
+      </li><br>
+      <li>
+        Notify responsible consultant to attend
+      </li><br>
+      <li>
+        Document findings in the EMR
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
