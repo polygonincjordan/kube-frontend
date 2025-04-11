@@ -150,6 +150,7 @@ import { NursAssessmentRestraintsComponent } from './nurs-treatment-workarea/pat
 import { ListFilterPipe } from './list-filter.pipe';
 import { CriticalCarePainComponent } from './nurs-treatment-workarea/patient-documentation/critical-care-pain/critical-care-pain.component';
 import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
+import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 
 
 
@@ -263,7 +264,8 @@ const route: Routes = [
     CvcMaintenanceComponent,
     NursAssessmentRestraintsComponent,
     ListFilterPipe,
-    CriticalCarePainComponent
+    CriticalCarePainComponent,
+    ReceiveCartComponent
   ],
   providers: [
     EmergencyService,

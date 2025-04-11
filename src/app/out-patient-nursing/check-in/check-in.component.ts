@@ -750,6 +750,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
           filterStatusList: this.statusList,
           filterDoctorList: this.doctorList,
         };
+        this.filterListData(this.filterEvent);
         this.dataShareService.sendFilterType(FilterType.OpCheckIn$, true, value);
       }
     }).catch((error: any) => {
@@ -758,9 +759,11 @@ export class CheckInComponent implements OnInit, OnDestroy {
   }
 
 
-
+  filterEvent: any;
   filterListData(event) {
     console.log(event);
+    if(!event) return
+    this.filterEvent = event;
     // Check if Physician array exists and is not empty
     const selectedPhysicians = event.Physician && Array.isArray(event.Physician)
       ? event.Physician.map(item => item.$ngOptionLabel.trim())
@@ -1152,7 +1155,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
         // Handle errors if the request fails
         this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => {
           if (result.value) {
-            // this.getSelectedDates(this.todayDate);
+            this.getSelectedDates(this.todayDate);
             this.modalService.hide();
           }
         })

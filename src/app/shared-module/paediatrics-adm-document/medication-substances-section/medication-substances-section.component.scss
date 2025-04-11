@@ -1,0 +1,13 @@
+@import url("../../nursing-admission-assessment/nursing-admission-assessment.component.scss");
+
+.scale-box {
+  padding: 0px 10px !important;
+}
+.no-medication {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.scale-box-checkbox{
+  justify-content: space-between;
+}

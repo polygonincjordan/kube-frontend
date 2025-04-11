@@ -142,3 +142,31 @@ bs-daterangepicker-container {
 .background_aliceblue {
   background: aliceblue;
 }
+
+.save-risk {
+  border: 1px solid;
+  background: #3b82f6;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: flex;
+  font-weight: 700;
+  height: 40px;
+  width: 80px;
+  align-items: center;
+  justify-content: center;
+}
+.patient-info{
+  label{
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .col-sm-7{
+    line-height: 26px;
+  }
+}
+
+::ng-deep .patient-info-modal-size {
+  width: 50% !important;
+  min-width: 50% !important;
+}

@@ -1,0 +1,101 @@
+.braden-details {
+  .braden-box {
+    padding: 15px;
+    border: 1px solid #cacaca;
+    border-radius: 6px;
+
+    .scales-info {
+      border: 1px solid #cacaca;
+      border-radius: 13px;
+      padding: 24px;
+    }
+
+    .selection-section {
+      padding: 15px;
+      border: 1px solid #cacaca;
+      border-radius: 6px;
+
+      .selection-box {
+        display: inline-flex;
+        // justify-content: space-between;
+        gap: 10px;
+
+        /* Adjust the spacing between radio button items */
+        /* Custom CSS for horizontal radio button layout */
+        .form-check-inline {
+          margin-right: 20px;
+          /* Adjust the spacing between radio buttons */
+        }
+
+        /* Custom CSS for aligning radio buttons */
+        .radio-input {
+          margin-right: 5px;
+          /* Adjust spacing between radio button and label */
+        }
+
+        /* Optional: To remove extra space between radio buttons */
+        .form-check {
+          margin-right: 15px;
+        }
+      }
+
+    }
+
+    label {
+      margin: 0;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .radio-input {
+      content: "";
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #000;
+      /* Change color as needed */
+      border-radius: 50%;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    .radio-section {
+      padding: 15px;
+      border-bottom: 2px solid #cacaca;
+      margin: 0;
+    }
+
+    h4 {
+      font-weight: 600;
+    }
+  }
+}
+
+
+
+.scale-result {
+  padding: 15px 25px;
+  border: 1px solid #cacaca;
+  border-radius: 6px;
+
+  .comment-input {
+    padding: 0 15px;
+
+    label {
+      margin-right: 45px;
+    }
+
+    textarea {
+      margin-right: 12px;
+    }
+  }
+}
+
+.allergy-header-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.splitter {
+  padding: 10px;
+}

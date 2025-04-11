@@ -12,6 +12,7 @@ export class EPrescriptionService implements OnDestroy {
   public templateDrugList: any;
   TemplateMedDataList: TemplateMedDataList;
   emardata: any;
+  receiveCart: boolean;
   static tabPanelNavigation(arg0: string): import("@angular/router").ResolveData {
     throw new Error('Method not implemented.');
   }
@@ -76,6 +77,7 @@ export class EPrescriptionService implements OnDestroy {
   }
 
   tabPanelNavigation(tabName: any) {
+    this.receiveCart = false;
     if (tabName && tabName === 'OrderDetails') {
       this.OrderDetails = true; this.toadmission = false; this.Administration = false; this.DischargeOrder = false; this.eEmar = false;
     } else if (tabName && tabName === 'Administration') {
@@ -89,6 +91,9 @@ export class EPrescriptionService implements OnDestroy {
       this.loadEmarPanelData();
     } else if (tabName && tabName === "toadmission") {
       this.OrderDetails = false; this.toadmission = true; this.Administration = false; this.DischargeOrder = false; this.eEmar = false;
+      // this.loadEmarPanelData();
+    } else if (tabName && tabName === "receiveCart") {
+      this.OrderDetails = false; this.toadmission = true; this.Administration = false; this.DischargeOrder = false; this.eEmar = false; this.receiveCart = true;
       // this.loadEmarPanelData();
     }
   }
