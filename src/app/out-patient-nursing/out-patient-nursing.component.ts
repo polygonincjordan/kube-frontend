@@ -553,6 +553,7 @@ export class OutPatientNursingComponent implements OnInit {
   }
 
   refreshCheckIn() {
+    this.resetFilterForm()
     var date1 = this.formDetailGroup.get("DateRange").value[0];
     var date2 = this.formDetailGroup.get("DateRange").value[1];
     // this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()])

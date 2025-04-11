@@ -3,4 +3,265 @@
         <app-admission-data-section [isFormValidError]="isFormValidError"
             [nursingAdmissionForm]="nursingAdmissionForm"></app-admission-data-section>
     </div>
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Allergies</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part p-0 mt-3">
+                    <div class="tab-navigate allergies-header">
+                        <div class="tab-nav mb-3 align-items-center">
+                            <label class="m-0">Allergies</label>
+                            <input type="text" class="form-control w-70" [value]="
+                      toAllergyArr.length ? 'Allergy Exists' : 'No Known Allergies'
+                    " />
+                        </div>
+                        <div class="" (click)="openModalForAllergy()">
+                            <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div>
+                            <div class="allergy-box">
+                                <table class="table table-bordered past-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Group</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of toAllergyArr; let i = index">
+                                            <td>{{ item.Agroup || item.AllergenGrp }}</td>
+                                            <td>{{ item.Description || item.Allergen }}</td>
+                                            <td>
+                                                <img src="assets/img/Delete.svg" alt="delete"
+                                                    (click)="deleteFromAllergy(item, i)" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Scales</label>
+            <div class="container-fluid">
+                <div class="row create-form-inputs">
+                    <div class="scale-box">
+                        <div class="scale-box-checkbox">
+                            <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
+                                [ngModelOptions]="{ standalone: true }" [disabled]="isDockeyAvailable()" />
+                            <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
+
+                            <div style="display: flex; width: 88%; justify-content: end;">
+                                <img src="assets/img/file1.svg" title="Create & Import" class="img-size"
+                                    (click)="openModalForScales(scalesOrderCase)" />
+                            </div>
+                        </div>
+                        <div class="scale-box-table">
+                            <table class="table table-bordered past-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Measured Value</th>
+                                        <th scope="col">Normal Range</th>
+                                        <th scope="col">Date/Time</th>
+                                        <th scope="col" colspan="3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of scalesList; let i = index">
+                                        <td>{{ item.ScaleType }}</td>
+                                        <td>{{ item.LastScore }}</td>
+                                        <td>{{ item.ScoreDesc }}</td>
+                                        <td>{{ item.Datetimee }}</td>
+                                        <td>
+                                            <a (click)="openScaleModel(item)">Create</a>
+                                        </td>
+                                        <td>
+                                            <a (click)="viewGlosgowModel(item)">View</a>
+                                        </td>
+                                        <td>
+                                            <img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer ml-1"
+                                                (click)="removeScale(i)" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <app-medication-substances-section></app-medication-substances-section>
+    </div>
+    <!-- vital section -->
+    <div class="end-container">
+        <div class="scale-box-main">
+            <label class="box-label">Vitals</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part p-0">
+                    <div class="container-fluid">
+                        <div class="allergy-box d-flex justify-content-between py-3">
+                            <div class="allergy-checkbox-section d-flex align-items-center">
+                                <input type="checkbox" id="noVitalSignsApplicable"
+                                    (change)="handleCheckboxVitals($event)" style="width: 24px; height: 20px"
+                                    [attr.disabled]="toVitalsArr?.length > 0 ? true : null" />
+                                <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No Vitals
+                                    Signs Applicable</label>
+                            </div>
+                            <div class="secound-bar-vital-sign" (click)="openModalVital()">
+                                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                            </div>
+                        </div>
+                        <div style="max-height: 296px; overflow: auto">
+                            <table class="table table-bordered past-table">
+                                <thead style="background-color: #e4edf5; color: black">
+                                    <tr>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Measured Value</th>
+                                        <th scope="col">Normal Range</th>
+                                        <th scope="col">Date/Time</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: #fbfcff">
+                                    <tr class="past-med-input" *ngFor="let item of toVitalsArr; let i = index">
+                                        <td style="
+                                padding: 10px !important;
+                                width: 15%;
+                                pointer-events: none;
+                              ">
+                                            {{ item.Vdescription }}
+                                        </td>
+                                        <td style="
+                                padding: 10px !important;
+                                width: 15%;
+                                pointer-events: none;
+                              ">
+                                            {{ item.MeasuredValue }} {{ item.Vunit }}
+                                        </td>
+                                        <td style="
+                                padding: 10px !important;
+                                width: 15%;
+                                pointer-events: none;
+                              ">
+                                            {{ item.NormalRange }}
+                                        </td>
+                                        <td style="
+                                padding: 10px !important;
+                                width: 15%;
+                                pointer-events: none;
+                              ">
+                                            {{ item.DateTime }}
+                                        </td>
+                                        <td style="
+                                padding: 10px !important;
+                                width: 3%;
+                                text-align: center;
+                              " (click)="deleteVitalsFromTable(i)">
+                                            <img src="assets/img/Delete.svg" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <app-vaccination-exposure-section [nursingAdmissionForm]="nursingAdmissionForm"
+            (addTableRow)="addTableRow($event)"></app-vaccination-exposure-section>
+    </div>
+    <div>
+        <app-psychological-economic></app-psychological-economic>
+    </div>
+    <div>
+        <app-physical-assessment-section
+            [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-section>
+    </div>
 </div>
+
+<app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>
+<app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>
+<app-glos-gow-comma-scale-popup #scalesGlosgow
+    (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-scale-popup>
+<app-morse-fall-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-scale>
+<app-braden-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-scale>
+
+<ng-template #scalesOrderCase>
+    <div>
+        <div class="allergy-header">
+            <div style="
+        font-size: 23px;
+        font-weight: bold">
+                <span>Import Scales</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" style="padding: 0 11px 0px;">
+        <div style="display: flex;
+    justify-content: end;
+    padding-right: 1rem;">
+            <button (click)="scalesImport()" style="border: 1px solid;
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 5px 20px;
+      border-radius: 4px;
+      font-weight: 700;margin-top: 4px;">
+                Import
+            </button>
+        </div>
+        <form style="max-height: 350px;
+    overflow: auto;">
+            <table class="table table-bordered past-table mt-3">
+                <thead style="background-color: #e4edf5;
+    color: black;text-align: center;position: sticky;
+    top: 0;">
+                    <tr>
+                        <th scope="col" style="    text-align: -webkit-center;">
+                            <input type="checkbox" [checked]="selectedScales.length === toScaleArr.length"
+                                class="form-control" (change)="collectAllScalesData($event)" style="width:20px" />
+                        </th>
+                        <th>Scale Type</th>
+                        <th style="width: 270px;">Last Score</th>
+                        <th>Score Description</th>
+                        <th>Date/Time</th>
+                        <th>Create</th>
+                        <th>Display</th>
+
+                    </tr>
+                </thead>
+                <tbody style="background-color: hsl(225, 100%, 99%);">
+                    <tr *ngFor="let item of toScaleArr;let i=index" style="text-align:center">
+                        <td style="text-align: -webkit-center;"> <span
+                                class="input-text-field d-inline-block align-top w-100">
+                                <ng-container>
+                                    <input type="checkbox" class="form-control" [checked]="item.isSelected"
+                                        (change)="collectScalesIData($event,item, i)" style="width:20px" />
+                                </ng-container>
+                            </span></td>
+                        <td>{{item!.Scaletype}}</td>
+                        <td style="width: 270px;">{{item?.Score}}</td>
+                        <td style="text-align: center;pointer-events: none;">{{item?.ScoreDesc}}</td>
+                        <td style="text-align: center;pointer-events: none;">{{item?.DateTime}}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</ng-template>

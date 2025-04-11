@@ -1,0 +1,17 @@
+@import url("../../nursing-admission-assessment/nursing-admission-assessment.component.scss");
+
+.past-table input {
+  background: #ffffff;
+  border: 1px solid #cacaca !important;
+}
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+.scale-box {
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 10px;
+  }
+}

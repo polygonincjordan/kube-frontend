@@ -1,0 +1,66 @@
+<div class="end-container">
+    <div class="scale-box-main">
+        <label class="box-label">Psychological / Economic History</label>
+        <div class="container-fluid p-0 mt-2">
+            <div class="tab-navigation-part p-0">
+                <div class="tab-navigate">
+                    <div class="tab-nav w-100">
+                        <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+                            <li *ngFor="let item of tabList" class="d-flex m-0 align-items-center"
+                                (click)="selectTab(item)" [ngClass]="item == selectedTabName ? 'active' : ''">
+                                <img src="./assets/img/grid-icon.svg" />
+                                <p class="d-inline-block m-0">{{ item }}</p>
+                            </li>
+                        </ul>
+                        <div>
+                            <img style="height: 25px;" src="./assets/img/add.png" (click)="addRow()" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row tab-content scale-box mt-3" style="border-radius: 7px">
+                    <div class="col-md-12 row m-0">
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">No Problem identified</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 row m-0">
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Anxious</label>
+                        </div>
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Uncoorperative</label>
+                        </div>
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Depressed</label>
+                        </div>
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Angry</label>
+                        </div>
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Agitated</label>
+                        </div>
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Combative</label>
+                        </div>
+                        <div class="col-md-2 row m-0">
+                            <input type="checkbox" class="m-0" />
+                            <label class="ml-2 m-0">Other</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 row m-0 ml-2 mt-3">
+                        <label class="m-0 mr-2">Comments</label>
+                        <input class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

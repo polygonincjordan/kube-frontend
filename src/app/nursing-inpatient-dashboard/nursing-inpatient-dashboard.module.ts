@@ -153,6 +153,7 @@ import { MaternityEarlyWarningSignComponent } from './nurs-treatment-workarea/pa
 import { IntraOperativeRecordComponent } from './nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
+import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 
 
 const route: Routes = [
@@ -266,8 +267,9 @@ const route: Routes = [
     NursAssessmentRestraintsComponent,
     ListFilterPipe,
     CriticalCarePainComponent,
+    ReceiveCartComponent,
     MaternityEarlyWarningSignComponent,
-    IntraOperativeRecordComponent,
+    IntraOperativeRecordComponent
   ],
   providers: [
     EmergencyService,
