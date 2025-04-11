@@ -810,7 +810,7 @@
               </div>
 
               <!--  Pediatric Admission Assessment -->
-              <!-- <div
+               <!-- <div
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('isPediatricsAdmission',latestPediatricAdmissionList[0])">
                 <div class="col-md-4"> Pediatrics Admission Assessment {{latestPediatricAdmissionList[0]?.Zversion ?
@@ -824,10 +824,6 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestPediatricAdmissionList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestPediatricAdmissionList[0]?.StatusTxt == 'Released'" />
-                    <!-- <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPediatricAdmissionList[0]?.Dockey, latestPediatricAdmissionList[0])">
-                      <select *ngIf="latestPediatricAdmissionList[0]?.StatusTxt !='N/A' && latestPediatricAdmissionList[0]?.Dokvr != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div> -->
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPediatricAdmissionList[0]?.Dockey, latestPediatricAdmissionList[0])">
                       <select *ngIf="latestPediatricAdmissionList.length && latestPediatricAdmissionList[0]?.StatusTxt !='N/A' && latestPediatricAdmissionList[0]?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
