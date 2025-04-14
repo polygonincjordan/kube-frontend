@@ -324,3 +324,8 @@ tr:nth-child(odd) {
 .btn-primary {
   color: #fff !important;
 }
+
+
+::ng-deep .modal-dialog.extra-large-modal {
+  max-width: 80vw !important;
+}
