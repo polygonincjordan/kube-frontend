@@ -119,6 +119,7 @@ import { DietMealOrderComponentNew } from './nurs-treatment-workarea/diet-meal-o
 import { PatientsDietMealComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/patients-diet-meal/patients-diet-meal.component';
 import { DislikePreferenceComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/dislike-preference/dislike-preference.component';
 import { CompanionMealOrderingComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/companion-meal-ordering/companion-meal-ordering.component';
+import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 
 const route: Routes = [
   {
@@ -233,7 +234,8 @@ const route: Routes = [
     NursingDischargeSummaryModule,NursingAdmissionAssessmentModule,
     VitalSignModule,
     HistoryAssessmentModule,
-    CprDocumentModule
+    CprDocumentModule,
+    PreCardiacCathModule
   ],
 })
 export class DayCaseDashboardModule { }

@@ -1,0 +1,60 @@
+@import url("../../nursing-admission-assessment/nursing-admission-assessment.component.scss");
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    width: 15px !important;
+    height: 15px !important;
+    position: relative;
+    top: 3px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+    width: 15px !important;
+    height: 15px !important;
+    position: relative;
+    top: 3px;
+}
+
+// input[type="text"] {
+//   height: 30px !important;
+// }
+
+.tab-ui::-webkit-scrollbar {
+    height: 0 !important;
+}
+
+.tab-ui {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.top-0 {
+    top: 0 !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.past-table {
+    input {
+        background: #ffffff;
+        border: 1px solid #cacaca !important;
+    }
+
+    thead {
+        background-color: #e4edf5;
+        color: black;
+    }
+}
+
+input[type=radio] {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+input[type=checkbox] {
+    width: 20px !important;
+    height: 20px !important;
+}

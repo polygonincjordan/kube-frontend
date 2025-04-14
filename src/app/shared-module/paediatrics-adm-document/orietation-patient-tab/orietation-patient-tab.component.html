@@ -1,0 +1,101 @@
+<form [formGroup]="nursingAdmissionForm">
+    <div class="end-container">
+        <div class="sph-box">
+            <label class="box-label">Examination</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part">
+                    <div class="row m-0">
+                        <div class="col-md-2">
+                            <label class="m-0">Orientation of the unit</label>
+                        </div>
+                        <div class="col-md-10 row m-0">
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">ID Band </label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Bathroom</label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Batch Call Light</label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Nurse Call</label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Meal Times</label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Visiting Hours </label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">TV Control </label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">No-smoking Policy</label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Patient Equipment</label>
+                            </div>
+                            <div class="col-md-2 d-flex">
+                                <input type="checkbox" />
+                                <label class="m-0">Telephone</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-0 mt-4">
+                        <div class="col-md-3">
+                            <label class="m-0">Patient's Handbook / Explanation given to</label>
+                        </div>
+                        <div class="col-md-9 row m-0">
+                            <div class="col-md-2">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-md-2">
+                            <label class="m-0">Valuables / Equipement</label>
+                        </div>
+                        <div class="col-md-10 row m-0">
+                            <div class="col-md-12 d-flex">
+                                <label class="m-0"> Valuables / Equipement brought to hospital by patient /
+                                    family</label>
+                                <ng-select class="w-20 ml-3">
+                                    <ng-option *ngFor="let item of valueableList">{{ item.label }}</ng-option>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-12 row m-0 mt-2">
+                                <input type="checkbox" />
+                                <label class="m-0">Patient</label>
+                            </div>
+                            <div class="col-md-12 row m-0 mt-2">
+                                <input type="checkbox" />
+                                <label class="m-0 ml-2">Sent Home with</label>
+                                <input class="form-control w-30 ml-2" />
+                            </div>
+                            <div class="col-md-12 row m-0 mt-2">
+                                <input type="checkbox" />
+                                <label class="m-0 ml-2">Given by</label>
+                                <input class="form-control w-30 ml-2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
