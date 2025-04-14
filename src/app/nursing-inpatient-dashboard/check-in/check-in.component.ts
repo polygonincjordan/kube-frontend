@@ -29,6 +29,8 @@ import { SharedService } from '@services/shared.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EEmrService } from '@services/e-emr.service';
 import { WardList } from '@services/e-hospitalist/interfaces/hospitalist';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DocumentingDeliveryComponent } from './documenting-delivery/documenting-delivery.component';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -145,6 +147,7 @@ export class CheckInComponent implements OnInit {
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
+    private modalServicecom: NgbModal,
     private formBuilder: FormBuilder,
     private storageService: StorageService,
     private patientService: PatientService,
@@ -1835,6 +1838,13 @@ export class CheckInComponent implements OnInit {
         this.admissionStatusModel = [];
       }
     });
+  }
+
+
+  openDocumentingDeliveryModel(data){
+    console.log(data,"data")
+    const modalRef  = this.modalServicecom.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
+    // modalRef.componentInstance.someInput = data;
   }
 
 
