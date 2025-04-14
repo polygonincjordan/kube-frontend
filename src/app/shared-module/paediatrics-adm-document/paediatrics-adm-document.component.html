@@ -192,6 +192,15 @@
         <app-physical-assessment-section
             [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-section>
     </div>
+    <div>
+        <app-examination-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-examination-tab>
+    </div>
+    <div>
+        <app-assessment-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
+    </div>
+    <div>
+        <app-orietation-patient-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-orietation-patient-tab>
+    </div>
 </div>
 
 <app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>

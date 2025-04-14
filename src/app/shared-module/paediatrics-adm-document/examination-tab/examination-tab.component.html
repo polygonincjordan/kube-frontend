@@ -1,0 +1,140 @@
+<form [formGroup]="nursingAdmissionForm">
+    <div class="end-container">
+        <div class="sph-box">
+            <label class="box-label">Examination</label>
+            <div class="container-fluid">
+                <div class="tab-navigation-part">
+                    <div class="tab-navigate">
+                        <div class="tab-nav w-100">
+                            <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                                <li *ngFor="let tab of tabList" class="d-flex m-0 align-items-center"
+                                    (click)="assessmentTabSelect(tab)"
+                                    [ngClass]="selectedTabName == tab ? 'active' : ''">
+                                    <img src="./assets/img/grid-icon.svg" />
+                                    <p class="d-inline-block m-0">{{ tab }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content pl-2 mb-3" style="border-radius: 7px">
+                        <div *ngIf="selectedTabName == 'Physical Examination'">
+                            <table class="table table-bordered past-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Mode</th>
+                                        <th scope="col">Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container formArrayName="TOMEDICATION" *ngFor="
+                                      let item of nursingAdmissionForm.get('TOMEDICATION')[
+                                        'controls'
+                                      ];
+                                      let i = index
+                                    ">
+                                        <tr [formGroupName]="i">
+                                            <td class="w-10">
+                                                <input class="form-control" type="text" placeholder=""
+                                                    #dp="bsDatepicker" bsDatepicker
+                                                    [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+                                            </td>
+                                            <td class="w-10">
+                                                <input class="form-control" type="time" />
+                                            </td>
+                                            <td>
+                                                <input class="form-control" />
+                                            </td>
+                                            <td class="text-center w-10">
+                                                <ng-select>
+                                                    <ng-option *ngFor="let item of modePhysicalList">{{ item.label
+                                                        }}</ng-option>
+                                                </ng-select>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" />
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="selectedTabName == 'Sexual Development'">
+
+                            <div class="row m-0 mb-3">
+                                <div class="col-md-2 m-0 row">
+                                    <label class="m-0">Infant</label>
+                                </div>
+                                <div class="col-md-10 row m-0">
+                                    <div class="col-md-2 d-flex">
+                                        <input type="checkbox" formControlName="GgRectalPain" />
+                                        <label class="m-0">Swollen Breast Tissue</label>
+                                    </div>
+                                    <div class="col-md-2 d-flex">
+                                        <input type="checkbox" formControlName="GgIndigestion" />
+                                        <label class="m-0">Vaginal Discharge</label>
+                                    </div>
+                                    <div class="col-md-2 d-flex">
+                                        <input type="checkbox" formControlName="GgIndigestion" />
+                                        <label class="m-0">Hypertrophy of the labia</label>
+                                    </div>
+                                    <div class="col-md-2 d-flex">
+                                        <input type="checkbox" formControlName="GgIndigestion" />
+                                        <label class="m-0">Other</label>
+                                        <input class="form-control ml-3" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-0 mb-3">
+                                <div class="col-md-2 row m-0">
+                                    <label class="m-0">Toddler/School Aged Children</label>
+                                </div>
+                                <div class="col-md-10 row m-0">
+                                    <div class="col-md-4 d-flex">
+                                        <input type="checkbox" formControlName="GgRectalPain" />
+                                        <label class="m-0">Early development of breast / public hair</label>
+                                    </div>
+                                    <div class="col-md-4 d-flex">
+                                        <input type="checkbox" formControlName="GgIndigestion" />
+                                        <label class="m-0">Other</label>
+                                        <input class="form-control ml-3" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-0 mb-3">
+                                <div class="col-md-2 row m-0">
+                                    <label class="m-0">Pre-Pubertal / Pubertal Child</label>
+                                </div>
+                                <div class="col-md-10 row m-0">
+                                    <div class="col-md-3 d-flex">
+                                        <input type="radio" formControlName="GgRectalPain" />
+                                        <label class="m-0">Early puberty</label>
+                                    </div>
+                                    <div class="col-md-3 d-flex">
+                                        <input type="radio" formControlName="GgRectalPain" />
+                                        <label class="m-0">Delayed Puberty</label>
+                                    </div>
+                                    <div class="col-md-4 d-flex">
+                                        <input type="radio" formControlName="GgIndigestion" />
+                                        <label class="m-0">Other</label>
+                                        <input class="form-control ml-2" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0 mt-4">
+                            <div class="col-md-12 row m-0 mt-3">
+                                <div class="col-md-8 d-flex">
+                                    <label class="m-0">Comments</label>
+                                    <input class="form-control w-70 ml-3" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

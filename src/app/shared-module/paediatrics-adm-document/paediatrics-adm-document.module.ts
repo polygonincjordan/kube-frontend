@@ -16,6 +16,9 @@ import { MedicationSubstancesSectionComponent } from './medication-substances-se
 import { VaccinationExposureSectionComponent } from './vaccination-exposure-section/vaccination-exposure-section.component';
 import { PsychologicalEconomicComponent } from './psychological-economic/psychological-economic.component';
 import { PhysicalAssessmentSectionComponent } from './physical-assessment-section/physical-assessment-section.component';
+import { ExaminationTabComponent } from './examination-tab/examination-tab.component';
+import { AssessmentTabComponent } from './assessment-tab/assessment-tab.component';
+import { OrietationPatientTabComponent } from './orietation-patient-tab/orietation-patient-tab.component';
 
 
 
@@ -31,7 +34,10 @@ import { PhysicalAssessmentSectionComponent } from './physical-assessment-sectio
     MedicationSubstancesSectionComponent,
     VaccinationExposureSectionComponent,
     PsychologicalEconomicComponent,
-    PhysicalAssessmentSectionComponent
+    PhysicalAssessmentSectionComponent,
+    ExaminationTabComponent,
+    AssessmentTabComponent,
+    OrietationPatientTabComponent
   ],
   imports: [
     CommonModule,
