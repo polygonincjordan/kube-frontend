@@ -144,7 +144,9 @@
               <div style="margin-left: 3px; margin-right: 3px" (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
                 <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status"/>
               </div>
-              <div style="margin-left: 3px; margin-right: 3px" (click)="openDocumentingDeliveryModel(item)">
+              <div style="margin-left: 3px; margin-right: 3px" [class.disabled]="item.Patname?.includes('(M')" 
+              [style.pointerEvents]="item.Patname?.includes('(M') ? 'none' : 'auto'"
+              [style.opacity]="item.Patname?.includes('(M') ? '0.5' : '1'" (click)="openDocumentingDeliveryModel(item)">
                 <img src="assets/img/newbornbaby.png" style="width: 25px; cursor: pointer" title="Documenting Delivery"/>
               </div>
             </td>
