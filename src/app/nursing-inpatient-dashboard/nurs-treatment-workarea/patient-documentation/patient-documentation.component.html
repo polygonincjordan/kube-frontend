@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 12px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra  && !openMaternitySign &&!openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openPediatricAdmissionDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra  && !openMaternitySign &&!openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openPediatricAdmissionDocument && !openObstetricFallRiskAssessmentDocument">
         <div class="search-functionality col-md-2 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCvcMain || openNurseAssRes || openNurseIntra || openMaternitySign  || openCriticalPain || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument || openCVCInsertionDocument || openPediatricAdmissionDocument"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCvcMain || openNurseAssRes || openNurseIntra || openMaternitySign  || openCriticalPain || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument || openCVCInsertionDocument || openPediatricAdmissionDocument || openObstetricFallRiskAssessmentDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -204,7 +204,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra && !openMaternitySign && !openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openPediatricAdmissionDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra && !openMaternitySign && !openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openPediatricAdmissionDocument && !openObstetricFallRiskAssessmentDocument">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -348,7 +348,7 @@
             <div [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
               (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
               <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
-                dockVer(nurseIntraMainList[0]?.Zversion) : ''}} :</div>
+                dockVer(nurseIntraMainList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span>:</div>
               <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(nurseIntraMainList[0]?.DocTime)}}">
                 {{getDate(nurseIntraMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -368,7 +368,7 @@
             <div [ngClass]="isMaternitySign ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
               (click)="selectAssessment('isMaternitySign',maternitySignMainList[0])">
               <div class="col-md-4">Maternity Early Warning Sign {{maternitySignMainList[0]?.Zversion ?
-                dockVer(maternitySignMainList[0]?.Zversion) : ''}} :</div>
+                dockVer(maternitySignMainList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{maternitySignMainList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(maternitySignMainList[0]?.DocTime)}}">
                 {{getDate(maternitySignMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -854,7 +854,7 @@
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('isPediatricsAdmission',latestPediatricAdmissionList[0])">
                 <div class="col-md-4"> Pediatrics Admission Assessment {{latestPediatricAdmissionList[0]?.Zversion ?
-                  dockVer(latestPediatricAdmissionList[0]?.Zversion) : ''}} :</div>
+                  dockVer(latestPediatricAdmissionList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestPediatricAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestPediatricAdmissionList[0]?.DocTime)}}">
                   {{getDate(latestPediatricAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -870,7 +870,28 @@
                     </div>
                 </div>
               </div>
-            
+
+              <!--  Pediatric Admission Assessment -->
+               <div
+                [ngClass]="isObstetricFallRiskAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isObstetricFallRiskAssessment',latestObstetricFallRiskAssessmentList[0])">
+                <div class="col-md-4"> Obstetric Fall Risk Assessment {{latestObstetricFallRiskAssessmentList[0]?.Zversion ?
+                  dockVer(latestObstetricFallRiskAssessmentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestObstetricFallRiskAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestObstetricFallRiskAssessmentList[0]?.DocTime)}}">
+                  {{getDate(latestObstetricFallRiskAssessmentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestObstetricFallRiskAssessmentList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestObstetricFallRiskAssessmentList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestObstetricFallRiskAssessmentList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestObstetricFallRiskAssessmentList[0]?.Dockey, latestObstetricFallRiskAssessmentList[0])">
+                      <select *ngIf="latestObstetricFallRiskAssessmentList.length && latestObstetricFallRiskAssessmentList[0]?.StatusTxt !='N/A' && latestObstetricFallRiskAssessmentList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
           <!--  Correspondence Document -->
             <!-- <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -998,6 +1019,7 @@
     <app-paediatrics-adm-document *ngIf="openPediatricAdmissionDocument"></app-paediatrics-adm-document>
     <!-- <app-neonatal-disch-document *ngIf="openNeonatalDischDocument"></app-neonatal-disch-document> -->
     <app-time-out-checklist *ngIf="openTimeoutCheckDocument"></app-time-out-checklist>
+    <app-obs-fall-risk-assessment *ngIf="openObstetricFallRiskAssessmentDocument"></app-obs-fall-risk-assessment>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>

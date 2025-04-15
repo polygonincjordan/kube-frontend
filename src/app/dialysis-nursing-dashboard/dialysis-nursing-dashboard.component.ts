@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { CheckInComponent } from './check-in/check-in.component';
@@ -26,6 +26,7 @@ import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithoutDocumentsComponent } from './patient-without-documents/patient-without-documents.component';
 import { BedComponent } from './bed/bed.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 @UntilDestroy()
 
 @Component({
@@ -127,6 +128,8 @@ export class DialysisNursingDashboardComponent implements OnInit {
   phyOrderRoomsList: any;
   updatedDate: any;
   reservation: boolean = false;
+  modalRef: BsModalRef;
+
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,
@@ -140,7 +143,8 @@ export class DialysisNursingDashboardComponent implements OnInit {
     private titleService: Title,
     private dataShareService: DataShareService,
     private consumableService: ConsumableService,
-    private emergencyService: EmergencyService
+    private emergencyService: EmergencyService,
+    private modalService: BsModalService,
   ) {
     this.formDetailGroup = this.formBuilder.group({
       SearchData: [''],
@@ -1065,6 +1069,13 @@ export class DialysisNursingDashboardComponent implements OnInit {
       FCategory: [''],
     });
 
+  }
+
+  openPatientInfo(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered patient-info-modal-size',
+    };
+    this.modalRef = this.modalService.show(template, config);
   }
 
   // ER-History
