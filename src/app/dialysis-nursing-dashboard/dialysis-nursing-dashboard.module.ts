@@ -135,6 +135,8 @@ import { CreateEorderComponent } from './nurs-treatment-workarea/create-e-order/
 import { EOrderHistoryComponent } from './nurs-treatment-workarea/e-order-history/e-order-history.component';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
+import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-plan-document/nursing-care-plan-document.module';
+import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 
 
 const route: Routes = [
@@ -285,7 +287,9 @@ const route: Routes = [
     NursingAdmissionAssessmentModule,
     VitalSignModule,
     HistoryAssessmentModule,
-    CprDocumentModule
+    CprDocumentModule,
+    NursingCarePlanDocumentModule,
+    PreCardiacCathModule
   ],
 })
 export class DialysisNursingDashboardModule {}

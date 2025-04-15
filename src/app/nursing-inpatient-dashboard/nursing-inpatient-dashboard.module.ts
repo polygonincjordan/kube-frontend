@@ -155,6 +155,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { DocumentingDeliveryComponent } from './check-in/documenting-delivery/documenting-delivery.component';
+import { ObsFallRiskAssessmentModule } from '../shared-module/obs-fall-risk-assessment/obs-fall-risk-assessment.module';
 
 
 const route: Routes = [
@@ -324,7 +325,8 @@ const route: Routes = [
     NeonatalDischDocumentModule,
     TimeOutChecklistModule,
     CvcInsertionModule,
-    PaediatricsAdmDocumentModule
+    PaediatricsAdmDocumentModule,
+    ObsFallRiskAssessmentModule
 ],
 })
 export class NursingInpatientDashboardModule {}
