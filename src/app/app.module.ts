@@ -13,6 +13,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppComponent } from './app.component';
 import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-medication-doses.service';
 import { DatePipe } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 export const appRoutes: Routes = [
   {
@@ -38,6 +39,7 @@ export const appRoutes: Routes = [
     BrowserAnimationsModule,
     NgxSpinnerModule,
     FormsModule,
+    NgSelectModule,
     HttpModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
