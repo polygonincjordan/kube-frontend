@@ -138,3 +138,16 @@ bs-daterangepicker-container {
     }
   }
 }
+.patient-info{
+  label{
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .col-sm-7{
+    line-height: 26px;
+  }
+}
+::ng-deep .patient-info-modal-size {
+  width: 50% !important;
+  min-width: 50% !important;
+}

@@ -163,6 +163,10 @@ export class PatientDocumentationComponent implements OnInit {
   public openPediatricAdmissionDocument: boolean = false;
   latestPediatricAdmissionList = [];
 
+  public isObstetricFallRiskAssessment: boolean = false;
+  public openObstetricFallRiskAssessmentDocument: boolean = false;
+  latestObstetricFallRiskAssessmentList = [];
+
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -1063,6 +1067,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isTimeoutCheck': { isTimeoutCheck: true, selectedDocName: 'Time Out Checklist in Non-OR Settings' },
       'isCVCInsertion': { isCVCInsertion: true, selectedDocName: 'IC Bundles for CVC Insertion' },
       'isPediatricAdmission': { isPediatricAdmission: true, selectedDocName: 'Pediatric Admission Assessment' },
+      'isObstetricFallRiskAssessment': { isObstetricFallRiskAssessment: true, selectedDocName: 'Obstetric Fall Risk Assessment' },
     };
 
 
@@ -1106,6 +1111,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.isCVCInsertion = false;
     this.isPediatricAdmission = false;
     this.openPediatricAdmissionDocument = false;
+    this.openObstetricFallRiskAssessmentDocument = false;
+    this.isObstetricFallRiskAssessment = false;
     this.openCVCInsertionDocument = false;
     this.openNeonatalDischDocument = false;
     this.openTimeoutCheckDocument = false;
@@ -1469,6 +1476,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPediatricAdmission = false;
     this.openPediatricAdmissionDocument = false;
     this.latestPediatricAdmissionList = [];
+    this.isObstetricFallRiskAssessment = false;
+    this.openObstetricFallRiskAssessmentDocument = false;
+    this.latestObstetricFallRiskAssessmentList = [];
     this.latestMorseFallScaleData = [];
     this.latestCVCInsertionList = [];
     this.openNeonatalDischDocument = false;
@@ -2952,6 +2962,57 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openPediatricAdmissionDocument = true;
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
+
+    else if (this.isObstetricFallRiskAssessment) {
+      if (action == 'create') {
+        this.openObstetricFallRiskAssessmentDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openObstetricFallRiskAssessmentDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteCVCInsertionPlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseCVCInsertionDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openObstetricFallRiskAssessmentDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openObstetricFallRiskAssessmentDocument = true;
         this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()

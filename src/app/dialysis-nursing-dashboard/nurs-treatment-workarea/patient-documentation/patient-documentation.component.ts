@@ -36,6 +36,8 @@ import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-d
 import { NursingAdmissionAssessmentComponent } from 'src/app/shared-module/nursing-admission-assessment/nursing-admission-assessment.component';
 import { DatePipe } from '@angular/common';
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
+import { NursingCarePlansComponent } from 'src/app/shared-module/nursing-care-plan-document/nursing-care-plans/nursing-care-plans.component';
+import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -58,6 +60,8 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(HemodialysisFistulaGraftComponent) hemoDialysisFistulaGraftC: HemodialysisFistulaGraftComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
+  @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
+  @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -154,6 +158,14 @@ export class PatientDocumentationComponent implements OnInit {
   imgType: string;
   apiJson: any;
 
+  public isNursingCarePlan: boolean = false;
+  openNursingCarePlans: boolean = false;
+  latestNurCarePlanList:any[] = [];
+
+  public isPreCardiacCath: boolean = false;
+  latestPreCardiacCathList = [];
+  openPreCardiacCath: boolean = false;
+
   latestDocData: any;
   DocStatus: any;
   public RedirectionType: any;
@@ -226,6 +238,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestHemoDialysisFistulaGraft();
     this.getNursingAdmissionLatestDoc()
     this.getCPRDocDetails();
+    this.getNursingPlanCareDocDetails();
+    this.getPreCardiecCathDocDetails();
 
     this.patientDocService.dialysisAssecementForm.setControl("TOMONITOR", new FormArray([]))
     this.patientDocService.dialysisAssecementForm.reset();
@@ -374,6 +388,32 @@ export class PatientDocumentationComponent implements OnInit {
       },
     });
 
+  }
+
+  // Nursing Plan Care Document Latest
+  getNursingPlanCareDocDetails() {
+    this.dayCaseDashboardService.getNursingCarePlanLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestNurCarePlanList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Nursing Plan Care Document Latest
+  getPreCardiecCathDocDetails() {
+    this.dayCaseDashboardService.preCardiacCathLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestPreCardiacCathList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
   }
 
   getPatientProfile() {    
@@ -668,6 +708,8 @@ export class PatientDocumentationComponent implements OnInit {
       'hemoCatheter': { hemoCatheter: true, selectedDocName: 'Hemo Catheter' },
       'hemoDialysisFistulaGraft': { hemoDialysisFistulaGraft: true, selectedDocName: 'IC Bundle for Hemodialysis Fistula/Graft' },
       'isCPRDocument': { isCPRDocument: true, selectedDocName: 'CPR Document' },
+      'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
+      'isPreCardiacCath': { isPreCardiacCath: true, selectedDocName: 'Pre-Cardiac Cath Checklist' },
     };
 
     // Reset all flags to false initially
@@ -687,6 +729,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.hemoCatheter = false;
     this.hemoDialysisFistulaGraft = false;
     this.isCPRDocument = false;
+    this.isNursingCarePlan = false;
+    this.isPreCardiacCath = false;
 
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -997,6 +1041,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openCPRDocument) {
       this.CprDocumentComp.ngOnDestroy();
     }
+    if (this.openNursingCarePlans) {
+      this.NursingCarePlansComp?.ngOnDestroy();
+    }
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getTriageLatestDocuments();
@@ -1010,8 +1057,14 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestHemoDialysisFistulaGraft();
     this.getNursingAdmissionLatestDoc();
     this.getCPRDocDetails();
+    this.getNursingPlanCareDocDetails();
+    this.getPreCardiecCathDocDetails();
 
     this.patientDocService.initialForm()
+    this.openNursingCarePlans = false;
+    this.isNursingCarePlan = false;
+    this.openPreCardiacCath = false;
+    this.isPreCardiacCath = false;
 
     this.phyAssess = false;
     this.nursAssess = false;
@@ -1685,6 +1738,110 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
+
+// Nusring Care Plans
+    else if (this.isNursingCarePlan) {
+      if (action == 'create') {
+        this.openNursingCarePlans = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNursingCarePlans = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseNursingCarePlanDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNursingCarePlans = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNursingCarePlans = true;
+        this.NursingCarePlansComp.createNursingCarePlan('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
+
+    // Pre-Cardiac Cath Checklist
+    else if (this.isPreCardiacCath) {
+      if (action == 'create') {
+        this.openPreCardiacCath = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPreCardiacCath = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deletePreCardiacCathDoc(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleasePreCardiecCathDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPreCardiacCath = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPreCardiacCath = true;
+        this.PreCardiacCathComp.createNursingAssessmentDoc('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiec Cath document:', error);
+        });
+      }
+
+    }
   }
 
  async deleteCPRDoc(docKey: string) {
@@ -1764,6 +1921,97 @@ export class PatientDocumentationComponent implements OnInit {
         }
       });
   }
+  directReleasePreCardiecCathDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .fetcPreCardiacCathDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.savePreCardiacCathDoc({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Pre-Cardiec Cath released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+  directReleaseNursingCarePlanDoc() {
+    this.subscription = this.dayCaseDashboardService
+      .getNursingCarePlanDetail(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.dayCaseDashboardService.createNursingCarePlan({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Nursing care plan released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+// Delete Nursing Care Plan Document
+  async deleteNursingCarePlan(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.dayCaseDashboardService.deleteNursingCarePlan(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
   public openModalForAttachment() {
     const config: ModalOptions = { class: 'modal-dialog-centered attachment-modal' };
     this.removeFile();
@@ -1948,6 +2196,30 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+      if (this.openNursingCarePlans) {
+        let docStatus = '1';
+        this.NursingCarePlansComp.createNursingCarePlan(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      // Pre Cardiec Cath Document Create API
+      if (this.openPreCardiacCath) {
+        let docStatus = '1';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
       if (this.openAssessment) {
         this.postOpenAssessment('1', this.actionType);
       }
@@ -2025,6 +2297,30 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error modifying numeric rating Scale:', error);
         });
+      }
+      if (this.openNursingCarePlans) {
+        let docStatus = '1';
+        this.NursingCarePlansComp.createNursingCarePlan(docStatus, 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+  
+      // Pre Cardiec Cath Document Create API
+      if (this.openPreCardiacCath) {
+        let docStatus = '1';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
       }
         // Nursing Admission Assessment Edit API
       if (this.openNurseAdmission) {
@@ -2118,6 +2414,29 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openAssessment) {
         this.postOpenAssessment('3', this.actionType);
       }
+      if (this.openNursingCarePlans) {
+        this.NursingCarePlansComp.createNursingCarePlan('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      // Pre Cardiec Cath Document Create API
+      if (this.openPreCardiacCath) {
+        let docStatus = '3';
+        this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiac cath:', error);
+        })
+      }
       if(this.openMorseFallScale){
         const formData = {
           ...this.morseFallScaleC.getFormData(),
@@ -2162,6 +2481,86 @@ export class PatientDocumentationComponent implements OnInit {
       }
     }
   }
+  directReleaseFromForm() {
+    
+    if (this.phyAssess) {
+      // this.release();
+    } else if (this.medReport) {
+      this.releaseMed();
+    } else if (this.educationAssessment) {
+      this.createEducationAss(true);
+    } else if (this.assessment){
+      if(this.actionType === "create"){
+        this.postOpenAssessment('4', this.actionType);
+      }
+      if(this.actionType === "edit"){
+        this.postOpenAssessment('2', this.actionType);
+      }
+      if(this.actionType == 'copy'){
+        this.postOpenAssessment('5', this.actionType);
+      }
+    } else if(this.hemoCatheter){
+      if(this.actionType == 'create'){
+        this.postHemoCatheter('4', this.actionType);
+      }
+      if(this.actionType == 'edit'){
+        this.postHemoCatheter('2', this.actionType);
+      }
+      if(this.actionType == 'copy'){
+        this.postHemoCatheter('5', this.actionType);
+      }
+    } else if(this.hemoDialysisFistulaGraft){
+      if(this.actionType == 'create'){
+        this.postHemoDialysisFistulaGraft('4', this.actionType);
+      }
+      if(this.actionType == 'edit'){
+        this.postHemoDialysisFistulaGraft('2', this.actionType);
+      }
+      if(this.actionType == 'copy'){
+        this.postHemoDialysisFistulaGraft('5', this.actionType);
+      }
+    }
+    else if(this.openNurseAdmission) {
+      this.NursingAdmissionComp.createNursingAdmissionDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openCPRDocument) {
+      this.CprDocumentComp.createCPRDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating CPR Document:', error);
+      });
+    } 
+    else if (this.openNursingCarePlans) {
+      this.NursingCarePlansComp.createNursingCarePlan('4', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }  else if (this.openPreCardiacCath) {
+      this.openPreCardiacCath = true;
+        this.PreCardiacCathComp.createNursingAssessmentDoc('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiec Cath document:', error);
+        });
+    } 
+  }
+  
   releaseFromForm() {
     
     if (this.phyAssess) {
@@ -2220,8 +2619,39 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating CPR Document:', error);
       });
     } 
+    else if (this.openNursingCarePlans) {
+      this.NursingCarePlansComp.createNursingCarePlan('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }  else if (this.openPreCardiacCath) {
+      this.openPreCardiacCath = true;
+        this.PreCardiacCathComp.createNursingAssessmentDoc('2').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Pre-Cardiec Cath document:', error);
+        });
+    } 
   }
-  
+
+  // Copy + Release Nursing Care Plan Document
+  copyDirectReleaseNursingCarePlanDoc() {
+    this.NursingCarePlansComp.createNursingCarePlan('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Glasgow coma scale:', error);
+    });
+  }
 
   formatDate(dateTimeString){    
     if(dateTimeString){
@@ -2428,6 +2858,42 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+
+  async deletePreCardiacCathDoc(docKey: string) {
+      Swal.fire({
+        title: 'Confirm',
+        text: 'Do you want to delete?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      }).then(async (result) => {
+        if (result.value) {
+          (await this.dayCaseDashboardService.deletePreCardiacCathDoc(docKey)).subscribe(
+            (_success: any) => {
+              Swal.fire({
+                text: "Document is deleted successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            },
+            (_error: any) => {
+              Swal.fire({
+                text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            }
+          );
+        }
+      });
+    }
+  
   async updateMedDoc() {
     (await this.medComp.updateMedDoc()).subscribe((res: any) => {
       Swal.fire({
@@ -2565,6 +3031,19 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  // Copy + Release Nursing Admission Document
+  copyDirectReleasePreCardiac() {
+    // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
+    this.PreCardiacCathComp.createNursingAssessmentDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Pre-Cardiac Cath document:', error);
+    });
+  }
+
   async deleteEducationAss() {
     Swal.fire({
       title: 'Confirm',
@@ -2626,6 +3105,23 @@ export class PatientDocumentationComponent implements OnInit {
         }
       );
     })
+  }
+
+  openPreCathDocPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .preCardiacCathDocPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
   }
 
   openEducationAssPdf(Dockey) {

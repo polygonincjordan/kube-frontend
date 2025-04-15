@@ -159,6 +159,7 @@ export class HeaderComponent implements OnInit {
   removeSomeContentIntoProfile() {
     this.isSeniorNurse = false;
     const getKubeRule = this.storageService.getKubeRule();
+    console.log(getKubeRule, "getKubeRule")
     if (getKubeRule === UserType.DayCaseNurse) {
       this.outpatientlistdata = false;
     } else if (getKubeRule === UserType.DIYNurse) {
