@@ -15,19 +15,91 @@ import { Subscription } from 'rxjs';
 })
 export class IntraOperativeRecordComponent implements OnInit {
   @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
+  public equipment = [
+    {value : '1',label:'No'},
+    {value : '0',label:'Yes'},
+  ]
+  yesNoOptions = [
+    { value:'0', label: 'Yes' },
+    { value: 1, label: 'No' }
+  ];
+  
+  classifications = [
+    { value:'0', label: 'Intermediate' },
+    { value: 1, label: 'Major Plus' },
+    { value: 2, label: 'Complex Major' },
+    { value: 3, label: 'Minor' }
+  ];
+  
+  surgeryTypes = [
+    { value:'0', label: 'Elective' },
+    { value: 1, label: 'Emergency' },
+    { value: 2, label: 'Urgent' }
+  ];
+  
+  surgeryRoomTypes = [
+    { value:'0', label: 'Sterilized' },
+    { value: 1, label: 'Destilized' }
+  ];
+  
+  positions = [
+    { value:'0', label: 'Supine' },
+    { value:'1', label: 'Prone' },
+    { value:'2', label: 'Lithotomy' },
+    { value:'3', label: 'Sitting' },
+    { value:'4', label: 'Lateral Rt.' },
+    { value:'5', label: 'Lateral Lt.' },
+    { value:'7', label: 'Others' }
+  ];
+  
+  skinConditions = [
+    { value:'0', label: 'Intact' },
+    { value:'1', label: 'Non-Intact' }
+  ];
+  
+  sutureTypes = [
+    { value:'0', label: 'Suture' },
+    { value:'1', label: 'Stapler' },
+    { value:'2', label: 'Glue' }
+  ];
+  
+  drainMethods = [
+    { value:'0', label: 'Single' },
+    { value: '1', label: 'Continuous' },
+    { value: '2', label: 'Retention' }
+  ];
+  
+  investigationTypes = [
+    { value:'0', label: 'Pathology' },
+    { value:'1', label: 'Cytology' },
+    { value:'2', label: 'Bacteriology' },
+    { value:'3', label: 'Other Lab Investigations' }
+  ];
+
+  babyGenders = [
+    { value:'0', label: 'Unknown' },
+    { value: '1', label: 'Female' },
+    { value: '2', label: 'Male' }
+  ];
+  
+  babyDischargeOptions = [
+    { value:'0', label: 'NICU' },
+    { value: '1', label: 'Nursery' },
+    { value: '2', label: 'Other' }
+  ];
+  
+  dischargeDestinations = [
+    { value:'0', label: 'PACU' },
+    { value: '1', label: 'Ward' },
+    { value: '2', label: 'Intensive Care Unit' },
+    { value: '3', label: 'Other' }
+  ];
+  
   public criticalForm :FormGroup
   public paramsObject: any
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   public docKey: any;
-  public facialList: any;
-  public painList: any;
-  public VocalizationList: any;
-  public ventilationList: any;
-  public musicList: any;
-  public bodyList: any;
-  public realized: any;
-  public realizedDescription: any;
   public CurrentDateAndTime: Date = new Date();
    constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService) { 
      this._route.queryParams.subscribe((params) => {
@@ -58,49 +130,7 @@ export class IntraOperativeRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.ToGetFieldValues()
-    this.ToGetFieldValuesB()
-    this.ToGetFieldValuesM()
-    this.ToGetFieldValuesV()
-    this.ToGetFieldValuesE()
-    this.ToGetFieldValuesP()
-    // Watch for changes in any relevant dropdowns
-  const controlsToWatch = [
-    'FacialExpressions',
-    'BodyMovements',
-    'MuscleTension',
-    'Ventilation',
-    'Vocalization',
-    'PainMovement'
-  ];
- 
-  this.realized = this.storageService.getUserProfile().Gpart;
-  this.realizedDescription = this.storageService.getUserProfile().GpartName;
-  }
-
-  calculateTotalScore() {
-    const fields = [
-      'FacialExpressions',
-      'BodyMovements',
-      'MuscleTension',
-      'Ventilation',
-      'Vocalization',
-      'PainMovement'
-    ];
   
-    let total = 0;
-  
-    fields.forEach(field => {
-      const val: string = this.criticalForm.get(field)?.value;
-      if (val) {
-        const match = val.match(/\((\d+)\)/); // get number inside parentheses
-        if (match) {
-          total += parseInt(match[1], 10);
-        }
-      }
-    });
-  
-    this.criticalForm.get('TotalScore')?.setValue(String(total), { emitEvent: false });
   }
 
   ngOnDestroy() {
@@ -126,97 +156,65 @@ export class IntraOperativeRecordComponent implements OnInit {
       },
     });
   }
-  ToGetFieldValues(data?){
-    this.admissionService
-    .ToGetFieldValues('F')
-    .subscribe({
-      next: (data: any) => {
-        if(data){
-         this.facialList = data?.results
-        }
-      },
-      error: (err: any) => {   
-      },
-    });
-  }
-  ToGetFieldValuesB(data?){
-    this.admissionService
-    .ToGetFieldValues('B')
-    .subscribe({
-      next: (data: any) => {
-        if(data){
-         this.bodyList = data?.results
-        }
-      },
-      error: (err: any) => {   
-      },
-    });
-  }
-  ToGetFieldValuesM(data?){
-    this.admissionService
-    .ToGetFieldValues('M')
-    .subscribe({
-      next: (data: any) => {
-        if(data){
-         this.musicList = data?.results
-        }
-      },
-      error: (err: any) => {   
-      },
-    });
-  }
-  ToGetFieldValuesV(data?){
-    this.admissionService
-    .ToGetFieldValues('V')
-    .subscribe({
-      next: (data: any) => {
-        if(data){
-         this.ventilationList  = data?.results
-        }
-      },
-      error: (err: any) => {   
-      },
-    });
-  }
-  ToGetFieldValuesE(data?){
-    this.admissionService
-    .ToGetFieldValues('E')
-    .subscribe({
-      next: (data: any) => {
-        if(data){
-         this.VocalizationList = data?.results
-        }
-      },
-      error: (err: any) => {   
-      },
-    });
-  }
-  ToGetFieldValuesP(data?){
-    this.admissionService
-    .ToGetFieldValues('P')
-    .subscribe({
-      next: (data: any) => {
-        if(data){
-         this.painList = data?.results
-        }
-      },
-      error: (err: any) => {   
-      },
-    });
-  }
 
   initForm(data?){
     this.criticalForm = this.formBuilder.group({
-      FacialExpressions : [data?.FacialExpressions || ''],
-      BodyMovements : [data?.BodyMovements || ''],
-      MuscleTension : [data?.MuscleTension || ''],
-      Ventilation : [data?.Ventilation || ''],
-      Vocalization : [data?.Vocalization || ''],
-      PainMovement : [data?.PainMovement || ''],
-      TotalScore :  [data?.TotalScore || ''],
-      Comments : [data?.Comments || '']
+      MotherBg:[''],
+      EquipmentText:[''],
+      Problem:[false],
+      ProblemText:[''],
+      AppliedL:[''],
+      AppliedR:[''],
+      rightLine:[false],
+      leftLine:[false],
+      Tourniquet:[''],
+      Tourniquettext:[''],
+      otherassetT:[''],
+      otherasset:[false],
+      asset:[false],
+      assetT:[''],
+      otherS:[false],
+      otherT:[''],
+      na:[false],
+      naT:[''],
+      otherIv:[false],
+      otherIvT:[''],
+      Hair:[''],
+      HairT:[''],
+      Position:[''],
+      PositionT:[''],
+
     })
+
   }
+
+
+  toggleInput(controlName: string, value: string): void {
+    // const control = this.criticalForm.get(controlName);  
+    if (value === '0') {
+      this.criticalForm.get(controlName)?.enable();
+    } else {
+      this.criticalForm.get(controlName)?.disable();
+      this.criticalForm.get(controlName)?.setValue('');
+    }
+  }
+
+  onSelectChange(selectControl: string, inputControl: string) {
+    const value = this.criticalForm.get(selectControl)?.value;
+    this.toggleInput(inputControl, value);
+  }
+
+  toggleInputText(checkboxName: string, inputName: string) {
+    const checkboxControl = this.criticalForm.get(checkboxName);
+    const inputControl = this.criticalForm.get(inputName);
+    if (checkboxControl?.value) {
+      inputControl?.enable();
+    } else {
+      inputControl?.disable();
+      inputControl?.setValue('');
+    }
+  }
+  
 
   public createDoc(status?:any,actionType?:any){
     return new Promise((resolve, reject) => {
