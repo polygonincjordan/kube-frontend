@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { PatientService } from '@services/e-kardex/patient.service';
@@ -32,7 +32,6 @@ export class SurgicalPassportComponent implements OnInit {
   public enableCreateVitals: boolean = false;
   public enableCreateDiagnosis: boolean = false;
   private encounterId: any;
-
   conmonDropOption = [
     { label: 'Yes', value: '0' },
     { label: 'No', value: '1' },
@@ -66,6 +65,7 @@ export class SurgicalPassportComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   docKey: any;
+  isFormValidError: boolean = false;
   isChecked: any;
   isCheckedDiagnosis: any;
 
@@ -77,7 +77,7 @@ export class SurgicalPassportComponent implements OnInit {
       }
       this.storageService.setEinri(this.paramsObject.einri);
       this.storageService.setFalnr(this.paramsObject.falnr);
-      this.storageService.setLfdnr(this.paramsObject.lfdnr);
+      this.storageService.setLfdnr(this.paramsObject.lfdnr) ;
       this.storageService.setPatnr(this.paramsObject.patnr);
       this.getPatinetDetails(this.encounterId);
     });
@@ -155,9 +155,9 @@ export class SurgicalPassportComponent implements OnInit {
       voided:  SurgicalPassData && SurgicalPassData.Voided ? SurgicalPassData.Voided : '',
       catheter:  SurgicalPassData && SurgicalPassData.Catheter ? SurgicalPassData.Catheter : '',
       ngt: SurgicalPassData && SurgicalPassData.Ngt ? SurgicalPassData.Ngt : '',
-      itime: SurgicalPassData && SurgicalPassData.ITime ? this.convertDurationToTime(SurgicalPassData.ITime) : '',
+      itime: [SurgicalPassData && SurgicalPassData.ITime ? this.convertDurationToTime(SurgicalPassData.ITime) : '',Validators.required],
       NoOfunit: SurgicalPassData && SurgicalPassData.Units ? SurgicalPassData.Units : '',
-      VTime: SurgicalPassData && SurgicalPassData.VTime ? this.convertDurationToTime(SurgicalPassData.VTime) : '',
+      VTime: [SurgicalPassData && SurgicalPassData.VTime ? this.convertDurationToTime(SurgicalPassData.VTime) : '',Validators.required],
       PreMedicationAdministred: SurgicalPassData && SurgicalPassData.PreMedication ? SurgicalPassData.PreMedication : '',
       skinTest: SurgicalPassData && SurgicalPassData.SkinTest ? SurgicalPassData.SkinTest : '',
       fullDose: SurgicalPassData && SurgicalPassData.FullDose ? SurgicalPassData.FullDose : '',
@@ -244,7 +244,6 @@ export class SurgicalPassportComponent implements OnInit {
     this.isCheckedDiagnosis = event.target.checked;
     this.formSurgicalPaasDetailGroup.get('isDiagnosis')?.setValue(this.isCheckedDiagnosis);
   }
-
   public getPatinetDetails(encounterId) {
     this.patientService.getDataPatient(encounterId).pipe(catchError(() => {
       return of({} as Patient);
@@ -352,6 +351,7 @@ export class SurgicalPassportComponent implements OnInit {
 
 
   createSurgicalPassDoc(status?:any,actionType?:any) {
+    this.isFormValidError = true
     return new Promise((resolve, reject) => {
     const Payload = {
       d: {
@@ -406,22 +406,25 @@ export class SurgicalPassportComponent implements OnInit {
         TOVITALSIGNS: this.toVitalsArr ? this.toVitalsArr:[] ,
       },
     };
-
-    this.subscription = this.emergencyService.createSurgicalPassDetail(Payload).subscribe({
-      next: (data: any) => {
-      },
-      error: (err: any) => {
-        this.sharedService.waringSwallModel(`Error ${err}`);
-        this.sharedService.waringSwallModel(`PUT Error at Surgical Passport : ${err}`);
-      },
-      complete: () => {
-        resolve(true);
-        if(status === 'edit'){
-          this.sharedService.successSwallModel('Surgical Passport updated successfully');
+    if(this.formSurgicalPaasDetailGroup.valid){
+      this.subscription = this.emergencyService.createSurgicalPassDetail(Payload).subscribe({
+        next: (data: any) => {
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at Surgical Passport : ${err}`);
+        },
+        complete: () => {
+          resolve(true);
+          if(status === 'edit'){
+            this.sharedService.successSwallModel('Surgical Passport updated successfully');
+          }else{
+            this.sharedService.successSwallModel('Surgical Passport created successfully');
+          }
+          this.isFormValidError = false
         }
-        this.sharedService.successSwallModel('Surgical Passport created successfully');
-      }
-    });    
+      });    
+    }
   })
   }
   copySurgicalPassDoc(status?:any,actionType?:any) {
@@ -506,6 +509,7 @@ export class SurgicalPassportComponent implements OnInit {
   this.surgicalPassDocForm(data.d.results[0])
   this.toDiagnosisArr = data.d.results[0].TODIAGNOSES.rsults
   this.toVitalsArr = data.d.results[0].TOVITALSIGNS.rsults
+  console.log(this.toVitalsArr, "this.toVitalsArr");
   
       },
       error: (err: any) => {

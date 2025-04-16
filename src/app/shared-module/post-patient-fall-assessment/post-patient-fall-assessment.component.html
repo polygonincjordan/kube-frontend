@@ -1,0 +1,476 @@
+<div class="end-container">
+    <div class="scale-box-main">
+        <!-- <label class="box-label">Medical History</label> -->
+        <div class="container-fluid p-0 mt-2">
+            <div class="tab-navigation-part p-0">
+                <div class="tab-navigate">
+                    <div class="tab-nav w-100">
+                        <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+                            <li *ngFor="let item of tabList" class="d-flex m-0 align-items-center"
+                                (click)="selectTab(item)" [ngClass]="item == selectedTabName ? 'active' : ''">
+                                <img src="./assets/img/grid-icon.svg" />
+                                <p class="d-inline-block m-0">{{ item }}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content scale-box mt-3" style="border-radius: 7px">
+                    <div *ngIf="selectedTabName == 'Assessed by Nurse'">
+                        <div>
+                            <div class="row m-0">
+                                <div class="col-md-3">
+                                    <label class="m-0">Was this fall observed?</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <ng-select>
+                                        <ng-option *ngFor="let item of observedList">{{ item.label }}</ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="m-0">If yes, by whome</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row m-0 mt-2">
+                                <div class="col-md-3">
+                                    <label class="m-0">Was this the patient first fall?</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <ng-select>
+                                        <ng-option *ngFor="let item of observedList">{{ item.label }}</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="row m-0 mt-3">
+                                <label style="font-weight: 600;" class="m-0 ml-2">Ask the patient immediately after their
+                                    fall; why do you think you
+                                    fall?</label>
+                            </div>
+                            <div class="row m-0 mt-2">
+                                <div class="col-md-3">
+                                    <label class="m-0">Patient response</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="row m-0 mb-2">
+                                    <div class="col-md-2">
+                                        <label class="m-0">What assistive devices were in use?</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div>
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Canes</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="m-0">Were Cane in good repair?</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ng-select>
+                                            <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="row m-0 mb-2">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div>
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Crutches</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="m-0">Were crutches in good repair?</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ng-select>
+                                            <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="row m-0 mb-2">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div>
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Walker</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="m-0">Was walker in good repair?</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ng-select>
+                                            <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="row m-0 mb-2">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div>
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Wheelchair</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="m-0">Was wheelchair in good repair?</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ng-select>
+                                            <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="row m-0">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div>
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Other</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ng-select>
+                                            <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="row m-0">
+                                    <label style="font-weight: 600;" class="m-0">Investigate the surrounding where the
+                                        incident occurred for any
+                                        evidence,</label>
+                                </div>
+                                <div class="row m-0 mt-2">
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Water spills or slipping floor?</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Phone cords/T.V cords lying?</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Poor lightening?</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Improper footwear?</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Clothing got in the way?</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Bed unlocked?</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Other furniture involved?</label>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Other</label>
+                                        <input class="form-control w-40 ml-3" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-0">
+                                <div class="col-md-3">
+                                    <label class="m-0 ">Location of this current fall</label>
+                                </div>
+                                <div class="col-md-8 row m-0 pl-0">
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Examination room </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Bath room </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Bed room </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Corrider</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Rest hall</label>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Other</label>
+                                        <input class="form-control w-40 ml-3" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="row m-0">
+                                    <label class="m-0">Was a restraint used during this incident?</label>
+                                </div>
+                                <div class="row m-0 mt-2">
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">None</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Side rails</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Wrist restraint</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Waist restraint</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Vest restaint</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Mittens</label>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center">
+                                        <input type="checkbox" />
+                                        <label class="m-0 ml-2">Other</label>
+                                        <input class="form-control w-40 ml-3" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="phsician-header">To be Filled by Physician</h4>
+                                <div class="row m-0 mt-3">
+                                    <div class="col-md-3 pl-0">
+                                        <label class="m-0">Physical assessment & Examination finding</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <textarea class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row m-0 mt-3">
+                                    <div class="col-md-2 pl-0">
+                                        <label class="m-0">Past fall plan of care</label>
+                                    </div>
+                                    <div class="col-md-8 row m-0">
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">No follow up indicated</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Keep under observation </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Pain management</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Lab ordered</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">X-ray</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Consultation</label>
+                                        </div>
+                                        <div class="col-md-3 d-flex align-items-center">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Other</label>
+                                            <input class="form-control w-40 ml-3" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m-0 mt-3">
+                                    <div class="col-md-2 pl-0">
+                                        <label class="m-0">Injury from fall</label>
+                                    </div>
+                                    <div class="col-md-8 row m-0">
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">No injury</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Minor injury </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Major injury</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" />
+                                            <label class="m-0 ml-2">Death</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m-0 mt-3">
+                                    <div class="col-md-2 pl-0">
+                                        <label class="m-0">Physician Name</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" />
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center">
+                                        <label class="m-0 mr-2">Date </label>
+                                        <input class="form-control ml-3" />
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center">
+                                        <label class="m-0 mr-2">Time </label>
+                                        <input class="form-control ml-3" type="time" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="selectedTabName == 'Diagnosis'">
+                        <div class="d-flex mb-2 py-3" style="justify-content: space-between;
+                          padding-right: 22px">
+                            <div style="display: flex;
+                          align-items: center;
+                          gap: 10px;">
+                                <input type="checkbox" style="width: 36px; 
+                            height: 22px;" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)"
+                                    [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+                                <label class="admitting-physician" for="noDiagnosisApplicable">No Diagnosis
+                                    Applicable</label>
+                            </div>
+                            <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
+                                <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+                            </div>
+
+                        </div>
+                        <div style="max-height: 296px;
+                          overflow: auto;">
+                            <table class="table table-bordered past-table">
+                                <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                                    <tr>
+                                        <th scope="col">Code</th>
+                                        <th scope="col">Description </th>
+                                        <th scope="col">Remarks</th>
+                                        <th scope="col">Administion Diag.</th>
+                                        <th scope="col">Discharge Diag.</th>
+                                        <th scope="col">Working Diag.</th>
+                                        <th scope="col">Preoperative Diag.</th>
+                                        <th scope="col">Surgery Diag.</th>
+                                        <th scope="col">Cause Diag.</th>
+                                        <th scope="col">Department Diag.</th>
+                                        <th scope="col">Hospital Diag.</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: #fbfcff;">
+                                    <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                                        <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                                        <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                                        <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}">
+                                        </td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}">
+                                        </td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DWorking" [ngModelOptions]="{standalone: true}"></td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}">
+                                        </td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DDeath" [ngModelOptions]="{standalone: true}"></td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DDepartment" [ngModelOptions]="{standalone: true}">
+                                        </td>
+                                        <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                                                [(ngModel)]="item.DHospital" [ngModelOptions]="{standalone: true}"></td>
+                                        <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(i)">
+                                            <img src="assets/img/Delete.svg" style="position: relative; top: 6px;" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="selectedTabName == 'Vital Sign Prior to Fall' || selectedTabName == 'Vital Sign at the time of Fall'">
+                        <div class="container-fluid">
+                            <div class="allergy-box d-flex justify-content-between py-1">
+                                <div class="allergy-checkbox-section d-flex align-items-center">
+                                    <input type="checkbox" id="noVitalSignsApplicable"
+                                        (change)="handleCheckboxVitals($event)" style="width: 24px;height: 20px;"
+                                        [attr.disabled]="toVitalsArr?.length >0 ? true:null" />
+                                    <label class="admitting-physician" for="noVitalSignsApplicable">&nbsp;&nbsp;No
+                                        Vitals
+                                        Signs Applicable</label>
+                                </div>
+                                <div class="secound-bar-vital-sign" (click)="openModalVital()">
+                                    <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+                                </div>
+                            </div>
+                            <div style="max-height: 296px;
+                      overflow: auto;">
+                                <table class="table table-bordered past-table">
+                                    <thead style="background-color: #e4edf5; color: black; ">
+                                        <tr>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Measured Value </th>
+                                            <th scope="col">Normal Range</th>
+                                            <th scope="col">Date/Time</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="background-color: #fbfcff;">
+                                        <tr class="past-med-input" *ngFor="let item of toVitalsArr;let i=index">
+                                            <td style="    padding: 10px !important;
+                          width: 15%;pointer-events: none;">{{item.Vdescription}}</td>
+                                            <td style="    padding: 10px !important;
+                          width: 15%;pointer-events: none;">{{item.MeasuredValue}} {{item.Vunit}}</td>
+                                            <td style="    padding: 10px !important;
+                          width: 15%;pointer-events: none;">{{item.NormalRange}}</td>
+                                            <td style="    padding: 10px !important;
+                          width: 15%;pointer-events: none;">{{item.DateTime}}</td>
+                                            <td style="    padding: 10px !important;
+                          width: 3%;text-align: center;" (click)="deleteVitalsFromTable(i)"><img
+                                                    src="assets/img/Delete.svg" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-diagnosis-tab #diagnosisNotesKardexId (importEvent)="importDiagnosisData($event)"></app-diagnosis-tab>
+<app-er-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-vitals>
