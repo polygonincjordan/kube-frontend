@@ -156,6 +156,7 @@ import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-d
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { DocumentingDeliveryComponent } from './check-in/documenting-delivery/documenting-delivery.component';
 import { ObsFallRiskAssessmentModule } from '../shared-module/obs-fall-risk-assessment/obs-fall-risk-assessment.module';
+import { PediatricsFallRiskAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/pediatrics-fall-risk-assessment/pediatrics-fall-risk-assessment.component';
 import { PostPatientFallAssessmentModule } from '../shared-module/post-patient-fall-assessment/post-patient-fall-assessment.module';
 
 
@@ -273,7 +274,8 @@ const route: Routes = [
     ReceiveCartComponent,
     MaternityEarlyWarningSignComponent,
     IntraOperativeRecordComponent,
-    DocumentingDeliveryComponent
+    DocumentingDeliveryComponent,
+    PediatricsFallRiskAssessmentComponent
   ],
   providers: [
     EmergencyService,

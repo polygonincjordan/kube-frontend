@@ -156,8 +156,11 @@ export class PatientDocumentationComponent implements OnInit {
   latestTimeoutCheckList = [];
 
   public isCVCInsertion: boolean = false;
+  public isPediatricsFall: boolean = false;
   public openCVCInsertionDocument: boolean = false;
+  public openisPediatricsFallDocument: boolean = false;
   latestCVCInsertionList = [];
+  public pediatricsFallList = [];
 
   public isPediatricAdmission: boolean = false;
   public openPediatricAdmissionDocument: boolean = false;
@@ -1071,6 +1074,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isNeonatalDisch': { isNeonatalDisch: true, selectedDocName: 'Neonatal Discharge Summary' },
       'isTimeoutCheck': { isTimeoutCheck: true, selectedDocName: 'Time Out Checklist in Non-OR Settings' },
       'isCVCInsertion': { isCVCInsertion: true, selectedDocName: 'IC Bundles for CVC Insertion' },
+      'isPediatricsFall': { isPediatricsFall: true, selectedDocName: 'Pediatrics Fall Risk Assessment' },
       'isPediatricAdmission': { isPediatricAdmission: true, selectedDocName: 'Pediatric Admission Assessment' },
       'isObstetricFallRiskAssessment': { isObstetricFallRiskAssessment: true, selectedDocName: 'Obstetric Fall Risk Assessment' },
       'ispostPatientFallAssessment': { ispostPatientFallAssessment: true, selectedDocName: 'Post Patient Fall Assessment' },
@@ -1115,11 +1119,13 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNeonatalDisch = false;
     this.isTimeoutCheck = false;
     this.isCVCInsertion = false;
+    this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
     this.openPediatricAdmissionDocument = false;
     this.openObstetricFallRiskAssessmentDocument = false;
     this.isObstetricFallRiskAssessment = false;
     this.openCVCInsertionDocument = false;
+    this.openisPediatricsFallDocument = false;
     this.openNeonatalDischDocument = false;
     this.openTimeoutCheckDocument = false;
     this.ispostPatientFallAssessment = false;
@@ -1481,6 +1487,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openTimeoutCheckDocument = false;
     this.isTimeoutCheck = false;
     this.isCVCInsertion = false;
+    this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
     this.openPediatricAdmissionDocument = false;
     this.latestPediatricAdmissionList = [];
@@ -1494,6 +1501,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.latestCVCInsertionList = [];
     this.openNeonatalDischDocument = false;
     this.openCVCInsertionDocument = false;
+    this.openisPediatricsFallDocument = false;
     this.isNeonatalDisch = false;
     this.latestNeonatalDischList = [];
     this.searchString = '';
@@ -1577,6 +1585,9 @@ export class PatientDocumentationComponent implements OnInit {
       this.TimeOutCheckListComp.ngOnDestroy();
     }
     if (this.openCVCInsertionDocument) {
+      this.CvcInsertionDocumentComp.ngOnDestroy();
+    }
+    if (this.openisPediatricsFallDocument) {
       this.CvcInsertionDocumentComp.ngOnDestroy();
     }
     this.getPatientProfile();
@@ -2933,6 +2944,56 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
+    else if (this.isPediatricsFall) {
+      if (action == 'create') {
+        this.openisPediatricsFallDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openisPediatricsFallDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteCVCInsertionPlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseCVCInsertionDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openisPediatricsFallDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openisPediatricsFallDocument = true;
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
 
     else if (this.isPediatricsAdmission) {
       if (action == 'create') {
@@ -3904,6 +3965,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openisPediatricsFallDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -4179,6 +4252,18 @@ export class PatientDocumentationComponent implements OnInit {
 
       // IC Bundles for CVC Insertion Document
       if (this.openCVCInsertionDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+      if (this.openisPediatricsFallDocument) {
         let docStatus = '1';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
@@ -4484,6 +4569,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }      
+      if (this.openisPediatricsFallDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }      
 
       if (this.openMorseFallScale) {
         const formData = {
@@ -4720,6 +4817,16 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     } else if (this.openMaternitySign) {
+      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+     else if (this.openisPediatricsFallDocument) {
       this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
