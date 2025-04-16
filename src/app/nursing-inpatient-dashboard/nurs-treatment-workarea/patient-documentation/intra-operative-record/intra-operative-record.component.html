@@ -55,7 +55,7 @@
       <div class="scale-container p-2">
         <h6 class="scale-result">Sign In</h6>
         <div class="d-flex">
-          <label class="mr-2 mt-1">Time</label>
+          <label class="col-md-1 p-0 mt-1 mb-2">Time</label>
           <input
             placeholder=""
             class="form-control"
@@ -138,21 +138,21 @@
             </div>
             <div class="mews-row">
               <div class="col-md-12 p-0"></div>
-              <div class="position-set">
+              <div class="inline-set">
                 <input type="checkbox" name="resp" /> The anaesthesia equipment
                 is on the patient and functioning
               </div>
             </div>
             <div class="mews-row">
               <div class="col-md-12 p-0"></div>
-              <div class="position-set">
+              <div class="inline-set">
                 <input type="checkbox" name="resp" /> Verification of critical
                 steps that require special equipment, implants or prepa
               </div>
             </div>
             <div class="mews-row">
               <div class="col-md-12 p-0"></div>
-              <div class="position-set">
+              <div class="inline-set">
                 <input type="checkbox" name="resp" /> Verification of the
                 existence of an anaesthetic problem
               </div>
@@ -163,7 +163,7 @@
           Time Out: Cirulating Nurse Verbalize to all team before skin incision
         </h6>
         <div class="d-flex">
-          <label class="mr-2 mt-1">Time</label>
+          <label class="col-md-1 p-0 mt-1 mb-2">Time</label>
           <input
             placeholder=""
             class="form-control"
@@ -205,7 +205,7 @@
               <div class="col-md-12 p-0">
                 <input type="checkbox" name="resp" /> Procedure site/marking
               </div>
-              <div class="position-set">
+              <div class="inline-set">
                 <input type="checkbox" class="mr-1" name="resp" />Anticipated
                 critical events (Surgeon, anaesthetist, nurse)
               </div>
@@ -237,7 +237,7 @@
                 <input type="checkbox" name="resp" /> What are the critical or
                 non-routine steps?
               </div>
-              <div class="position-set">
+              <div class="inline-set">
                 <input type="checkbox" class="mr-1" name="resp" />Has sterility
                 (including indicator results) been confirmed?
               </div>
@@ -258,8 +258,8 @@
                 blood loss?
               </div>
             </div>
-            <div class="mews-row">
-              <div class="col-md-12 p-0">ANAESTHETIST:</div>
+            <div class="d-flex">
+              <div class="col-md-2 p-0">ANAESTHETIST:</div>
               <div class="position-set">
                 <input type="checkbox" class="mr-1" name="resp" />Are there any
                 patient-specific concerns?
@@ -321,6 +321,7 @@
                   <input
                     type="text"
                     name="resp"
+                    class="form-control"
                     formControlName="EquipmentText"
                     [readOnly]="criticalForm.get('MotherBg')?.value != '0'"
                   />
@@ -339,10 +340,11 @@
                 Problem encountered
               </div>
               <div class="row">
-                <div class="position-set col-md-12 w-100">
+                <div class="position-set pl-0 col-md-12 w-100">
                   <input
                     type="text"
                     name="resp"
+                    class="form-control"
                     formControlName="ProblemText"
                     [readOnly]="!criticalForm.get('Problem')?.value"
                   />
@@ -408,7 +410,7 @@
             <div class="mews-row">
               <div class="col-md-10 p-0" style="text-align: end">Total</div>
               <div class="position-set">
-                <input class="form-control" type="text" />
+                <input class="form-control" type="text" style="height:36px;" />
               </div>
             </div>
             <div class="d-flex">
@@ -425,15 +427,15 @@
         <div class="mews-container">
           <div class="mews-table">
             <div class="mews-row d-flex">
-              <div class="col-md-11 p-0">
+              <div class="col-md-10 p-0">
                 <input type="checkbox" class="mr-1" name="resp" /> No diagnoses
                 applicable
               </div>
               <div
-                class="button-Import mr-5"
-                style="text-align: end; display: flex"
+                class="button-Import ml-auto"
+                style=" display: flex"
               >
-                <button class="btn action-doc">Import</button>
+                <button class="btn action-doc mr-2">Import</button>
                 <button class="btn action-doc">Create</button>
               </div>
             </div>
@@ -506,8 +508,8 @@
               </tbody>
             </table>
             <h6 class="scale-result">Surgical Team</h6>
-            <div class="button-Import mr-2" style="display: flex">
-              <button class="btn action-doc">Import</button>
+            <div class="button-Import  justify-content-end" style="display: flex">
+              <button class="btn action-doc mr-2">Import</button>
               <button class="btn action-doc">Create</button>
             </div>
             <table class="table table-bordered">
@@ -582,15 +584,15 @@
             <div class="mews-container">
               <div class="mews-table">
                 <div class="mews-row d-flex">
-                  <div class="col-md-11 p-0">
+                  <div class="col-md-10 p-0">
                     <input type="checkbox" class="mr-1" name="resp" /> No
                     Procedure applicable
                   </div>
                   <div
-                    class="button-Import mr-5"
+                    class="button-Import ml-auto"
                     style="text-align: end; display: flex"
                   >
-                    <button class="btn action-doc">Import</button>
+                    <button class="btn action-doc mr-2">Import</button>
                     <button class="btn action-doc">Create</button>
                   </div>
                 </div>
@@ -667,8 +669,8 @@
       <div class="scale-container p-2">
         <div class="mews-container">
           <div class="row">
-            <div class="col-md-3 d-flex">
-              <label class="mr-2 mt-3">Date</label>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-2 ">Date</label>
               <input
                 type="text"
                 class="form-control"
@@ -681,44 +683,47 @@
                 disabled
               />
             </div>
-            <div class="col-md-3 d-flex">
-              <label class="mr-3 mt-3">Surgery</label>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3 ">Surgery</label>
               <ng-select
                 [items]="surgeryTypes"
                 bindLabel="label"
                 bindValue="value"
                 placeholder="Select Surgery Type"
+                style="width:100%;"
               >
               </ng-select>
             </div>
-            <div class="col-md-6 d-flex">
-              <label class="mr-3 mt-3">Surgery Room Type</label>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3 ">Surgery Room Type</label>
               <ng-select
                 [items]="surgeryRoomTypes"
                 bindLabel="label"
                 bindValue="value"
                 placeholder="Select Surgery Room Type"
+                style="width:100%;"
               >
               </ng-select>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3 d-flex">
-              <label class="mr-5 mt-3">Classification</label>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-2 ">Classification</label>
               <ng-select
                 [items]="classifications"
                 bindLabel="label"
                 bindValue="value"
                 placeholder="Select Classification"
+                style="width:100%;"
               >
               </ng-select>
             </div>
-            <div class="col-md-3 d-flex">
-              <label class="mr-3 mt-3">Room</label>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3 ">Room</label>
               <input class="form-control" type="text" />
             </div>
-            <div class="col-md-3 d-flex">
-              <label class="mr-3 mt-3">Position</label>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3 ">Position</label>
               <ng-select
                 [items]="positions"
                 bindLabel="label"
@@ -726,23 +731,24 @@
                 placeholder="Select Position"
                 formControlName="Position"
                 (change)="onSelectChange('Position', 'PositionT')"
+                style="width:100%;"
               >
               </ng-select>
             </div>
-            <div class="col-md-3 d-flex">
+            <div class="col-md-3 d-flex align-items-center">
               <input class="form-control" type="text"   formControlName="PositionT"
               [readOnly]="criticalForm.get('Position')?.value != '0'" />
             </div>
           </div>
           <div class="row Safety d-flex mt-4">
-            <div class="col-md-1">SUPPORT DEVICES:</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">SUPPORT DEVICES:</div>
+            <div class="col-md-1 pl-3">
               <input type="checkbox" name="resp" /> Safety belts
             </div>
             <div class="col-md-1">
               <input type="checkbox" name="resp" /> Lateral Support
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1 pr-0">
               <input type="checkbox" class="mr-1" name="resp" />Warming Devices
             </div>
             <div class="col-md-1">
@@ -756,8 +762,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1"></div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px"></div>
+            <div class="col-md-1 pl-3">
               <input type="checkbox" class="mr-1" name="resp" />Gel pads
             </div>
             <div class="col-md-1">
@@ -774,8 +780,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1">PADDING:</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">PADDING:</div>
+            <div class="col-md-1 pl-3">
               <input type="checkbox" name="resp" /> Arms
             </div>
             <div class="col-md-1">
@@ -795,8 +801,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1"></div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px"></div>
+            <div class="col-md-1 pl-3">
               <input type="checkbox" class="mr-1" name="resp" />Shoulders
             </div>
             <div class="col-md-1">
@@ -804,8 +810,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1">Hair Clipping</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">Hair Clipping</div>
+            <div class="col-md-1 pl-3">
               <ng-select
                 [items]="yesNoOptions"
                 bindLabel="label"
@@ -813,6 +819,7 @@
                 placeholder="Hair Clipping"
                 formControlName="Hair"
                 (change)="onSelectChange('Hair', 'HairT')"
+                style="width:100%"
               >
               </ng-select>
             </div>
@@ -823,8 +830,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1">SKIN PREPARATION</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">SKIN PREPARATION</div>
+            <div class="col-md-1 pl-3">
               <input type="checkbox" name="resp" /> Povidone Iodine
             </div>
             <div class="col-md-1">
@@ -850,23 +857,25 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1">Warming Blanket</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">Warming Blanket</div>
+            <div class="col-md-1 pl-3">
               <ng-select
                 [items]="yesNoOptions"
                 bindLabel="label"
                 bindValue="value"
                 placeholder=""
+                style="width:100%;"
               >
               </ng-select>
             </div>
-            <div class="col-md-2">Electro Cautry Machine</div>
+            <div class="col-md-1" style="min-width:fit-content;">Electro Cautry Machine</div>
             <div class="col-md-1">
               <ng-select
                 [items]="yesNoOptions"
                 bindLabel="label"
                 bindValue="value"
                 placeholder=""
+                style="width:100%;"
               >
               </ng-select>
             </div>
@@ -891,8 +900,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-2">PATIENT PLATE LOCATION</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">PATIENT PLATE LOCATION</div>
+            <div class="col-md-1 pl-3">
               <input type="checkbox" name="resp" /> Arms
             </div>
             <div class="col-md-1">
@@ -909,8 +918,8 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-1"></div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px"></div>
+            <div class="col-md-1 pl-3">
               <input
                 type="checkbox"
                 class="mr-1"
@@ -930,13 +939,14 @@
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
-            <div class="col-md-2">Skin Condition after removal of Plate</div>
-            <div class="col-md-1">
+            <div class="col-md-1" style="min-width:150px">Skin Condition after removal of Plate</div>
+            <div class="col-md-1 pl-3">
               <ng-select
                 [items]="skinConditions"
                 bindLabel="label"
                 bindValue="value"
                 placeholder="Select Skin Condition"
+                style="width:100%;"
               >
               </ng-select>
             </div>
@@ -952,6 +962,7 @@
                 placeholder=""
                 formControlName="Tourniquet"
                 (change)="onSelectChange('Tourniquet', 'Tourniquettext')"
+                style="width:100%;"
               >
               </ng-select>
             </div>
@@ -959,10 +970,11 @@
             <div class="col-md-1">
               <input
                 type="text"
-                class="mr-1"
+                class="mr-1 w-100"
                 name="resp"
                 formControlName="Tourniquettext"
                 [readOnly]="criticalForm.get('Tourniquet')?.value != '0'"
+                style="min-width:auto;"
               />
             </div>
             <div class="col-md-1">Applied By</div>
@@ -981,34 +993,60 @@
           </div>
           <div class="row Safety d-flex mt-2">
             <div class="col-md-2"></div>
-            <div class="col-md-1">
-              <input
-                type="checkbox"
-                class="mr-1"
-                name="resp"
-                formControlName="leftLine"
-                (change)="toggleInputText('leftLine', 'AppliedL')"
-              />
-              Left Limb
-            </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-1">
-              <input
-                type="checkbox"
-                class="mr-1"
-                name="resp"
-                formControlName="rightLine"
-                (change)="toggleInputText('rightLine', 'AppliedR')"
-              />
-              Right Limb
-            </div>
-          </div>
-          <div class="row Safety d-flex mt-2">
-            <div class="col-md-2"></div>
-            <div class="col-md-1">Time Applied</div>
-            <div class="col-md-1"></div>
-            <div class="col-md-1">
-              <input
+            <div class="col-md-5">
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="leftLine"
+                  (change)="toggleInputText('leftLine', 'AppliedL')"
+                />
+                Left Limb
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Applied</div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="AppliedL"
+                    [readOnly]="!criticalForm.get('leftLine')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Pressure</div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="AppliedL"
+                    [readOnly]="!criticalForm.get('leftLine')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Deflated</div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="AppliedL"
+                    [readOnly]="!criticalForm.get('leftLine')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Removed</div>
+                <div class="col-md-3">
+                  <input
                 type="text"
                 placeholder="00:00:00"
                 class="mr-1"
@@ -1016,9 +1054,86 @@
                 formControlName="AppliedL"
                 [readOnly]="!criticalForm.get('leftLine')?.value"
               />
+                </div>
+              </div>
+            
             </div>
+            <div class="col-md-5">
+              <div class="col-md-1">
+                <input
+                    type="checkbox"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="rightLine"
+                    (change)="toggleInputText('rightLine', 'AppliedR')"
+                  />
+                  Right Limb
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Inflated</div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="AppliedL"
+                    [readOnly]="!criticalForm.get('leftLine')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Pressure</div>
+                <div class="col-md-3">
+                  <input
+                  type="text"
+                  placeholder="00:00:00"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="AppliedR"
+                  [readOnly]="!criticalForm.get('rightLine')?.value"
+                />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Deflated</div>
+                <div class="col-md-3">
+                  <input
+                  type="text"
+                  placeholder="00:00:00"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="AppliedR"
+                  [readOnly]="!criticalForm.get('rightLine')?.value"
+                />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Removed</div>
+                <div class="col-md-3">
+                  <input
+                  type="text"
+                  placeholder="00:00:00"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="AppliedR"
+                  [readOnly]="!criticalForm.get('rightLine')?.value"
+                />
+                </div>
+              </div>
+                
+              </div>
+            </div>
+            
+            
+            
+          <!-- <div class="row Safety d-flex mt-2">
             <div class="col-md-2"></div>
-            <div class="col-md-1">Time Inflated</div>
+           
+            <div class="col-md-1"></div>
+            
+            <div class="col-md-2"></div>
+            
             <div class="col-md-1"></div>
             <div class="col-md-1">
               <input
@@ -1030,21 +1145,12 @@
                 [readOnly]="!criticalForm.get('rightLine')?.value"
               />
             </div>
-          </div>
-          <div class="row Safety d-flex mt-2">
+          </div> -->
+          <!-- <div class="row Safety d-flex mt-2">
             <div class="col-md-2"></div>
             <div class="col-md-1">Pressure</div>
             <div class="col-md-1"></div>
-            <div class="col-md-1">
-              <input
-                type="text"
-                placeholder="00:00:00"
-                class="mr-1"
-                name="resp"
-                formControlName="AppliedL"
-                [readOnly]="!criticalForm.get('leftLine')?.value"
-              />
-            </div>
+            
             <div class="col-md-2"></div>
             <div class="col-md-1">Pressure</div>
             <div class="col-md-1"></div>
@@ -1064,27 +1170,13 @@
             <div class="col-md-1">Time Deflated</div>
             <div class="col-md-1"></div>
             <div class="col-md-1">
-              <input
-                type="text"
-                placeholder="00:00:00"
-                class="mr-1"
-                name="resp"
-                formControlName="AppliedL"
-                [readOnly]="!criticalForm.get('leftLine')?.value"
-              />
+             
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-1">Time Deflated</div>
             <div class="col-md-1"></div>
             <div class="col-md-1">
-              <input
-                type="text"
-                placeholder="00:00:00"
-                class="mr-1"
-                name="resp"
-                formControlName="AppliedR"
-                [readOnly]="!criticalForm.get('rightLine')?.value"
-              />
+              
             </div>
           </div>
           <div class="row Safety d-flex mt-2">
@@ -1105,18 +1197,11 @@
             <div class="col-md-1">Time Removed</div>
             <div class="col-md-1"></div>
             <div class="col-md-1">
-              <input
-                type="text"
-                placeholder="00:00:00"
-                class="mr-1"
-                name="resp"
-                formControlName="AppliedR"
-                [readOnly]="!criticalForm.get('rightLine')?.value"
-              />
+             
             </div>
-          </div>
+          </div> -->
           <div class="row">
-            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 404px">
+            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 440px">
               <div class="Safety d-flex mt-2">
                 <div class="col-md-1 mt-1 mr-2">Implants</div>
                 <ng-select
@@ -1195,6 +1280,7 @@
                     bindValue="value"
                     class="col-md-2"
                     placeholder="Select Type"
+                    style="padding-left:0"
                   >
                   </ng-select>
                 </div>
@@ -1206,32 +1292,33 @@
                     bindValue="value"
                     placeholder="Select Method"
                     class="col-md-2"
+                    style="padding-left:0"
                   >
                   </ng-select>
                 </div>
                 <div class="Safety d-flex mt-2">
                   <div class="col-md-2">Other</div>
-                  <input type="text" class="mr-1 col-md-2" name="resp" />
+                  <input type="text" class="mr-1 form-control col-md-2" name="resp" />
                 </div>
               </div>
               <div class="bordercoloer mt-2">
                 <h6 class="scale-result">Blood Loss/Swabs</h6>
                 <div class="Safety d-flex mt-2">
-                  <div class="col-md-1 mt-2 mr-2">Swabs</div>
-                  <input type="text" class="mr-1 col-md-2" name="resp" />
+                  <div class="col-md-1 mt-2 mr-3">Swabs</div>
+                  <input type="text" class="mr-1 form-control col-md-2" name="resp" />
                 </div>
                 <div class="Safety d-flex mt-2">
-                  <div class="col-md-1 mt-2 mr-2">Subction</div>
-                  <input type="text" class="mr-1 col-md-2" name="resp" />
+                  <div class="col-md-1 mt-2 mr-3">Subction</div>
+                  <input type="text" class="mr-1 form-control col-md-2" name="resp" />
                 </div>
                 <div class="Safety d-flex mt-2">
-                  <div class="col-md-1 mt-2 mr-2">Total</div>
-                  <input type="text" class="mr-1 col-md-2" name="resp" />
+                  <div class="col-md-1 mt-2 mr-3">Total</div>
+                  <input type="text" class="mr-1 form-control col-md-2" name="resp" />
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row"> 
             <div class="col-md-6 mt-2 bordercoloer">
               <div class="Safety d-flex mt-2">
                 <div class="col-md-1 mt-1 mr-2">Drains</div>
@@ -1291,7 +1378,7 @@
             <div class="col-md-6 mt-2">
               <div class="bordercoloer">
                 <div class="Safety d-flex mt-2">
-                  <div class="col-md-4 mt-1 mr-2">
+                  <div class="col-md-5 mt-1 mr-2">
                     Packs/swabs left in cavities/wounds
                   </div>
                   <ng-select
@@ -1481,7 +1568,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 375px">
+            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 400px">
               <h6 class="scale-result">Instrument Sets</h6>
               <table class="table table-bordered mt-2">
                 <thead
@@ -1555,6 +1642,7 @@
                     formControlName="naT"
                     [readonly]="!criticalForm.get('na')?.value"
                     class="col-md-3"
+                    style="padding:0;min-width: 200px;"
                   >
                   </ng-select>
                 </div>
@@ -1562,7 +1650,7 @@
                   <div class="col-md-3 mt-2 mr-2">Weight(kg)</div>
                   <input
                     type="text"
-                    class="mr-1 col-md-1"
+                    class="mr-1 form-control col-md-1"
                     name="resp"
                     formControlName="naT"
                     [readOnly]="!criticalForm.get('na')?.value"
@@ -1572,7 +1660,7 @@
                   <div class="col-md-3 mt-2 mr-2">Birth Time</div>
                   <input
                     type="text"
-                    class="mr-1 col-md-1"
+                    class="mr-1 form-control col-md-1"
                     placeholder="00:00:00"
                     name="resp"
                   />
@@ -1587,6 +1675,7 @@
                     bindValue="value"
                     placeholder="Identification Applied"
                     class="col-md-3"
+                    style="padding:0;min-width: 200px;"
                   >
                   </ng-select>
                 </div>
@@ -1594,7 +1683,7 @@
                   <div class="col-md-3 mt-2 mr-2">By</div>
                   <input
                     type="text"
-                    class="mr-1 col-md-3"
+                    class="mr-1 form-control col-md-3"
                     placeholder="00:00:00"
                     name="resp"
                     formControlName="naT"
@@ -1611,11 +1700,12 @@
                     class="col-md-3 ml-2"
                     formControlName="naT"
                     [readonly]="!criticalForm.get('na')?.value"
+                    style="padding:0;min-width: 200px;margin-right:8px;margin-left:0!important"
                   >
                   </ng-select>
                   <input
                     type="text"
-                    class="col-md-1"
+                    class="col-md-1 "
                     name="resp"
                     formControlName="naT"
                     [readOnly]="!criticalForm.get('na')?.value"
@@ -1625,11 +1715,11 @@
             </div>
           </div>
           <div class="Safety d-flex mt-2">
-            <div class="col-md-1 mt-2 mr-2">Circulating Nurse</div>
+            <div class="col-md-1 pl-0 mt-2 mr-2">Circulating Nurse</div>
             <input type="text" class="mr-1 col-md-4" name="resp" />
           </div>
           <div class="Safety d-flex mt-2">
-            <div class="col-md-1 mt-2 mr-2">Scrub Nurse</div>
+            <div class="col-md-1 pl-0 mt-2 mr-2">Scrub Nurse</div>
             <input type="text" class="mr-1 col-md-4" name="resp" />
           </div>
         </div>
@@ -1658,23 +1748,24 @@
               </div>
             </div>
             <div class="Safety d-flex mt-2">
-              <div class="col-md-1 mt-2 mr-2">Location</div>
-              <input type="text" class="mr-1 col-md-4" name="resp" />
+              <div class="col-md-2 mt-2 mr-2">Location</div>
+              <input type="text" class="mr-1 form-control col-md-4" name="resp" />
             </div>
             <div class="Safety d-flex mt-2">
-              <div class="col-md-1 mt-2 mr-2">Discharged To</div>
+              <div class="col-md-2 mt-2 mr-2">Discharged To</div>
               <ng-select
                 [items]="dischargeDestinations"
                 bindLabel="label"
                 bindValue="value"
                 class="col-md-3"
                 placeholder="Select Discharge Destination"
+                style="padding-left:0;"
               >
               </ng-select>
-              <input type="text" class="mr-1 col-md-3" name="resp" />
+              <input type="text" class="mr-1 form-control my-0 col-md-3" name="resp" />
             </div>
             <div class="row Safety d-flex mt-4">
-              <div class="col-md-1">Reported/Handover</div>
+              <div class="col-md-2">Reported/Handover</div>
               <div class="col-md-1">
                 <input type="checkbox" name="resp" /> Wound Status
               </div>
@@ -1694,7 +1785,7 @@
               </div>
             </div>
             <div class="row Safety d-flex mt-2">
-              <div class="col-md-1"></div>
+              <div class="col-md-2"></div>
               <div class="col-md-1">
                 <input type="checkbox" name="resp" /> X-ray/MRI films
               </div>
@@ -1708,29 +1799,29 @@
                 <input type="checkbox" class="mr-1" name="resp"  formControlName="otherIv" (change)="toggleInputText('otherIv', 'otherIvT')"/>Others
               </div>
               <div class="col-md-1">
-                <input type="text" class="mr-1 col-md-2" name="resp"  formControlName="otherIvT" [readOnly]="!criticalForm.get('otherIv')?.value"/>
+                <input type="text" class="mr-1 form-control col-md-2" name="resp"  formControlName="otherIvT" [readOnly]="!criticalForm.get('otherIv')?.value"/>
               </div>
             </div>
             <div class="Safety d-flex mt-2">
               <div class="col-md-2 mt-2 mr-2">
                 Handover by (Circulating Nurse)
               </div>
-              <input type="text" class="mr-1 col-md-3" name="resp" />
+              <input type="text" class="mr-1 form-control col-md-3" name="resp" />
               <div class="mr-2 mt-2 ml-2">Time</div>
               <input
                 type="text"
-                class="mr-1 col-md-2"
+                class="mr-1 form-control col-md-2"
                 placeholder="00:00:00"
                 name="resp"
               />
             </div>
             <div class="Safety d-flex mt-2">
               <div class="col-md-2 mt-2 mr-2">Received by : Nurse</div>
-              <input type="text" class="mr-1 col-md-3" name="resp" />
+              <input type="text" class="mr-1 form-control col-md-3" name="resp" />
               <div class="mr-2 mt-2 ml-2">Time</div>
               <input
                 type="text"
-                class="mr-1 col-md-2"
+                class="mr-1 form-control col-md-2"
                 placeholder="00:00:00"
                 name="resp"
               />
