@@ -170,6 +170,10 @@ export class PatientDocumentationComponent implements OnInit {
   public openObstetricFallRiskAssessmentDocument: boolean = false;
   latestObstetricFallRiskAssessmentList = [];
 
+  public ispostPatientFallAssessment: boolean = false;
+  public openpostPatientFallAssessmentDocument: boolean = false;
+  latestpostPatientFallAssessmentList = [];
+
   phyDocList = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
@@ -260,6 +264,7 @@ export class PatientDocumentationComponent implements OnInit {
   base64Value: string;
   mimetype: any;
   filename: any;
+  searchStringForLeft: any;
   file: File;
   selectedFile: File | null = null;
   documentUrl: SafeResourceUrl | null = null;
@@ -1072,6 +1077,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isPediatricsFall': { isPediatricsFall: true, selectedDocName: 'Pediatrics Fall Risk Assessment' },
       'isPediatricAdmission': { isPediatricAdmission: true, selectedDocName: 'Pediatric Admission Assessment' },
       'isObstetricFallRiskAssessment': { isObstetricFallRiskAssessment: true, selectedDocName: 'Obstetric Fall Risk Assessment' },
+      'ispostPatientFallAssessment': { ispostPatientFallAssessment: true, selectedDocName: 'Post Patient Fall Assessment' },
     };
 
 
@@ -1122,6 +1128,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openisPediatricsFallDocument = false;
     this.openNeonatalDischDocument = false;
     this.openTimeoutCheckDocument = false;
+    this.ispostPatientFallAssessment = false;
+    this.openpostPatientFallAssessmentDocument = false;
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
       const assessment = assessments[name];
@@ -1485,6 +1493,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.latestPediatricAdmissionList = [];
     this.isObstetricFallRiskAssessment = false;
     this.openObstetricFallRiskAssessmentDocument = false;
+    this.openpostPatientFallAssessmentDocument = false;
+    this.ispostPatientFallAssessment = false;
+    this.latestpostPatientFallAssessmentList = [];
     this.latestObstetricFallRiskAssessmentList = [];
     this.latestMorseFallScaleData = [];
     this.latestCVCInsertionList = [];
@@ -3074,6 +3085,57 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openObstetricFallRiskAssessmentDocument = true;
+        this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+    }
+
+    else if (this.ispostPatientFallAssessment) {
+      if (action == 'create') {
+        this.openpostPatientFallAssessmentDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openpostPatientFallAssessmentDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteCVCInsertionPlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseCVCInsertionDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openpostPatientFallAssessmentDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openpostPatientFallAssessmentDocument = true;
         this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()
