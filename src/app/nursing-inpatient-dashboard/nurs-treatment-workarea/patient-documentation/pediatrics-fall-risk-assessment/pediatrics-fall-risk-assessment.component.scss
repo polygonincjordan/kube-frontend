@@ -74,5 +74,16 @@
     border: none;
     padding: 8px 16px;
   }
+
+
+  ol.pl-3 {
+    list-style-position: outside;
+    padding-left: 2rem;
+    }
+    ol.pl-3 li {
+      text-indent: -10px;
+      /* padding-left: 1.8rem; */
+      line-height: 1.6;
+    }
   
   

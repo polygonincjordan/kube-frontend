@@ -1,11 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -101,7 +102,7 @@ export class IntraOperativeRecordComponent implements OnInit {
   private actionTypeSubscription$: Subscription;
   public docKey: any;
   public CurrentDateAndTime: Date = new Date();
-   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService) { 
+   constructor(public modalService: BsModalService,private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService) { 
      this._route.queryParams.subscribe((params) => {
            this.paramsObject = params;
            this.storageService.setEinri(this.paramsObject.einri);
@@ -183,10 +184,123 @@ export class IntraOperativeRecordComponent implements OnInit {
       HairT:[''],
       Position:[''],
       PositionT:[''],
+      drains: this.formBuilder.array([]),
+      Packs: this.formBuilder.array([]),
+      Implants: this.formBuilder.array([]),
+      Count: this.formBuilder.array([]),
+      Instrument : this.formBuilder.array([]),
+      Specimens : this.formBuilder.array([]),
+      drainsDrop:[''],
+      na1:[false],
+      PacksDrop:[''],
+      Implantsdrop:['']
 
     })
+    for (let i = 0; i < 5; i++) {
+      this.addDrain();
+      this.addPacks();
+      this.addImplants();
+      this.addCount();
+      this.addSpecimens();
+      this.addInstrument();
+    }
 
   }
+
+
+  get drains(): FormArray {
+    return this.criticalForm.get('drains') as FormArray;
+  }
+  get Packs(): FormArray {
+    return this.criticalForm.get('Packs') as FormArray;
+  }
+  get Implants(): FormArray {
+    return this.criticalForm.get('Implants') as FormArray;
+  }
+  get Count(): FormArray {
+    return this.criticalForm.get('Count') as FormArray;
+  }
+  get Instrument (): FormArray {
+    return this.criticalForm.get('Instrument') as FormArray;
+  }
+  get Specimens (): FormArray {
+    return this.criticalForm.get('Specimens') as FormArray;
+  }
+
+  addDrain() {
+    const drainGroup = this.formBuilder.group({
+      type: [''],
+      size: [''],
+      site: ['']
+    });
+    this.drains.push(drainGroup);
+  }
+  addSpecimens() {
+    const drainGroup = this.formBuilder.group({
+      Specimenstype: [''],
+      Samples: [''],
+    });
+    this.Specimens.push(drainGroup);
+  }
+  addPacks() {
+    const drainGroup = this.formBuilder.group({
+      types: [''],
+      no: [''],
+      sites: ['']
+    });
+    this.Packs.push(drainGroup);
+  }
+   addInstrument() {
+    const drainGroup = this.formBuilder.group({
+      InstrumentSet : [''],
+      InstrumentNum : [''],
+      InstrumentPac : [''],
+      InstrumentName  : ['']
+    });
+    this.Instrument.push(drainGroup);
+  }
+  addImplants() {
+    const drainGroup = this.formBuilder.group({
+      Implantstypes: [''],
+      ImplantsSize: [''],
+      ImplantsQuantity: ['']
+    });
+    this.Implants.push(drainGroup);
+  }
+  addCount() {
+    const drainGroup = this.formBuilder.group({
+      item: [''],
+      Correct1: [''],
+      Incorrect1: [''],
+      Correct2: [''],
+      Incorrect2: [''],
+      Correct3: [''],
+      Incorrect3: ['']
+     
+    });
+    this.Count.push(drainGroup);
+  }
+
+  removeDrain(index: number) {
+    this.drains.removeAt(index);
+  }
+  removePacks(index: number) {
+    this.Packs.removeAt(index);
+  }
+  removeImplants(index: number) {
+    this.Implants.removeAt(index);
+  }
+  
+  removeCount(index: number) {
+    this.Count.removeAt(index);
+  }
+  removeInstrument (index: number) {
+    this.Instrument.removeAt(index);
+  }
+  removeSpecimens (index: number) {
+    this.Specimens.removeAt(index);
+  }
+  
 
 
   toggleInput(controlName: string, value: string): void {
@@ -194,8 +308,18 @@ export class IntraOperativeRecordComponent implements OnInit {
     if (value === '0') {
       this.criticalForm.get(controlName)?.enable();
     } else {
-      this.criticalForm.get(controlName)?.disable();
-      this.criticalForm.get(controlName)?.setValue('');
+      if(controlName === 'type'){
+        this.criticalForm.get('type')?.disable();
+      this.criticalForm.get('type')?.setValue('');
+        this.criticalForm.get('size')?.disable();
+      this.criticalForm.get('size')?.setValue('');
+        this.criticalForm.get('site')?.disable();
+      this.criticalForm.get('site')?.setValue('');
+      }else{
+        this.criticalForm.get(controlName)?.disable();
+        this.criticalForm.get(controlName)?.setValue('');
+
+      }
     }
   }
 
@@ -255,5 +379,18 @@ export class IntraOperativeRecordComponent implements OnInit {
   activeTab: string = 'surgicalsafetychecklist'; // Default tab
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+  userGroup:FormGroup
+  updateAdditionalInfo() {
+   
+  }
+
+  cancelAdditionalInfo() {
+    this.modalRef.hide()
+  }
+  modalRef?: BsModalRef;
+
+  showPopup(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { backdrop: true, ignoreBackdropClick: false, class: 'additional-info-temp' });
   }
 }

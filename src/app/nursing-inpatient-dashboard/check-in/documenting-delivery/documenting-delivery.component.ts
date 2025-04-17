@@ -21,6 +21,11 @@ export class DocumentingDeliveryComponent implements OnInit {
     { value: '2', label: 'Female' },
     { value: '3', label: 'Unknown' }
   ];
+  public apgar = [
+    { value: '0', label: '0 = Very Bad' },
+    { value: '10',label: '10 = Very Good' },
+ 
+  ];
   
   public delOutcomes = [
     { value: 'L', label: 'Live' },

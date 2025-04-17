@@ -38,10 +38,10 @@ padding-bottom: 10px;">
     <h6 class="scale-result">Birth Data</h6>
     <div>
       <div class="d-flex">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <input type="checkbox" style="width: 10px !important" name="resp" />
           <label for="name" class="col-md-3">Name</label>
-          <input id="name" class="col-md-4 mrglft30" type="text">
+          <input id="name" class="col-md-4 mrglft30" style="margin-left: 22px !important;" type="text">
         </div>
         <div class="col-md-4 d-flex">
           <label for="name" class="mr-3 mt-3">Case</label>
@@ -50,9 +50,9 @@ padding-bottom: 10px;">
       </div>
   
       <div class="d-flex mt-2">
-        <div class="col-md-4 d-flex">
+        <div class="col-md-5 d-flex">
           <label for="birthdate" class="col-md-4 mr-3" style="margin-left: 8px;">Birthdate</label>
-          <input id="birthdate" type="date" class="mrlf11">
+          <input id="birthdate" type="date" class="mrlf11 mrlft20">
         </div>
         <div class="col-md-4 d-flex">
           <label for="tob" class="mr-3 mt-2">ToB</label>
@@ -71,8 +71,8 @@ padding-bottom: 10px;">
       </div>
   
       <div class="form-group mt-2">
-        <label for="apgar" class="adjustStyle" style="max-width: 115px !important;">Delivery Type</label>
-        <ng-select [items]="delvTypes" class="col-md-3 mrlf11 p-0" style="height: 32px; margin-left: -5px;"
+        <label for="apgar" class="adjustStyle" style="max-width: 150px !important;">Delivery Type</label>
+        <ng-select [items]="delvTypes" class="col-md-3 mrlf11 p-0" style="height: 32px; margin-left: -10px !important;"
         bindLabel="label"
         bindValue="value"
         placeholder="Select Delivery Type"
@@ -84,15 +84,18 @@ padding-bottom: 10px;">
   
       <div class="form-group mt-2">
         <label for="weight" class="adjustStyle">Weight</label>
-        <input id="weight" type="text" class="mr-2 mrlf11">
+        <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important;">
         <span class="mt-2">G</span>
         <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-        <input id="length" type="text" class="mr-2">
+        <input id="length" type="text" class="mr-2"  style="max-width: 255px !important;">
         <span class="mt-2">CM</span>
         <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-        <input type="checkbox" class="ml-3">
-        <input type="checkbox" class="ml-3">
-        <input type="checkbox" class="ml-3">
+        <ng-select [items]="apgar"
+          bindLabel="label"
+          bindValue="value"
+          placeholder="Select APGAR"
+          class="col-md-2 p-0" style="height: 32px;"
+         ></ng-select>
       </div>
   
       <div class="form-group">
@@ -146,7 +149,7 @@ padding-bottom: 10px;">
           <div class="col-md-4">
             <input type="checkbox" style="width: 10px !important" name="resp" />
             <label for="name" class="col-md-3">Name</label>
-            <input id="name" class="col-md-4 mrglft30" type="text">
+            <input id="name" class="col-md-4" style="margin-left: 42px !important;" type="text">
           </div>
           <div class="col-md-4 d-flex">
             <label for="name" class="mr-3 mt-3">Case</label>
@@ -157,7 +160,7 @@ padding-bottom: 10px;">
         <div class="d-flex mt-2">
           <div class="col-md-4 d-flex">
             <label for="birthdate" class="col-md-4 mr-3" style="margin-left: 8px;">Birthdate</label>
-            <input id="birthdate" type="date" class="mrlf11">
+            <input id="birthdate" type="date">
           </div>
           <div class="col-md-4 d-flex">
             <label for="tob" class="mr-3 mt-2">ToB</label>
@@ -189,15 +192,18 @@ padding-bottom: 10px;">
     
         <div class="form-group mt-2">
           <label for="weight" class="adjustStyle">Weight</label>
-          <input id="weight" type="text" class="mr-2 mrlf11">
+          <input id="weight" type="text" class="mr-2 mrlf11"  style="max-width: 255px !important;">
           <span class="mt-2">G</span>
           <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-          <input id="length" type="text" class="mr-2">
+          <input id="length" type="text" class="mr-2"  style="max-width: 255px !important;">
           <span class="mt-2">CM</span>
           <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <input type="checkbox" class="ml-3">
-          <input type="checkbox" class="ml-3">
-          <input type="checkbox" class="ml-3">
+          <ng-select [items]="apgar"
+          bindLabel="label"
+          bindValue="value"
+          placeholder="Select APGAR"
+          class="col-md-2 p-0" style="height: 32px;"
+         ></ng-select>
         </div>
     
         <div class="form-group">
@@ -221,7 +227,7 @@ padding-bottom: 10px;">
           <div class="col-md-4">
             <input type="checkbox" style="width: 10px !important" name="resp" />
             <label for="name" class="col-md-3">Name</label>
-            <input id="name" class="col-md-4 mrglft30" type="text">
+            <input id="name" class="col-md-4" style="margin-left: 42px !important" type="text">
           </div>
           <div class="col-md-4 d-flex">
             <label for="name" class="mr-3 mt-3">Case</label>
@@ -232,7 +238,7 @@ padding-bottom: 10px;">
         <div class="d-flex mt-2">
           <div class="col-md-4 d-flex">
             <label for="birthdate" class="col-md-4 mr-3" style="margin-left: 8px;">Birthdate</label>
-            <input id="birthdate" type="date" class="mrlf11">
+            <input id="birthdate" type="date" class="">
           </div>
           <div class="col-md-4 d-flex">
             <label for="tob" class="mr-3 mt-2">ToB</label>
@@ -264,15 +270,18 @@ padding-bottom: 10px;">
     
         <div class="form-group mt-2">
           <label for="weight" class="adjustStyle">Weight</label>
-          <input id="weight" type="text" class="mr-2 mrlf11">
+          <input id="weight" type="text" class="mr-2 mrlf11"  style="max-width: 255px !important;">
           <span class="mt-2">G</span>
           <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-          <input id="length" type="text" class="mr-2">
+          <input id="length" type="text" class="mr-2"  style="max-width: 255px !important;">
           <span class="mt-2">CM</span>
           <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <input type="checkbox" class="ml-3">
-          <input type="checkbox" class="ml-3">
-          <input type="checkbox" class="ml-3">
+          <ng-select [items]="apgar"
+          bindLabel="label"
+          bindValue="value"
+          placeholder="Select APGAR"
+          class="col-md-2 p-0" style="height: 32px;"
+         ></ng-select>
         </div>
     
         <div class="form-group">

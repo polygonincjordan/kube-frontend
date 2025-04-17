@@ -199,3 +199,108 @@ input[type="time"] {
     background: white;
     box-shadow: 0 1px 15px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.04);
 }
+
+
+.font-use{
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+.bg-comm {
+  background: #EDF6FD !important;
+}
+
+.bg-color {
+  background-color: #0056B0 !important;
+  border-radius: 20px;
+  color: #fff !important;
+}
+
+.font-witnss{
+  font-size: 20px;
+}
+
+
+.review-btn{
+  background: #0056b0;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 90px;
+  border: none;
+}
+
+.table-scroll-container {
+  max-height: 375px; /* set scroll height */
+  overflow: auto;
+}
+
+.count-table {
+  width: 1000px; /* enough width to make horizontal scroll */
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.count-table thead th {
+  position: sticky;
+  top: 0;
+  background: #e4edf5;
+  z-index: 1;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+}
+
+.count-table th,
+.count-table td {
+  min-width: 120px; /* Reduced width from default */
+  padding: 8px;
+  text-align: left;
+}
+
+.table-responsive-custom {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.instrument-table {
+  min-width: 750px; /* Adjust if you need to fit more/less columns */
+  border-collapse: collapse;
+}
+
+.instrument-table th,
+.instrument-table td {
+  min-width: 150px;
+  white-space: nowrap;
+  background: white;
+}
+
+.instrument-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #e4edf5;
+  z-index: 10;
+}
+
+.specimen-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background-color: #e4edf5;
+}
+
+.specimen-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.specimen-table th,
+.specimen-table td {
+  white-space: nowrap;
+  text-align: left;
+}
+
+
+.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
