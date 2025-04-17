@@ -47,6 +47,53 @@ export class AssessmentTabComponent implements OnInit {
       value: '1'
     },
   ]
+
+  growthStatus = [
+    {
+      label: 'Ealry development',
+      value: '0'
+    },
+    {
+      label: 'Milestones met',
+      value: '1'
+    },
+    {
+      label: 'Development delay',
+      value: '2'
+    },
+  ]
+
+  
+  functionalAssessment = [
+    {
+      label: 'Feeding',
+      value: '0'
+    },
+    {
+      label: 'Toileting',
+      value: '1'
+    },
+    {
+      label: 'Dressing',
+      value: '1'
+    },
+    {
+      label: 'Grooming',
+      value: '1'
+    },
+    {
+      label: 'Walking',
+      value: '1'
+    },
+    {
+      label: 'Transfer',
+      value: '1'
+    },
+    {
+      label: 'Mobility',
+      value: '1'
+    }
+  ]
   constructor() { }
 
   ngOnInit(): void {

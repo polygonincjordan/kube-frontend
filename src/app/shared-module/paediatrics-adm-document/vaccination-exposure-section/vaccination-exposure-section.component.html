@@ -78,8 +78,8 @@
                         </td>
                         <td>
                           <ng-select formControlName="status" [appendTo]="'body'">
-                            <ng-option *ngFor="let item of statusList">{{
-                              item
+                            <ng-option *ngFor="let item of statusListForVaccination" [value]="item.value">{{
+                              item.label
                             }}</ng-option>
                           </ng-select>
                         </td>
@@ -127,7 +127,7 @@
                         </td>
                         <td>
                           <ng-select formControlName="Status" [appendTo]="'body'">
-                            <ng-option *ngFor="let item of statusList" [value]="item.value">{{
+                            <ng-option *ngFor="let item of statusListForVaccination" [value]="item.value">{{
                               item.label
                             }}</ng-option>
                           </ng-select>

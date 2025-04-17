@@ -11,137 +11,153 @@
                 <strong>Score</strong>
             </div>
         </div>
-        <div class="border-all">
+        <div class="border-all pb-3">
+
+            <!-- Prior History -->
             <div class="row m-0 mt-3">
+                <div class="col-md-4"><strong>Prior History</strong></div>
                 <div class="col-md-4">
-                    <strong>Prior History</strong>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="priorOptions[0].checked"
+                            (change)="priorValue = updateCheckboxValue(priorOptions, 3); calculateTotalScore()" />
+                        <label>{{ priorOptions[0].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="priorOptions[1].checked"
+                            (change)="priorValue = updateCheckboxValue(priorOptions, 3); calculateTotalScore()" />
+                        <label>{{ priorOptions[1].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="priorOptions[2].checked"
+                            (change)="priorValue = updateCheckboxValue(priorOptions, 3); calculateTotalScore()" />
+                        <label>{{ priorOptions[2].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="priorOptions[3].checked"
+                            (change)="priorValue = updateCheckboxValue(priorOptions, 3); calculateTotalScore()" />
+                        <label>{{ priorOptions[3].label }}</label>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(2) HX of a fall</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(2) HX of a bedrest</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(3) Visual Impairment</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(0) None</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <input class="form-control">
+                <div class="col-md-2">
+                    <input class="form-control" [(ngModel)]="priorValue" readonly />
                 </div>
             </div>
+
+            <!-- Cardiovascular -->
             <div class="row m-0 mt-3">
+                <div class="col-md-4"><strong>Cardiovascular</strong></div>
                 <div class="col-md-4">
-                    <strong>Cardiovascular</strong>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="cardiovascularOptions[0].checked"
+                            (change)="cardiovascularValue = updateCheckboxValue(cardiovascularOptions, 3); calculateTotalScore()" />
+                        <label>{{ cardiovascularOptions[0].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="cardiovascularOptions[1].checked"
+                            (change)="cardiovascularValue = updateCheckboxValue(cardiovascularOptions, 3); calculateTotalScore()" />
+                        <label>{{ cardiovascularOptions[1].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="cardiovascularOptions[2].checked"
+                            (change)="cardiovascularValue = updateCheckboxValue(cardiovascularOptions, 3); calculateTotalScore()" />
+                        <label>{{ cardiovascularOptions[2].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="cardiovascularOptions[3].checked"
+                            (change)="cardiovascularValue = updateCheckboxValue(cardiovascularOptions, 3); calculateTotalScore()" />
+                        <label>{{ cardiovascularOptions[3].label }}</label>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(2) HX of anemia or preeclampsia</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(3) Orthostatic</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(2) Dizziness</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(0) None</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <input class="form-control">
+                <div class="col-md-2">
+                    <input class="form-control" [(ngModel)]="cardiovascularValue" readonly />
                 </div>
             </div>
+
+            <!-- Hemorrhage -->
             <div class="row m-0 mt-3">
+                <div class="col-md-4"><strong>Hemorrhage</strong></div>
                 <div class="col-md-4">
-                    <strong>Hemorrhage</strong>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="hemorrhageOptions[0].checked"
+                            (change)="hemorrhageValue = updateCheckboxValue(hemorrhageOptions, 2); calculateTotalScore()" />
+                        <label>{{ hemorrhageOptions[0].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="hemorrhageOptions[1].checked"
+                            (change)="hemorrhageValue = updateCheckboxValue(hemorrhageOptions, 2); calculateTotalScore()" />
+                        <label>{{ hemorrhageOptions[1].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="hemorrhageOptions[2].checked"
+                            (change)="hemorrhageValue = updateCheckboxValue(hemorrhageOptions, 2); calculateTotalScore()" />
+                        <label>{{ hemorrhageOptions[2].label }}</label>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(3) PP Hemorrhage</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(3) DX abruption or previa</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(0) None</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <input class="form-control">
+                <div class="col-md-2">
+                    <input class="form-control" [(ngModel)]="hemorrhageValue" readonly />
                 </div>
             </div>
+
+            <!-- Motor/Activity -->
             <div class="row m-0 mt-3">
-                <div class="col-md-4">
-                    <strong>Motor/ Activity</strong>
-                </div>
+                <div class="col-md-4"><strong>Motor/Activity</strong></div>
                 <div class="col-md-4">
                     <div>
-                        <input type="radio" />
-                        <label for="">(1) Able to SLR but not bridge</label>
+                        <input type="radio" name="motor" (change)="updateRadioValue(1)" />
+                        <label>(1) Able to SLR but not bridge</label>
                     </div>
                     <div>
-                        <input type="radio" />
-                        <label for="">(2) Unable to SLR</label>
+                        <input type="radio" name="motor" (change)="updateRadioValue(2)" />
+                        <label>(2) Unable to SLR</label>
                     </div>
                     <div>
-                        <input type="radio" />
-                        <label for="">(0) None</label>
+                        <input type="radio" name="motor" (change)="updateRadioValue(0)" />
+                        <label>(0) None</label>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <input class="form-control">
+                <div class="col-md-2">
+                    <input class="form-control" [(ngModel)]="motorValue" readonly />
                 </div>
             </div>
+
+            <!-- Medication -->
             <div class="row m-0 mt-3">
+                <div class="col-md-4"><strong>Medication</strong></div>
                 <div class="col-md-4">
-                    <strong>Medication</strong>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="medicationOptions[0].checked"
+                            (change)="medicationValue = updateCheckboxValue(medicationOptions, 2); calculateTotalScore()" />
+                        <label>{{ medicationOptions[0].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="medicationOptions[1].checked"
+                            (change)="medicationValue = updateCheckboxValue(medicationOptions, 2); calculateTotalScore()" />
+                        <label>{{ medicationOptions[1].label }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" [(ngModel)]="medicationOptions[2].checked"
+                            (change)="medicationValue = updateCheckboxValue(medicationOptions, 2); calculateTotalScore()" />
+                        <label>{{ medicationOptions[2].label }}</label>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(1) IV / IM Narcotics w in 30 min</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(3) Anti-hypertensives</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" />
-                        <label for="">(0) None</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <input class="form-control">
+                <div class="col-md-2">
+                    <input class="form-control" [(ngModel)]="medicationValue" readonly />
                 </div>
             </div>
+
         </div>
+
     </div>
     <div class="mt-4">
         <div class="header-tab">
             <h4 class="m-0 pl-3">Scale Result</h4>
         </div>
-        <div class="border-all">
+        <div class="border-all pb-3">
 
             <div class="row m-0 mt-3">
-                <div class="col-md-3">
+                <div class="col-md-3 d-flex">
                     <label>Total Score :</label>
-                    <input class="form-control w-40" />
+                    <input class="form-control w-40" readonly [(ngModel)]="totalScore" />
                 </div>
                 <div class="col-md-1">
                     <input type="radio" />
@@ -165,13 +181,13 @@
     <div class="mt-4">
         <div class="row m-0">
             <div class="col-md-6 header-tab">
-                <h4 class="m-0">Fall Risk Score</h4>
+                <h4 class="m-0 ml-3">Fall Risk Score</h4>
             </div>
             <div class="col-md-6 header-tab">
-                <h4 class="m-0">Intervention</h4>
+                <h4 class="m-0 ml-3">Intervention</h4>
             </div>
         </div>
-        <div class="border-all">
+        <div class="border-all pt-3 ">
             <div class="row m-0">
                 <div class="col-md-6">
                     <label>Low Fall Risk (0-2)</label>

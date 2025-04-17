@@ -26,6 +26,36 @@ export class ExaminationTabComponent implements OnInit {
       value: '1'
     },
   ]
+  functionalAssessment = [
+    {
+      label: 'Feeding',
+      value: '0'
+    },
+    {
+      label: 'Toileting',
+      value: '1'
+    },
+    {
+      label: 'Dressing',
+      value: '1'
+    },
+    {
+      label: 'Grooming',
+      value: '1'
+    },
+    {
+      label: 'Walking',
+      value: '1'
+    },
+    {
+      label: 'Transfer',
+      value: '1'
+    },
+    {
+      label: 'Mobility',
+      value: '1'
+    }
+  ]
   constructor() { }
 
   ngOnInit(): void {

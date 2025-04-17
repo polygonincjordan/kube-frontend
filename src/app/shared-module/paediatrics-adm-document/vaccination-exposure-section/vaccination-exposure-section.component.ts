@@ -5,6 +5,7 @@ import {
   IsolationList,
   statusList,
   vaccinationDrodownList,
+  statusListForVaccination
 } from '../../nursing-admission-assessment/dropdown-value';
 
 @Component({
@@ -21,6 +22,7 @@ export class VaccinationExposureSectionComponent implements OnInit {
 
   IsolationList = IsolationList;
   statusList = statusList;
+  statusListForVaccination = statusListForVaccination;
   vaccinationDrodownList = vaccinationDrodownList;
   InfactiousDrodownList:any[] = InfactiousDrodownList;
 
