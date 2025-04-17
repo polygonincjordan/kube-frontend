@@ -57,6 +57,8 @@ export class PostPatientFallAssessmentComponent implements OnInit {
 
   modalRefUpdateName: BsModalRef;
 
+  payloadJson: any = {}
+
   public isCheckedDiagnosis: any;
   public toDiagnosisArr: any = [];
   public duplicates: any = [];

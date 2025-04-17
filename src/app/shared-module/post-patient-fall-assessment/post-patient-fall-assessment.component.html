@@ -23,15 +23,16 @@
                                     <label class="m-0">Was this fall observed?</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <ng-select>
-                                        <ng-option *ngFor="let item of observedList">{{ item.label }}</ng-option>
+                                    <ng-select [(ngModel)]="payloadJson.fallobserved">
+                                        <ng-option *ngFor="let item of observedList" [value]="item.value">{{ item.label
+                                            }}</ng-option>
                                     </ng-select>
                                 </div>
                                 <div class="col-md-1">
                                     <label class="m-0">If yes, by whome</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control" />
+                                    <input class="form-control" [disabled]="payloadJson.fallobserved != '1'" />
                                 </div>
                             </div>
                             <div class="row m-0 mt-2">
@@ -45,7 +46,8 @@
                                 </div>
                             </div>
                             <div class="row m-0 mt-3">
-                                <label style="font-weight: 600;" class="m-0 ml-2">Ask the patient immediately after their
+                                <label style="font-weight: 600;" class="m-0 ml-2">Ask the patient immediately after
+                                    their
                                     fall; why do you think you
                                     fall?</label>
                             </div>
@@ -64,7 +66,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div>
-                                            <input type="checkbox" />
+                                            <input type="checkbox" [(ngModel)]="payloadJson.Canes" />
                                             <label class="m-0 ml-2">Canes</label>
                                         </div>
                                     </div>
@@ -72,7 +74,7 @@
                                         <label class="m-0">Were Cane in good repair?</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <ng-select>
+                                        <ng-select [readonly]="!payloadJson.Canes">
                                             <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
                                         </ng-select>
                                     </div>
@@ -82,7 +84,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div>
-                                            <input type="checkbox" />
+                                            <input type="checkbox" [(ngModel)]="payloadJson.crutches" [value]="false" />
                                             <label class="m-0 ml-2">Crutches</label>
                                         </div>
                                     </div>
@@ -90,7 +92,7 @@
                                         <label class="m-0">Were crutches in good repair?</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <ng-select>
+                                        <ng-select [readonly]="!payloadJson.crutches">
                                             <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
                                         </ng-select>
                                     </div>
@@ -100,7 +102,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div>
-                                            <input type="checkbox" />
+                                            <input type="checkbox" [(ngModel)]="payloadJson.walker" />
                                             <label class="m-0 ml-2">Walker</label>
                                         </div>
                                     </div>
@@ -108,7 +110,7 @@
                                         <label class="m-0">Was walker in good repair?</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <ng-select>
+                                        <ng-select [readonly]="!payloadJson.walker">
                                             <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
                                         </ng-select>
                                     </div>
@@ -118,7 +120,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div>
-                                            <input type="checkbox" />
+                                            <input type="checkbox" [(ngModel)]="payloadJson.wheelchair" />
                                             <label class="m-0 ml-2">Wheelchair</label>
                                         </div>
                                     </div>
@@ -126,7 +128,7 @@
                                         <label class="m-0">Was wheelchair in good repair?</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <ng-select>
+                                        <ng-select [readonly]="!payloadJson.wheelchair">
                                             <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
                                         </ng-select>
                                     </div>
@@ -136,15 +138,15 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div>
-                                            <input type="checkbox" />
+                                            <input type="checkbox" [(ngModel)]="payloadJson.other" />
                                             <label class="m-0 ml-2">Other</label>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control" />
+                                        <input class="form-control" [readonly]="!payloadJson.other" />
                                     </div>
                                     <div class="col-md-2">
-                                        <ng-select>
+                                        <ng-select [readonly]="!payloadJson.other">
                                             <ng-option *ngFor="let item of assistiveList">{{ item.label }}</ng-option>
                                         </ng-select>
                                     </div>
@@ -186,9 +188,9 @@
                                         <label class="m-0 ml-2">Other furniture involved?</label>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center">
-                                        <input type="checkbox" />
+                                        <input type="checkbox" [(ngModel)]="payloadJson.involved"/>
                                         <label class="m-0 ml-2">Other</label>
-                                        <input class="form-control w-40 ml-3" />
+                                        <input class="form-control w-40 ml-3" [disabled]="!payloadJson.involved"/>
                                     </div>
                                 </div>
                             </div>
@@ -218,9 +220,9 @@
                                         <label class="m-0 ml-2">Rest hall</label>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center">
-                                        <input type="checkbox" />
+                                        <input type="checkbox" [(ngModel)]="payloadJson.currentfall" />
                                         <label class="m-0 ml-2">Other</label>
-                                        <input class="form-control w-40 ml-3" />
+                                        <input class="form-control w-40 ml-3" [disabled]="!payloadJson.currentfall" />
                                     </div>
                                 </div>
                             </div>
@@ -254,9 +256,9 @@
                                         <label class="m-0 ml-2">Mittens</label>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center">
-                                        <input type="checkbox" />
+                                        <input type="checkbox" [(ngModel)]="payloadJson.mittens"/>
                                         <label class="m-0 ml-2">Other</label>
-                                        <input class="form-control w-40 ml-3" />
+                                        <input class="form-control w-40 ml-3" [disabled]="!payloadJson.mittens"/>
                                     </div>
                                 </div>
                             </div>
@@ -300,9 +302,9 @@
                                             <label class="m-0 ml-2">Consultation</label>
                                         </div>
                                         <div class="col-md-3 d-flex align-items-center">
-                                            <input type="checkbox" />
+                                            <input type="checkbox" [(ngModel)]="payloadJson.consultation"/>
                                             <label class="m-0 ml-2">Other</label>
-                                            <input class="form-control w-40 ml-3" />
+                                            <input class="form-control w-40 ml-3" [disabled]="!payloadJson.consultation"/>
                                         </div>
                                     </div>
                                 </div>

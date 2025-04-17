@@ -44,7 +44,7 @@
                                         <tr [formGroupName]="i">
                                             <td class="w-10">
                                                 <ng-select>
-                                                    <ng-option *ngFor="let item of modePhysicalList">{{ item.label
+                                                    <ng-option *ngFor="let item of functionalAssessment">{{ item.label
                                                         }}</ng-option>
                                                 </ng-select>
                                             </td>
@@ -61,13 +61,49 @@
                                     </ng-container>
                                 </tbody>
                             </table>
+                            <div class="row m-0 mt-3">
+                                <div class="col-md-2">
+                                    <label class="m-0">Recent changes in mobility needs </label>
+                                </div>
+                                <div class="col-md-1">
+                                    <ng-select>
+                                        <ng-option></ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="row m-0 mt-3">
+                                <div class="col-md-2">
+                                    <label class="m-0">Requires Dr. Notif</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <ng-select>
+                                        <ng-option></ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    <label class="m-0">Notified</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <ng-select>
+                                        <ng-option></ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="row m-0 mt-3">
+                                <div class="col-md-2">
+                                    <label class="m-0">Comments</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input class="form-control" />
+                                </div>
+                            </div>
                         </div>
                         <div *ngIf="selectedTabName == 'Sleep/Rest'">
                             <div class="row m-0">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label>Sleep/Rest</label>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-3">
                                     <ng-select>
                                         <ng-option *ngFor="let item of sleepRest">{{ item.label
                                             }}</ng-option>
@@ -75,7 +111,7 @@
                                 </div>
                             </div>
                             <div class="row m-0 mt-2">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label>Sleep Time</label>
                                 </div>
                                 <div class="col-md-1">
@@ -83,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="row m-0 mt-2">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label>Number of hours</label>
                                 </div>
                                 <div class="col-md-1">
@@ -91,7 +127,7 @@
                                 </div>
                             </div>
                             <div class="row m-0 mt-4">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label>Comments</label>
                                 </div>
                                 <div class="col-md-8">
@@ -154,7 +190,7 @@
                                 </div>
                                 <div class="col-md-10 row m-0">
                                     <ng-select class="w-20">
-                                        <ng-option *ngFor="let item of modePhysicalList">{{ item.label
+                                        <ng-option *ngFor="let item of growthStatus">{{ item.label
                                             }}</ng-option>
                                     </ng-select>
                                 </div>
@@ -176,31 +212,37 @@
                                 <label class="ml-2 m-0">No social factor can be identified</label>
                             </div>
                             <div class="row m-0 mt-3">
-                                <h4>Screening Factors: (if any selected inform social worker)</h4>
-                                <div class="col-md-12">
-                                    <input type="checkbox" class="m-0" />
-                                    <label class="ml-2 m-0">Inadequate Family/Social Support</label>
+                                <div class="col-md-6 row m-0" style="border: 1px solid #cacaca; padding: 20px;">
+                                    <h4>Screening Factors: (if any selected inform social worker)</h4>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" class="m-0" />
+                                        <label class="ml-2 m-0">Inadequate Family/Social Support</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" class="m-0" />
+                                        <label class="ml-2 m-0">Suspected abuse/ neglect</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" class="m-0" />
+                                        <label class="ml-2 m-0">Patient/ Family lifestyle change due to illness</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" class="m-0" />
+                                        <label class="ml-2 m-0">Inadequate financial support </label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="checkbox" class="m-0" />
+                                        <label class="ml-2 m-0">Inadequate coping with hospitalization</label>
+                                    </div>
+                                    <div class="col-md-12 d-flex align-items-center">
+                                        <input type="checkbox" class="m-0" />
+                                        <label class="ml-2 m-0">Others</label>
+                                        <input class="m-0 ml-2 w-40 form-control" />
+                                    </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6 hospitalization">
                                     <input type="checkbox" class="m-0" />
-                                    <label class="ml-2 m-0">Suspected abuse/ neglect</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <input type="checkbox" class="m-0" />
-                                    <label class="ml-2 m-0">Patient/ Family lifestyle change due to illness</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <input type="checkbox" class="m-0" />
-                                    <label class="ml-2 m-0">Inadequate financial support </label>
-                                </div>
-                                <div class="col-md-12">
-                                    <input type="checkbox" class="m-0" />
-                                    <label class="ml-2 m-0">Inadequate coping with hospitalization</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <input type="checkbox" class="m-0" />
-                                    <label class="ml-2 m-0">Others</label>
-                                    <input class="m-0 ml-2 w-40 form-control" />
+                                        <label class="ml-2 m-0">Social Worker Notified</label>
                                 </div>
                             </div>
                         </div>

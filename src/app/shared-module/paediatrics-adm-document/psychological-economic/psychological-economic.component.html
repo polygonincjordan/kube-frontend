@@ -18,46 +18,103 @@
                     </div>
                 </div>
 
-                <div class="row tab-content scale-box mt-3" style="border-radius: 7px">
-                    <div class="col-md-12 row m-0">
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">No Problem identified</label>
+                <div >
+                    <div *ngIf="selectedTabName == 'Psychological History'" class="row tab-content scale-box mt-3" style="border-radius: 7px">
+                        <div class="col-md-12 row m-0">
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">No Problem identified</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row m-0">
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Anxious</label>
+                            </div>
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Uncoorperative</label>
+                            </div>
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Depressed</label>
+                            </div>
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Angry</label>
+                            </div>
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Agitated</label>
+                            </div>
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Combative</label>
+                            </div>
+                            <div class="col-md-2 row m-0">
+                                <input type="checkbox" class="m-0" />
+                                <label class="ml-2 m-0">Other</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row m-0 ml-2 mt-3">
+                            <label class="m-0 mr-2">Comments</label>
+                            <input class="form-control w-70" />
                         </div>
                     </div>
-                    <div class="col-md-12 row m-0">
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Anxious</label>
+                    <div *ngIf="selectedTabName == 'Economic History'">
+                        <div class="row m-0">
+                            <div class="col-md-2">
+                                <label class="m-0">Living with</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" />
+                            </div>
+                            <div class="col-md-1">
+                                <label class="m-0">No. People</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" />
+                            </div>
                         </div>
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Uncoorperative</label>
+                        <div class="row m-0 mt-2">
+                            <div class="col-md-2">
+                                <label class="m-0">Relationship</label>
+                            </div>
+                            <div class="col-md-2">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control" />
+                            </div>
                         </div>
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Depressed</label>
+                        <div class="row m-0 mt-2">
+                            <div class="col-md-2">
+                                <label class="m-0">Phone</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" />
+                            </div>
                         </div>
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Angry</label>
+                        <div class="row m-0 mt-2">
+                            <div class="col-md-2">
+                                <label class="m-0">Father's job</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" />
+                            </div>
                         </div>
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Agitated</label>
+                        <div class="row m-0 mt-2">
+                            <div class="col-md-2">
+                                <label class="m-0">Insurance</label>
+                            </div>
+                            <div class="col-md-2">
+                                <ng-select>
+                                    <ng-option></ng-option>
+                                </ng-select>
+                            </div>
                         </div>
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Combative</label>
-                        </div>
-                        <div class="col-md-2 row m-0">
-                            <input type="checkbox" class="m-0" />
-                            <label class="ml-2 m-0">Other</label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 row m-0 ml-2 mt-3">
-                        <label class="m-0 mr-2">Comments</label>
-                        <input class="form-control w-70" />
                     </div>
                 </div>
             </div>

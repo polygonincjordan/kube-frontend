@@ -430,6 +430,11 @@ export const statusList = [
   { label: 'Yes', value: '0' },
   { label: 'No', value: '1' },
 ];
+export const statusListForVaccination = [
+  { label: 'Yes', value: '0' },
+  { label: 'No', value: '1' },
+  { label: 'Unknown', value: '3' },
+];
 
 export const vaccinationDrodownList = [
   {
