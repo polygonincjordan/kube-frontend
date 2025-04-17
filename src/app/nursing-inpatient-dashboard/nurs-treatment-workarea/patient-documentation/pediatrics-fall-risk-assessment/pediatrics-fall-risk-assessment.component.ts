@@ -139,5 +139,11 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
     };
     this.modalRef = this.modalService.show(template, config);
   }
+  openModalHigh(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-lg' ,
+    };
+    this.modalRef = this.modalService.show(template, config);
+  }
 
 }

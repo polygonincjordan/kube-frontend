@@ -410,7 +410,7 @@
             <div class="mews-row">
               <div class="col-md-10 p-0" style="text-align: end">Total</div>
               <div class="position-set">
-                <input class="form-control" type="text" style="height:36px;" />
+                <input class="form-control" type="text" style="height:36px;" disabled/>
               </div>
             </div>
             <div class="d-flex">
@@ -1202,20 +1202,28 @@
           </div> -->
           <div class="row">
             <div class="col-md-6 mt-2 bordercoloer" style="min-height: 440px">
-              <div class="Safety d-flex mt-2">
-                <div class="col-md-1 mt-1 mr-2">Implants</div>
-                <ng-select
-                  [items]="yesNoOptions"
-                  bindLabel="label"
-                  bindValue="value"
-                  class="col-md-2"
-                  placeholder="Implants"
-                >
-                </ng-select>
+              <div class="Safety d-flex mt-2 justify-content-between">
+                <div class="d-flex w-100" style="gap:5px">
+                  <div class="col-md-1 mt-1 mr-2">Implants</div>
+                  <ng-select
+                    [items]="yesNoOptions"
+                    bindLabel="label"
+                    bindValue="value"
+                    class="col-md-2"
+                    placeholder="Implants"
+                    formControlName="Implantsdrop"
+                    (change)="onSelectChange('Implantsdrop', 'Implantstypes')"
+                  >
+                  </ng-select>
+                </div>
+                <button class="review-btn mb-2" (click)="addImplants()" [disabled]="criticalForm.get('Implantsdrop')?.value != '0'"> 
+                  <i class="fa fa-plus"></i> Add
+                </button>
               </div>
               <table class="table table-bordered mt-2">
+                <div style="max-height: 362px; overflow-y: auto;">
                 <thead
-                  style="
+                  sty-9="
                     position: sticky;
                     top: -10px;
                     z-index: 9;
@@ -1223,38 +1231,23 @@
                   "
                 >
                   <tr>
-                    <th></th>
                     <th scope="col">Type</th>
                     <th scope="col">Size</th>
                     <th scope="col">Quantity</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody style="background: #fbfcff">
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
+                  <tbody formArrayName="Implants">
+                    <tr *ngFor="let drain of Implants.controls; let i = index" [formGroupName]="i">
+                      <td><input type="text"   [readOnly]="criticalForm.get('Implantsdrop')?.value !== '0'"  formControlName="Implantstypes" class="form-control m-0" /></td>
+                      <td><input type="text"   [readOnly]="criticalForm.get('Implantsdrop')?.value !== '0'"  formControlName="ImplantsSize" class="form-control m-0" /></td>
+                      <td><input type="text"  [readOnly]="criticalForm.get('Implantsdrop')?.value !== '0'"  formControlName="ImplantsQuantity" class="form-control m-0" /></td>
+                      <td>
+                        <img  [class.disabled]="criticalForm.get('Implantsdrop')?.value !== '0'" class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeImplants(i)">
+                      </td>
+                    </tr>
+                  </tbody>
+                </div>
               </table>
             </div>
             <div class="col-md-6 mt-2">
@@ -1320,142 +1313,26 @@
           </div>
           <div class="row"> 
             <div class="col-md-6 mt-2 bordercoloer">
-              <div class="Safety d-flex mt-2">
-                <div class="col-md-1 mt-1 mr-2">Drains</div>
-                <ng-select
-                  [items]="yesNoOptions"
-                  bindLabel="label"
-                  bindValue="value"
-                  placeholder="Drains"
-                  class="col-md-2"
-                >
-                </ng-select>
-              </div>
-              <table class="table table-bordered mt-2">
-                <thead
-                  style="
-                    position: sticky;
-                    top: -10px;
-                    z-index: 9;
-                    background: #e4edf5;
-                  "
-                >
-                  <tr>
-                    <th></th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Size</th>
-                    <th scope="col">Site</th>
-                  </tr>
-                </thead>
-                <tbody style="background: #fbfcff">
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-md-6 mt-2">
-              <div class="bordercoloer">
-                <div class="Safety d-flex mt-2">
-                  <div class="col-md-5 mt-1 mr-2">
-                    Packs/swabs left in cavities/wounds
-                  </div>
+              <div class="Safety d-flex mt-2 justify-content-between ">
+                <div class="d-flex w-100" style="gap:5px">
+                  <div class="col-md-1 mt-1 mr-2">Drains</div>
                   <ng-select
                     [items]="yesNoOptions"
                     bindLabel="label"
                     bindValue="value"
-                    placeholder="Packs/swabs left"
-                    col-md-2
+                    placeholder="Drains"
+                    class="col-md-2"
+                    formControlName="drainsDrop"
+                    (change)="onSelectChange('drainsDrop', 'type')"
                   >
                   </ng-select>
                 </div>
-                <table class="table table-bordered mt-2">
-                  <thead
-                    style="
-                      position: sticky;
-                      top: -10px;
-                      z-index: 9;
-                      background: #e4edf5;
-                    "
-                  >
-                    <tr>
-                      <th></th>
-                      <th scope="col">Type</th>
-                      <th scope="col">No</th>
-                      <th scope="col">Site</th>
-                    </tr>
-                  </thead>
-                  <tbody style="background: #fbfcff">
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div
-              class="col-md-6 mt-2 bordercoloer"
-              style="padding: 20px !important"
-            >
-              <h6 class="scale-result d-flex">
-                <div class="col-md-1">Count</div>
-                <div class="col-md-1"></div>
-                <!-- <div class="col-md-1">Correct</div>
-                <div class="col-md-1">Incorrect</div> -->
-              </h6>
-              <div class="Safety d-flex mt-1">
-                <div class="col-md-2"></div>
-                <div class="col-md-1">Initial</div>
-                <div class="col-md-1"></div>
-                <div class="col-md-1">2nd</div>
-                <div class="col-md-1"></div>
-                <div class="col-md-1">Final</div>
+                <button class="review-btn mb-2" (click)="addDrain()" [disabled]="criticalForm.get('drainsDrop')?.value != '0'"> 
+                  <i class="fa fa-plus"></i> Add
+                </button>
               </div>
               <table class="table table-bordered mt-2">
+                <div style="max-height: 362px; overflow-y: auto;">
                 <thead
                   style="
                     position: sticky;
@@ -1465,162 +1342,239 @@
                   "
                 >
                   <tr>
-                    <th></th>
-                    <th scope="col">Item</th>
-                    <th scope="col">Corr...</th>
-                    <th scope="col">Inco...</th>
-                    <th scope="col">Corr...</th>
-                    <th scope="col">Inco...</th>
-                    <th scope="col">Corr...</th>
-                    <th scope="col">Inco...</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Site</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody style="background: #fbfcff">
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tbody formArrayName="drains">
+                  <tr *ngFor="let drain of drains.controls; let i = index" [formGroupName]="i">
+                    <td><input type="text"   [readOnly]="criticalForm.get('drainsDrop')?.value !== '0'"  formControlName="type" class="form-control m-0" /></td>
+                    <td><input type="text"   [readOnly]="criticalForm.get('drainsDrop')?.value !== '0'"  formControlName="size" class="form-control m-0" /></td>
+                    <td><input type="text"  [readOnly]="criticalForm.get('drainsDrop')?.value !== '0'"  formControlName="site" class="form-control m-0" /></td>
+                    <td style="text-align: center;">
+                      <img _ngcontent-fei-c288=""  [class.disabled]="criticalForm.get('drainsDrop')?.value !== '0'" class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeDrain(i)">
+                    </td>
                   </tr>
                 </tbody>
-              </table>
-            </div>
-            <div class="col-md-6">
-              <div class="bordercoloer mt-2" style="height: 290px">
-                <h6 class="scale-result d-flex">Specimens</h6>
-                <div class="Safety d-flex mt-2">
-                  <input type="checkbox" class="mt-2 mr-2" name="resp" />
-                  <div class="mr-2 mt-2">NA</div>
                 </div>
-                <table class="table table-bordered mt-2">
-                  <thead
-                    style="
-                      position: sticky;
-                      top: -10px;
-                      z-index: 9;
-                      background: #e4edf5;
-                    "
-                  >
-                    <tr>
-                      <th></th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Specimen Samples</th>
-                    </tr>
-                  </thead>
-                  <tbody style="background: #fbfcff">
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr class="c-pointer">
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 400px">
-              <h6 class="scale-result">Instrument Sets</h6>
-              <table class="table table-bordered mt-2">
-                <thead
-                  style="
-                    position: sticky;
-                    top: -10px;
-                    z-index: 9;
-                    background: #e4edf5;
-                  "
-                >
-                  <tr>
-                    <th></th>
-                    <th scope="col">Instrument Sets</th>
-                    <th scope="col">Cycle Number</th>
-                    <th scope="col">Packed By</th>
-                    <th scope="col">Packed By Name</th>
-                  </tr>
-                </thead>
-                <tbody style="background: #fbfcff">
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="c-pointer">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
               </table>
             </div>
             <div class="col-md-6 mt-2">
               <div class="bordercoloer">
+                <div class="Safety d-flex mt-2 justify-content-between">
+                  <div class="d-flex w-100" style="gap:5px">
+                    <div class="col-md-5 mt-1 mr-2">
+                      Packs/swabs left in cavities/wounds
+                    </div>
+                    <ng-select
+                      [items]="yesNoOptions"
+                      bindLabel="label"
+                      bindValue="value"
+                      placeholder="Packs/swabs left"
+                      class="col-md-2"
+                      formControlName="PacksDrop"
+                      (change)="onSelectChange('PacksDrop', 'types')"
+                    >
+                    </ng-select>
+
+                  </div>
+                  <button class="review-btn mb-2" (click)="addPacks()" [disabled]="criticalForm.get('PacksDrop')?.value != '0'"> 
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+                <table class="table table-bordered mt-2">
+                  <div style="max-height: 362px; overflow-y: auto;">
+                  <thead
+                    style="
+                      position: sticky;
+                      top: -10px;
+                      z-index: 9;
+                      background: #e4edf5;
+                    "
+                  >
+                    <tr>
+                      <th scope="col">Type</th>
+                      <th scope="col">No</th>
+                      <th scope="col">Site</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="Packs">
+                    <tr *ngFor="let drain of Packs.controls; let i = index" [formGroupName]="i">
+                      <td><input type="text"   [readOnly]="criticalForm.get('PacksDrop')?.value !== '0'"  formControlName="types" class="form-control m-0" /></td>
+                      <td><input type="text"   [readOnly]="criticalForm.get('PacksDrop')?.value !== '0'"  formControlName="no" class="form-control m-0" /></td>
+                      <td><input type="text"  [readOnly]="criticalForm.get('PacksDrop')?.value !== '0'"  formControlName="sites" class="form-control m-0" /></td>
+                      <td style="text-align: center;">
+                        <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"  [class.disabled]="criticalForm.get('PacksDrop')?.value !== '0'"
+                        (click)="criticalForm.get('PacksDrop')?.value === '0' && removePacks(i)">
+                      </td>
+                    </tr>
+                  </tbody>
+                </div>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row d-flex">
+            <div
+              class="col-md-6 mt-2 bordercoloer" style="min-height: 480px;"
+            >
+              <div class="col-md-12 p-0">
+                <div class="scale-result d-flex justify-content-between align-items-center mb-2 p-0">
+                  <h6 class="mb-0">Count</h6>
+                  <button class="review-btn mb-2" (click)="addCount()">
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+              
+                <div class="table-scroll-container" style="overflow: auto;">
+                  <table class="table table-bordered count-table w-100">
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="Count">
+                      <tr *ngFor="let drain of Count.controls; let i = index" [formGroupName]="i">
+                        <td><input type="text" formControlName="item" class="form-control m-0" /></td>
+                        <td><input type="text" formControlName="Correct1" class="form-control m-0" /></td>
+                        <td><input type="text" formControlName="Incorrect1" class="form-control m-0" /></td>
+                        <td><input type="text" formControlName="Correct2" class="form-control m-0" /></td>
+                        <td><input type="text" formControlName="Incorrect2" class="form-control m-0" /></td>
+                        <td><input type="text" formControlName="Correct3" class="form-control m-0" /></td>
+                        <td><input type="text" formControlName="Incorrect3" class="form-control m-0" /></td>
+                        <td style="text-align: center;">
+                          <img src="assets/img/Delete.svg" class="cursor-pointer"  (click)="removeCount(i)" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bordercoloer mt-2">
+                <div class="scale-result d-flex justify-content-between p-0">
+                  <h6 class="d-flex">Specimens</h6>
+                  <button class="review-btn mb-2" (click)="addSpecimens()" [disabled]="!criticalForm.get('na1')?.value"> 
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <input type="checkbox" class="mt-2 mr-2" name="resp" formControlName="na1"   (change)="toggleInputText('na', '')"/>
+                  <div class="mr-2 mt-2">NA</div>
+                </div>
+               
+<div style="max-height: 390px; overflow-y: auto;">
+  <table class="table table-bordered mt-2 w-100 specimen-table">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+        <th scope="col">Specimen Samples</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="Specimens">
+      <tr *ngFor="let drain of Specimens.controls; let i = index" [formGroupName]="i">
+        <td><input type="text" formControlName="Specimenstype" class="form-control m-0" /></td>
+        <td><input type="text" formControlName="Samples" class="form-control m-0" /></td>
+        <td>
+          <img class="all-notes cursor-pointer"  [class.disabled]="!criticalForm.get('na1')?.value" src="assets/img/Delete.svg" (click)="removeSpecimens(i)">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- <div class="col-md-6 mt-2 bordercoloer" style="min-height: 400px">
+              <div class="d-flex justify-content-between">
+                <h6 class="scale-result">Instrument Sets</h6>
+                <button class="review-btn mb-2" (click)="addInstrument()"> 
+                  <i class="fa fa-plus"></i> Add
+                </button>
+              </div>
+              <table class="table table-bordered mt-2">
+                <thead
+                  style="
+                    position: sticky;
+                    top: -10px;
+                    z-index: 9;
+                    background: #e4edf5;
+                  "
+                >
+                  <tr>
+                    <th scope="col">Instrument Sets</th>
+                    <th scope="col">Cycle Number</th>
+                    <th scope="col">Packed By</th>
+                    <th scope="col">Packed By Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="Instrument">
+                  <tr *ngFor="let drain of Instrument.controls; let i = index" [formGroupName]="i">
+                    <td><input type="text"   formControlName="InstrumentSet" class="form-control m-0" /></td>
+                    <td><input type="text"   formControlName="InstrumentNum" class="form-control m-0" /></td>
+                    <td><input type="text"  formControlName="InstrumentPac" class="form-control m-0" /></td>
+                    <td><input type="text"  formControlName="InstrumentName" class="form-control m-0" /></td>
+                    <td style="text-align: center;">
+                      <img _ngcontent-fei-c288="" class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeInstrument(i)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 400px; padding: 15px;">
+              <div class="scale-result d-flex justify-content-between p-0">
+                <h6 class="">Instrument Sets</h6>
+                <button class="review-btn mb-2" (click)="addInstrument()"> 
+                  <i class="fa fa-plus"></i> Add
+                </button>
+              </div>
+            
+              <!-- ✅ Make this div scrollable horizontally -->
+              <div class="table-responsive-custom">
+                <table class="table table-bordered mt-2 instrument-table">
+                  <div style="max-height: 362px; overflow-y: auto;">
+                  <thead>
+                    <tr>
+                      <th>Instrument Sets</th>
+                      <th>Cycle Number</th>
+                      <th>Packed By</th>
+                      <th>Packed By Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="Instrument">
+                    <tr *ngFor="let drain of Instrument.controls; let i = index" [formGroupName]="i">
+                      <td><input type="text" formControlName="InstrumentSet" class="form-control m-0" /></td>
+                      <td><input type="text" formControlName="InstrumentNum" class="form-control m-0" /></td>
+                      <td><input type="text" formControlName="InstrumentPac" class="form-control m-0" /></td>
+                      <td><input type="text" formControlName="InstrumentName" class="form-control m-0" /></td>
+                      <td>
+                        <img class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeInstrument(i)">
+                      </td>
+                    </tr>
+                  </tbody>
+                  </div>
+                </table>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mt-2">
+              <div class="bordercoloer" style="min-height: 485px;">
                 <h6 class="scale-result d-flex">LSCS</h6>
                 <div class="Safety d-flex mt-2">
                   <input
@@ -1663,6 +1617,7 @@
                     class="mr-1 form-control col-md-1"
                     placeholder="00:00:00"
                     name="resp"
+                    [readOnly]="!criticalForm.get('na')?.value"
                   />
                 </div>
                 <div class="Safety d-flex mt-2">
@@ -1826,9 +1781,43 @@
                 name="resp"
               />
             </div>
+            <div class="Safety d-flex mt-2">
+              <div class="col-md-2 mt-2 mr-2"></div>
+              <button class="review-btn" (click)="showPopup(additionalInfo)">
+                <i class="fa fa-check-circle text-success me-2" style="font-size: 13px !important;"></i> Review
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </form>
+
+
+
+
+<ng-template #additionalInfo>
+  <form [formGroup]="userGroup">
+    <div class="d-flex justify-content-between align-items-center bg-comm p-2">
+      <label for="additionalInfo" class="w-100 mb-0 font-witnss font-weight-bold">Review</label>
+      <div>
+        <img src="assets/img/CloseTab.svg" alt="" (click)="cancelAdditionalInfo()">
+      </div>
+    </div>
+    <div class="additional-input additional-input w-100 p-3">
+      <div class="mb-2">
+        <label class="font-use mb-1">User Name</label>
+        <input type="text" class="form-control" formControlName="username" [autocomplete]="false">
+      </div>
+      <div>
+        <label class="font-use mb-1">password</label>
+        <input type="password" class="form-control" formControlName="password"  [autocomplete]="false">
+      </div>
+    </div>
+  </form>
+  <div class="button-group d-flex justify-content-center align-content-center p-3">
+    <button (click)="updateAdditionalInfo()" class="d-flex
+      align-items-center w-100 mr-2 bg-color justify-content-center">Save</button>
+  </div>
+</ng-template>

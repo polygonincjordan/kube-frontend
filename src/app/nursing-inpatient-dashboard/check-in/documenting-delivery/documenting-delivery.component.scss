@@ -239,10 +239,15 @@
 .scroll-bar{
     overflow: auto;
     height: calc(100vh - 440px) !important;
+    overflow-x: hidden;
 }
 
   
 .under-deve {
   color: red;
   font-size: 14px;
+}
+
+.mrlft20 {
+  margin-left: -26px !important;
 }
