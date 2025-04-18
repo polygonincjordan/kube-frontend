@@ -1,0 +1,207 @@
+<div class="row m-0">
+    <div class="col-md-2">
+        <label class="m-0">Breath Sounds</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Clear Bilateral</label>
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Wheezy</label>
+        <div class="d-flex ml-3">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Right</label>
+        </div>
+        <div class="d-flex ml-3">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Left</label>
+        </div>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-center">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Crackles</label>
+        <div class="d-flex ml-3">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Right</label>
+        </div>
+        <div class="d-flex ml-2">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Left</label>
+        </div>
+    </div>
+
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Air Entry</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Good Bilateral</label>
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Fair</label>
+        <div class="d-flex ml-3">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Right</label>
+        </div>
+        <div class="d-flex ml-2">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Left</label>
+        </div>
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Poor</label>
+        <div class="d-flex ml-3">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Right</label>
+        </div>
+        <div class="d-flex ml-2">
+            <input type="checkbox" />
+            <label class="m-0 ml-2">Left</label>
+        </div>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Respirations</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Regular</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Irregular</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Apnea</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.apneaOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.apneaOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Retractions</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">NA</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Supra-clavicular</label>
+    </div>
+    <div class="col-md-2">
+        <input type="radio" />
+        <label class="m-0 ml-2">Intercostals</label>
+    </div>
+    <div class="col-md-2">
+        <input type="radio" />
+        <label class="m-0 ml-2">Sub costal</label>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Oxygen Supplement</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">NA</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Nasal Cannula</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input class="form-control w-40" />
+        <label class="m-0 ml-2">L/M</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Positive Pressure</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input class="form-control w-40" />
+        <label class="m-0 ml-2">L/M</label>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Free Flow</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input class="form-control w-40" />
+        <label class="m-0 ml-2">L/M</label>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Ears</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Normal</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Malformation</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.malformationOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.malformationOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Hearing Assessment</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Yes</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">No</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.hearingOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.hearingOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Head</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Cephalhematoma</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Caputsaccedaneum</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.caputsaOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.caputsaOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Comments</label>
+    </div>
+    <div class="col-md-6">
+        <input class="form-control" />
+    </div>
+</div>
