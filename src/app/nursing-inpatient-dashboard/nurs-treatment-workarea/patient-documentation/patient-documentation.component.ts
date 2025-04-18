@@ -120,6 +120,8 @@ export class PatientDocumentationComponent implements OnInit {
   public isNurseAssRes: boolean = false;
   public isNurseIntra: boolean = false;
   public isMaternitySign: boolean = false;
+  public isPostAnesthesia: boolean = false;
+  public isNurseInitAss: boolean = false;
   public isCriticalPain: boolean = false;
   public isEducationAssement: boolean = false;
   public isNursingCarePlan: boolean = false;
@@ -207,6 +209,7 @@ export class PatientDocumentationComponent implements OnInit {
   nurseAssMainList = []
   nurseIntraMainList = []
   maternitySignMainList = []
+  PostAnesthesiaList = []
   CriticalPainList = []
   educationAssList = [];
   documentTypeFilter = []
@@ -241,12 +244,14 @@ export class PatientDocumentationComponent implements OnInit {
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
   openNewBorn: boolean = false;
-  openBundles: boolean = false;
-  openCvcMain: boolean = false;
-  openNurseAssRes: boolean = false;
-  openMaternitySign: boolean = false;
-  openNurseIntra: boolean = false;
-  openCriticalPain: boolean = false;
+  openBundles : boolean = false;
+  openCvcMain : boolean = false;
+  openNurseAssRes : boolean = false;
+  openMaternitySign : boolean = false;
+  openPostAnesthesia : boolean = false;
+  openNurseInitAss : boolean = false;
+  openNurseIntra : boolean = false;
+  openCriticalPain : boolean = false;
   openNursingCarePlans: boolean = false;
   openDischargeSummery: boolean = false;
   openPreCardiacCath: boolean = false;
@@ -1029,6 +1034,22 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isPostAnesthesia', this.CriticalPainList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isPostAnesthesia', this.CriticalPainList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.getPatientProfileData(this.CriticalPainList[0]);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isNurseInitAss', this.CriticalPainList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isNurseInitAss', this.CriticalPainList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.getPatientProfileData(this.CriticalPainList[0]);
     }
     this.dayCaseDashboardService.isRedirectToSelectedDoc = false;
   }
@@ -1053,6 +1074,8 @@ export class PatientDocumentationComponent implements OnInit {
       'isNurseAssRes': { isNurseAssRes: true, selectedDocName: 'Nurse Assessment for Restraints' },
       'isNurseIntra': { isNurseIntra: true, selectedDocName: 'Nursing Intra-Operative Record' },
       'isMaternitySign': { isMaternitySign: true, selectedDocName: 'Maternity Early Warning Sign' },
+      'isPostAnesthesia': { isPostAnesthesia: true, selectedDocName: 'Post Anesthesia Care Record' },
+      'isNurseInitAss': { isNurseInitAss: true, selectedDocName: 'Nursing Initial Assessment Gyno Obstetrics' },
       'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
@@ -1094,6 +1117,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNurseAssRes = false;
     this.isNurseIntra = false;
     this.isMaternitySign = false;
+    this.isPostAnesthesia = false;
+    this.isNurseInitAss = false;
     this.isCriticalPain = false;
     this.isEducationAssement = false;
     this.isNursingCarePlan = false;
@@ -1443,6 +1468,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNurseAssRes = false;
     this.isNurseIntra = false;
     this.isMaternitySign = false;
+    this.isPostAnesthesia = false;
+    this.isNurseInitAss = false;
     this.isCriticalPain = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
@@ -1472,6 +1499,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openCvcMain = false
     this.openNurseAssRes = false
     this.openMaternitySign = false
+    this.openPostAnesthesia = false
+    this.openNurseInitAss = false
     this.openNurseIntra = false
     this.openCriticalPain = false
     this.openPediatricEarlyWarningScale = false
@@ -1548,6 +1577,12 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openMaternitySign) {
+      this.NurseAssMainComp?.ngOnDestroy();
+    }
+    if (this.openPostAnesthesia) {
+      this.NurseAssMainComp?.ngOnDestroy();
+    }
+    if (this.openNurseInitAss) {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openNurseIntra) {
@@ -2046,6 +2081,96 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openMaternitySign = true;
+        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating education assessment:', error);
+        });
+      }
+    }
+    if (this.isPostAnesthesia) {
+      if (action == 'create') {
+        this.openPostAnesthesia = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPostAnesthesia = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      }else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNurseAssMainDoc();
+        } else {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseNurseAssMainDetail();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPostAnesthesia = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPostAnesthesia = true;
+        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating education assessment:', error);
+        });
+      }
+    }
+    if (this.isNurseInitAss) {
+      if (action == 'create') {
+        this.openNurseInitAss = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNurseInitAss = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      }else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNurseAssMainDoc();
+        } else {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseNurseAssMainDetail();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNurseInitAss = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNurseInitAss = true;
         this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
@@ -3779,6 +3904,28 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+      if (this.openPostAnesthesia) {
+        let docStatus = '1';
+        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+      if (this.openNurseInitAss) {
+        let docStatus = '1';
+        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
       if (this.openCriticalPain) {
         let docStatus = '1';
         this.CriticalCarePainComp.createDoc(docStatus).then((formValue: any) => {
@@ -4172,6 +4319,24 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
+      if (this.openPostAnesthesia) {
+        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
+      if (this.openNurseInitAss) {
+        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
       if (this.openCriticalPain) {
         this.CriticalCarePainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
@@ -4462,6 +4627,24 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openMaternitySign) {
+        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
+      if (this.openPostAnesthesia) {
+        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
+      if (this.openNurseInitAss) {
         this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
@@ -4878,6 +5061,26 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     } else if (this.openMaternitySign) {
+      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+    else if (this.openPostAnesthesia) {
+      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+    else if (this.openNurseInitAss) {
       this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
@@ -6443,7 +6646,9 @@ export class PatientDocumentationComponent implements OnInit {
       this.openPediatricAdmissionDocument ||
       this.openObstetricFallRiskAssessmentDocument ||
       this.openpostPatientFallAssessmentDocument || 
-      this.openInitialNursingNewbornDocument
+      this.openInitialNursingNewbornDocument || 
+      this.isNurseInitAss ||
+      this.isPostAnesthesia
     );
   }
   get showActionBtn(): boolean {
@@ -6477,7 +6682,9 @@ export class PatientDocumentationComponent implements OnInit {
       this.openPediatricAdmissionDocument ||
       this.openObstetricFallRiskAssessmentDocument ||
       this.openpostPatientFallAssessmentDocument ||
-      this.openInitialNursingNewbornDocument
+      this.openInitialNursingNewbornDocument ||
+      this.isNurseInitAss ||
+      this.isPostAnesthesia
     );
   }
 

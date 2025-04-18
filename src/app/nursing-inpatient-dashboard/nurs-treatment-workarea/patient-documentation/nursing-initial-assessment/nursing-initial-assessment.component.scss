@@ -1,0 +1,72 @@
+.status_body{
+    padding: 16px;
+    label{
+        margin-bottom: 0;
+        text-transform: capitalize;
+    }
+    .form-group{
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        label{
+            margin: 0;
+            min-width: 80px; 
+        }
+        .label{
+            min-width: max-content;
+            text-transform: capitalize;
+        }
+    }
+    .title-main {  
+        border-bottom: 3px solid #0056b0; 
+    } 
+    .form-control:focus, .form-control:-webkit-autofill, .form-control:not(:placeholder-shown) {
+        -webkit-box-shadow: unset;
+        box-shadow: 0px 0px 4px 0px rgba(137, 137, 137, 0.250980);
+    }
+    .row{
+        align-items: center;
+    }
+    .col-md-1,.col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6{
+        padding: 0 10px;
+    }
+    .tabs{
+        background: #e0edff;
+        border-radius: 8px;
+        overflow: hidden;
+        width: fit-content;
+        margin-bottom: 15px;
+        ul{
+            li{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 12px 20px;
+                cursor: pointer;
+                margin: 0;
+                transition: all 0.3s linear;
+                &.active, &:hover{
+                    background: #0056B0;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .max-height300{
+        height: 300px;
+    }
+    .btn {
+        border-radius: 8px;
+        padding: 10px;
+        background: #0056B0;
+        color: #fff;
+        font-size: 14px;
+    }
+    table{
+        tr{
+            td{
+                text-align: center;
+            }
+        }
+    }
+}

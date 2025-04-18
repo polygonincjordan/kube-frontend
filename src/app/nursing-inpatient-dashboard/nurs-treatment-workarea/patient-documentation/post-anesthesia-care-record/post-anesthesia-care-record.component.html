@@ -1,0 +1,755 @@
+<form>
+  <div class="border">
+    <div class="row align-items-center mb-2">
+      <div class="col-md-3 col-6 d-flex align-items-end">
+        <label for="date" class="mr-2">Date:</label>
+        <input type="date" id="date" class="form-control form-control-sm" />
+      </div>
+      <div class="col-md-9 col-12 d-flex flex-wrap align-items-center">
+        <div class="form-check mr-3">
+          <input class="form-check-input" type="checkbox" id="anesthesia" />
+          <label class="form-check-label" for="anesthesia">Anaesthesia</label>
+        </div>
+        <div class="form-check mr-3">
+          <input class="form-check-input" type="checkbox" id="general" />
+          <label class="form-check-label" for="general">General</label>
+        </div>
+        <div class="form-check mr-3">
+          <input class="form-check-input" type="checkbox" id="spinal" />
+          <label class="form-check-label" for="spinal">Spinal</label>
+        </div>
+        <div class="form-check mr-3">
+          <input class="form-check-input" type="checkbox" id="epidural" />
+          <label class="form-check-label" for="epidural">Epidural</label>
+        </div>
+        <div class="form-check mr-3">
+          <input class="form-check-input" type="checkbox" id="ivBlock" />
+          <label class="form-check-label" for="ivBlock">I.V Block</label>
+        </div>
+        <div class="form-check mr-3">
+          <input class="form-check-input" type="checkbox" id="conscious" />
+          <label class="form-check-label" for="conscious"
+            >Conscious Sedation</label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="otherRegional" />
+          <label class="form-check-label" for="otherRegional"
+            >Other regional</label
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Input Rows -->
+    <div class="row mb-2">
+      <div class="col-md-6 d-flex align-items-center mb-2">
+        <label class="col-md-4 col-form-label-sm pl-0">Anaesthesiologist</label>
+        <input type="text" class="form-control form-control-sm" />
+        <!-- <i class="fa fa-edit ml-2 cursor-pointer"></i> -->
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-6 d-flex align-items-center mb-2">
+        <label class="col-md-4 col-form-label-sm pl-0">Surgeon</label>
+        <input type="text" class="form-control form-control-sm" />
+        <!-- <i class="fa fa-edit ml-2 cursor-pointer"></i> -->
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-6 d-flex align-items-center mb-2">
+        <label class="col-md-4 col-form-label-sm pl-0">Procedure</label>
+        <input type="text" class="form-control form-control-sm" />
+        <!-- <i class="fa fa-edit ml-2 cursor-pointer"></i> -->
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-6 d-flex align-items-center mb-2">
+        <label class="col-md-4 col-form-label-sm pl-0"
+          >Received in PACU by</label
+        >
+        <input type="text" class="form-control form-control-sm" />
+        <!-- <i class="fa fa-edit ml-2 cursor-pointer"></i> -->
+      </div>
+    </div>
+    <!-- Time In/Out -->
+    <div class="row mt-2">
+      <div class="col-md-6 d-flex align-items-center">
+        <label class="col-md-4 col-form-label-sm pl-0">Time In:</label>
+        <input
+          type="time"
+          class="form-control form-control-sm w-auto"
+          value="09:03:21"
+        />
+      </div>
+      <div class="col-md-6 d-flex align-items-center">
+        <label class="mr-2">Time Out:</label>
+        <input
+          type="time"
+          class="form-control form-control-sm w-auto"
+          value="00:00:00"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Seconed Tab Section -->
+  <div class="row mb-3">
+    <div id="exTab1" class="d-flex mt-4">
+      <ng-container *ngFor="let item of tabItems">
+        <ul class="nav nav-pills">
+          <li
+            [class.active]="activeTab === item.value"
+            (click)="setActiveTab(item.value)"
+          >
+            {{ item.label }}
+          </li>
+        </ul>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="main w-100">
+    <div *ngIf="activeTab === '1'">
+      <div class="form-container">
+        <!-- Vital Signs Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered text-center align-middle">
+            <thead style="background-color: #e4edf5; color: black">
+              <tr>
+                <th>Time</th>
+                <th>Vital Signs</th>
+                <!-- Time Intervals -->
+                <th>0 min</th>
+                <th>10 min</th>
+                <th>20 min</th>
+                <th>30 min</th>
+                <th>40 min</th>
+                <th>50 min</th>
+                <th>60 min</th>
+                <th>70 min</th>
+                <th>80 min</th>
+                <th>90 min</th>
+                <th>100 min</th>
+                <th>110 min</th>
+                <th>120 min</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Sample rows -->
+              <tr>
+                <td>00:00:00</td>
+                <td style="width: 15%">
+                  <ng-select
+                    [items]="vitalSigns"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select"
+                    class="form-select form-select-sm p-0"
+                    style="border: none !important"
+                  >
+                  </ng-select>
+                </td>
+                <td colspan="13"></td>
+              </tr>
+              <tr>
+                <td>00:00:00</td>
+                <td style="width: 15%">
+                  <ng-select
+                    [items]="vitalSigns"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select"
+                    class="form-select form-select-sm p-0"
+                    style="border: none !important"
+                  >
+                  </ng-select>
+                </td>
+                <td colspan="13"></td>
+              </tr>
+              <tr>
+                <td>00:00:00</td>
+                <td style="width: 15%">
+                  <ng-select
+                    [items]="vitalSigns"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select"
+                    class="form-select form-select-sm p-0"
+                    style="border: none !important"
+                  >
+                  </ng-select>
+                </td>
+                <td colspan="13"></td>
+              </tr>
+              <tr>
+                <td>00:00:00</td>
+                <td style="width: 15%">
+                  <ng-select
+                    [items]="vitalSigns"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select"
+                    class="form-select form-select-sm p-0"
+                    style="border: none !important"
+                  >
+                  </ng-select>
+                </td>
+                <td colspan="13"></td>
+              </tr>
+              <tr>
+                <td>00:00:00</td>
+                <td style="width: 15%">
+                  <ng-select
+                    [items]="vitalSigns"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select"
+                    class="form-select form-select-sm p-0"
+                    style="border: none !important"
+                  >
+                  </ng-select>
+                </td>
+                <td colspan="13"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Input Fields Section -->
+        <div class="form-section">
+          <div class="row g-4">
+            <!-- Column 1 -->
+            <div class="col-md-4">
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">Pre op BP</label>
+                <div class="input-group">
+                  <input type="text" class="form-control col-md-5" />
+                  <span class="p-0 ml-2">mmHg</span>
+                </div>
+              </div>
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3" style="white-space: nowrap"
+                  >Wound Drainage</label
+                >
+                <div class="input-group">
+                  <input type="text" class="form-control col-md-5" />
+                  <span class="p-0 ml-2">ml</span>
+                </div>
+              </div>
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">Biopsy</label>
+                <input type="text" class="form-control col-md-5" />
+              </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-4">
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">OR BP</label>
+                <div class="input-group">
+                  <input type="text" class="form-control col-md-5" />
+                  <span class="p-0 ml-2">mmHg</span>
+                </div>
+              </div>
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">Blood given in PACU</label>
+                <div class="input-group">
+                  <input type="text" class="form-control col-md-5" />
+                  <span class="p-0 ml-2">ml</span>
+                </div>
+              </div>
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">Other</label>
+                <input type="text" class="form-control col-md-5" />
+              </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-md-4">
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">Urine Catheter</label>
+                <input type="text" class="form-control col-md-5" />
+              </div>
+              <div class="mb-2 d-flex">
+                <label class="custom-label col-md-3">IV Fluid</label>
+                <div class="input-group">
+                  <input type="text" class="form-control col-md-5" />
+                  <span class="ml-2">ml</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === '2'">
+      <div class="end-container">
+        <div class="scale-box-main">
+          <div class="container-fluid">
+            <div class="row create-form-inputs">
+              <div class="scale-box">
+                <div class="scale-box-checkbox">
+                  <div style="display: flex; width: 100%; justify-content: end">
+                    <img
+                      src="assets/img/file1.svg"
+                      title="Create & Import"
+                      class="img-size"
+                    />
+                  </div>
+                </div>
+                <div class="scale-box-table">
+                  <table class="table table-bordered past-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Scale Type</th>
+                        <th scope="col">Last Score</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Date/Time</th>
+                        <th scope="col" colspan="3">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of scalesList; let i = index">
+                        <td>{{ item.ScaleType }}</td>
+                        <td>{{ item.LastScore }}</td>
+                        <td>{{ item.ScoreDesc }}</td>
+                        <td>{{ item.Datetimee }}</td>
+                        <td>
+                          <a>Create</a>
+                        </td>
+                        <td>
+                          <a>View</a>
+                        </td>
+                        <td>
+                          <img
+                            src="assets/img/Delete.svg"
+                            title="Delete"
+                            class="cursor-pointer ml-1"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === '3'">
+      <div class="end-container mb-4">
+        <div class="scale-box-main">
+          <div class="container-fluid">
+            <div class="row create-form-inputs">
+              <div class="scale-box">
+                <div class="scale-box-checkbox">
+                  <label
+                    class="admitting-physician"
+                    style="font-size: 15px; font-weight: 700"
+                    for="noScaleAppicable"
+                    >Intake</label
+                  >
+                </div>
+                <div class="third-table">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Type of Intake</th>
+                        <th scope="col">Amount(Ml)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" id="anesthesia" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" id="anesthesia" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" id="anesthesia" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="end-container">
+        <div class="scale-box-main">
+          <div class="container-fluid">
+            <div class="row create-form-inputs">
+              <div class="scale-box">
+                <div class="scale-box-checkbox">
+                  <label
+                    class="admitting-physician"
+                    style="font-size: 15px; font-weight: 700"
+                    for="noScaleAppicable"
+                    >Output</label
+                  >
+                </div>
+                <div class="third-table">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Type of Intake</th>
+                        <th scope="col">Amount(Ml)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><input type="checkbox" id="anesthesia" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" id="anesthesia" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox" id="anesthesia" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2 mb-2">
+        <div class="col-md-6 d-flex align-items-center mb-2">
+          <label class="col-md-4 col-form-label-sm pl-0"
+            >Grand Total Intake(ml)</label
+          >
+          <input type="text" class="form-control form-control-sm col-md-2" />
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6 d-flex align-items-center mb-2">
+          <label class="col-md-4 col-form-label-sm pl-0"
+            >Grand Total Output(ml)</label
+          >
+          <input type="text" class="form-control form-control-sm col-md-2" />
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6 d-flex align-items-center mb-2">
+          <label class="col-md-4 col-form-label-sm pl-0"
+            >Fluid Balance(ml)</label
+          >
+          <input type="text" class="form-control form-control-sm col-md-2" />
+        </div>
+      </div>
+    </div>
+
+    <div class="my-1 tab-four" *ngIf="activeTab === '4'">
+      <div class="form-wrapper">
+        <!-- Checkbox Grid -->
+        <div class="checkbox-grid">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="allergy" />
+            <label class="form-check-label" for="allergy">Allergy</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="dyspnoea" />
+            <label class="form-check-label" for="dyspnoea">Dyspnoea</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="bleeding" />
+            <label class="form-check-label" for="bleeding">Bleeding</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="arrhythmia" />
+            <label class="form-check-label" for="arrhythmia">Arrhythmia</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="nausea" />
+            <label class="form-check-label" for="nausea">Nausea</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="laryngo" />
+            <label class="form-check-label" for="laryngo">Laryngo Spasm</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="shivering" />
+            <label class="form-check-label" for="shivering">Shivering</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="airway" />
+            <label class="form-check-label" for="airway"
+              >Airway obstruction</label
+            >
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="hoarseness" />
+            <label class="form-check-label" for="hoarseness">Hoarseness</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="vomiting" />
+            <label class="form-check-label" for="vomiting">Vomiting</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="hypoxemia" />
+            <label class="form-check-label" for="hypoxemia">Hypoxemia</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="agitation" />
+            <label class="form-check-label" for="agitation">Agitation</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="hypertension" />
+            <label class="form-check-label" for="hypertension"
+              >Hypertension</label
+            >
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="hypotension" />
+            <label class="form-check-label" for="hypotension"
+              >Hypotension</label
+            >
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="confusion" />
+            <label class="form-check-label" for="confusion">Confusion</label>
+          </div>
+          <div class="form-inline-input">
+            <div class="form-check mb-0">
+              <input class="form-check-input" type="checkbox" id="other" [ngModelOptions]="{ standalone: true }" [(ngModel)]="otherChecked"/>
+              <label class="form-check-label" for="other">Other</label>
+            </div>
+            <input type="text" class="form-control" placeholder="" [readOnly]="!otherChecked"/>
+          </div>
+        </div>
+
+        <!-- Input Fields -->
+        <div class="form-group d-flex mb-3">
+          <label
+            for="intervention"
+            class="col-md-1 p-0"
+            style="white-space: nowrap"
+            >Intervention done</label
+          >
+          <input type="text" class="form-control col-md-9" id="intervention" />
+        </div>
+        <div class="form-group d-flex">
+          <label for="signature" class="col-md-1 p-0">Signature</label>
+          <input type="text" class="form-control col-md-9" id="signature" />
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === '5'">
+      <div class="end-container">
+        <div class="scale-box-main">
+          <div class="container-fluid">
+            <div class="row create-form-inputs">
+              <div class="scale-box">
+                <div class="scale-box-checkbox">
+                  <input type="checkbox" id="noScaleAppicable" />
+                  <label class="admitting-physician" for="noScaleAppicable"
+                    >No Medication Order Applicable</label
+                  >
+                  <div style="display: flex; width: 85%; justify-content: end">
+                    <img
+                      src="assets/img/file1.svg"
+                      title="Create & Import"
+                      class="img-size"
+                    />
+                  </div>
+                </div>
+                <div class="four-table">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Order Type</th>
+                        <th style="width: 270px">Description</th>
+                        <th>Home Medication</th>
+                        <th>Patient's Own Meds</th>
+                        <th>Dose</th>
+                        <th>Validity</th>
+                        <th>Route</th>
+                        <th>Rate</th>
+                        <th>Therapy Recommdation</th>
+                        <th>Durg ID</th>
+                        <th>Ordering Physician</th>
+                        <th>Cycle</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center">
+                          <input type="checkbox" id="anesthesia" />
+                        </td>
+                        <td style="text-align: center">
+                          <input type="checkbox" id="anesthesia" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center">
+                          <input type="checkbox" id="anesthesia" />
+                        </td>
+                        <td style="text-align: center">
+                          <input type="checkbox" id="anesthesia" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center">
+                          <input type="checkbox" id="anesthesia" />
+                        </td>
+                        <td style="text-align: center">
+                          <input type="checkbox" id="anesthesia" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border mt-3">
+    <!-- Nursing Notes -->
+    <div class="section-title pl-0">Nursing Notes</div>
+    <div class="row align-items-center mb-2">
+      <div class="col-md-2 col-sm-12">Nursing Notes</div>
+      <div class="col-md-9 col-sm-10">
+        <input type="text" class="form-control" />
+      </div>
+      <div class="col-md-1 col-sm-2">
+        <button class="btn btn-light p-1 w-100">
+          <!-- <i class="fa fa-edit"></i> -->
+        </button>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-2 col-sm-12">Nursing initials</div>
+      <div class="col-md-10 col-sm-12">
+        <input type="text" class="form-control" />
+      </div>
+    </div>
+
+    <!-- Discharge Order -->
+    <div class="section-title pl-0">Discharge Order</div>
+
+    <div class="row align-items-center mb-2">
+      <div class="col-md-3 col-sm-12">Transfer patient to :</div>
+      <div class="col-md-1 col-sm-3">
+        <input type="checkbox" class="mr-1" id="ward" />
+        <label for="ward">Ward</label>
+      </div>
+      <div class="col-md-1 col-sm-3">
+        <input type="checkbox" class="mr-1" id="icu" />
+        <label for="icu">ICU</label>
+      </div>
+      <div class="col-md-1 col-sm-3">
+        <input type="checkbox" class="mr-1" id="other" [ngModelOptions]="{ standalone: true }" [(ngModel)]="otherChecked1"/>
+        <label for="other">Other</label>
+      </div>
+      <div class="col-md-6 col-sm-12 mt-2 mt-md-0">
+        <input type="text" class="form-control" [readOnly]="!otherChecked1" />
+      </div>
+    </div>
+
+    <!-- Info Fields -->
+    <div class="row mb-2">
+      <div class="col-md-3 col-sm-12">Anaesthesiologist name</div>
+      <div class="col-md-9 col-sm-12">
+        <input type="text" class="form-control gray-bg" />
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-3 col-sm-12">Transferred to PACU by Dr.</div>
+      <div class="col-md-9 col-sm-12">
+        <input type="text" class="form-control gray-bg" />
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-3 col-sm-12">Evaluated by (MD)</div>
+      <div class="col-md-9 col-sm-12">
+        <input type="text" class="form-control gray-bg" />
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-3 col-sm-12">Discharge from PACU by (R.N)</div>
+      <div class="col-md-9 col-sm-12">
+        <input type="text" class="form-control gray-bg" />
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-md-3 col-sm-12">Received on unit by</div>
+      <div class="col-md-9 col-sm-12">
+        <input type="text" class="form-control gray-bg" />
+      </div>
+    </div>
+  </div>
+</form>
