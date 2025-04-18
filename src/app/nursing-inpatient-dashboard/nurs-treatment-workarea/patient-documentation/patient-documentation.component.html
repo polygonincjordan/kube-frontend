@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 12px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra  && !openMaternitySign &&!openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openisPediatricsFallDocument && !openPediatricAdmissionDocument && !openObstetricFallRiskAssessmentDocument && !openpostPatientFallAssessmentDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra  && !openMaternitySign && !openPostAnesthesia && !openNurseInitAss &&!openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openisPediatricsFallDocument && !openPediatricAdmissionDocument && !openObstetricFallRiskAssessmentDocument && !openpostPatientFallAssessmentDocument">
         <div class="search-functionality col-md-2 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCvcMain || openNurseAssRes || openNurseIntra || openMaternitySign  || openCriticalPain || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument || openCVCInsertionDocument || openisPediatricsFallDocument || openPediatricAdmissionDocument || openObstetricFallRiskAssessmentDocument || openpostPatientFallAssessmentDocument"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openNewBorn || openBundles || openCvcMain || openNurseAssRes || openNurseIntra || openMaternitySign  || openPostAnesthesia || openNurseInitAss || openCriticalPain || openCPRDocument || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openNurseAssissment || openPreCardiacCath || openCorrespondenceDocument || openNeonatalDischDocument || openTimeoutCheckDocument || openCVCInsertionDocument || openisPediatricsFallDocument || openPediatricAdmissionDocument || openObstetricFallRiskAssessmentDocument || openpostPatientFallAssessmentDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -204,7 +204,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra && !openMaternitySign && !openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openisPediatricsFallDocument && !openPediatricAdmissionDocument && !openObstetricFallRiskAssessmentDocument && !openpostPatientFallAssessmentDocument">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openNewBorn && !openBundles && !openCvcMain && !openNurseAssRes && !openNurseIntra && !openMaternitySign && !openPostAnesthesia && !openNurseInitAss && !openCriticalPain && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openNurseAssissment && !openPreCardiacCath && !openCPRDocument && !openCorrespondenceDocument && !openModifiedAldreteDocument && !openNeonatalDischDocument && !openTimeoutCheckDocument && !openCVCInsertionDocument && !openisPediatricsFallDocument && !openPediatricAdmissionDocument && !openObstetricFallRiskAssessmentDocument && !openpostPatientFallAssessmentDocument">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -380,6 +380,46 @@
                   *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
                     <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
+            <!-- Post Anesthesia Care Record -->
+            <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
+              <div class="col-md-4"> Post Anesthesia Care Record {{PostAnesthesiaList[0]?.Zversion ?
+                dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
+                {{getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(PostAnesthesiaList[0]?.Dockey)"
+                  *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
+                    <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
+            <!-- Nursing Initial Assessment Gyno Obstetrics -->
+            <div [ngClass]="isNurseInitAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isNurseInitAss',PostAnesthesiaList[0])">
+              <div class="col-md-4">Nursing Initial Assessment Gyno Obstetrics {{PostAnesthesiaList[0]?.Zversion ?
+                dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
+                {{getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(PostAnesthesiaList[0]?.Dockey)"
+                  *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
+                    <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -1040,6 +1080,8 @@
      <app-intra-operative-record *ngIf="openNurseIntra" (successEvent)="reloadDoc($event)"></app-intra-operative-record>
     <app-critical-care-pain *ngIf="openCriticalPain" (successEvent)="reloadDoc($event)"></app-critical-care-pain>
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
+    <app-nursing-initial-assessment *ngIf="openNurseInitAss"></app-nursing-initial-assessment>
+    <app-post-anesthesia-care-record *ngIf="openPostAnesthesia"></app-post-anesthesia-care-record>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
     <app-nursing-discharge-summary *ngIf="openDischargeSummery" ></app-nursing-discharge-summary>

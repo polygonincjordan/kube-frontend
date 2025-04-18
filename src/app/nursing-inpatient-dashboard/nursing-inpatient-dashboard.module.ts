@@ -158,6 +158,8 @@ import { DocumentingDeliveryComponent } from './check-in/documenting-delivery/do
 import { ObsFallRiskAssessmentModule } from '../shared-module/obs-fall-risk-assessment/obs-fall-risk-assessment.module';
 import { PediatricsFallRiskAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/pediatrics-fall-risk-assessment/pediatrics-fall-risk-assessment.component';
 import { PostPatientFallAssessmentModule } from '../shared-module/post-patient-fall-assessment/post-patient-fall-assessment.module';
+import { NursingInitialAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/nursing-initial-assessment/nursing-initial-assessment.component';
+import { PostAnesthesiaCareRecordComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/post-anesthesia-care-record.component';
 
 
 const route: Routes = [
@@ -275,7 +277,9 @@ const route: Routes = [
     MaternityEarlyWarningSignComponent,
     IntraOperativeRecordComponent,
     DocumentingDeliveryComponent,
-    PediatricsFallRiskAssessmentComponent
+    PediatricsFallRiskAssessmentComponent,
+    NursingInitialAssessmentComponent,
+    PostAnesthesiaCareRecordComponent
   ],
   providers: [
     EmergencyService,
