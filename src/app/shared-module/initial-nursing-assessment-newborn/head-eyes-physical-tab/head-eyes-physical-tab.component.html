@@ -1,0 +1,177 @@
+<div class="row m-0">
+    <div class="col-md-2">
+        <label class="m-0">Fontanels</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Normal</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Closed</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Wide</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Depressed</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Bulged</label>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.bulgedOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.bulgedOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Mouth</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Pink</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Symmetry</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.symnmetryOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.symnmetryOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Palate</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Intact</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Open</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Cleft Palate</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.cleftOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.cleftOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Eyes</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Open Spontaneous</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Eye Discharge</label>
+    </div>
+    <div class="col-md-2">
+        <input type="radio" />
+        <label class="m-0 ml-2">No</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="radio" />
+        <label class="m-0 ml-2">Yes</label>
+        <input class="form-control w-40 ml-2" />
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Sclera</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Clear</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Yellow</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Red</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.redOther" />
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.redOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Ears</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Normal</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Malformation</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.malformationOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.malformationOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Hearing Assessment</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Yes</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">No</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.hearingOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.hearingOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Head</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Cephalhematoma</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Caputsaccedaneum</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.motherOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.motherOther"/>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Comments</label>
+    </div>
+    <div class="col-md-6">
+        <input class="form-control" />
+    </div>
+</div>

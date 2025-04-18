@@ -1,0 +1,73 @@
+<div class="row m-0">
+    <div class="col-md-2">
+        <label class="m-0">Color</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Pink</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Pale</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Cyanotic</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Jaundiced</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Mottled</label>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Temperature</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Warm</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Hot</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Cold</label>
+    </div>
+</div>
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Condition of Skin</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Intact</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Rash</label>
+    </div>
+    <div class="col-md-2">
+        <input type="checkbox" />
+        <label class="m-0 ml-2">Lesions</label>
+    </div>
+    <div class="col-md-2 row m-0 align-items-center">
+        <input type="checkbox" [(ngModel)]="intialJson.lesionsOther"/>
+        <label class="m-0 ml-2">Others</label>
+        <input class="form-control w-40 ml-2" [disabled]="!intialJson.lesionsOther"/>
+    </div>
+</div>
+
+<div class="row m-0 mt-3">
+    <div class="col-md-2">
+        <label class="m-0">Birthmarks</label>
+    </div>
+    <div class="col-md-6">
+        <input class="form-control" />
+    </div>
+</div>

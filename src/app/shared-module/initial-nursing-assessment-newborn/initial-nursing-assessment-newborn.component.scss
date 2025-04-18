@@ -1,0 +1,515 @@
+.tab-navigation-part {
+    background: #fff !important;
+}
+
+.table-contant-ass {
+    padding: 10px;
+
+    thead {
+        background: aliceblue;
+    }
+}
+
+.associated_medication {
+    border: 1px solid #cacaca;
+
+    h4 {
+        border: 1px solid #cacaca;
+        padding: 10px;
+    }
+}
+
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+.chief-complain {
+    textarea {
+        height: 100px;
+        border-radius: 10px;
+        font-size: 1rem;
+        border: 1px solid #0056b0;
+    }
+
+    span.text-area-label {
+        position: relative !important;
+        cursor: text;
+        font-size: 12px;
+        opacity: 1;
+        top: 0.6em;
+        left: 20px;
+        z-index: 3;
+        line-height: 0.2 !important;
+        font-weight: bold;
+        color: #0890c5;
+        background: #fff;
+        padding: 0 10px;
+    }
+
+    .z-indexlabel {
+        z-index: 999;
+    }
+}
+
+.triage-circle {
+    top: 0 !important;
+    margin-left: 10px;
+}
+
+.allergy-header-title {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.checkbox-margin {
+    padding: 4px 10px 4px 10px;
+    border: 1px solid #cacaca;
+    border-radius: 6px;
+    height: 35px;
+}
+
+.prior-media {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+
+    li {
+        margin-right: 30px; // Spacing between radio buttons
+        display: flex;
+        align-items: center;
+        padding: 4px 10px 4px 10px;
+        border: 1px solid #cacaca;
+        border-radius: 6px;
+        height: 35px;
+
+        input[type='radio'] {
+            margin-right: 5px; // Spacing between radio button and label
+            cursor: pointer;
+
+            label {
+                cursor: pointer;
+            }
+        }
+
+        .triage-circle {
+            display: inline-block;
+            width: 30px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 16px;
+            color: white;
+            font-weight: bold;
+            position: absolute;
+            margin: 2px 0px;
+        }
+    }
+}
+
+.tab-navigation-part {
+    background: none !important;
+    padding: 10px 0 !important;
+    // border-bottom: 2px solid #cacaca;
+}
+
+.tab-navigation-part .tab-navigate .tab-nav {
+    padding: 10px 5px 0 !important;
+    border-bottom: none !important;
+}
+
+.secound-bar-vital-sign {
+    display: flex;
+    // padding: 15px;
+    align-items: baseline;
+}
+
+.secound-bar-vital-sign .arrows img {
+    width: 70px;
+}
+
+.secound-bar-vital-sign ul.list-simple li {
+    background: #e4edf5;
+    border-radius: 10px;
+    padding: 6px 10px;
+}
+
+.secound-bar-vital-sign ul.list-simple li img {
+    width: 30px;
+    padding: 3px;
+}
+
+.secound-bar-vital-sign ul.list-simple li.icon-pdf {
+    padding: 3px 5px;
+}
+
+.icon-pdf {
+    padding: 3px 5px;
+    border-radius: 7px;
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.create-form-inputs {
+    label {
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
+
+.admitting-physician {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tab-navigate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.past-med-input {
+    td {
+        padding: 10px !important;
+        width: 15%;
+    }
+}
+
+.psychological-main {
+    input {
+        width: 15px;
+        height: 22px;
+    }
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+    border-color: none !important;
+}
+
+.arrival-header {
+    padding: 5px 13px;
+    background: #f6f9fb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    label {
+        font-size: 16px;
+    }
+}
+
+.table-er-traige {
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 9 !important;
+        background-color: #e4edf5;
+        color: black;
+    }
+
+    tbody tr td {
+        padding: 10px !important;
+    }
+}
+
+.ped-10 {
+    padding: 10px !important;
+}
+
+.allergy-header-ul {
+    width: 10% !important;
+}
+
+// Assuming this is your main styles.scss file
+.end-container {
+    padding: 20px; // Add padding around the container
+    font-size: 15px;
+  
+    .box-label {
+      position: relative;
+      cursor: pointer;
+      opacity: 1;
+      top: -19px;
+      left: 10px;
+      z-index: 0;
+      font-weight: bold;
+      background: #fff;
+      font-size: 18px;
+      text-align: center;
+      display: inline-block;
+      width: 300px;
+      /* Allow width to adjust based on content */
+    }
+  
+  
+    form {
+      border: 1px solid #cacaca;
+      border-radius: 6px;
+      padding: 4px 10px 4px 10px;
+  
+  
+      .create-form-inputs {
+        margin-top: 15px;
+        margin-bottom: 15px; // Spacing between input sections
+  
+        .col-md-2 {
+          width: 16.67%; // Set column width for labels
+  
+          label {
+            font-weight: bold;
+          }
+        }
+  
+        .col-md-4 {
+          width: 33.33%; // Set column width for input fields
+  
+          ng-select {
+            // Customize ng-select styles if needed
+            width: 100%;
+          }
+  
+          input.form-control {
+            height: 33px; // Set height for form controls
+          }
+        }
+  
+        .col-md-10 {
+          width: 83.33%; // Adjust width for full-width content
+        }
+  
+        .prior-media {
+          list-style: none;
+          padding: 0;
+          display: flex;
+          align-items: center;
+  
+          li {
+            margin-right: 30px; // Spacing between radio buttons
+            display: flex;
+            align-items: center;
+            padding: 4px 10px 4px 10px;
+            border: 1px solid #cacaca;
+            border-radius: 6px;
+            height: 35px;
+  
+            input[type='radio'] {
+              margin-right: 5px; // Spacing between radio button and label
+              cursor: pointer;
+  
+              label {
+                cursor: pointer;
+              }
+            }
+  
+            .triage-circle {
+              display: inline-block;
+              width: 30px;
+              height: 28px;
+              border-radius: 50%;
+              text-align: center;
+              line-height: 16px;
+              color: white;
+              font-weight: bold;
+              position: absolute;
+            }
+          }
+        }
+  
+        .scale-box {
+          justify-content: space-between;
+          padding: 0px 25px;
+          width: 100%;
+  
+          .scale-box-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 0px;
+  
+            input[type="checkbox"] {
+              width: 18px;
+              height: 18px;
+              accent-color: green;
+            }
+  
+            label {
+              display: inline-block;
+              margin-bottom: 0.0rem !important;
+            }
+          }
+  
+          .scale-box-table {
+            max-height: 296px;
+            overflow: auto;
+  
+            table {
+              thead {
+                background-color: #e4edf5;
+                color: black;
+  
+              }
+  
+              tbody {
+                background-color: #fbfcff;
+  
+                tr {
+                  td {
+                    padding: 10px !important;
+                    width: 15%;
+                    pointer-events: none;
+  
+                    &:nth-child(5) {
+                      width: 3%;
+                      text-align: center;
+                      cursor: pointer;
+                    }
+  
+                    &:nth-child(6) {
+                      width: 3%;
+                      text-align: center;
+                      cursor: pointer;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  
+      .chief-complain {
+        margin-left: 20px; // Adjust left margin for chief complaint section
+        margin-right: 20px; // Adjust right margin for chief complaint section
+  
+        .text-area-label {
+          font-weight: bold;
+        }
+  
+        textarea.form-control {
+          height: 100px; // Set height for textarea
+        }
+      }
+    }
+  
+  
+    .chief-complain {
+      textarea {
+        height: 100px;
+        border-radius: 10px;
+        font-size: 12px;
+        border: 1px solid #0056b0;
+      }
+  
+      span.text-area-label {
+        position: relative !important;
+        cursor: text;
+        font-size: 12px;
+        opacity: 1;
+        top: 0.6em;
+        left: 20px;
+        line-height: 0.2 !important;
+        font-weight: bold;
+        color: #0890c5;
+        background: #fff;
+        padding: 0 10px;
+        font-size: 15px;
+      }
+  
+    }
+  
+    .container-fluid {
+  
+      .tab-navigation-part {
+        background: none !important;
+  
+        // border-bottom: 2px solid #cacaca;
+        .tab-content {
+          border-radius: 7px;
+  
+          .allergy-box {
+            max-height: 296px;
+            overflow: auto;
+  
+            .allergy-checkbox-section {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+  
+              input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                accent-color: green;
+              }
+            }
+  
+            table {
+              thead {
+                background-color: #e4edf5;
+                color: black;
+  
+              }
+  
+              tbody {
+                background-color: #fbfcff;
+  
+                tr {
+                  padding: 10px !important;
+                  width: 15%;
+  
+                  td {
+                    padding-left: 2px;
+                    padding-right: 2px;
+                    width: 15%;
+                    pointer-events: none;
+                    text-align: left;
+                    padding-left: 24px !important;
+                    line-height: 39px;
+  
+                  }
+                }
+              }
+            }
+          }
+  
+  
+        }
+      }
+  
+      .tab-navigation-part .tab-navigate .tab-nav {
+        padding: 10px 5px 0 !important;
+        border-bottom: none !important;
+      }
+  
+      .tab-navigate {
+        .secound-bar-vital-sign {
+          display: flex;
+          align-items: baseline;
+          position: absolute;
+          right: 0;
+          margin: -52px 90px 0px 0px;
+          background: #e4edf5;
+          padding: 8px;
+          border-radius: 28%;
+  
+          .img {
+            width: 17px;
+          }
+        }
+      }
+    }
+  
+    .sph-box {
+      border: 1px solid #cacaca;
+      border-radius: 6px;
+      padding: 4px 10px 4px 10px;
+  
+      form {
+        border: unset;
+        border-radius: unset;
+      }
+    }
+  
+  }
+  
