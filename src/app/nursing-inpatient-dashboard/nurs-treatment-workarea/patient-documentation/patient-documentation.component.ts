@@ -6647,8 +6647,8 @@ export class PatientDocumentationComponent implements OnInit {
       this.openObstetricFallRiskAssessmentDocument ||
       this.openpostPatientFallAssessmentDocument || 
       this.openInitialNursingNewbornDocument || 
-      this.isNurseInitAss ||
-      this.isPostAnesthesia
+      this.openNurseInitAss ||
+      this.openPostAnesthesia
     );
   }
   get showActionBtn(): boolean {
@@ -6683,8 +6683,8 @@ export class PatientDocumentationComponent implements OnInit {
       this.openObstetricFallRiskAssessmentDocument ||
       this.openpostPatientFallAssessmentDocument ||
       this.openInitialNursingNewbornDocument ||
-      this.isNurseInitAss ||
-      this.isPostAnesthesia
+      this.openNurseInitAss ||
+      this.openPostAnesthesia
     );
   }
 
