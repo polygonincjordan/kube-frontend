@@ -1,7 +1,7 @@
 <form [formGroup]="nursingAdmissionForm">
     <div class="end-container">
         <div class="sph-box">
-            <label class="box-label">Examination</label>
+            <label class="box-label">Orientation / Patient Rights / Valuables</label>
             <div class="container-fluid">
                 <div class="tab-navigation-part">
                     <div class="row m-0">
@@ -58,7 +58,7 @@
                         <div class="col-md-9 row m-0">
                             <div class="col-md-2">
                                 <ng-select>
-                                    <ng-option></ng-option>
+                                    <ng-option *ngFor="let item of patientHandbook">{{ item.label }}</ng-option>
                                 </ng-select>
                             </div>
                             <div class="col-md-4">
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row m-0">
+                    <div class="row m-0 mt-2">
                         <div class="col-md-2">
                             <label class="m-0">Valuables / Equipement</label>
                         </div>

@@ -58,6 +58,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   getCheckInData: any;
   getCheckInStatusFilterData: any;
+  getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
   getCheckInWardFilterData: any;
   getCheckInSpecialtyFilterData: any;
@@ -227,6 +228,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: [''],
       FWard: [''],
       FSpecialty: [''],
+      RoomidText: ['']
     });
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
@@ -767,6 +769,16 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         },
         []
       );
+      this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
+        (accumulator: string[], currentValue) => {
+          let roomText = currentValue?.RoomidText?.trim();
+          if (roomText && !accumulator.includes(roomText)) {
+            accumulator.push(roomText);
+          }
+          return accumulator;
+        },
+        []
+      );
       this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
         (accumulator: string[], currentValue) => {
           if (!accumulator.includes(currentValue?.FinancialCategory)) {
@@ -918,6 +930,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: '',
       FWard: '',
       FSpecialty: '',
+      RoomidText:''
     });
     this.filterFormLab.patchValue({
       Rooms: '',
@@ -1364,6 +1377,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: [''],
       FWard: [''],
       FSpecialty: [''],
+      RoomidText: ['']
     });
   }
 

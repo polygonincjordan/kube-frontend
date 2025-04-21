@@ -222,10 +222,14 @@
                   {{getDate(latestNurCarePlanList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{latestNurCarePlanList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestNurCarePlanList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNurCarePlanList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
+                      <select *ngIf="latestNurCarePlanList.length && latestNurCarePlanList[0]?.StatusTxt !='N/A' && latestNurCarePlanList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
 
@@ -240,10 +244,14 @@
                   {{getDate(latestNurDischargeSummeryList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{latestNurDischargeSummeryList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestNurDischargeSummeryList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNurDischargeSummeryList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurDischargeSummeryList[0]?.Dockey, latestNurDischargeSummeryList[0])">
+                      <select *ngIf="latestNurDischargeSummeryList.length && latestNurDischargeSummeryList[0]?.StatusTxt !='N/A' && latestNurDischargeSummeryList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
               <!--  Braden Scale -->
@@ -256,10 +264,14 @@
                   {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
+                      <select *ngIf="latestBridentScaleList.length && latestBridentScaleList[0]?.StatusTxt !='N/A' && latestBridentScaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
               
@@ -284,10 +296,14 @@
               {{getDate(latestMorseFallScaleData?.DocDate) | date: "dd.MM.y" || '-'}}
             </div>
             <div class="col-md-3">{{latestMorseFallScaleData?.PhyNm || '-'}}</div>
-            <div class="col-md-1">
+            <div class="col-md-1 d-flex">
               <img src="assets/img/document-html.png" width="18px" height="18px"
               (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                 *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
+                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
+                  <select *ngIf="latestMorseFallScaleData && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
+                    id=""></select>
+                </div>
             </div>
           </div>
 
@@ -302,10 +318,14 @@
                 {{getDate(latestNurAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
               </div>
               <div class="col-md-3">{{latestNurAdmissionList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <img src="assets/img/document-html.png" width="15px" height="15px"
                   (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.NAA$)"
                   *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurAdmissionList[0]?.Dockey, latestNurAdmissionList[0])">
+                    <select *ngIf="latestNurAdmissionList.length && latestNurAdmissionList[0]?.StatusTxt !='N/A' && latestNurAdmissionList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
               </div>
             </div>
 
@@ -444,10 +464,14 @@
                   {{getDate(latestGlasgowComaScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{latestGlasgowComaScaleList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestGlasgowComaScaleList[0],RedirectionType.COMMA$)"
                     *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestGlasgowComaScaleList[0]?.Dockey, latestGlasgowComaScaleList[0])">
+                      <select *ngIf="latestGlasgowComaScaleList.length && latestGlasgowComaScaleList[0]?.StatusTxt !='N/A' && latestGlasgowComaScaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
                 </div>
               </div>
 

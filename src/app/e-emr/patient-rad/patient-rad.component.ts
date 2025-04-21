@@ -301,6 +301,37 @@ export class PatientRadComponent implements OnInit {
       (_error: any) => {}
     );
   }
+
+  openModuleKardex(data) {
+    if (data.BESSTATTEXT == 'Planned') {
+      if (data.BESSTATTEXT == 'Planned' && data.PATNR) {
+        window.open(
+          'e-kardex?patnr=' +
+          data.PATNR +
+          '&falnr=' +
+          data.FALNR +
+          '&einri=' +
+          data.EINRI +
+          '&lfdnr=' +
+          data.LFDBW,
+          '_blank'
+        );
+      }
+    } else {
+      window.open(
+        'e-kardex?patnr=' +
+        data.PATNR +
+        '&falnr=' +
+        data.FALNR +
+        '&einri=' +
+        data.EINRI +
+        '&lfdnr=' +
+        data.LFDBW,
+        '_blank'
+      );
+    }
+
+  }
   closePdfModal(){
     this.modalRef.hide();
     this.confirmationMarkAsChecked(this.record,'pdf');

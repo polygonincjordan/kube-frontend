@@ -48,6 +48,17 @@ export class AssessmentTabComponent implements OnInit {
     },
   ]
 
+  yesNoList = [
+    {
+      label: 'Yes',
+      value: '0'
+    },
+    {
+      label: 'No',
+      value: '1'
+    },
+  ]
+
   growthStatus = [
     {
       label: 'Ealry development',
