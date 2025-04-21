@@ -161,6 +161,7 @@ import { PostPatientFallAssessmentModule } from '../shared-module/post-patient-f
 import { NursingInitialAssessmentComponent } from './nurs-treatment-workarea/patient-documentation/nursing-initial-assessment/nursing-initial-assessment.component';
 import { PostAnesthesiaCareRecordComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/post-anesthesia-care-record.component';
 import { InitialNursingAssessmentNewbornModule } from '../shared-module/initial-nursing-assessment-newborn/initial-nursing-assessment-newborn.module';
+import { DailyNursingAssessmentNewbornComponent } from './nurs-treatment-workarea/patient-documentation/daily-nursing-assessment-newborn/daily-nursing-assessment-newborn.component';
 
 
 const route: Routes = [
@@ -280,7 +281,8 @@ const route: Routes = [
     DocumentingDeliveryComponent,
     PediatricsFallRiskAssessmentComponent,
     NursingInitialAssessmentComponent,
-    PostAnesthesiaCareRecordComponent
+    PostAnesthesiaCareRecordComponent,
+    DailyNursingAssessmentNewbornComponent
   ],
   providers: [
     EmergencyService,

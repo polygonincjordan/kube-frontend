@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -6,196 +12,208 @@ import { DataShareService } from '@services/data-share.service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
-import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-intra-operative-record',
   templateUrl: './intra-operative-record.component.html',
-  styleUrls: ['./intra-operative-record.component.scss']
+  styleUrls: ['./intra-operative-record.component.scss'],
 })
 export class IntraOperativeRecordComponent implements OnInit {
   @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
   public equipment = [
-    {value : '1',label:'No'},
-    {value : '0',label:'Yes'},
-  ]
-  yesNoOptions = [
-    { value:'0', label: 'Yes' },
-    { value: 1, label: 'No' }
+    { value: '1', label: 'No' },
+    { value: '0', label: 'Yes' },
   ];
-  
+  yesNoOptions = [
+    { value: '0', label: 'Yes' },
+    { value: 1, label: 'No' },
+  ];
+
   classifications = [
-    { value:'0', label: 'Intermediate' },
+    { value: '0', label: 'Intermediate' },
     { value: 1, label: 'Major Plus' },
     { value: 2, label: 'Complex Major' },
-    { value: 3, label: 'Minor' }
+    { value: 3, label: 'Minor' },
   ];
-  
+
   surgeryTypes = [
-    { value:'0', label: 'Elective' },
+    { value: '0', label: 'Elective' },
     { value: 1, label: 'Emergency' },
-    { value: 2, label: 'Urgent' }
+    { value: 2, label: 'Urgent' },
   ];
-  
+
   surgeryRoomTypes = [
-    { value:'0', label: 'Sterilized' },
-    { value: 1, label: 'Destilized' }
+    { value: '0', label: 'Sterilized' },
+    { value: 1, label: 'Destilized' },
   ];
-  
+
   positions = [
-    { value:'0', label: 'Supine' },
-    { value:'1', label: 'Prone' },
-    { value:'2', label: 'Lithotomy' },
-    { value:'3', label: 'Sitting' },
-    { value:'4', label: 'Lateral Rt.' },
-    { value:'5', label: 'Lateral Lt.' },
-    { value:'7', label: 'Others' }
+    { value: '0', label: 'Supine' },
+    { value: '1', label: 'Prone' },
+    { value: '2', label: 'Lithotomy' },
+    { value: '3', label: 'Sitting' },
+    { value: '4', label: 'Lateral Rt.' },
+    { value: '5', label: 'Lateral Lt.' },
+    { value: '7', label: 'Others' },
   ];
-  
+
   skinConditions = [
-    { value:'0', label: 'Intact' },
-    { value:'1', label: 'Non-Intact' }
+    { value: '0', label: 'Intact' },
+    { value: '1', label: 'Non-Intact' },
   ];
-  
+
   sutureTypes = [
-    { value:'0', label: 'Suture' },
-    { value:'1', label: 'Stapler' },
-    { value:'2', label: 'Glue' }
+    { value: '0', label: 'Suture' },
+    { value: '1', label: 'Stapler' },
+    { value: '2', label: 'Glue' },
   ];
-  
+
   drainMethods = [
-    { value:'0', label: 'Single' },
+    { value: '0', label: 'Single' },
     { value: '1', label: 'Continuous' },
-    { value: '2', label: 'Retention' }
+    { value: '2', label: 'Retention' },
   ];
-  
+
   investigationTypes = [
-    { value:'0', label: 'Pathology' },
-    { value:'1', label: 'Cytology' },
-    { value:'2', label: 'Bacteriology' },
-    { value:'3', label: 'Other Lab Investigations' }
+    { value: '0', label: 'Pathology' },
+    { value: '1', label: 'Cytology' },
+    { value: '2', label: 'Bacteriology' },
+    { value: '3', label: 'Other Lab Investigations' },
   ];
 
   babyGenders = [
-    { value:'0', label: 'Unknown' },
+    { value: '0', label: 'Unknown' },
     { value: '1', label: 'Female' },
-    { value: '2', label: 'Male' }
+    { value: '2', label: 'Male' },
   ];
-  
+
   babyDischargeOptions = [
-    { value:'0', label: 'NICU' },
+    { value: '0', label: 'NICU' },
     { value: '1', label: 'Nursery' },
-    { value: '2', label: 'Other' }
+    { value: '2', label: 'Other' },
   ];
-  
+
   dischargeDestinations = [
-    { value:'0', label: 'PACU' },
+    { value: '0', label: 'PACU' },
     { value: '1', label: 'Ward' },
     { value: '2', label: 'Intensive Care Unit' },
-    { value: '3', label: 'Other' }
+    { value: '3', label: 'Other' },
   ];
-  
-  public criticalForm :FormGroup
-  public paramsObject: any
+
+  public criticalForm: FormGroup;
+  public paramsObject: any;
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   public docKey: any;
   public CurrentDateAndTime: Date = new Date();
-   constructor(public modalService: BsModalService,private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService) { 
-     this._route.queryParams.subscribe((params) => {
-           this.paramsObject = params;
-           this.storageService.setEinri(this.paramsObject.einri);
-           this.storageService.setFalnr(this.paramsObject.falnr);
-           this.storageService.setLfdnr(this.paramsObject.lfdnr);
-           this.storageService.setPatnr(this.paramsObject.patnr);
-         });
-         this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {      
-               if (data != null) {
-                 if (data.type == ActionType.Add$ && data.value == '') {
-                   this.docKey = data.value.Dockey
-                 }
-                 if (data.type == ActionType.Update$  && data.value) {
-                 this.docKey = data.value.docKey
-                 this.getDocument(data.value.docKey)
-                   }
-                   if (data.type == ActionType.Copy$  && data.value) {
-                      this.docKey = data.value.docKey
-                      this.getDocument(data.value.docKey)
-                   }
-                 }  else {
-                 // for after code
-                 }
-         })
-   }
+  constructor(
+    public modalService: BsModalService,
+    private formBuilder: FormBuilder,
+    private _route: ActivatedRoute,
+    public storageService: StorageService,
+    public admissionService: AdmissionService,
+    private sharedService: SharedService,
+    private dataShareService: DataShareService
+  ) {
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+      this.storageService.setEinri(this.paramsObject.einri);
+      this.storageService.setFalnr(this.paramsObject.falnr);
+      this.storageService.setLfdnr(this.paramsObject.lfdnr);
+      this.storageService.setPatnr(this.paramsObject.patnr);
+    });
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getDocument(data.value.docKey);
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getDocument(data.value.docKey);
+          }
+        } else {
+          // for after code
+        }
+      }
+    );
+  }
+
+  currentTime: any;
 
   ngOnInit(): void {
     this.initForm();
-  
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    this.currentTime = `${hours}:${minutes}:${seconds}`;
   }
 
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }  
-     if (this.actionTypeSubscription$) {
+    }
+    if (this.actionTypeSubscription$) {
       this.actionTypeSubscription$.unsubscribe();
       this.dataShareService.sendActionType(null);
     }
   }
 
-  getDocument(data?){
-    this.admissionService
-    .getCriticalPainDetail(this.docKey)
-    .subscribe({
+  getDocument(data?) {
+    this.admissionService.getCriticalPainDetail(this.docKey).subscribe({
       next: (data: any) => {
-        if(data){
+        if (data) {
           this.initForm(data?.results[0]);
         }
       },
-      error: (err: any) => {   
-      },
+      error: (err: any) => {},
     });
   }
 
-  initForm(data?){
+  initForm(data?) {
     this.criticalForm = this.formBuilder.group({
-      MotherBg:[''],
-      EquipmentText:[''],
-      Problem:[false],
-      ProblemText:[''],
-      AppliedL:[''],
-      AppliedR:[''],
-      rightLine:[false],
-      leftLine:[false],
-      Tourniquet:[''],
-      Tourniquettext:[''],
-      otherassetT:[''],
-      otherasset:[false],
-      asset:[false],
-      assetT:[''],
-      otherS:[false],
-      otherT:[''],
-      na:[false],
-      naT:[''],
-      otherIv:[false],
-      otherIvT:[''],
-      Hair:[''],
-      HairT:[''],
-      Position:[''],
-      PositionT:[''],
+      MotherBg: [''],
+      EquipmentText: [''],
+      Problem: [false],
+      ProblemText: [''],
+      AppliedL: [''],
+      AppliedR: [''],
+      rightLine: [false],
+      leftLine: [false],
+      Tourniquet: [''],
+      Tourniquettext: [''],
+      otherassetT: [''],
+      otherasset: [false],
+      asset: [false],
+      assetT: [''],
+      otherS: [false],
+      otherT: [''],
+      na: [false],
+      naT: [''],
+      otherIv: [false],
+      otherIvT: [''],
+      Hair: [''],
+      HairT: [''],
+      Position: [''],
+      PositionT: [''],
       drains: this.formBuilder.array([]),
       Packs: this.formBuilder.array([]),
       Implants: this.formBuilder.array([]),
       Count: this.formBuilder.array([]),
-      Instrument : this.formBuilder.array([]),
-      Specimens : this.formBuilder.array([]),
-      drainsDrop:[''],
-      na1:[false],
-      PacksDrop:[''],
-      Implantsdrop:['']
-
-    })
+      Instrument: this.formBuilder.array([]),
+      Specimens: this.formBuilder.array([]),
+      drainsDrop: [''],
+      na1: [false],
+      PacksDrop: [''],
+      Implantsdrop: [''],
+    });
     for (let i = 0; i < 5; i++) {
       this.addDrain();
       this.addPacks();
@@ -204,9 +222,7 @@ export class IntraOperativeRecordComponent implements OnInit {
       this.addSpecimens();
       this.addInstrument();
     }
-
   }
-
 
   get drains(): FormArray {
     return this.criticalForm.get('drains') as FormArray;
@@ -220,10 +236,10 @@ export class IntraOperativeRecordComponent implements OnInit {
   get Count(): FormArray {
     return this.criticalForm.get('Count') as FormArray;
   }
-  get Instrument (): FormArray {
+  get Instrument(): FormArray {
     return this.criticalForm.get('Instrument') as FormArray;
   }
-  get Specimens (): FormArray {
+  get Specimens(): FormArray {
     return this.criticalForm.get('Specimens') as FormArray;
   }
 
@@ -231,7 +247,7 @@ export class IntraOperativeRecordComponent implements OnInit {
     const drainGroup = this.formBuilder.group({
       type: [''],
       size: [''],
-      site: ['']
+      site: [''],
     });
     this.drains.push(drainGroup);
   }
@@ -246,16 +262,16 @@ export class IntraOperativeRecordComponent implements OnInit {
     const drainGroup = this.formBuilder.group({
       types: [''],
       no: [''],
-      sites: ['']
+      sites: [''],
     });
     this.Packs.push(drainGroup);
   }
-   addInstrument() {
+  addInstrument() {
     const drainGroup = this.formBuilder.group({
-      InstrumentSet : [''],
-      InstrumentNum : [''],
-      InstrumentPac : [''],
-      InstrumentName  : ['']
+      InstrumentSet: [''],
+      InstrumentNum: [''],
+      InstrumentPac: [''],
+      InstrumentName: [''],
     });
     this.Instrument.push(drainGroup);
   }
@@ -263,7 +279,7 @@ export class IntraOperativeRecordComponent implements OnInit {
     const drainGroup = this.formBuilder.group({
       Implantstypes: [''],
       ImplantsSize: [''],
-      ImplantsQuantity: ['']
+      ImplantsQuantity: [''],
     });
     this.Implants.push(drainGroup);
   }
@@ -275,8 +291,7 @@ export class IntraOperativeRecordComponent implements OnInit {
       Correct2: [''],
       Incorrect2: [''],
       Correct3: [''],
-      Incorrect3: ['']
-     
+      Incorrect3: [''],
     });
     this.Count.push(drainGroup);
   }
@@ -290,35 +305,32 @@ export class IntraOperativeRecordComponent implements OnInit {
   removeImplants(index: number) {
     this.Implants.removeAt(index);
   }
-  
+
   removeCount(index: number) {
     this.Count.removeAt(index);
   }
-  removeInstrument (index: number) {
+  removeInstrument(index: number) {
     this.Instrument.removeAt(index);
   }
-  removeSpecimens (index: number) {
+  removeSpecimens(index: number) {
     this.Specimens.removeAt(index);
   }
-  
-
 
   toggleInput(controlName: string, value: string): void {
-    // const control = this.criticalForm.get(controlName);  
+    // const control = this.criticalForm.get(controlName);
     if (value === '0') {
       this.criticalForm.get(controlName)?.enable();
     } else {
-      if(controlName === 'type'){
+      if (controlName === 'type') {
         this.criticalForm.get('type')?.disable();
-      this.criticalForm.get('type')?.setValue('');
+        this.criticalForm.get('type')?.setValue('');
         this.criticalForm.get('size')?.disable();
-      this.criticalForm.get('size')?.setValue('');
+        this.criticalForm.get('size')?.setValue('');
         this.criticalForm.get('site')?.disable();
-      this.criticalForm.get('site')?.setValue('');
-      }else{
+        this.criticalForm.get('site')?.setValue('');
+      } else {
         this.criticalForm.get(controlName)?.disable();
         this.criticalForm.get(controlName)?.setValue('');
-
       }
     }
   }
@@ -338,59 +350,67 @@ export class IntraOperativeRecordComponent implements OnInit {
       inputControl?.setValue('');
     }
   }
-  
 
-  public createDoc(status?:any,actionType?:any){
+  public createDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
       let formData = this.criticalForm.value;
       let payload = {
         ...formData,
-        Dockey : actionType === 'edit' ||  actionType === 'copy' ? this.docKey : '',
-        Dtid : 'ZSCA_CCPOT',
+        Dockey:
+          actionType === 'edit' || actionType === 'copy' ? this.docKey : '',
+        Dtid: 'ZSCA_CCPOT',
         Einri: this.paramsObject.einri,
         Patnr: this.paramsObject.patnr,
         Falnr: this.paramsObject.falnr,
         Lfdnr: this.paramsObject.lfdnr,
         Orgdo: 'F21IUAMC',
-        AttendPhy :this.storageService.getUserProfile().Gpart,
-        DocStatus :status,
-      }
-   
-      this.subscription = this.admissionService.createCriticalPainDoc(payload).subscribe({
-        next: (data: any) => {
-        },
-        error: (err: any) => {
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at Critical Care Pain Observation Tool : ${err}`);
-        },
-        complete: () => {
-          resolve(true);
-          if(status === 'edit'){
-            this.sharedService.successSwallModel('Critical Care Pain Observation Tool updated successfully');
-          }else{
-            this.sharedService.successSwallModel('Critical Care Pain Observation Tool created successfully');
-          }
-          this.successEvent.next(true)
-        }
-      });
-    })   
-    
+        AttendPhy: this.storageService.getUserProfile().Gpart,
+        DocStatus: status,
+      };
+
+      this.subscription = this.admissionService
+        .createCriticalPainDoc(payload)
+        .subscribe({
+          next: (data: any) => {},
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(
+              `PUT Error at Critical Care Pain Observation Tool : ${err}`
+            );
+          },
+          complete: () => {
+            resolve(true);
+            if (status === 'edit') {
+              this.sharedService.successSwallModel(
+                'Critical Care Pain Observation Tool updated successfully'
+              );
+            } else {
+              this.sharedService.successSwallModel(
+                'Critical Care Pain Observation Tool created successfully'
+              );
+            }
+            this.successEvent.next(true);
+          },
+        });
+    });
   }
   activeTab: string = 'surgicalsafetychecklist'; // Default tab
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
-  userGroup:FormGroup
-  updateAdditionalInfo() {
-   
-  }
+  userGroup: FormGroup;
+  updateAdditionalInfo() {}
 
   cancelAdditionalInfo() {
-    this.modalRef.hide()
+    this.modalRef.hide();
   }
   modalRef?: BsModalRef;
 
   showPopup(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { backdrop: true, ignoreBackdropClick: false, class: 'additional-info-temp' });
+    this.modalRef = this.modalService.show(template, {
+      backdrop: true,
+      ignoreBackdropClick: false,
+      class: 'additional-info-temp',
+    });
   }
 }

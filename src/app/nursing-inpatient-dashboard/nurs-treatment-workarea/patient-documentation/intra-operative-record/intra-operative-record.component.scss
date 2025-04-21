@@ -304,3 +304,11 @@ input[type="time"] {
   opacity: 0.4;
   pointer-events: none;
 }
+
+
+input[type=time] {
+  padding: 5px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  width: 200px;
+}

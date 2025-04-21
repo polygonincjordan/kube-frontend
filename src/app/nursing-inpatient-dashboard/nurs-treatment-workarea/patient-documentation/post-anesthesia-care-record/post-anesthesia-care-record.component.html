@@ -3,7 +3,40 @@
     <div class="row align-items-center mb-2">
       <div class="col-md-3 col-6 d-flex align-items-end">
         <label for="date" class="mr-2">Date:</label>
-        <input type="date" id="date" class="form-control form-control-sm" />
+        <div class="header-date p-0">
+          <span
+            _ngcontent-ufq-c103=""
+            style="
+              position: relative;
+              top: 32px;
+                  right: 30px;
+              float: right;
+              margin-top: -26px;
+              font-size: 18px;
+              z-index: 1;
+            "
+          >
+            <img src="assets/img/Calender.svg" alt="" />
+          </span>
+          <input
+            class="form-control ml-0 col-1"
+            style="color: #000; border-radius: 8px"
+            type="text"
+            placeholder=""
+            [minDate]=""
+            [maxDate]=""
+            readonly  
+            #dp="bsDatepicker"
+            [bsValue]="CurrentDateAndTime"
+            style="min-width: 200px;height:40px !important"
+            readonly
+            bsDatepicker
+            [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD.MM.YYYY'
+            }"
+          />
+      </div>
       </div>
       <div class="col-md-9 col-12 d-flex flex-wrap align-items-center">
         <div class="form-check mr-3">
@@ -78,7 +111,7 @@
         <input
           type="time"
           class="form-control form-control-sm w-auto"
-          value="09:03:21"
+          [value]="currentTime"
         />
       </div>
       <div class="col-md-6 d-flex align-items-center">
@@ -86,7 +119,7 @@
         <input
           type="time"
           class="form-control form-control-sm w-auto"
-          value="00:00:00"
+          [value]="currentTime"
         />
       </div>
     </div>
