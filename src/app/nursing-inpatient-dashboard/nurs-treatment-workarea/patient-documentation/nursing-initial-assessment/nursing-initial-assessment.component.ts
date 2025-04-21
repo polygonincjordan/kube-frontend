@@ -9,7 +9,10 @@ export class NursingInitialAssessmentComponent implements OnInit {
   activeTab: string = 'persoalData'
   activeTab3: string = 'postPartumAssessment'
   activeTab2: string = 'functionalAssessment'
+  public CurrentDateAndTime: Date = new Date();
+  toVitalsArr:any
   items:[]
+  toAllergyArr:any
   statusDescriptions = [
     { id: 0, label: 'Normal' },
     { id: 1, label: 'Birth Defects' },
@@ -39,7 +42,14 @@ export class NursingInitialAssessmentComponent implements OnInit {
     { id: 7, label: '9' },
     { id: 7, label: '10' }
   ];
-  constructor() { }
+  currentTime:any
+  constructor() { 
+    const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  this.currentTime = `${hours}:${minutes}:${seconds}`;
+  }
 
   ngOnInit(): void {
   }
