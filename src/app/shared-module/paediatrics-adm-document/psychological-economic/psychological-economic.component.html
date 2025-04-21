@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-md-2">
                                 <ng-select>
-                                    <ng-option></ng-option>
+                                    <ng-option *ngFor="let item of patientRelationList">{{ item.label }}</ng-option>
                                 </ng-select>
                             </div>
                             <div class="col-md-2">
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-2">
                                 <ng-select>
-                                    <ng-option></ng-option>
+                                    <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                 </ng-select>
                             </div>
                         </div>

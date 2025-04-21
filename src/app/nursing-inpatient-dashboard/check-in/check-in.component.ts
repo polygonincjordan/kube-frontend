@@ -67,6 +67,7 @@ export class CheckInComponent implements OnInit {
   triageValueArr: any = [];
   physicianValueArr: any = [];
   financialValueArr: any = [];
+  roomidTextValueArr: any = [];
   statusValueArr: any = [];
   wardValueArr: any = [];
   specialtyValueArr: any = [];
@@ -919,7 +920,8 @@ export class CheckInComponent implements OnInit {
     this.physicianValueArr = [];
     this.statusValueArr = [];
     this.financialValueArr = [];
-    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty) {
+    this.roomidTextValueArr = [];
+    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText) {
       let filterValue = this.inHospitalistListClone;
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
@@ -933,7 +935,18 @@ export class CheckInComponent implements OnInit {
         });
         filterValue = this.physicianValueArr.flat();
       }
-
+      if (event.RoomidText && event.RoomidText?.length) {
+        event.RoomidText.forEach((physicianValue) => {
+          this.roomidTextValueArr.push(
+            filterValue.filter((element) => {
+              if (element.RoomidText === physicianValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.roomidTextValueArr.flat();
+      }
       if (event.Status && event.Status?.length) {
         event.Status.forEach((statusValue) => {
           this.statusValueArr.push(

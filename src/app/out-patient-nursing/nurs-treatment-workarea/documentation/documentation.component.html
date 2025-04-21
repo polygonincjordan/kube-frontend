@@ -319,13 +319,17 @@ min-width: 15%;">
                 {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
               </div>
               <div class="col-md-3">{{latestCprList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <!-- <img src="assets/img/document-html.png" width="18px" height="18px"
                   (click)="getScaleDetails(latestCprList[0],RedirectionType.BRADEN$)"
                   *ngIf="latestCprList[0]?.StatusTxt == 'Released'" /> -->
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
                 *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
+                  <select *ngIf="latestCprList.length && latestCprList[0]?.StatusTxt !='N/A' && latestCprList[0]?.Zversion != '00'" class="mr-2" name=""
+                    id=""></select>
+                </div>
               </div>
             </div>
 

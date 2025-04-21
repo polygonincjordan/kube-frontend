@@ -19,6 +19,21 @@ export class OrietationPatientTabComponent implements OnInit {
       value: '1'
     },
   ]
+
+  patientHandbook = [
+    {
+      label: 'Patient',
+      value: '0'
+    },
+    {
+      label: 'Relative',
+      value: '1'
+    },
+    {
+      label: 'Other',
+      value: '2'
+    },
+  ]
   constructor() { }
 
   ngOnInit(): void {

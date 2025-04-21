@@ -15,6 +15,51 @@ selectedTabName: string = 'Psychological History';
 
   tabList = ['Psychological History', 'Economic History'];
 
+  yesNoList = [
+    {
+      label: 'Yes',
+      value: 'J'
+    },
+    {
+      label: 'No',
+      value: 'N'
+    },
+  ]
+  patientRelationList = [
+    {
+      label: 'Parents',
+      value: '1'
+    },
+    {
+      label: 'Father',
+      value: '2'
+    },
+    {
+      label: 'Mother',
+      value: '3'
+    },
+    {
+      label: 'Grandparents',
+      value: '4'
+    },
+    {
+      label: 'Uncle / Aunt',
+      value: '5'
+    },
+    {
+      label: 'Cousin',
+      value: '6'
+    },
+    {
+      label: 'Brother / Sister',
+      value: '7'
+    },
+    {
+      label: 'Other',
+      value: '8'
+    }
+  ]
+
   IsolationList = IsolationList;
   statusList = statusList;
   vaccinationDrodownList = vaccinationDrodownList;

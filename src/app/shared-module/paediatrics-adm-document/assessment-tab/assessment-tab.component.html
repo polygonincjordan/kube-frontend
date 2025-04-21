@@ -1,7 +1,7 @@
 <form [formGroup]="nursingAdmissionForm">
     <div class="end-container">
         <div class="sph-box">
-            <label class="box-label">Examination</label>
+            <label class="box-label">Assessment</label>
             <div class="container-fluid">
                 <div class="tab-navigation-part">
                     <div class="tab-navigate">
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <ng-select>
-                                        <ng-option></ng-option>
+                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                     </ng-select>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <ng-select>
-                                        <ng-option></ng-option>
+                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                     </ng-select>
                                 </div>
                                 <div class="col-md-2 text-right">
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <ng-select>
-                                        <ng-option></ng-option>
+                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                     </ng-select>
                                 </div>
                             </div>

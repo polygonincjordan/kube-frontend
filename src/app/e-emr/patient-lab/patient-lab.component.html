@@ -134,8 +134,8 @@
                 <tr *ngFor="let item of dataOnTable | filter : searchString">
                   <td>{{ item.EBGDT | date : "dd.MM.yyyy"}}</td>
                   <td>{{ item.EBZT }}</td>
-                  <td>{{ item.PATNR }}</td>
-                  <td>{{ item.PNAMEC }}</td>
+                  <td (click)="openModuleKardex(item)">{{ item.PATNR }}</td>
+                  <td (click)="openModuleKardex(item)">{{ item.PNAMEC }}</td>
                   <td>{{ item.FALAR_TXT }}</td>
                   <td>{{ item.LEITXT }}</td>
                   <td>{{ item.ZZRESULT_STATUS_TEXT }}</td>

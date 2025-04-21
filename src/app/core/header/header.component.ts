@@ -265,6 +265,7 @@ export class HeaderComponent implements OnInit {
         Gbdav: newDate,
         Telnr: this.f.telephone.value,
         New: 'X',
+        Falnr: this.f.idNumber.value || ""
       };
     } else {
       jsonObj = {
@@ -277,12 +278,12 @@ export class HeaderComponent implements OnInit {
         //Gbdav:this.f.dob.value,
         Telnr: this.f.telephone.value,
         New: 'X',
-        // Falnr: this.f.idNumber.value || ""
+        Falnr: this.f.idNumber.value || ""
       };
     }
     this._dataServices.widgetDataFilter(jsonObj).subscribe(
       (_success: any) => {
-        this.form.reset();
+        // this.form.reset();
         //console.log(_success.json());
 
         //_success = _success.json();
@@ -454,6 +455,11 @@ export class HeaderComponent implements OnInit {
     this.modalRef.hide();
   }
 
+  closePatientListModal() {
+    this.modalRefForPatientSearch?.hide();
+    this.form.reset();
+  }
+
   getPatientCase(caseNumber : any, index: number) {
     this.eprescriptionService
     .getData(
@@ -548,11 +554,11 @@ export class HeaderComponent implements OnInit {
           const falnr = params.get('falnr');
           const einri = params.get('einri');
           const lfdnr = params.get('lfdnr');
-
+          let formattedCaseNumber = this.form?.value.idNumber?.padStart(10, '0');
           const json = {
             Patnr: patnr,
             Einri: einri,
-            Falnr: falnr,
+            Falnr: this.form?.value?.idNumber ? formattedCaseNumber : falnr,
             Lfdnr: lfdnr,
           };
           this.storageService.setCheckinData(json);
@@ -560,6 +566,7 @@ export class HeaderComponent implements OnInit {
           this.redirectToTreatment(json);
           this.modalRef?.hide();
           this.modalRefForPatientSearch?.hide();
+          this.form.reset();
 
         }
       },

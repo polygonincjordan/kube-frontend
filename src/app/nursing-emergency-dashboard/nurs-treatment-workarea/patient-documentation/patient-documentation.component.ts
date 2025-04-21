@@ -2782,6 +2782,24 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+
+  openSurgicalAssPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getSurgicalPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
   async deletePainAssessmentDocument(docKey: string) {
     Swal.fire({
       title: 'Confirm',
