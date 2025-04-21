@@ -1,0 +1,258 @@
+<div>
+    <!-- First Section -->
+  <div class="row align-items-center mb-2">
+    <div class="col-md-3 col-6 d-flex align-items-end">
+      <label for="date" class="mr-2">Date:</label>
+      <div class="header-date p-0">
+        <span
+          _ngcontent-ufq-c103=""
+          style="
+            position: relative;
+            top: 32px;
+            right: 30px;
+            float: right;
+            margin-top: -26px;
+            font-size: 18px;
+            z-index: 1;
+          "
+        >
+          <img src="assets/img/Calender.svg" alt="" />
+        </span>
+        <input
+          class="form-control ml-0 col-1"
+          style="color: #000; border-radius: 8px"
+          type="text"
+          placeholder=""
+          [minDate]=""
+          [maxDate]=""
+          readonly
+          #dp="bsDatepicker"
+          [bsValue]="CurrentDateAndTime"
+          style="min-width: 230px; height: 40px !important"
+          readonly
+          bsDatepicker
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+        />
+      </div>
+    </div>
+    <div class="col-md-3 col-6 d-flex align-items-end">
+      <label class="col-md-1 p-0 mt-1 mb-2">Time</label>
+      <input class="form-control" type="time" [value]="currentTime" />
+    </div>
+  </div>
+  <!-- Second Section -->
+  <div class="end-container">
+    <div class="scale-box-main">
+      <div class="container-fluid">
+        <div class="row create-form-inputs">
+          <div class="scale-box">
+            <div class="scale-box-checkbox">
+              <div
+                style="
+                  display: flex;
+                  width: 100%;
+                  justify-content: space-between;
+                "
+              >
+                <div class="d-flex align-items-center w-50">
+                  <label class="m-0">Allergies</label>
+                  <input
+                    type="text"
+                    class="form-control w-70 ml-3"
+                    [value]="
+                      toAllergyArr?.length
+                        ? 'Allergy Exists'
+                        : 'No Known Allergies'
+                    "
+                  />
+                </div>
+                <img
+                  src="assets/img/file1.svg"
+                  title="Create & Import"
+                  class="img-size"
+                />
+              </div>
+            </div>
+            <div class="scale-box-table">
+              <table class="table table-bordered third-table">
+                <thead>
+                  <tr>
+                    <th style="width: 2% !important"></th>
+                    <th scope="col">Group</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 2% !important">
+                      <input type="checkbox" />
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- third section -->
+  <div class="mt-4 allergy-div">
+    <div
+      class="d-flex mb-2"
+      style="justify-content: space-between; padding-right: 22px"
+    >
+      <div style="display: flex; align-items: center; gap: 10px">
+        <input
+          type="checkbox"
+          style="width: 36px; height: 22px"
+          [attr.disabled]="toVitalsArr?.length > 0 ? true : null"
+        />
+        <label class="admitting-physician">No Risk Factors</label>
+      </div>
+      <div>
+        <img
+          src="assets/img/file1.svg"
+          title="Create & Import"
+          class="img-size"
+        />
+      </div>
+    </div>
+    <div style="max-height: 296px; overflow: auto">
+      <table class="table table-bordered past-table">
+        <thead
+          style="background-color: #e4edf5; color: black; text-align: center"
+        >
+          <tr>
+            <th scope="col" style="width: 2% !important">
+              <input
+                style="width: 30% !important; height: 15px"
+                type="checkbox"
+              />
+            </th>
+            <th scope="col">ID</th>
+            <th scope="col">Description</th>
+            <th scope="col">Code</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff">
+          <tr class="past-med-input">
+            <td
+              style="padding: 10px !important; width: 2%; pointer-events: none"
+            >
+              <input
+                style="width: 30% !important; height: 15px"
+                type="checkbox"
+              />
+            </td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+          </tr>
+          <tr class="past-med-input">
+            <td
+              style="padding: 10px !important; width: 2%; pointer-events: none"
+            >
+              <input
+                type="checkbox"
+                style="width: 30% !important; height: 15px"
+              />
+            </td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+          </tr>
+          <tr class="past-med-input">
+            <td
+              style="padding: 10px !important; width: 2%; pointer-events: none"
+            >
+              <input
+                type="checkbox"
+                style="width: 30% !important; height: 15px"
+              />
+            </td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+            <td
+              style="padding: 10px !important; width: 15%; pointer-events: none"
+            ></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Tab Section -->
+  <div id="exTab1" class="mt-4">
+    <ul class="nav nav-pills">
+      <li
+        [class.active]="activeTab === 'Neurosensory'"
+        (click)="setActiveTab('Neurosensory')"
+      >
+      Neurosensory
+      </li>
+      <li
+        [class.active]="activeTab === 'Musculoskeletal'"
+        (click)="setActiveTab('Musculoskeletal')"
+      >
+      Musculoskeletal
+      </li>
+      <li
+        [class.active]="activeTab === 'Respiratory'"
+        (click)="setActiveTab('Respiratory')"
+      >
+      Respiratory
+      </li>
+      <li
+        [class.active]="activeTab === 'Cardiovascular'"
+        (click)="setActiveTab('Cardiovascular')"
+      >
+      Cardiovascular
+      </li>
+      <li
+        [class.active]="activeTab === 'Gastrointestinal'"
+        (click)="setActiveTab('Gastrointestinal')"
+      >
+      Gastrointestinal
+      </li>
+      <li
+        [class.active]="activeTab === 'Nutrition'"
+        (click)="setActiveTab('Nutrition')"
+      >
+      Nutrition
+      </li>
+      <li
+        [class.active]="activeTab === 'Skin'"
+        (click)="setActiveTab('Skin')"
+      >
+      Skin
+      </li>
+      <li
+        [class.active]="activeTab === 'Genitourinary'"
+        (click)="setActiveTab('Genitourinary')"
+      >
+      Genitourinary
+      </li>
+    </ul>
+  </div>
+</div>

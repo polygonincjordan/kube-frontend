@@ -1828,7 +1828,7 @@
           gap: 10px;">
             <input type="checkbox" style="width: 36px;
             height: 22px;"
-              [attr.disabled]="toVitalsArr.length >0 ? true:null" />
+              [attr.disabled]="toVitalsArr?.length >0 ? true:null" />
             <label class="admitting-physician">No Vitals Signs Applicable</label>
           </div>
           <div>
@@ -1907,8 +1907,7 @@
           align-items: center;
           gap: 10px;">
             <input type="checkbox" style="width: 36px;
-            height: 22px;"
-              [attr.disabled]="toVitalsArr.length >0 ? true:null" />
+            height: 22px;" />
             <label class="admitting-physician">No Risk Factors</label>
           </div>
           <div>
