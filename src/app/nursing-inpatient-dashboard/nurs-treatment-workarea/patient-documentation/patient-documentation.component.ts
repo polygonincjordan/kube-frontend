@@ -159,6 +159,10 @@ export class PatientDocumentationComponent implements OnInit {
   public openTimeoutCheckDocument: boolean = false;
   latestTimeoutCheckList = [];
 
+  public isPaediatricPhysician: boolean = false;
+  public openPaediatricPhysicianDocument: boolean = false;
+  latestPaediatricPhysicianList = [];
+
   public isCVCInsertion: boolean = false;
   public isPediatricsFall: boolean = false;
   public openCVCInsertionDocument: boolean = false;
@@ -1127,6 +1131,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isCVCInsertion': { isCVCInsertion: true, selectedDocName: 'IC Bundles for CVC Insertion' },
       'isPediatricsFall': { isPediatricsFall: true, selectedDocName: 'Pediatrics Fall Risk Assessment' },
       'isPediatricAdmission': { isPediatricAdmission: true, selectedDocName: 'Pediatric Admission Assessment' },
+      'isPaediatricPhysician': { isPaediatricPhysician: true, selectedDocName: 'Paediatric Physician Assessment' },
       'isObstetricFallRiskAssessment': { isObstetricFallRiskAssessment: true, selectedDocName: 'Obstetric Fall Risk Assessment' },
       'ispostPatientFallAssessment': { ispostPatientFallAssessment: true, selectedDocName: 'Post Patient Fall Assessment' },
       'isInitialNursingNewborn': { isInitialNursingNewborn: true, selectedDocName: 'Initial Nursing Assessment Newborn' },
@@ -1174,6 +1179,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openModifiedAldreteDocument = false;
     this.isNeonatalDisch = false;
     this.isTimeoutCheck = false;
+    this.isPaediatricPhysician = false;
     this.isCVCInsertion = false;
     this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
@@ -1184,6 +1190,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openisPediatricsFallDocument = false;
     this.openNeonatalDischDocument = false;
     this.openTimeoutCheckDocument = false;
+    this.openPaediatricPhysicianDocument = false;
     this.ispostPatientFallAssessment = false;
     this.isInitialNursingNewborn = false;
     this.openpostPatientFallAssessmentDocument = false;
@@ -1551,6 +1558,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.latestModifiedAldreteList = [];
     this.openTimeoutCheckDocument = false;
     this.isTimeoutCheck = false;
+    this.openPaediatricPhysicianDocument = false;
+    this.isPaediatricPhysician = false;
     this.isCVCInsertion = false;
     this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
@@ -3145,6 +3154,56 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openTimeoutCheckDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    }
+
+    else if (this.isPaediatricPhysician) {
+      if (action == 'create') {
+        this.openPaediatricPhysicianDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPaediatricPhysicianDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPaediatricPhysicianDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPaediatricPhysicianDocument = true;
         this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()
@@ -6853,8 +6912,9 @@ export class PatientDocumentationComponent implements OnInit {
       this.openInitialNursingNewbornDocument || 
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
-      this.openMalnutritionAss ||
-      this.openPostAnesthesia 
+      this.openMalnutritionAss || 
+      this.openPostAnesthesia ||
+      this.openPaediatricPhysicianDocument
     );
   }
   get showActionBtn(): boolean {
@@ -6892,7 +6952,8 @@ export class PatientDocumentationComponent implements OnInit {
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
       this.openMalnutritionAss ||
-      this.openPostAnesthesia
+      this.openPostAnesthesia || 
+      this.openPaediatricPhysicianDocument
     );
   }
 

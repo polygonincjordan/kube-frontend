@@ -1223,6 +1223,7 @@ export class DiagnosesComponent implements OnInit {
   isComponentLoaded = false;
   openNewFormForInPatients(template?: TemplateRef<any>,){
     const modalRef = this.modalService.open(NewBornPopupComponent, { ariaLabelledBy: 'modal-dialog-centered pdfviewmodal' })
+    modalRef.componentInstance.data = this.selectedPatient;
     modalRef.componentInstance.selectedItemClicked.subscribe((item: any) => {
       if (item == 'Success') {
         modalRef.close();

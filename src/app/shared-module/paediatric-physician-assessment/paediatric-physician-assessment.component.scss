@@ -1,0 +1,876 @@
+.nursing-admission-main {
+    height: calc(100vh - 260px);
+    overflow: auto;
+}
+
+.allergies-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.end-container {
+    padding: 20px;
+    font-size: 15px;
+
+    .box-label {
+        position: relative;
+        cursor: pointer;
+        opacity: 1;
+        top: -19px;
+        left: 10px;
+        z-index: 0;
+        font-weight: bold;
+        background: #fff;
+        font-size: 18px;
+        text-align: center;
+        display: inline-block;
+        padding: 0px 20px;
+        color: #0890c5;
+    }
+
+    form {
+        border: 1px solid #cacaca;
+        border-radius: 6px;
+        padding: 4px 10px 4px 10px;
+
+        .create-form-inputs {
+            margin-bottom: 8px;
+
+            .col-md-2 {
+                width: 16.67%;
+
+
+            }
+
+            .col-md-4 {
+                width: 33.33%;
+
+                ng-select {
+                    width: 100%;
+                }
+            }
+
+            .col-md-10 {
+                width: 83.33%;
+            }
+
+            .prior-media {
+                list-style: none;
+                padding: 0;
+                display: flex;
+                align-items: center;
+
+                li {
+                    margin-right: 30px;
+                    display: flex;
+                    align-items: center;
+                    padding: 4px 10px 4px 10px;
+                    border: 1px solid #cacaca;
+                    border-radius: 6px;
+                    height: 35px;
+
+                    input[type="radio"] {
+                        margin-right: 5px;
+                        cursor: pointer;
+
+                        label {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .triage-circle {
+                        display: inline-block;
+                        width: 30px;
+                        height: 28px;
+                        border-radius: 50%;
+                        text-align: center;
+                        line-height: 16px;
+                        color: white;
+                        font-weight: bold;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+
+        .chief-complain {
+            margin-left: 20px;
+            margin-right: 20px;
+
+            .text-area-label {
+                font-weight: bold;
+            }
+
+            textarea.form-control {
+                height: 100px;
+                font-size: 18px;
+                padding: 10px 30px;
+            }
+        }
+    }
+
+    .chief-complain {
+        textarea {
+            height: 100px;
+            border-radius: 10px;
+            font-size: 12px;
+            border: 1px solid #cacaca;
+        }
+
+        span.text-area-label {
+            position: relative;
+            cursor: pointer;
+            opacity: 1;
+            top: 12px;
+            left: 10px;
+            z-index: 0;
+            font-weight: bold;
+            background: #fff;
+            font-size: 15px;
+            text-align: center;
+            display: inline-block;
+            padding: 0px 20px;
+            color: #0890c5;
+        }
+    }
+
+    .container-fluid {
+        .tab-navigation-part {
+            background: none !important;
+
+            .tab-content {
+                border-radius: 7px;
+
+                .notice-bar {
+                    p {
+                        color: gray;
+                    }
+                }
+
+                .allergy-box {
+                    max-height: 296px;
+                    overflow: auto;
+
+                    .allergy-checkbox-section {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 15px 0px;
+
+                        input[type="checkbox"] {
+                            width: 18px;
+                            height: 18px;
+                            accent-color: #0056b0;
+                        }
+
+                        label {
+                            display: inline-block;
+                            margin-bottom: 0rem !important;
+                        }
+                    }
+
+                    table {
+                        thead {
+                            background-color: #e4edf5;
+                            color: black;
+
+                            tr {
+                                th {
+                                    &:nth-child(3) {
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+
+                        tbody {
+                            background-color: #fbfcff;
+
+                            tr {
+                                padding: 10px !important;
+                                width: 15%;
+
+                                td {
+                                    text-align: left;
+                                    padding-left: 24px !important;
+                                    line-height: 39px;
+
+                                    &:nth-child(3) {
+                                        text-align: center;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .tab-navigation-part .tab-navigate .tab-nav {
+            padding: 10px 5px 0 !important;
+            border-bottom: none !important;
+        }
+
+        .tab-navigate {
+            margin-top: -35px;
+
+            .secound-bar-vital-sign {
+                display: flex;
+                align-items: baseline;
+                position: absolute;
+                right: 0;
+                margin: -52px 90px 0px 0px;
+                background: #e4edf5;
+                padding: 8px;
+                border-radius: 28%;
+
+                .img {
+                    width: 17px;
+                }
+            }
+        }
+    }
+
+    .sph-box {
+        border: 1px solid #cacaca;
+        border-radius: 6px;
+        padding: 4px 10px 4px 10px;
+
+        form {
+            border: unset;
+            border-radius: unset;
+        }
+
+        .psychological-main {
+            justify-content: space-between;
+
+            .scale-box-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 15px 0px;
+
+                input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    accent-color: #0056b0;
+                }
+
+                label {
+                    display: inline-block;
+                    margin-bottom: 0rem !important;
+                }
+            }
+
+            .checbox-list {
+                padding: 0px 20px;
+            }
+
+            .main-tab-contant {
+                table {
+                    thead {
+                        position: sticky;
+                        top: 0;
+                        z-index: 9 !important;
+                        background-color: #e4edf5;
+                        color: black;
+
+                        tr {
+                            th {
+                                &:nth-child(7) {
+                                    text-align: center;
+                                    width: 100px;
+                                }
+
+                                &:nth-child(8) {
+                                    text-align: center;
+                                    width: 150px;
+                                }
+
+                                &:nth-child(9) {
+                                    text-align: center;
+                                    width: 100px;
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            td {
+                                &:nth-child(9) {
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .option-box {
+                    border: 1px solid #cacaca;
+                    border-radius: 6px;
+                    margin: 30px 0px 0px 0px;
+
+                    .box-label-inner {
+                        position: relative;
+                        cursor: pointer;
+                        opacity: 1;
+                        top: -14px;
+                        left: 10px;
+                        z-index: 0;
+                        font-weight: bold;
+                        background: #fff;
+                        font-size: 18px;
+                        text-align: center;
+                        display: inline-block;
+                        padding: 0px 20px;
+                        color: #0890c5;
+                    }
+
+                    .option-section {
+                        margin: -25px 10px 10px 30px !important;
+
+                        div {
+                            .scale-box-checkbox {
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                padding: 15px 0px;
+
+                                input[type="checkbox"] {
+                                    width: 18px;
+                                    height: 18px;
+                                    accent-color: #0056b0;
+                                }
+
+                                label {
+                                    display: inline-block;
+                                    margin-bottom: 0rem !important;
+                                }
+                            }
+                        }
+
+                        .checkbox-list {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            justify-content: space-between;
+                            width: 35%;
+                        }
+
+                        .use-of-box {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+
+                            .scale-box-checkbox {
+                                flex: 0 0 auto;
+                                display: flex;
+                                align-items: center;
+                                padding: 10px;
+
+                                input[type="checkbox"] {
+                                    margin-right: 5px;
+                                }
+
+                                input[type="text"] {
+                                    margin-right: 5px !important;
+                                }
+                            }
+
+                            .comment {
+                                border: none;
+                                height: 252px;
+                            }
+
+                            ng-select {
+                                flex: 1 1 auto;
+                            }
+
+                            input[type="text"] {
+                                flex: 0 0 auto;
+                            }
+
+                            .scale-box-list {
+                                flex: 0 0 auto;
+                                display: flex;
+                                align-items: center;
+                                padding: 15px 0px;
+
+                                label {
+                                    width: 250px;
+                                }
+
+                                input[type="text"] {
+                                    flex: 0 0 auto;
+                                }
+
+                                .drop-down-list {
+                                    width: 250px;
+                                }
+
+                                .drop-down-list2 {
+                                    width: 375px;
+                                }
+                            }
+
+                            .scale-box-kg-list {
+                                flex: 0 0 auto;
+                                display: flex;
+                                align-items: center;
+                                padding: 15px 0px;
+
+                                label {
+                                    &:nth-child(1) {
+                                        width: 200px;
+                                    }
+
+                                    &:nth-child(2) {
+                                        width: 150px;
+                                        padding: 0px 20px;
+                                    }
+                                }
+
+                                input[type="text"] {
+                                    flex: 0 0 auto;
+                                    width: 150px !important;
+                                }
+                            }
+
+                            .scale-box-textarea {
+                                width: 100%;
+                                margin-bottom: 25px;
+                                outline: none;
+                            }
+
+                            .new-class {
+                                gap: 10px;
+                            }
+                        }
+                    }
+
+                    .option-sections {
+                        width: 100%;
+                        padding-left: 10px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        .scale-box-lists {
+                            padding: 5px 10px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .habit-box-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0px;
+
+            input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                accent-color: #0056b0;
+            }
+
+            label {
+                display: inline-block;
+                margin-bottom: 0rem !important;
+            }
+        }
+    }
+
+    .scale-box-main {
+        border: 1px solid #cacaca;
+        border-radius: 6px;
+        padding: 4px 10px 4px 10px;
+
+        .scale-box {
+            margin-top: -25px;
+            justify-content: space-between;
+            padding: 0px 10px;
+            width: 100%;
+
+            .scale-box-checkbox {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 15px 0px;
+
+                input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    accent-color: #0056b0;
+                }
+
+                label {
+                    display: inline-block;
+                    margin-bottom: 0rem !important;
+                }
+            }
+
+            .scale-box-table {
+                max-height: 296px;
+                overflow: auto;
+
+                table {
+                    thead {
+                        background-color: #e4edf5;
+                        color: black;
+
+                        tr {
+                            th {
+                                &:nth-child(5) {
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+
+                    tbody {
+                        background-color: #fbfcff;
+
+                        tr {
+                            td {
+                                padding: 10px !important;
+                                width: 25%;
+
+                                &:nth-child(5) {
+                                    width: 3%;
+                                    text-align: center;
+                                    cursor: pointer;
+                                }
+
+                                &:nth-child(6) {
+                                    width: 3%;
+                                    text-align: center;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .system-review-box {
+        border: 1px solid #cacaca;
+        border-radius: 6px;
+        padding: 4px 10px 4px 10px;
+
+        form {
+            border: unset;
+            padding: unset;
+        }
+
+        .main-box-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 0px;
+            position: relative;
+            top: 0;
+            left: 0;
+            padding: 0px 13px 26px 13px;
+
+            input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                accent-color: #0056b0;
+            }
+
+            label {
+                display: inline-block;
+                margin-bottom: 0rem !important;
+            }
+        }
+
+        .tab-navigation-part {
+            background: none !important;
+
+            .tab-navigate {
+                margin-top: -35px;
+
+                .tab-nav ul {
+                    gap: 23px;
+                }
+
+                .tab-content {
+                    border-radius: 7px;
+
+                    .tab-box-checkbox {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 15px 0px;
+
+                        input[type="checkbox"] {
+                            width: 18px;
+                            height: 18px;
+                            accent-color: #0056b0;
+                        }
+
+                        label {
+                            display: inline-block;
+                            margin-bottom: 0rem !important;
+                        }
+                    }
+
+                    .tab-box-inputbox {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 15px 0px;
+
+                        label {
+                            width: 100%;
+                            display: inline-block;
+                            margin-bottom: 0rem !important;
+                        }
+                    }
+
+                    .tab-content-box {
+                        border: 1px solid #cacaca;
+                        border-radius: 6px;
+                        padding: 4px 10px 4px 10px;
+
+                        .checkbox-list {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            justify-content: space-between;
+                            width: 90%;
+                        }
+
+                        .checkbox-list-no-justtification {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 80px;
+                            width: 100%;
+                        }
+                    }
+
+                    .notice-bar {
+                        p {
+                            color: gray;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.splitter {
+    position: relative;
+    background-color: #e5e5e5;
+    z-index: 1;
+    flex: 0 0 auto;
+    width: 2px;
+    max-width: 100%;
+    margin: 0px 45px;
+    background: #e5e5e5;
+    transition: all 0.15s ease;
+    height: 25px;
+}
+
+.splitter::after {
+    content: "OR";
+    margin: -10px;
+    background-color: #e5e5e5;
+}
+
+.splitter-signifier {
+    flex-grow: 1;
+    background-color: #fcb900 !important;
+}
+
+.splitter-active {
+    background-color: #0080c5;
+
+    .cls-1 {
+        fill: #fff;
+    }
+}
+
+.risk-section {
+    padding: 30px 0px 0px 0px;
+}
+
+.drop-down-list {
+    width: 250px;
+}
+
+.drop-down-list2 {
+    width: 275px;
+}
+
+.other-box {
+    width: 350px !important;
+}
+
+.sm-0 {
+    padding-right: 33px;
+}
+
+.sm-1 {
+    padding-right: 60px;
+}
+
+.sm-2 {
+    padding-right: 90px;
+}
+
+.sm-3 {
+    padding: 0px 90px;
+}
+
+.sm-4 {
+    padding: 0px 86px 0px 0px;
+}
+
+.risk-score {
+    width: 100px;
+}
+
+.risk-level {
+    width: 400px !important;
+}
+
+.nutritional-complain {
+    textarea {
+        height: 112px;
+        border-radius: 10px;
+        font-size: 15px;
+        border: 1px solid #cacaca;
+        padding: 15px 30px;
+    }
+
+    span.text-area-label {
+        position: relative;
+        cursor: pointer;
+        opacity: 1;
+        top: 12px;
+        left: 10px;
+        z-index: 0;
+        font-weight: bold;
+        background: #fff;
+        font-size: 15px;
+        text-align: center;
+        display: inline-block;
+        padding: 0px 20px;
+        color: #0890c5;
+    }
+}
+
+.type-of-complain {
+    padding: 15px 15px;
+
+    textarea {
+        height: 100%;
+        border-radius: 10px;
+        font-size: 15px;
+        border: 1px solid #cacaca;
+        padding: 15px 30px;
+    }
+
+    span.text-area-label {
+        position: relative;
+        cursor: pointer;
+        opacity: 1;
+        top: 12px;
+        left: 10px;
+        z-index: 0;
+        font-weight: bold;
+        background: #fff;
+        font-size: 15px;
+        text-align: center;
+        display: inline-block;
+        padding: 0px 20px;
+        color: #0890c5;
+    }
+}
+
+.weight-right-label {
+    font-size: 12px;
+    font-weight: bold;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.tab-nav {
+    display: flex;
+    width: 35%;
+    justify-content: space-between;
+}
+
+.assesment-card {
+    padding-bottom: 10px;
+
+    label {
+        margin: 0 !important;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 16px;
+        width: 15px !important;
+        height: 15px !important;
+        position: relative;
+        top: 2px;
+    }
+}
+
+.nutritional-main {
+    border: 1px solid #cacaca;
+    border-radius: 6px;
+
+    input[type="checkbox"] {
+        margin-right: 16px;
+        width: 15px !important;
+        height: 15px !important;
+        position: relative;
+        top: 2px;
+    }
+}
+
+.assessment-label {
+    width: 100%;
+    border-bottom: 1px solid #cacaca;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.assessment-section-box {
+    border: 1px solid #cacaca;
+    border-radius: 7px;
+}
+
+.height-10 {
+    height: 10%;
+}
+
+.height-25 {
+    height: 25%;
+}
+
+.height-35 {
+    height: 35%;
+}
+
+.nutritional-header {
+    border-bottom: 1px solid #cacaca;
+    margin-bottom: 12px;
+    padding: 6px 10px;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}

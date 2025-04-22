@@ -677,6 +677,8 @@
               </div>
             </div>
 
+            
+
               <!-- Nurse Endorsement -->
 
               <div
@@ -968,6 +970,27 @@
                     </div>
                 </div>
               </div>
+              <!--  Pediatric Admission Assessment -->
+               <div
+                [ngClass]="isPaediatricPhysician ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isPaediatricPhysician',latestPaediatricPhysicianList[0])">
+                <div class="col-md-4"> Paediatric Physician Assessment {{latestPaediatricPhysicianList[0]?.Zversion ?
+                  dockVer(latestPaediatricPhysicianList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestPaediatricPhysicianList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestPaediatricPhysicianList[0]?.DocTime)}}">
+                  {{getDate(latestPaediatricPhysicianList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestPaediatricPhysicianList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestPaediatricPhysicianList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestPaediatricPhysicianList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPaediatricPhysicianList[0]?.Dockey, latestPaediatricPhysicianList[0])">
+                      <select *ngIf="latestPaediatricPhysicianList.length && latestPaediatricPhysicianList[0]?.StatusTxt !='N/A' && latestPaediatricPhysicianList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
 
               <!--  Pediatric Admission Assessment -->
                <div
@@ -1167,6 +1190,7 @@
     <app-time-out-checklist *ngIf="openTimeoutCheckDocument"></app-time-out-checklist>
     <app-obs-fall-risk-assessment *ngIf="openObstetricFallRiskAssessmentDocument"></app-obs-fall-risk-assessment>
     <app-post-patient-fall-assessment *ngIf="openpostPatientFallAssessmentDocument"></app-post-patient-fall-assessment>
+    <app-paediatric-physician-assessment *ngIf="openPaediatricPhysicianDocument"></app-paediatric-physician-assessment>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>

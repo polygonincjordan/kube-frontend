@@ -20,6 +20,9 @@
                   <td>
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>
+                  <td>
+                    <span class="white-space">{{item?.Ergtx ? item?.Ergtx : '--'}}</span>
+                  </td>
                   <td style="text-align: center;">
                     <img *ngIf="item.Pdf" (click)="getPdf(item)" class="width-25 cursor-pointer" src="assets/img/emergency-pdf.png" alt="" />
                   </td>

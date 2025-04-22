@@ -72,7 +72,7 @@
                                         </ng-select>
                                     </div>
                                     <div class="col-md-2 row m-0">
-                                        <label class="m-0">Boood Group</label>
+                                        <label class="m-0">Blood Group</label>
                                         <ng-select class="w-50 ml-3">
                                             <ng-option></ng-option>
                                         </ng-select>
@@ -87,7 +87,8 @@
                                     </div>
                                     <div class="col-md-2 row m-0">
                                         <label class="m-0">Edd</label>
-                                        <input class="form-control w-50 ml-3" />
+                                        <input class="form-control w-50 ml-3" style="font-weight: 800; color: #000" [minDate]="" [maxDate]=""
+                                            #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
                                     </div>
                                 </div>
                                 <div class="row m-0 mt-3">
@@ -151,23 +152,33 @@
                                 <div class="associated_medication mt-3">
                                     <h4>Associated Medications Orders</h4>
                                     <div class="table-contant-ass">
-                                        <div class="row m-0">
-                                            <input type="checkbox" />
-                                            <label class="m-0 ml-3">No medication order applicable</label>
+                                        <div class="mb-3">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <input type="checkbox" style="width: 15px; height: 22px;" />
+                                                <label class="admitting-physician m-0">No medication order applicable</label>
+                                            </div>
+                                            <div style="display: flex; width: 88%; justify-content: end;">
+                                                <img src="assets/img/file1.svg" title="Create & Import" class="img-size"/>
+                                            </div>
                                         </div>
+                                    </div>
                                         <table class="table mt-3">
                                             <thead>
                                                 <th>Order Type</th>
                                                 <th>Description</th>
-                                                <th>Home</th>
-                                                <th>Patient</th>
+                                                <th>Home Medication</th>
+                                                <th>Patient's Own Medication</th>
                                                 <th>Dose</th>
                                                 <th>Validity</th>
                                                 <th>Route</th>
+                                                <th>Amount</th>
+                                                <th>Therapy Recommended Sort</th>
                                                 <th>Rate</th>
-                                                <th>Therapy </th>
                                                 <th>ID</th>
-                                                <th>Order</th>
+                                                <th>Ordering Physician </th>
+                                                <th>Cycle</th>
+                                                <th>Comments </th>
                                             </thead>
                                             <tbody>
                                                 <tr>
@@ -338,8 +349,7 @@
                                         </div>
                                     </div>
                                     <div style="padding: 18px 25px;">
-                                        <div class="d-flex mb-3"
-                                            style="justify-content: space-between; padding-right: 22px; width: 100%;">
+                                        <div class="mb-3">
                                             <div style="display: flex; justify-content: space-between;">
                                                 <div style="display: flex; align-items: center; gap: 10px;">
                                                     <input type="checkbox" style="width: 15px; height: 22px;"
@@ -491,31 +501,31 @@
                         <div class="tab-content pl-2" style="border-radius: 7px">
                             <h4>Please tick all what is applicable</h4>
                             <div class="row m-0">
-                                <div class="col-md-12">
+                                <div class="col-md-12 mt-3">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">May need medical follow ou outside</label>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 mt-3">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">May need devices, medical supplies, oxygen
                                         supplement</label>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 mt-3">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">May need transortation (Ambulance)</label>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 mt-3">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">May need to transfer to other facility</label>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 mt-3">
                                     <input type="checkbox" />
                                     <label class="m-0 ml-2">May need life support upon discharge</label>
                                 </div>
-                                <div class="col-md-12 row m-0 align-items-center">
+                                <div class="col-md-12 mt-3 row m-0 align-items-center">
                                     <input type="checkbox" [(ngModel)]="intialJson.planingOther" />
                                     <label class="m-0 ml-2">Others</label>
-                                    <input class="form-control w-60" [disabled]="!intialJson.planingOther" />
+                                    <input class="form-control w-60 ml-3" [disabled]="!intialJson.planingOther" />
                                 </div>
                             </div>
                         </div>
