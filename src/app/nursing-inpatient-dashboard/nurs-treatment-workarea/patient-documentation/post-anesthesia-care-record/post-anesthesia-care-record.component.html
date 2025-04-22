@@ -388,28 +388,31 @@
                   </button>
                 </div>
                 <div class="third-table">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Type of Intake</th>
-                        <th scope="col">Amount(Ml)</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="inputArr">
-                      <tr *ngFor="let drain of inputArr.controls; let i = index" [formGroupName]="i">
-                        <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
-                        <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
-                        <td><input type="text" formControlName="type" class="form-control m-0" /></td>
-                        <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
-                        <td style="text-align: center;">
-                          <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeDrain(i)">
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div style="max-height: 315px; overflow-y: auto;">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Time</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Type of Intake</th>
+                          <th scope="col">Amount(Ml)</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="inputArr">
+                        <tr *ngFor="let drain of inputArr.controls; let i = index" [formGroupName]="i">
+                          <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
+                          <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="type" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
+                          <td style="text-align: center;">
+                            <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeDrain(i)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -433,28 +436,31 @@
                   </button>
                 </div>
                 <div class="third-table">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Type of Intake</th>
-                        <th scope="col">Amount(Ml)</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="outputArr">
-                      <tr *ngFor="let drain of outputArr.controls; let i = index" [formGroupName]="i">
-                        <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
-                        <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
-                        <td><input type="text" formControlName="type" class="form-control m-0" /></td>
-                        <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
-                        <td style="text-align: center;">
-                          <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeOut(i)">
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div style="max-height: 315px; overflow-y: auto;">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Time</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Type of Intake</th>
+                          <th scope="col">Amount(Ml)</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="outputArr">
+                        <tr *ngFor="let drain of outputArr.controls; let i = index" [formGroupName]="i">
+                          <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
+                          <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="type" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
+                          <td style="text-align: center;">
+                            <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeOut(i)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
                 </div>
               </div>
             </div>

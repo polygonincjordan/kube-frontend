@@ -1,29 +1,27 @@
+<!--changes-->
 <div>
-  <!-- First Section -->
-  <h6 class="mb-3">Allergies</h6>
-  <div style="border-bottom: 3px solid #0056b0;" class="mt-3 mb-3"></div>
-
-  <div class="row align-items-center mb-2">
+  <div class="row align-items-center mb-4">
+    <!-- First Section -->
     <div class="col-md-3 col-6 d-flex align-items-end">
       <label for="date" class="mr-2">Date:</label>
       <div class="header-date p-0">
         <span _ngcontent-ufq-c103="" style="
-          position: relative;
-          top: 32px;
-          right: 30px;
-          float: right;
-          margin-top: -26px;
-          font-size: 18px;
-          z-index: 1;
-        ">
+        position: relative;
+        top: 32px;
+        right: 30px;
+        float: right;
+        margin-top: -26px;
+        font-size: 18px;
+        z-index: 1;
+      ">
           <img src="assets/img/Calender.svg" alt="" />
         </span>
         <input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text" placeholder=""
           [minDate]="" [maxDate]="" readonly #dp="bsDatepicker" [bsValue]="CurrentDateAndTime"
           style="min-width: 230px; height: 40px !important" readonly bsDatepicker [bsConfig]="{
-          showWeekNumbers: false,
-          dateInputFormat: 'DD.MM.YYYY'
-        }" />
+        showWeekNumbers: false,
+        dateInputFormat: 'DD.MM.YYYY'
+      }" />
       </div>
     </div>
     <div class="col-md-3 col-6 d-flex align-items-end">
@@ -36,6 +34,9 @@
     <div class="scale-box-main">
       <div class="container-fluid">
         <div class="row create-form-inputs">
+          <div class="p-0" style="border-bottom: 3px solid #0056b0; width: 100%;">
+            <h6 class="col-md-12 p-0 b-3 mb-3 mt-3">Allergies</h6>
+          </div> <br>
           <div class="scale-box">
             <div class="scale-box-checkbox">
               <div style="
@@ -58,16 +59,12 @@
               <table class="table table-bordered third-table">
                 <thead>
                   <tr>
-                    <!-- <th style="width: 2% !important"></th> -->
                     <th scope="col">Group</th>
                     <th scope="col">Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <!-- <td style="width: 2% !important">
-                      <input type="checkbox" />
-                    </td> -->
                     <td></td>
                     <td></td>
                   </tr>
@@ -80,55 +77,43 @@
     </div>
   </div>
   <!-- third section -->
-  <h6 class="mb-3 mt-3">Risk Factor</h6>
-  <div style="border-bottom: 3px solid #0056b0;" class="mt-3 mb-3"></div>
   <div class="mt-4 allergy-div">
-    <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
-      <div style="display: flex; align-items: center; gap: 10px">
+    <h6 class="mb-3 mt-3">Risk Factor</h6>
+    <div style="border-bottom: 3px solid #0056b0; width: 100%;" class="mt-3 mb-3"></div>
+    <div class="d-flex mb-2" style="justify-content:end; padding-right: 22px;">
+      <!-- <div style="display: flex; align-items: center; gap: 10px">
         <input type="checkbox" style="width: 36px; height: 22px"
           [attr.disabled]="toVitalsArr?.length > 0 ? true : null" />
         <label class="admitting-physician">No Risk Factors</label>
-      </div>
+      </div> -->
       <div>
         <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
       </div>
     </div>
     <div style="max-height: 296px; overflow: auto">
       <table class="table table-bordered past-table">
-        <thead style="background-color: #e4edf5; color: black; text-align: center">
+        <thead style="background-color: #e4edf5; color: black;">
           <tr>
-            <!-- <th scope="col" style="width: 2% !important">
-              <input style="width: 30% !important; height: 15px" type="checkbox" />
-            </th> -->
             <th scope="col">ID</th>
             <th scope="col">Description</th>
             <th scope="col">Code</th>
           </tr>
         </thead>
-        <tbody style="background-color: #fbfcff">
+        <tbody style="background-color: #fbfcff;">
           <tr class="past-med-input">
-            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
-              <input style="width: 30% !important; height: 15px" type="checkbox" />
-            </td> -->
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
           </tr>
           <tr class="past-med-input">
-            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
-              <input type="checkbox" style="width: 30% !important; height: 15px" />
-            </td> -->
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
           </tr>
           <tr class="past-med-input">
-            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
-              <input type="checkbox" style="width: 30% !important; height: 15px" />
-            </td> -->
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
-            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none;"></td>
           </tr>
         </tbody>
       </table>
@@ -195,7 +180,7 @@
 
     <div class="section reflexes d-flex">
       <label class="col-md-3"><input type="checkbox"> Reflexes</label>
-      <ng-select class="col-md-2" bindLabel="label" bindValue="value" placeholder="Select Surgery Type"
+      <ng-select class="col-md-2" bindLabel="label" [items]="surgaryTypes" bindValue="value" placeholder="Select Surgery Type"
         style="width:100%;">
       </ng-select>
       <div class="col-md-1"></div>
@@ -266,7 +251,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Cough</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -279,7 +264,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Regular Heart Rate </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Normal</label>
+        <label class="mrg55"><input type="checkbox"> Normal</label>
         <label><input type="checkbox"> Abnormal</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -288,7 +273,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Apical Pulse </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg80"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No </label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -297,7 +282,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Femoral Pluse bilateral palpated</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg80"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -306,7 +291,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Edema</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg80"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -337,7 +322,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Soft Abdomen </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg27"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No </label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -346,7 +331,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Distended Abdomen</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg27"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -355,7 +340,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Tender Abdomen</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -364,7 +349,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Bowel Sounds</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -373,47 +358,50 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Bowel Movement /BM</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
-      <label class="col-md-3 pl-0"> Date of Last BM<input type="text" class="ml-2 form-control"> </label>
-      <label class="col-md-3 pl-0"> Frequency<input type="text" class="ml-2 form-control"></label>
+      <div class="d-flex col-md-6">
+        <label class="col-md-2 p-0"> Date of Last BM</label> <input type="text" class="col-md-2 mr-4 form-control">
+        <label class="col-md-2 p-0"> Frequency</label> <input type="text" class="col-md-2 form-control">
+      </div>
+
     </div>
 
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Nausea</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
-      <input class="input-notes col-md-3" type="text" placeholder="">
+      <input class="input-notes form-control col-md-3" type="text" placeholder="">
     </div>
 
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Vomiting</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
-      <input class="input-notes col-md-3" type="text" placeholder="">
+      <input class="input-notes form-control col-md-3" type="text" placeholder="">
     </div>
 
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Diarrhea</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
-      <input class="input-notes col-md-3" type="text" placeholder="">
+      <input class="input-notes form-control col-md-3" type="text" placeholder="">
     </div>
 
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Constipation</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
-      <input class="input-notes col-md-3" type="text" placeholder="">
+      <input class="input-notes form-control col-md-3" type="text" placeholder="">
     </div>
 
   </div>
@@ -423,7 +411,7 @@
     <div class="section d-flex">
       <label class="col-md-2"><input type="checkbox"> Stucking Diffculty </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg15"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No </label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -433,10 +421,10 @@
       <label class="col-md-2"><input type="checkbox"> Fedding</label>
       <div class="checkbox-group col-md-3">
         <label><input type="checkbox"> Every </label>
-        <label><input type="text" class="col-md-2 p-0 mr-3 form-control">hrs </label>
+        <label class="d-flex"><input type="text" class="col-md-3 p-0 mr-3 form-control">hrs </label>
       </div>
-      <input class="input-notes col-md-2" type="text" placeholder="">
-      <div class="checkbox-group col-md-4">
+
+      <div class="checkbox-group col-md-4 p-0">
         <label><input type="checkbox" class="mr-2"> NPO </label>
         <label><input type="checkbox" class="mr-2"> Artificial </label>
         <label><input type="checkbox" class="mr-2"> Comments </label>
@@ -450,7 +438,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Intact Skin </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg27"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No </label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -468,7 +456,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Rash</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg27"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -477,7 +465,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Whound</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -486,7 +474,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Warm</label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes</label>
+        <label class="mrg27"><input type="checkbox"> Yes</label>
         <label><input type="checkbox"> No</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -498,7 +486,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Voiding Urine With Diffculaty </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg27"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No </label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -507,7 +495,7 @@
     <div class="section d-flex">
       <label class="col-md-3"><input type="checkbox"> Discharge </label>
       <div class="checkbox-group col-md-3">
-        <label><input type="checkbox"> Yes </label>
+        <label class="mrg27"><input type="checkbox"> Yes </label>
         <label><input type="checkbox"> No </label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
@@ -520,6 +508,87 @@
         <label><input type="checkbox"> No Bledding</label>
       </div>
       <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+  </div>
+
+  <h6 class="mb-3 mt-4">Nusrsing Care</h6>
+  <div class="d-flex">
+    <div class="table-wrapper mr-3">
+      <table class="nursing-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th style="width:10%">Oxygen Mode</th>
+            <th>Flow (l/min)</th>
+            <th>Suction</th>
+            <th>Umbilical C.</th>
+            <th>Comment</th>
+            <th>Skin Care</th>
+            <th>Comment</th>
+            <th>Diaper Change</th>
+            <th>Bathing</th>
+            <th>Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let time of times">
+            <td>{{ time }}</td>
+            <td><ng-select [items]="oxygenModes" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><input type="text" class="form-control"></td>
+            <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+                <td><input type="text" class="form-control"></td>
+                <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                    style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrapper">
+      <table class="nursing-table">
+        <thead>
+          <tr>
+            <th style="width:10%">Feeding Type</th>
+            <th>Comment</th>
+            <th>Amount</th>
+            <th>Vomitus</th>
+            <th>Comment</th>
+            <th>Urine</th>
+            <th>Comment</th>
+            <th>Meconium</th>
+            <th>Comment</th>
+            <th>Other</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let time of times">
+            <td><ng-select [items]="feedingTypes" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><input type="text" class="form-control"></td>
+            <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><ng-select [items]="yesNoList" bindLabel="label" bindValue="value" placeholder="Select"
+                style="width: 100%;"></ng-select></td>
+            <td><input type="text" class="form-control"></td>
+            <td><input type="text" class="form-control"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

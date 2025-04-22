@@ -445,6 +445,26 @@
                   </div>
               </div>
             </div>
+            <!-- Screening Tool for the Assessment of Malnutrition in Paediatrics -->
+            <div [ngClass]="isMalnutritionAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isMalnutritionAss',malnutritionAssList[0])">
+              <div class="col-md-4" [title]="'Screening Tool for the Assessment of Malnutrition in Paediatrics' + (malnutritionAssList[0]?.Zversion ? dockVer(CriticalPainList[0]?.Zversion) : '')">STAMP {{malnutritionAssList[0]?.Zversion ?
+                dockVer(malnutritionAssList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{malnutritionAssList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(malnutritionAssList[0]?.DocTime)}}">
+                {{getDate(malnutritionAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{malnutritionAssList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(malnutritionAssList[0]?.Dockey)"
+                  *ngIf="malnutritionAssList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(malnutritionAssList[0]?.Dockey, malnutritionAssList[0])">
+                    <select *ngIf="malnutritionAssList.length && malnutritionAssList[0]?.StatusTxt !='N/A' && malnutritionAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
              
               <!-- Education Assessment -->
               <div
@@ -1126,6 +1146,7 @@
     <app-post-anesthesia-care-record *ngIf="openPostAnesthesia"></app-post-anesthesia-care-record>
     <app-nursing-initial-assessment *ngIf="openNurseInitAss"></app-nursing-initial-assessment>
     <app-daily-nursing-assessment-newborn *ngIf="openDailyNurseAss"></app-daily-nursing-assessment-newborn>
+    <app-malnutrition-paediatrics *ngIf="openMalnutritionAss"></app-malnutrition-paediatrics>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
     <app-nursing-discharge-summary *ngIf="openDischargeSummery" ></app-nursing-discharge-summary>
