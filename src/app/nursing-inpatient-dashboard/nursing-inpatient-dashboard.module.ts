@@ -162,6 +162,7 @@ import { NursingInitialAssessmentComponent } from './nurs-treatment-workarea/pat
 import { PostAnesthesiaCareRecordComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/post-anesthesia-care-record.component';
 import { InitialNursingAssessmentNewbornModule } from '../shared-module/initial-nursing-assessment-newborn/initial-nursing-assessment-newborn.module';
 import { DailyNursingAssessmentNewbornComponent } from './nurs-treatment-workarea/patient-documentation/daily-nursing-assessment-newborn/daily-nursing-assessment-newborn.component';
+import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
 
 
 const route: Routes = [
@@ -338,7 +339,8 @@ const route: Routes = [
     PaediatricsAdmDocumentModule,
     ObsFallRiskAssessmentModule,
     PostPatientFallAssessmentModule,
-    InitialNursingAssessmentNewbornModule
+    InitialNursingAssessmentNewbornModule,
+    PaediatricPhysicianAssessmentModule
 ],
 })
 export class NursingInpatientDashboardModule {}
