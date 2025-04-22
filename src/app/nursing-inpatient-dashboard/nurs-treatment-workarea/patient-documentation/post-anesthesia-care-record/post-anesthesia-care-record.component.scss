@@ -139,8 +139,7 @@
         }
       }
       .third-table {
-        max-height: 296px;
-        overflow: auto;
+       
 
         table {
           thead {
@@ -151,7 +150,7 @@
               th {
                 &:nth-child(1) {
                   text-align: center;
-                  width: 1%;
+                  width: 10%;
                 }
                 &:nth-child(2) {
                   text-align: center;
@@ -167,7 +166,7 @@
                 }
                 &:nth-child(5) {
                   text-align: center;
-                  width: 10%;
+                  width: 2%;
                 }
               }
             }
@@ -271,3 +270,11 @@
       }
   }
 
+  .review-btn{
+    background: #0056b0;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    width: 90px;
+    border: none;
+  }

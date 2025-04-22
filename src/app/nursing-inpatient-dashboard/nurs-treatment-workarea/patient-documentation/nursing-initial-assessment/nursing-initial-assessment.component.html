@@ -105,52 +105,54 @@
   </div>
 
   <!-- =========== first sections=== TABS START =========================== -->
-  <div class="tabs title-main">
-    <ul class="nav nav-pills">
-      <li
-        [class.active]="activeTab === 'persoalData'"
-        (click)="setActiveTab('persoalData')"
-      >
-        Personal Data
-      </li>
-      <li
-        [class.active]="activeTab === 'currentMedication'"
-        (click)="setActiveTab('currentMedication')"
-      >
-        Current Medication
-      </li>
-      <li
-        [class.active]="activeTab === 'painAssessment'"
-        (click)="setActiveTab('painAssessment')"
-      >
-        Pain Assessment
-      </li>
-      <li
-        [class.active]="activeTab === 'sleep'"
-        (click)="setActiveTab('sleep')"
-      >
-        Sleep
-      </li>
-      <li
-        [class.active]="activeTab === 'nutritionalScreening'"
-        (click)="setActiveTab('nutritionalScreening')"
-      >
-        Nutritional Screening
-      </li>
-      <li
-        [class.active]="activeTab === 'patientHistory'"
-        (click)="setActiveTab('patientHistory')"
-      >
-        Patient History
-      </li>
-      <li
-        [class.active]="activeTab === 'skinProblems'"
-        (click)="setActiveTab('skinProblems')"
-      >
-        Skin Problems
-      </li>
-    </ul>
-  </div>
+   <div id="exTab1">
+     <div class="tabs title-main">
+       <ul class="nav nav-pills">
+         <li
+           [class.active]="activeTab === 'persoalData'"
+           (click)="setActiveTab('persoalData')"
+         >
+           Personal Data
+         </li>
+         <li
+           [class.active]="activeTab === 'currentMedication'"
+           (click)="setActiveTab('currentMedication')"
+         >
+           Current Medication
+         </li>
+         <li
+           [class.active]="activeTab === 'painAssessment'"
+           (click)="setActiveTab('painAssessment')"
+         >
+           Pain Assessment
+         </li>
+         <li
+           [class.active]="activeTab === 'sleep'"
+           (click)="setActiveTab('sleep')"
+         >
+           Sleep
+         </li>
+         <li
+           [class.active]="activeTab === 'nutritionalScreening'"
+           (click)="setActiveTab('nutritionalScreening')"
+         >
+           Nutritional Screening
+         </li>
+         <li
+           [class.active]="activeTab === 'patientHistory'"
+           (click)="setActiveTab('patientHistory')"
+         >
+           Patient History
+         </li>
+         <li
+           [class.active]="activeTab === 'skinProblems'"
+           (click)="setActiveTab('skinProblems')"
+         >
+           Skin Problems
+         </li>
+       </ul>
+     </div>
+   </div>
   <form>
     <div class="tab-content px-3 clearfix">
       <div *ngIf="activeTab === 'persoalData'">
@@ -461,8 +463,8 @@
             <div class="d-flex align-items-center justify-content-end">
               <button class="btn">Import</button>
               <button class="btn mx-2">Create</button>
-              <button class="btn mx-2"><img src="" alt="" />check</button>
-              <button class="btn">Alternative Search</button>
+              <!-- <button class="btn mx-2"><img src="" alt="" />check</button>
+              <button class="btn">Alternative Search</button> -->
             </div>
           </div>
         </div>
@@ -479,17 +481,18 @@
               <th></th>
               <th>Order Type</th>
               <th>Description</th>
-              <th>Hom...</th>
-              <th>Patie...</th>
+              <th>Home</th>
+              <th>Patient's Own</th>
               <th>Dose</th>
               <th>Validity</th>
               <th>Route</th>
               <th>Amount</th>
               <th>Rate</th>
-              <th>Ther...</th>
+              <th>Therapy Recommended Sort</th>
               <th>ID</th>
-              <th>Ordering P...</th>
-              <th>Cycle..</th>
+              <th>Ordering Physician</th>
+              <th>Cycle</th>
+              <th>Comments</th>
             </tr>
           </thead>
           <tbody style="background: #fbfcff">
@@ -508,21 +511,6 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
-            </tr>
-            <tr class="c-pointer">
-              <td></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="checkbox" /></td>
-              <td><input type="checkbox" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="number" value="0" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
             </tr>
             <tr class="c-pointer">
@@ -538,21 +526,6 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="number" value="0" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-            </tr>
-            <tr class="c-pointer">
-              <td></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="checkbox" /></td>
-              <td><input type="checkbox" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td><input type="number" value="0" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -572,6 +545,7 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
             </tr>
             <tr class="c-pointer">
               <td></td>
@@ -585,6 +559,41 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="number" value="0" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+            </tr>
+            <tr class="c-pointer">
+              <td></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="checkbox" /></td>
+              <td><input type="checkbox" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="number" value="0" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+            </tr>
+            <tr class="c-pointer">
+              <td></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="checkbox" /></td>
+              <td><input type="checkbox" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
+              <td><input type="number" value="0" class="form-control" /></td>
+              <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -601,13 +610,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="no" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="no" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -703,15 +712,9 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-1"></div>
+          <div class="col-md-2"></div>
           <div class="col-md-4">
             <label>Does this pain keep you from sleeping at night?</label>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" name="pain" />
-              <div class="label">No</div>
-            </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
@@ -719,9 +722,15 @@
               <div class="label">Yes</div>
             </div>
           </div>
+          <div class="col-md-1">
+            <div class="form-group">
+              <input type="radio" class="mr-2 ml-0" name="pain" />
+              <div class="label">No</div>
+            </div>
+          </div>
         </div>
         <div class="row">
-          <div class="col-md-1"></div>
+          <div class="col-md-2"></div>
           <div class="col-md-4">
             <label
               >Does this pain keep you from participating in activities?</label
@@ -730,31 +739,31 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="pain1" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="pain1" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-1"></div>
+          <div class="col-md-2"></div>
           <div class="col-md-4">
             <label>Do you experience this pain everyday?</label>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="pain2" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="pain2" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -806,13 +815,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother" />
-              <div class="label">(3)Yes</div>
+              <div class="label">(3)No</div>
             </div>
           </div>
         </div>
@@ -825,13 +834,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother1" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother1" />
-              <div class="label">(3)Yes</div>
+              <div class="label">(3)No</div>
             </div>
           </div>
         </div>
@@ -842,13 +851,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother2" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother2" />
-              <div class="label">(2)Yes</div>
+              <div class="label">(2)No</div>
             </div>
           </div>
         </div>
@@ -862,13 +871,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother3" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother3" />
-              <div class="label">(2)Yes</div>
+              <div class="label">(2)No</div>
             </div>
           </div>
         </div>
@@ -879,13 +888,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother4" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother4" />
-              <div class="label">(3)Yes</div>
+              <div class="label">(3)No</div>
             </div>
           </div>
         </div>
@@ -898,13 +907,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother5" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother5" />
-              <div class="label">(2)Yes</div>
+              <div class="label">(2)No</div>
             </div>
           </div>
         </div>
@@ -915,13 +924,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother6" />
-              <div class="label">(0)No</div>
+              <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother6" />
-              <div class="label">(2)Yes</div>
+              <div class="label">(2)No</div>
             </div>
           </div>
         </div>
@@ -958,13 +967,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother7" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Mother7" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -1105,13 +1114,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Previous1" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Previous1" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -1120,13 +1129,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Previous2" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Previous2" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -1135,13 +1144,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Previous3" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" name="Previous3" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -1210,7 +1219,7 @@
   <!-- =========== first sections=== TABS END =========================== -->
 
   <!-- =========== Second sections=== TABS START =========================== -->
-  <div class="tabs mt-3 title-main">
+  <div class="tabs mt-3 mb-3 title-main" id="exTab1">
     <ul class="nav nav-pills">
       <li
         [class.active]="activeTab2 === 'functionalAssessment'"
@@ -1589,13 +1598,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation3" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation3" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
           <div class="col-md-1">
@@ -1630,13 +1639,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation4" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation4" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
           <div class="col-md-1">
@@ -1647,13 +1656,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation5" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation5" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
           <div class="col-md-1">
@@ -1699,13 +1708,13 @@
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation6" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation6" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
           <div class="col-md-2">
@@ -1734,13 +1743,13 @@
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="Limitation" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>
@@ -1799,14 +1808,14 @@
                     <table class="table table-bordered third-table">
                       <thead>
                         <tr>
-                          <th style="width:2% !important"></th>
+                          <!-- <th style="width:2% !important"></th> -->
                           <th scope="col">Group</th>
                           <th scope="col">Description</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td style="width:2% !important"><input type="checkbox" /></td>
+                          <!-- <td style="width:2% !important"><input type="checkbox" /></td> -->
                           <td></td>
                           <td></td>
                         </tr>
@@ -1925,7 +1934,7 @@
           <table class="table table-bordered past-table">
             <thead style="background-color: #e4edf5; color: black; text-align: center;">
               <tr>
-                <th scope="col" style="width: 2% !important"><input  style="width: 30% !important; height: 15px;" type="checkbox"/></th>
+                <!-- <th scope="col" style="width: 2% !important"><input  style="width: 30% !important; height: 15px;" type="checkbox"/></th> -->
                 <th scope="col">ID</th>
                 <th scope="col">Description</th>
                 <th scope="col">Code</th>
@@ -1933,19 +1942,19 @@
             </thead>
             <tbody style="background-color: #fbfcff;">
               <tr class="past-med-input">
-                <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input style="width: 30% !important; height: 15px;" type="checkbox"/></td>
+                <!-- <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input style="width: 30% !important; height: 15px;" type="checkbox"/></td> -->
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
               </tr>
               <tr class="past-med-input">
-                <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input type="checkbox"  style="width: 30% !important; height: 15px;"/></td>
+                <!-- <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input type="checkbox"  style="width: 30% !important; height: 15px;"/></td> -->
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
               </tr>
               <tr class="past-med-input">
-                <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input type="checkbox"  style="width: 30% !important; height: 15px;"/></td>
+                <!-- <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input type="checkbox"  style="width: 30% !important; height: 15px;"/></td> -->
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
                 <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
@@ -1959,7 +1968,7 @@
   <!-- =========== Second sections=== TABS END =========================== -->
 
   <!-- =========== Third sections=== START =========================== -->
-  <div class="tabs mt-3 title-main">
+  <div class="tabs mt-3 mb-3 title-main" id="exTab1">
     <ul class="nav nav-pills">
       <li class="active">Summary of Labor</li>
     </ul>
@@ -2170,9 +2179,9 @@
             <th>Time</th>
             <th>Sex</th>
             <th>Wt</th>
-            <th>Aggar Score(1)</th>
-            <th>Aggar Score(5)</th>
-            <th>Aggar Score(10)</th>
+            <th>APGAR Score(1)</th>
+            <th>APGAR Score(5)</th>
+            <th>APGAR Score(10)</th>
             <th>Status Description</th>
           </tr>
         </thead>
@@ -2275,7 +2284,7 @@
   <!-- =========== Third sections=== END =========================== -->
 
   <!-- =========== Forth sections=== TABS START =========================== -->
-  <div class="tabs mt-3">
+  <div class="tabs mt-3 mb-3" id="exTab1">
     <ul class="nav nav-pills">
       <li
         [class.active]="activeTab3 === 'postPartumAssessment'"
@@ -2320,13 +2329,13 @@
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="massage" />
-              <div class="label">No</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="massage" />
-              <div class="label">Yes</div>
+              <div class="label">No</div>
             </div>
           </div>
           <div class="col-md-2">
@@ -2440,13 +2449,13 @@
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="episiotomy" />
-              <div class="label">no</div>
+              <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <input type="radio" class="ml-0 mr-1" name="episiotomy" />
-              <div class="label">yes</div>
+              <div class="label">No</div>
             </div>
           </div>
         </div>

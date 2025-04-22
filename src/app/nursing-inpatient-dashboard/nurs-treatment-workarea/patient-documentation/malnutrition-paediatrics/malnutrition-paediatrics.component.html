@@ -1,0 +1,543 @@
+<form [formGroup]="malnutritionForm">
+  <div class="scale-container p-2">
+    <h6 class="scale-result">Scale Information</h6>
+    <div class="row">
+      <label>Scale Name</label>
+      <input
+        class="col-md-5 form-control"
+        type="text"
+        value="Screening Tool for the Ass. of Malnutrition in Paediatrics"
+        disabled
+      />
+    </div>
+    <div class="row">
+      <label>Date</label>
+      <input
+        type="text"
+        class="col-2 form-control"
+        bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
+        [bsValue]="CurrentDateAndTime"
+        disabled
+      />
+      <input
+        type="text"
+        class="col-2 form-control ml-2"
+        bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"
+        [bsValue]="CurrentDateAndTime"
+        disabled
+      />
+    </div>
+    <div class="row">
+      <label>Realized by </label>
+      <input
+        class="col-md-3 form-control"
+        type="text"
+        [value]="realized"
+        disabled
+      />
+      <input
+        class="col-md-5 form-control ml-2"
+        type="text"
+        [value]="realizedDescription"
+        disabled
+      />
+    </div>
+  </div>
+
+  <!-- STAMP Form Section -->
+  <div>
+    <h6 class="mb-3 scale-result">
+      Screening Tool for the Ass. of Malnutrition in Paediatrics (STAMP)
+    </h6>
+
+    <!-- Diagnosis -->
+    <div class="section-title">Diagnosis</div>
+    <div class="add-button">
+      <button class="review-btn" (click)="addDiagnosis()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <div style="max-height: 265px; overflow-y: auto">
+          <thead class="table-light">
+            <tr>
+              <th>Screening</th>
+              <th>
+                Does the child have a diagnosis that has any nutritional
+                implications?
+              </th>
+              <th>Entry Date</th>
+              <th>Entry Time</th>
+              <th>Signature</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="Diagnosis">
+            <tr
+              *ngFor="let drain of Diagnosis.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="Screening"
+                />
+              </td>
+              <td>
+                <ng-select
+                  [items]="diagnosisOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select"
+                  formControlName="diagnosis"
+                  class="form-select form-select-sm p-0"
+                  style="border: none !important"
+                >
+                </ng-select>
+              </td>
+              <td>
+                <div class="header-date p-0">
+                  <span
+                    _ngcontent-ufq-c103=""
+                    style="
+                      position: relative;
+                      top: 5px;
+                      right: 35px;
+                      float: right;
+                      font-size: 18px;
+                      z-index: 1;
+                    "
+                  >
+                    <img src="assets/img/Calender.svg" alt="" />
+                  </span>
+                  <input
+                    class="form-control ml-0 col-1"
+                    style="color: #000; border-radius: 8px"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    #dp="bsDatepicker"
+                    [bsValue]="CurrentDateAndTime"
+                    style="min-width: 200px"
+                    formControlName="date"
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="time"
+                  class="form-control input-time"
+                  formControlName="time"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control signature"
+                  formControlName="Signature"
+                />
+              </td>
+              <td>
+                <img
+                  class="all-notes cursor-pointer"
+                  src="assets/img/Delete.svg"
+                  (click)="removeDiagnosis(i)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </div>
+      </table>
+    </div>
+
+    <!-- Nutritional Intake -->
+    <div class="section-title">Nutritional Intake</div>
+    <div class="add-button">
+      <button class="review-btn mb-2" (click)="addNutritional()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </div>
+    <div class="table-responsive">
+      <div style="max-height: 275px; overflow-y: auto">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Screening</th>
+              <th>What is the child’s nutritional intake?</th>
+              <th>Entry Date</th>
+              <th>Entry Time</th>
+              <th>Signature</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="Nutritional">
+            <tr
+              *ngFor="let drain of Nutritional.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="Screening"
+                />
+              </td>
+              <td>
+                <ng-select
+                  [items]="intakeOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select"
+                  formControlName="diagnosis"
+                  class="form-select form-select-sm p-0"
+                  style="border: none !important"
+                >
+                </ng-select>
+              </td>
+              <td>
+                <div class="header-date p-0">
+                  <span
+                    _ngcontent-ufq-c103=""
+                    style="
+                      position: relative;
+                      top: 5px;
+                      right: 35px;
+                      float: right;
+                      font-size: 18px;
+                      z-index: 1;
+                    "
+                  >
+                    <img src="assets/img/Calender.svg" alt="" />
+                  </span>
+                  <input
+                    class="form-control ml-0 col-1"
+                    style="color: #000; border-radius: 8px"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    #dp="bsDatepicker"
+                    [bsValue]="CurrentDateAndTime"
+                    style="min-width: 200px"
+                    formControlName="date"
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="time"
+                  class="form-control input-time"
+                  formControlName="time"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control signature"
+                  formControlName="Signature"
+                />
+              </td>
+              <td>
+                <img
+                  class="all-notes cursor-pointer"
+                  src="assets/img/Delete.svg"
+                  (click)="removeNutritional(i)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Weight and Height -->
+    <div class="section-title">Weight and Height</div>
+    <div class="add-button">
+      <button class="review-btn mb-2" (click)="addWeight()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </div>
+    <div class="table-responsive Weight-class">
+      <div style="max-height: 275px; overflow-y: auto">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Screening</th>
+              <th>Weight (kg)</th>
+              <th>Height (cm)</th>
+              <th style="white-space: nowrap">
+                Use growth chart/centile quick reference tables to determine
+                child's measurement
+              </th>
+              <th>Entry Date</th>
+              <th>Entry Time</th>
+              <th>Signature</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="Weight">
+            <tr
+              *ngFor="let drain of Weight.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="Screening"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  style="min-width: 80px !important"
+                  formControlName="wigth"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  style="min-width: 80px !important"
+                  formControlName="height"
+                />
+              </td>
+              <td>
+                <ng-select
+                  [items]="growthChartOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select"
+                  formControlName="diagnosis"
+                  class="form-select form-select-sm p-0"
+                  style="border: none !important"
+                >
+                </ng-select>
+              </td>
+              <td>
+                <div class="header-date p-0">
+                  <span
+                    _ngcontent-ufq-c103=""
+                    style="
+                      position: relative;
+                      top: 5px;
+                      right: 35px;
+                      float: right;
+                      font-size: 18px;
+                      z-index: 1;
+                    "
+                  >
+                    <img src="assets/img/Calender.svg" alt="" />
+                  </span>
+                  <input
+                    class="form-control ml-0 col-1"
+                    style="color: #000; border-radius: 8px"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    #dp="bsDatepicker"
+                    [bsValue]="CurrentDateAndTime"
+                    formControlName="date"
+                    style="min-width: 200px"
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="time"
+                  class="form-control input-time"
+                  formControlName="time"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control signature"
+                  formControlName="Signature"
+                />
+              </td>
+              <td>
+                <img
+                  class="all-notes cursor-pointer"
+                  src="assets/img/Delete.svg"
+                  (click)="removeWeight(i)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">Overall risk of malnutrition</div>
+    <div class="add-button">
+      <button class="review-btn mb-2" (click)="addOverall()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </div>
+    <div class="table-responsive malnutrition">
+      <div style="max-height: 275px; overflow-y: auto">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Screening</th>
+              <th>Score</th>
+              <th>Risk Level</th>
+              <th>Entry Date</th>
+              <th>Entry Time</th>
+              <th>Signature</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="Overall">
+            <tr
+              *ngFor="let drain of Overall.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="Screening"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="wigth"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="height"
+                />
+              </td>
+              <td>
+                <div class="header-date p-0">
+                  <span
+                    _ngcontent-ufq-c103=""
+                    style="
+                      position: relative;
+                      top: 5px;
+                      right: 35px;
+                      float: right;
+                      font-size: 18px;
+                      z-index: 1;
+                    "
+                  >
+                    <img src="assets/img/Calender.svg" alt="" />
+                  </span>
+                  <input
+                    class="form-control ml-0 col-1"
+                    style="color: #000; border-radius: 8px"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    [maxDate]=""
+                    #dp="bsDatepicker"
+                    [bsValue]="CurrentDateAndTime"
+                    formControlName="date"
+                    style="min-width: 200px"
+                    bsDatepicker
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD.MM.YYYY'
+                    }"
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="time"
+                  class="form-control input-time"
+                  formControlName="time"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control signature"
+                  formControlName="Signature"
+                />
+              </td>
+              <td>
+                <img
+                  class="all-notes cursor-pointer"
+                  src="assets/img/Delete.svg"
+                  (click)="removeOverall(i)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h6 class="mb-3 scale-result">Care plan</h6>
+    <div class="main">
+      <div class="risk-title col-md-2 p-0">High risk</div>
+      <ul>
+        <li>Take action</li>
+        <li>
+          Refer the child to a Dietitian, nutritional support team, or
+          consultant
+        </li>
+        <li>Monitor as per care plan</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <div class="risk-title col-md-2 p-0">Medium risk</div>
+      <ul>
+        <li>Monitor the child’s nutritional intake for 3 days</li>
+        <li>Repeat the STAMP screening after 3 days</li>
+        <li>Amend care plan as required</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <div class="risk-title col-md-2 p-0">Low risk</div>
+      <ul>
+        <li>Continue routine clinical care</li>
+        <li>
+          Repeat the STAMP screening weekly while the child is an in-patient
+        </li>
+        <li>Amend care plan as required</li>
+      </ul>
+    </div>
+
+    <div class="comments-box d-flex">
+      <label for="comments" class="form-label col-md-2 p-0"
+        ><strong>Comments</strong></label
+      >
+      <textarea class="form-control" id="comments" rows="2"></textarea>
+    </div>
+  </div>
+</form>

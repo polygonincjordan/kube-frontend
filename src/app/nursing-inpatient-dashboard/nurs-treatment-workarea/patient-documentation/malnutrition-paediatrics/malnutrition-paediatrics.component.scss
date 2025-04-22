@@ -1,0 +1,171 @@
+.table-responsive {
+  thead {
+    position: sticky;
+    top: -10px;
+    z-index: 9;
+    background: #e4edf5;
+
+    tr {
+      th {
+        &:nth-child(1) {
+          // text-align: center;
+          width: 1%;
+        }
+        &:nth-child(2) {
+          // text-align: center;
+          // width: 10%;
+        }
+        &:nth-child(3) {
+          // text-align: center;
+          width: 16%;
+        }
+        &:nth-child(4) {
+          // text-align: center;
+          width: 10%;
+        }
+        &:nth-child(5) {
+          // text-align: center;
+          width: 10%;
+        }
+      }
+    }
+  }
+}
+
+.Weight-class {
+  thead {
+    position: sticky;
+    top: -10px;
+    z-index: 9;
+    background: #e4edf5;
+
+    tr {
+      th {
+        &:nth-child(1) {
+          width: 1%;
+        }
+        &:nth-child(2) {
+        }
+        &:nth-child(3) {
+        }
+        &:nth-child(4) {
+          // text-align: center;
+          width: 20%;
+        }
+        &:nth-child(5) {
+          // text-align: center;
+          width: 17%;
+        }
+        &:nth-child(6) {
+          // text-align: center;
+          width: 10%;
+        }
+        &:nth-child(7) {
+          // text-align: center;
+          width: 10%;
+        }
+      }
+    }
+  }
+}
+.malnutrition {
+  thead {
+    position: sticky;
+    top: -10px;
+    z-index: 9;
+    background: #e4edf5;
+
+    tr {
+      th {
+        &:nth-child(1) {
+          width: 1%;
+        }
+        &:nth-child(2) {
+        }
+        &:nth-child(3) {
+        }
+        &:nth-child(4) {
+          // text-align: center;
+          width: 16%;
+        }
+        &:nth-child(5) {
+          // text-align: center;
+          width: 10%;
+        }
+        &:nth-child(6) {
+          // text-align: center;
+          width: 10%;
+        }
+      }
+    }
+  }
+}
+
+.section-title {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  padding: 5px;
+  border: 1px solid #dee2e6;
+  margin-top: 1rem;
+}
+.input-time {
+  width: 150px;
+}
+.signature {
+  width: 150px;
+}
+
+.scale-result {
+  border-bottom: 3px solid #0056b0;
+  padding-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.row label {
+  min-width: 150px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+input[type="text"] {
+  padding: 6px;
+  margin: 4px 0;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 80px;
+}
+.risk-title {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+.main {
+  display: flex;
+  align-items: baseline;
+
+  li {
+    list-style: disc;
+  }
+}
+
+.review-btn {
+  background: #0056b0;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 90px;
+  border: none;
+}
+
+.add-button {
+  text-align: end;
+  padding: 10px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}

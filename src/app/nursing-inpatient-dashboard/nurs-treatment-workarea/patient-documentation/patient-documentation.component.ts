@@ -123,6 +123,7 @@ export class PatientDocumentationComponent implements OnInit {
   public isPostAnesthesia: boolean = false;
   public isNurseInitAss: boolean = false;
   public isDailyNurseAss: boolean = false;
+  public isMalnutritionAss: boolean = false;
   public isCriticalPain: boolean = false;
   public isEducationAssement: boolean = false;
   public isNursingCarePlan: boolean = false;
@@ -216,6 +217,7 @@ export class PatientDocumentationComponent implements OnInit {
   maternitySignMainList = []
   PostAnesthesiaList = []
   DailyNurseAssList = []
+  malnutritionAssList = []
   CriticalPainList = []
   educationAssList = [];
   documentTypeFilter = []
@@ -257,6 +259,7 @@ export class PatientDocumentationComponent implements OnInit {
   openPostAnesthesia : boolean = false;
   openNurseInitAss : boolean = false;
   openDailyNurseAss : boolean = false;
+  openMalnutritionAss : boolean = false;
   openNurseIntra : boolean = false;
   openCriticalPain : boolean = false;
   openNursingCarePlans: boolean = false;
@@ -1065,6 +1068,14 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
+    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isMalnutritionAss', this.CriticalPainList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isMalnutritionAss', this.CriticalPainList[0])
+      this.openDocument('edit');
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.getPatientProfileData(this.CriticalPainList[0]);
     }
     this.dayCaseDashboardService.isRedirectToSelectedDoc = false;
   }
@@ -1092,6 +1103,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isPostAnesthesia': { isPostAnesthesia: true, selectedDocName: 'Post Anesthesia Care Record' },
       'isNurseInitAss': { isNurseInitAss: true, selectedDocName: 'Nursing Initial Assessment Gyno Obstetrics' },
       'isDailyNurseAss': { isDailyNurseAss: true, selectedDocName: 'Daily Nursing Assessment Newborn' },
+      'isMalnutritionAss': { isMalnutritionAss: true, selectedDocName: 'Screening Tool for the Assessment of Malnutrition in Paediatrics' },
       'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
@@ -1137,6 +1149,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPostAnesthesia = false;
     this.isNurseInitAss = false;
     this.isDailyNurseAss = false;
+    this.isMalnutritionAss = false;
     this.isCriticalPain = false;
     this.isEducationAssement = false;
     this.isNursingCarePlan = false;
@@ -1491,6 +1504,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPostAnesthesia = false;
     this.isNurseInitAss = false;
     this.isDailyNurseAss = false;
+    this.isMalnutritionAss = false;
     this.isCriticalPain = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
@@ -1523,6 +1537,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.openPostAnesthesia = false
     this.openNurseInitAss = false
     this.openDailyNurseAss = false
+    this.openMalnutritionAss = false
     this.openNurseIntra = false
     this.openCriticalPain = false
     this.openPediatricEarlyWarningScale = false
@@ -1610,6 +1625,9 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openDailyNurseAss) {
+      this.NurseAssMainComp?.ngOnDestroy();
+    }
+    if (this.openMalnutritionAss) {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openNurseIntra) {
@@ -2243,6 +2261,51 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openDailyNurseAss = true;
+        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating education assessment:', error);
+        });
+      }
+    }
+    if (this.isMalnutritionAss) {
+      if (action == 'create') {
+        this.openMalnutritionAss = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNurseInitAss = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      }else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNurseAssMainDoc();
+        } else {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseNurseAssMainDetail();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openMalnutritionAss = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openMalnutritionAss = true;
         this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
@@ -4059,6 +4122,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
+      if (this.openMalnutritionAss) {
+        let docStatus = '1';
+        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
       if (this.openCriticalPain) {
         let docStatus = '1';
         this.CriticalCarePainComp.createDoc(docStatus).then((formValue: any) => {
@@ -4479,6 +4553,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
+      if (this.openMalnutritionAss) {
+        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying Glasgow coma scale:', error);
+        });
+      }
       if (this.openCriticalPain) {
         this.CriticalCarePainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
@@ -4796,6 +4879,15 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openDailyNurseAss) {
+        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
+      if (this.openMalnutritionAss) {
         this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
@@ -5242,6 +5334,16 @@ export class PatientDocumentationComponent implements OnInit {
       });
     }
     else if (this.openDailyNurseAss) {
+      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+    else if (this.openMalnutritionAss) {
       this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
@@ -6810,6 +6912,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openInitialNursingNewbornDocument || 
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
+      this.openMalnutritionAss || 
       this.openPostAnesthesia ||
       this.openPaediatricPhysicianDocument
     );
@@ -6848,6 +6951,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openInitialNursingNewbornDocument ||
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
+      this.openMalnutritionAss ||
       this.openPostAnesthesia || 
       this.openPaediatricPhysicianDocument
     );

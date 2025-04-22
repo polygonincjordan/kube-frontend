@@ -162,6 +162,7 @@ import { NursingInitialAssessmentComponent } from './nurs-treatment-workarea/pat
 import { PostAnesthesiaCareRecordComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/post-anesthesia-care-record.component';
 import { InitialNursingAssessmentNewbornModule } from '../shared-module/initial-nursing-assessment-newborn/initial-nursing-assessment-newborn.module';
 import { DailyNursingAssessmentNewbornComponent } from './nurs-treatment-workarea/patient-documentation/daily-nursing-assessment-newborn/daily-nursing-assessment-newborn.component';
+import { MalnutritionPaediatricsComponent } from './nurs-treatment-workarea/patient-documentation/malnutrition-paediatrics/malnutrition-paediatrics.component';
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
 
 
@@ -283,7 +284,8 @@ const route: Routes = [
     PediatricsFallRiskAssessmentComponent,
     NursingInitialAssessmentComponent,
     PostAnesthesiaCareRecordComponent,
-    DailyNursingAssessmentNewbornComponent
+    DailyNursingAssessmentNewbornComponent,
+    MalnutritionPaediatricsComponent
   ],
   providers: [
     EmergencyService,

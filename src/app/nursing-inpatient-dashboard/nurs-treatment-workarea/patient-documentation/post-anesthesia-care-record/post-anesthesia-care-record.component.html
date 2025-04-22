@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="postAssForm">
   <div class="border">
     <div class="row align-items-center mb-2">
       <div class="col-md-3 col-6 d-flex align-items-end">
@@ -376,49 +376,43 @@
           <div class="container-fluid">
             <div class="row create-form-inputs">
               <div class="scale-box">
-                <div class="scale-box-checkbox">
+                <div class="scale-box-checkbox justify-content-between ">
                   <label
                     class="admitting-physician"
                     style="font-size: 15px; font-weight: 700"
                     for="noScaleAppicable"
                     >Intake</label
                   >
+                  <button class="review-btn mb-2" (click)="addDrain()" > 
+                    <i class="fa fa-plus"></i> Add
+                  </button>
                 </div>
                 <div class="third-table">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Type of Intake</th>
-                        <th scope="col">Amount(Ml)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox" id="anesthesia" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" id="anesthesia" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" id="anesthesia" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div style="max-height: 315px; overflow-y: auto;">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Time</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Type of Intake</th>
+                          <th scope="col">Amount(Ml)</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="inputArr">
+                        <tr *ngFor="let drain of inputArr.controls; let i = index" [formGroupName]="i">
+                          <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
+                          <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="type" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
+                          <td style="text-align: center;">
+                            <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeDrain(i)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -430,49 +424,43 @@
           <div class="container-fluid">
             <div class="row create-form-inputs">
               <div class="scale-box">
-                <div class="scale-box-checkbox">
+                <div class="scale-box-checkbox justify-content-between" >
                   <label
                     class="admitting-physician"
                     style="font-size: 15px; font-weight: 700"
                     for="noScaleAppicable"
                     >Output</label
                   >
+                  <button class="review-btn mb-2" (click)="addOut()" > 
+                    <i class="fa fa-plus"></i> Add
+                  </button>
                 </div>
                 <div class="third-table">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Type of Intake</th>
-                        <th scope="col">Amount(Ml)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox" id="anesthesia" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" id="anesthesia" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" id="anesthesia" /></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div style="max-height: 315px; overflow-y: auto;">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th scope="col">Time</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Type of Intake</th>
+                          <th scope="col">Amount(Ml)</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="outputArr">
+                        <tr *ngFor="let drain of outputArr.controls; let i = index" [formGroupName]="i">
+                          <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
+                          <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="type" class="form-control m-0" /></td>
+                          <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
+                          <td style="text-align: center;">
+                            <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg" (click)="removeOut(i)">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
                 </div>
               </div>
             </div>
