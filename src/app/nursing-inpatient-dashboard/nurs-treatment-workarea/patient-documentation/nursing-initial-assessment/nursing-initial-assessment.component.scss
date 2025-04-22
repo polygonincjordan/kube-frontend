@@ -19,6 +19,7 @@
     }
     .title-main {  
         border-bottom: 3px solid #0056b0; 
+        padding-bottom: 10px;
     } 
     .form-control:focus, .form-control:-webkit-autofill, .form-control:not(:placeholder-shown) {
         -webkit-box-shadow: unset;
@@ -30,27 +31,49 @@
     .col-md-1,.col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6{
         padding: 0 10px;
     }
-    .tabs{
-        background: #e0edff;
-        border-radius: 8px;
-        overflow: hidden;
-        width: fit-content;
-        margin-bottom: 15px;
-        ul{
-            li{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 12px 20px;
-                cursor: pointer;
-                margin: 0;
-                transition: all 0.3s linear;
-                &.active, &:hover{
-                    background: #0056B0;
-                    color: #fff;
-                }
-            }
-        }
+    #exTab1 .tab-content {
+      color : white;
+      background-color: #428bca;
+      padding : 5px 15px;
+    }
+    
+    #exTab2 h3 {
+      color : white;
+      background-color: #428bca;
+      padding : 5px 15px;
+    }
+    
+    /* remove border radius for the tab */
+    
+    #exTab1 .nav-pills > li > a {
+      border-radius: 0;
+    }
+    
+    /* change border radius for the tab , apply corners on top*/
+    
+    #exTab3 .nav-pills > li > a {
+      border-radius: 4px 4px 0 0 ;
+    }
+    
+    #exTab3 .tab-content {
+      color : white;
+      background-color: #428bca;
+      padding : 5px 15px;
+    }
+    
+    
+    .nav-pills li{
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      padding: 10px;
+      margin-bottom: 0px;
+      border:  1px solid #ccc;
+    }
+    
+    .active{
+      color: #fff;
+      background-color: #0056b0;
     }
     .max-height300{
         height: 300px;

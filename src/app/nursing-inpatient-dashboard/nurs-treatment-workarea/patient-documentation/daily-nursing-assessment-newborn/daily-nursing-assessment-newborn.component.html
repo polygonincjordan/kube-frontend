@@ -1,41 +1,29 @@
 <div>
-    <!-- First Section -->
+  <!-- First Section -->
+  <h6 class="mb-3">Allergies</h6>
+  <div style="border-bottom: 3px solid #0056b0;" class="mt-3 mb-3"></div>
+
   <div class="row align-items-center mb-2">
     <div class="col-md-3 col-6 d-flex align-items-end">
       <label for="date" class="mr-2">Date:</label>
       <div class="header-date p-0">
-        <span
-          _ngcontent-ufq-c103=""
-          style="
-            position: relative;
-            top: 32px;
-            right: 30px;
-            float: right;
-            margin-top: -26px;
-            font-size: 18px;
-            z-index: 1;
-          "
-        >
+        <span _ngcontent-ufq-c103="" style="
+          position: relative;
+          top: 32px;
+          right: 30px;
+          float: right;
+          margin-top: -26px;
+          font-size: 18px;
+          z-index: 1;
+        ">
           <img src="assets/img/Calender.svg" alt="" />
         </span>
-        <input
-          class="form-control ml-0 col-1"
-          style="color: #000; border-radius: 8px"
-          type="text"
-          placeholder=""
-          [minDate]=""
-          [maxDate]=""
-          readonly
-          #dp="bsDatepicker"
-          [bsValue]="CurrentDateAndTime"
-          style="min-width: 230px; height: 40px !important"
-          readonly
-          bsDatepicker
-          [bsConfig]="{
-            showWeekNumbers: false,
-            dateInputFormat: 'DD.MM.YYYY'
-          }"
-        />
+        <input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text" placeholder=""
+          [minDate]="" [maxDate]="" readonly #dp="bsDatepicker" [bsValue]="CurrentDateAndTime"
+          style="min-width: 230px; height: 40px !important" readonly bsDatepicker [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+        }" />
       </div>
     </div>
     <div class="col-md-3 col-6 d-flex align-items-end">
@@ -50,46 +38,36 @@
         <div class="row create-form-inputs">
           <div class="scale-box">
             <div class="scale-box-checkbox">
-              <div
-                style="
-                  display: flex;
-                  width: 100%;
-                  justify-content: space-between;
-                "
-              >
+              <div style="
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+              ">
                 <div class="d-flex align-items-center w-50">
                   <label class="m-0">Allergies</label>
-                  <input
-                    type="text"
-                    class="form-control w-70 ml-3"
-                    [value]="
-                      toAllergyArr?.length
-                        ? 'Allergy Exists'
-                        : 'No Known Allergies'
-                    "
-                  />
+                  <input type="text" class="form-control w-70 ml-3" [value]="
+                    toAllergyArr?.length
+                      ? 'Allergy Exists'
+                      : 'No Known Allergies'
+                  " />
                 </div>
-                <img
-                  src="assets/img/file1.svg"
-                  title="Create & Import"
-                  class="img-size"
-                />
+                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
               </div>
             </div>
             <div class="scale-box-table">
               <table class="table table-bordered third-table">
                 <thead>
                   <tr>
-                    <th style="width: 2% !important"></th>
+                    <!-- <th style="width: 2% !important"></th> -->
                     <th scope="col">Group</th>
                     <th scope="col">Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td style="width: 2% !important">
+                    <!-- <td style="width: 2% !important">
                       <input type="checkbox" />
-                    </td>
+                    </td> -->
                     <td></td>
                     <td></td>
                   </tr>
@@ -102,39 +80,26 @@
     </div>
   </div>
   <!-- third section -->
+  <h6 class="mb-3 mt-3">Risk Factor</h6>
+  <div style="border-bottom: 3px solid #0056b0;" class="mt-3 mb-3"></div>
   <div class="mt-4 allergy-div">
-    <div
-      class="d-flex mb-2"
-      style="justify-content: space-between; padding-right: 22px"
-    >
+    <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
       <div style="display: flex; align-items: center; gap: 10px">
-        <input
-          type="checkbox"
-          style="width: 36px; height: 22px"
-          [attr.disabled]="toVitalsArr?.length > 0 ? true : null"
-        />
+        <input type="checkbox" style="width: 36px; height: 22px"
+          [attr.disabled]="toVitalsArr?.length > 0 ? true : null" />
         <label class="admitting-physician">No Risk Factors</label>
       </div>
       <div>
-        <img
-          src="assets/img/file1.svg"
-          title="Create & Import"
-          class="img-size"
-        />
+        <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
       </div>
     </div>
     <div style="max-height: 296px; overflow: auto">
       <table class="table table-bordered past-table">
-        <thead
-          style="background-color: #e4edf5; color: black; text-align: center"
-        >
+        <thead style="background-color: #e4edf5; color: black; text-align: center">
           <tr>
-            <th scope="col" style="width: 2% !important">
-              <input
-                style="width: 30% !important; height: 15px"
-                type="checkbox"
-              />
-            </th>
+            <!-- <th scope="col" style="width: 2% !important">
+              <input style="width: 30% !important; height: 15px" type="checkbox" />
+            </th> -->
             <th scope="col">ID</th>
             <th scope="col">Description</th>
             <th scope="col">Code</th>
@@ -142,61 +107,28 @@
         </thead>
         <tbody style="background-color: #fbfcff">
           <tr class="past-med-input">
-            <td
-              style="padding: 10px !important; width: 2%; pointer-events: none"
-            >
-              <input
-                style="width: 30% !important; height: 15px"
-                type="checkbox"
-              />
-            </td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
+            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
+              <input style="width: 30% !important; height: 15px" type="checkbox" />
+            </td> -->
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
           </tr>
           <tr class="past-med-input">
-            <td
-              style="padding: 10px !important; width: 2%; pointer-events: none"
-            >
-              <input
-                type="checkbox"
-                style="width: 30% !important; height: 15px"
-              />
-            </td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
+            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
+              <input type="checkbox" style="width: 30% !important; height: 15px" />
+            </td> -->
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
           </tr>
           <tr class="past-med-input">
-            <td
-              style="padding: 10px !important; width: 2%; pointer-events: none"
-            >
-              <input
-                type="checkbox"
-                style="width: 30% !important; height: 15px"
-              />
-            </td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
-            <td
-              style="padding: 10px !important; width: 15%; pointer-events: none"
-            ></td>
+            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
+              <input type="checkbox" style="width: 30% !important; height: 15px" />
+            </td> -->
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
           </tr>
         </tbody>
       </table>
@@ -204,55 +136,390 @@
   </div>
   <!-- Tab Section -->
   <div id="exTab1" class="mt-4">
-    <ul class="nav nav-pills">
-      <li
-        [class.active]="activeTab === 'Neurosensory'"
-        (click)="setActiveTab('Neurosensory')"
-      >
-      Neurosensory
+    <ul class="nav nav-pills mt-2">
+      <li [class.active]="activeTab === 'Neurosensory'" (click)="setActiveTab('Neurosensory')">
+        Neurosensory
       </li>
-      <li
-        [class.active]="activeTab === 'Musculoskeletal'"
-        (click)="setActiveTab('Musculoskeletal')"
-      >
-      Musculoskeletal
+      <li [class.active]="activeTab === 'Musculoskeletal'" (click)="setActiveTab('Musculoskeletal')">
+        Musculoskeletal
       </li>
-      <li
-        [class.active]="activeTab === 'Respiratory'"
-        (click)="setActiveTab('Respiratory')"
-      >
-      Respiratory
+      <li [class.active]="activeTab === 'Respiratory'" (click)="setActiveTab('Respiratory')">
+        Respiratory
       </li>
-      <li
-        [class.active]="activeTab === 'Cardiovascular'"
-        (click)="setActiveTab('Cardiovascular')"
-      >
-      Cardiovascular
+      <li [class.active]="activeTab === 'Cardiovascular'" (click)="setActiveTab('Cardiovascular')">
+        Cardiovascular
       </li>
-      <li
-        [class.active]="activeTab === 'Gastrointestinal'"
-        (click)="setActiveTab('Gastrointestinal')"
-      >
-      Gastrointestinal
+      <li [class.active]="activeTab === 'Gastrointestinal'" (click)="setActiveTab('Gastrointestinal')">
+        Gastrointestinal
       </li>
-      <li
-        [class.active]="activeTab === 'Nutrition'"
-        (click)="setActiveTab('Nutrition')"
-      >
-      Nutrition
+      <li [class.active]="activeTab === 'Nutrition'" (click)="setActiveTab('Nutrition')">
+        Nutrition
       </li>
-      <li
-        [class.active]="activeTab === 'Skin'"
-        (click)="setActiveTab('Skin')"
-      >
-      Skin
+      <li [class.active]="activeTab === 'Skin'" (click)="setActiveTab('Skin')">
+        Skin
       </li>
-      <li
-        [class.active]="activeTab === 'Genitourinary'"
-        (click)="setActiveTab('Genitourinary')"
-      >
-      Genitourinary
+      <li [class.active]="activeTab === 'Genitourinary'" (click)="setActiveTab('Genitourinary')">
+        Genitourinary
       </li>
     </ul>
+  </div>
+  <div style="border-bottom: 3px solid #0056b0;" class="mt-3 mb-3"></div>
+  <!-- Neurosensory Tab Content 1-->
+  <div class="tab-content" *ngIf="activeTab === 'Neurosensory'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Alert, Awake to Stimuli</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Move all Extremities</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Intact Sensation</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section reflexes d-flex">
+      <label class="col-md-3"><input type="checkbox"> Reflexes</label>
+      <ng-select class="col-md-2" bindLabel="label" bindValue="value" placeholder="Select Surgery Type"
+        style="width:100%;">
+      </ng-select>
+      <div class="col-md-1"></div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+  </div>
+
+  <!-- Musculoskeletal Tab Content 2-->
+  <div class="tab-content" *ngIf="activeTab === 'Musculoskeletal'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Full Range of Motion</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Muscle Tone</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Rotation</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+  </div>
+
+  <!-- Respiratory Tab Content 3-->
+  <div class="tab-content" *ngIf="activeTab === 'Respiratory'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Respiration Regular, Unlabored</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Breath sounds clear all Field</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Acyanotic</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Cough</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+  </div>
+
+  <!-- Cardiovascular Tab Content 4-->
+  <div class="tab-content" *ngIf="activeTab === 'Cardiovascular'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Regular Heart Rate </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Apical Pulse </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Femoral Pluse bilateral palpated</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Edema</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Capillary Refill</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal (2-3 secs)</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+  </div>
+
+  <!-- Gastrointestinal Tab Content 5-->
+  <div class="tab-content" *ngIf="activeTab === 'Gastrointestinal'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Intact Oral Mucosa </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal</label>
+        <label><input type="checkbox"> Abnormal</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Soft Abdomen </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Distended Abdomen</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Tender Abdomen</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Bowel Sounds</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Bowel Movement /BM</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <label class="col-md-3 pl-0"> Date of Last BM<input type="text" class="ml-2 form-control"> </label>
+      <label class="col-md-3 pl-0"> Frequency<input type="text" class="ml-2 form-control"></label>
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Nausea</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Vomiting</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Diarrhea</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Constipation</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3" type="text" placeholder="">
+    </div>
+
+  </div>
+
+  <!-- Nutrition Tab Content 6-->
+  <div class="tab-content" *ngIf="activeTab === 'Nutrition'">
+    <div class="section d-flex">
+      <label class="col-md-2"><input type="checkbox"> Stucking Diffculty </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-2"><input type="checkbox"> Fedding</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Every </label>
+        <label><input type="text" class="col-md-2 p-0 mr-3 form-control">hrs </label>
+      </div>
+      <input class="input-notes col-md-2" type="text" placeholder="">
+      <div class="checkbox-group col-md-4">
+        <label><input type="checkbox" class="mr-2"> NPO </label>
+        <label><input type="checkbox" class="mr-2"> Artificial </label>
+        <label><input type="checkbox" class="mr-2"> Comments </label>
+        <input class="input-notes col-md-2 form-control" type="text" placeholder="">
+      </div>
+    </div>
+  </div>
+
+  <!-- Skin Tab Content 7-->
+  <div class="tab-content" *ngIf="activeTab === 'Skin'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Intact Skin </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Skin color with patient norm </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Normal </label>
+        <label><input type="checkbox"> Abnormal </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Rash</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Whound</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Warm</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes</label>
+        <label><input type="checkbox"> No</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+  </div>
+
+  <!-- Skin Tab Content 8-->
+  <div class="tab-content" *ngIf="activeTab === 'Genitourinary'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Voiding Urine With Diffculaty </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Discharge </label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Yes </label>
+        <label><input type="checkbox"> No </label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox"> Circumcision Site</label>
+      <div class="checkbox-group col-md-3">
+        <label><input type="checkbox"> Healthy </label>
+        <label><input type="checkbox"> No Bledding</label>
+      </div>
+      <input class="input-notes col-md-3 form-control" type="text" placeholder="">
+    </div>
   </div>
 </div>
