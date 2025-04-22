@@ -63,7 +63,19 @@ export class InitialNursingAssessmentNewbornComponent implements OnInit {
   ];
   selectedTabName: string = 'Head, Eyes & Ears';
   physicialTabList = ['Head, Eyes & Ears', 'Skin', 'Neuromuscular', 'Respiratory', 'Cardiovascular', 'Gastrointestinal', 'Genitourinary', 'Psychological']
-  intialJson: any = {};
+  intialJson: any = {
+    appointmentValue: 'NA',
+    summaryValue: 'NA',
+    hospitalValue: 'NA',
+    devicesValue: 'NA',
+    laboratoryValue: 'NA',
+    suturesValue: 'NA',
+    XRayValue: 'NA',
+    dressingsValue: 'NA',
+    educationValue: 'NA',
+    SuppliesValue: 'NA',
+    MedicationValue: 'NA',
+  };
   constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, private sharedService: SharedService) { }
 
   ngOnInit(): void {

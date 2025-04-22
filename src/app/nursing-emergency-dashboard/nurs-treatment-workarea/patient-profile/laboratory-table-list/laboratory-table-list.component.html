@@ -21,6 +21,9 @@
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>
                   <td>
+                    <span class="white-space">{{item?.Ergtx ? item?.Ergtx : '--'}}</span>
+                  </td>
+                  <td>
                     <div style="display: flex; justify-content: end; line-height: 14px">
                       <img *ngIf="item.Pdf" (click)="getPdf(item)" class="width-25 cursor-pointer" src="assets/img/emergency-pdf.png" alt="" />
                       <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
