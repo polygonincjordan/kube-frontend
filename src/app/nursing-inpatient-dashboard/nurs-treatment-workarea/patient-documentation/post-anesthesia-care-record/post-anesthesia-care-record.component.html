@@ -388,7 +388,7 @@
                   </button>
                 </div>
                 <div class="third-table">
-                  <div style="max-height: 315px; overflow-y: auto;">
+                  <div style="max-height: 321px; overflow-y: auto;">
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -401,8 +401,40 @@
                       </thead>
                       <tbody formArrayName="inputArr">
                         <tr *ngFor="let drain of inputArr.controls; let i = index" [formGroupName]="i">
-                          <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
-                          <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
+                          <td><input type="time"  formControlName="time" class="form-control m-0" /></td>
+                          <td><div class="header-date p-0">
+                            <span
+                              _ngcontent-ufq-c103=""
+                              style="
+                                position: relative;
+                                top: 28px;
+                                    right: 10px;
+                                float: right;
+                                margin-top: -26px;
+                                font-size: 18px;
+                                z-index: 1;
+                              "
+                            >
+                              <img src="assets/img/Calender.svg" alt="" />
+                            </span>
+                            <input
+                              class="form-control ml-0 col-1"
+                              style="color: #000; border-radius: 8px"
+                              type="text"
+                              placeholder=""
+                              [minDate]=""
+                              [maxDate]=""  
+                              #dp="bsDatepicker"
+                              [bsValue]="CurrentDateAndTime"
+                              style="min-width: 200px;"
+                              formControlName="date"
+                              bsDatepicker
+                              [bsConfig]="{
+                                showWeekNumbers: false,
+                                dateInputFormat: 'DD.MM.YYYY'
+                              }"
+                            />
+                        </div></td>
                           <td><input type="text" formControlName="type" class="form-control m-0" /></td>
                           <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
                           <td style="text-align: center;">
@@ -436,7 +468,7 @@
                   </button>
                 </div>
                 <div class="third-table">
-                  <div style="max-height: 315px; overflow-y: auto;">
+                  <div style="max-height: 321px; overflow-y: auto;">
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -449,8 +481,42 @@
                       </thead>
                       <tbody formArrayName="outputArr">
                         <tr *ngFor="let drain of outputArr.controls; let i = index" [formGroupName]="i">
-                          <td><input type="text"  formControlName="time" class="form-control m-0" /></td>
-                          <td><input type="text"  formControlName="date" class="form-control m-0" /></td>
+                          <td><input type="time"  formControlName="time" class="form-control m-0" /></td>
+                          <td>
+                            <div class="header-date p-0">
+                              <span
+                                _ngcontent-ufq-c103=""
+                                style="
+                                  position: relative;
+                                  top: 28px;
+                                      right: 10px;
+                                  float: right;
+                                  margin-top: -26px;
+                                  font-size: 18px;
+                                  z-index: 1;
+                                "
+                              >
+                                <img src="assets/img/Calender.svg" alt="" />
+                              </span>
+                              <input
+                                class="form-control ml-0 col-1"
+                                style="color: #000; border-radius: 8px"
+                                type="text"
+                                placeholder=""
+                                [minDate]=""
+                                [maxDate]=""  
+                                #dp="bsDatepicker"
+                                [bsValue]="CurrentDateAndTime"
+                                style="min-width: 200px;"
+                                formControlName="date"
+                                bsDatepicker
+                                [bsConfig]="{
+                                  showWeekNumbers: false,
+                                  dateInputFormat: 'DD.MM.YYYY'
+                                }"
+                              />
+                          </div>
+                          </td>
                           <td><input type="text" formControlName="type" class="form-control m-0" /></td>
                           <td><input type="text" formControlName="amount" class="form-control m-0" /></td>
                           <td style="text-align: center;">

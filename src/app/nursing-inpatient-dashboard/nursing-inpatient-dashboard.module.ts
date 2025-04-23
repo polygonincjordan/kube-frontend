@@ -164,6 +164,8 @@ import { InitialNursingAssessmentNewbornModule } from '../shared-module/initial-
 import { DailyNursingAssessmentNewbornComponent } from './nurs-treatment-workarea/patient-documentation/daily-nursing-assessment-newborn/daily-nursing-assessment-newborn.component';
 import { MalnutritionPaediatricsComponent } from './nurs-treatment-workarea/patient-documentation/malnutrition-paediatrics/malnutrition-paediatrics.component';
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
+import { RichmondScaleComponent } from './nurs-treatment-workarea/patient-documentation/richmond-scale/richmond-scale.component';
+import { DeliveryRecordDocComponent } from './nurs-treatment-workarea/patient-documentation/delivery-record-doc/delivery-record-doc.component';
 import { NewScaleDocumentModule } from '../shared-module/new-scale-document/new-scale-document.module';
 import { NIPSDocumentModule } from '../shared-module/nips-document/nips-document.module';
 import { RamsaySedationScaleModule } from '../shared-module/ramsay-sedation-scale/ramsay-sedation-scale.module';
@@ -289,7 +291,9 @@ const route: Routes = [
     NursingInitialAssessmentComponent,
     PostAnesthesiaCareRecordComponent,
     DailyNursingAssessmentNewbornComponent,
-    MalnutritionPaediatricsComponent
+    MalnutritionPaediatricsComponent,
+    RichmondScaleComponent,
+    DeliveryRecordDocComponent
   ],
   providers: [
     EmergencyService,

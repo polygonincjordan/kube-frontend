@@ -465,6 +465,46 @@
                   </div>
               </div>
             </div>
+            <!-- Richmond Scale -->
+            <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isRichmondScale',richmondList[0])">
+              <div class="col-md-4" >Richmond Scale {{richmondList[0]?.Zversion ?
+                dockVer(richmondList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(richmondList[0]?.DocTime)}}">
+                {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{richmondList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(richmondList[0]?.Dockey)"
+                  *ngIf="richmondList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(richmondList[0]?.Dockey, richmondList[0])">
+                    <select *ngIf="richmondList.length && richmondList[0]?.StatusTxt !='N/A' && richmondList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
+            <!-- Delivery Record -->
+            <div [ngClass]="isDeliverRecord ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isDeliverRecord',richmondList[0])">
+              <div class="col-md-4" >Delivery Record {{richmondList[0]?.Zversion ?
+                dockVer(richmondList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(richmondList[0]?.DocTime)}}">
+                {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{richmondList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(richmondList[0]?.Dockey)"
+                  *ngIf="richmondList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(richmondList[0]?.Dockey, richmondList[0])">
+                    <select *ngIf="richmondList.length && richmondList[0]?.StatusTxt !='N/A' && richmondList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
              
               <!-- Education Assessment -->
               <div
@@ -1258,6 +1298,8 @@
     <app-nursing-initial-assessment *ngIf="openNurseInitAss"></app-nursing-initial-assessment>
     <app-daily-nursing-assessment-newborn *ngIf="openDailyNurseAss"></app-daily-nursing-assessment-newborn>
     <app-malnutrition-paediatrics *ngIf="openMalnutritionAss"></app-malnutrition-paediatrics>
+    <app-richmond-scale *ngIf="openRichmondScale"></app-richmond-scale>
+    <app-delivery-record-doc *ngIf="openisDeliverRecord"></app-delivery-record-doc>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
     <app-nursing-discharge-summary *ngIf="openDischargeSummery" ></app-nursing-discharge-summary>
