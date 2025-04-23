@@ -166,6 +166,10 @@ import { MalnutritionPaediatricsComponent } from './nurs-treatment-workarea/pati
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
 import { RichmondScaleComponent } from './nurs-treatment-workarea/patient-documentation/richmond-scale/richmond-scale.component';
 import { DeliveryRecordDocComponent } from './nurs-treatment-workarea/patient-documentation/delivery-record-doc/delivery-record-doc.component';
+import { NewScaleDocumentModule } from '../shared-module/new-scale-document/new-scale-document.module';
+import { NIPSDocumentModule } from '../shared-module/nips-document/nips-document.module';
+import { RamsaySedationScaleModule } from '../shared-module/ramsay-sedation-scale/ramsay-sedation-scale.module';
+import { ConfusionAssessmentMethodModule } from '../shared-module/confusion-assessment-method/confusion-assessment-method.module';
 
 
 const route: Routes = [
@@ -346,7 +350,11 @@ const route: Routes = [
     ObsFallRiskAssessmentModule,
     PostPatientFallAssessmentModule,
     InitialNursingAssessmentNewbornModule,
-    PaediatricPhysicianAssessmentModule
+    PaediatricPhysicianAssessmentModule,
+    NewScaleDocumentModule,
+    NIPSDocumentModule,
+    RamsaySedationScaleModule,
+    ConfusionAssessmentMethodModule
 ],
 })
 export class NursingInpatientDashboardModule {}
