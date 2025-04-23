@@ -163,6 +163,22 @@ export class PatientDocumentationComponent implements OnInit {
   public openPaediatricPhysicianDocument: boolean = false;
   latestPaediatricPhysicianList = [];
 
+  public isNewScaleDocument: boolean = false;
+  public openNewScaleDocumentDocument: boolean = false;
+  latestNewScaleDocumentList = [];
+
+  public isNIPSDocument: boolean = false;
+  public openNIPSDocumentDocument: boolean = false;
+  latestNIPSDocumentList = [];
+
+  public isRamsaySedation: boolean = false;
+  public openRamsaySedationDocument: boolean = false;
+  latestRamsaySedationList = [];
+
+  public isConfusionAssessment: boolean = false;
+  public openConfusionAssessmentDocument: boolean = false;
+  latestConfusionAssessmentList = [];
+
   public isCVCInsertion: boolean = false;
   public isPediatricsFall: boolean = false;
   public openCVCInsertionDocument: boolean = false;
@@ -1132,6 +1148,10 @@ export class PatientDocumentationComponent implements OnInit {
       'isPediatricsFall': { isPediatricsFall: true, selectedDocName: 'Pediatrics Fall Risk Assessment' },
       'isPediatricAdmission': { isPediatricAdmission: true, selectedDocName: 'Pediatric Admission Assessment' },
       'isPaediatricPhysician': { isPaediatricPhysician: true, selectedDocName: 'Paediatric Physician Assessment' },
+      'isNewScaleDocument': { isNewScaleDocument: true, selectedDocName: 'New Scale Document' },
+      'isNIPSDocument': { isNIPSDocument: true, selectedDocName: 'NIPS (Newborn to 1 Year)' },
+      'isRamsaySedation': { isRamsaySedation: true, selectedDocName: 'Ramsay Sedation Scale' },
+      'isConfusionAssessment': { isConfusionAssessment: true, selectedDocName: 'Confusion Assessment Method for ICU (CAM-ICU)' },
       'isObstetricFallRiskAssessment': { isObstetricFallRiskAssessment: true, selectedDocName: 'Obstetric Fall Risk Assessment' },
       'ispostPatientFallAssessment': { ispostPatientFallAssessment: true, selectedDocName: 'Post Patient Fall Assessment' },
       'isInitialNursingNewborn': { isInitialNursingNewborn: true, selectedDocName: 'Initial Nursing Assessment Newborn' },
@@ -1180,6 +1200,14 @@ export class PatientDocumentationComponent implements OnInit {
     this.isNeonatalDisch = false;
     this.isTimeoutCheck = false;
     this.isPaediatricPhysician = false;
+    this.isNewScaleDocument = false;
+    this.openNewScaleDocumentDocument = false;
+    this.isNIPSDocument = false;
+    this.openNIPSDocumentDocument = false;
+    this.isRamsaySedation = false;
+    this.openRamsaySedationDocument = false;
+    this.isConfusionAssessment = false;
+    this.openConfusionAssessmentDocument = false;
     this.isCVCInsertion = false;
     this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
@@ -1560,6 +1588,14 @@ export class PatientDocumentationComponent implements OnInit {
     this.isTimeoutCheck = false;
     this.openPaediatricPhysicianDocument = false;
     this.isPaediatricPhysician = false;
+    this.openNewScaleDocumentDocument = false;
+    this.isNewScaleDocument = false;
+    this.openNIPSDocumentDocument = false;
+    this.isNIPSDocument = false;
+    this.isRamsaySedation = false;
+    this.openRamsaySedationDocument = false;
+    this.isConfusionAssessment = false;
+    this.openConfusionAssessmentDocument = false;
     this.isCVCInsertion = false;
     this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
@@ -3517,6 +3553,206 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
 
+    }
+
+    else if (this.isNewScaleDocument) {
+      if (action == 'create') {
+        this.openNewScaleDocumentDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNewScaleDocumentDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNewScaleDocumentDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNewScaleDocumentDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    }
+
+    else if (this.isNIPSDocument) {
+      if (action == 'create') {
+        this.openNIPSDocumentDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openNIPSDocumentDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openNIPSDocumentDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openNIPSDocumentDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    }
+
+    else if (this.isRamsaySedation) {
+      if (action == 'create') {
+        this.openRamsaySedationDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openRamsaySedationDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openRamsaySedationDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openRamsaySedationDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    }
+
+    else if (this.isConfusionAssessment) {
+      if (action == 'create') {
+        this.openConfusionAssessmentDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openConfusionAssessmentDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openConfusionAssessmentDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openConfusionAssessmentDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
   }
   private subscription: Subscription;
@@ -6914,7 +7150,11 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDailyNurseAss ||
       this.openMalnutritionAss || 
       this.openPostAnesthesia ||
-      this.openPaediatricPhysicianDocument
+      this.openPaediatricPhysicianDocument ||
+      this.openNewScaleDocumentDocument || 
+      this.openNIPSDocumentDocument || 
+      this.openRamsaySedationDocument || 
+      this.openConfusionAssessmentDocument
     );
   }
   get showActionBtn(): boolean {
@@ -6953,7 +7193,11 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDailyNurseAss ||
       this.openMalnutritionAss ||
       this.openPostAnesthesia || 
-      this.openPaediatricPhysicianDocument
+      this.openPaediatricPhysicianDocument || 
+      this.openNewScaleDocumentDocument || 
+      this.openNIPSDocumentDocument || 
+      this.openRamsaySedationDocument || 
+      this.openConfusionAssessmentDocument
     );
   }
 

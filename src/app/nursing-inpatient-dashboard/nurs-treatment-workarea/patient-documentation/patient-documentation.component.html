@@ -1057,6 +1057,94 @@
                     </div>
                 </div>
               </div>
+
+              <!--  APGAR Scale Document -->
+               <div
+                [ngClass]="isNewScaleDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isNewScaleDocument',latestNewScaleDocumentList[0])">
+                <div class="col-md-4"> APGAR Scale {{latestNewScaleDocumentList[0]?.Zversion ?
+                  dockVer(latestNewScaleDocumentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestNewScaleDocumentList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestNewScaleDocumentList[0]?.DocTime)}}">
+                  {{getDate(latestNewScaleDocumentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestNewScaleDocumentList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestNewScaleDocumentList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestNewScaleDocumentList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNewScaleDocumentList[0]?.Dockey, latestNewScaleDocumentList[0])">
+                      <select *ngIf="latestNewScaleDocumentList.length && latestNewScaleDocumentList[0]?.StatusTxt !='N/A' && latestNewScaleDocumentList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
+              <!--  NIPS (Newborn to 1 Year) -->
+               <div
+                [ngClass]="isNIPSDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isNIPSDocument',latestNIPSDocumentList[0])">
+                <div class="col-md-4"> NIPS (Newborn to 1 Year) {{latestNIPSDocumentList[0]?.Zversion ?
+                  dockVer(latestNIPSDocumentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestNIPSDocumentList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestNIPSDocumentList[0]?.DocTime)}}">
+                  {{getDate(latestNIPSDocumentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestNIPSDocumentList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestNIPSDocumentList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestNIPSDocumentList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNIPSDocumentList[0]?.Dockey, latestNIPSDocumentList[0])">
+                      <select *ngIf="latestNIPSDocumentList.length && latestNIPSDocumentList[0]?.StatusTxt !='N/A' && latestNIPSDocumentList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
+              <!--  Ramsay Sedation Scale -->
+               <div
+                [ngClass]="isRamsaySedation ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isRamsaySedation',latestRamsaySedationList[0])">
+                <div class="col-md-4"> Ramsay Sedation Scale {{latestRamsaySedationList[0]?.Zversion ?
+                  dockVer(latestRamsaySedationList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestRamsaySedationList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestRamsaySedationList[0]?.DocTime)}}">
+                  {{getDate(latestRamsaySedationList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestRamsaySedationList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestRamsaySedationList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestRamsaySedationList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestRamsaySedationList[0]?.Dockey, latestRamsaySedationList[0])">
+                      <select *ngIf="latestRamsaySedationList.length && latestRamsaySedationList[0]?.StatusTxt !='N/A' && latestRamsaySedationList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
+              <!--  Confusion Assessment Method for ICU (CAM-ICU) -->
+               <div
+                [ngClass]="isConfusionAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isConfusionAssessment',latestConfusionAssessmentList[0])">
+                <div class="col-md-4"> Confusion Assessment Method for ICU (CAM-ICU) {{latestConfusionAssessmentList[0]?.Zversion ?
+                  dockVer(latestConfusionAssessmentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestConfusionAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestConfusionAssessmentList[0]?.DocTime)}}">
+                  {{getDate(latestConfusionAssessmentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestConfusionAssessmentList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestConfusionAssessmentList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestConfusionAssessmentList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestConfusionAssessmentList[0]?.Dockey, latestConfusionAssessmentList[0])">
+                      <select *ngIf="latestConfusionAssessmentList.length && latestConfusionAssessmentList[0]?.StatusTxt !='N/A' && latestConfusionAssessmentList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
           <!--  Correspondence Document -->
             <!-- <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -1191,6 +1279,10 @@
     <app-obs-fall-risk-assessment *ngIf="openObstetricFallRiskAssessmentDocument"></app-obs-fall-risk-assessment>
     <app-post-patient-fall-assessment *ngIf="openpostPatientFallAssessmentDocument"></app-post-patient-fall-assessment>
     <app-paediatric-physician-assessment *ngIf="openPaediatricPhysicianDocument"></app-paediatric-physician-assessment>
+    <app-new-scale-document *ngIf="openNewScaleDocumentDocument"></app-new-scale-document>
+    <app-nips-document *ngIf="openNIPSDocumentDocument"></app-nips-document>
+    <app-ramsay-sedation-scale *ngIf="openRamsaySedationDocument"></app-ramsay-sedation-scale>
+    <app-confusion-assessment-method *ngIf="openConfusionAssessmentDocument"></app-confusion-assessment-method>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>

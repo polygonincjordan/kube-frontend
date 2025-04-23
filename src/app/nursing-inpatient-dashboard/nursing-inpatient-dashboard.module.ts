@@ -164,6 +164,10 @@ import { InitialNursingAssessmentNewbornModule } from '../shared-module/initial-
 import { DailyNursingAssessmentNewbornComponent } from './nurs-treatment-workarea/patient-documentation/daily-nursing-assessment-newborn/daily-nursing-assessment-newborn.component';
 import { MalnutritionPaediatricsComponent } from './nurs-treatment-workarea/patient-documentation/malnutrition-paediatrics/malnutrition-paediatrics.component';
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
+import { NewScaleDocumentModule } from '../shared-module/new-scale-document/new-scale-document.module';
+import { NIPSDocumentModule } from '../shared-module/nips-document/nips-document.module';
+import { RamsaySedationScaleModule } from '../shared-module/ramsay-sedation-scale/ramsay-sedation-scale.module';
+import { ConfusionAssessmentMethodModule } from '../shared-module/confusion-assessment-method/confusion-assessment-method.module';
 
 
 const route: Routes = [
@@ -342,7 +346,11 @@ const route: Routes = [
     ObsFallRiskAssessmentModule,
     PostPatientFallAssessmentModule,
     InitialNursingAssessmentNewbornModule,
-    PaediatricPhysicianAssessmentModule
+    PaediatricPhysicianAssessmentModule,
+    NewScaleDocumentModule,
+    NIPSDocumentModule,
+    RamsaySedationScaleModule,
+    ConfusionAssessmentMethodModule
 ],
 })
 export class NursingInpatientDashboardModule {}

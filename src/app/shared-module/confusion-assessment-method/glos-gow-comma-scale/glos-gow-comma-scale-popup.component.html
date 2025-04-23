@@ -1,0 +1,106 @@
+<ng-template #scalesGlosgowModal>
+  <div>
+    <div class="allergy-header">
+      <div class="allergy-header-title">
+        <span>Glasgow coma scale</span>
+      </div>
+      <div class="allergy-header-details">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon">
+            <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer"
+              (click)="closeGlosgowModel()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="main-glosgow">
+    
+    <div class="glosgow">
+      <div class="glosgow-box">
+        <div class="row ml-0 mr-0 selection-section ">
+          <div class="col-md-4 selection-box ">
+            <h4>Eyes Opening Response (E)</h4>
+            <div class="d-flex align-items-center p-1" *ngFor="let eor of EyesOpeningResponse">
+              <input type="radio" class="mr-3 radio-input" [name]="'eyesOpeningResponse'" [id]="eor.keyId"
+                [(ngModel)]="eyeOpeningScore" [value]="eor.value" (change)="selectEyeOpeningRadio($event, eor.value)" />
+              <label [for]="eor.keyId">{{eor.text}}</label>
+            </div>
+          </div>
+          <div class="selection-box col-md-4">
+            <h4>Motor Response (M)</h4>
+            <div class="d-flex align-items-center p-1" *ngFor="let mrs of MotorResponse">
+              <input type="radio" class="mr-3 radio-input" [name]="'motorResponse'" [id]="mrs.keyId"
+                [(ngModel)]="moterScore" [value]="mrs.value" (change)="selectMoterRadio($event, mrs.value)" />
+              <label [for]="mrs.keyId">{{mrs.text}}</label>
+            </div>
+          </div>
+          <div class="selection-box col-md-4">
+            <h4>Verbal Response (V)</h4>
+            <div class="d-flex align-items-center p-1" *ngFor="let vrs of VerbalResponse">
+              <input type="radio" class="mr-3 radio-input" [name]="'verbalResponse'" [id]="vrs.keyId"
+                [(ngModel)]="verbalScore" [value]="vrs.value" (change)="selectVerbalRadio($event, vrs.value)" />
+              <label [for]="vrs.keyId">{{vrs.text}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="splitter"></div>
+        <div class="scale-result">
+          <h4 class="mb-4">Scale Result</h4>
+          <div class="row m-0">
+            <div class="col-md-3">
+              <div class="mb-2 row m-0 align-items-center">
+                <div class="col-md-6 p-0">
+                  <label>Eye Score (E)</label>
+                </div>
+                <div class="col-md-6">
+                  <input placeholder="C" class="form-control" [value]="eyeOpeningScore" disabled />
+                </div>
+              </div>
+              <div class="mb-2 row m-0 align-items-center">
+                <div class="col-md-6 p-0">
+                  <label>Total Score</label>
+                </div>
+                <div class="col-md-6">
+                  <input class="form-control" [value]="totalProjectScore" disabled />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="mb-2 row m-0 align-items-center justify-content-end">
+                <div class="col-md-5 p-0">
+                  <label>Moter Score (M)</label>
+                </div>
+                <div class="col-md-5 pr-0">
+                  <input placeholder="C" class="form-control" [value]="moterScore" disabled />
+                </div>
+              </div>
+              <div class="mb-2 d-flex justify-content-between">
+                <input [value]="totalScoreDescription" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-2 row m-0 align-items-center justify-content-end">
+                <div class="col-md-5 p-0">
+                  <label>Verbal Score (V)</label>
+                </div>
+                <div class="col-md-5">
+                  <input placeholder="T" class="form-control" [value]="verbalScore" disabled />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comment-input d-flex mt-4 align-items-center">
+            <label>Comments</label>
+            <textarea class="form-control" [(ngModel)]="comments" [disabled]="dockeyValue"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-12 mt-4" style="text-align: end" *ngIf="!dockeyValue">
+      <button class="triage-model-btn" (click)="closeGlosgowModel()">Cancel</button>
+      <button class="triage-model-btn" (click)="createGlosgowData()">Save</button>
+    </div>
+  </div>
+</ng-template>

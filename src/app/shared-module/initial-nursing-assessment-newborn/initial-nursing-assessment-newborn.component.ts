@@ -25,6 +25,7 @@ export class InitialNursingAssessmentNewbornComponent implements OnInit {
   modalRefScales: BsModalRef;
   toScaleArr: any[];
   selectedScales: any[] = [];
+  currentDate = new Date();
 
   ageForMotherTab: any = [];
   bloodGroup: any = [

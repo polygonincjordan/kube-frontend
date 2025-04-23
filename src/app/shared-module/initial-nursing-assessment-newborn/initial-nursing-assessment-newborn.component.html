@@ -6,9 +6,8 @@
                     <label>Date</label>
                 </div>
                 <div class="col-md-3">
-                    <input class="form-control" style="font-weight: 800; color: #000" [minDate]="" [maxDate]=""
-                        #dp="bsDatepicker" bsDatepicker
-                        [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+                    <input class="form-control w-50 ml-3" [(ngModel)]="currentDate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]=""
+                        #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
                 </div>
             </div>
             <div class="col-md-5 row m-0 align-items-center">
@@ -74,11 +73,11 @@
                                     <div class="col-md-2 row m-0">
                                         <label class="m-0">Blood Group</label>
                                         <ng-select class="w-50 ml-3">
-                                            <ng-option></ng-option>
+                                            <ng-option *ngFor="let item of  bloodGroup">{{ item.label }}</ng-option>
                                         </ng-select>
                                     </div>
                                     <div class="col-md-2 row m-0">
-                                        <label class="m-0">Gavida</label>
+                                        <label class="m-0">Gravida</label>
                                         <input class="form-control w-50 ml-3" />
                                     </div>
                                     <div class="col-md-2 row m-0">
@@ -86,8 +85,8 @@
                                         <input class="form-control w-50 ml-3" />
                                     </div>
                                     <div class="col-md-2 row m-0">
-                                        <label class="m-0">Edd</label>
-                                        <input class="form-control w-50 ml-3" style="font-weight: 800; color: #000" [minDate]="" [maxDate]=""
+                                        <label class="m-0">EDD</label>
+                                        <input class="form-control w-50 ml-3" [(ngModel)]="currentDate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]=""
                                             #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
                                     </div>
                                 </div>
@@ -150,7 +149,7 @@
                                 </div>
 
                                 <div class="associated_medication mt-3">
-                                    <h4>Associated Medications Orders</h4>
+                                    <h4>Associated Medication Orders</h4>
                                     <div class="table-contant-ass">
                                         <div class="mb-3">
                                         <div style="display: flex; justify-content: space-between;">
@@ -262,15 +261,16 @@
                             </div>
                             <div *ngIf="isInfantInfo">
                                 <div class="row m-0 mt-3">
-                                    <div class="col-md-2 row m-0 align-items-center">
+                                    <div class="col-md-3 row m-0 align-items-center">
                                         <div class="col-md-6">
                                             <label class="m-0">DOB</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input class="form-control" />
+                                            <input class="form-control w-50 ml-3" [(ngModel)]="currentDate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]=""
+                                            #dp="bsDatepicker" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
                                         </div>
                                     </div>
-                                    <div class="col-md-2 row m-0 align-items-center">
+                                    <div class="col-md-3 row m-0 align-items-center">
                                         <div class="col-md-6">
                                             <label class="m-0">Gestitational Age</label>
                                         </div>
@@ -296,7 +296,7 @@
                                     </div>
                                 </div>
                                 <div class="row m-0 mt-3">
-                                    <div class="col-md-2 row m-0 align-items-center">
+                                    <div class="col-md-3 row m-0 align-items-center">
                                         <div class="col-md-6">
                                             <label class="m-0">Head Circumference (cm)</label>
                                         </div>
@@ -304,9 +304,9 @@
                                             <input class="form-control" />
                                         </div>
                                     </div>
-                                    <div class="col-md-2 row m-0 align-items-center">
+                                    <div class="col-md-3 row m-0 align-items-center">
                                         <div class="col-md-6">
-                                            <label class="m-0">Chest Circumference</label>
+                                            <label class="m-0">Chest Circumference (cm)</label>
                                         </div>
                                         <div class="col-md-6">
                                             <input class="form-control" />
@@ -322,7 +322,7 @@
                                     </div>
                                     <div class="col-md-2 row m-0 align-items-center">
                                         <div class="col-md-6">
-                                            <label class="m-0">Vain</label>
+                                            <label class="m-0">Vein</label>
                                         </div>
                                         <div class="col-md-6">
                                             <input class="form-control" />
