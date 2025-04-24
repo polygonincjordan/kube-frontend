@@ -26,6 +26,8 @@ import { SharedService } from '@services/shared.service';
 import { ProgressNotesKardexComponent } from './progress-notes-kardex/progress-notes-kardex.component';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DocumentingDeliveryComponent } from './documenting-delivery/documenting-delivery.component';
 @UntilDestroy()
 @Component({
   selector: 'app-In-Patients',
@@ -186,7 +188,8 @@ export class InPatientsComponent implements OnInit {
     private hospitalistService: HospitalistService,
     public missedMedicationService: MissedMedicationDosesService,
     public sharedService: SharedService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+     private modalServiceComp: NgbModal,
   ) {
     this.initForm();
     this.phyOrderform1 = this.formBuilder.group({
@@ -237,6 +240,11 @@ export class InPatientsComponent implements OnInit {
     );
   }
 
+  openDocumentingDeliveryModel(data){
+     console.log(data,"data")
+     const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
+     // modalRef.componentInstance.someInput = data;
+   }
 
   addItem(): void {
     this.items = this.phyOrderform1.get('items') as FormArray;

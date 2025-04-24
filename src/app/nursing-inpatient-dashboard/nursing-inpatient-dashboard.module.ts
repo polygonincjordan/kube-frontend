@@ -170,6 +170,10 @@ import { NewScaleDocumentModule } from '../shared-module/new-scale-document/new-
 import { NIPSDocumentModule } from '../shared-module/nips-document/nips-document.module';
 import { RamsaySedationScaleModule } from '../shared-module/ramsay-sedation-scale/ramsay-sedation-scale.module';
 import { ConfusionAssessmentMethodModule } from '../shared-module/confusion-assessment-method/confusion-assessment-method.module';
+import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/sbar-nursing-endorsement.component';
+import { DyingPatientComponent } from './nurs-treatment-workarea/patient-documentation/dying-patient/dying-patient.component';
+import { PostCathRadialComponent } from './nurs-treatment-workarea/patient-documentation/post-cath-radial/post-cath-radial.component';
+import { PostCathFemoralComponent } from './nurs-treatment-workarea/patient-documentation/post-cath-femoral/post-cath-femoral.component';
 import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.module';
 import { IcuHoursFlowsheetModule } from '../shared-module/icu-hours-flowsheet/icu-hours-flowsheet.module';
 
@@ -295,7 +299,11 @@ const route: Routes = [
     DailyNursingAssessmentNewbornComponent,
     MalnutritionPaediatricsComponent,
     RichmondScaleComponent,
-    DeliveryRecordDocComponent
+    DeliveryRecordDocComponent,
+    SbarNursingEndorsementComponent,
+    DyingPatientComponent,
+    PostCathRadialComponent,
+    PostCathFemoralComponent
   ],
   providers: [
     EmergencyService,

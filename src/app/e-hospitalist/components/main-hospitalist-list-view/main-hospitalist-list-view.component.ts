@@ -21,6 +21,8 @@ import { catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PhysicianOrderKardexComponent } from './physician-order-kardex/physician-order-kardex.component';
 import { ProgressNotesKardexComponent } from './progress-notes-kardex/progress-notes-kardex.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DocumentingDeliveryComponent } from './documenting-delivery/documenting-delivery.component';
 
 @UntilDestroy()
 @Component({
@@ -72,7 +74,8 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
     private storageService: StorageService,
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private modalServiceComp: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -110,6 +113,12 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
     }
     );
   }
+
+    openDocumentingDeliveryModel(data){
+      console.log(data,"data")
+      const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
+      // modalRef.componentInstance.someInput = data;
+    }
 
   SortLDRData(col: string): void {
     console.log('col--------', col);

@@ -1,0 +1,900 @@
+
+<!--new design-->
+<div class="mt-3">
+  <!--First Tab Section -->
+  <h6>Situation: Condition at the time of Assessment</h6>
+  <div id="exTab1" class="mt-4">
+    <ul class="nav nav-pills mt-2">
+      <li [class.active]="activeTabFirst === 'chifComplaint'" (click)="setActiveTabFirst('chifComplaint')">
+        Chif Complaint
+      </li>
+      <li [class.active]="activeTabFirst === 'diagnosis'" (click)="setActiveTabFirst('diagnosis')">
+        Diagnosis
+      </li>
+      <li [class.active]="activeTabFirst === 'codeStatus'" (click)="setActiveTabFirst('codeStatus')">
+        Code Status
+      </li>
+    </ul>
+  </div>
+  <div style="border-bottom: 3px solid #0056b0" class="mt-3 mb-3"></div>
+  <!-- Chif Complaint-->
+  <div class="tab-content" *ngIf="activeTabFirst === 'chifComplaint'">
+    <div class="col-md-10">
+      <textarea id="chifComplaint" name="chifComplaint" class="form-control" rows="5"></textarea>
+    </div>
+  </div>
+
+  <!-- Diagnosis -->
+  <div class="tab-content p-0" *ngIf="activeTabFirst === 'diagnosis'">
+    <div class="d-flex mb-2 py-3" style="justify-content: space-between;
+    padding-right: 22px">
+      <div style="display: flex;
+    align-items: center;
+    gap: 10px;">
+        <input type="checkbox" style="width: 36px; 
+      height: 22px;" id="noDiagnosisApplicable" [attr.disabled]="toDiagnosisArr.length >0 ? true:null" />
+        <label class="admitting-physician" for="noDiagnosisApplicable">No Diagnosis
+          Applicable</label>
+      </div>
+      <div class="secound-bar-vital-sign">
+        <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+      </div>
+
+    </div>
+    <div style="max-height: 296px;
+    overflow: auto;">
+      <table class="table table-bordered past-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center;">
+          <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Description </th>
+            <th scope="col">Remarks</th>
+            <th scope="col">Administion Diag.</th>
+            <th scope="col">Discharge Diag.</th>
+            <th scope="col">Working Diag.</th>
+            <th scope="col">Preoperative Diag.</th>
+            <th scope="col">Surgery Diag.</th>
+            <th scope="col">Cause Diag.</th>
+            <th scope="col">Department Diag.</th>
+            <th scope="col">Hospital Diag.</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff;">
+          <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+            <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+            <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+            <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DAdmission"
+                [ngModelOptions]="{standalone: true}">
+            </td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DDischarge"
+                [ngModelOptions]="{standalone: true}">
+            </td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DWorking"
+                [ngModelOptions]="{standalone: true}"></td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DPreoperative"
+                [ngModelOptions]="{standalone: true}">
+            </td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DSurgery"
+                [ngModelOptions]="{standalone: true}"></td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DDeath"
+                [ngModelOptions]="{standalone: true}"></td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DDepartment"
+                [ngModelOptions]="{standalone: true}">
+            </td>
+            <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DHospital"
+                [ngModelOptions]="{standalone: true}"></td>
+            <td style="text-align: center;width:5%">
+              <img src="assets/img/Delete.svg" style="position: relative; top: 6px;" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- codeStatus Tab Content 3-->
+  <div class="tab-content" *ngIf="activeTabFirst === 'codeStatus'">
+    <div class="section d-flex">
+      <label class="col-md-3"><input type="checkbox" /> Full Code</label>
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-1"><input type="checkbox" /> DNR</label>
+      <label class="mr-2">When signed </label>
+      <input class="form-control col-md-3" type="text" placeholder="" />
+    </div>
+  </div>
+  <!--End First Tab Section-->
+
+  <!--Second Tab Section -->
+  <h6>Background</h6>
+  <div id="exTab2" class="mt-2">
+    <ul class="nav nav-pills mt-2">
+      <li [class.active]="activeTabSecond === 'allergies'" (click)="setActiveTabSecond('allergies')">
+        Allergies
+      </li>
+      <li [class.active]="activeTabSecond === 'vitals'" (click)="setActiveTabSecond('vitals')">
+        Vitals
+      </li>
+      <li [class.active]="activeTabSecond === 'isolationDiet'" (click)="setActiveTabSecond('isolationDiet')">
+        Isolation Diet
+      </li>
+      <li [class.active]="activeTabSecond === 'medicalHistory'" (click)="setActiveTabSecond('medicalHistory')">
+        Medical History
+      </li>
+      <li [class.active]="activeTabSecond === 'surgicalHistory'" (click)="setActiveTabSecond('surgicalHistory')">
+        Surgical History
+      </li>
+    </ul>
+  </div>
+  <div style="border-bottom: 3px solid #0056b0" class="mt-3"></div>
+  <!-- allergies-->
+  <div class="tab-content" *ngIf="activeTabSecond === 'allergies'">
+    <div class="end-container">
+      <div class="scale-box-main">
+        <div class="container-fluid">
+          <div class="row create-form-inputs">
+            <div class="scale-box">
+              <div class="scale-box-checkbox">
+                <div style="
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                  ">
+                  <div class="d-flex align-items-center w-50">
+                    <label class="m-0">Allergies</label>
+                    <input type="text" class="form-control w-70 ml-3" [value]="
+                        toAllergyArr?.length
+                          ? 'Allergy Exists'
+                          : 'No Known Allergies'
+                      " />
+                  </div>
+                  <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                </div>
+              </div>
+              <div class="scale-box-table">
+                <table class="table table-bordered third-table">
+                  <thead>
+                    <tr>
+                      <!-- <th style="width:2% !important"></th> -->
+                      <th scope="col">Group</th>
+                      <th scope="col">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <!-- <td style="width:2% !important"><input type="checkbox" /></td> -->
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- vitals -->
+  <div class="tab-content" *ngIf="activeTabSecond === 'vitals'">
+    <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <input type="checkbox" style="width: 36px; height: 22px"
+          [attr.disabled]="toVitalsArr?.length > 0 ? true : null" />
+        <label class="admitting-physician">No Vitals Signs Applicable</label>
+      </div>
+      <div>
+        <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+      </div>
+    </div>
+    <div style="max-height: 296px; overflow: auto">
+      <table class="table table-bordered past-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center">
+          <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Measured Value</th>
+            <th scope="col">Normal Range</th>
+            <th scope="col">Date/Time</th>
+            <!-- <th scope="col"></th> -->
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff">
+          <tr class="past-med-input" *ngFor="let item of toVitalsArr; let i = index">
+            <td style="padding: 10px !important; width: 15%; pointer-events: none">
+              {{ item.Vdescription }}
+            </td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none">
+              {{ item.MeasuredValue }} {{ item.Vunit }}
+            </td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none">
+              {{ item.NormalRange }}
+            </td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none">
+              {{ item.DateTime }}
+            </td>
+            <!-- <td style="    padding: 10px !important;
+            width: 3%;text-align: center;" ><img
+                  src="assets/img/Delete.svg" /></td> -->
+          </tr>
+          <tr class="past-med-input">
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <!-- <td style="    padding: 10px !important;
+            width: 3%;text-align: center;" ><img
+                  src="assets/img/Delete.svg" /></td> -->
+          </tr>
+        </tbody>
+        <tr class="past-med-input">
+          <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          <!-- <td style="    padding: 10px !important;
+          width: 3%;text-align: center;" ><img
+                src="assets/img/Delete.svg" /></td> -->
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- isolationDiet-->
+  <div class="tab-content" *ngIf="activeTabSecond === 'isolationDiet'">
+    <div class="section d-flex">
+      <label class="col-md-1">Isolation</label>
+      <input class="form-control col-md-8 mr-2" type="text" placeholder="" />
+    </div>
+    <div class="section d-flex">
+      <label class="col-md-1">Diet </label>
+      <input class="form-control col-md-8 mr-2" type="text" placeholder="" />
+    </div>
+  </div>
+
+  <!-- medicalHistory-->
+  <div class="tab-content" *ngIf="activeTabSecond === 'medicalHistory'">
+    <div class="section d-flex">
+      <label class="col-md-1 mr-1"><input type="checkbox" /> DM</label>
+      <label class="col-md-1 mr-1"><input type="checkbox" /> HTM</label>
+      <label class="col-md-1 mr-1"><input type="checkbox" /> CAD</label>
+      <label class="col-md-1 mr-1"><input type="checkbox" /> COPD</label>
+      <label class="col-md-1 mr-1"><input type="checkbox" /> CHF</label>
+      <label class="col-md-1 mr-1"><input type="checkbox" /> CVA</label>
+    </div>
+
+    <div class="section d-flex">
+      <label class="col-md-1 mr-1"><input type="checkbox" /> Others</label>
+      <input class="form-control col-md-3" type="text" placeholder="" />
+    </div>
+  </div>
+
+  <!-- surgicalHistory-->
+  <div class="tab-content" *ngIf="activeTabSecond === 'surgicalHistory'">
+    <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <input type="checkbox" style="width: 36px; height: 22px"
+          [attr.disabled]="toVitalsArr?.length > 0 ? true : null" />
+        <label class="admitting-physician">No Past surgeries known</label>
+      </div>
+      <div>
+        <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+      </div>
+    </div>
+    <div style="max-height: 296px; overflow: auto">
+      <table class="table table-bordered past-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center">
+          <tr>
+            <!-- <th scope="col" style="width: 2% !important">
+              <input style="width: 30% !important; height: 15px" type="checkbox" />
+            </th> -->
+            <th scope="col">Surgery Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Surgery Remarks</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff">
+          <tr class="past-med-input">
+            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
+              <input style="width: 30% !important; height: 15px" type="checkbox" />
+            </td> -->
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          </tr>
+          <tr class="past-med-input">
+            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
+              <input type="checkbox" style="width: 30% !important; height: 15px" />
+            </td> -->
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          </tr>
+          <tr class="past-med-input">
+            <!-- <td style="padding: 10px !important; width: 2%; pointer-events: none">
+              <input type="checkbox" style="width: 30% !important; height: 15px" />
+            </td> -->
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+            <td style="padding: 10px !important; width: 15%; pointer-events: none"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--End Second Tab Section-->
+
+  <!--Third Tab Section -->
+  <h6>Assessment</h6>
+  <div id="exTab3" class="mt-2">
+    <ul class="nav nav-pills mt-2">
+      <li [class.active]="activeTabThird === 'risk'" (click)="setActiveTabThird('risk')">
+        Risk
+      </li>
+      <li [class.active]="activeTabThird === 'physicalExamination'" (click)="setActiveTabThird('physicalExamination')">
+        Physical Examination
+      </li>
+      <li [class.active]="activeTabThird === 'psychosocialEnvironment'"
+        (click)="setActiveTabThird('psychosocialEnvironment')">
+        Psychosocial / Environment
+      </li>
+    </ul>
+  </div>
+  <div style="border-bottom: 3px solid #0056b0" class="mt-3"></div>
+
+  <!-- risk-->
+  <div class="tab-content" *ngIf="activeTabThird === 'risk'">
+    <div class="scale-box-table pr-2">
+      <div class="scale-box-checkbox pb-2">
+        <div style="width: 100%; justify-content: space-between">
+          <div class="d-flex align-items-center mb-3">
+            <label class="m-0 col-md-3 mr-2">Risk for Falling Down</label>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />N/A</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />Yes</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />No</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <label class="m-0 col-md-3 mr-2">Risk for Bedsores</label>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />N/A</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />Yes</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />No</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <label class="m-0 col-md-3 mr-2">Risk for Aspiration</label>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />N/A</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />Yes</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />No</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <label class="m-0 col-md-3 mr-2">Risk for Bleeding</label>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />N/A</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />Yes</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />No</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <label class="m-0 col-md-3 mr-2">Risk for Seizures</label>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />N/A</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />Yes</span>
+            <span class="col-md-1 p-0"><input type="radio" class="mr-3" />No</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- physicalExamination -->
+  <div class="tab-content" *ngIf="activeTabThird === 'physicalExamination'">
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Respiratory</label>
+      <label class="col-md-2 p-0">O₂ therapy via</label><input type="text" class="col-md-2 form-control" />
+      <div class="col-md-1"></div>
+      <label class="col-md-2 p-0">L/min</label><input type="text" class="col-md-2 form-control" />
+    </div>
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <label class="col-md-2 p-0">Ventilator</label><input type="text" class="col-md-2 form-control" />
+      <div class="col-md-1"></div>
+      <label class="col-md-2 p-0">Tracheostomy / ETT size</label><input type="text" class="col-md-2 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <input type="checkbox" class="mr-2" /> Check Tube
+      <label class="col-md-1 p-0 ml-4">Level of drainage</label><input type="text" class="ml-3 col-md-2 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <input type="checkbox" class="mr-2" /> Suctioning
+      <label class="col-md-1 p-0 ml-4">last Time</label><input type="time" class="ml-4 col-md-1 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Cardical</label>
+      <label class="mr-3 col-md-1 p-0">Breathing</label>
+      <input type="checkbox" class="mr-2" />Regular
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="ml-2 mr-2" />Irregular
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="ml-2 mr-2" />Pacemaker
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Neurosensory</label>
+      <input type="checkbox" class="mr-2" />Alert
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrglft" />Oriented
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2" />Drowsy
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 ml-3" />Confused
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2" />Unconscious
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2" />Seizures
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Gastrointestinal</label>
+      <input type="checkbox" class="mr-2" />Nausea
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrlf47" />Vomiting
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2" />Diarrhea
+      <div class="col-md-1 p-0"></div>
+      <div class="col-md-1 p-0 ml-2">Last Bewel Movement</div>
+      <input type="time" class="ml-2 mr-3 col-md-1 form-control" />
+      <div class="col-md-1 p-0">Enteral Feeding</div>
+      <input type="text" class="col-md-2 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Genito-Urinary</label>
+      <input type="checkbox" class="mr-2" />Continence
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrlft67" />Incontinence
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrlf22" />Device
+      <div class="col-md-1 p-0 mr-3"></div>
+      <div class="col-md-1 p-0 ml-1">Date of Insertion</div>
+      <input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text" placeholder=""
+        [minDate]="" [maxDate]="" #dp="bsDatepicker" style="min-width: 235px; height: 40px !important" bsDatepicker
+        [bsConfig]="{
+              showWeekNumbers: false,
+              dateInputFormat: 'DD.MM.YYYY'
+            }" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <div class="col-md-12 d-flex p-0">
+        <label class="col-md-3 p-0">Significant Findings related to Obstetric & Gynecologic
+          Assessment</label>
+        <input type="text" class="col-md-6 mr-3 form-control" />
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Skin</label>
+      <input type="checkbox" class="mr-2" />Wounds / Injuries
+      <div class="col-md-1 p-0"></div>
+      <div class="col-md-1 p-0 ml-1">Describe</div>
+      <input type="text" class="ml-3 mr-3 col-md-3 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <div class="col-md-3 p-0">Dressing by</div>
+      <input type="text" class="mr-3 col-md-3 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <input type="text" class="col-md-2 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <!-- Braden Table -->
+      <div class="w-100 mb-3">
+        <div class="col-md-10 p-0">
+          <div class="end-container">
+            <div class="scale-box-main">
+              <div class="container-fluid">
+                <div class="row create-form-inputs">
+                  <div class="scale-box">
+                    <div class="scale-box-checkbox">
+                      <div style="display: flex; width: 100%; justify-content: end">
+                        <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                      </div>
+                    </div>
+                    <div class="scale-box-table">
+                      <table class="table table-bordered past-table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Scale Type</th>
+                            <th scope="col">Last Score</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Date/Time</th>
+                            <th scope="col" colspan="3">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of scalesList; let i = index">
+                            <td>{{ item.ScaleType }}</td>
+                            <td>{{ item.LastScore }}</td>
+                            <td>{{ item.ScoreDesc }}</td>
+                            <td>{{ item.Datetimee }}</td>
+                            <td>
+                              <a>Create</a>
+                            </td>
+                            <td>
+                              <a>View</a>
+                            </td>
+                            <td>
+                              <img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer ml-1" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Musculoskeletal</label>
+      <input type="checkbox" class="mr-2" />Ambulated
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrlft67" />Bed Rest
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrlf22" />Splint
+      <div class="col-md-1 p-0 mr-3"></div>
+      <div class="col-md-1 p-0 ml-1">Place</div>
+      <input type="text" class="ml-2 mr-3 col-md-3 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">VAD</label>
+      <input type="checkbox" class="mr-2" />Peripheral
+      <div class="col-md-1 p-0"></div>
+      <input type="checkbox" class="mr-2 mrlft67" />Central
+      <div class="col-md-1 p-0 mr-3"></div>
+      <div class="col-md-1 mrlf40">Type of Access</div>
+      <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <div class="col-md-1 p-0">Insertion Date</div>
+      <input type="date" class="ml-2 mr-3 col-md-1 form-control" />
+      <div class="col-md-1 mr-1 ml-4 mrlft30">Dressing Date</div>
+      <input type="date" class="ml-1 mr-3 col-md-2 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Other assessment findings</label>
+      <div class="col-md-1 p-0"></div>
+      <input type="text" class="ml-2 mr-3 col-md-8 form-control" />
+    </div>
+  </div>
+
+  <!-- psychosocialEnvironment-->
+  <div class="tab-content" *ngIf="activeTabThird === 'psychosocialEnvironment'">
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2">Psychosocial</label>
+      <span class="col-md-1 p-0"><input type="checkbox" class="mr-2" />Family Support</span>
+      <span class="col-md-1 p-0"><input type="checkbox" class="ml-2 mr-2" />Alone</span>
+      <span class="col-md-1 p-0"><input type="checkbox" class="ml-2 mr-2" />Substance Abuse</span>
+      <span class="col-md-1 p-0"><input type="checkbox" class="ml-2 mr-2" />Psychiatric History</span>
+      <span class="col-md-2 p-0"><input type="checkbox" class="ml-2 mr-2" />None Arbic/English Speaker</span>
+    </div>
+    <div class="d-flex align-items-center mb-4">
+      <label class="col-md-2"></label>
+      <span class="col-md-1 p-0"><input type="checkbox" class="mr-2" />Deaf</span>
+      <span class="col-md-1 p-0"><input type="checkbox" class="ml-2 mr-2" />Blind</span>
+      <span class="col-md-1 p-0"><input type="checkbox" class="ml-2 mr-2" />Other</span>
+      <input type="text" class="ml-2 mr-2 col-md-3 form-control" />
+    </div>
+
+    <div class="d-flex align-items-center mb-3 mt-4">
+      <label class="col-md-2">Environment</label>
+      <span class="col-md-2 p-0"><input type="checkbox" class="mr-2" />ID Band Applied</span>
+      <span class="col-md-1 p-0"><input type="checkbox" class="ml-2 mr-2" />Clean Equipment</span>
+      <span class="col-md-2 p-0"><input type="checkbox" class="ml-2 mr-2" />No sharp objects near patient</span>
+    </div>
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <span class="col-md-2 p-0"><input type="checkbox" class="mr-2" />Fall Preventive Measures Applied</span>
+      <span class="col-md-2 p-0"><input type="checkbox" class="ml-2 mr-2" />Nursing Call Bell Nrarby and
+        Working</span>
+      <span class="col-md-2 p-0"><input type="checkbox" class="ml-2 mr-2" />Seizures Precautions Applied</span>
+    </div>
+    <div class="d-flex align-items-center mb-3">
+      <label class="col-md-2"></label>
+      <input type="checkbox" class="mr-2" />Equipment Label Properly (valid
+      Preventive Maintenance, fuilds and lines labeled) properly
+    </div>
+  </div>
+  <!--End Third Tab Section-->
+
+  <!--Four Tab Section -->
+  <h6>Recommendations</h6>
+  <div id="exTab2" class="mt-2">
+    <ul class="nav nav-pills mt-2">
+      <li [class.active]="activeTabFour === 'medication'" (click)="setActiveTabFour('medication')">
+        Medication
+      </li>
+      <li [class.active]="activeTabFour === 'labTestClut'" (click)="setActiveTabFour('labTestClut')">
+        Lab Test And Clutures
+      </li>
+      <li [class.active]="activeTabFour === 'bloodAndCompo'" (click)="setActiveTabFour('bloodAndCompo')">
+        Blood And Blood Components/Diagnosstic Proc.
+      </li>
+      <li [class.active]="activeTabFour === 'consultations'" (click)="setActiveTabFour('consultations')">
+        Consultations
+      </li>
+      <li [class.active]="activeTabFour === 'nursingRecom'" (click)="setActiveTabFour('nursingRecom')">
+        Nursing Recommendations
+      </li>
+    </ul>
+  </div>
+  <div style="border-bottom: 3px solid #0056b0" class="mt-3"></div>
+  <!-- medication-->
+  <div class="tab-content" *ngIf="activeTabFour === 'medication'">
+    <div class="end-container">
+      <div class="scale-box-main">
+        <div class="container-fluid">
+          <div class="row create-form-inputs">
+            <div class="scale-box">
+              <div class="scale-box-checkbox">
+                <input type="checkbox" id="noScaleAppicable" />
+                <label class="admitting-physician" for="noScaleAppicable">No Medication Order Applicable</label>
+                <div style="display: flex; width: 85%; justify-content: end">
+                  <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                </div>
+              </div>
+              <div class="four-table">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Order Type</th>
+                      <th style="width: 270px">Description</th>
+                      <th>Home Medication</th>
+                      <th>Patient's Own Meds</th>
+                      <th>Dose</th>
+                      <th>Validity</th>
+                      <th>Route</th>
+                      <th>Rate</th>
+                      <th>Therapy Recommdation</th>
+                      <th>Durg ID</th>
+                      <th>Ordering Physician</th>
+                      <th>Cycle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td style="text-align: center">
+                        <input type="checkbox" id="anesthesia" />
+                      </td>
+                      <td style="text-align: center">
+                        <input type="checkbox" id="anesthesia" />
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td style="text-align: center">
+                        <input type="checkbox" id="anesthesia" />
+                      </td>
+                      <td style="text-align: center">
+                        <input type="checkbox" id="anesthesia" />
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td style="text-align: center">
+                        <input type="checkbox" id="anesthesia" />
+                      </td>
+                      <td style="text-align: center">
+                        <input type="checkbox" id="anesthesia" />
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- labTestClut -->
+   <div class="tab-content" *ngIf="activeTabFour === 'labTestClut'">
+    <div class="scale-box-table pr-2">
+      <div class="scale-box-main">
+        <div class="scale-box-checkbox pb-2">
+          <div style="display: flex; width: 100%; justify-content: space-between">
+            <div class="scale-box-checkbox d-flex align-items-center w-50">
+              <input type="checkbox" id="noScaleAppicable" class="mr-2" />
+              <label class="m-0">No lab test applicable</label>
+            </div>
+            <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+          </div>
+        </div>
+        <div class="table-scroll-container">
+          <table class="table table-bordered third-table">
+            <thead style="background-color: #e4edf5;color: black;">
+              <tr>
+                <th scope="col">Date/Time</th>
+                <th scope="col">Catelog</th>
+                <th scope="col">Description</th>
+                <th scope="col">Done</th>
+                <th scope="col">Result Ready</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let codeItems of code">
+                <td>
+                  <div class="date-input-wrapper">
+                    <input class="form-control" type="text" placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                      bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+                    <img src="assets/img/Calender.svg" alt="calendar" class="calendar-icon" />
+                  </div>
+                </td>
+                <td><input type="text" class="form-control" /></td>
+                <td><input type="text" class="form-control" /></td>
+                <td class="w-20">
+                  <ng-select bindLabel="label" [items]="yesNoOptions" bindValue="value" placeholder="" style="width: 100%">
+                  </ng-select>
+                </td>
+                <td class="w-20">
+                  <ng-select bindLabel="label" [items]="yesNoOptions" bindValue="value" placeholder="" style="width: 100%">
+                  </ng-select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- bloodAndCompo-->
+  <div class="tab-content" *ngIf="activeTabFour === 'bloodAndCompo'">
+    <div class="scale-box-table pr-2">
+      <div class="scale-box-main">
+        <div class="scale-box-checkbox pb-3" style="text-align: right;">
+          <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+        </div>
+        <div class="table-scroll-container">
+          <table class="table table-bordered third-table">
+            <thead style="background-color: #e4edf5;color: black;">
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Code</th>
+                <th scope="col">Description</th>
+                <th scope="col">Requested</th>
+                <th scope="col">Ready</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let codeItems of code">
+                <td>
+                  <div class="date-input-wrapper">
+                    <input class="form-control" type="text" placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                      bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+                    <img src="assets/img/Calender.svg" alt="calendar" class="calendar-icon" />
+                  </div>
+                </td>
+                <td>
+                  <input type="time" value="00.00.00" class="form-control" />
+                </td>
+                <td><input type="text" class="form-control" /></td>
+                <td><input type="text" class="form-control" /></td>
+                <td class="w-20">
+                  <ng-select bindLabel="label" [items]="yesNoOptions" bindValue="value" placeholder="" style="width: 100%">
+                  </ng-select>
+                </td>
+                <td class="w-20">
+                  <ng-select bindLabel="label" [items]="yesNoOptions" bindValue="value" placeholder="" style="width: 100%">
+                  </ng-select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- consultations-->
+  <div class="tab-content" *ngIf="activeTabFour === 'consultations'">
+    <div class="scale-box-table pr-2">
+      <div class="scale-box-main">
+        <div class="scale-box-checkbox pb-3" style="text-align: right;">
+          <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+        </div>
+        <div class="table-scroll-container">
+          <table class="table table-bordered third-table">
+            <thead style="background-color: #e4edf5;color: black;">
+              <tr>
+                <th scope="col">Date/Time</th>
+                <th scope="col">Consulattions</th>
+                <th scope="col">Employee Resposible</th>
+                <th scope="col">Informed</th>
+                <th scope="col">Seen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let codeItems of code">
+                <td>
+                  <div class="date-input-wrapper">
+                    <input class="form-control" type="text" placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                      bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+                    <img src="assets/img/Calender.svg" alt="calendar" class="calendar-icon" />
+                  </div>
+                </td>
+                <td><input type="text" class="form-control" /></td>
+                <td><input type="text" class="form-control" /></td>
+                <td class="w-20">
+                  <ng-select bindLabel="label" [items]="yesNoOptions" bindValue="value" placeholder="" style="width: 100%">
+                  </ng-select>
+                </td>
+                <td class="w-20">
+                  <ng-select bindLabel="label" [items]="yesNoOptions" bindValue="value" placeholder="" style="width: 100%">
+                  </ng-select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- nursingRecom-->
+  <div class="tab-content" *ngIf="activeTabFour === 'nursingRecom'">
+    <div class="col-md-10 d-flex">
+      <textarea id="chifComplaint" name="chifComplaint" class="form-control mr-3" rows="5"></textarea>
+    </div>
+  </div>
+  <!--End Four Tab Section-->
+</div>
