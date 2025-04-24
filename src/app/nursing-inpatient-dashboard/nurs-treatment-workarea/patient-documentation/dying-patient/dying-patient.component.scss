@@ -1,0 +1,57 @@
+
+.data_body{
+    .row{
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    label{
+      margin-bottom: 0;
+      text-transform: capitalize;
+  }
+  .label{
+      min-width: max-content;
+      text-transform: capitalize;
+      font-weight: 600;
+  }
+  ul{
+      padding-left: 30px;
+      li{
+          border-bottom: 1px solid lightgrey;
+          list-style: disc;
+      }
+  }
+  .ng-select.ng-select-single .ng-select-container {
+      height: 36px !important;
+  }
+}
+
+
+    .review-btn{
+      background: #0056b0;
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      width: 90px;
+      border: none;
+    }
+
+    .font-use{
+      font-size: 16px !important;
+      font-weight: 400 !important;
+    }
+    .bg-comm {
+      background: #EDF6FD !important;
+    }
+    
+    .bg-color {
+      background-color: #0056B0 !important;
+      border-radius: 20px;
+      color: #fff !important;
+    }
+    
+    .font-witnss{
+      font-size: 20px;
+    }
+
+
+

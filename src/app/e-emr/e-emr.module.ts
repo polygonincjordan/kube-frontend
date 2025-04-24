@@ -46,6 +46,7 @@ import { PatientHistoryService } from '@services/e-kardex/patient-history.servic
 import { MyFavoritePatientsComponent } from './my-favorite-patients/my-favorite-patients.component';
 import { MainHospitalistListViewComponent } from './my-favorite-patients/main-hospitalist-list-view/main-hospitalist-list-view.component';
 import { MyEndoscopyComponent } from './my-endoscopy/my-endoscopy.component';
+import { DocumentingDeliveryComponent } from './in-patients/documenting-delivery/documenting-delivery.component';
 export const emrRoutes: Routes = [
   // { path: '**', redirectTo: 'emr', pathMatch: 'full' },
   { path: '**', component: EmrComponent },
@@ -93,7 +94,8 @@ export const emrRoutes: Routes = [
     PhysicianOrdersComponent,
     MyFavoritePatientsComponent,
     MainHospitalistListViewComponent,
-    MyEndoscopyComponent
+    MyEndoscopyComponent,
+    DocumentingDeliveryComponent
   ],
   providers: [EEmrService, ChartService, EmergencyService,EPrescriptionService,MissedMedicationDosesService,PatientHistoryService],
 })

@@ -10,7 +10,7 @@
       "
     >
       <tr>
-        <th scope="col">Admitted on<i (click)="onSortClick($event,'AdmissionDate')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">Admitted<i (click)="onSortClick($event,'AdmissionDate')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- 1 -->
         <th scope="col" *ngIf="showColumnsListView.Admitted_At">Admitted at<i (click)="onSortClick($event,'AdmissionTime')"  class="my-icon fa fa-chevron-up"></i></th>
 
@@ -136,6 +136,7 @@
               <a *ngIf="listType != '04' && listType != '05'" class="dropdown-item c-pointer" (click)="openModuleAdmissionProcess(item)">New Admission</a>
               <a *ngIf="listType != '03'" class="dropdown-item c-pointer" (click)="openModuleDischargeProcess(item)">Discharge Process</a>
               <a class="dropdown-item c-pointer" routerLinkActive="active" target="_blank" routerLink="/handOverprocess"> Handover Process</a>
+              <a class="dropdown-item c-pointer" routerLinkActive="active" target="_blank" (click)="openDocumentingDeliveryModel(item)">Documenting Delivery</a>
               </div>
             </div>
         </td>
