@@ -1,0 +1,150 @@
+@import url('../nursing-admission-assessment/nursing-admission-assessment.component.scss');
+
+.haemodialysis-main {
+    border-radius: 10px;
+    border: 1px solid #cacaca;
+    padding: 0px 20px;
+
+    .haemodialysis-info {
+        .haemodialysis-dialysis-info {
+            border: 1px solid #cacaca;
+            border-radius: 13px;
+            padding: 20px;
+
+            .title-text {
+                position: absolute;
+                top: -15px;
+                color: #0056b0;
+                background-color: white;
+                padding: 0 15px;
+                z-index: 1;
+            }
+        }
+
+        .haemodialysis-content {
+            input {
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                padding: 3px 10px;
+            }
+
+            .common-label {
+                min-width: 200px;
+                font-size: 16px;
+            }
+
+            .score-input {
+                input {
+                    width: 300px;
+                    padding: 7.2px 0.75rem;
+                }
+            }
+
+            .risk-input-wrap {
+                width: 100%;
+
+                div {
+                    width: 100%;
+                }
+            }
+        }
+
+        .title-text {
+            color: #000000;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+    }
+
+    .risk-wrap {
+        .custom-input {
+            div {
+                width: 250px !important;
+            }
+        }
+    }
+
+    .custom-input {
+        gap: 10px;
+
+        label {
+            color: #000;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+            white-space: nowrap;
+
+            &.morse-label-comments {
+                max-width: 142px !important;
+                flex: 0 0 142px;
+            }
+        }
+
+        input {
+            border: 1px solid #bfbfbf;
+            border-radius: 6px !important;
+            padding: 7.2px 0.75rem;
+        }
+
+        .i-morse {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            span {
+                padding: 0 10px;
+                border: 1px solid #ddd;
+                border-radius: 2px;
+            }
+        }
+    }
+}
+
+.feature_section {
+    margin-top: 20px;
+    width: 100%;
+    border: 1px solid #cacaca;
+
+    h3 {
+        border-bottom: 1px solid #cacaca;
+        padding: 10px;
+    }
+}
+
+#exTab1 .nav-pills>li>a {
+    border-radius: 0;
+}
+
+
+#exTab3 .nav-pills>li>a {
+    border-radius: 4px 4px 0 0;
+}
+
+#exTab3 .tab-content {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+
+.nav-pills li {
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    padding: 10px;
+    margin-bottom: 0px;
+    border: 1px solid #ccc;
+}
+
+.active {
+    color: #fff;
+    background-color: #0056b0;
+}
+
+.border_box {
+    border: 1px solid #cacaca;
+}

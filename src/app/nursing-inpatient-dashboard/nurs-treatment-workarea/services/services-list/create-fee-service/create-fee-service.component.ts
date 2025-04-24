@@ -32,6 +32,7 @@ export class CreateFeeServiceComponent implements OnInit {
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
       if (data != null) {
         if (data.type == ActionType.Save$ && data.isAllow == true && data.value == WordType.CreateNewFeeServiceOrder) {
+          console.log(this.dataShareService.actionsType$, "this.dataShareService.actionsType");
           this.createNewFeeServiceOrder();
         }
       }

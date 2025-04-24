@@ -10,7 +10,7 @@ export class SearchTextPipe implements PipeTransform {
       return value;
     }
     return value.filter(item => {
-      return Object.values(item).some(val => val?.toString().toLowerCase().includes(args));
+      return Object.values(item).some(val => val?.toString().toLowerCase().includes(args.toLowerCase()));
       });
   }
 }

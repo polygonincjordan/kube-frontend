@@ -75,12 +75,11 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
             _success.d.Url
           );
           const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-lg',
+            class: 'modal-dialog-centered modal-xl',
           };
           this.modalRef = this.modalService.show(this.labpdfmodal, config);
         }
       },
-      (_error: any) => {}
     );
   }
 

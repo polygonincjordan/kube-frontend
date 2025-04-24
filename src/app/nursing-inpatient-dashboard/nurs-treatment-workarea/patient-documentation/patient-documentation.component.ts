@@ -181,6 +181,14 @@ export class PatientDocumentationComponent implements OnInit {
   public openConfusionAssessmentDocument: boolean = false;
   latestConfusionAssessmentList = [];
 
+  public isICAdultVentilator: boolean = false;
+  public openICAdultVentilatorDocument: boolean = false;
+  latestICAdultVentilatorList = [];
+
+  public isICUFlowsheet: boolean = false;
+  public openICUFlowsheetDocument: boolean = false;
+  latestICUFlowsheetList = [];
+
   public isCVCInsertion: boolean = false;
   public isPediatricsFall: boolean = false;
   public openCVCInsertionDocument: boolean = false;
@@ -1175,9 +1183,11 @@ export class PatientDocumentationComponent implements OnInit {
       'isNIPSDocument': { isNIPSDocument: true, selectedDocName: 'NIPS (Newborn to 1 Year)' },
       'isRamsaySedation': { isRamsaySedation: true, selectedDocName: 'Ramsay Sedation Scale' },
       'isConfusionAssessment': { isConfusionAssessment: true, selectedDocName: 'Confusion Assessment Method for ICU (CAM-ICU)' },
+      'isICAdultVentilator': { isICAdultVentilator: true, selectedDocName: 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)' },
       'isObstetricFallRiskAssessment': { isObstetricFallRiskAssessment: true, selectedDocName: 'Obstetric Fall Risk Assessment' },
       'ispostPatientFallAssessment': { ispostPatientFallAssessment: true, selectedDocName: 'Post Patient Fall Assessment' },
       'isInitialNursingNewborn': { isInitialNursingNewborn: true, selectedDocName: 'Initial Nursing Assessment Newborn' },
+      'isICUFlowsheet': { isICUFlowsheet: true, selectedDocName: 'ICU 24 hours Flowsheet' },
     };
 
 
@@ -1233,6 +1243,10 @@ export class PatientDocumentationComponent implements OnInit {
     this.openRamsaySedationDocument = false;
     this.isConfusionAssessment = false;
     this.openConfusionAssessmentDocument = false;
+    this.isICAdultVentilator = false;
+    this.openICAdultVentilatorDocument = false;
+    this.isICUFlowsheet = false;
+    this.openICUFlowsheetDocument = false;
     this.isCVCInsertion = false;
     this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
@@ -1625,6 +1639,10 @@ export class PatientDocumentationComponent implements OnInit {
     this.openRamsaySedationDocument = false;
     this.isConfusionAssessment = false;
     this.openConfusionAssessmentDocument = false;
+    this.isICAdultVentilator = false;
+    this.openICAdultVentilatorDocument = false;
+    this.isICUFlowsheet = false;
+    this.openICUFlowsheetDocument = false;
     this.isCVCInsertion = false;
     this.isPediatricsFall = false;
     this.isPediatricAdmission = false;
@@ -3869,6 +3887,106 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openConfusionAssessmentDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    }
+
+    else if (this.isICAdultVentilator) {
+      if (action == 'create') {
+        this.openICAdultVentilatorDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openICAdultVentilatorDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openICAdultVentilatorDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openICAdultVentilatorDocument = true;
+        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+    }
+
+    else if (this.isICUFlowsheet) {
+      if (action == 'create') {
+        this.openICUFlowsheetDocument = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openICUFlowsheetDocument = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.directReleaseTimeOutCheckListDoc();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openICUFlowsheetDocument = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openICUFlowsheetDocument = true;
         this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
           if (formValue) {
             this.refresh()
@@ -7356,10 +7474,12 @@ export class PatientDocumentationComponent implements OnInit {
       this.openRichmondScale ||
       this.openisDeliverRecord ||
       this.openPaediatricPhysicianDocument ||
-      this.openNewScaleDocumentDocument || 
-      this.openNIPSDocumentDocument || 
-      this.openRamsaySedationDocument || 
-      this.openConfusionAssessmentDocument
+      // this.openNewScaleDocumentDocument || 
+      // this.openNIPSDocumentDocument || 
+      // this.openRamsaySedationDocument || 
+      // this.openConfusionAssessmentDocument || 
+      this.openICAdultVentilatorDocument || 
+      this.openICUFlowsheetDocument
     );
   }
   get showActionBtn(): boolean {
@@ -7401,10 +7521,8 @@ export class PatientDocumentationComponent implements OnInit {
       this.openRichmondScale || 
       this.openisDeliverRecord || 
       this.openPaediatricPhysicianDocument || 
-      this.openNewScaleDocumentDocument || 
-      this.openNIPSDocumentDocument || 
-      this.openRamsaySedationDocument || 
-      this.openConfusionAssessmentDocument
+      this.openICAdultVentilatorDocument || 
+      this.openICUFlowsheetDocument
     );
   }
 
@@ -7425,6 +7543,12 @@ export class PatientDocumentationComponent implements OnInit {
     // Recalculate content height whenever the window is resized
     // This will automatically update the height of the scrollable div
     this.getContentHeight();
+  }
+
+  hideSaveBtnForScale() {
+    if(this.selectedDocName != 'Critical Care Pain Observation Tool') {
+
+    }
   }
 
 }

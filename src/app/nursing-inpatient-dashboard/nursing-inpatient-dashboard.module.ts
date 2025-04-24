@@ -170,6 +170,8 @@ import { NewScaleDocumentModule } from '../shared-module/new-scale-document/new-
 import { NIPSDocumentModule } from '../shared-module/nips-document/nips-document.module';
 import { RamsaySedationScaleModule } from '../shared-module/ramsay-sedation-scale/ramsay-sedation-scale.module';
 import { ConfusionAssessmentMethodModule } from '../shared-module/confusion-assessment-method/confusion-assessment-method.module';
+import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.module';
+import { IcuHoursFlowsheetModule } from '../shared-module/icu-hours-flowsheet/icu-hours-flowsheet.module';
 
 
 const route: Routes = [
@@ -354,7 +356,9 @@ const route: Routes = [
     NewScaleDocumentModule,
     NIPSDocumentModule,
     RamsaySedationScaleModule,
-    ConfusionAssessmentMethodModule
+    ConfusionAssessmentMethodModule,
+    IcBundleAdultVentilatorModule,
+    IcuHoursFlowsheetModule
 ],
 })
 export class NursingInpatientDashboardModule {}

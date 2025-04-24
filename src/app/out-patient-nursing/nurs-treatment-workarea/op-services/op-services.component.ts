@@ -4,6 +4,7 @@ import { DataShareService } from '@services/data-share.service';
 import { FeeListService } from '@services/fee-service/fee-list.service';
 import { FeeList } from '@services/fee-service/interface/fee-list.interface';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'op-services',
@@ -42,7 +43,19 @@ export class OpServicesComponent implements OnInit {
   }
 
   public create() {
-    this.dataShareService.sendActionType(ActionType.Save$, true, WordType.CreateNewFeeServiceOrder);
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Are You Sure to Add New Services?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        this.dataShareService.sendActionType(ActionType.Save$, true, WordType.CreateNewFeeServiceOrder);
+      }
+    });
   }
 
   public cancel() {
