@@ -11,6 +11,7 @@ import { StorageService } from '@services/storage.service';
 import { TabsetComponent, TabDirective } from 'ngx-bootstrap/tabs';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-consumables',
@@ -81,7 +82,19 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
   }
 
   public saveConsumable(): void {
-    this.dataShareService.sendActionType(ActionType.Save$, true);
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Are You Sure to Add New Consumables?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        this.dataShareService.sendActionType(ActionType.Save$, true);
+      }
+    });
   }
 
   public changeTab($event) {

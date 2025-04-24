@@ -76,7 +76,7 @@ export class PatientLabComponent implements OnInit {
     template: TemplateRef<any>,
     data: any
   ) {
-    const config: ModalOptions = { class: 'modal-dialog-centered modal-lg' };
+    const config: ModalOptions = { class: 'modal-dialog-centered modal-xl' };
       this.modalRef = this.modalService.show(template,config);
 
   }
@@ -326,7 +326,7 @@ export class PatientLabComponent implements OnInit {
         (_success: any) => {
           if (_success) {
           this.pdfUrl=this.sanitizer.bypassSecurityTrustResourceUrl(_success.d.Url);
-          const config: ModalOptions = { class: 'modal-dialog-centered modal-lg' };
+          const config: ModalOptions = { class: 'modal-dialog-centered modal-xl' };
       this.modalRef = this.modalService.show(this.labpdfmodal,config);
        }
         },

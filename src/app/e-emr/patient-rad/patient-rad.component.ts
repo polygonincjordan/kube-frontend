@@ -294,7 +294,7 @@ export class PatientRadComponent implements OnInit {
       (_success: any) => {
         if (_success) {
         this.pdfUrl=this.sanitizer.bypassSecurityTrustResourceUrl(_success.d.Url);
-        const config: ModalOptions = { class: 'modal-dialog-centered modal-lg' };
+        const config: ModalOptions = { class: 'modal-dialog-centered modal-xl' };
     this.modalRef = this.modalService.show(this.radpdfmodal,config);
      }
       },
@@ -429,7 +429,7 @@ export class PatientRadComponent implements OnInit {
         if (_success) {
        //this.filterData();
        this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(_success.d.Url);
-       const config: ModalOptions = { class: 'modal-dialog-centered modal-lg' };
+       const config: ModalOptions = { class: 'modal-dialog-centered modal-xl' };
        this.modalRef = this.modalService.show(this.imageModal,config);
      }
       },

@@ -36,6 +36,7 @@ export interface Patient {
   primDiaTxt?: string;
   bloodGrpTxt?: string;
   maritalStatus?: string;
+  telephone?: string;
 }
 
 export interface FlagIcons {

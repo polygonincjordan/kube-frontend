@@ -174,6 +174,8 @@ import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patie
 import { DyingPatientComponent } from './nurs-treatment-workarea/patient-documentation/dying-patient/dying-patient.component';
 import { PostCathRadialComponent } from './nurs-treatment-workarea/patient-documentation/post-cath-radial/post-cath-radial.component';
 import { PostCathFemoralComponent } from './nurs-treatment-workarea/patient-documentation/post-cath-femoral/post-cath-femoral.component';
+import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.module';
+import { IcuHoursFlowsheetModule } from '../shared-module/icu-hours-flowsheet/icu-hours-flowsheet.module';
 
 
 const route: Routes = [
@@ -362,7 +364,9 @@ const route: Routes = [
     NewScaleDocumentModule,
     NIPSDocumentModule,
     RamsaySedationScaleModule,
-    ConfusionAssessmentMethodModule
+    ConfusionAssessmentMethodModule,
+    IcBundleAdultVentilatorModule,
+    IcuHoursFlowsheetModule
 ],
 })
 export class NursingInpatientDashboardModule {}

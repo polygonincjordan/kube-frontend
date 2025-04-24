@@ -9,7 +9,7 @@ export class SearchTextPipe implements PipeTransform {
       return value;
     }
     return value.filter((val)=>{
-      let rVal=(val.N1ztxt.toLocaleLowerCase().includes(args)) || val.Descrlt.toLocaleLowerCase().includes(args);
+      let rVal=(val.N1ztxt.toLocaleLowerCase().includes(args)) || val.Descrlt.toLocaleLowerCase().includes(args.toLowerCase());
       return rVal;
     })
   }
