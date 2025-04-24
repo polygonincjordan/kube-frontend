@@ -179,7 +179,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -1185,6 +1185,50 @@
                     </div>
                 </div>
               </div>
+
+              <!--  IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) -->
+               <div
+                [ngClass]="isICAdultVentilator ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isICAdultVentilator',latestICAdultVentilatorList[0])">
+                <div class="col-md-4"> IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) {{latestICAdultVentilatorList[0]?.Zversion ?
+                  dockVer(latestICAdultVentilatorList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestICAdultVentilatorList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestICAdultVentilatorList[0]?.DocTime)}}">
+                  {{getDate(latestICAdultVentilatorList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestICAdultVentilatorList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestICAdultVentilatorList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestICAdultVentilatorList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestICAdultVentilatorList[0]?.Dockey, latestICAdultVentilatorList[0])">
+                      <select *ngIf="latestICAdultVentilatorList.length && latestICAdultVentilatorList[0]?.StatusTxt !='N/A' && latestICAdultVentilatorList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
+              <!--  ICU 24 hours Flowsheet -->
+               <!-- <div
+                [ngClass]="isICUFlowsheet ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isICUFlowsheet',latestICUFlowsheetList[0])">
+                <div class="col-md-4"> ICU 24 hours Flowsheet {{latestICUFlowsheetList[0]?.Zversion ?
+                  dockVer(latestICUFlowsheetList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                <div class="col-md-2 status-color">{{latestICUFlowsheetList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestICUFlowsheetList[0]?.DocTime)}}">
+                  {{getDate(latestICUFlowsheetList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestICUFlowsheetList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestICUFlowsheetList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestICUFlowsheetList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestICUFlowsheetList[0]?.Dockey, latestICUFlowsheetList[0])">
+                      <select *ngIf="latestICUFlowsheetList.length && latestICUFlowsheetList[0]?.StatusTxt !='N/A' && latestICUFlowsheetList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div> -->
           <!--  Correspondence Document -->
             <!-- <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -1325,6 +1369,8 @@
     <app-nips-document *ngIf="openNIPSDocumentDocument"></app-nips-document>
     <app-ramsay-sedation-scale *ngIf="openRamsaySedationDocument"></app-ramsay-sedation-scale>
     <app-confusion-assessment-method *ngIf="openConfusionAssessmentDocument"></app-confusion-assessment-method>
+    <app-ic-bundle-adult-ventilator *ngIf="openICAdultVentilatorDocument"></app-ic-bundle-adult-ventilator>
+    <app-icu-hours-flowsheet *ngIf="openICUFlowsheetDocument"></app-icu-hours-flowsheet>
 
     <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
     <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>

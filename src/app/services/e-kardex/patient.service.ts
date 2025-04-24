@@ -89,6 +89,7 @@ export class PatientService {
       fallRiskForceScore: _get(episodeOfCare, 'fallRiskForceScore', ''),
       fallRiskForceScoreTxt: _get(episodeOfCare, 'fallRiskForceScoreTxt', ''),
       phone: _get(subject, 'telecom[0].value'),
+      telephone: _get(subject, 'telecom[1].value'),
       address: this.getAddressText(_get(subject, 'address[0]', '')),
       deptOrgUnit: _get(data, 'deptOrgUnit', ''),
       deptOrgUnitTxt: _get(data, 'deptOrgUnitTxt', ''),

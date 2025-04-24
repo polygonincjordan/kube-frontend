@@ -84,7 +84,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
             _success.d.Url
           );
           const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-lg',
+            class: 'modal-dialog-centered modal-xl',
           };
           this.modalRef = this.modalService.show(this.labpdfmodal, config);
         }
@@ -224,7 +224,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
 
   getLabService(item: any, template: TemplateRef<any>) {
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-lg labservice-modal',
+      class: 'modal-dialog-centered modal-xl labservice-modal',
     };
     this.modalRef = this.modalService.show(template, config);
     this.laboratoryDetails = item;

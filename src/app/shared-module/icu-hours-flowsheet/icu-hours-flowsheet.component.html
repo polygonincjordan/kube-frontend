@@ -1,0 +1,263 @@
+<div class="haemodialysis-main">
+    <div class="haemodialysis-info">
+        <div class="container-fluid" style="padding: 0px;">
+            <div>
+                <div class="row mb-3">
+                    <div id="exTab1" class="d-flex mt-4">
+                        <ng-container *ngFor="let item of tabItems">
+                            <ul class="nav nav-pills">
+                                <li [class.active]="activeTab === item.value" (click)="setActiveTab(item.value)">
+                                    {{ item.label }}
+                                </li>
+                            </ul>
+                        </ng-container>
+                    </div>
+                </div>
+                <div>
+                    <div *ngIf="activeTab == '1'">
+                        <div class="row my-3 m-0">
+                            <div class="col-md-6 row my-3 m-0 border_box">
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-3 px-0 mb-2">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">ET-Tube</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">T-Tube</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">NP Tube</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
+                                            <ng-select class="col-2 px-0">
+                                                <ng-option></ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">By</label>
+                                            <input type="text" class="col-8">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 row my-3 m-0 border_box">
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-3 px-0 mb-2">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">Swan Ganz</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
+                                            <ng-select class="col-2 px-0">
+                                                <ng-option></ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2 mb-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">By</label>
+                                            <input type="text" class="col-8">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-3 m-0 mt-3">
+                            <div class="col-md-6 row my-3 m-0 border_box">
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-3 px-0 mb-2">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">Central Line</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
+                                            <ng-select class="col-2 px-0">
+                                                <ng-option></ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">By</label>
+                                            <input type="text" class="col-8">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 row my-3 m-0 border_box">
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-3 px-0 mb-2">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <input type="radio" class="col-2">
+                                            <label for="" class="text-nowrap m-0 col-4 px-0">Arterial Line</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">ETT Size</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
+                                            <input type="text" class="col-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
+                                            <ng-select class="col-2 px-0">
+                                                <ng-option></ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex align-items-center mt-2 mb-2">
+                                    <div class="col-12 px-0 ">
+                                        <div class="row align-items-center w-100 custom-input">
+                                            <label for="" class="text-nowrap m-0 col-2">By</label>
+                                            <input type="text" class="col-8">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

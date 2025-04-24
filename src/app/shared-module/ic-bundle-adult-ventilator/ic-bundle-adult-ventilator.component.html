@@ -1,0 +1,201 @@
+<div class="haemodialysis-main">
+    <div class="haemodialysis-info">
+        <div class="container-fluid" style="padding: 0px;">
+            <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
+                <label for="" class="title-text m-0">Bundle Elements</label>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">Mechanical Ventilation Start Date</label>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 ">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">Mechanical Ventilation Start Time</label>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">Date of Intubation</label>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 ">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">VAP Bundle Date</label>
+                                <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">Ventilator Days</label>
+                                <input type="text" class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">1. Head of the bed elevated to between 30
+                                    and 45 degrees</label>
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Yes</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">No</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
+                                <input type="text" class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">2. Daily "sedation interruption" and daily
+                                    assessment of readiness to extubate performed?</label>
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Yes</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">No</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
+                                <input type="text" class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">3. Peptic ulcer disease (PUD) prophylaxis
+                                    prescribed according to policy?</label>
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Yes</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">No</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
+                                <input type="text" class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">4. Deep venous thrombosis (DVT) prophylaxis
+                                    measures (unless contraindicated) prescribed according to policy?</label>
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Yes</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">No</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
+                                <input type="text" class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">5. Daily oral care provided: 0.12% oral
+                                    chlorhexidine for use as mouth rinse?</label>
+                            </div>
+                        </div>
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Yes</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">No</label>
+                            </div>
+                            <div class="row align-items-center w-100 custom-input mt-2">
+                                <input type="radio" />
+                                <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
+                                <input type="text" class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">VAP Prevention Score</label>
+                                <input type="text" class="col-2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="col-6 px-0 mb-2">
+                            <div class="row align-items-center w-100 custom-input">
+                                <label for="" class="text-nowrap m-0 col-4">Comments</label>
+                                <input type="text" class="col-2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
