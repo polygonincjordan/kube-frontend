@@ -355,6 +355,10 @@
     *ngIf="!reservation"
     [ngStyle]="{ display: erSetting ? 'none' : 'flex' }"
   >
+  <span *ngIf="checkin" style="display: flex;font-size: 16px;margin-right: 13px;gap: 8px;" title="Search in Er list">
+    <input style="width: 16px;" type="checkbox" [(ngModel)]="isShowRooms" [value]="false" (change)="showRooms()" />
+    <label class="m-0" >All Rooms </label>
+  </span>
   <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i>
     <i
       class="fa fa-filter"
@@ -420,6 +424,28 @@
         ></span>
       </div>
       <form [formGroup]="filterForm" class="p-2">
+        <p style="margin: auto; margin-top: 5px">Admission Status</p>
+        <ng-select
+          class=""
+          id="inputGroupSelect01"
+          formControlName="Status"
+          [multiple]="true"
+        >
+          <ng-option
+            [value]="item"
+            *ngFor="let item of getCheckInStatusFilterData"
+          >
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Specialty</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FSpecialty" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
         <p style="margin: auto; margin-top: 5px">Attending Physician</p>
         <ng-select
           class=""
@@ -435,21 +461,14 @@
             {{ item.NamString }}
           </ng-option>
         </ng-select>
-        <p style="margin: auto; margin-top: 5px">Admission Status</p>
-        <ng-select
-          class=""
-          id="inputGroupSelect01"
-          formControlName="Status"
-          [multiple]="true"
-        >
-          <!-- <ng-option selected value="">Choose Status</ng-option> -->
-          <ng-option
-            [value]="item"
-            *ngFor="let item of getCheckInStatusFilterData"
-          >
+    
+        <p style="margin: auto; margin-top: 5px">Ward</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
             {{ item }}
           </ng-option>
         </ng-select>
+
         <p style="margin: auto; margin-top: 5px">Rooms</p>
         <ng-select
           class=""
@@ -465,24 +484,14 @@
             {{ item }}
           </ng-option>
         </ng-select>
+
         <p style="margin: auto; margin-top: 5px">Financial Category</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="FCategory" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInFinancialFilterData">
             {{ item }}
           </ng-option>
         </ng-select>
-        <p style="margin: auto; margin-top: 5px">Ward</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
-          <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
-            {{ item }}
-          </ng-option>
-        </ng-select>
-        <p style="margin: auto; margin-top: 5px">Specialty</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="FSpecialty" [multiple]="true">
-          <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
-            {{ item }}
-          </ng-option>
-        </ng-select>
+  
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button
             class="btn btn-primary"
@@ -491,10 +500,7 @@
           >
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
-    border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;" (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>

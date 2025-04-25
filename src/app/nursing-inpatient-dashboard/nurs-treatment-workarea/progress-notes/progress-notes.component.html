@@ -68,15 +68,17 @@ padding: 10px;">
               }}</ng-option>
           </ng-select>
         </div> -->
-        <div class="header-btn" (click)="cancelProgressNote()">
-          <button type="button" class="create-progress">
-            Cancel
-          </button>
-        </div>
-        <div class="header-btn">
-          <button (click)="createProgressNote()" type="button" class="create-progress">
-            Create
-          </button>
+        <div class="d-flex">
+          <div class="header-btn" (click)="cancelProgressNote()">
+            <button type="button" class="create-progress">
+              Cancel
+            </button>
+          </div>
+          <div class="header-btn">
+            <button (click)="createProgressNote()" type="button" class="create-progress">
+              Create
+            </button>
+          </div>
         </div>
       </div>
       <div class="progress mt-3">

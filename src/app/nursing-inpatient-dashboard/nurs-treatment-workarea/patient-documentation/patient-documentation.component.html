@@ -23,21 +23,21 @@
             </ng-option>
           </ng-select>
         </div>
-        <div class="select-functionality text-left">
+        <div class="select-functionality text-left" style="min-width: 8%;">
           <ng-select [searchable]="true" placeholder="previous periods" [(ngModel)]="previousPeriodValue" (change)="filterPeriodDate()">
             <ng-option *ngFor="let data of previousPeriodsList" [value]="data">{{ data}}
               <!-- [{{data.Dtid}}] -->
             </ng-option>
           </ng-select>
         </div>
-        <div class="select-functionality text-left">
+        <div class="select-functionality text-left" style="min-width: 8%;">
           <ng-select [searchable]="true" placeholder="Created by" [(ngModel)]="selectedCreatedBy" (change)="filterPeriodDate()">
             <ng-option *ngFor="let data of createdDocumentUserList" [value]="data">{{ data }}
               <!-- [{{data.Dtid}}] -->
             </ng-option>
           </ng-select>
         </div>
-        <div class="select-functionality text-left">
+        <div class="select-functionality text-left" style="min-width: 8%;">
           <ng-select [searchable]="true" placeholder="Department OU" [(ngModel)]="selectedDocumentOU" (change)="filterPeriodDate()">
             <ng-option *ngFor="let data of departmentOUList" [value]="data">{{ data }}
               <!-- [{{data.Dtid}}] -->
@@ -179,7 +179,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -1289,7 +1289,7 @@
               </div>
 
               <!--  ICU 24 hours Flowsheet -->
-               <!-- <div
+               <div
                 [ngClass]="isICUFlowsheet ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" (click)="selectAssessment('isICUFlowsheet',latestICUFlowsheetList[0])">
                 <div class="col-md-4"> ICU 24 hours Flowsheet {{latestICUFlowsheetList[0]?.Zversion ?
@@ -1308,7 +1308,7 @@
                         id=""></select>
                     </div>
                 </div>
-              </div> -->
+              </div>
           <!--  Correspondence Document -->
             <!-- <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "

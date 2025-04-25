@@ -1730,6 +1730,37 @@ export class CheckinListComponent implements OnInit {
         this.getErList();
       });
   }
+
+  confirmationOfPhysicianStatus(item) {
+    Swal.fire({
+      text: "Are You Sure to Mark Physician Treatment as Complete?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then((result) => {
+      if (result.value) {
+        this.changePhysicianStatus(item);
+      }
+    })
+  }
+  changePhysicianStatus(item) {
+    let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
+    const json = {
+      "Einri": item.Einri,
+      "Falnr": item.Falnr,
+      "Patnr": item.Patnr,
+      "Lfdnr": item.Lfdbw,
+      "VisitStat": "65",
+      "Sdate": new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
+      "Stime": createTime
+    }
+    this.emrservice.changeStatus(json).subscribe(
+      (success: any) => {
+        this.getErList();
+      });
+  }
   openAssignDoc(template: TemplateRef<any>, data) {
     const config: ModalOptions = { class: 'modal-dialog-centered' };
     this.modalRef = this.modalService.show(template, config);
