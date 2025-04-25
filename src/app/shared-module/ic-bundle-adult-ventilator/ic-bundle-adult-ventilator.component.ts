@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IcBundleAdultVentilatorComponent implements OnInit {
 
+  selectedRadio: any = {
+    elevated: '0',
+    interruption: '0',
+    peptic: '0',
+    thrombosis: '0',
+    chlorhexidine: '0',
+  }
   constructor() { }
 
   ngOnInit(): void {

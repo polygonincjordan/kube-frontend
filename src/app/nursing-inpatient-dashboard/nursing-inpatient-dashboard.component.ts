@@ -78,6 +78,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   LabResults: boolean = false;
   noReleaseDoc: boolean = false;
   rxEmr: boolean = false;
+  isShowRooms: boolean = false;
   showfilter = false;
   selectedModule: any;
   currentDate: Date;
@@ -695,6 +696,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  showRooms() {
+    this.CheckInComponent.showAllRooms(this.isShowRooms);
+  }
+
   countForPhysicianOrder() {
     let jsonObj = {
       fromDate: `${new DatePipe('en-US').transform(
@@ -866,6 +871,13 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
     this.showfilter = false;
+  }
+
+  clearFilter() {
+    this.refreshFormGroup();
+    if (this.selectedModule == 'checkin') {
+      this.CheckInComponent.filterListData(this.filterForm.value);
+    } 
   }
 
   closeAndRefresh() {

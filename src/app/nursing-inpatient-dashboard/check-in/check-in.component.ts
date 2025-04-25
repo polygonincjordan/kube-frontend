@@ -825,6 +825,7 @@ export class CheckInComponent implements OnInit {
 
         let IPList: any[] = patientList;
         this.inHospitalistList = IPList.filter(item => item.PatientstatusDischarged !== 'X');
+        this.inHospitalistList = IPList.filter(item => item.Roomid);
         let IPListClone: any[] = patientList;
         this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
 
@@ -832,6 +833,14 @@ export class CheckInComponent implements OnInit {
         this.lastIndex = this.inHospitalistList.length - 1;
         this.emergencyService.callAgainAPI = true;
       });
+  }
+
+  showAllRooms(isShowRooms?: any) {
+    if(isShowRooms) {
+      this.inHospitalistList = this.inHospitalistListClone;
+    } else {
+      this.inHospitalistList = this.inHospitalistListClone.filter(item => item.Roomid);
+    }
   }
 
   getErList(date?: any) {

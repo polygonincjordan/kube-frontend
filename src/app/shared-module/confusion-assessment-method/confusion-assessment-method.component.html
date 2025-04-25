@@ -9,7 +9,7 @@
                             <div class="col-6 px-0 mb-2">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Scale Name</label>
-                                    <input type="text" class="col-6" value="Morse Fall Scale (MFS)" style="width: 100%;"
+                                    <input type="text" class="col-6" value="Confusion Assessment Method for ICU (CAM-ICU)" style="width: 100%;"
                                         disabled>
                                 </div>
                             </div>
@@ -193,28 +193,55 @@
                                 <label>Yes/No Questions: Ask the patient to respond:</label>
                                 <div class="row m-0 my-3 risk-wrap">
                                     <label for="" class="col-md-3">1. Will a stone float on water?</label>
-                                    <ng-select class="col-md-2">
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
+                                    <div class="col-md-2 row m-0">
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">Yes</label>
+                                        </div>
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">No</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row m-0 my-3 risk-wrap">
                                     <label for="" class="col-md-3">2. Are there fish in the sea?</label>
-                                    <ng-select class="col-md-2">
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
-
+                                    <div class="col-md-2 row m-0">
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">Yes</label>
+                                        </div>
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">No</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row m-0 my-3 risk-wrap">
                                     <label for="" class="col-md-3">3. Does 1 pound weigh more than 2 pounds?</label>
-                                    <ng-select class="col-md-2">
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
+                                    <div class="col-md-2 row m-0">
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">Yes</label>
+                                        </div>
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">No</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row m-0 my-3 risk-wrap">
                                     <label for="" class="col-md-3">4. Can you use a hammer to pound a nail?</label>
-                                    <ng-select class="col-md-2">
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
+                                    <div class="col-md-2 row m-0">
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">Yes</label>
+                                        </div>
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <input type="radio" />
+                                            <label for="" class="m-0 ml-2">No</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <label for="" class="mx-3">Commands :Ask the patient to follow your

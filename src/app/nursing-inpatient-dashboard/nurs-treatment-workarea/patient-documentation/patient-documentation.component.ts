@@ -7884,10 +7884,10 @@ export class PatientDocumentationComponent implements OnInit {
       this.openPostCathFemoral ||
       this.openPostCathRedial ||
       this.openPaediatricPhysicianDocument ||
-      // this.openNewScaleDocumentDocument || 
-      // this.openNIPSDocumentDocument || 
-      // this.openRamsaySedationDocument || 
-      // this.openConfusionAssessmentDocument || 
+      this.openNewScaleDocumentDocument || 
+      this.openNIPSDocumentDocument || 
+      this.openRamsaySedationDocument || 
+      this.openConfusionAssessmentDocument || 
       this.openICAdultVentilatorDocument || 
       this.openICUFlowsheetDocument
     );
@@ -7935,7 +7935,6 @@ export class PatientDocumentationComponent implements OnInit {
       this.openPostCathFemoral || 
       this.openPostCathRedial || 
       this.openPaediatricPhysicianDocument || 
-      this.openICAdultVentilatorDocument || 
       this.openICUFlowsheetDocument
     );
   }

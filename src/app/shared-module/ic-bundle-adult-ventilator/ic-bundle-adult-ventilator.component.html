@@ -59,15 +59,18 @@
                         </div>
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
-                                <input type="radio" />
+                                <input type="radio" name="status" [value]="'2'" class="me-2"
+                                    [(ngModel)]="selectedRadio.elevated" />
                                 <label for="" class="text-nowrap m-0 col-4">Yes</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="status" [value]="'1'" class="me-2"
+                                    [(ngModel)]="selectedRadio.elevated" />
                                 <label for="" class="text-nowrap m-0 col-4">No</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="status" [value]="'0'" class="me-2"
+                                    [(ngModel)]="selectedRadio.elevated" />
                                 <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
                                 <input type="text" class="col-2">
                             </div>
@@ -84,15 +87,18 @@
                         </div>
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
-                                <input type="radio" />
+                                <input type="radio" name="status" value="2" class="me-2"
+                                    [(ngModel)]="selectedRadio.interruption" />
                                 <label for="" class="text-nowrap m-0 col-4">Yes</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="status" value="1" class="me-2"
+                                    [(ngModel)]="selectedRadio.interruption" />
                                 <label for="" class="text-nowrap m-0 col-4">No</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="status" value="0" class="me-2"
+                                    [(ngModel)]="selectedRadio.interruption" />
                                 <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
                                 <input type="text" class="col-2">
                             </div>
@@ -109,15 +115,18 @@
                         </div>
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
-                                <input type="radio" />
+                                <input type="radio" name="peptic" [value]="'2'" class="me-2"
+                                    [(ngModel)]="selectedRadio.peptic" />
                                 <label for="" class="text-nowrap m-0 col-4">Yes</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="peptic" [value]="'1'" class="me-2"
+                                    [(ngModel)]="selectedRadio.peptic" />
                                 <label for="" class="text-nowrap m-0 col-4">No</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="peptic" [value]="'0'" class="me-2"
+                                    [(ngModel)]="selectedRadio.peptic" />
                                 <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
                                 <input type="text" class="col-2">
                             </div>
@@ -134,15 +143,18 @@
                         </div>
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
-                                <input type="radio" />
+                                <input type="radio" name="thrombosis" [value]="'2'" class="me-2"
+                                    [(ngModel)]="selectedRadio.thrombosis" />
                                 <label for="" class="text-nowrap m-0 col-4">Yes</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="thrombosis" [value]="'1'" class="me-2"
+                                    [(ngModel)]="selectedRadio.thrombosis" />
                                 <label for="" class="text-nowrap m-0 col-4">No</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="thrombosis" [value]="'0'" class="me-2"
+                                    [(ngModel)]="selectedRadio.thrombosis" />
                                 <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
                                 <input type="text" class="col-2">
                             </div>
@@ -159,15 +171,18 @@
                         </div>
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
-                                <input type="radio" />
+                                <input type="radio" name="chlorhexidine" [value]="'2'" class="me-2"
+                                    [(ngModel)]="selectedRadio.chlorhexidine" />
                                 <label for="" class="text-nowrap m-0 col-4">Yes</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="chlorhexidine" [value]="'1'" class="me-2"
+                                    [(ngModel)]="selectedRadio.chlorhexidine" />
                                 <label for="" class="text-nowrap m-0 col-4">No</label>
                             </div>
                             <div class="row align-items-center w-100 custom-input mt-2">
-                                <input type="radio" />
+                                <input type="radio" name="chlorhexidine" [value]="'0'" class="me-2"
+                                    [(ngModel)]="selectedRadio.chlorhexidine" />
                                 <label for="" class="text-nowrap m-0 col-4">Not Applicable</label>
                                 <input type="text" class="col-2">
                             </div>
@@ -180,17 +195,17 @@
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-4">VAP Prevention Score</label>
-                                <input type="text" class="col-2" />
+                                <input type="text" class="col-2" disabled />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row my-3">
                     <div class="col-12 d-flex align-items-center">
-                        <div class="col-6 px-0 mb-2">
+                        <div class="col-12 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
-                                <label for="" class="text-nowrap m-0 col-4">Comments</label>
-                                <input type="text" class="col-2" />
+                                <label for="" class="text-nowrap m-0 col-2">Comments</label>
+                                <input type="text" class="col-9" />
                             </div>
                         </div>
                     </div>
