@@ -71,7 +71,7 @@
               Cancel
             </button>
           </div>
-          <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale'">
+          <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
             <button type="button" class="action-doc" (click)="saveDoc()">
               Save
             </button>

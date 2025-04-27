@@ -15,6 +15,7 @@ import { SidebarService } from '@services/sidebar.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 import swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
@@ -66,6 +67,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   ProgressNotesList: ProgressNotesListModel[];
   ProgressNotesListFilterValue: ProgressNotesListModel[];
   physicianOrderListFilterValue: any[];
+  unsavedProgressNote: boolean = false;
   myTag: any;
   treatmentPatientData: any;
   lfdnr: any;
@@ -1053,27 +1055,54 @@ console.log('Full URL:', fullUrl);
       });
     // }
   }
+ 
+  dataGetEvent(data){
+    this.unsavedProgressNote = data
+  }
+
+  async  calltab(tabName){
+    if (this.unsavedProgressNote) {
+      const result = await Swal.fire({
+        title: 'Confirm',
+        text: 'Are you sure you want to leave without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      });
+      if (result.isConfirmed) { 
+        this.unsavedProgressNote = false;
+        this.emergencyService.tabPanelNavigation(tabName);
+      } else {
+        return;
+      }
+    } else {
+      this.unsavedProgressNote = false;
+      this.emergencyService.tabPanelNavigation(tabName);
+    }
+  }
+  
   tabChange(tabName?) {
     console.log("call");
-    
     if (tabName == 'ProgressNotes') {
       this.getProgressNotesData();
-      this.emergencyService.tabPanelNavigation('ProgressNotes');
+      this.calltab('ProgressNotes')
     } else if (tabName == 'PhysicianOrders') {
+      this.calltab('PhysicianOrders')
       this.phyOrderTableList();
-      this.emergencyService.tabPanelNavigation('PhysicianOrders');
     } else if (tabName == 'OrderSet') {
-      this.emergencyService.tabPanelNavigation('OrderSet');
+      this.calltab('OrderSet')
     } else if (tabName == 'CPOE') {
-      this.emergencyService.tabPanelNavigation('CPOE');
+      this.calltab('CPOE')
     } else if (tabName == 'ePrescription') {
-      this.emergencyService.tabPanelNavigation('ePrescription');
+      this.calltab('ePrescription')
     } else if (tabName == 'orderdetails') {
-      this.emergencyService.tabPanelNavigation('orderdetails');
+      this.calltab('orderdetails')
     } else if (tabName == 'Diagnosis') {
-      this.emergencyService.tabPanelNavigation('Diagnosis');
+      this.calltab('Diagnosis')
     } else if (tabName == 'Documentation') {
-      this.emergencyService.tabPanelNavigation('Documentation');
+      this.calltab('Documentation')
       // if ( this.documentationComp != undefined) {
       //   this.documentationComp.ngOnInit();
       // }
@@ -1084,23 +1113,23 @@ console.log('Full URL:', fullUrl);
       this.emergencyService.tabPanelNavigation('Rad');
       this.openModuleRad();
     } else if (tabName == 'patientProfile') {
-      this.emergencyService.tabPanelNavigation('patientProfile');
+      this.calltab('patientProfile')
     } else if (tabName == 'Consumables') {
-      this.emergencyService.tabPanelNavigation('Consumables');
+      this.calltab('Consumables')
     } else if (tabName == 'IOCharts') {
-      this.emergencyService.tabPanelNavigation('IOCharts');
+      this.calltab('IOCharts')
     } else if (tabName == 'DietMealOrdering') {
-      this.emergencyService.tabPanelNavigation('DietMealOrdering');
+      this.calltab('DietMealOrdering')
     } else if (tabName == 'Services') {
-      this.emergencyService.tabPanelNavigation('Services');
+      this.calltab('Services')
     }  else if(tabName == 'vitalSign'){
-      this.emergencyService.tabPanelNavigation('VitalSign');
+      this.calltab('VitalSign')
     }  else if(tabName == 'IOChartsPlus'){
-      this.emergencyService.tabPanelNavigation('IOChartsPlus');
+      this.calltab('IOChartsPlus')
     }  else if(tabName == 'DietMealOrderingPlus'){
-      this.emergencyService.tabPanelNavigation('DietMealOrderingPlus');
+      this.calltab('DietMealOrderingPlus')
     }  else if(tabName == 'HistoryAssessment'){
-      this.emergencyService.tabPanelNavigation('HistoryAssessment');
+      this.calltab('HistoryAssessment')
     }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;

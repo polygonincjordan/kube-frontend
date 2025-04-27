@@ -759,7 +759,7 @@ export class PhysicianErVitalsComponent implements OnInit {
       "Lfdnr": this.erListSelectedData.Lfdbw,
       "Orgfa": "",
       "Orgpf": "",
-      "Orgdo": this.maintainVitalBarForm.controls.Orgdo.value ? this.maintainVitalBarForm.controls.Orgdo.value : "",
+      "Orgdo": this.storageService?.patientData?.deptOrgUnit ? this.storageService?.patientData?.deptOrgUnit :this.maintainVitalBarForm.controls.Orgdo.value,
       "Mitarb": this.storageService.getGpart(),
       "Origin": "",
       "Odate": createDate,
