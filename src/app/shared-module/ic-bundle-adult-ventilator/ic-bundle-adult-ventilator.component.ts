@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ic-bundle-adult-ventilator.component.scss']
 })
 export class IcBundleAdultVentilatorComponent implements OnInit {
-
+  public CurrentDateAndTime: Date = new Date();
   selectedRadio: any = {
     elevated: '0',
     interruption: '0',

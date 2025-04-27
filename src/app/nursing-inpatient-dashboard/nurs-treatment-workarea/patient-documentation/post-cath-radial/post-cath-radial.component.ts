@@ -9,12 +9,12 @@ export class PostCathRadialComponent implements OnInit {
 
   public CurrentDateAndTime: Date = new Date();
   physicians = [
-    { id: '01', name: 'Dr. Kais Balbissi' },
-    { id: '02', name: 'Dr. Ramzi Tabbalat' },
-    { id: '03', name: 'Dr. Kamel Toukan' },
-    { id: '04', name: 'Dr. Amir Malkawi' },
-    { id: '05', name: "Dr. Ziad Qura'n" },
-    { id: '06', name: 'Dr. Nazih Kadri' },
+    { id: '01', name: 'Dr.Kais Balbissi' },
+    { id: '02', name: 'Dr.Ramzi Tabbalat' },
+    { id: '03', name: 'Dr.Kamel Toukan' },
+    { id: '04', name: 'Dr.Amir Malkawi' },
+    { id: '05', name: "Dr.Ziad Qura'n" },
+    { id: '06', name: 'Dr.Nazih Kadri' },
   ];
   currentTime: string;
   constructor() { 

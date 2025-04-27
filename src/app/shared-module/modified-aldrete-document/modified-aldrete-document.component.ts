@@ -218,7 +218,6 @@ export class ModifiedAldreteDocumentComponent implements OnInit {
 
   isFormValidError: boolean = false;
   createModifiedAldreteDocument(docStatus: any, actiontype?: string) {
-    debugger
     return new Promise((resolve, reject) => {
       this.isFormValidError = true;
       if (this.MorsefallForm.invalid) {

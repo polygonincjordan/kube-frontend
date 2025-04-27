@@ -8,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class PostCathFemoralComponent implements OnInit {
   public CurrentDateAndTime: Date = new Date();
   physicians = [
-    { id: '01', name: '01 Dr. Kais Balbissi' },
-    { id: '02', name: '02 Dr. Ramzi Tabbalat' },
-    { id: '03', name: '03 Dr. Kamel Toukan' },
-    { id: '04', name: '04 Dr. Amir Malkawi' },
-    { id: '05', name: "05 Dr. Ziad Qura'n" },
-    { id: '06', name: '06 Dr. Nazih Kadri' },
+    { id: '01', name: 'Dr.Kais Balbissi' },
+    { id: '02', name: 'Dr.Ramzi Tabbalat' },
+    { id: '03', name: 'Dr.Kamel Toukan' },
+    { id: '04', name: 'Dr.Amir Malkawi' },
+    { id: '05', name: "Dr.Ziad Qura'n" },
+    { id: '06', name: 'Dr.Nazih Kadri' },
   ];
   currentTime: string;
   constructor() { 

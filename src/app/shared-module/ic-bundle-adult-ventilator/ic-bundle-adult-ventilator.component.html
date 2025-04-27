@@ -8,14 +8,46 @@
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-4">Mechanical Ventilation Start Date</label>
-                                <input type="text" class="col-2" bsDatepicker
-                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
+                                <!-- <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"> -->
+                                    <div class="header-date p-0 ">
+                                        <span
+                                          _ngcontent-ufq-c103=""
+                                          style="
+                                            position: relative;
+                                            top: 32px;
+                                                right: 40px;
+                                            float: right;
+                                            margin-top: -26px;
+                                            font-size: 18px;
+                                            z-index: 1;
+                                          "
+                                        >
+                                          <img src="assets/img/Calender.svg" alt="" />
+                                        </span>
+                                        <input
+                                          class="form-control ml-0 col-1"
+                                          style="color: #000; border-radius: 8px"
+                                          type="text"
+                                          placeholder=""
+                                          [minDate]=""
+                                          [maxDate]=""  
+                                          #dp="bsDatepicker"
+                                          [bsValue]="CurrentDateAndTime"
+                                          style="min-width: 200px;height:40px !important"
+                                          bsDatepicker
+                                          [bsConfig]="{
+                                            showWeekNumbers: false,
+                                            dateInputFormat: 'DD.MM.YYYY'
+                                          }"
+                                        />
+                                    </div>
                             </div>
                         </div>
                         <div class="col-6 px-0 ">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-4">Mechanical Ventilation Start Time</label>
-                                <input type="text" class="col-2" bsDatepicker
+                                <input type="time" class="col-2" bsDatepicker
                                     [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }">
                             </div>
                         </div>
@@ -26,15 +58,79 @@
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-4">Date of Intubation</label>
-                                <input type="text" class="col-2" bsDatepicker
-                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }">
+                                <!-- <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"> -->
+                                    <div class="header-date p-0 ">
+                                        <span
+                                          _ngcontent-ufq-c103=""
+                                          style="
+                                            position: relative;
+                                            top: 32px;
+                                                right: 40px;
+                                            float: right;
+                                            margin-top: -26px;
+                                            font-size: 18px;
+                                            z-index: 1;
+                                          "
+                                        >
+                                          <img src="assets/img/Calender.svg" alt="" />
+                                        </span>
+                                        <input
+                                          class="form-control ml-0 col-1"
+                                          style="color: #000; border-radius: 8px"
+                                          type="text"
+                                          placeholder=""
+                                          [minDate]=""
+                                          [maxDate]=""  
+                                          #dp="bsDatepicker"
+                                          [bsValue]="CurrentDateAndTime"
+                                          style="min-width: 200px;height:40px !important"
+                                          bsDatepicker
+                                          [bsConfig]="{
+                                            showWeekNumbers: false,
+                                            dateInputFormat: 'DD.MM.YYYY'
+                                          }"
+                                        />
+                                    </div>
                             </div>
                         </div>
                         <div class="col-6 px-0 ">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-4">VAP Bundle Date</label>
-                                <input type="text" class="col-2" bsDatepicker
-                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }">
+                                <!-- <input type="text" class="col-2" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"> -->
+                                    <div class="header-date p-0 ">
+                                        <span
+                                          _ngcontent-ufq-c103=""
+                                          style="
+                                            position: relative;
+                                            top: 32px;
+                                                right: 40px;
+                                            float: right;
+                                            margin-top: -26px;
+                                            font-size: 18px;
+                                            z-index: 1;
+                                          "
+                                        >
+                                          <img src="assets/img/Calender.svg" alt="" />
+                                        </span>
+                                        <input
+                                          class="form-control ml-0 col-1"
+                                          style="color: #000; border-radius: 8px"
+                                          type="text"
+                                          placeholder=""
+                                          [minDate]=""
+                                          [maxDate]=""  
+                                          #dp="bsDatepicker"
+                                          [bsValue]="CurrentDateAndTime"
+                                          style="min-width: 200px;height:40px !important"
+                                          bsDatepicker
+                                          [bsConfig]="{
+                                            showWeekNumbers: false,
+                                            dateInputFormat: 'DD.MM.YYYY'
+                                          }"
+                                        />
+                                    </div>
                             </div>
                         </div>
                     </div>

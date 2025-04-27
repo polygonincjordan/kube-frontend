@@ -1196,7 +1196,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isSbarNursingEnd': { isSbarNursingEnd: true, selectedDocName: 'SBAR Nursing Endorsement' },
       'isDyingPatient': { isDyingPatient: true, selectedDocName: 'Dying Patient Assessment' },
       'isPostCathFemoral': { isPostCathFemoral: true, selectedDocName: 'Post Cath - PCI Femoral' },
-      'isPostCathRadial': { isPostCathRadial: true, selectedDocName: 'Post Cath - PCI Redial' },
+      'isPostCathRadial': { isPostCathRadial: true, selectedDocName: 'Post Cath - PCI Radial' },
       'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },

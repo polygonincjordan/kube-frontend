@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -24,6 +24,7 @@ export class ProgressNotesComponent implements OnInit {
   @Input() occupationalGroupData: any = new EventEmitter();
   @Input() ProgressNotesList: ProgressNotesListModel[];
   @Input() searchString: any;
+  @Output() dataToParents = new EventEmitter<any>();
   progressNoteForm: FormGroup;
   paramsObj: any = {};
   reloadPhyOrderList: boolean = false;
@@ -45,13 +46,17 @@ export class ProgressNotesComponent implements OnInit {
       this.paramsObj.tretmentOU = params.tretmentOU;
     });
   }
-
+  unsavedProgressNote: boolean = false;
   ngOnInit(): void {
     this.userProfileDetail = this._storageService.getUserProfile();
     this.initForm();
     // this.getProgressNotesData();
     this.getCategoryList();
     this.getProgressNotesTemplateList();
+    this.progressNoteForm.get('Text')?.valueChanges.subscribe(value => {
+      this.unsavedProgressNote = !!value; // true if there's any text
+      this.dataToParents.emit(this.unsavedProgressNote)
+    });
   }
 
   initForm() {
