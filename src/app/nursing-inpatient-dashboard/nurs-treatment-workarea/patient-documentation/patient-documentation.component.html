@@ -208,16 +208,21 @@
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
-            <div class="d-flex doc-header">
-              <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
-                  style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Document</h2>
+            <div class="d-flex doc-header" style="justify-content: space-between;">
+              <div class="d-flex doc-header">
+                <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
+                    style="font-size: 15px;font-weight: bold;color:white"></i></div>
+                <h2 style="font-weight: bold;">Current Visit Document</h2>
+              </div>
+              <ng-select [(ngModel)]="selectedDocument" class="w-30">
+                <ng-option *ngFor="let item of documentFilterList" [value]="item.value">{{ item?.label }}</ng-option>
+              </ng-select>
             </div>
             <div class="scrollable-div" [style.height.px]="getContentHeight()">
 
               <!-- Surgical passport -->
               <div [ngClass]="isSurgicalPassport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-                (click)="selectAssessment('isSurgicalPassport',surgicalPassportList[0])">
+                (click)="selectAssessment('isSurgicalPassport',surgicalPassportList[0])" *ngIf="!selectedDocument || selectedDocument == 'SP'">
                 <div class="col-md-4">Surgical Passport {{surgicalPassportList[0]?.Zversion ?
                   dockVer(surgicalPassportList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{surgicalPassportList[0]?.StatusTxt || 'N/A'}}</div>
@@ -263,7 +268,7 @@
 
               <!-- Urinary Bundles Document -->
               <div [ngClass]="isNewBundles ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-                (click)="selectAssessment('isNewBundles',bundlesList[0])">
+                (click)="selectAssessment('isNewBundles',bundlesList[0])" *ngIf="!selectedDocument || selectedDocument == 'ICBUC'">
                 <div class="col-md-4">IC Bundles for Urinary Catheter {{bundlesList[0]?.Zversion ?
                   dockVer(bundlesList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{bundlesList[0]?.StatusTxt || 'N/A'}}</div>
@@ -284,7 +289,7 @@
 
               <!-- IC Bundles for CVC Maintenance -->
               <div [ngClass]="isCvcMain ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isCvcMain',cvcMainList[0])">
+              (click)="selectAssessment('isCvcMain',cvcMainList[0])" *ngIf="!selectedDocument || selectedDocument == 'ICBCM'">
               <div class="col-md-4">IC Bundles for CVC Maintenance {{cvcMainList[0]?.Zversion ?
                 dockVer(cvcMainList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{cvcMainList[0]?.StatusTxt || 'N/A'}}</div>
@@ -305,7 +310,7 @@
 
             <!-- Nurse Assessment for Restraints -->
             <div [ngClass]="isNurseAssRes ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isNurseAssRes',nurseAssMainList[0])">
+             (click)="selectAssessment('isNurseAssRes',nurseAssMainList[0])" *ngIf="!selectedDocument || selectedDocument == 'NAR'">
               <div class="col-md-4">Nurse Assessment for Restraints {{nurseAssMainList[0]?.Zversion ?
                 dockVer(nurseAssMainList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{nurseAssMainList[0]?.StatusTxt || 'N/A'}}</div>
@@ -326,7 +331,7 @@
 
             <!-- Critical Care Pain Observation Tool -->
             <div [ngClass]="isCriticalPain ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isCriticalPain',CriticalPainList[0])">
+             (click)="selectAssessment('isCriticalPain',CriticalPainList[0])" *ngIf="!selectedDocument || selectedDocument == 'CCPOT'">
               <div class="col-md-4" [title]="'Critical Care Pain Observation Tool ' + (CriticalPainList[0]?.Zversion ? dockVer(CriticalPainList[0]?.Zversion) : '')"
               >CPOT {{CriticalPainList[0]?.Zversion ?
                 dockVer(CriticalPainList[0]?.Zversion) : ''}} :</div>
@@ -347,7 +352,7 @@
             </div>
             <!-- Nursing Intra-Operative Record -->
             <div [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'NIOR'" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
               <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
                 dockVer(nurseIntraMainList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span>:</div>
               <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
@@ -367,7 +372,7 @@
             </div>
             <!-- maternity early warning sign -->
             <div [ngClass]="isMaternitySign ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isMaternitySign',maternitySignMainList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'MEWS'" (click)="selectAssessment('isMaternitySign',maternitySignMainList[0])">
               <div class="col-md-4">Maternity Early Warning Sign {{maternitySignMainList[0]?.Zversion ?
                 dockVer(maternitySignMainList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{maternitySignMainList[0]?.StatusTxt || 'N/A'}}</div>
@@ -387,7 +392,7 @@
             </div>
             <!-- Post Anesthesia Care Record -->
             <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'PACR'" (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
               <div class="col-md-4"> Post Anesthesia Care Record {{PostAnesthesiaList[0]?.Zversion ?
                 dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
@@ -407,7 +412,7 @@
             </div>
             <!-- Nursing Initial Assessment Gyno Obstetrics -->
             <div [ngClass]="isNurseInitAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isNurseInitAss',PostAnesthesiaList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'NIAGO'" (click)="selectAssessment('isNurseInitAss',PostAnesthesiaList[0])">
               <div class="col-md-4">Nursing Initial Assessment Gyno Obstetrics {{PostAnesthesiaList[0]?.Zversion ?
                 dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
@@ -427,7 +432,7 @@
             </div>
             <!-- Daily Nursing Assessment Newborn -->
             <div [ngClass]="isDailyNurseAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isDailyNurseAss',DailyNurseAssList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'DNAN'" (click)="selectAssessment('isDailyNurseAss',DailyNurseAssList[0])">
               <div class="col-md-4">Daily Nursing Assessment Newborn {{DailyNurseAssList[0]?.Zversion ?
                 dockVer(DailyNurseAssList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{DailyNurseAssList[0]?.StatusTxt || 'N/A'}}</div>
@@ -447,7 +452,7 @@
             </div>
             <!-- Screening Tool for the Assessment of Malnutrition in Paediatrics -->
             <div [ngClass]="isMalnutritionAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isMalnutritionAss',malnutritionAssList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'STAMP'" (click)="selectAssessment('isMalnutritionAss',malnutritionAssList[0])">
               <div class="col-md-4" [title]="'Screening Tool for the Assessment of Malnutrition in Paediatrics' + (malnutritionAssList[0]?.Zversion ? dockVer(CriticalPainList[0]?.Zversion) : '')">STAMP {{malnutritionAssList[0]?.Zversion ?
                 dockVer(malnutritionAssList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{malnutritionAssList[0]?.StatusTxt || 'N/A'}}</div>
@@ -467,7 +472,7 @@
             </div>
             <!-- Richmond Scale -->
             <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isRichmondScale',richmondList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'RS'" (click)="selectAssessment('isRichmondScale',richmondList[0])">
               <div class="col-md-4" >Richmond Scale {{richmondList[0]?.Zversion ?
                 dockVer(richmondList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
@@ -487,7 +492,7 @@
             </div>
             <!-- Delivery Record -->
             <div [ngClass]="isDeliverRecord ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isDeliverRecord',deliverRecordList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'DR'" (click)="selectAssessment('isDeliverRecord',deliverRecordList[0])">
               <div class="col-md-4" >Delivery Record {{deliverRecordList[0]?.Zversion ?
                 dockVer(deliverRecordList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{deliverRecordList[0]?.StatusTxt || 'N/A'}}</div>
@@ -507,7 +512,7 @@
             </div>
             <!-- SBAR Nursing Endorsement -->
             <div [ngClass]="isSbarNursingEnd ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isSbarNursingEnd',sbarNurEndList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'SBARNE'" (click)="selectAssessment('isSbarNursingEnd',sbarNurEndList[0])">
               <div class="col-md-4" >SBAR Nursing Endorsement {{sbarNurEndList[0]?.Zversion ?
                 dockVer(sbarNurEndList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
@@ -527,7 +532,7 @@
             </div>
             <!-- Dying Patient -->
             <div [ngClass]="isDyingPatient ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isDyingPatient',sbarNurEndList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'DPA'" (click)="selectAssessment('isDyingPatient',sbarNurEndList[0])">
               <div class="col-md-4" >Dying Patient Assessment {{sbarNurEndList[0]?.Zversion ?
                 dockVer(sbarNurEndList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
@@ -547,7 +552,7 @@
             </div>
             <!-- Post Cath - PCI Femoral - Nursing -->
             <div [ngClass]="isPostCathFemoral ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isPostCathFemoral',sbarNurEndList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'PCPF'" (click)="selectAssessment('isPostCathFemoral',sbarNurEndList[0])">
               <div class="col-md-4" >Post Cath - PCI Femoral {{sbarNurEndList[0]?.Zversion ?
                 dockVer(sbarNurEndList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
@@ -567,7 +572,7 @@
             </div>
             <!-- Post Cath - PCI Radial - Nursing -->
             <div [ngClass]="isPostCathRadial ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isPostCathRadial',sbarNurEndList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'PCPR'" (click)="selectAssessment('isPostCathRadial',sbarNurEndList[0])">
               <div class="col-md-4" >Post Cath - PCI Radial {{sbarNurEndList[0]?.Zversion ?
                 dockVer(sbarNurEndList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
@@ -629,7 +634,7 @@
               <!-- Education Assessment -->
               <div
                 [ngClass]="isEducationAssement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isEducationAssement',educationAssList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'EDA'" (click)="selectAssessment('isEducationAssement',educationAssList[0])">
                 <div class="col-md-4">Education Assessment : {{educationAssList[0]?.Zversion ?
                   dockVer(educationAssList[0]?.Zversion) : ''}}</div>
                 <div class="col-md-2 status-color">{{educationAssList[0]?.StatusTxt || 'N/A'}}</div>
@@ -651,7 +656,7 @@
               <!--  Nursing Care Plan -->
               <div
                 [ngClass]="isNursingCarePlan ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isNursingCarePlan',latestNurCarePlanList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NCP'" (click)="selectAssessment('isNursingCarePlan',latestNurCarePlanList[0])">
                 <div class="col-md-4"> Nursing Care Plan {{latestNurCarePlanList[0]?.Zversion ?
                   dockVer(latestNurCarePlanList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNurCarePlanList[0]?.StatusTxt || 'N/A'}}</div>
@@ -677,7 +682,7 @@
               <!--  Nursing Discharge Summary -->
               <div
                 [ngClass]="isNursingDischarge ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isNursingDischarge',latestNurDischargeSummeryList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NDS'" (click)="selectAssessment('isNursingDischarge',latestNurDischargeSummeryList[0])">
                 <div class="col-md-4"> Nursing Discharge Summary {{latestNurDischargeSummeryList[0]?.Zversion ?
                   dockVer(latestNurDischargeSummeryList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNurDischargeSummeryList[0]?.StatusTxt || 'N/A'}}</div>
@@ -698,7 +703,7 @@
               <!--  Braden Scale -->
               <div
                 [ngClass]="isBradenScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isBradenScale',latestBridentScaleList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'BRS'" (click)="selectAssessment('isBradenScale',latestBridentScaleList[0])">
                 <div class="col-md-4"> Braden Scale :</div>
                 <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
@@ -719,7 +724,7 @@
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('attachments','')">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'ATTD'" (click)="selectAssessment('attachments','')">
                 <div class="col-md-4">Attachments Document</div>
                 <div class="col-md-2 status-color">N/A</div>
                 <div class="col-md-2"></div>
@@ -729,7 +734,7 @@
             <!--  Morse Fall Scale (MFS) -->
           <div
             [ngClass]="morsefallScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-            style="font-weight: bold;" (click)="selectAssessment('morsefallScale',latestMorseFallScaleData)">
+            style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'MFS'" (click)="selectAssessment('morsefallScale',latestMorseFallScaleData)">
             <div class="col-md-4">Morse Fall Scale {{latestMorseFallScaleData?.Zversion ?
               dockVer(latestMorseFallScaleData?.Zversion) : ''}} :</div>
             <div class="col-md-2 status-color">{{ latestMorseFallScaleData?.StatusTxt ? latestMorseFallScaleData.StatusTxt : "N/A" }}</div>
@@ -751,7 +756,7 @@
             <!--  Nursing Admission Assessment -->
             <div
               [ngClass]="isNursingAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isNursingAdmission',latestNurAdmissionList[0])">
+              style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NAA'" (click)="selectAssessment('isNursingAdmission',latestNurAdmissionList[0])">
               <div class="col-md-4"> Nursing Admission Assessment {{latestNurAdmissionList[0]?.Zversion ?
                 dockVer(latestNurAdmissionList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{latestNurAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
@@ -773,7 +778,7 @@
               <!-- Glasgow Coma Scale -->
               <div
                 [ngClass]="glasgowcomascale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('glasgowcomascale',latestGlasgowComaScaleList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'GCS'" (click)="selectAssessment('glasgowcomascale',latestGlasgowComaScaleList[0])">
                 <div class="col-md-4">Glasgow Coma Scale :</div>
                 <div class="col-md-2 status-color">{{latestGlasgowComaScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestGlasgowComaScaleList[0]?.DocTime)}}">
@@ -793,7 +798,7 @@
 
             <!-- Pain Assessment -->
             <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
-              (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'PAA'" (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
               <div class="col-md-4">Pain Assessment {{painAssessmentLaestDoc[0]?.Zversion ?
                 dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
             <div class="col-md-2 status-color">{{painAssessmentLaestDoc[0]?.StatusTxt || 'N/A'}}</div>
@@ -815,7 +820,7 @@
             <!-- pediatric early warning scale -->
             <div
               [ngClass]="pediatricEarlyWarningScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'PEWS'" (click)="selectAssessment('pediatricEarlyWarningScale',pediatricEarlyWarningList[0])">
               <div class="col-md-4">Pediatric Early Warning Scale {{pediatricEarlyWarningList[0]?.Zversion ?
                 dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
                 <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
@@ -843,7 +848,7 @@
 
               <div
                 [ngClass]="nurseEndorsement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('nurseEndorsement',nurseEndorsementList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NUE'" (click)="selectAssessment('nurseEndorsement',nurseEndorsementList[0])">
                 <div class="col-md-4">Nurse Endorsement {{nurseEndorsementList[0]?.Zversion ?
                   dockVer(nurseEndorsementList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{nurseEndorsementList[0]?.StatusTxt || 'N/A'}}</div>
@@ -862,7 +867,7 @@
               <div
                 [ngClass]="numericratingscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;"
-                (click)="selectAssessment('numericratingscale',latestNumericratingscaleList[0])">
+               *ngIf="!selectedDocument || selectedDocument == 'NRS'" (click)="selectAssessment('numericratingscale',latestNumericratingscaleList[0])">
                 <div class="col-md-4">Numeric Rating Scale(more than 8 yrs) :</div>
                 <div class="col-md-2 status-color">{{latestNumericratingscaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNumericratingscaleList[0]?.DocTime)}}">
@@ -883,7 +888,7 @@
               <!-- Face Pain Scale -->
               <div
                 [ngClass]="facepainscale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('facepainscale',latestFacePainScaleList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'FPS'" (click)="selectAssessment('facepainscale',latestFacePainScaleList[0])">
                 <div class="col-md-4">Face Pain Scale :</div>
                 <div class="col-md-2 status-color">{{latestFacePainScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestFacePainScaleList[0]?.DocTime)}}">
@@ -903,7 +908,7 @@
              <!-- Nursing Assessment -->
             <div
               [ngClass]="isNursingAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isNursingAssessment',latestNurAssessment[0])">
+              style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NUA'" (click)="selectAssessment('isNursingAssessment',latestNurAssessment[0])">
               <div class="col-md-4"> Nursing Assessment {{latestNurAssessment[0]?.Zversion ?
                   dockVer(latestNurAssessment[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{latestNurAssessment[0]?.StatusTxt || 'N/A'}}</div>
@@ -925,7 +930,7 @@
             <!--  Pediatrics Admission Assessment -->
             <!-- <div
               [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isPediatricsAdmission',latestPediatricsAdmissionList[0])">
+              style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'CCPOT'" (click)="selectAssessment('isPediatricsAdmission',latestPediatricsAdmissionList[0])">
               <div class="col-md-4"> Pediatrics Admission Assessment :</div>
               <div class="col-md-2 status-color">{{latestPediatricsAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(latestPediatricsAdmissionList[0]?.DocTime)}}">
@@ -942,7 +947,7 @@
             <!--  Fall Risk Assessment - Pediatrics -->
             <!-- <div
               [ngClass]="isFallRiskAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isFallRiskAssessment',latestFallRiskAssessmentList[0])">
+              style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'CCPOT'" (click)="selectAssessment('isFallRiskAssessment',latestFallRiskAssessmentList[0])">
               <div class="col-md-4"> Fall Risk Assessment - Pediatrics :</div>
               <div class="col-md-2 status-color">{{latestFallRiskAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(latestFallRiskAssessmentList[0]?.DocTime)}}">
@@ -959,7 +964,7 @@
             <!--  Pre-Cardiac Cath Checklist -->
             <div
               [ngClass]="isPreCardiacCath ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isPreCardiacCath',latestPreCardiacCathList[0])">
+              style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PCCC'" (click)="selectAssessment('isPreCardiacCath',latestPreCardiacCathList[0])">
               <div class="col-md-4"> Pre-Cardiac Cath Checklist {{latestPreCardiacCathList[0]?.Zversion ?
                   dockVer(latestPreCardiacCathList[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{latestPreCardiacCathList[0]?.StatusTxt || 'N/A'}}</div>
@@ -984,7 +989,7 @@
           <!--  Pre-Cardiac Cath Checklist -->
             <div
               [ngClass]="isCPRDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isCPRDocument',latestCprList[0])">
+              style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'CPRD'" (click)="selectAssessment('isCPRDocument',latestCprList[0])">
               <div class="col-md-4"> CPR Document {{latestCprList[0]?.Zversion ?
                   dockVer(latestCprList[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{latestCprList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1010,7 +1015,7 @@
             <div
              [ngClass]="isModifiedAldreteDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
              style="font-weight: bold;"
-             (click)="selectAssessment('isModifiedAldreteDocument',latestModifiedAldreteList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'MASS'" (click)="selectAssessment('isModifiedAldreteDocument',latestModifiedAldreteList[0])">
              <div class="col-md-4">Modified Aldrete Score (MAS) Scale {{latestModifiedAldreteList[0]?.Zversion ?
                   dockVer(latestModifiedAldreteList[0]?.Zversion) : ''}}:</div>
              <div class="col-md-2 status-color">{{latestModifiedAldreteList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1033,7 +1038,7 @@
             <div
              [ngClass]="isNeonatalDisch ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
              style="font-weight: bold;"
-             (click)="selectAssessment('isNeonatalDisch',latestNeonatalDischList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'NEDS'" (click)="selectAssessment('isNeonatalDisch',latestNeonatalDischList[0])">
              <div class="col-md-4">Neonatal Discharge Summary {{latestNeonatalDischList[0]?.Zversion ?
                   dockVer(latestNeonatalDischList[0]?.Zversion) : ''}}:</div>
              <div class="col-md-2 status-color">{{latestNeonatalDischList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1055,7 +1060,7 @@
             <div
              [ngClass]="isTimeoutCheck ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
              style="font-weight: bold;"
-             (click)="selectAssessment('isTimeoutCheck',latestTimeoutCheckList[0])">
+             *ngIf="!selectedDocument || selectedDocument == 'TOC'" (click)="selectAssessment('isTimeoutCheck',latestTimeoutCheckList[0])">
              <div class="col-md-4">Time-out Checklist {{latestTimeoutCheckList[0]?.Zversion ?
                   dockVer(latestTimeoutCheckList[0]?.Zversion) : ''}}:</div>
              <div class="col-md-2 status-color">{{latestTimeoutCheckList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1077,7 +1082,7 @@
             <!-- IC Bundles for CVC Insertion -->
               <div
                 [ngClass]="isCVCInsertion ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isCVCInsertion',latestCVCInsertionList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'ICBCI'" (click)="selectAssessment('isCVCInsertion',latestCVCInsertionList[0])">
                 <div class="col-md-4">IC Bundles for CVC Insertion {{latestCVCInsertionList[0]?.Zversion ?
                   dockVer(latestCVCInsertionList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestCVCInsertionList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1094,7 +1099,7 @@
               <!-- Pediatrics Fall Risk Assessment_SCA_FALLP -->
               <div
                 [ngClass]="isPediatricsFall ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isPediatricsFall',pediatricsFallList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PFRA'" (click)="selectAssessment('isPediatricsFall',pediatricsFallList[0])">
                 <div class="col-md-4">Pediatrics Fall Risk Assessment {{pediatricsFallList[0]?.Zversion ?
                   dockVer(pediatricsFallList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{pediatricsFallList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1112,7 +1117,7 @@
               <!--  Pediatric Admission Assessment -->
                <div
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isPediatricsAdmission',latestPediatricAdmissionList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PEAA'" (click)="selectAssessment('isPediatricsAdmission',latestPediatricAdmissionList[0])">
                 <div class="col-md-4"> Pediatrics Admission Assessment {{latestPediatricAdmissionList[0]?.Zversion ?
                   dockVer(latestPediatricAdmissionList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestPediatricAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1133,7 +1138,7 @@
               <!--  Pediatric Admission Assessment -->
                <div
                 [ngClass]="isPaediatricPhysician ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isPaediatricPhysician',latestPaediatricPhysicianList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PEPA'" (click)="selectAssessment('isPaediatricPhysician',latestPaediatricPhysicianList[0])">
                 <div class="col-md-4"> Paediatric Physician Assessment {{latestPaediatricPhysicianList[0]?.Zversion ?
                   dockVer(latestPaediatricPhysicianList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestPaediatricPhysicianList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1155,7 +1160,7 @@
               <!--  Pediatric Admission Assessment -->
                <div
                 [ngClass]="isObstetricFallRiskAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isObstetricFallRiskAssessment',latestObstetricFallRiskAssessmentList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'OFRA'" (click)="selectAssessment('isObstetricFallRiskAssessment',latestObstetricFallRiskAssessmentList[0])">
                 <div class="col-md-4"> Obstetric Fall Risk Assessment {{latestObstetricFallRiskAssessmentList[0]?.Zversion ?
                   dockVer(latestObstetricFallRiskAssessmentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestObstetricFallRiskAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1177,7 +1182,7 @@
               <!--  Post Patient Fall Assessment -->
                <div
                 [ngClass]="ispostPatientFallAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('ispostPatientFallAssessment',latestpostPatientFallAssessmentList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PPFA'" (click)="selectAssessment('ispostPatientFallAssessment',latestpostPatientFallAssessmentList[0])">
                 <div class="col-md-4"> Post Patient Fall Assessment {{latestpostPatientFallAssessmentList[0]?.Zversion ?
                   dockVer(latestpostPatientFallAssessmentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestpostPatientFallAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1199,7 +1204,7 @@
               <!--  Initial Nursing Assessment Newborn -->
                <div
                 [ngClass]="isInitialNursingNewborn ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isInitialNursingNewborn',latestInitialNursingNewbornList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'INAN'" (click)="selectAssessment('isInitialNursingNewborn',latestInitialNursingNewbornList[0])">
                 <div class="col-md-4"> Initial Nursing Assessment Newborn {{latestInitialNursingNewbornList[0]?.Zversion ?
                   dockVer(latestInitialNursingNewbornList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestInitialNursingNewbornList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1221,7 +1226,7 @@
               <!--  APGAR Scale Document -->
                <div
                 [ngClass]="isNewScaleDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isNewScaleDocument',latestNewScaleDocumentList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'APGARS'" (click)="selectAssessment('isNewScaleDocument',latestNewScaleDocumentList[0])">
                 <div class="col-md-4"> APGAR Scale {{latestNewScaleDocumentList[0]?.Zversion ?
                   dockVer(latestNewScaleDocumentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestNewScaleDocumentList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1243,7 +1248,7 @@
               <!--  NIPS (Newborn to 1 Year) -->
                <div
                 [ngClass]="isNIPSDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isNIPSDocument',latestNIPSDocumentList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NIPS'" (click)="selectAssessment('isNIPSDocument',latestNIPSDocumentList[0])">
                 <div class="col-md-4"> NIPS (Newborn to 1 Year) {{latestNIPSDocumentList[0]?.Zversion ?
                   dockVer(latestNIPSDocumentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestNIPSDocumentList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1265,7 +1270,7 @@
               <!--  Ramsay Sedation Scale -->
                <div
                 [ngClass]="isRamsaySedation ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isRamsaySedation',latestRamsaySedationList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'RSS'" (click)="selectAssessment('isRamsaySedation',latestRamsaySedationList[0])">
                 <div class="col-md-4"> Ramsay Sedation Scale {{latestRamsaySedationList[0]?.Zversion ?
                   dockVer(latestRamsaySedationList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestRamsaySedationList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1287,7 +1292,7 @@
               <!--  Confusion Assessment Method for ICU (CAM-ICU) -->
                <div
                 [ngClass]="isConfusionAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isConfusionAssessment',latestConfusionAssessmentList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'CAMIC'" (click)="selectAssessment('isConfusionAssessment',latestConfusionAssessmentList[0])">
                 <div class="col-md-4"> Confusion Assessment Method for ICU (CAM-ICU) {{latestConfusionAssessmentList[0]?.Zversion ?
                   dockVer(latestConfusionAssessmentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestConfusionAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1309,7 +1314,7 @@
               <!--  IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) -->
                <div
                 [ngClass]="isICAdultVentilator ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isICAdultVentilator',latestICAdultVentilatorList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'IBAVAP'" (click)="selectAssessment('isICAdultVentilator',latestICAdultVentilatorList[0])">
                 <div class="col-md-4"> IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) {{latestICAdultVentilatorList[0]?.Zversion ?
                   dockVer(latestICAdultVentilatorList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestICAdultVentilatorList[0]?.StatusTxt || 'N/A'}}</div>
@@ -1331,7 +1336,7 @@
               <!--  ICU 24 hours Flowsheet -->
                <div
                 [ngClass]="isICUFlowsheet ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" (click)="selectAssessment('isICUFlowsheet',latestICUFlowsheetList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'ICUHF'" (click)="selectAssessment('isICUFlowsheet',latestICUFlowsheetList[0])">
                 <div class="col-md-4"> ICU 24 hours Flowsheet {{latestICUFlowsheetList[0]?.Zversion ?
                   dockVer(latestICUFlowsheetList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
                 <div class="col-md-2 status-color">{{latestICUFlowsheetList[0]?.StatusTxt || 'N/A'}}</div>

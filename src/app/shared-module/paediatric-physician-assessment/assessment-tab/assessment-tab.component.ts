@@ -9,10 +9,10 @@ import { FormGroup } from '@angular/forms';
 export class AssessmentTabComponent implements OnInit {
 
   @Input() nursingAdmissionForm: FormGroup;
-  selectedTabName: string = 'Glowth & Development';
+  selectedTabName: string = 'Growth & Development';
 
   tabList = [
-    'Glowth & Development',
+    'Growth & Development',
     'Social Screening',
   ];
 

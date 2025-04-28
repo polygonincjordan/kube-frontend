@@ -289,24 +289,24 @@ export class PatientDocumentationComponent implements OnInit {
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
   openNewBorn: boolean = false;
-  openBundles : boolean = false;
-  openCvcMain : boolean = false;
-  openNurseAssRes : boolean = false;
-  openMaternitySign : boolean = false;
-  openPostAnesthesia : boolean = false;
-  openNurseInitAss : boolean = false;
-  openDailyNurseAss : boolean = false;
-  openMalnutritionAss : boolean = false;
-  openRichmondScale : boolean = false;
-  openisDeliverRecord : boolean = false;
-  openSbarNursingEnd : boolean = false;
-  openDyingPatient : boolean = false;
-  openPostCathFemoral : boolean = false;
-  openPostCathRedial : boolean = false;
+  openBundles: boolean = false;
+  openCvcMain: boolean = false;
+  openNurseAssRes: boolean = false;
+  openMaternitySign: boolean = false;
+  openPostAnesthesia: boolean = false;
+  openNurseInitAss: boolean = false;
+  openDailyNurseAss: boolean = false;
+  openMalnutritionAss: boolean = false;
+  openRichmondScale: boolean = false;
+  openisDeliverRecord: boolean = false;
+  openSbarNursingEnd: boolean = false;
+  openDyingPatient: boolean = false;
+  openPostCathFemoral: boolean = false;
+  openPostCathRedial: boolean = false;
   openLaborRoomFlow : boolean = false;
   openNicuNurFlowSheet : boolean = false;
-  openNurseIntra : boolean = false;
-  openCriticalPain : boolean = false;
+  openNurseIntra: boolean = false;
+  openCriticalPain: boolean = false;
   openNursingCarePlans: boolean = false;
   openDischargeSummery: boolean = false;
   openPreCardiacCath: boolean = false;
@@ -336,6 +336,207 @@ export class PatientDocumentationComponent implements OnInit {
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];
+
+  selectedDocument: any = ''
+
+  documentFilterList = [
+    {
+      label: 'Surgical Passport',
+      value: 'SP'
+    },
+    {
+      label: 'IC Bundles for Urinary Catheter',
+      value: 'ICBUC'
+    },
+    {
+      label: 'IC Bundles for CVC Maintenance',
+      value: 'ICBCM'
+    },
+    {
+      label: 'Nurse Assessment for Restraints',
+      value: 'NAR'
+    },
+    {
+      label: 'Critical Care Pain Observation Tool',
+      value: 'CCPOT'
+    },
+    {
+      label: 'Nursing Intra-Operative Record',
+      value: 'NIOR'
+    },
+    {
+      label: 'Maternity Early Warning Sign',
+      value: 'MEWS'
+    },
+    {
+      label: 'Post Anesthesia Care Record',
+      value: 'PACR'
+    },
+    {
+      label: 'Nursing Initial Assessment Gyno Obstetrics',
+      value: 'NIAGO'
+    },
+    {
+      label: 'Daily Nursing Assessment Newborn',
+      value: 'DNAN'
+    },
+    {
+      label: 'Screening Tool for the Assessment of Malnutrition in Paediatrics',
+      value: 'STAMP'
+    },
+    {
+      label: 'Richmond Scale',
+      value: 'RS'
+    },
+    {
+      label: 'Delivery Record',
+      value: 'DR'
+    },
+    {
+      label: 'SBAR Nursing Endorsement',
+      value: 'SBARNE'
+    },
+    {
+      label: 'Dying Patient Assessment',
+      value: 'DPA'
+    },
+    {
+      label: 'Post Cath - PCI Femoral',
+      value: 'PCPF'
+    },
+    {
+      label: 'Post Cath - PCI Radial',
+      value: 'PCPR'
+    },
+    {
+      label: 'Education Assessment',
+      value: 'EDA'
+    },
+    {
+      label: 'Nursing Care Plan',
+      value: 'NCP'
+    },
+    {
+      label: 'Nursing Discharge Summary',
+      value: 'NDS'
+    },
+    {
+      label: 'Braden Scale',
+      value: 'BRS'
+    },
+    {
+      label: 'Attachments Document',
+      value: 'ATTD'
+    },
+    {
+      label: 'Morse Fall Scale',
+      value: 'MFS'
+    },
+    {
+      label: 'Nursing Admission Assessment',
+      value: 'NAA'
+    },
+    {
+      label: 'Glasgow Coma Scale',
+      value: 'GCS'
+    },
+    {
+      label: 'Pain Assessment',
+      value: 'PAA'
+    },
+    {
+      label: 'Pediatric Early Warning Scale',
+      value: 'PEWS'
+    },
+    {
+      label: 'Nurse Endorsement',
+      value: 'NUE'
+    },
+    {
+      label: 'Numeric Rating Scale(more than 8 yrs)',
+      value: 'NRS'
+    },
+    {
+      label: 'Face Pain Scale',
+      value: 'FPS'
+    },
+    {
+      label: 'Nursing Assessment',
+      value: 'NUA'
+    },
+    {
+      label: 'Pre-Cardiac Cath Checklist',
+      value: 'PCCC'
+    },
+    {
+      label: 'CPR Document',
+      value: 'CPRD'
+    },
+    {
+      label: 'Modified Aldrete Score (MAS) Scale',
+      value: 'MASS'
+    },
+    {
+      label: 'Neonatal Discharge Summary',
+      value: 'NEDS'
+    },
+    {
+      label: 'Time-out Checklist',
+      value: 'TOC'
+    },
+    {
+      label: 'IC Bundles for CVC Insertion',
+      value: 'ICBCI'
+    },
+    {
+      label: 'Pediatrics Fall Risk Assessment',
+      value: 'PFRA'
+    },
+    {
+      label: 'Pediatrics Admission Assessment',
+      value: 'PEAA'
+    },
+    {
+      label: 'Paediatric Physician Assessment',
+      value: 'PEPA'
+    },
+    {
+      label: 'Obstetric Fall Risk Assessment',
+      value: 'OFRA'
+    },
+    {
+      label: 'Post Patient Fall Assessment',
+      value: 'PPFA'
+    },
+    {
+      label: 'Initial Nursing Assessment Newborn',
+      value: 'INAN'
+    },
+    {
+      label: 'APGAR Scale',
+      value: 'APGARS'
+    },
+    {
+      label: 'NIPS (Newborn to 1 Year)',
+      value: 'NIPS'
+    },
+    {
+      label: 'Ramsay Sedation Scale',
+      value: 'RSS'
+    },
+    {
+      label: 'Confusion Assessment Method for ICU (CAM-ICU)',
+      value: 'CAMIC'
+    },
+    {
+      label: 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)',
+      value: 'IBAVAP'
+    },
+    {
+      label: 'ICU 24 hours Flowsheet',
+      value: 'ICUHF'
+    }
+  ]
 
   createdDocumentUserList: any = [];
 
@@ -1089,7 +1290,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isPostAnesthesia', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1097,7 +1298,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isNurseInitAss', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1105,7 +1306,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isDailyNurseAss', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1113,7 +1314,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isMalnutritionAss', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1121,7 +1322,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isRichmondScale', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1145,7 +1346,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isDyingPatient', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1153,7 +1354,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isPostCathFemoral', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1161,7 +1362,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isPostCathRadial', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -2343,7 +2544,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2388,7 +2589,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2433,7 +2634,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2478,7 +2679,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2523,7 +2724,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2568,7 +2769,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2613,7 +2814,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2658,7 +2859,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2703,7 +2904,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -2748,7 +2949,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -8075,11 +8276,11 @@ export class PatientDocumentationComponent implements OnInit {
       this.openisPediatricsFallDocument ||
       this.openPediatricAdmissionDocument ||
       this.openObstetricFallRiskAssessmentDocument ||
-      this.openpostPatientFallAssessmentDocument || 
-      this.openInitialNursingNewbornDocument || 
+      this.openpostPatientFallAssessmentDocument ||
+      this.openInitialNursingNewbornDocument ||
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
-      this.openMalnutritionAss || 
+      this.openMalnutritionAss ||
       this.openPostAnesthesia ||
       this.openRichmondScale ||
       this.openisDeliverRecord ||
@@ -8090,11 +8291,11 @@ export class PatientDocumentationComponent implements OnInit {
       this.openLaborRoomFlow ||
       this.openNicuNurFlowSheet ||
       this.openPaediatricPhysicianDocument ||
-      this.openNewScaleDocumentDocument || 
-      this.openNIPSDocumentDocument || 
-      this.openRamsaySedationDocument || 
-      this.openConfusionAssessmentDocument || 
-      this.openICAdultVentilatorDocument || 
+      this.openNewScaleDocumentDocument ||
+      this.openNIPSDocumentDocument ||
+      this.openRamsaySedationDocument ||
+      this.openConfusionAssessmentDocument ||
+      this.openICAdultVentilatorDocument ||
       this.openICUFlowsheetDocument
     );
   }
@@ -8133,16 +8334,16 @@ export class PatientDocumentationComponent implements OnInit {
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
       this.openMalnutritionAss ||
-      this.openPostAnesthesia || 
-      this.openRichmondScale || 
-      this.openisDeliverRecord || 
-      this.openSbarNursingEnd || 
-      this.openDyingPatient || 
-      this.openPostCathFemoral || 
-      this.openPostCathRedial || 
-      this.openLaborRoomFlow || 
-      this.openNicuNurFlowSheet || 
-      this.openPaediatricPhysicianDocument || 
+      this.openPostAnesthesia ||
+      this.openRichmondScale ||
+      this.openisDeliverRecord ||
+      this.openSbarNursingEnd ||
+      this.openDyingPatient ||
+      this.openPostCathFemoral ||
+      this.openPostCathRedial ||
+      this.openLaborRoomFlow ||
+      this.openNicuNurFlowSheet ||
+      this.openPaediatricPhysicianDocument ||
       this.openICUFlowsheetDocument
     );
   }
@@ -8167,7 +8368,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   hideSaveBtnForScale() {
-    if(this.selectedDocName != 'Critical Care Pain Observation Tool') {
+    if (this.selectedDocName != 'Critical Care Pain Observation Tool') {
 
     }
   }

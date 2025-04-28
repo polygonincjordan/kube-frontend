@@ -64,7 +64,239 @@ export class IcuHoursFlowsheetComponent implements OnInit {
   selectedScales: any[] = [];
   scalesArray: any[] = [];
   toScaleArr: any[];
+  yesNoList: any = [
+    {
+      label: 'Yes',
+      value: '0',
+    },
+    {
+      label: 'No',
+      value: '1',
+    },
+  ];
+  CIRCULATIONList: any = [
+    {
+      label: 'Good',
+      value: '0',
+    },
+    {
+      label: 'Bad',
+      value: '1',
+    },
+  ];
+  careGivenList: any = [
+    {
+      label: 'Skin Care',
+      value: '0',
+    },
+    {
+      label: 'Range of Motion',
+      value: '1',
+    },
+    {
+      label: 'Reposition',
+      value: '2',
+    },
+  ];
+  behaviourList: any = [
+    {
+      label: 'Calm',
+      value: '0',
+    },
+    {
+      label: 'Confused',
+      value: '1',
+    },
+    {
+      label: 'Agitated',
+      value: '2',
+    },
+    {
+      label: 'Asleep',
+      value: '3',
+    },
+  ];
+  sensoryReceptionList: any = [
+    {
+      label: '(1) Totally limited',
+      value: '1',
+    },
+    {
+      label: '(2) Very limited',
+      value: '2',
+    },
+    {
+      label: '(3) Slightly limited',
+      value: '3',
+    },
+    {
+      label: '(4) No impairment',
+      value: '4',
+    },
+  ];
 
+  moistureList: any = [
+    {
+      label: 'Totally moisted',
+      value: '1',
+    },
+    {
+      label: 'Very moist',
+      value: '2',
+    },
+    {
+      label: 'Occasionally moist',
+      value: '3',
+    },
+    {
+      label: 'Rare moist',
+      value: '4',
+    },
+  ];
+  activityList: any = [
+    {
+      label: '(1) Bedfast',
+      value: '1',
+    },
+    {
+      label: '(2) Chair fast ',
+      value: '2',
+    },
+    {
+      label: '(3) Walks Occasionally',
+      value: '3',
+    },
+    {
+      label: '(4) Walks frequently',
+      value: '4',
+    },
+  ];
+  mobilityList: any = [
+    {
+      label: '(1) Totally Immpobile',
+      value: '1',
+    },
+    {
+      label: '(2) Very Limited ',
+      value: '2',
+    },
+    {
+      label: '(3) Slightly limited',
+      value: '3',
+    },
+    {
+      label: '(4) No limitations',
+      value: '4',
+    },
+  ];
+  nutritionList: any = [
+    {
+      label: '(1) Very Poor',
+      value: '1',
+    },
+    {
+      label: '(2) Probably',
+      value: '2',
+    },
+    {
+      label: '(3) Adequate',
+      value: '3',
+    },
+    {
+      label: '(4) Excellent',
+      value: '4',
+    },
+  ];
+  frictionList: any = [
+    {
+      label: '(1) Problem',
+      value: '1',
+    },
+    {
+      label: '(2) Potential Problem',
+      value: '2',
+    },
+    {
+      label: '(3) No Apparent Problem',
+      value: '3',
+    }
+  ];
+  gradeList: any = [
+    {
+      label: 'Stage 1',
+      value: '0',
+    },
+    {
+      label: 'Stage 2',
+      value: '1',
+    },
+    {
+      label: 'Stage 3',
+      value: '2',
+    },
+    {
+      label: 'Stage 4',
+      value: '3',
+    },
+    {
+      label: 'Unstageable',
+      value: '4',
+    },
+  ];
+
+  stageWoundList: any = [
+    {
+      label: 'Stage 1 - Reddened area (intact skin)',
+      value: '1',
+    },
+    {
+      label: 'Stage 2 - Blister, skin Break',
+      value: '2',
+    },
+    {
+      label: 'Stage 3 - Skin break exposing subcutaneous tissue',
+      value: '3',
+    },
+    {
+      label: 'Stage 4 - Skin break exposing muscle and/or bone',
+      value: '4',
+    }
+  ];
+
+  edamaList: any = [
+    {
+      label: '1 - Mild',
+      value: '1',
+    },
+    {
+      label: '2 - Moderate',
+      value: '2',
+    },
+    {
+      label: '3 - Severe',
+      value: '3',
+    },
+    {
+      label: '4 - Pitting',
+      value: '4',
+    }
+  ];
+  modeList: any = [
+    {
+      label: 'Normal',
+      value: '0',
+    },
+    {
+      label: 'Abnormal',
+      value: '1',
+    }
+  ];
+  restraintsList = [1,2];
+  pressuerList = [1,2];
+  pressuerCoreList = [1,2];
+  woundCareList = [1,2];
+  physicialExaminationList = [1,2, 3, 4, 5];
+  ventilatorList = [1,2, 3, 4, 5];
   constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
@@ -97,7 +329,36 @@ export class IcuHoursFlowsheetComponent implements OnInit {
     { code: 'A001', admission: false, discharge: false, working: false, preop: false, surgery: false, cause: false, department: false, hospital: false },
     { code: 'B002', admission: true, discharge: false, working: true, preop: false, surgery: true, cause: false, department: true, hospital: false },
     { code: 'C003', admission: false, discharge: true, working: false, preop: true, surgery: false, cause: true, department: false, hospital: true },
+    { code: 'C004', admission: false, discharge: true, working: false, preop: true, surgery: false, cause: true, department: false, hospital: true },
   ];
+
+  addRow() {
+    this.code.push(
+      { code: 'A001', admission: false, discharge: false, working: false, preop: false, surgery: false, cause: false, department: false, hospital: false }
+    )
+  }
+
+  addrestraintsList() {
+    this.restraintsList.push(this.restraintsList.length + 1);
+  }
+
+  addPressuer() {
+    this.pressuerList.push(this.pressuerList.length + 1);
+  }
+
+  addPressuerCare() {
+    this.pressuerCoreList.push(this.pressuerCoreList.length + 1);
+  }
+
+  addWoundCare() {
+    this.woundCareList.push(this.woundCareList.length + 1);
+  }
+  addPhysicialExamination() {
+    this.physicialExaminationList.push(this.physicialExaminationList.length + 1);
+  }
+  addVentilatorList() {
+    this.ventilatorList.push(this.ventilatorList.length + 1);
+  }
 
   loadScalesData() {
     // this.selectedScales = [];
