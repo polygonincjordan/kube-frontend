@@ -176,6 +176,8 @@ import { PostCathRadialComponent } from './nurs-treatment-workarea/patient-docum
 import { PostCathFemoralComponent } from './nurs-treatment-workarea/patient-documentation/post-cath-femoral/post-cath-femoral.component';
 import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.module';
 import { IcuHoursFlowsheetModule } from '../shared-module/icu-hours-flowsheet/icu-hours-flowsheet.module';
+import { NicuNursingFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/nicu-nursing-flow-sheet/nicu-nursing-flow-sheet.component';
+import { LaborRoomFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/labor-room-flow-sheet.component';
 
 
 const route: Routes = [
@@ -303,7 +305,9 @@ const route: Routes = [
     SbarNursingEndorsementComponent,
     DyingPatientComponent,
     PostCathRadialComponent,
-    PostCathFemoralComponent
+    PostCathFemoralComponent,
+    NicuNursingFlowSheetComponent,
+    LaborRoomFlowSheetComponent
   ],
   providers: [
     EmergencyService,
