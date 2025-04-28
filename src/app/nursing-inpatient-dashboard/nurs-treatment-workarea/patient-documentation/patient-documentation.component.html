@@ -590,6 +590,46 @@
                   </div>
               </div>
             </div>
+            <!-- Labor Room Flow Sheet -->
+            <div [ngClass]="isLaborRoomFlow ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isLaborRoomFlow',laborRoomFlowList[0])">
+              <div class="col-md-4" >Labor Room Flow Sheet {{laborRoomFlowList[0]?.Zversion ?
+                dockVer(laborRoomFlowList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{laborRoomFlowList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(laborRoomFlowList[0]?.DocTime)}}">
+                {{getDate(laborRoomFlowList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{laborRoomFlowList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(laborRoomFlowList[0]?.Dockey)"
+                  *ngIf="laborRoomFlowList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(laborRoomFlowList[0]?.Dockey, laborRoomFlowList[0])">
+                    <select *ngIf="laborRoomFlowList.length && laborRoomFlowList[0]?.StatusTxt !='N/A' && laborRoomFlowList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
+            <!-- NICU Nursing Flow Sheet -->
+            <div [ngClass]="isNicuNurFlowSheet ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+              (click)="selectAssessment('isNicuNurFlowSheet',NicuNursingFlowSheetList[0])">
+              <div class="col-md-4" >NICU Nursing Flow Sheet {{NicuNursingFlowSheetList[0]?.Zversion ?
+                dockVer(NicuNursingFlowSheetList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+              <div class="col-md-2 status-color">{{NicuNursingFlowSheetList[0]?.StatusTxt || 'N/A'}}</div>
+              <div class="col-md-2" title="{{getTime(NicuNursingFlowSheetList[0]?.DocTime)}}">
+                {{getDate(NicuNursingFlowSheetList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              </div>
+              <div class="col-md-3">{{NicuNursingFlowSheetList[0]?.PhyNm || '-'}}</div>
+              <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openNurseAssMainsPdf(NicuNursingFlowSheetList[0]?.Dockey)"
+                  *ngIf="NicuNursingFlowSheetList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(NicuNursingFlowSheetList[0]?.Dockey, NicuNursingFlowSheetList[0])">
+                    <select *ngIf="NicuNursingFlowSheetList.length && NicuNursingFlowSheetList[0]?.StatusTxt !='N/A' && NicuNursingFlowSheetList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+              </div>
+            </div>
              
               <!-- Education Assessment -->
               <div
@@ -1433,6 +1473,8 @@
     <app-dying-patient *ngIf="openDyingPatient"></app-dying-patient>
     <app-post-cath-radial *ngIf="openPostCathRedial"></app-post-cath-radial>
     <app-post-cath-femoral *ngIf="openPostCathFemoral"></app-post-cath-femoral>
+    <app-nicu-nursing-flow-sheet *ngIf="openNicuNurFlowSheet"></app-nicu-nursing-flow-sheet>
+    <app-labor-room-flow-sheet *ngIf="openLaborRoomFlow"></app-labor-room-flow-sheet>
     <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
     <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans>
     <app-nursing-discharge-summary *ngIf="openDischargeSummery" ></app-nursing-discharge-summary>

@@ -1,0 +1,948 @@
+
+<div class="p-2 my-4">
+    <!-- Date and Time -->
+    <div class="d-flex mb-4">
+      <div class="d-flex col-md-2">
+        <label for="date" class="mr-3">Date</label>
+        <input type="date" class="form-control" id="date" value="2025-04-07">
+      </div>
+      <div class="d-flex col-md-2">
+        <label for="time" class="mr-3">Time</label>
+        <input type="time" class="form-control" id="time" value="11:54:58">
+      </div>
+    </div>
+  
+    <!-- Second Section -->
+    <div class="p-2 end-container">
+      <div class="scale-box-main">
+        <div class="container-fluid">
+          <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+            <h6 class="col-md-12 p-0 b-3">Allergies</h6>
+          </div> <br>
+          <div class="scale-box">
+            <div class="scale-box-checkbox">
+              <div style="
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                  ">
+                <div class="d-flex align-items-center w-50">
+                  <label class="m-0">Allergies</label>
+                  <input type="text" class="form-control w-70 ml-3" />
+                </div>
+                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+              </div>
+            </div>
+            <div class="scale-box-table">
+              <table class="table table-bordered third-table">
+                <thead>
+                  <tr>
+                    <!-- <th style="width: 2% !important"></th> -->
+                    <th scope="col">Group</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <!-- <td style="width: 2% !important">
+                      <input type="checkbox" />
+                    </td> -->
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Allergies Section -->
+    <div class="scale-box-main p-2">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">AObstetric History</h6>
+      </div>
+      <!--section 1 -->
+      <div class="row section d-flex mb-3 mt-2  align-items-center">
+        <label class="col-md-1 mr-2">Gravida</label>
+        <input type="text" class="form-control col-md-1 p-0">
+        <label class="ml-2 mr-2">Para</label>
+        <input type="text" class="form-control col-md-1">
+        <div class="col-md-1 p-0"></div>
+        <label class="mr-2">Abortion</label>
+        <input type="text" class="form-control col-md-1">
+        <div class="col-md-1 p-0"></div>
+        <label class="mr-3">No. of Alive</label>
+        <input type="text" class="form-control col-md-1 mr-3">
+        <label class="col-md-1 ml-3">No. of Dead</label>
+        <input type="text" class="form-control col-md-1">
+      </div>
+  
+      <!--section 2 -->
+      <div class="row section d-flex mb-3 mt-2 align-items-center">
+        <label class="col-md-1 mr-2">Normal Delivery</label>
+        <input type="text" class="form-control col-md-2 minwdt">
+        <div class="col-md-1 p-0"></div>
+        <label class="mr-2">LMP</label>
+        <input type="text" class="form-control col-md-1 ml-4">
+        <div class="col-md-1 p-0"></div>
+        <label class="mrgrght">EDD</label>
+        <input type="text" class="form-control col-md-1 mr-3">
+        <label class="col-md-1 mrglft">Gestational Age</label>
+        <input type="text" class="form-control col-md-1">
+      </div>
+  
+      <!--section 3 -->
+      <div class="section d-flex mb-3 mt-2">
+        <div class="col-md-7" style="max-width: 56.5% !important;"></div>
+        <label class="mrght42">Height</label>
+        <input type="text" class="form-control col-md-1 mr-2">
+        <span> cm </span>
+        <label class="col-md-1 ml-2 mr-0">weight</label>
+        <input type="text" class="form-control col-md-1 mr-2">
+        <span>kg</span>
+      </div>
+  
+      <div class="section d-flex">
+        <label class="col-md-1 form-check-label mr-2">
+          History of
+        </label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">APH</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="AbruptioPlacenta">
+          <label class="form-check-label" for="AbruptioPlacenta">PPH</label>
+        </div>
+        <div class="col-md-2 mrlft7">
+          <input class="form-check-input" type="checkbox" id="Twins">
+          <label class="form-check-label" for="Twins">Previous C/S</label>
+        </div>
+        <div class="col-md-2 mrlft7">
+          <input class="form-check-input" type="checkbox" id="FetalAnomalies">
+          <label class="form-check-label" for="FetalAnomalies">V.B after C/S</label>
+        </div>
+        <div class="col-md-1 mrlft7">
+          <input class="form-check-input" type="checkbox" id="DiabetesMellitus">
+          <label class="form-check-label" for="DiabetesMellitus">Abdominal Surgery</label>
+        </div>
+        <input class="input-notes col-md-2 form-control" type="text" placeholder="">
+      </div>
+      <div class="section d-flex col-md-12  mb-3 mt-2">
+        <label class="form-check-label"> Risk Factors in Current Pregnancy </label>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <span class="col-md-1"></span>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Grand Multiparity</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">PIH</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="AbruptioPlacenta">
+          <label class="form-check-label" for="AbruptioPlacenta">Polyhydramnios</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="Twins">
+          <label class="form-check-label" for="Twins">Twins</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="FetalAnomalies">
+          <label class="form-check-label" for="FetalAnomalies">Fetal Anomalies</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="DiabetesMellitus">
+          <label class="form-check-label" for="DiabetesMellitus">Diabetes Mellitus</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <span class="col-md-1"></span>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Placenta Previa</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Abruptio Placenta</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="AbruptioPlacenta">
+          <label class="form-check-label" for="AbruptioPlacenta">Oligohydramnios</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="Twins">
+          <label class="form-check-label" for="Twins">PROM</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="FetalAnomalies">
+          <label class="form-check-label" for="FetalAnomalies">Large for GA</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="DiabetesMellitus">
+          <label class="form-check-label" for="DiabetesMellitus">GDM</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <span class="col-md-1"></span>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Small or GA</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Heart Disease</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="AbruptioPlacenta">
+          <label class="form-check-label" for="AbruptioPlacenta">Antepartum Hemorrhage</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <span class="col-md-1"></span>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="SmallGA">
+          <label class="form-check-label" for="SmallGA">Small or GA</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="Oligohydramnios">
+          <label class="form-check-label" for="Oligohydramnios">Oligohydramnios</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="FetalAnomalies">
+          <label class="form-check-label" for="FetalAnomalies">Fetal Anomalies</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="DiabetesMellitus">
+          <label class="form-check-label" for="DiabetesMellitus">Diabetes Mellitus</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <span class="col-md-1"></span>
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="MedicalProblem">
+          <label class="form-check-label mr-3" for="MedicalProblem">Medical Problem</label>
+          <input type="text" class="form-control col-md-6">
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <span class="col-md-1"></span>
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="SurgicalProblem">
+          <label class="form-check-label mr-3" for="SurgicalProblem">Surgical Problem</label>
+          <input type="text" class="form-control col-md-6">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Laboratory Tests Section -->
+    <div class="tab-content">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">Laboratory Tests</h6>
+      </div> <br>
+      <div class="scale-box-main scale-box-table pr-2">
+        <div class="pl-3 pr-3">
+          <div class="scale-box-checkbox pb-2">
+            <div style="display: flex; width: 100%; justify-content: space-between">
+              <div class="scale-box-checkbox d-flex align-items-center w-50">
+                <input type="checkbox" id="noScaleAppicable" class="mr-2" />
+                <label class="m-0">No lab test applicable</label>
+              </div>
+              <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+            </div>
+          </div>
+          <div class="table-scroll-container">
+            <table class="table table-bordered third-table">
+              <thead style="background-color: #e4edf5;color: black;">
+                <tr>
+                  <th scope="col">Description</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Value Configuration</th>
+                  <th scope="col">Range</th>
+                  <th scope="col">Date/Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let codeItems of code">
+  
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text"
+                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                      style="min-width: 235px; height: 40px !important" bsDatepicker [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Admission Section -->
+    <div class="scale-box-main mt-3 mb-3">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">Admission</h6>
+      </div> <br>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Reason for Admission</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Labour Pain</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Rupter of Membranse</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Leaking Membranse</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="AbruptioPlacenta">
+          <label class="form-check-label" for="AbruptioPlacenta">Bleeding</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2"></label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Induction of Labour</label>
+        </div>
+        <div class="col-md-6 p-0">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Other</label>
+          <input type="text" class="form-control col-md-6">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Induction / Augmentation Section -->
+    <div class="scale-box-main mt-3 mb-3">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">Induction / Augmentation</h6>
+      </div> <br>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Reason for Induction</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Post Date</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Non Reassuring FHR</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Patient Request</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="IUGR">
+          <label class="form-check-label" for="AbruptioPlacenta">IUGR</label>
+        </div>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="Oligo">
+          <label class="form-check-label" for="AbruptioPlacenta">Oligo</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2"></label>
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Medical Reason</label>
+          <input type="text" class="form-control col-md-6">
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Method for Induction</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">PGE2</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Propess</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Syntocinon</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Argmentation</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Syntocinon</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">ARM</label>
+        </div>
+      </div>
+    </div>
+  
+    <!-- After Admission Section-->
+    <div class="scale-box-main mt-3 mb-3">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">After Admission</h6>
+      </div> <br>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Onset of Labor</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Spontaneous</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Augmentation</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Induced</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Membranes</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">ARM</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Leaking</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">SROM</label>
+        </div>
+  
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label mr-4" for="PlacentaPrevia">Since</label>
+          <input type="text" class="form-control col-md-4 mr-1"> hrs
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Meconium</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Light</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Stained</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Thick</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Liquor</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Clear</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Blood Stained</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">CTG</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Reactive</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">NonReactive</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Abdominal Examination</label>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Cephalic</label>
+          <input type="text" class="form-control col-md-4">
+        </div>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">From 5/5</label>
+          <input type="text" class="form-control col-md-4">
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2"></label>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Breech</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2"></label>
+        <div class="col-md-3">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Transverse</label>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Bishop Score Section -->
+    <div class="scale-box-main mt-3 mb-3">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">Bishop Score</h6>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Pelvic</label>
+        <label class="form-check-label col-md-2">Score 0</label>
+        <label class="form-check-label col-md-2">Score 1</label>
+        <label class="form-check-label col-md-2">Score 2</label>
+        <label class="form-check-label col-md-2">Score 3</label>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Dilatation (cm)</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Closed</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">1-2</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">3-4</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">5 or more</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Effacement(%)</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">0-30</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">40-50</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">60-70</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">80 or more</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Station</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">0-3</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">0-2</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">-1 to 0</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">1+ or 2+</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Positive (Cervical)</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Posterior</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Mid-position</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Anterior</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Consistency</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Firm</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Medium</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="radio" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Soft</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <label class="form-check-label col-md-2">Bishop Total Score</label>
+        <div class="col-md-1 mr-3">
+          <input class="form-control" type="text" id="GrandMultiparity">
+        </div>
+        <div class="col-md-3 ml-2">
+          <input class="form-control" type="text" id="GrandMultiparity">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Pelvic Examination upon Admission Section -->
+    <div class="scale-box-main mt-4">
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-0">
+        <label class="form-check-label col-md-2">Pelvic Examination upon Admission</label>
+        <input type="text" class="form-control col-md-4">
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Management</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Cannula</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">IV cannula</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">CTG</label>
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Epidural Used</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Yes</label>
+        </div>
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">No</label>
+          <input type="text" class="form-control col-md-4">
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Catheter</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Removed</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label mr-3" for="GrandMultiparity">Not Removed</label>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Scales Section -->
+    <div class="scale-box-main">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">Scales</h6>
+      </div> <br>
+      <div class="d-flex mb-2 py-3" style="justify-content: space-between;
+      padding-right: 22px">
+        <div style="display: flex;
+      align-items: center;
+      gap: 10px;">
+          <input type="checkbox" style="width: 36px; 
+        height: 22px;" id="noDiagnosisApplicable" />
+          <label class="admitting-physician" for="noDiagnosisApplicable">No Scales
+            Applicable</label>
+        </div>
+        <div class="secound-bar-vital-sign">
+          <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+        </div>
+      </div>
+      <div class="end-container">
+        <div class="scale-box-main" style="border: 0px solid #fff !important;">
+          <div class="container-fluid">
+            <div class="row create-form-inputs">
+              <div class="scale-box">
+                <div class="scale-box-table">
+                  <table class="table table-bordered past-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Scale Type</th>
+                        <th scope="col">Last Score</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Date/Time</th>
+                        <th scope="col" colspan="3">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of scalesList; let i = index">
+                        <td>{{ item.ScaleType }}</td>
+                        <td>{{ item.LastScore }}</td>
+                        <td>{{ item.ScoreDesc }}</td>
+                        <td>{{ item.Datetimee }}</td>
+                        <td>
+                          <a>Create</a>
+                        </td>
+                        <td>
+                          <a>View</a>
+                        </td>
+                        <td>
+                          <img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer ml-1" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <!--Post Delivery Section -->
+    <div class="scale-box-main">
+      <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
+        <h6 class="col-md-12 p-0 b-3">Post Delivery</h6>
+      </div> <br>
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-0">
+        <label class="form-check-label col-md-1 p-0">Time of Delivery</label>
+        <input type="time" class="form-control col-md-1">
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Mode of Delivery</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">NSVD</label>
+        </div>
+  
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Vacuume</label>
+        </div>
+  
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Forceps</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Placenta</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Complete</label>
+        </div>
+  
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Incomplete</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Perineum</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Intact</label>
+        </div>
+  
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Episiotomy</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Extended Tear</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Blood Loss</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Average</label>
+        </div>
+  
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Excessive</label>
+        </div>
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label mr-4" for="PlacentaPrevia">Estimated Blood Loss </label>
+          <input type="text" class="form-control col-md-2 mr-1"> ml
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="GrandMultiparity">
+          <label class="form-check-label" for="GrandMultiparity">Cervix</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Intact</label>
+        </div>
+  
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Leceration</label>
+        </div>
+        <div class="col-md-8">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label mr-4" for="PlacentaPrevia">Other </label>
+          <input type="text" class="form-control col-md-4">
+        </div>
+      </div>
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <label class="form-check-label col-md-2 p-0" for="GrandMultiparity">Comments</label>
+        <textarea class="form-control" rows="2" style="height: 100px;"></textarea>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <label class="form-check-label col-md-2 p-0" for="GrandMultiparity">Anesthesia</label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Local</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">General</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Epidural</label>
+        </div>
+        <div class="col-md-6">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label mr-3" for="PlacentaPrevia">Other</label>
+          <input type="text" class="form-control col-md-4">
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 p-2">
+        <div class="col-md-12">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">IF Post Partum Hemorrhage</label>
+        </div>
+      </div>
+  
+      <div class="section d-flex col-md-12 mb-3 mt-2 p-2">
+        <label class="form-check-label col-md-2 p-0" for="GrandMultiparity"></label>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Cervical Laceration</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Atonic</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Retained Parts</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Veginal Laceration</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-check-input" type="checkbox" id="PlacentaPrevia">
+          <label class="form-check-label" for="PlacentaPrevia">Perineal Tear</label>
+        </div>
+      </div>
+      <!-- Neonatal Data Section -->
+      <div class="tab-content">
+        <h6 class="col-md-12 p-0 pb-3">Neonatal Data</h6>
+        <div class="scale-box-table pr-2">
+          <div class="table-scroll-container">
+            <table class="table table-bordered third-table">
+              <thead style="background-color: #e4edf5;color: black;">
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Birth Time</th>
+                  <th scope="col">Sex</th>
+                  <th scope="col">WT</th>
+                  <th scope="col">Apgar Score (1)</th>
+                  <th scope="col">Apgar Score (5)</th>
+                  <th scope="col">Apgar Score (10)</th>
+                  <th scope="col">Status Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let codeItems of code">
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text"
+                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+                      style="min-width: 235px; height: 40px !important" bsDatepicker [bsConfig]="{
+                showWeekNumbers: false,
+                dateInputFormat: 'DD.MM.YYYY'
+              }" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="text" class="form-control" /></td>
+                  <td class="w-20">
+                    <ng-select bindLabel="label" [items]="statusDescriptionOptions" bindValue="value" placeholder="" style="width: 100%">
+                    </ng-select>
+                  </td>
+  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
