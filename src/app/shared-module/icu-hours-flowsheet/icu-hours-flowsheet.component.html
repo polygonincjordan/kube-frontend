@@ -64,7 +64,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -122,7 +122,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -182,7 +182,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -240,7 +240,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -300,7 +300,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -364,7 +364,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -424,7 +424,7 @@
                                         <div class="row align-items-center w-100 custom-input">
                                             <label for="" class="text-nowrap m-0 col-2">Inserted</label>
                                             <ng-select class="col-2 px-0">
-                                                <ng-option></ng-option>
+                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -479,7 +479,7 @@
                                                     </td>
                                                     <td>
                                                         <ng-select>
-                                                            <ng-option></ng-option>
+                                                            <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                                                         </ng-select>
                                                     </td>
                                                     <td>
@@ -566,7 +566,12 @@
                                             <input type="checkbox" id="noScaleAppicable" class="mr-2" />
                                             <label class="m-0">No lab test applicable</label>
                                         </div>
-                                        <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                                        <div class="d-flex">
+                                            <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                                            <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addRow()">
+                                                <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="table-scroll-container">
@@ -653,7 +658,8 @@
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <label class="col-md-2">Reasons explained to patient</label>
-                            <ng-select bindLabel="label" class="col-md-1 pl-0" bindValue="value" placeholder="">
+                            <ng-select>
+                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
                             </ng-select>
                             <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
                         </div>
@@ -685,9 +691,16 @@
                             <input type="text" class="mr-3 col-md-5 form-control" />
                         </div>
 
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2">Searched for harmful objects, removed</label>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-3">Belt / Shoes removed</span>
+                        <div class="d-flex align-items-center mb-3 w-100 justify-content-between">
+                            <div class="d-flex align-items-center mb-3">
+                                <label class="col-md-8">Searched for harmful objects, removed</label>
+                                <input type="checkbox" class="mr-1" /><span class="col-md-6">Belt / Shoes removed</span>
+                            </div>
+                            <div class="d-flex ml-3">
+                                <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addrestraintsList()">
+                                    <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Table Section -->
@@ -705,8 +718,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><input class="form-control ml-0 col-1"
+                                    <tr *ngFor="let item of restraintsList">
+                                        <td>
+                                            <input class="form-control ml-0 col-1"
                                                 style="color: #000; border-radius: 8px" type="text" placeholder=""
                                                 [minDate]="" [maxDate]="" #dp="bsDatepicker"
                                                 style="min-width: 200px; height: 40px !important" bsDatepicker
@@ -722,17 +736,17 @@
                                             <input type="text" class="form-control" placeholder="">
                                         </td>
                                         <td>
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="CIRCULATIONList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td>
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="careGivenList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td>
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="behaviourList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
@@ -746,7 +760,14 @@
 
                     <!--Pressuer Score Risk-->
                     <div class="tab-content" *ngIf="activeTab == '5'">
-                        <label class="mb-2 pl-3">Pressuer Score Risk</label>
+                        <div class="d-flex justify-content-between mb-2">
+                            <label class="mb-2 pl-3">Pressuer Score Risk</label>
+                            <div class="d-flex">
+                                <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addPressuer()">
+                                    <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
+                                </div>
+                            </div>
+                        </div>
                         <!--Fisrt Table Section -->
                         <div class="table-responsive pl-3 mb-4">
                             <table class="table table-bordered">
@@ -764,37 +785,37 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr *ngFor="let ite of pressuerList">
                                         <td class="w-8">
                                             <input type="text" class="form-control" placeholder="00:00:00">
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="sensoryReceptionList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="moistureList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="activityList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="mobilityList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="nutritionList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="frictionList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
@@ -804,8 +825,14 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        <label class="mb-2 pl-3 mt-3">Pressuer Sore Care</label>
+                        <div class="d-flex justify-content-between mb-2 align-items-center">
+                            <label class="mb-2 pl-3 mt-3">Pressuer Score Care</label>
+                            <div class="d-flex justify-content-between">
+                                <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addPressuerCare()">
+                                    <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
+                                </div>
+                            </div>
+                        </div>
                         <!--Second Table Section -->
                         <div class="table-responsive pl-3 mb-4">
                             <table class="table table-bordered">
@@ -819,12 +846,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr *ngFor="let item of pressuerCoreList">
                                         <td class="w-8">
                                             <input type="time" class="form-control" placeholder="00:00:00">
                                         </td>
                                         <td class="w-10">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="gradeList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
@@ -867,6 +894,11 @@
 
                     <!--wound Care-->
                     <div class="tab-content" *ngIf="activeTab == '6'">
+                        <div class="d-flex justify-content-end mb-2">
+                            <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addWoundCare()">
+                                <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
+                            </div>
+                        </div>
                         <div class="table-responsive pl-3 mb-4">
                             <table class="table table-bordered">
                                 <thead style="background-color: #e4edf5;color: black;">
@@ -879,9 +911,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr *ngFor="let item of woundCareList">
                                         <td class="w-17">
-                                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label"
+                                            <ng-select [items]="stageWoundList" bindLabel="label"
                                                 bindValue="value" placeholder="" style="width: 100%">
                                             </ng-select>
                                         </td>
@@ -901,6 +933,11 @@
 
                     <!--ventilator Settings-->
                     <div class="tab-content" *ngIf="activeTab == '7'">
+                        <div class="d-flex justify-content-end mb-2">
+                            <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addVentilatorList()">
+                                <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
+                            </div>
+                        </div>
                         <div class="table-responsive pl-3 mb-4">
                             <table class="table table-bordered">
                                 <thead style="background-color: #e4edf5;color: black;">
@@ -921,7 +958,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr *ngFor="let item of ventilatorList">
                                         <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
                                         <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
                                         <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
@@ -945,7 +982,7 @@
                     <div class="tab-content" *ngIf="activeTab == '8'">
                         <div class="d-flex align-items-center mb-3">
                             <label class="col-md-1 mr-2">Edema</label>
-                            <ng-select [items]="[{label: 'Select', value: ''}]" bindLabel="label" bindValue="value"
+                            <ng-select [items]="edamaList" bindLabel="label" bindValue="value"
                                 placeholder="" style="width: 15%">
                             </ng-select>
                         </div>
@@ -1035,9 +1072,14 @@
                     <div class="tab-content" *ngIf="activeTab == '10'">
                         <div class="scale-box-table pr-2">
                             <div class="pl-3 pr-3">
-                                <div class="scale-box-checkbox pb-2">
+                                <div class="scale-box-checkbox pb-2 d-flex justify-content-end">
                                     <div style="text-align: right;">
                                         <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                                    </div>
+                                    <div class="d-flex ml-3">
+                                        <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addPhysicialExamination()">
+                                            <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="table-scroll-container">
@@ -1049,11 +1091,10 @@
                                                 <th scope="col">Description</th>
                                                 <th style="width: 10%;" scope="col">Mode</th>
                                                 <th scope="col">Comments</th>
-                                                <th style="width: 1%;" scope="col">C...</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let codeItems of code">
+                                            <tr *ngFor="let codeItems of physicialExaminationList">
                                                 <td><input class="form-control ml-0 col-1"
                                                         style="color: #000; border-radius: 8px" type="text"
                                                         placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
@@ -1064,11 +1105,10 @@
               }" /></td>
                                                 <td><input type="time" class="form-control" /></td>
                                                 <td><input type="text" class="form-control" /></td>
-                                                <td> <ng-select [items]="[{label: 'Select', value: ''}]"
+                                                <td> <ng-select [items]="modeList"
                                                         bindLabel="label" bindValue="value" placeholder="">
                                                     </ng-select></td>
                                                 <td><input type="text" class="form-control" /></td>
-                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>

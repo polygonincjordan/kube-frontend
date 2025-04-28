@@ -14,7 +14,7 @@ export class AssessmentTabComponent implements OnInit {
   tabList = [
     'Functional Assessment',
     'Sleep/Rest',
-    'Glowth & Development',
+    'Growth & Development',
     'Social Screening',
   ];
 
