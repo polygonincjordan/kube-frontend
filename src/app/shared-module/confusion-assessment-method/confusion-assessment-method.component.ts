@@ -53,7 +53,7 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
   ]
   public scalesList: any[] = [
     {
-      ScaleType: 'Glasgow Coma Scale',
+      ScaleType: 'Richmond Scale',
       LastScore: '',
       ScoreDesc: '',
       Datetimee: '',
@@ -61,21 +61,13 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
       Dockey: '',
     },
     {
-      ScaleType: 'Morse Fall Scale (MFS)',
+      ScaleType: 'Ramsay Sedation Scale',
       LastScore: '',
       ScoreDesc: '',
       Datetimee: '',
       value: '2',
       Dockey: '',
-    },
-    {
-      ScaleType: 'Braden scale for predicting pressure ulcers',
-      LastScore: '',
-      ScoreDesc: '',
-      Datetimee: '',
-      value: '3',
-      Dockey: '',
-    },
+    }
   ];
 
   morseFallScaleData;

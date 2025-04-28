@@ -24,8 +24,8 @@ export class RamsaySedationScaleComponent implements OnInit {
   ch_mfs_IV_acess: number | null; 
   ch_mfs_gait: number | null; 
   ch_mfs_mental_status  : number | null; 
-  totalScore: number;
-  description: string;
+  totalScore: number = 0;
+  description: string = 'Not answered';
 
   ramsayList = [
     {

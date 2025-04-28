@@ -13,7 +13,7 @@ export class ExaminationTabComponent implements OnInit {
 
   tabList = [
     'Physical Examination',
-    'Sexual Development',
+    // 'Sexual Development',
   ];
 
   modePhysicalList = [

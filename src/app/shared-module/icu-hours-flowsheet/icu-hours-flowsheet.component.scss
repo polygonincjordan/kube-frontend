@@ -468,3 +468,18 @@ body {
     pointer-events: none;
     /* So click passes to input */
   }
+
+  .icon-pdf {
+    background-color: #e4edf5;
+    font-weight: 500;
+    list-style: none;
+    display: inline-block;
+    padding: 0px 10px;
+    font-size: 14px;
+    border: 1px solid #d3d1d1;
+    border-radius: 6px;
+    padding: 4px;
+    // width: -moz-fit-content;
+    margin: 0px 5px;
+    text-align: center;
+  }

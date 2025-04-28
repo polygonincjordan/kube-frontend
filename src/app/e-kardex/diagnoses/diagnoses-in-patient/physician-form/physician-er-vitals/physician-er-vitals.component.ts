@@ -495,7 +495,16 @@ export class PhysicianErVitalsComponent implements OnInit {
     const config: ModalOptions = {
       class: 'modal-dialog-centered cancel-vital',
     };
-    this.modalRefForDelete = this.modalService.show(template, config);
+    if (this.isSelected) {
+      this.modalRefForDelete = this.modalService.show(template, config);
+    } else {
+      Swal.fire({
+        text: "Please select Vital Signs to delete.",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+    }
   }
   deleteVitalList() {
     this.isFormSubmitted = true;
@@ -650,27 +659,37 @@ export class PhysicianErVitalsComponent implements OnInit {
     }
   }
 
-  EditVitalList() {
-    if (this.selectedColData) {
-      this.showMaintain = true;
-      this.edit = true
-      this.selectedColData.TOITEM.results.forEach(element => {
-        // if(element.Name.includes('Temperature')){
-        //   element['Value'] = parseFloat(element.Value).toFixed(2);
-        // }
-        // else{
-        //   element['Value'] = parseInt(element.Value);
-        // }
-        this.addItemForVital(element);
-      });
-      this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo);
-      this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
-      this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
-      this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
-      this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);
-
+   EditVitalList() {
+      if (this.isSelected) {
+        if (this.selectedColData) {
+          this.showMaintain = true;
+          this.edit = true
+          this.selectedColData.TOITEM.results.forEach(element => {
+            // if(element.Name.includes('Temperature')){
+            //   element['Value'] = parseFloat(element.Value).toFixed(2);
+            // }
+            // else{
+            //   element['Value'] = parseInt(element.Value);
+            // }
+            this.addItemForVital(element);
+          });
+          this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo);
+          this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
+          this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
+          this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
+          this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);
+  
+        }
+      } else {
+        Swal.fire({
+          text: "Please select Vital Signs to change.",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+      }
+  
     }
-  }
   // maintain vitals
   closeMaintain() {
     this.showMaintain = false;
