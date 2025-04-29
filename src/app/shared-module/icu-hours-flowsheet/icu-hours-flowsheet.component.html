@@ -1,1202 +1,1794 @@
 <div class="haemodialysis-main">
-    <div class="haemodialysis-info">
-        <div class="container-fluid" style="padding: 0px;">
-            <div>
-                <div class="row mb-3">
-                    <div id="exTab1" class="d-flex mt-4">
-                        <ng-container *ngFor="let item of tabItems">
-                            <ul class="nav nav-pills">
-                                <li [class.active]="activeTab === item.value" (click)="setActiveTab(item.value)">
-                                    {{ item.label }}
-                                </li>
-                            </ul>
-                        </ng-container>
-                    </div>
-                </div>
-                <div>
-                    <div *ngIf="activeTab == '1'">
-                        <div class="row my-3 m-0">
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">ET-Tube</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">T-Tube</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">NP Tube</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">Swan Ganz</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2 mb-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-3 m-0 mt-3">
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">Central Line</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">Arterial Line</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">ETT Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2 mb-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-3 m-0 mt-3">
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">Chest Tube</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">NG </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">PEG Tube </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">ETT Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2 mb-2">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row my-3 m-0 mt-3">
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">N/A</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">Foleys Catheter</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Site</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Size</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">No. of Days</label>
-                                            <input type="text" class="col-2">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">Inserted</label>
-                                            <ng-select class="col-2 px-0">
-                                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center">
-                                    <div class="col-12 px-0 ">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <label for="" class="text-nowrap m-0 col-2">By</label>
-                                            <input type="text" class="col-8">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 row my-3 m-0 border_box">
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-3 px-0 mb-2">
-                                        <div class="row align-items-center w-100 custom-input">
-                                            <input type="radio" class="col-2">
-                                            <label for="" class="text-nowrap m-0 col-4 px-0">Peripheral IV</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-flex align-items-center mt-2">
-                                    <div class="col-12 px-0 ">
-                                        <table class="table">
-                                            <thead>
-                                                <th>Lot #</th>
-                                                <th>Inserted</th>
-                                                <th>D/C</th>
-                                                <th>Days</th>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <input class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <ng-select>
-                                                            <ng-option></ng-option>
-                                                        </ng-select>
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <input class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <ng-select>
-                                                            <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                                        </ng-select>
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" />
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="activeTab == '2'">
-                        <div class="end-container">
-                            <div class="scale-box-main">
-                                <label class="box-label">Scales</label>
-                                <div class="container-fluid">
-                                    <div class="row create-form-inputs">
-                                        <div class="scale-box">
-                                            <div class="scale-box-checkbox">
-                                                <input type="checkbox" id="noScaleAppicable"
-                                                    [(ngModel)]="noScaleAppicable"
-                                                    [ngModelOptions]="{ standalone: true }"
-                                                    [disabled]="isDockeyAvailable()" />
-                                                <label class="admitting-physician" for="noScaleAppicable">No Scale
-                                                    Applicable</label>
-
-                                                <div style="display: flex; width: 88%; justify-content: end;">
-                                                    <img src="assets/img/file1.svg" title="Create & Import"
-                                                        class="img-size"
-                                                        (click)="openModalForScales(scalesOrderCase)" />
-                                                </div>
-                                            </div>
-                                            <div class="scale-box-table">
-                                                <table class="table table-bordered past-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Description</th>
-                                                            <th scope="col">Measured Value</th>
-                                                            <th scope="col">Normal Range</th>
-                                                            <th scope="col">Date/Time</th>
-                                                            <th scope="col" colspan="3">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let item of scalesList; let i = index">
-                                                            <td>{{ item.ScaleType }}</td>
-                                                            <td>{{ item.LastScore }}</td>
-                                                            <td>{{ item.ScoreDesc }}</td>
-                                                            <td>{{ item.Datetimee }}</td>
-                                                            <td>
-                                                                <a (click)="openScaleModel(item)">Create</a>
-                                                            </td>
-                                                            <td>
-                                                                <a (click)="viewGlosgowModel(item)">View</a>
-                                                            </td>
-                                                            <td>
-                                                                <img src="assets/img/Delete.svg" title="Delete"
-                                                                    class="cursor-pointer ml-1"
-                                                                    (click)="removeScale(i)" />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- labTestClut -->
-                    <div class="tab-content" *ngIf="activeTab == '3'">
-                        <div class="scale-box-table pr-2">
-                            <div class="pl-3 pr-3">
-                                <div class="scale-box-checkbox pb-2">
-                                    <div style="display: flex; width: 100%; justify-content: space-between">
-                                        <div class="scale-box-checkbox d-flex align-items-center w-50">
-                                            <input type="checkbox" id="noScaleAppicable" class="mr-2" />
-                                            <label class="m-0">No lab test applicable</label>
-                                        </div>
-                                        <div class="d-flex">
-                                            <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
-                                            <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addRow()">
-                                                <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-scroll-container">
-                                    <table class="table table-bordered third-table">
-                                        <thead style="background-color: #e4edf5;color: black;">
-                                            <tr>
-                                                <th scope="col">Description</th>
-                                                <th scope="col">Value</th>
-                                                <th scope="col">Value Configuration</th>
-                                                <th scope="col">Range</th>
-                                                <th scope="col">Date/Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let codeItems of code">
-
-                                                <td><input type="text" class="form-control" /></td>
-                                                <td><input type="text" class="form-control" /></td>
-                                                <td><input type="text" class="form-control" /></td>
-                                                <td><input type="text" class="form-control" /></td>
-                                                <td><input class="form-control ml-0 col-1"
-                                                        style="color: #000; border-radius: 8px" type="text"
-                                                        placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
-                                                        style="min-width: 235px; height: 40px !important" bsDatepicker
-                                                        [bsConfig]="{
-                showWeekNumbers: false,
-                dateInputFormat: 'DD.MM.YYYY'
-              }" /></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- monitoring Tab Content 3-->
-                    <div class="tab-content" *ngIf="activeTab == '4'">
-
-                        <!-- Physician and RN Supervisor Notification -->
-                        <div class="d-flex mb-3">
-                            <label for="physicianNotified" class="col-md-2 mr-2">PHYSICIAN NOTIFIED</label>
-                            <input type="text" class="form-control col-md-1" id="physicianNotified"
-                                placeholder="00:00:00">
-                            <div class="col-md-1 p-0"></div>
-                            <label for="rnSupervisorNotified" class="col-md-2 mr-2">RN SUPERVISOR NOTIFIED</label>
-                            <input type="text" class="form-control col-md-1" id="rnSupervisorNotified"
-                                placeholder="00:00:00">
-                        </div>
-
-                        <!-- Patient Risk Factors Section -->
-                        <div class="form-section">
-                            <label class="col-md-12">PATIENT RISK FACTORS: Indicate any that could possibly make the
-                                patient a
-                                higher risk during seclusion/restraints notify the physician:</label>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2">Psychological Risk Factors</label>
-                            <input type="checkbox" class="mr-2" /><span class="col-md-1"> Child Abuse</span>
-                            <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2"></label>
-                            <input type="checkbox" class="mr-2" /><span class="col-md-1">Patient Behaviour</span>
-                            <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <label class="col-md-12">CLINICAL JUSTIFICATION FOR USE OF DEVICE (check all that
-                                apply):</label>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-2 pl-3">
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Prevent Injury</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-2">Fall prevention to
-                                self</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-2">Patient Behaviour</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Other</span>
-                            <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3 pl-3">
-                            <label>REASONS</label>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2">Reasons explained to patient</label>
-                            <ng-select>
-                                <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                            </ng-select>
-                            <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2">Type of restraint (check all that apply)</label>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Soft Bandage</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Restraint Kit</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Other</span>
-                            <input type="text" class="ml-2 mr-3 col-md-2 form-control" />
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2">Site of restraint application</label>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Right Hand</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Left Hand</span>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2"></label>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Right Foot</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Left Foot</span>
-                            <input type="checkbox" class="mr-1" /><span class="col-md-1">Other</span>
-                            <input type="text" class="ml-2 mr-3 col-md-2 form-control" />
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2">Less Restrictive Measure attempted</label>
-                            <input type="text" class="mr-3 col-md-5 form-control" />
-                        </div>
-
-                        <div class="d-flex align-items-center mb-3 w-100 justify-content-between">
-                            <div class="d-flex align-items-center mb-3">
-                                <label class="col-md-8">Searched for harmful objects, removed</label>
-                                <input type="checkbox" class="mr-1" /><span class="col-md-6">Belt / Shoes removed</span>
-                            </div>
-                            <div class="d-flex ml-3">
-                                <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addrestraintsList()">
-                                    <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Table Section -->
-                        <div class="table-responsive pl-3">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th>DATE</th>
-                                        <th>TIME</th>
-                                        <th>RESPIRATORY RATE (br/min)</th>
-                                        <th>CIRCULATION</th>
-                                        <th>CARE GIVEN</th>
-                                        <th>BEHAVIOUR</th>
-                                        <th>SIGNATURE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of restraintsList">
-                                        <td>
-                                            <input class="form-control ml-0 col-1"
-                                                style="color: #000; border-radius: 8px" type="text" placeholder=""
-                                                [minDate]="" [maxDate]="" #dp="bsDatepicker"
-                                                style="min-width: 200px; height: 40px !important" bsDatepicker
-                                                [bsConfig]="{
-          showWeekNumbers: false,
-          dateInputFormat: 'DD.MM.YYYY'
-        }" /></td>
-
-                                        <td>
-                                            <input type="text" class="form-control" placeholder="00:00:00">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" placeholder="">
-                                        </td>
-                                        <td>
-                                            <ng-select [items]="CIRCULATIONList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td>
-                                            <ng-select [items]="careGivenList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td>
-                                            <ng-select [items]="behaviourList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                    </tr>
-                                    <!-- Add more rows as needed -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!--Pressuer Score Risk-->
-                    <div class="tab-content" *ngIf="activeTab == '5'">
-                        <div class="d-flex justify-content-between mb-2">
-                            <label class="mb-2 pl-3">Pressuer Score Risk</label>
-                            <div class="d-flex">
-                                <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addPressuer()">
-                                    <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
-                                </div>
-                            </div>
-                        </div>
-                        <!--Fisrt Table Section -->
-                        <div class="table-responsive pl-3 mb-4">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th>Hour</th>
-                                        <th>Sensory Reception</th>
-                                        <th>Moisture</th>
-                                        <th>Activity</th>
-                                        <th>Mobility</th>
-                                        <th>Nutrition</th>
-                                        <th>Friction & Shear</th>
-                                        <th>Total</th>
-                                        <th>Signature</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let ite of pressuerList">
-                                        <td class="w-8">
-                                            <input type="text" class="form-control" placeholder="00:00:00">
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="sensoryReceptionList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="moistureList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="activityList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="mobilityList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="nutritionList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="frictionList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2 align-items-center">
-                            <label class="mb-2 pl-3 mt-3">Pressuer Score Care</label>
-                            <div class="d-flex justify-content-between">
-                                <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addPressuerCare()">
-                                    <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
-                                </div>
-                            </div>
-                        </div>
-                        <!--Second Table Section -->
-                        <div class="table-responsive pl-3 mb-4">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th>Time</th>
-                                        <th>Grade</th>
-                                        <th>Site</th>
-                                        <th>Apperance</th>
-                                        <th>Intervention</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of pressuerCoreList">
-                                        <td class="w-8">
-                                            <input type="time" class="form-control" placeholder="00:00:00">
-                                        </td>
-                                        <td class="w-10">
-                                            <ng-select [items]="gradeList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-13">
-                                            <input type="text" class="form-control">
-                                        </td>
-                                        <td class="w-13">
-                                            <input type="text" class="form-control">
-                                        </td>
-                                        <td class="w-13">
-                                            <input type="text" class="form-control">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="grading-section pl-3">
-                            <h6 class="fw-bold">Pressure Sore Risk Grading System</h6>
-                            <div class="stage-item">
-                                <p><strong>Stage 1:</strong> Non-blanchable erythema (redness) of intact skin.</p>
-                            </div>
-                            <div class="stage-item">
-                                <p><strong>Stage 2:</strong> Superficial/partial thickness skin loss - Ulcer
-                                    involves Epidermis or Dermis, Skin
-                                    abrasion - Presents as deep crater.</p>
-                            </div>
-                            <div class="stage-item">
-                                <p><strong>Stage 3:</strong> Full thickness skin loss with subcutaneous damage -
-                                    Ulcer extends down to
-                                    underlying fascia - Presents as deep crater.</p>
-                            </div>
-                            <div class="stage-item">
-                                <p><strong>Stage 4:</strong> Full thickness skin loss with extensive destruction.
-                                    Tissue necrosis. Damage to
-                                    muscles, bones, tendon or joint capsule.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--wound Care-->
-                    <div class="tab-content" *ngIf="activeTab == '6'">
-                        <div class="d-flex justify-content-end mb-2">
-                            <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addWoundCare()">
-                                <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
-                            </div>
-                        </div>
-                        <div class="table-responsive pl-3 mb-4">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th>Stage</th>
-                                        <th>Appetite</th>
-                                        <th>Drainage</th>
-                                        <th>Odour</th>
-                                        <th>Treatment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of woundCareList">
-                                        <td class="w-17">
-                                            <ng-select [items]="stageWoundList" bindLabel="label"
-                                                bindValue="value" placeholder="" style="width: 100%">
-                                            </ng-select>
-                                        </td>
-                                        <td class="w-17"> <input type="text" class="form-control" placeholder="">
-                                        </td>
-                                        <td class="w-17"> <input type="text" class="form-control" placeholder="">
-                                        </td>
-                                        <td class="w-17"> <input type="text" class="form-control" placeholder="">
-                                        </td>
-                                        <td class="w-13"> <input type="text" class="form-control" placeholder="">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!--ventilator Settings-->
-                    <div class="tab-content" *ngIf="activeTab == '7'">
-                        <div class="d-flex justify-content-end mb-2">
-                            <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addVentilatorList()">
-                                <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
-                            </div>
-                        </div>
-                        <div class="table-responsive pl-3 mb-4">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th>Mode</th>
-                                        <th>FiO2</th>
-                                        <th>RR Set</th>
-                                        <th>RR Total</th>
-                                        <th>PEEP</th>
-                                        <th>PS</th>
-                                        <th>EPAP</th>
-                                        <th>IPAP</th>
-                                        <th>MAP</th>
-                                        <th>VT Set</th>
-                                        <th>VT Exhaled</th>
-                                        <th>Sensitivity</th>
-                                        <th>I:E Ratio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ventilatorList">
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="w-3"><input type="text" class="form-control" placeholder=""></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!--Edema-->
-                    <div class="tab-content" *ngIf="activeTab == '8'">
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-1 mr-2">Edema</label>
-                            <ng-select [items]="edamaList" bindLabel="label" bindValue="value"
-                                placeholder="" style="width: 15%">
-                            </ng-select>
-                        </div>
-                    </div>
-
-                    <!--inteak/Out...-->
-                    <div class="tab-content" *ngIf="activeTab == '9'">
-                        <label class="mb-2 pl-3">Inteak</label>
-                        <!--Fisrt Table Section -->
-                        <div class="table-responsive pl-3 mb-4">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th style="width: 2%">Date</th>
-                                        <th>Time</th>
-                                        <th>Type of Inteak</th>
-                                        <th>Amount (ml)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input class="form-control ml-0 col-1"
-                                                style="color: #000; border-radius: 8px" type="text" placeholder=""
-                                                [minDate]="" [maxDate]="" #dp="bsDatepicker"
-                                                style="min-width: 185px; height: 40px !important" bsDatepicker
-                                                [bsConfig]="{
-            showWeekNumbers: false,
-            dateInputFormat: 'DD.MM.YYYY'
-          }" /></td>
-                                        <td class="w-2"> <input type="time" class="form-control" placeholder="">
-                                        </td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <label class="mb-2 pl-3 mt-3">Output</label>
-                        <!--Second Table Section -->
-                        <div class="table-responsive pl-3 mb-4">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #e4edf5;color: black;">
-                                    <tr>
-                                        <th style="width: 2%">Date</th>
-                                        <th>Time</th>
-                                        <th>Type of Output</th>
-                                        <th>Amount (ml)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input class="form-control ml-0 col-1"
-                                                style="color: #000; border-radius: 8px" type="text" placeholder=""
-                                                [minDate]="" [maxDate]="" #dp="bsDatepicker"
-                                                style="min-width: 185px; height: 40px !important" bsDatepicker
-                                                [bsConfig]="{
-            showWeekNumbers: false,
-            dateInputFormat: 'DD.MM.YYYY'
-          }" /></td>
-                                        <td class="w-2"> <input type="time" class="form-control" placeholder="">
-                                        </td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                        <td> <input type="text" class="form-control" placeholder=""></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!--Last point-->
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2 mr-2">Grand Total Inteak (ml)</label>
-                            <input type="text" class="form-control col-md-1" placeholder="">
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2 mr-2">Grand Total Output (ml)</label>
-                            <input type="text" class="form-control col-md-1" placeholder="">
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <label class="col-md-2 mr-2">Grand Balance (ml)</label>
-                            <input type="text" class="form-control col-md-1" placeholder="">
-                        </div>
-
-                    </div>
-
-                    <!-- physicalExam -->
-                    <div class="tab-content" *ngIf="activeTab == '10'">
-                        <div class="scale-box-table pr-2">
-                            <div class="pl-3 pr-3">
-                                <div class="scale-box-checkbox pb-2 d-flex justify-content-end">
-                                    <div style="text-align: right;">
-                                        <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
-                                    </div>
-                                    <div class="d-flex ml-3">
-                                        <div class="icon-pdf" style="background-color: #e4edf5;" (click)="addPhysicialExamination()">
-                                            <img src="assets/img/Add.svg" title="Add row" class="img-size" width="15">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-scroll-container">
-                                    <table class="table table-bordered third-table">
-                                        <thead style="background-color: #e4edf5;color: black;">
-                                            <tr>
-                                                <th style="width: 2%;" scope="col">Date</th>
-                                                <th style="width: 2%;" scope="col">Time</th>
-                                                <th scope="col">Description</th>
-                                                <th style="width: 10%;" scope="col">Mode</th>
-                                                <th scope="col">Comments</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let codeItems of physicialExaminationList">
-                                                <td><input class="form-control ml-0 col-1"
-                                                        style="color: #000; border-radius: 8px" type="text"
-                                                        placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
-                                                        style="min-width: 235px; height: 40px !important" bsDatepicker
-                                                        [bsConfig]="{
-                showWeekNumbers: false,
-                dateInputFormat: 'DD.MM.YYYY'
-              }" /></td>
-                                                <td><input type="time" class="form-control" /></td>
-                                                <td><input type="text" class="form-control" /></td>
-                                                <td> <ng-select [items]="modeList"
-                                                        bindLabel="label" bindValue="value" placeholder="">
-                                                    </ng-select></td>
-                                                <td><input type="text" class="form-control" /></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="haemodialysis-info">
+    <div class="container-fluid" style="padding: 0px">
+      <div>
+        <div class="row mb-3">
+          <div id="exTab1" class="d-flex mt-4">
+            <ng-container *ngFor="let item of tabItems">
+              <ul class="nav nav-pills">
+                <li
+                  [class.active]="activeTab === item.value"
+                  (click)="setActiveTab(item.value)"
+                >
+                  {{ item.label }}
+                </li>
+              </ul>
+            </ng-container>
+          </div>
         </div>
+        <div>
+          <div *ngIf="activeTab == '1'">
+            <div class="row my-3 m-0">
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >ET-Tube</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >T-Tube</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >NP Tube</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Size</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption1" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption1" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >Swan Ganz</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Site</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Size</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2 mb-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row my-3 m-0 mt-3">
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption2" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption2" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >Central Line</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Site</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Size</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption3" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption3" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >Arterial Line</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Site</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >ETT Size</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2 mb-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row my-3 m-0 mt-3">
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption4" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption4" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >Chest Tube</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Site</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Size</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption5" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption5" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >NG
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption5" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >PEG Tube
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Site</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >ETT Size</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2 mb-2">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row my-3 m-0 mt-3">
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption6" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >N/A</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-3 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption6" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >Foleys Catheter</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Site</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">Size</label>
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >No. of Days</label
+                      >
+                      <input type="text" class="col-2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2"
+                        >Inserted</label
+                      >
+                      <ng-select class="col-2 px-0">
+                        <ng-option *ngFor="let item of yesNoList">{{
+                          item.label
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center">
+                  <div class="col-12 px-0">
+                    <div class="row align-items-center w-100 custom-input">
+                      <label for="" class="text-nowrap m-0 col-2">By</label>
+                      <input type="text" class="col-8" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 row my-3 m-0 border_box">
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-3 px-0 mb-2">
+                    <div class="row align-items-center w-100 custom-input">
+                      <input type="radio" name="tubeOption7" class="col-2" />
+                      <label for="" class="text-nowrap m-0 col-4 px-0"
+                        >Peripheral IV</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-center mt-2">
+                  <div class="col-12 px-0">
+                    <table class="table">
+                      <thead>
+                        <th>Lot #</th>
+                        <th>Inserted</th>
+                        <th>D/C</th>
+                        <th>Days</th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <input class="form-control" />
+                          </td>
+                          <td>
+                            <ng-select>
+                              <ng-option></ng-option>
+                            </ng-select>
+                          </td>
+                          <td>
+                            <input class="form-control" />
+                          </td>
+                          <td>
+                            <input class="form-control" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input class="form-control" />
+                          </td>
+                          <td>
+                            <ng-select>
+                              <ng-option *ngFor="let item of yesNoList">{{
+                                item.label
+                              }}</ng-option>
+                            </ng-select>
+                          </td>
+                          <td>
+                            <input class="form-control" />
+                          </td>
+                          <td>
+                            <input class="form-control" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="activeTab == '2'">
+            <div class="end-container">
+              <div class="scale-box-main">
+                <label class="box-label">Scales</label>
+                <div class="container-fluid">
+                  <div class="row create-form-inputs">
+                    <div class="scale-box">
+                      <div class="scale-box-checkbox">
+                        <input
+                          type="checkbox"
+                          id="noScaleAppicable"
+                          [(ngModel)]="noScaleAppicable"
+                          [ngModelOptions]="{ standalone: true }"
+                          [disabled]="isDockeyAvailable()"
+                        />
+                        <label
+                          class="admitting-physician"
+                          style="white-space: nowrap;"
+                          for="noScaleAppicable"
+                          >No Scale Applicable</label
+                        >
+
+                        <div
+                          style="
+                            display: flex;
+                            width: 88%;
+                            justify-content: end;
+                          "
+                        >
+                          <img
+                            src="assets/img/file1.svg"
+                            title="Create & Import"
+                            class="img-size"
+                            (click)="openModalForScales(scalesOrderCase)"
+                          />
+                        </div>
+                      </div>
+                      <div class="scale-box-table">
+                        <table class="table table-bordered past-table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Description</th>
+                              <th scope="col">Measured Value</th>
+                              <th scope="col">Normal Range</th>
+                              <th scope="col">Date/Time</th>
+                              <th scope="col" colspan="3">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of scalesList; let i = index">
+                              <td>{{ item.ScaleType }}</td>
+                              <td>{{ item.LastScore }}</td>
+                              <td>{{ item.ScoreDesc }}</td>
+                              <td>{{ item.Datetimee }}</td>
+                              <td>
+                                <a (click)="openScaleModel(item)">Create</a>
+                              </td>
+                              <td>
+                                <a (click)="viewGlosgowModel(item)">View</a>
+                              </td>
+                              <td>
+                                <img
+                                  src="assets/img/Delete.svg"
+                                  title="Delete"
+                                  class="cursor-pointer ml-1"
+                                  (click)="removeScale(i)"
+                                />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- labTestClut -->
+          <div class="tab-content" *ngIf="activeTab == '3'">
+            <div class="scale-box-table pr-2">
+              <div class="pl-3 pr-3">
+                <div class="scale-box-checkbox pb-2">
+                  <div
+                    style="
+                      display: flex;
+                      width: 100%;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div
+                      class="scale-box-checkbox d-flex align-items-center w-50"
+                    >
+                      <input
+                        type="checkbox"
+                        id="noScaleAppicable"
+                        class="mr-2"
+                      />
+                      <label class="m-0">No lab test applicable</label>
+                    </div>
+                    <div class="d-flex">
+                      <img
+                        src="assets/img/file1.svg"
+                        title="Create & Import"
+                        class="img-size"
+                      />
+                      <div
+                        class="icon-pdf"
+                        style="background-color: #e4edf5"
+                        (click)="addRow()"
+                      >
+                        <img
+                          src="assets/img/Add.svg"
+                          title="Add row"
+                          class="img-size"
+                          width="15"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-scroll-container">
+                  <table class="table table-bordered third-table">
+                    <thead style="background-color: #e4edf5; color: black">
+                      <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Value Configuration</th>
+                        <th scope="col">Range</th>
+                        <th scope="col">Date/Time</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let codeItems of code; let i = index">
+                        <td><input type="text" class="form-control" /></td>
+                        <td><input type="text" class="form-control" /></td>
+                        <td><input type="text" class="form-control" /></td>
+                        <td><input type="text" class="form-control" /></td>
+                        <td>
+                          <div class="header-date p-0">
+                            <span
+                              style="
+                                position: relative;
+                                top: 32px;
+                                right: 80px;
+                                float: right;
+                                margin-top: -26px;
+                                font-size: 18px;
+                                z-index: 1;
+                              "
+                            >
+                              <img src="assets/img/Calender.svg" alt="" />
+                            </span>
+                            <input
+                              class="form-control ml-0 col-1"
+                              style="color: #000; border-radius: 8px"
+                              type="text"
+                              placeholder=""
+                              [minDate]=""
+                              [maxDate]=""
+                              #dp="bsDatepicker"
+                              style="min-width: 200px; height: 40px !important"
+                              bsDatepicker
+                            
+                              [bsConfig]="{
+                                showWeekNumbers: false,
+                                dateInputFormat: 'DD.MM.YYYY'
+                              }"
+                            />
+                          </div>
+                        </td>
+                    
+                            <td>
+                                <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                                (click)="removeCode(i)">
+                              </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- monitoring Tab Content 3-->
+          <div class="tab-content" *ngIf="activeTab == '4'">
+            <!-- Physician and RN Supervisor Notification -->
+            <div class="d-flex mb-3">
+              <label for="physicianNotified" class="col-md-2 mr-2"
+                >PHYSICIAN NOTIFIED</label
+              >
+              <input
+                type="time"
+                class="form-control col-md-1"
+                id="physicianNotified"
+               
+              />
+              <div class="col-md-1 p-0"></div>
+              <label for="rnSupervisorNotified" class="col-md-2 mr-2"
+                >RN SUPERVISOR NOTIFIED</label
+              >
+              <input
+                type="time"
+                class="form-control col-md-1"
+                id="rnSupervisorNotified"
+               
+              />
+            </div>
+
+            <!-- Patient Risk Factors Section -->
+            <div class="form-section">
+              <label class="col-md-12"
+                >PATIENT RISK FACTORS: Indicate any that could possibly make the
+                patient a higher risk during seclusion/restraints notify the
+                physician:</label
+              >
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2">Psychological Risk Factors</label>
+              <input type="checkbox" class="mr-2" /><span class="col-md-1">
+                Child Abuse</span
+              >
+              <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2"></label>
+              <input type="checkbox" class="mr-2" /><span class="col-md-1"
+                >Patient Behaviour</span
+              >
+              <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
+            </div>
+
+            <div class="d-flex align-items-center">
+              <label class="col-md-12"
+                >CLINICAL JUSTIFICATION FOR USE OF DEVICE (check all that
+                apply):</label
+              >
+            </div>
+
+            <div class="d-flex align-items-center mb-2 pl-3">
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Prevent Injury</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-2"
+                >Fall prevention to self</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-2"
+                >Patient Behaviour</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Other</span
+              >
+              <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
+            </div>
+
+            <div class="d-flex align-items-center mb-3 pl-3">
+              <label>REASONS</label>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2">Reasons explained to patient</label>
+              <ng-select>
+                <ng-option *ngFor="let item of yesNoList">{{
+                  item.label
+                }}</ng-option>
+              </ng-select>
+              <input type="text" class="ml-2 mr-3 col-md-4 form-control" />
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2"
+                >Type of restraint (check all that apply)</label
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Soft Bandage</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Restraint Kit</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Other</span
+              >
+              <input type="text" class="ml-2 mr-3 col-md-2 form-control" />
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2">Site of restraint application</label>
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Right Hand</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Left Hand</span
+              >
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2"></label>
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Right Foot</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Left Foot</span
+              >
+              <input type="checkbox" class="mr-1" /><span class="col-md-1"
+                >Other</span
+              >
+              <input type="text" class="ml-2 mr-3 col-md-2 form-control" />
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2">Less Restrictive Measure attempted</label>
+              <input type="text" class="mr-3 col-md-5 form-control" />
+            </div>
+
+            <div
+              class="d-flex align-items-center mb-3 w-100 justify-content-between"
+            >
+              <div class="d-flex align-items-center mb-3">
+                <label class="col-md-8"
+                  >Searched for harmful objects, removed</label
+                >
+                <input type="checkbox" class="mr-1" /><span class="col-md-6"
+                  >Belt / Shoes removed</span
+                >
+              </div>
+              <div class="d-flex ml-3">
+                <div
+                  class="icon-pdf"
+                  style="background-color: #e4edf5"
+                  (click)="addrestraintsList()"
+                >
+                  <img
+                    src="assets/img/Add.svg"
+                    title="Add row"
+                    class="img-size"
+                    width="15"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-responsive pl-3">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th>DATE</th>
+                    <th>TIME</th>
+                    <th>RESPIRATORY RATE (br/min)</th>
+                    <th>CIRCULATION</th>
+                    <th>CARE GIVEN</th>
+                    <th>BEHAVIOUR</th>
+                    <th>SIGNATURE</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of restraintsList; let i = index">
+                    <td>
+                      <div class="header-date p-0">
+                        <span
+                          style="
+                            position: relative;
+                            top: 32px;
+                            right: 90px;
+                            float: right;
+                            margin-top: -26px;
+                            font-size: 18px;
+                            z-index: 1;
+                          "
+                        >
+                          <img src="assets/img/Calender.svg" alt="" />
+                        </span>
+                        <input
+                          class="form-control ml-0 col-1"
+                          style="color: #000; border-radius: 8px"
+                          type="text"
+                          placeholder=""
+                          [minDate]=""
+                          [maxDate]=""
+                          #dp="bsDatepicker"
+                          style="min-width: 200px; height: 40px !important"
+                          bsDatepicker
+                        
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD.MM.YYYY'
+                          }"
+                        />
+                      </div>
+                    </td>
+
+                    <td>
+                      <input
+                        type="time"
+                        class="form-control"
+                       
+                      />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                      <ng-select
+                        [items]="CIRCULATIONList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td>
+                      <ng-select
+                        [items]="careGivenList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td>
+                      <ng-select
+                        [items]="behaviourList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                        <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                        (click)="removeSafetyMainRow(i)">
+                      </td>
+                  </tr>
+                  <!-- Add more rows as needed -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!--Pressuer Score Risk-->
+          <div class="tab-content" *ngIf="activeTab == '5'">
+            <div class="d-flex justify-content-between mb-2">
+              <label class="mb-2 pl-3">Pressuer Score Risk</label>
+              <div class="d-flex">
+                <div
+                  class="icon-pdf"
+                  style="background-color: #e4edf5"
+                  (click)="addPressuer()"
+                >
+                  <img
+                    src="assets/img/Add.svg"
+                    title="Add row"
+                    class="img-size"
+                    width="15"
+                  />
+                </div>
+              </div>
+            </div>
+            <!--Fisrt Table Section -->
+            <div class="table-responsive pl-3 mb-4">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th>Hour</th>
+                    <th>Sensory Reception</th>
+                    <th>Moisture</th>
+                    <th>Activity</th>
+                    <th>Mobility</th>
+                    <th>Nutrition</th>
+                    <th>Friction & Shear</th>
+                    <th>Total</th>
+                    <th>Signature</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ite of pressuerList; let i = index">
+                    <td class="w-8">
+                      <input
+                        type="time"
+                        class="form-control"
+                       
+                      />
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="sensoryReceptionList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="moistureList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="activityList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="mobilityList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="nutritionList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="frictionList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                        <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                        (click)="removePressuer(i)">
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-between mb-2 align-items-center">
+              <label class="mb-2 pl-3 mt-3">Pressuer Score Care</label>
+              <div class="d-flex justify-content-between">
+                <div
+                  class="icon-pdf"
+                  style="background-color: #e4edf5"
+                  (click)="addPressuerCare()"
+                >
+                  <img
+                    src="assets/img/Add.svg"
+                    title="Add row"
+                    class="img-size"
+                    width="15"
+                  />
+                </div>
+              </div>
+            </div>
+            <!--Second Table Section -->
+            <div class="table-responsive pl-3 mb-4">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th>Time</th>
+                    <th>Grade</th>
+                    <th>Site</th>
+                    <th>Apperance</th>
+                    <th>Intervention</th>
+                    <th style="width:1%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of pressuerCoreList; let i = index">
+                    <td class="w-8">
+                      <input
+                        type="time"
+                        class="form-control"
+                       
+                      />
+                    </td>
+                    <td class="w-10">
+                      <ng-select
+                        [items]="gradeList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-13">
+                      <input type="text" class="form-control" />
+                    </td>
+                    <td class="w-13">
+                      <input type="text" class="form-control" />
+                    </td>
+                    <td class="w-13">
+                      <input type="text" class="form-control" />
+                    </td>
+                    <td>
+                        <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                        (click)="removePressuerCare(i)">
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grading-section pl-3">
+              <h6 class="fw-bold">Pressure Sore Risk Grading System</h6>
+              <div class="stage-item">
+                <p>
+                  <strong>Stage 1:</strong> Non-blanchable erythema (redness) of
+                  intact skin.
+                </p>
+              </div>
+              <div class="stage-item">
+                <p>
+                  <strong>Stage 2:</strong> Superficial/partial thickness skin
+                  loss - Ulcer involves Epidermis or Dermis, Skin abrasion -
+                  Presents as deep crater.
+                </p>
+              </div>
+              <div class="stage-item">
+                <p>
+                  <strong>Stage 3:</strong> Full thickness skin loss with
+                  subcutaneous damage - Ulcer extends down to underlying fascia
+                  - Presents as deep crater.
+                </p>
+              </div>
+              <div class="stage-item">
+                <p>
+                  <strong>Stage 4:</strong> Full thickness skin loss with
+                  extensive destruction. Tissue necrosis. Damage to muscles,
+                  bones, tendon or joint capsule.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!--wound Care-->
+          <div class="tab-content" *ngIf="activeTab == '6'">
+            <div class="d-flex justify-content-end mb-2">
+              <div
+                class="icon-pdf"
+                style="background-color: #e4edf5"
+                (click)="addWoundCare()"
+              >
+                <img
+                  src="assets/img/Add.svg"
+                  title="Add row"
+                  class="img-size"
+                  width="15"
+                />
+              </div>
+            </div>
+            <div class="table-responsive pl-3 mb-4">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th>Stage</th>
+                    <th>Appetite</th>
+                    <th>Drainage</th>
+                    <th>Odour</th>
+                    <th>Treatment</th>
+                    <th style="width:1%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of woundCareList; let i = index">
+                    <td class="w-17">
+                      <ng-select
+                        [items]="stageWoundList"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder=""
+                        style="width: 100%"
+                      >
+                      </ng-select>
+                    </td>
+                    <td class="w-17">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-17">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-17">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-13">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td style="text-align: center;">
+                        <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                        (click)="removeWoundCare(i)">
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!--ventilator Settings-->
+          <div class="tab-content" *ngIf="activeTab == '7'">
+            <div class="d-flex justify-content-end mb-2">
+              <div
+                class="icon-pdf"
+                style="background-color: #e4edf5"
+                (click)="addVentilatorList()"
+              >
+                <img
+                  src="assets/img/Add.svg"
+                  title="Add row"
+                  class="img-size"
+                  width="15"
+                />
+              </div>
+            </div>
+            <div class="table-responsive pl-3 mb-4">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th>Mode</th>
+                    <th>FiO2</th>
+                    <th>RR Set</th>
+                    <th>RR Total</th>
+                    <th>PEEP</th>
+                    <th>PS</th>
+                    <th>EPAP</th>
+                    <th>IPAP</th>
+                    <th>MAP</th>
+                    <th>VT Set</th>
+                    <th>VT Exhaled</th>
+                    <th>Sensitivity</th>
+                    <th>I:E Ratio</th>
+                    <th style="width:1%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of ventilatorList; let i = index">
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td class="w-3">
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td style="text-align: center;"> 
+                        <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                        (click)="removeVentilatorList(i)">
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!--Edema-->
+          <div class="tab-content" *ngIf="activeTab == '8'">
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-1 mr-2">Edema</label>
+              <ng-select
+                [items]="edamaList"
+                bindLabel="label"
+                bindValue="value"
+                placeholder=""
+                style="width: 15%"
+              >
+              </ng-select>
+            </div>
+          </div>
+
+          <!--inteak/Out...-->
+          <div class="tab-content" *ngIf="activeTab == '9'">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="mb-2 pl-3">Inteak</label>
+              <div
+                class="icon-pdf"
+                style="background-color: #e4edf5"
+                (click)="addVentilatorList()"
+              >
+                <img
+                  src="assets/img/Add.svg"
+                  title="Add row"
+                  class="img-size"
+                  width="15"
+                />
+              </div>
+            </div>
+            <!--Fisrt Table Section -->
+            <div class="table-responsive pl-3 mb-4">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th style="width: 2%">Date</th>
+                    <th>Time</th>
+                    <th>Type of Inteak</th>
+                    <th>Amount (ml)</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody >
+                  <tr  *ngFor="let item of ventilatorList; let i = index">
+                    <td>
+                      <div class="header-date p-0">
+                        <span
+                          style="
+                            position: relative;
+                            top: 32px;
+                            right: 10px;
+                            float: right;
+                            margin-top: -26px;
+                            font-size: 18px;
+                            z-index: 1;
+                          "
+                        >
+                          <img src="assets/img/Calender.svg" alt="" />
+                        </span>
+                        <input
+                          class="form-control ml-0 col-1"
+                          style="color: #000; border-radius: 8px"
+                          type="text"
+                          placeholder=""
+                          [minDate]=""
+                          [maxDate]=""
+                          #dp="bsDatepicker"
+                          style="min-width: 200px; height: 40px !important"
+                          bsDatepicker
+                        
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD.MM.YYYY'
+                          }"
+                        />
+                      </div>
+                    </td>
+                    <td class="w-2">
+                      <input type="time" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                        <img  class="all-notes cursor-pointer"  (click)="removeVentilatorList(i)" src="assets/img/Delete.svg"
+                       >
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="mb-2 pl-3">Output</label>
+              <div
+                class="icon-pdf"
+                style="background-color: #e4edf5"
+                (click)="addVentilatorList()"
+              >
+                <img
+                  src="assets/img/Add.svg"
+                  title="Add row"
+                  class="img-size"
+                  width="15"
+                />
+              </div>
+            </div>
+            <!--Second Table Section -->
+            <div class="table-responsive pl-3 mb-4">
+              <table class="table table-bordered">
+                <thead style="background-color: #e4edf5; color: black">
+                  <tr>
+                    <th style="width: 2%">Date</th>
+                    <th>Time</th>
+                    <th>Type of Output</th>
+                    <th>Amount (ml)</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of ventilatorList; let i = index">
+                    <td>
+                      <div class="header-date p-0">
+                        <span
+                          style="
+                            position: relative;
+                            top: 32px;
+                            right: 10px;
+                            float: right;
+                            margin-top: -26px;
+                            font-size: 18px;
+                            z-index: 1;
+                          "
+                        >
+                          <img src="assets/img/Calender.svg" alt="" />
+                        </span>
+                        <input
+                          class="form-control ml-0 col-1"
+                          style="color: #000; border-radius: 8px"
+                          type="text"
+                          placeholder=""
+                          [minDate]=""
+                          [maxDate]=""
+                          #dp="bsDatepicker"
+                          style="min-width: 200px; height: 40px !important"
+                          bsDatepicker
+                        
+                          [bsConfig]="{
+                            showWeekNumbers: false,
+                            dateInputFormat: 'DD.MM.YYYY'
+                          }"
+                        />
+                      </div>
+                    </td>
+                    <td class="w-2">
+                      <input type="time" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" placeholder="" />
+                    </td>
+                    <td>
+                        <img  class="all-notes cursor-pointer"  (click)="removeVentilatorList(i)" src="assets/img/Delete.svg"
+                       >
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!--Last point-->
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2 mr-2">Grand Total Inteak (ml)</label>
+              <input type="text" class="form-control col-md-1" placeholder="" />
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2 mr-2">Grand Total Output (ml)</label>
+              <input type="text" class="form-control col-md-1" placeholder="" />
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <label class="col-md-2 mr-2">Grand Balance (ml)</label>
+              <input type="text" class="form-control col-md-1" placeholder="" />
+            </div>
+          </div>
+
+          <!-- physicalExam -->
+          <div class="tab-content" *ngIf="activeTab == '10'">
+            <div class="scale-box-table pr-2">
+              <div class="pl-3 pr-3">
+                <div class="scale-box-checkbox pb-2 d-flex justify-content-end">
+                  <div style="text-align: right">
+                    <img
+                      src="assets/img/file1.svg"
+                      title="Create & Import"
+                      class="img-size"
+                    />
+                  </div>
+                  <div class="d-flex ml-3">
+                    <div
+                      class="icon-pdf"
+                      style="background-color: #e4edf5"
+                      (click)="addPhysicialExamination()"
+                    >
+                      <img
+                        src="assets/img/Add.svg"
+                        title="Add row"
+                        class="img-size"
+                        width="15"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="table-scroll-container">
+                  <table class="table table-bordered third-table">
+                    <thead style="background-color: #e4edf5; color: black">
+                      <tr>
+                        <th style="width: 2%" scope="col">Date</th>
+                        <th style="width: 2%" scope="col">Time</th>
+                        <th scope="col">Description</th>
+                        <th style="width: 10%" scope="col">Mode</th>
+                        <th scope="col">Comments</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let codeItems of physicialExaminationList; let i = index">
+                        <td>
+                          <div class="header-date p-0">
+                            <span
+                              style="
+                                position: relative;
+                                top: 32px;
+                                right: 10px;
+                                float: right;
+                                margin-top: -26px;
+                                font-size: 18px;
+                                z-index: 1;
+                              "
+                            >
+                              <img src="assets/img/Calender.svg" alt="" />
+                            </span>
+                            <input
+                              class="form-control ml-0 col-1"
+                              style="color: #000; border-radius: 8px"
+                              type="text"
+                              placeholder=""
+                              [minDate]=""
+                              [maxDate]=""
+                              #dp="bsDatepicker"
+                              style="min-width: 200px; height: 40px !important"
+                              bsDatepicker
+                            
+                              [bsConfig]="{
+                                showWeekNumbers: false,
+                                dateInputFormat: 'DD.MM.YYYY'
+                              }"
+                            />
+                          </div>
+                        </td>
+                        <td><input type="time" class="form-control" /></td>
+                        <td><input type="text" class="form-control" /></td>
+                        <td>
+                          <ng-select
+                            [items]="modeList"
+                            bindLabel="label"
+                            bindValue="value"
+                            placeholder=""
+                          >
+                          </ng-select>
+                        </td>
+                        <td><input type="text" class="form-control" /></td>
+                        <td>
+                            <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                            (click)="removePhysicialExamination(i)">
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-
 <ng-template #scalesOrderCase>
-    <div>
-
-        <div class="allergy-header">
-            <div style="
-        font-size: 23px;
-        font-weight: bold">
-
-                <span>Import Scales</span>
-            </div>
-
-
-
-        </div>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Import Scales</span>
+      </div>
     </div>
-    <div class="modal-body" style="padding: 0 11px 0px;">
-        <div style="display: flex;
-    justify-content: end;
-    padding-right: 1rem;">
-            <button (click)="scalesImport()" style="border: 1px solid;
-      background: #3b82f6;
-      color: #ffffff;
-      padding: 5px 20px;
-      border-radius: 4px;
-      font-weight: 700;margin-top: 4px;">
-                Import
-            </button>
-        </div>
-        <form style="max-height: 350px;
-    overflow: auto;">
-            <table class="table table-bordered past-table mt-3">
-                <thead style="background-color: #e4edf5;
-    color: black;text-align: center;position: sticky;
-    top: 0;">
-                    <tr>
-                        <th scope="col" style="    text-align: -webkit-center;">
-                            <input type="checkbox" [checked]="selectedScales.length === toScaleArr.length"
-                                class="form-control" (change)="collectAllScalesData($event)" style="width:20px" />
-                        </th>
-                        <th>Scale Type</th>
-                        <th style="width: 270px;">Last Score</th>
-                        <th>Score Description</th>
-                        <th>Date/Time</th>
-                        <th>Create</th>
-                        <th>Display</th>
-
-                    </tr>
-                </thead>
-                <tbody style="background-color: hsl(225, 100%, 99%);">
-                    <tr *ngFor="let item of toScaleArr;let i=index" style="text-align:center">
-                        <td style="text-align: -webkit-center;"> <span
-                                class="input-text-field d-inline-block align-top w-100">
-                                <ng-container>
-                                    <input type="checkbox" class="form-control" [checked]="item.isSelected"
-                                        (change)="collectScalesIData($event,item, i)" style="width:20px" />
-                                </ng-container>
-                            </span></td>
-                        <td>{{item!.Scaletype}}</td>
-                        <td style="width: 270px;">{{item?.Score}}</td>
-                        <td style="text-align: center;pointer-events: none;">{{item?.ScoreDesc}}</td>
-                        <td style="text-align: center;pointer-events: none;">{{item?.DateTime}}</td>
-                        <td></td>
-                        <td></td>
-
-
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <div style="display: flex; justify-content: end; padding-right: 1rem">
+      <button
+        (click)="scalesImport()"
+        style="
+          border: 1px solid;
+          background: #3b82f6;
+          color: #ffffff;
+          padding: 5px 20px;
+          border-radius: 4px;
+          font-weight: 700;
+          margin-top: 4px;
+        "
+      >
+        Import
+      </button>
     </div>
+    <form style="max-height: 350px; overflow: auto">
+      <table class="table table-bordered past-table mt-3">
+        <thead
+          style="
+            background-color: #e4edf5;
+            color: black;
+            text-align: center;
+            position: sticky;
+            top: 0;
+          "
+        >
+          <tr>
+            <th scope="col" style="text-align: -webkit-center">
+              <input
+                type="checkbox"
+                [checked]="selectedScales.length === toScaleArr.length"
+                class="form-control"
+                (change)="collectAllScalesData($event)"
+                style="width: 20px"
+              />
+            </th>
+            <th>Scale Type</th>
+            <th style="width: 270px">Last Score</th>
+            <th>Score Description</th>
+            <th>Date/Time</th>
+            <th>Create</th>
+            <th>Display</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: hsl(225, 100%, 99%)">
+          <tr
+            *ngFor="let item of toScaleArr; let i = index"
+            style="text-align: center"
+          >
+            <td style="text-align: -webkit-center">
+              <span class="input-text-field d-inline-block align-top w-100">
+                <ng-container>
+                  <input
+                    type="checkbox"
+                    class="form-control"
+                    [checked]="item.isSelected"
+                    (change)="collectScalesIData($event, item, i)"
+                    style="width: 20px"
+                  />
+                </ng-container>
+              </span>
+            </td>
+            <td>{{ item!.Scaletype }}</td>
+            <td style="width: 270px">{{ item?.Score }}</td>
+            <td style="text-align: center; pointer-events: none">
+              {{ item?.ScoreDesc }}
+            </td>
+            <td style="text-align: center; pointer-events: none">
+              {{ item?.DateTime }}
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
 </ng-template>
 
-<app-glos-gow-comma-scale-popup #scalesGlosgow
-    (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-scale-popup>
-<app-morse-fall-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-scale>
-<app-braden-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-scale>
+<app-glos-gow-comma-scale-popup
+  #scalesGlosgow
+  (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"
+></app-glos-gow-comma-scale-popup>
+<app-morse-fall-scale
+  #morseFallScale
+  (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"
+></app-morse-fall-scale>
+<app-braden-scale
+  #bradenScaleTemp
+  (scaleStoreValue)="scaleStoreInTable($event, 'braden')"
+></app-braden-scale>
