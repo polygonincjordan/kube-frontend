@@ -43,7 +43,7 @@ export class IcuHoursFlowsheetComponent implements OnInit {
       Dockey: '',
     },
     {
-      ScaleType: 'Morse Fall Scale (MFS)',
+      ScaleType: 'Fall Risk Assessment',
       LastScore: '',
       ScoreDesc: '',
       Datetimee: '',
@@ -51,7 +51,7 @@ export class IcuHoursFlowsheetComponent implements OnInit {
       Dockey: '',
     },
     {
-      ScaleType: 'Braden scale for predicting pressure ulcers',
+      ScaleType: '',
       LastScore: '',
       ScoreDesc: '',
       Datetimee: '',
@@ -291,10 +291,10 @@ export class IcuHoursFlowsheetComponent implements OnInit {
       value: '1',
     }
   ];
-  restraintsList = [1,2];
-  pressuerList = [1,2];
-  pressuerCoreList = [1,2];
-  woundCareList = [1,2];
+  restraintsList = [1,2,3,4,5];
+  pressuerList = [1,2,3];
+  pressuerCoreList = [1,2,3];
+  woundCareList = [1,2,3,4,5];
   physicialExaminationList = [1,2, 3, 4, 5];
   ventilatorList = [1,2, 3, 4, 5];
   constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, private sharedService: SharedService) { }
@@ -338,26 +338,46 @@ export class IcuHoursFlowsheetComponent implements OnInit {
     )
   }
 
+  removeCode(index){
+    this.code.splice(index,1)
+  }
+
   addrestraintsList() {
     this.restraintsList.push(this.restraintsList.length + 1);
   }
 
+  removeSafetyMainRow(index: number) {
+    this.restraintsList.splice(index, 1);
+  }
   addPressuer() {
     this.pressuerList.push(this.pressuerList.length + 1);
   }
-
+  removePressuer(index: number) {
+    this.pressuerList.splice(index, 1);
+  }
   addPressuerCare() {
     this.pressuerCoreList.push(this.pressuerCoreList.length + 1);
   }
-
+  removePressuerCare(index: number) {
+    this.pressuerCoreList.splice(index, 1);
+  }
   addWoundCare() {
     this.woundCareList.push(this.woundCareList.length + 1);
+  }
+  removeWoundCare(index: number) {
+    this.woundCareList.splice(index, 1);
   }
   addPhysicialExamination() {
     this.physicialExaminationList.push(this.physicialExaminationList.length + 1);
   }
+  removePhysicialExamination(index: number) {
+    this.physicialExaminationList.splice(index, 1);
+  }
   addVentilatorList() {
     this.ventilatorList.push(this.ventilatorList.length + 1);
+  }
+  removeVentilatorList(index: number) {
+    this.ventilatorList.splice(index, 1);
   }
 
   loadScalesData() {
