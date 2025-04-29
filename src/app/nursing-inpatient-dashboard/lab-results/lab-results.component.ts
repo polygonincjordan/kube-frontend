@@ -628,6 +628,7 @@ export class LabResultsComponent implements OnInit{
           this.lastIndex = this.ERlistData.length - 1;
         }
         this.dataToParent.emit(this.ERlistDataClone);
+        this.sendErPatientCount.emit(this.ERlistData.length);
         this.getPrintUrl();
       },
       (_error: any) => {}

@@ -33,6 +33,8 @@ import { ActionType, RedirectionType, WordType } from '@services/interfaces/comm
 import { NewbornAssessmentComponent } from 'src/app/shared-module/newborn-assessment/newborn-assessment.component';
 import { NewBornPopupComponent } from './diagnoses-in-patient/new-born-popup/new-born-popup.component';
 import { SharedService } from '@services/shared.service';
+import { MedicalReportComponent } from './diagnoses-in-patient/medical-report/medical-report.component';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @UntilDestroy()
 @Component({
@@ -46,6 +48,7 @@ export class DiagnosesComponent implements OnInit {
   @ViewChild('newborndocument') newborndocument?: TemplateRef<any>;
   @ViewChild('pdfViewModal') pdfViewModal?: TemplateRef<any>;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  @ViewChild(MedicalReportComponent) MedicalReportComp: MedicalReportComponent;
   @ViewChild('newBornComp', { static: false }) newBornComp!: NewbornAssessmentComponent;
   // @ViewChild('familyHistoryKardexId')familyHistoryKardex: PhysicianFamilyHistoryComponent;
   
@@ -106,6 +109,7 @@ export class DiagnosesComponent implements OnInit {
   soapFormDiv: boolean = false;
   correspondenceFormDiv: boolean = false;
   physicianAssessFormDiv: boolean = false;
+  medicalReportFormDiv: boolean = false;
   pdfFormDiv: boolean = false;
   visitFormDiv: boolean = false;
   isCreateRequest: boolean = false;
@@ -148,7 +152,8 @@ export class DiagnosesComponent implements OnInit {
     private patientHistoryService:PatientHistoryService,
     private dayCaseDashboardService: DayCaseDashboardService,
     private dataShareService: DataShareService,
-    private sharedService:SharedService
+    private sharedService:SharedService,
+    private emergencyService: EmergencyService
   ) {
 
     this.createAttachmentForm= this.formBuilder.group({
@@ -698,6 +703,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientSoapForm = false;
     this.correspondenceFormDiv = false;
     this.physicianAssessFormDiv = false;
+    this.medicalReportFormDiv = false;
     this.pdfFormDiv = false;
     this.visitFormDiv = false
     this.isCreateRequest = false;
@@ -782,6 +788,24 @@ export class DiagnosesComponent implements OnInit {
 
     if(paitentData?.Dtid == 'ZMED_CORES' && !paitentData.Released) {
       this.correspondenceFormDiv = true;
+      this.copyReleaseCorrespondence();
+      this.selectedPatient = paitentData;
+      this.InOutPatientViewValue = {
+        showBoth: false,
+        showIn: false,
+        showOut: true,
+      };
+      this.inPatientShow = false;
+      let valueObj = {
+        type: WordType.EditBS,
+        docKey: this.selectedPatient.Dockey ? this.selectedPatient.Dockey : this.selectedPatient.DocKey
+      }
+      this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+      return
+    }
+    if(paitentData?.Dtid == 'ZMED_MEDRP' && !paitentData.Released) {
+      this.medicalReportFormDiv = true;
       this.copyReleaseCorrespondence();
       this.selectedPatient = paitentData;
       this.InOutPatientViewValue = {
@@ -1004,6 +1028,44 @@ export class DiagnosesComponent implements OnInit {
       return; 
     }
 
+    if(paitentData?.Dtid == 'ZMED_MEDRP') {
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+
+      if (paitentData.DokstText == 'Released' || paitentData.Released) {
+        this.InOutPatientViewValue = {
+         showBoth: true,
+         showIn: false,
+         showOut: false,
+       };
+        const json = {
+          Dockey: paitentData.Dockey,
+        };
+       
+        this.emergencyService
+        .getMedReleasedPdf(json)
+        .subscribe((data: any) => {
+          this.physicianAssPDFURL =  this.sanitizer.bypassSecurityTrustResourceUrl(
+            `data:application/pdf;base64, ${data?.d?.AttachmentData}`
+          );
+          this.soapPdf = data?.d
+          this.patientVisitRecord = data;
+          const config: ModalOptions = { class: 'modal-dialog-centered pdfviewmodal' };
+          this.modalRef = this.modalServiceForAllergy.show(this.pdfViewModalForOhysician,config);
+        });
+        return;
+      }
+      // this.admissionService.isEditPhysicianForm = true;
+      this.inPatientShow = true;
+      this.inPatientForm = "Medical Report";
+      let valueObj = {
+        type: WordType.EditBS,
+        docKey: paitentData.Dockey
+      }
+      this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+      this.admissionService.selectedCurrentDocDetails = paitentData;
+      this.showInDiv();
+      return; 
+    }
 
     if(paitentData?.Dtid == 'ZMED_NBASM') {
       this.admissionService.selectedCurrentDocDetails = paitentData;
@@ -1264,6 +1326,7 @@ export class DiagnosesComponent implements OnInit {
       this.soapFormDiv = false;
       this.visitFormDiv = false;
       this.physicianAssessFormDiv = false;
+      this.medicalReportFormDiv = false;
       this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
       this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
       this.correspondenceFormDiv = true;
@@ -1287,12 +1350,36 @@ export class DiagnosesComponent implements OnInit {
       this.soapFormDiv = false;
       this.visitFormDiv = false;
       this.physicianAssessFormDiv = true;
+      this.medicalReportFormDiv = false;
       this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
       this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
       this.correspondenceFormDiv = false;
       return;
     }
-
+    if(type == 'MedicalReport') {
+      this.inPatientForm = "MedicalReport";
+      type = 'out';
+      this.inPatientSoapData = {} as PatientVisitDataResult;
+      this.inPatientSoapData.DocKey = '';
+      this.inPatientSoapData.Einri = this.storageService.einri;
+      this.inPatientSoapData.Falnr = this.storageService.falnr;
+      this.inPatientSoapData.Lfdnr = this.storageService.lfdnr;
+      this.inPatientSoapData.Patnr = this.storageService.patnr;
+      this.inPatientSoapData.Visitdate = new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd');
+      this.correspondenceFormDiv = false;
+      this.pdfFormDiv = false;
+      this.visitFormDiv = false;
+      this.isCreateRequest = true;
+      this.inPatientShow = false;
+      this.soapFormDiv = false;
+      this.visitFormDiv = false;
+      this.physicianAssessFormDiv = false;
+      this.medicalReportFormDiv = true;
+      this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
+      this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
+      this.correspondenceFormDiv = false;
+      return;
+    }
   this.editing = true;
   if (this.userconfig.DefaultNewDocumentSOAP) {
     this.inPatientSoapData = {} as PatientVisitDataResult;
@@ -1309,6 +1396,7 @@ export class DiagnosesComponent implements OnInit {
     this.inPatientShow = false;
     this.correspondenceFormDiv = false;
     this.physicianAssessFormDiv = false;
+    this.medicalReportFormDiv = false;
     this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
     this.inPatientSoapData.Dtid = DocType.ZMED_SOAP;
     this.soapFormDiv = true;
@@ -1327,6 +1415,7 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientShow = false;
       this.correspondenceFormDiv = false;
       this.physicianAssessFormDiv = false;
+      this.medicalReportFormDiv = false;
       this.InOutPatientViewValue = (type === 'out' && { showBoth: false, showIn: false, showOut: true, }) || (type === 'in' && { showBoth: false, showIn: true, showOut: false, });
 
       this.patientVisitRecord.Dtid = DocType.ZMED_VISIT;
@@ -1390,6 +1479,7 @@ export class DiagnosesComponent implements OnInit {
               this.base64Value = '';
               this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
               this.userConfigurationService.getListOfPatientVisitDataSet()
+              this.getCurrentVisitDetails('1')
             });
           },
           (_error: any) => {
@@ -1429,7 +1519,43 @@ export class DiagnosesComponent implements OnInit {
       console.error('Error creating Correspondence Document:', error);
     });
   }
+  saveMedicalReport() {
+    let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '1' : '1';
+    this.MedicalReportComp.createMedicalReport(docStatus).then((formValue: any) => {
+      if (formValue) {
+        // this.refresh();
+        this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Correspondence Document:', error);
+    });
+  }
 
+  releaseMedicalReport() {
+    let docStatus = this.selectedPatient?.DocKey ? this.selectedPatient?.Released == 'X' ? '5' : '2' : '4';
+    this.MedicalReportComp.createMedicalReport(docStatus).then((formValue) => {
+      if (formValue) {
+        // this.refresh();
+      this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating CPR document:', error);
+    });
+  }
+  updateMedicalReport() {
+    let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '3' : '1';
+    this.MedicalReportComp.updateMedicalReport(docStatus).then((formValue: any) => {
+      if (formValue) {
+        // this.refresh();
+        this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Correspondence Document:', error);
+    });
+  }
   releaseCorresponde() {
     let docStatus = this.selectedPatient?.DocKey ? this.selectedPatient?.Released == 'X' ? '5' : '2' : '4';
     this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue) => {
@@ -1535,6 +1661,10 @@ export class DiagnosesComponent implements OnInit {
       this.copyReleaseCorrespondence();
       return;
     }
+    if(this.selectedPatient?.Dtid == 'ZMED_MEDRP') {
+      this.copyReleaseMedicalReport();
+      return;
+    }
     if(this.selectedPatient?.Dtid == 'ZMED_NBASM') {
       this.copyReleaseNewBorn();
       return;
@@ -1556,6 +1686,22 @@ export class DiagnosesComponent implements OnInit {
     this.admissionService.isClonePhysicianForm = true;
     this.inPatientShow = true;
     this.inPatientForm = "Correspondence Document";
+    let valueObj = {
+      type: WordType.CopyBS,
+      docKey: this.selectedPatient.Dockey
+    }
+    this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+    this.InOutPatientViewValue = {
+      showBoth: false,
+      showIn: true,
+      showOut: false,
+    };
+    this.modalRef?.hide();
+  }
+  copyReleaseMedicalReport() {
+    this.admissionService.isClonePhysicianForm = true;
+    this.inPatientShow = true;
+    this.inPatientForm = "Medical Report";
     let valueObj = {
       type: WordType.CopyBS,
       docKey: this.selectedPatient.Dockey
@@ -1802,6 +1948,8 @@ export class DiagnosesComponent implements OnInit {
       this.inPatientForm = "PhysicianAssessment";
     } else if (formType === "CorrespondenceDocument") {
       this.inPatientForm = "Correspondence Document";
+    } else if (formType === "MedicalReport") {
+      this.inPatientForm = "Medical Report";
     }
     this.inPatientShow = true;
     this.InOutPatientViewValue = {

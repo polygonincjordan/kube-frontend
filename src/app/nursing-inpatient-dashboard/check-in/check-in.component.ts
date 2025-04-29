@@ -828,7 +828,7 @@ export class CheckInComponent implements OnInit {
         this.inHospitalistList = IPList.filter(item => item.Roomid);
         let IPListClone: any[] = patientList;
         this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
-
+        this.sendErPatientCount.emit(this.inHospitalistList.length);
         this.dataToParent.emit(this.inHospitalistListClone);
         this.lastIndex = this.inHospitalistList.length - 1;
         this.emergencyService.callAgainAPI = true;

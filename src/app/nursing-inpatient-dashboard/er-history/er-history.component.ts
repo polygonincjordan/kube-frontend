@@ -510,6 +510,7 @@ export class ErHistoryComponent implements OnInit {
         this.inHospitaDischargelistListClone = IpListClone.filter(item => item.PatientstatusDischarged == 'X');
         console.log(this.inHospitaDischargelistList, "inHospitaDischargelistList");
         this.dataToParent.emit(this.inHospitaDischargelistListClone);
+        this.sendErPatientCount.emit(this.inHospitaDischargelistList.length);
         this.lastIndex = this.inHospitaDischargelistList.length - 1;
       });
   }

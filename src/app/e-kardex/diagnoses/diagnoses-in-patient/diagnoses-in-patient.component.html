@@ -23,7 +23,7 @@
         <img src="assets/img/grid-icon.svg">
         Correspondence Document
       </span>
-      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment' && inPatientFormInput !== 'Correspondence Document' && inPatientFormInput != 'visitnote'">
+      <div class="right-button-group" *ngIf="inPatientFormInput !== 'PHDIS' && inPatientFormInput !== 'PhysicianAssessment' && inPatientFormInput !== 'Correspondence Document' && inPatientFormInput != 'visitnote' && inPatientFormInput != 'Medical Report'">
         <button type="button" (click)="saveForm()">Save</button>
         <button type="button" (click)="releaseForm()">Release</button>
         <button type="button" *ngIf="isDelete" (click)="deleteForm()">Delete</button>
@@ -45,6 +45,12 @@
         <button type="button" (click)="saveCorrespondenceDocument()">Save</button>
         <button type="button" (click)="releaseCorresponde()">Release</button>
         <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
+        <button type="button"(click)="closeInPatientForm()">Close</button>
+      </div>
+      <div class="right-button-group" *ngIf="inPatientFormInput === 'Medical Report'">
+        <button type="button" (click)="selectedPatient?.DokstText == 'In Work' ? updateMedicalReport() : saveMedicalReport()">Save</button>
+        <button type="button" (click)="releaseMedicalReport()">Release</button>
+        <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteMedicalReporteDoc(selectedPatient?.Dockey)">Delete</button>
         <button type="button"(click)="closeInPatientForm()">Close</button>
       </div>
 
@@ -489,6 +495,10 @@
     <ng-container *ngIf="inPatientFormInput === 'Correspondence Document'">
       <app-correspondence-document></app-correspondence-document>
     </ng-container>
+    <ng-container *ngIf="inPatientFormInput === 'Medical Report'">
+      <app-medical-report  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-medical-report>
+    </ng-container>
+  
   </div>
 </div>
 

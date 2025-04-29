@@ -64,6 +64,7 @@ import { CorrespondenceDocumentModule } from '../shared-module/correspondence-do
 import { SharedModuleModule } from '../shared-module/shared-module.module';
 import { NewbornAssessmentModule } from '../shared-module/newborn-assessment/newborn-assessment.module';
 import { NewBornPopupComponent } from './diagnoses/diagnoses-in-patient/new-born-popup/new-born-popup.component';
+import { MedicalReportComponent } from './diagnoses/diagnoses-in-patient/medical-report/medical-report.component';
 
 export const eKardexRoutes: Routes = [
   { path: '**', component: EKardexComponent },
@@ -141,7 +142,8 @@ export const eKardexRoutes: Routes = [
     PhysicianFamilyHistoryComponent,
     PhysicianPastMedicalComponent,
     PhysicianPastSurgicalComponent,
-    NewBornPopupComponent
+    NewBornPopupComponent,
+    MedicalReportComponent
   ],
 })
 export class EKardexModule { }

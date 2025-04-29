@@ -33,6 +33,9 @@
               <span (click)="openNewForm('Correspondence')" [title]="'Create Correspondence'">
                 <img src="assets/img/edit-ekardex.png" class="mw-15" />
               </span>
+              <span (click)="openNewForm('MedicalReport')" [title]="'Medical Report'">
+                <img src="assets/img/edit-ekardex.png" class="mw-15" />
+              </span>
               <span (click)="openPhysicianAssessment(PhysicianAssessment)" [title]="'Create Physician Assessment'">
                 <img src="assets/img/physician-assessment.png" class="mw-15" />
               </span>
@@ -126,6 +129,20 @@
               </div>
             </div>
         </ng-container>
+        <ng-container *ngIf="medicalReportFormDiv">
+          <div class="main_soap">
+            <div class="head">Medical Reports</div>
+            <div class="details">
+                <app-medical-report  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-medical-report>
+            </div>
+              <div class="bottom">
+                <button type="button" (click)="selectedPatient ? updateMedicalReport() : saveMedicalReport()">Save</button>
+                <button (click)="releaseMedicalReport()">Release</button>
+                <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
+                <button (click)="updateForm(false)">Close</button>
+              </div>
+            </div>
+        </ng-container>
 
     </div>
 
@@ -176,6 +193,9 @@
                   <span class="dropdown-item c-pointer d-flex align-items-center"
                   (click)="openNewFormForInPatient('CorrespondenceDocument')"><img src="assets/img/in-patient-dropdown.png"
                         class="mr-1">Correspondence Document</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatient('MedicalReport')"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Medical Report</span>
                   <span class="dropdown-item c-pointer d-flex align-items-center"
                   (click)="openNewFormForInPatients(newborndocument)"><img src="assets/img/in-patient-dropdown.png"
                         class="mr-1">Newborn Physician Assessment</span>
