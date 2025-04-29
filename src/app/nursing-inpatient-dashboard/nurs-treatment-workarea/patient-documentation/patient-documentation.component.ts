@@ -535,7 +535,15 @@ export class PatientDocumentationComponent implements OnInit {
     {
       label: 'ICU 24 hours Flowsheet',
       value: 'ICUHF'
-    }
+    },
+    {
+      label: 'Labor Room Flow Sheet',
+      value: 'LRFS'
+    },
+    {
+      label: 'NICU Nursing Flow Sheet',
+      value: 'NNFS'
+    },
   ]
 
   createdDocumentUserList: any = [];

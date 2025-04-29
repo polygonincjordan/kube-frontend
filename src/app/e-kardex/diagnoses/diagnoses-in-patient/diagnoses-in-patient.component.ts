@@ -11,6 +11,8 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import Swal from 'sweetalert2';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { MedicalReportComponent } from './medical-report/medical-report.component';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @Component({
   selector: 'diagnoses-in-patient',
@@ -20,6 +22,7 @@ import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-d
 
 export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  @ViewChild(MedicalReportComponent) MedicalReportComp: MedicalReportComponent;
   
   inPatientDataSet: FormGroup;
   inPatientOrrptDataSet: FormGroup;
@@ -169,7 +172,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
 
   @ViewChild('inPatientPopup', { static: true }) configPopup: ConfigPopup;
 
-  constructor(private inPatientConfigurationService: InPatientConfigurationService, private datePipe: DatePipe , private route: ActivatedRoute, private admissionService: AdmissionService, private dayCaseDashboardService: DayCaseDashboardService) {
+  constructor(private inPatientConfigurationService: InPatientConfigurationService, private datePipe: DatePipe , private route: ActivatedRoute, private admissionService: AdmissionService, private dayCaseDashboardService: DayCaseDashboardService, private emergencyService: EmergencyService) {
     this.inPatientDataSet = new FormGroup({
       DocKey: new FormControl(""),
       OperationPerformed: new FormControl(""),
@@ -384,6 +387,45 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     });
   }
 
+  saveMedicalReport() {
+    let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '1' : '1';
+    this.MedicalReportComp.createMedicalReport(docStatus).then((formValue: any) => {
+      if (formValue) {
+        // this.refresh();
+        this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Correspondence Document:', error);
+    });
+  }
+
+  updateMedicalReport() {
+    let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '3' : '1';
+    this.MedicalReportComp.updateMedicalReport(docStatus).then((formValue: any) => {
+      if (formValue) {
+        // this.refresh();
+        this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Correspondence Document:', error);
+    });
+  }
+
+  releaseMedicalReport() {
+    let docStatus = this.selectedPatient?.Dockey ? this.selectedPatient?.DokstText == 'Released' ? '5' : '2' : '4';
+    this.MedicalReportComp.releaseMedicalReport(docStatus).then((formValue) => {
+      if (formValue) {
+        // this.refresh();
+      this.updateForm(true);
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating CPR document:', error);
+    });
+  }
+
   deleteCorrespondenceDoc(docKey: string) {
     Swal.fire({
       title: 'Confirm',
@@ -396,6 +438,45 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.value) {
         (this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
+          (_success: any) => {
+            this.updateEvent.emit(true);
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            // this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            // this.refresh();
+          }
+        );
+      }
+    });
+  }
+
+  deleteMedicalReporteDoc(docKey: string) {
+    const json = {
+      Dockey : docKey
+    }
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then((result) => {
+      if (result.value) {
+        (this.emergencyService.deleteMedReport(json)).subscribe(
           (_success: any) => {
             this.updateEvent.emit(true);
             Swal.fire({

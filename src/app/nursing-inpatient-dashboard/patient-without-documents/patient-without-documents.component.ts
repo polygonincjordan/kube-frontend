@@ -30,6 +30,8 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
   public financialCategory: Array<any> = [];
   public statusList: Array<any> = [];
   public statusValueArr: Array<any> = [];
+  public wardValueArr: Array<any> = [];
+  public roomValueArr: Array<any> = [];
   public categoryValueArr: Array<any> = [];
 
   public isFormValidError: boolean = false;
@@ -283,27 +285,27 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   public filterListData(event) {
     let filterValue = this.filterNoReleaseMissDoc;
-    if ((event.Status && event.Status != '') || (event.FCategory && event.FCategory != '')) {
-      if (event.Status && event.Status.length) {
-        this.statusValueArr = event.Status.map((statusValue) => {
+    if ((event.FWard && event.FWard != '') || (event.RoomidText && event.RoomidText != '')) {
+      if (event.FWard && event.FWard.length) {
+        this.wardValueArr = event.FWard.map((statusValue) => {
           return filterValue.filter((element: any) => {
-            const statusText = element.StatusText ? element.StatusText.trim().toLowerCase() : ''; // Handle undefined or missing StatusText
-            return statusText === statusValue.trim().toLowerCase();
+            const Floor = element.Floor ? element.Floor.trim().toLowerCase() : ''; // Handle undefined or missing Floor
+            return Floor === statusValue.trim().toLowerCase();
           });
         });
       }
 
-      if (event.FCategory && event.FCategory.length) {
-        this.categoryValueArr = event.FCategory.map((categoryValue) => {
+      if (event.RoomidText && event.RoomidText.length) {
+        this.roomValueArr = event.RoomidText.map((categoryValue) => {
           return filterValue.filter((element: any) => {
-            const financeCategory = element.FinancecategoryName ? element.FinancecategoryName.trim().toLowerCase() : ''; // Handle undefined or missing FinancecategoryName
-            return financeCategory === categoryValue.trim().toLowerCase();
+            const RoomidText = element.RoomidText ? element.RoomidText.trim().toLowerCase() : ''; // Handle undefined or missing RoomidText
+            return RoomidText === categoryValue.trim().toLowerCase();
           });
         });
       }
 
       // Flatten the arrays
-      filterValue = this.flattenArrays([...this.statusValueArr, ...this.categoryValueArr]);
+      filterValue = this.flattenArrays([...this.wardValueArr, ...this.roomValueArr]);
 
       this.noReleasedMissedDocumentsList = filterValue;
       this.sendErNoDocumentCount.emit(this.noReleasedMissedDocumentsList.length);

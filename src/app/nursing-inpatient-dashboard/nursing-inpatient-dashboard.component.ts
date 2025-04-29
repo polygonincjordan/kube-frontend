@@ -65,6 +65,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
+  
+  getNoReleaseWardFilterData: any;
+  getNoReleaseRoomFilterData: any;
 
   checkin: any = true;
   treatmentarea: boolean = false;
@@ -94,6 +97,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   filterForm: FormGroup;
   filterFormLab: FormGroup;
   filterFormPatientWithNoConsumable: FormGroup;
+  filterFormNoReleased: FormGroup;
   missedMedPatientList: any[] = [];
   formDetailGroup: any;
   dateFrom: Date;
@@ -239,6 +243,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.filterFormPatientWithNoConsumable = this.formBuilder.group({
       Status: [''],
       FCategory: [''],
+    });
+    this.filterFormNoReleased = this.formBuilder.group({
+      FWard: [''],
+      RoomidText: ['']
     });
 
     this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe(
@@ -814,6 +822,31 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  receiveDatatoNoReleasedDco(data?: string) {
+    if (data && data.length) {
+      this.getCheckInData = data;
+      this.getNoReleaseWardFilterData = this.getCheckInData.reduce(
+        (accumulator: string[], currentValue) => {
+          let roomText = currentValue?.RoomidText?.trim();
+          if (roomText && !accumulator.includes(roomText)) {
+            accumulator.push(roomText);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.getNoReleaseRoomFilterData = this.getCheckInData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue?.Floor)) {
+            accumulator.push(currentValue?.Floor);
+          }
+          return accumulator;
+        },
+        []
+      );
+    }
+  }
+
   receiveDataFromPhysicianOrdersChild(data?: string) {
     if (data && data.length) {
       this.labReceivedData = data;
@@ -865,7 +898,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       );
     } else if (this.selectedModule == 'noReleaseDoc') {
       this.PatientWithoutDocumentsComponent?.filterListData(
-        this.filterFormPatientWithNoConsumable.value
+        this.filterFormNoReleased.value
       );
     } else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
@@ -968,6 +1001,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.filterFormPatientWithNoConsumable.patchValue({
       Status: '',
       FCategory: '',
+    });
+    this.filterFormNoReleased.patchValue({
+      FWard: '',
+      RoomidText:''
     });
     this.closeAndRefresh();
   }

@@ -592,7 +592,7 @@
             </div>
             <!-- Labor Room Flow Sheet -->
             <div [ngClass]="isLaborRoomFlow ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isLaborRoomFlow',laborRoomFlowList[0])">
+              (click)="selectAssessment('isLaborRoomFlow',laborRoomFlowList[0])" *ngIf="!selectedDocument || selectedDocument == 'LRFS'">
               <div class="col-md-4" >Labor Room Flow Sheet {{laborRoomFlowList[0]?.Zversion ?
                 dockVer(laborRoomFlowList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{laborRoomFlowList[0]?.StatusTxt || 'N/A'}}</div>
@@ -612,7 +612,7 @@
             </div>
             <!-- NICU Nursing Flow Sheet -->
             <div [ngClass]="isNicuNurFlowSheet ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-              (click)="selectAssessment('isNicuNurFlowSheet',NicuNursingFlowSheetList[0])">
+              (click)="selectAssessment('isNicuNurFlowSheet',NicuNursingFlowSheetList[0])" *ngIf="!selectedDocument || selectedDocument == 'NNFS'">
               <div class="col-md-4" >NICU Nursing Flow Sheet {{NicuNursingFlowSheetList[0]?.Zversion ?
                 dockVer(NicuNursingFlowSheetList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
               <div class="col-md-2 status-color">{{NicuNursingFlowSheetList[0]?.StatusTxt || 'N/A'}}</div>

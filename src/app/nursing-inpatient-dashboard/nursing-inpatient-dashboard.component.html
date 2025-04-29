@@ -1041,7 +1041,7 @@
     </div>
   </div>
   <app-check-in [getConfigToolWardList]="getConfigToolWardList" [getConfigToolSpecialtyList]="getConfigToolSpecialtyList"
-    (sendErPatientCount)="collectErPatientCount($event)"
+    (sendErPatientCount)="collectErHistPatientCount($event)"
     (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)"
     *ngIf="checkin"
@@ -1052,14 +1052,14 @@
     *ngIf="reservation"
   ></app-reservation>
   <app-lab-results
-    (sendErPatientCount)="collectErPatientCount($event)"
+    (sendErPatientCount)="collectErHistPatientCount($event)"
     (dataToParent)="receiveDataFromChild($event)"
     (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)"
     *ngIf="LabResults"
   ></app-lab-results>
   <app-physician-orders-list
-    (sendErPatientCount)="collectErPatientCount($event)"
+    (sendErPatientCount)="collectErHistPatientCount($event)"
     (dataToParent)="receiveDataFromPhysicianOrdersChild($event)"
     (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)"
@@ -1067,6 +1067,7 @@
   ></app-physician-orders-list>
   <app-administered-doses
     *ngIf="AdministeredDoses"
+    (sendErPatientCount)="collectErHistPatientCount($event)"
     style="width: calc(100% - 60px)"
   ></app-administered-doses>
   <app-nurs-treatment-workarea
@@ -1085,7 +1086,7 @@
   <app-patient-without-consumable
     style="width: calc(100% - 78px)"
     *ngIf="noConsumables"
-    (sendErPatientCount)="collectErPatientCount($event)"
+    (sendErPatientCount)="collectErHistPatientCount($event)"
     (redirectCheckInData)="collectCheckInData($event)"
   ></app-patient-without-consumable>
   <app-patient-assignment
@@ -1103,12 +1104,13 @@
     *ngIf="noReleaseDoc"
     (sendErNoDocumentCount)="collectErPatientCount($event)"
     (redirectCheckInData)="collectCheckInData($event)"
+    (dataToParent)="receiveDatatoNoReleasedDco($event)"
   ></app-patient-without-documents>
 </div>
 
 <div
   class="card patient-with-noconsumable-filter"
-  *ngIf="showfilter && (noConsumables || noReleaseDoc)"
+  *ngIf="showfilter && (noConsumables)"
   (click)="$event.stopPropagation()"
 >
   <div class="card-body" style="padding: 4px 21px 21px 21px">
@@ -1160,6 +1162,41 @@
             style="background-color: #0082c8; border: #0082c8"
             (click)="filterList()"
           >
+            Filter
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="card patient-with-noconsumable-filter" *ngIf="showfilter && (noReleaseDoc)"
+  (click)="$event.stopPropagation()">
+  <div class="card-body" style="padding: 4px 21px 21px 21px">
+    <div class="">
+      <div class="d-flex justify-content-between align-items-center">
+        <span style="margin: 0">Filter</span>
+        <span style="margin-left: 68px; font-size: 20px"><i class="fa fa-times" aria-hidden="true"
+            (click)="showFilterFn($event)"></i></span>
+      </div>
+      <form [formGroup]="filterFormNoReleased">
+        <div>
+          <p style="margin: auto; margin-top: 5px">Ward</p>
+          <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+            <ng-option [value]="item" *ngFor="let item of getNoReleaseWardFilterData">
+              {{ item }}
+            </ng-option>
+          </ng-select>
+
+          <p style="margin: auto; margin-top: 5px">Rooms</p>
+          <ng-select class="" id="inputGroupSelect01" formControlName="RoomidText" [multiple]="true">
+            <ng-option [value]="item" *ngFor="let item of getNoReleaseRoomFilterData">
+              {{ item }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="mt-2" style="display: flex; justify-content: space-around">
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
         </div>
