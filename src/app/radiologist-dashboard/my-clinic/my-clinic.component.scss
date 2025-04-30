@@ -1,0 +1,21 @@
+.movmentType {
+  font-size: 12px;
+}
+
+::ng-deep .checkout_list {
+  width: 100% !important;
+  min-width: 10% !important;
+  max-width: 85% !important;
+
+  .modal-header {
+    background: #fff !important;
+    padding: 10px !important;
+    color: black !important;
+
+    h3 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 20px;
+    }
+  }
+}

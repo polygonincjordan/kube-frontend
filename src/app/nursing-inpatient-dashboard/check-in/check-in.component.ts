@@ -144,6 +144,7 @@ export class CheckInComponent implements OnInit {
   OpenPdfModal: BsModalRef;
   inHospitalistList: any = [];
   inHospitalistListClone: any = [];
+  inHospitalistListDeepClone: any = [];
 
   constructor(
     private emergencyService: EmergencyService,
@@ -825,9 +826,10 @@ export class CheckInComponent implements OnInit {
 
         let IPList: any[] = patientList;
         this.inHospitalistList = IPList.filter(item => item.PatientstatusDischarged !== 'X');
-        this.inHospitalistList = IPList.filter(item => item.Roomid);
+        this.inHospitalistList = IPList.filter(item => item.Roomid && item.Bedid);
         let IPListClone: any[] = patientList;
         this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
+        this.inHospitalistListDeepClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
         this.sendErPatientCount.emit(this.inHospitalistList.length);
         this.dataToParent.emit(this.inHospitalistListClone);
         this.lastIndex = this.inHospitalistList.length - 1;
@@ -838,8 +840,12 @@ export class CheckInComponent implements OnInit {
   showAllRooms(isShowRooms?: any) {
     if(isShowRooms) {
       this.inHospitalistList = this.inHospitalistListClone;
+      this.inHospitalistListDeepClone = this.inHospitalistListClone;
+      this.sendErPatientCount.emit(this.inHospitalistList.length);
     } else {
-      this.inHospitalistList = this.inHospitalistListClone.filter(item => item.Roomid);
+      this.inHospitalistList = this.inHospitalistListClone.filter(item => item.Roomid && item.Bedid);
+      this.inHospitalistListDeepClone = this.inHospitalistList;
+      this.sendErPatientCount.emit(this.inHospitalistList.length);
     }
   }
 
@@ -1021,7 +1027,7 @@ export class CheckInComponent implements OnInit {
       this.inHospitalistList = filterValue;
       this.sendErPatientCount.emit(this.inHospitalistList.length);
     } else {
-      this.inHospitalistList = this.inHospitalistListClone;
+      this.inHospitalistList = this.inHospitalistListDeepClone;
       this.sendErPatientCount.emit(this.inHospitalistList.length);
     }
   }

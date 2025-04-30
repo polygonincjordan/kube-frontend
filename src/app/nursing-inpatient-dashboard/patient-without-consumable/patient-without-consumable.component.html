@@ -27,10 +27,22 @@
                 [ngClass]="{'fa-sort': sortColumn !== 'Falnr', 'fa-sort-up': sortColumn === 'Falnr' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Falnr' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
+            <th scope="col" (click)="sortTable('Floor')">
+              Ward
+              <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'Floor', 'fa-sort-up': sortColumn === 'Floor' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Floor' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
             <th scope="col" (click)="sortTable('RoomidText')">
               Room
               <i class="fa"
                 [ngClass]="{'fa-sort': sortColumn !== 'RoomidText', 'fa-sort-up': sortColumn === 'RoomidText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'RoomidText' && sortDirection === 'desc'}"
+                aria-hidden="true"></i>
+            </th>
+            <th scope="col" (click)="sortTable('BedidText')">
+              Bed
+              <i class="fa"
+                [ngClass]="{'fa-sort': sortColumn !== 'BedidText', 'fa-sort-up': sortColumn === 'BedidText' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'BedidText' && sortDirection === 'desc'}"
                 aria-hidden="true"></i>
             </th>
             <th scope="col" (click)="sortTable('FinancecategoryName')">
@@ -55,7 +67,9 @@
             </td>
             <td [title]="item.Patient" class="border-top-none">{{ item.Patient }}</td>
             <td [title]="item.Falnr" class="border-top-none">{{ item.Falnr }}</td>
+            <td [title]="item.Floor" class="border-top-none">{{ item.Floor }}</td>
             <td [title]="item.RoomidText" class="border-top-none">{{ item.RoomidText }}</td>
+            <td [title]="item.BedidText" class="border-top-none">{{ item.BedidText }}</td>
             <td [title]="item.FinancecategoryName" class="border-top-none">{{ item.FinancecategoryName }}</td>
             <td [title]="item.PhysicianName" class="border-top-none">{{ item.PhysicianName }}</td>
           </tr>

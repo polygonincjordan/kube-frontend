@@ -1,0 +1,43 @@
+::ng-deep .home-table {
+
+    th,
+    td {
+      border: 1px solid black;
+      min-width: 102px;
+      max-width: 267px !important;
+      // width: 100%;
+      overflow: hidden;
+  
+      &:nth-child(2) {
+        max-width: 450px !important;
+        min-width: 180px;
+      }
+    }
+  
+    th {
+      white-space: nowrap !important;
+    }
+  }
+  
+  .card-icon {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important;
+    background-size: 400% 400% !important;
+    animation: gradient 15s ease infinite !important;
+    position: absolute !important;
+    right: 10px !important;
+    bottom: 77px !important;
+    top: -12px !important;
+    display: inline-block !important;
+    width: 40px !important;
+    height: 45px !important;
+    border-radius: 5px !important;
+    line-height: 50px !important;
+    color: white !important;
+  }
+  
+  .card-icon i {
+    position: relative;
+    left: 10px;
+    top: 5px;
+    font-size: 21px;
+  }

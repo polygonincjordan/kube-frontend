@@ -1,0 +1,860 @@
+<div class="patient_docs mx-4">
+  <div class="row full-width pb-2">
+    <!-- in patient form start -->
+    <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
+      inPatientShow && !inPatientSoapForm">
+      <diagnoses-in-patient (onClose)="loadinPatientPanel($event)" [patientVisitRecord]="patientVisitRecord"
+        [userConfigSet]="userconfig"
+        (updateEvent)="updateInPatientForm($event)"
+        [inPatientVisitData]="inPatientVisitData" [inPatientDischargeData]="inPatientDischargeData" [selectedPatient]="selectedPatient"
+        [inPatientForm]="inPatientForm"></diagnoses-in-patient>
+
+    </div>
+    <div class="col-lg-6 1" *ngIf="InOutPatientViewValue.showIn &&
+      inPatientSoapForm">
+      <app-soap-form *ngIf="inPatientSoapForm"  [isCopy]="isCopy" [patientSoapData]="{data:
+        inPatientSoapData, type: 'InPatient'}"
+        [isCreateRequest]="isCreateRequest"
+        [isCopyRequest]="isCopyRequest"
+        (updateEvent)="updateInPatientForm($event)"></app-soap-form>
+    </div>
+    <!-- in patient form end -->
+    <div class="col-lg-6 2"  *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showOut">
+      <div class="inner_box main_inner_box_table">
+        <div class="main_bg main_diagnoses_table" style="min-height: 100%;
+        overflow: auto;
+        padding-bottom: 0px;
+        max-height: 100%;">
+          <!-- end---------------------- -->
+          <div class="head patient-table">
+            <title clas="patient-title">Outpatient Documents</title>
+            <div class="right_icons">
+              <!-- onclick this open patient doc modal -->
+              <span (click)="openNewForm('Correspondence')" [title]="'Create Correspondence'">
+                <img src="assets/img/edit-ekardex.png" class="mw-15" />
+              </span>
+              <span (click)="openNewForm('MedicalReport')" [title]="'Medical Report'">
+                <img src="assets/img/edit-ekardex.png" class="mw-15" />
+              </span>
+              <span (click)="openPhysicianAssessment(PhysicianAssessment)" [title]="'Create Physician Assessment'">
+                <img src="assets/img/physician-assessment.png" class="mw-15" />
+              </span>
+              <span (click)="openModalForAttachment(cvisAttachmentmodal)" [title]="'Create CVIS Attachments'">
+                <img src="assets/img/cvis-attechment.webp" class="mw-15" />
+              </span>
+              <span (click)="openModalForAttachment(attachmentmodal)" [title]="'Create Attachments'">
+                <img src="assets/img/attachment-icon.jpg" class="mw-15" style="height: 20px;" />
+              </span>
+              <span (click)="openEnlarge(Outcontent, 'OutPatient')" [title]="'View All'">
+                <img src="" class="iconsminds-resize mw-15" />
+              </span>
+              <span (click)="openSettings(opionmodal)" [title]="'Users Preferences'">
+                <img src="" class="simple-icon-settings mw-15" />
+              </span>
+              <span (click)="openNewForm('out')" [title]="'Create New Document'">
+                <img src="assets/img/file.png" class="mw-15" />
+              </span>
+            </div>
+          </div>
+          <ng-container *ngIf="!nodatafound && !isError">
+            <div class="document-detail-list">
+
+              <div *ngFor="let paitentData of patientVisitdataSource | slice : 0 :
+                5" class="detail_row">
+                <div class="d-flex align-items-center w-100"
+                  (click)="modelFormOpen(paitentData, false, pdfViewModal)">
+                  <span>{{ formatDate(paitentData.Erdattim) }}</span>
+                  <p class="attending-section" style="width: 100%">
+                    <strong> Physician:</strong>{{ paitentData.Mitarbname
+                    }}
+                    -
+                    {{ paitentData.Orgdo }}
+                  </p>
+                  <span class="fix-width text-elips d-inline-block mw-135 version-class" [title]="paitentData.DtidText">{{
+                    paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
+                </div>
+                <div class="d-flex align-items-center" >
+                  <div class="d-flex" style="width: 100%;">
+                    <span class="border-0 txt-al-ctr" (click)="modelFormOpen(paitentData, false, pdfViewModal)"
+                    [ngStyle]="{'min-width': paitentData.Dokvr != '00' ? '80px': '104px' }">{{
+                      paitentData.Released == "X" ? "Released" : "Draft"
+                      }}</span>
+                    <select *ngIf="paitentData.Dokvr != '00'" class="mr-2" name="" id="" (click)="onReleaseHistoryData(paitentData.DocKey)"></select>
+                  </div>
+                  <!-- <div class="mw-15" style="min-width: 15px">
+                    <a *ngIf="paitentData.Released == 'X'"
+                      (click)="onOpenAttachment(paitentData.DocKey)"><img
+                        src="assets/img/attach.png" class="mw-15" /></a>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <app-no-data-found *ngIf="nodatafound"></app-no-data-found>
+          <!-- <div>
+          </div> -->
+          <app-error-placeholder *ngIf="isError"></app-error-placeholder>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 3" *ngIf="!InOutPatientViewValue.showBoth && !inPatientShow">
+      <!-- open pdf modal-------------------- -->
+      <app-pdf-viewer *ngIf="pdfFormDiv" [patientVisitData]="{patientVisit: patientVisitRecord, Oldversion: oldversion}"
+        [inPatientVisitData]="inPatientVisitData" [isInPatientSoap]="isInPatientSoap" [soapPdf]="soapPdf" [inPatientSoapData]="inPatientSoapData" (newItemEvent)="openNewForm()"
+        (copyItemEvent)="copyReleaseForm($event)"
+        (updateEvent)="updateForm($event)"></app-pdf-viewer>
+
+
+      <!-- open soap modal-------------------- -->
+      <app-soap-form *ngIf="soapFormDiv"  [isCopy]="isCopy" [patientSoapData]="{data:
+        inPatientSoapData, type: 'OutPatient'}"
+        [isCreateRequest]="isCreateRequest"
+        [isCopyRequest]="isCopyRequest" (updateEvent)="updateForm($event)"></app-soap-form>
+      <!-- visit documents modal--------------- -->
+      <app-visit-form *ngIf="visitFormDiv"
+        [patientVisitData]="patientVisitRecord"
+        [isCreateRequest]="isCreateRequest"
+        [isCopyRequest]="isCopyRequest" (updateEvent)="updateForm($event)"></app-visit-form>
+        <ng-container *ngIf="correspondenceFormDiv">
+          <div class="main_soap">
+            <div class="head">Correspondence Document</div>
+            <div class="details">
+              <app-correspondence-document [correspondence]="'correspondence'"></app-correspondence-document>
+            </div>
+              <div class="bottom">
+                <button (click)="saveCorrespondenceDocument()" >Save</button>
+                <button (click)="releaseCorresponde()">Release</button>
+                <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
+                <button (click)="updateForm(false)">Close</button>
+              </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="medicalReportFormDiv">
+          <div class="main_soap">
+            <div class="head">Medical Reports</div>
+            <div class="details">
+                <app-medical-report  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-medical-report>
+            </div>
+              <div class="bottom">
+                <button type="button" (click)="selectedPatient ? updateMedicalReport() : saveMedicalReport()">Save</button>
+                <button (click)="releaseMedicalReport()">Release</button>
+                <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
+                <button (click)="updateForm(false)">Close</button>
+              </div>
+            </div>
+        </ng-container>
+
+    </div>
+
+    <div class="col-lg-6 4" *ngIf="InOutPatientViewValue.showBoth || InOutPatientViewValue.showIn">
+      <div class="inner_box main_inner_box_table">
+        <div class="main_bg main_diagnoses_table" style="min-height: 100%;
+        overflow: auto;
+        max-height: 100%;">
+  
+          <!-- end---------------------- -->
+          <div class="head">
+            <title clas="patient-title">Patient Documents Profile</title>
+            <div class="right_icons">
+              <!-- onclick this open patient doc modal -->
+              <span (click)="openEnlarge(Inpatient, 'Inpatient')" [title]="'View All'">
+                <img src="" class="iconsminds-resize mw-15" />
+              </span>
+              <!-- onclick this open configuration option modal -->
+              <!-- <span (click)="openSettings(opionmodal)"
+                ><img src="" class="simple-icon-settings"
+              /></span> -->
+              <span class="show position-relative dropdown-in-patient p-0 mw-15" [title]="'Create New Document '"
+                dropdown>
+                <span><img src="assets/img/file.png" class="mw-15"
+                    dropdownToggle /></span>
+                <div class="dropdown-menu dropdown-menu-right mt-3"
+                  *dropdownMenu role="menu">
+                  <span class="dropdown-item c-pointer d-flex
+                    align-items-center"
+                    (click)="openNewFormForInPatient('OPERT')"><img
+                      src="assets/img/in-patient-dropdown.png"
+                      class="mr-1">Surgery/Operation
+                    Note</span>
+                  <span class="dropdown-item c-pointer d-flex
+                    align-items-center"
+                    (click)="openNewFormForInPatient('ORRPT')"><img
+                      src="assets/img/in-patient-dropdown.png"
+                      class="mr-1">Operation Report</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                    (click)="openNewFormForInPatient('PHDIS')"><img src="assets/img/in-patient-dropdown.png"
+                      class="mr-1">Physician Discharge Summary</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openModalForAttachment(attachmentmodal)"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Attachment Document</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatient('PhysicianAssessment')"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Physician Assessment</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatient('CorrespondenceDocument')"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Correspondence Document</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatient('MedicalReport')"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Medical Report</span>
+                  <span class="dropdown-item c-pointer d-flex align-items-center"
+                  (click)="openNewFormForInPatients(newborndocument)"><img src="assets/img/in-patient-dropdown.png"
+                        class="mr-1">Newborn Physician Assessment</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <ng-container *ngIf="!noDatafoundInPatient && !isError">
+            <!-- <div *ngFor="
+              let paitentData of inPatientVisitDataSourceWithoutDocument | slice
+              : 0 : 5
+              " class="detail_row"
+              (click)="modelFormOpenInPatient(paitentData)">
+              <div class="d-flex align-items-center w-100">
+              <span>{{ formatDate(paitentData.Erdattim) }}</span>
+              <p class="attending-section" style="width: 100%">
+                <strong> Physician:</strong>{{ paitentData.Mitarbname }}
+                -
+                {{ paitentData.Orgdo }}
+              </p>
+              <span class="fix-width mw-135 version-class">{{
+                paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="d-flex" style="width: 100%;">
+              <span class="border-0 txt-al-ctr" [ngStyle]="{'min-width': paitentData.Dokvr != '00' ? '80px': '97px' }">{{
+                paitentData.Released ? "Released" : "Draft"
+                }}</span>
+              <select class="" name="" id="" *ngIf="paitentData.Dokvr != '00'"></select>
+            </div>
+          </div>
+            </div> -->
+
+            <div class="document-detail-list">
+              <div class="row  m-0" *ngFor="let item of newLimitProfileList | keyvalue : sortKeys; let i = index">
+                <!-- <div class="witdh-16 pl-2 mt-3">
+                  <strong class="list-doc-date" [title]="getDate(item.key) | date: 'dd-MM-y'">{{ getDate(item.key) | date: "dd-MM-y" || '-' }}</strong>
+                </div> -->
+               <!-- {{item.value|json}} -->
+              
+                <div class="w-100 ml-1 document-list mr-0 ml-0 align-items-center row m-0 py-1 px-2" *ngFor="let member of item.value ; let ind = index" [ngClass]="i > 0 ? 'mt-1':''">
+                  <ng-container>
+                
+                    <div class="col-md-2 p-0"  (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
+                      <span class="in-line" style="font-weight:700" [title]="getDate(member.Dodat) | date: 'dd.MM.y'"> {{ getDate(member.Dodat) | date: "dd.MM.y" }}</span>
+                    </div>
+                    <div class="col-md-4 p-0" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
+                      <span class="" [title]="member.MitarbName" ><strong> Physician:</strong> {{ member.MitarbName }}
+                        -
+                        {{ member.Orgdo }}</span>
+                    </div>
+                    <div class="col-md-3 p-0 d-flex" (click)="modelFormOpenInPatient(member,false,  pdfViewModal)">
+                      <span class="in-line d-inline-block text-elips" style="font-weight:700" [title]="(member.Dktxt ? member.Dktxt + ' ' : '') + (member.Dokvr ? dockVer(member.Dokvr) : '')"> {{ member.DtidText }} {{member.Dokvr ? dockVer(member.Dokvr) : ''}}</span>
+                    </div>
+                    <div class="col-md-2 pl-0" (click)="modelFormOpenInPatient(member,false, pdfViewModal)">
+                      <span class="" style="font-weight:700" [title]="member.DokstText">{{ member.DokstText ? member.DokstText : "N/A" }}</span>
+                    </div>
+                  </ng-container>
+                 
+
+                 
+                  <div class="col-md-1 pl-0 d-flex align-items-center" (click)="$event.preventDefault()">
+                    <div class="col-md-6 p-0 mr-2" *ngIf="member.NodocText !='N/A'">
+                      <!-- <img width="25" src="assets/img/rad-patient-image.png" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'image/bmp' || member.AttMimeType === 'url'" />
+                      <i aria-hidden="true" (click)="getnewReleasedPdf(member, labpdfmodal)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="member.AttMimeType === 'PDF'"></i>
+                      <img src="assets/img/document-html.png" width="15px" height="15px" (click)="getnewReleasedPdf(member, labpdfmodal)" *ngIf="member.AttMimeType === 'HTML'" /> -->
+                    </div>
+                      <div class="col-md-6 p-0">
+                        <div class="d-flex" style="width: 100%;"
+                        (click)="onReleaseNewHistoryData(member.Dockey, member)">
+                        <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+           
+
+          </ng-container>
+          <app-no-data-found *ngIf="noDatafoundInPatient"></app-no-data-found>
+          <app-error-placeholder *ngIf="isError"></app-error-placeholder>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="InOutPatientViewValue.showBoth && patientCaseSetDataSource.length>= 1">
+    <div style="width:100%;padding:0px 10px;">
+      <app-stepper [listItem]="patientCaseSetDataSource"></app-stepper>
+    </div>
+  </div>
+</div>
+<ng-template #pdfViewModal>
+  <app-pdf-viewer [patientVisitData]="{patientVisit: patientVisitRecord, Oldversion: oldversion}"
+  [inPatientVisitData]="inPatientVisitData" [isInPatientSoap]="isInPatientSoap" [soapPdf]="soapPdf" [inPatientSoapData]="inPatientSoapData" (newItemEvent)="openNewForm()"
+  (copyItemEvent)="copyReleaseForm($event)"
+  (updateEvent)="updateForm($event)"></app-pdf-viewer>
+</ng-template>
+<ng-template #labpdfmodal>
+  <div class="modal-body">
+    <!-- <ngx-extended-pdf-viewer
+        *ngIf="pdfUrlType == 'pdf'"
+        [src]="pdfUrl"
+        height="80vh"
+        [backgroundColor]="'#525659'"
+        [zoom]="'80'"
+        [sidebarVisible]="true"
+        [showOpenFileButton]="false"
+        [showBookmarkButton]="false"
+        >
+      </ngx-extended-pdf-viewer> -->
+      <app-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [patientVisitData]="{patientVisit: patientVisitRecord, Oldversion: oldversion}"
+      [inPatientVisitData]="inPatientVisitData" [isInPatientSoap]="isInPatientSoap" [soapPdf]="soapPdf" [inPatientSoapData]="inPatientSoapData" (newItemEvent)="openNewForm()"
+      (copyItemEvent)="copyReleaseForm($event)"
+      (updateEvent)="updateForm($event)"></app-pdf-viewer>
+    <div class="row" >
+      <!-- <iframe [src]="pdfUrl" width="2000" height="600"> </iframe> -->
+    </div>
+    <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
+      <img [src]="releaseDocumentImage" style="height: 70vh;" />
+    </div>
+    <div class="w-100" *ngIf="pdfUrlType == 'html'">
+      <div [innerHTML]="htmlData"></div>
+    </div>
+    <div class="mt-2" style="text-align: center">
+      <button
+        class="btn btn-primary"
+        (click)="closePdfModal()"
+        style="background-color: #0082c8; border: #0082c8"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- first patient documents modal---------------- -->
+<ng-template #Outcontent let-modal>
+  <div class="modal-body">
+    <div class="patient_docs_modal">
+      <div class="inner_box">
+        <div class="main_bg">
+          <div class="head">
+            <title>Outpatient Documents</title>
+          </div>
+          <div class="input_fields">
+            <input type="search" [(ngModel)]="searchTextValue"
+              (ngModelChange)="onChangeSearchTextValue()" name="" id=""
+              placeholder="search" />
+            <div class="right_fields">
+              <input type="checkbox" (change)="checkShowAll($event,
+                'OutPatient')" name="show all" id="" disabled/>
+              <label for="checkbox">Show All</label>
+              <input class="form-control" #drp="bsDaterangepicker"
+                bsDaterangepicker [container]="'html'"
+                [(ngModel)]="bsRangeValue"
+                (ngModelChange)="onDateRangeChange($event, 'OutPatient')"
+                [bsConfig]="{
+                rangeInputFormat: 'DD.MM.YYYY',
+                dateInputFormat: 'DD.MM.YYYY',
+                showWeekNumbers: false
+                 }" disabled/>
+              <span class="mr-0" [ngClass]="isAscending == true && 'bg-blu'"
+                (click)="checkSortButton()"><img
+                  src="assets/img/arrow-up-down_1.svg" /></span>
+            </div>
+          </div>
+          <div>
+            <ng-container *ngIf="!nopopUpdatafound && !isPopUpError">
+
+              <div *ngFor="let paitentData of patientGridVisitdataSource | filter : searchTextValue"
+                class="detail_row">
+                <div class="d-flex align-items-center w-100"
+                  (click)="modelFormOpen(paitentData, false)">
+                  <span>{{ formatDate(paitentData.Erdattim) }}</span>
+                  <p class="attending-section" style="width: 100%">
+                    <strong> Physician:</strong>{{ paitentData.Mitarbname
+                    }}
+                    -
+                    {{ paitentData.Orgdo }}
+                  </p>
+                  <span class="fix-width text-elips d-inline-block mw-135" [title]="paitentData.DtidText">{{
+                    paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="d-flex"
+                    (click)="onReleaseHistoryData(paitentData.DocKey)">
+                    <span class="border-0 mw-135 txt-al-ctr">{{
+                      paitentData.Released == "X" ? "Released" : "Draft"
+                      }}</span>
+                    <!-- <select class="mr-2" name="" id=""></select> -->
+                  </div>
+                  <!-- <div class="mw-15" style="min-width: 15px">
+                  <a *ngIf="paitentData.Released == 'X'"
+                    (click)="onOpenAttachment(paitentData.DocKey)"><img
+                      src="assets/img/attach.png" class="mw-15"
+                      /></a>
+                </div> -->
+                </div>
+                <!-- <span>{{ formatDate(paitentData.Erdattim) }}</span>
+                <p style="width: 100%">
+                  <strong> Attending Doctor:</strong>{{ paitentData.Mitarbname
+                  }} - {{ paitentData.Orgdo }}
+                </p>
+                <span class="fix-width mw-135">{{ paitentData.DtidText }} (v{{
+                  paitentData.Dokvr }})</span>
+                <span class="border-0 mw-135 txt-al-ctr">{{
+                  paitentData.Released == "X" ? "Released" : "Draft"
+                  }}</span> -->
+                <!-- <select name="" id="" class="opacity-0"></select>
+              <a href="#" class="opacity-0"><img src="assets/img/attach.png" class="mw-15" /></a> -->
+              </div>
+            </ng-container>
+            <app-no-data-found *ngIf="nopopUpdatafound"></app-no-data-found>
+            <app-error-placeholder *ngIf="isPopUpError"></app-error-placeholder>
+            <div class="show-more-cont">
+              <span (click)="onClickPrevious()" *ngIf="seeMoreListNumber> 10">Previous</span>
+              <span (click)="onClickSeeMore()"
+                *ngIf="patientAllVisitdataSource.length> seeMoreListNumber">Next</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #Inpatient let-modal>
+  <div class="modal-body">
+    <div class="patient_docs_modal">
+      <div class="inner_box">
+        <div class="main_bg">
+          <div class="head">
+            <title>In-Patient Documents</title>
+          </div>
+          <div class="input_fields">
+            <input type="search" [(ngModel)]="searchTextValue"
+              (ngModelChange)="onChangeSearchInpatientTextValue()"
+              name="" id="" placeholder="search" />
+            <div class="right_fields">
+              <input type="checkbox" (change)="checkShowAll($event,
+                'inPatient')" name="show all" id="" disabled/>
+              <label for="checkbox">Show All</label>
+              <input class="form-control" #drp="bsDaterangepicker"
+                bsDaterangepicker [container]="'html'"
+                [(ngModel)]="bsRangeValue"
+                (ngModelChange)="onDateRangeChange($event, 'inPatient')"
+                [bsConfig]="{
+                rangeInputFormat: 'DD.MM.YYYY',
+                dateInputFormat: 'DD.MM.YYYY'
+                }" disabled/>
+              <span class="mr-0" [ngClass]="isAscending == true && 'bg-blu'"
+                (click)="checkSortButton()"><img
+                  src="assets/img/arrow-up-down_1.svg" /></span>
+            </div>
+          </div>
+          <div>
+            <ng-container *ngIf="!nopopUpdatafound && !isPopUpError">
+
+              <div *ngFor="let paitentData of patientGridVisitdataSource"
+                class="detail_row"
+                (click)="modifyAndOpenForm(paitentData,pdfViewModal)">
+                <div class="d-flex align-items-center w-100">
+                  <span>{{ formatDate(paitentData.Erdattim) }}</span>
+                  <p class="attending-section" style="width: 100%">
+                    <strong> Physician:</strong>{{ paitentData.Mitarbname
+                    }}
+                    -
+                    {{ paitentData.Orgdo }}
+                  </p>
+                  <span class="fix-width text-elips d-inline-block mw-135 version-class" [title]="paitentData.DtidText">{{
+                    paitentData.DtidText }} (v{{ paitentData.Dokvr }})</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="d-flex">
+                    <span class="border-0 mw-135 txt-al-ctr">{{
+                      paitentData.Released ? "Released" : "Draft"
+                      }}</span>
+                    <!-- <select class="mr-2" name="" id=""></select> -->
+                  </div>
+                  <!-- <div class="mw-15" style="min-width: 15px">
+                  <a *ngIf="paitentData.Released == 'X'"
+                    (click)="onOpenAttachment(paitentData.DocKey)"><img
+                      src="assets/img/attach.png" class="mw-15"
+                      /></a>
+                </div> -->
+                </div>
+                <!-- <span>{{ formatDate(paitentData.Erdattim) }}</span>
+                <p style="width: 100%">
+                  <strong> Attending Doctor:</strong>{{ paitentData.Mitarbname
+                  }} - {{ paitentData.Orgdo }}
+                </p>
+                <span class="fix-width mw-135">{{ paitentData.DtidText }} (v{{
+                  paitentData.Dokvr }})</span>
+                <span class="border-0 mw-135 txt-al-ctr">{{
+                  paitentData.Released == "X" ? "Released" : "Draft"
+                  }}</span> -->
+                <!-- <select name="" id="" class="opacity-0"></select>
+              <a href="#" class="opacity-0"><img src="assets/img/attach.png" class="mw-15" /></a> -->
+              </div>
+            </ng-container>
+            <app-no-data-found *ngIf="nopopUpdatafound"></app-no-data-found>
+            <app-error-placeholder *ngIf="isPopUpError"></app-error-placeholder>
+            <div class="show-more-cont">
+              <span (click)="onClickPrevious()" *ngIf="seeMoreListNumber> 10">Previous</span>
+              <span (click)="onClickSeeMore()"
+                *ngIf="patientAllVisitdataSource.length> seeMoreListNumber">Next</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- configuration option modal-------------------- -->
+<ng-template #opionmodal let-modal>
+  <div class="modal-body">
+    <div class="options_modal">
+      <div class="inner_box">
+        <div class="main_bg">
+          <div class="border-bottom pb-2">
+            <title>Configuration Options</title>
+            <img src="assets/img/save.png" class="save-icon"
+              (click)="updateUserConfig(saveUserconfig)" />
+          </div>
+          <h6>Default New Document <span>*</span></h6>
+          <div class="d-flex">
+            <div class="checkbox">
+              <input type="checkbox" name="groupA"
+                (change)="changeDefaultSOAP($event, saveUserconfig)"
+                [checked]="saveUserconfig.DefaultNewDocumentVisitNote"
+                [(ngModel)]="saveUserconfig.DefaultNewDocumentVisitNote"
+                name="visit note" id="" />
+              <label>Visit Note</label>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" name="groupA"
+                (change)="changeDefaultVisitNote($event, saveUserconfig)"
+                [checked]="saveUserconfig.DefaultNewDocumentSOAP"
+                [(ngModel)]="saveUserconfig.DefaultNewDocumentSOAP"
+                name="SOAP" id="" />
+              <label>SOAP</label>
+            </div>
+          </div>
+          <h6 class="mt-2">Document Type <span>*</span></h6>
+          <div class="d-flex">
+            <div class="checkbox">
+              <input type="checkbox"
+                [checked]="saveUserconfig.DocumentTypeVisitNote"
+                [(ngModel)]="saveUserconfig.DocumentTypeVisitNote" name="visit
+                note" id="" />
+              <label>Visit Note</label>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" [checked]="saveUserconfig.DocumentTypeSOAP"
+                [(ngModel)]="saveUserconfig.DocumentTypeSOAP" name="SOAP" id=""
+                />
+              <label>SOAP</label>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox"
+                [checked]="saveUserconfig.DocumentTypeMedicalReport"
+                [(ngModel)]="saveUserconfig.DocumentTypeMedicalReport"
+                name="Medical Report" id="" />
+              <label>Medical Report</label>
+            </div>
+          </div>
+          <h6 class="mt-2">Document Status <span>*</span></h6>
+          <div class="d-flex">
+            <div class="checkbox">
+              <input type="checkbox"
+                [checked]="saveUserconfig.DocumentStatusReleased"
+                [(ngModel)]="saveUserconfig.DocumentStatusReleased" name="visit
+                note" id="" />
+              <label>Released</label>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox"
+                [checked]="saveUserconfig.DocumentStatusDraft"
+                [(ngModel)]="saveUserconfig.DocumentStatusDraft" name="SOAP"
+                id="" />
+              <label>Draft</label>
+            </div>
+          </div>
+          <h6 class="mt-2">Period Parameter</h6>
+          <div class="">
+            <div class="checkbox">
+              <input type="checkbox" name="month"
+                [(ngModel)]="periodParameterCheckValue.month"
+                (change)="handleChangePeriodParameter($event, 'month')" id="" />
+              <select name="" id="" [value]="periodParameterMonthSelectValue"
+                (change)="handleChangePeriodParameterMonthSelect($event)">
+                <option value="1">Last Month</option>
+                <option value="2">Last 3 Month</option>
+                <option value="3">Last 6 Month</option>
+                <option value="4">Last Year</option>
+                <option value="5">ALL</option>
+              </select>
+            </div>
+            <div class="checkbox mt-2">
+              <input type="checkbox"
+                [(ngModel)]="periodParameterCheckValue.date" name="date" id=""
+                (change)="handleChangePeriodParameter($event, 'date')" />
+
+              <label for=""> From date </label>
+              <input type="text" readonly name="" [ngModel]="
+                saveUserconfig.PeriodParameterFromDate | date : 'dd.MM.yyyy'
+                " id="" />
+              <input type="date" [ngModel]="
+                saveUserconfig.PeriodParameterFromDate | date : 'yyyy-MM-dd'
+                " (ngModelChange)="
+                saveUserconfig.PeriodParameterFromDate= $event
+                " name="" id="" />
+
+              <label for=""> To date </label>
+              <input type="text" name="" id="" [ngModel]="
+                saveUserconfig.PeriodParameterToDate | date : 'dd.MM.yyyy'
+                " />
+              <input type="date" [ngModel]="
+                saveUserconfig.PeriodParameterToDate | date : 'yyyy-MM-dd'
+                " (ngModelChange)="saveUserconfig.PeriodParameterToDate= $event"
+                name="" id="" />
+            </div>
+          </div>
+          <div class="note">
+            The OP Documentations component will show the recent 5 documents
+            created by you.If you prefer to show other doccuments created by
+            other physicians please select the down option
+            <div class="mt-3 d-flex">
+              <input type="checkbox" [checked]="saveUserconfig.ShowAllDocument"
+                [(ngModel)]="saveUserconfig.ShowAllDocument" name="" id="" />
+              <label for="checkbox" class="font-bold">Show All Documents</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #attachmentmodal>
+  <div class="modal-body">
+    <div class="main-white-boxes">
+      <div class="attachment-main-new">
+        <h4 class="top-head-h4">Attachments</h4>
+      </div>
+      <form [formGroup]="createAttachmentForm">
+        <div class="attachment-main-new">
+          <div class="attachment"> <span> Attachment Type</span>
+            <ng-select placeholder="Search" formControlName="attachmentType" style="font-size: 12px;
+                    width: 65%;">
+              <ng-option *ngFor=" let item of attachmentList" [value]="item.Id">
+                {{ item.Descr }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="attachment-main-new upload-box">
+          <span class="top-head-new"> Upload Attachment</span>
+          <div class="d-flex" style="align-items: center;justify-content: space-between;">
+            <!-- <div class="attachment position-relative">
+             <input type="file" id="myfile" name="myfile" formControlName="attachmentFile" (change)="handleFileChange($event)">
+             <div class="attachment-btn d-flex position-absolute ">
+               <button class=" btn-primary" >preview</button>
+               <button class=" btn-primary" >remove</button>
+             </div>
+            </div> -->
+            <div class="attachment position-relative">
+              <input type="file" id="docpicker" style="display: none;" formControlName="attachmentFile"
+              accept="image/png, image/gif, image/jpeg, application/pdf" (change)="handleFileChange($event)">
+              <label id="myfile" class="w-100 pl-2 m-0">
+                <label for="docpicker" class="choose-filebut" *ngIf="!this.file">Choose file</label>
+                <div class="choose-filename d-flex justify-content-between align-items-center" *ngIf="this.file">
+                  <div title="{{filename}}">{{filename}}</div>
+                  <img src="./assets/img/close.png" title="remove" class="cursor-pointer" *ngIf="this.file" (click)="removeFile()" height="13"/>
+                </div>
+              </label>
+              <div class="attachment-btn d-flex position-absolute">
+                <button class="border-0 px-1 fs-6"
+                  (click)="onFileSelected(documentUrlpdf)" title="view" *ngIf="this.file"><img style="filter: grayscale(1);" src="./assets/img/eye-icon.svg"/></button>
+              </div>
+            </div>
+            <div class="btns-save-cancel">
+              <button class="btn-save me-1" (click)="createAttachmentDoc()">Save</button>
+              <button class="btn-save" (click)="resetAttachment()"> Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<ng-template #documentUrlpdf>
+  <div *ngIf="this.documentUrl">
+    <iframe width="100%" height="700" [src]="documentUrl" frameborder="0" allowfullscreen></iframe>
+  </div>
+</ng-template>
+<ng-template #pdfViewModalForOhysician>
+  <div class="Pdf_modal">
+    <iframe width="100%" height="800" [src]="physicianAssPDFURL" frameborder="0" allowfullscreen></iframe>
+    <div class="bottom">
+      <button (click)="copyReleaseFormForPhysician()">Copy</button>
+      <button (click)="updateForm(false)">Close</button>
+    </div>
+  </div>  
+</ng-template>
+<diagnosis-history-popup #diagnosisHistory
+  (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)"
+  (onAttachmentClose)="onOpenAttachment($event)" (onInPatientAttachmentClose)="onInPatientAttachment($event)"  (onCorrespondeClose)="onInPatientCorrespondence($event)" (onReleseCloseInPatient)="FormOpenInPatient($event)"></diagnosis-history-popup>
+
+  <ng-template #cvisAttachmentmodal>
+    <div class="modal-body">
+      <div class="main-white-boxes">
+        <div class="attachment-main-new">
+          <h4 class="top-head-h4">CVIS Attachments</h4>
+        </div>
+        <form [formGroup]="createCVISAttachmentForm"
+          >
+          <!-- <div class="attachment-main-new">
+            <div class="attachment">
+              <span> Attachment Type</span>
+              <ng-select placeholder="Search" formControlName="attachmentType"
+                style="font-size: 12px; width: 65%;" [ngClass]="{'error-border': createAttachmentForm.get('attachmentType')?.hasError('required') && (createAttachmentForm.get('attachmentType')?.touched || createAttachmentForm.get('attachmentType')?.dirty)}">
+                <ng-option *ngFor="let item of attachmentList" [value]="item.Id">
+                  {{ item.Descr }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div> -->
+          <div class="attachment-main-new upload-box">
+            <span class="top-head-new"> Upload Attachment</span>
+            <div class="d-flex"
+              style="align-items: center;justify-content: space-between;">
+              <div class="attachment position-relative">
+                <input type="file" id="docpicker" style="display: none;"
+                  formControlName="attachmentFile"
+                  accept="image/png, image/gif, image/jpeg, application/pdf"
+                  (change)="handleFileChange($event)" >
+                <label id="myfile" class="w-100 pl-2 m-0" >
+                  <label for="docpicker" class="choose-filebut"
+                    *ngIf="!this.file"
+                    [ngClass]="{'error-border': createCVISAttachmentForm.get('attachmentFile')?.hasError('required') && (createCVISAttachmentForm.get('attachmentFile')?.touched || createCVISAttachmentForm.get('attachmentFile')?.dirty)}">
+                    Choose file
+                  </label>
+                  <div
+                    class="choose-filename d-flex justify-content-between align-items-center"
+                    *ngIf="this.file">
+                    <div title="{{filename}}">{{filename}}</div>
+                    <img src="./assets/img/close.png" title="remove"
+                      class="cursor-pointer" *ngIf="this.file"
+                      (click)="removeFile(); createCVISAttachmentForm.get('attachmentFile').markAsTouched()"  height="13" />
+                  </div>
+                </label>
+                <div class="attachment-btn d-flex position-absolute" >
+                  <button class="border-0 px-1 fs-6"
+                    (click)="onFileSelected(documentUrlpdf)" title="view"
+                    *ngIf="this.file"><img style="filter: grayscale(1);"
+                      src="./assets/img/eye-icon.svg" /></button>
+                </div>
+              </div>
+  
+              <div class="btns-save-cancel">
+                <button class="btn-save me-1" (click)="createCVISAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
+                <button class="btn-save" (click)="resetCVISAttachment()">
+                  Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #attachmentmodal>
+    <div class="modal-body">
+      <div class="main-white-boxes">
+        <div class="attachment-main-new">
+          <h4 class="top-head-h4">Attachments</h4>
+        </div>
+        <form [formGroup]="createAttachmentForm"
+          >
+          <div class="attachment-main-new">
+            <div class="attachment">
+              <span> Attachment Type</span>
+              <ng-select placeholder="Search" formControlName="attachmentType"
+                style="font-size: 12px; width: 65%;" [ngClass]="{'error-border': createAttachmentForm.get('attachmentType')?.hasError('required') && (createAttachmentForm.get('attachmentType')?.touched || createAttachmentForm.get('attachmentType')?.dirty)}">
+                <ng-option *ngFor="let item of attachmentList" [value]="item.Id">
+                  {{ item.Descr }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="attachment-main-new upload-box">
+            <span class="top-head-new"> Upload Attachment</span>
+            <div class="d-flex"
+              style="align-items: center;justify-content: space-between;">
+              <div class="attachment position-relative">
+                <input type="file" id="docpicker" style="display: none;"
+                  formControlName="attachmentFile"
+                  accept="image/png, image/gif, image/jpeg, application/pdf"
+                  (change)="handleFileChange($event)" >
+                <label id="myfile" class="w-100 pl-2 m-0" >
+                  <label for="docpicker" class="choose-filebut"
+                    *ngIf="!this.file"
+                    [ngClass]="{'error-border': createAttachmentForm.get('attachmentFile')?.hasError('required') && (createAttachmentForm.get('attachmentFile')?.touched || createAttachmentForm.get('attachmentFile')?.dirty)}">
+                    Choose file
+                  </label>
+                  <div
+                    class="choose-filename d-flex justify-content-between align-items-center"
+                    *ngIf="this.file">
+                    <div title="{{filename}}">{{filename}}</div>
+                    <img src="./assets/img/close.png" title="remove"
+                      class="cursor-pointer" *ngIf="this.file"
+                      (click)="removeFile(); createAttachmentForm.get('attachmentFile').markAsTouched()"  height="13" />
+                  </div>
+                </label>
+                <div class="attachment-btn d-flex position-absolute" >
+                  <button class="border-0 px-1 fs-6"
+                    (click)="onFileSelected(documentUrlpdf)" title="view"
+                    *ngIf="this.file"><img style="filter: grayscale(1);"
+                      src="./assets/img/eye-icon.svg" /></button>
+                </div>
+              </div>
+  
+              <div class="btns-save-cancel">
+                <button class="btn-save me-1" (click)="createAttachmentDoc(); createAttachmentForm.markAllAsTouched()" type="submit">Save</button>
+                <button class="btn-save" (click)="resetAttachment()">
+                  Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #PhysicianAssessment>
+    <div class="main_soap">
+      <div class="head physician-head">
+        <div>
+          Physician Assessment
+        </div>
+        <div class="bottom physician-ass">
+          <button type="button" (click)="savePhysicianAssessmentForm('add')">Save</button>
+          <button type="button" (click)="savePhysicianAssessmentForm('release')">Release</button>
+          <!-- <button type="button" *ngIf="isDelete" (click)="savePhysicianAssessmentForm('delete')">Delete</button> -->
+          <button type="button"(click)="updateForm(false)">Close</button>
+        </div>
+      </div>
+      <div class="details">
+        <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-physician-form>
+      </div>
+        <div class="bottom">
+         
+        </div>
+      </div>
+  </ng-template>
+
+ 

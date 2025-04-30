@@ -88,6 +88,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   defaultSelectedDateRange: any[] = [];
   assignUsersList: any;
   allStatus = [];
+  wardListWithout = [];
+  roomListWithoutCon = [];
   allFinancialCategory = [];
   phyOrder = 0;
   Medicationcount = 0;
@@ -239,10 +241,14 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Rooms: [''],
       Physician: [''],
       ItemStatus: [''],
+      FWard: [''],
+      RoomidText: ['']
     });
     this.filterFormPatientWithNoConsumable = this.formBuilder.group({
       Status: [''],
       FCategory: [''],
+      FWard: [''],
+      RoomidText: ['']
     });
     this.filterFormNoReleased = this.formBuilder.group({
       FWard: [''],
@@ -266,6 +272,18 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
             if (data.value?.filterStatusList) {
               this.allStatus = [];
               this.allStatus = data.value.filterStatusList.map((status) => ({
+                Status: status,
+              }));
+            }
+            if (data.value?.filterWardList) {
+              this.wardListWithout = [];
+              this.wardListWithout = data.value.filterWardList.map((status) => ({
+                Status: status,
+              }));
+            }
+            if (data.value?.filterRoomList) {
+              this.roomListWithoutCon = [];
+              this.roomListWithoutCon = data.value.filterRoomList.map((status) => ({
                 Status: status,
               }));
             }
@@ -981,6 +999,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Rooms: '',
       Physician: '',
       ItemStatus: '',
+       FWard: '',
+      RoomidText: ''
     });
     this.form.patchValue({
       admittedFrom: '',
@@ -1001,6 +1021,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.filterFormPatientWithNoConsumable.patchValue({
       Status: '',
       FCategory: '',
+      FWard: '',
+      RoomidText: ''
     });
     this.filterFormNoReleased.patchValue({
       FWard: '',

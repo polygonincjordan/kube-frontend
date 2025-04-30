@@ -34,7 +34,7 @@
                 <img src="assets/img/edit-ekardex.png" class="mw-15" />
               </span>
               <span (click)="openNewForm('MedicalReport')" [title]="'Medical Report'">
-                <img src="assets/img/edit-ekardex.png" class="mw-15" />
+                <img src="assets/img/medical_report_ekardex.png" class="mw-15" />
               </span>
               <span (click)="openPhysicianAssessment(PhysicianAssessment)" [title]="'Create Physician Assessment'">
                 <img src="assets/img/physician-assessment.png" class="mw-15" />
@@ -137,7 +137,7 @@
             </div>
               <div class="bottom">
                 <button type="button" (click)="selectedPatient ? updateMedicalReport() : saveMedicalReport()">Save</button>
-                <button (click)="releaseMedicalReport()">Release</button>
+                <button (click)="releaseMedicalReport()" *ngIf="selectedPatient?.DokstText == 'In Work'">Release</button>
                 <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
                 <button (click)="updateForm(false)">Close</button>
               </div>

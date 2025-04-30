@@ -1,0 +1,54 @@
+<div class="container-fluid d-flex">
+  <div class="card w-100">
+    <div class="card-body" style="padding: 0 16px 16px 16px">
+      <div class="row medicationRow">
+        <div class="col-lg-12 col-md-6 col-sm-12" style="overflow: auto;
+          max-height: 61vh">
+          <table class="table table-bordered">
+            <thead style="background: #0082c8 !important; color:
+              white;position: sticky;
+              top: 0;z-index: 99;">
+              <tr>
+                <th scope="col" class="w-8">MRN</th>
+                <th scope="col" class="w-8">Patient</th>
+                <th scope="col" class="w-14">Ward</th>
+                <th scope="col" class="w-10">Room/Bad</th>
+                <th scope="col" class="w-10">Attending Physician</th>
+                <th scope="col" class="w-10">Specialty</th>
+              </tr>
+            </thead>
+            <tbody class="medicationList">
+              <tr class="highlightPatient" *ngFor="let item of listItem | filter
+                : searchString"
+                (click)="this.missedMedicationService.onTodayEMAREventData(item)"[ngClass]="!!this.missedMedicationService.parameters && this.missedMedicationService.parameters && this.missedMedicationService.parameters.Falnr
+                === item.Falnr ? 'active-case': ''">
+                <td
+                  [ngClass]="{}">{{item?.Mrn }}</td>
+
+                <td class="set-width-3"
+                  [ngClass]="{}">{{item?.PatientName }}</td>
+
+                <td>{{ item?.Floor }}</td>
+
+                <td>{{ item?.RoomidText }}</td>
+
+                <td>{{ item?.AttendingDoctorName }}</td>
+
+                <td>{{ item?.DeptouDesc}}</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="this.missedMedicationService.missedMedicationList &&
+    (this.missedMedicationService.missedMedicationList.medicationData &&
+    this.missedMedicationService.missedMedicationList.medicationData.length)">
+    <div class="w-100">
+      <in-patient-medication-event
+        [medicationData]="this.missedMedicationService.missedMedicationList"></in-patient-medication-event>
+    </div>
+  </ng-container>
+</div>

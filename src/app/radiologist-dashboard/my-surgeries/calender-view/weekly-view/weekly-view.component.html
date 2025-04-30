@@ -1,0 +1,103 @@
+<div class="subg-color mt-3">
+  <h6 class="m-0 p-3 ml-4 Month-font" *ngIf="isSelected">{{ currentMonthYear }}</h6>
+  <div class="su-table ml-4 mr-4">
+    <div
+      class="d-flex c-pointer justify-content-center align-items-center su-imager my-left-position"
+      (click)="previousDays()"
+    >
+      <img class="" src="assets/img/prev-arrow.svg" alt="" />
+    </div>
+    <div class="m-0 heading-border">
+      <div class="d-flex row overflow-data">
+        <div id="weekly-calendar-table"
+          *ngFor="let element of days"
+          [ngClass]="(currentDate | date: 'yyyy-mm-dd') === (element.date | date: 'yyyy-mm-dd') ? 'active' : ''"
+          class="col header-width p-0">
+          <div class="p-2 week-position su-thead-color">
+            <div
+              class="heading-title su-border d-flex flex-wrap justify-content-center align-content-center">
+              <h3 class="text-center font-h3 w-100 m-0">
+                {{ element.day }}
+              </h3>
+              <h3 class="text-center font-h3 w-100 m-0">
+                {{ element.dayName }}
+              </h3>
+            </div>
+          </div>
+          <div class="heading-item mt-2 mb-2">
+            <div
+              *ngFor="let item of element.events"
+              [ngClass]="item.Color"
+              class="heading-dayitems">
+              <div class="p-2 had-word" [popover]="today" [outsideClick]="true"
+              [popoverContext]="{ item: item }" style="cursor: pointer;">
+                <div class="m-0 font-weight-bold font-event had-white-space">
+                  {{ item.Nname }}-{{item.Vname}}
+                </div>
+                <p class="m-0 font-weight-bold font-su had-white-space">
+                  {{ item.SurgSrvDescr }}
+                </p>
+                <p class="m-0 font-weight-bold font-su had-white-space">
+                  {{ item.ZimmrPtlocTxt }}
+                </p>
+                <p class="m-0 had-white-space">
+                  {{ item.Fromdatetime | date : "hh:mm a" }} -
+                  {{ item.Todatetime | date : "hh:mm a" }}
+                </p>
+              </div>
+            </div>
+            <div
+              *ngIf="element.events && element.events.length === 0"
+              class="no-events d-flex justify-content-center align-items-center not-brder font-weight-bold h-100">
+              Not Available
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="d-flex c-pointer justify-content-center align-items-center su-imager my-right-position"
+      (click)="nextDays()">
+      <img src="assets/img/next-arrow.svg" alt="" />
+    </div>
+  </div>
+</div>
+<ng-template #today let-item="item" class="w-100">
+  <div class="template-text-hide">
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Time :</div>
+      <p class="p-0 m-0 pl-2 color-font">
+        {{ item.Fromdatetime | date : "hh:mm a" }} -
+        {{ item.Todatetime | date : "hh:mm a" }}
+      </p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">MRN :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Patnr }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Full Name :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Nname }}-{{ item.Vname }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Age :</div>
+       <p class="p-0 m-0 pl-2 color-font">{{ item.Age }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Gender :</div>
+       <p class="p-0 m-0 pl-2 color-font">{{ item.Gender }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Surgery Name :</div>
+       <p class="p-0 m-0 pl-2 color-font">{{ item.SurgSrvDescr }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Room :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Baukb }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Assistant Surgeon :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.SurgassistRespNam }}</p>
+    </div>
+  </div>
+</ng-template>

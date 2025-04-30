@@ -11,7 +11,9 @@
             <th scope="col" style="padding-left: 11px;">Patient Name <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatientName()"></i></th>
             <th scope="col" style="padding-left: 0px;">MRN</th>
             <th scope="col" style="padding-left: 0px;">Case #</th>
+            <th scope="col" style="padding-left: 0px;">Ward</th>
             <th scope="col" style="padding-left: 0px;">Room</th>
+            <th scope="col" style="padding-left: 0px;">Bed</th>
             <th scope="col" style="padding-left: 0px;">Order Description</th>
             <th scope="col" style="padding-left: 0px;">
               Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
@@ -41,7 +43,13 @@
               {{ item.Falnr }}
             </td>
             <td scope="row" class="border-top-none">
+              {{ item.Floor }}
+            </td>
+            <td scope="row" class="border-top-none">
               {{ item.RoomidText }}
+            </td>
+            <td scope="row" class="border-top-none">
+              {{ item.BedidText }}
             </td>
             <td scope="row" class="border-top-none" style="padding-left: 1px;">
               {{ item.Leitx }}

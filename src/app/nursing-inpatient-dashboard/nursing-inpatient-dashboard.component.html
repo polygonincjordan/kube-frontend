@@ -627,7 +627,7 @@
           </ng-option>
         </ng-select>
 
-        <p style="margin: auto; margin-top: 5px">Physician</p>
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
         <ng-select
           class=""
           id="inputGroupSelect01"
@@ -639,17 +639,32 @@
             {{ item }}
           </ng-option>
         </ng-select>
-        <p style="margin: auto; margin-top: 5px">Order Status</p>
-        <ng-select
-          class=""
-          id="inputGroupSelect01"
-          formControlName="ItemStatus"
-        >
-          <ng-option value="">Choose</ng-option>
-          <ng-option [value]="item" *ngFor="let item of filterStatusList">
-            {{ item }}</ng-option
+        <div>
+          <p style="margin: auto; margin-top: 5px">Ward</p>
+          <ng-select
+            class=""
+            id="inputGroupSelect01"
+            formControlName="FWard"
+            [multiple]="true"
           >
-        </ng-select>
+            <ng-option [value]="item.Status" *ngFor="let item of wardListWithout">
+              {{ item.Status }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div>
+          <p style="margin: auto; margin-top: 5px">Room</p>
+          <ng-select
+            class=""
+            id="inputGroupSelect01"
+            formControlName="RoomidText"
+            [multiple]="true"
+          >
+            <ng-option [value]="item.Status" *ngFor="let item of roomListWithoutCon">
+              {{ item.Status }}
+            </ng-option>
+          </ng-select>
+        </div>
         <!-- <p style="margin: auto; margin-top: 5px">Creation Date</p>
       <div class="date-function" style="background: #dee5ea;
 
@@ -1144,14 +1159,27 @@
           </ng-select>
         </div>
         <div>
-          <p style="margin: auto; margin-top: 5px">Status</p>
+          <p style="margin: auto; margin-top: 5px">Ward</p>
           <ng-select
             class=""
             id="inputGroupSelect01"
-            formControlName="Status"
+            formControlName="FWard"
             [multiple]="true"
           >
-            <ng-option [value]="item.Status" *ngFor="let item of allStatus">
+            <ng-option [value]="item.Status" *ngFor="let item of wardListWithout">
+              {{ item.Status }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div>
+          <p style="margin: auto; margin-top: 5px">Room</p>
+          <ng-select
+            class=""
+            id="inputGroupSelect01"
+            formControlName="RoomidText"
+            [multiple]="true"
+          >
+            <ng-option [value]="item.Status" *ngFor="let item of roomListWithoutCon">
               {{ item.Status }}
             </ng-option>
           </ng-select>

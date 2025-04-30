@@ -22,7 +22,9 @@
               <th scope="col" style="padding-left: 0px;">MRN</th>
               <th scope="col" style="padding-left: 0px;">Case #</th>
               <th scope="col">DOB</th>
+              <th scope="col" style="padding-left: 0px;">Ward</th>
               <th scope="col" style="padding-left: 0px;">Room</th>
+              <th scope="col" style="padding-left: 0px;">Bed</th>
               <th scope="col" style="padding-left: 0px;">Allergy</th>
               <th scope="col" style="padding-left: 0px;">Diagnosis</th>
               <th scope="col" style="padding-left: 0px;">Attending Physician</th>
@@ -38,8 +40,14 @@
               <td class="border-top-none patient" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
                 {{ getDate(item.PatientDob) | date : 'dd.MM.y' }}
               </td>
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Floor">
+                {{ item?.Floor }}
+              </td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.RoomidText">
                 {{ item?.RoomidText }}
+              </td>
+              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.BedidText">
+                {{ item?.BedidText }}
               </td>
               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Allergies">
                 {{ item?.Allergies }}

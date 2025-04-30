@@ -30,6 +30,21 @@ export const rootRoutes: Routes = [
       import('../e-emr/e-emr.module').then((m) => m.EmrModule),
   },
   {
+    path: 'radiologist',
+    component: RootComponent,
+    // canActivate: [AuthEMRGuard],
+    loadChildren: () =>
+      import('../radiologist-dashboard/radiologist-dashboard.module').then((m) => m.RadiologistDashboardModule),
+  },
+  {
+    path: 'radiologist-ekardex',
+    // canActivate: [AuthGuard],
+    component: RootComponent,
+    loadChildren: () =>
+      import('../radiologist-ekardex/radiologist-ekardex.module').then((m) => m.RadiologistEkardexModule),
+  },
+  
+  {
     path: 'e-order',
     canActivate: [AuthGuard],
     component: RootComponent,

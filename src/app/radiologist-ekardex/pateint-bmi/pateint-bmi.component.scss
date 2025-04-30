@@ -1,0 +1,38 @@
+.font-bold {
+  font-weight: 700;
+}
+
+.text-tiny-x7 {
+  font-size: 0.75rem;
+}
+
+.text-tiny-x6 {
+  font-size: 0.6rem;
+}
+
+.justify-content-between {
+  justify-content: space-evenly !important;
+}
+
+.bg-changing {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+  padding: 10px !important;
+  border-radius: 4px;
+}
+
+.e-kardex-header-left {
+  @media (max-width: 1200px) {
+    margin: 10px auto;
+  }
+  .card {
+    min-width: fit-content;
+    .bg-changing {
+      @media (max-width: 1200px) {
+        padding: 4px !important;
+      }
+    }
+  }
+}
