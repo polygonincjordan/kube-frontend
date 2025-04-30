@@ -14,7 +14,7 @@ import { SharedService } from '@services/shared.service';
   styleUrls: ['./icu-hours-flowsheet.component.scss']
 })
 export class IcuHoursFlowsheetComponent implements OnInit {
-
+  public CurrentDateAndTime: Date = new Date();
   @ViewChild('scalesGlosgow') scalesGlosgow: GlosGowCommaScalePopupComponent;
   @ViewChild('morseFallScale') morseFallScale: MorseFallScaleComponent;
   @ViewChild('bradenScaleTemp') bradenScaleTemp: BradenScaleComponent;
@@ -291,6 +291,7 @@ export class IcuHoursFlowsheetComponent implements OnInit {
       value: '1',
     }
   ];
+  isNoLabApplicable: boolean = false;
   restraintsList = [1,2,3,4,5];
   pressuerList = [1,2,3];
   pressuerCoreList = [1,2,3];
@@ -330,6 +331,7 @@ export class IcuHoursFlowsheetComponent implements OnInit {
     { code: 'B002', admission: true, discharge: false, working: true, preop: false, surgery: true, cause: false, department: true, hospital: false },
     { code: 'C003', admission: false, discharge: true, working: false, preop: true, surgery: false, cause: true, department: false, hospital: true },
     { code: 'C004', admission: false, discharge: true, working: false, preop: true, surgery: false, cause: true, department: false, hospital: true },
+    { code: 'C005', admission: false, discharge: true, working: false, preop: true, surgery: false, cause: true, department: false, hospital: true },
   ];
 
   addRow() {
