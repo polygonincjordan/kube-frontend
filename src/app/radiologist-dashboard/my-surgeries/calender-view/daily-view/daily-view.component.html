@@ -1,0 +1,207 @@
+<div class="subg-color mt-3 h-auto">
+  <div class="p-3">
+    <div>
+      <div class="m-0">
+        <div class="p-0 day-border-color h-auto">
+          <div class="suday-color row time-padding">
+            <div class="col-1 time-border">
+              <h6 class="m-0 p-0 ml-2 text-center font-weight-bolder">Time</h6>
+              <!-- <hr class="p-0 ml-3 m-0 hr-color" /> -->
+            </div>
+            <ng-container *ngIf="days || days.length">
+              <div *ngFor="let element of days" class="col-11">
+                <div
+                  class="d-flex w-100 justify-content-between align-items-center"
+                >
+                  <div
+                    class="d-flex c-pointer justify-content-center align-items-center su-imager"
+                    (click)="previousDays()"
+                  >
+                    <img class="" src="assets/img/prev-arrow.svg" alt="" />
+                  </div>
+                  <div class="w-100 text-center">
+                    <div class="p-0 font-weight-bold day-font">
+                      <!-- <button id="calendarIcon" (click)="toggleCalendar()">📅</button>
+                <div id="calendar" [style.display]="calendarVisible ? 'block' : 'none'">
+                  Calendar Content
+                </div> -->
+                <div style="display: flex;
+                justify-content: center;
+                align-items: center;">
+                  <input
+                    [(ngModel)]="element.fulldayFormat"
+                    class="form-control"
+                    type="text"
+                    placeholder=""
+                    [minDate]=""
+                    #dp="bsDatepicker"
+                    bsDatepicker
+                    (ngModelChange)="selectPickDate($event)"
+                    [bsConfig]="{
+                      showWeekNumbers: false,
+                      dateInputFormat: 'DD MMM, YYYY'
+                    }"
+                  style="width: 12%;
+                  border: none;
+                  background: #edf6fd;
+                  font-weight: bold;
+                  font-size: 20px;"> |
+                  {{formatDateWithWeekday(element.date)}}
+                </div>
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex c-pointer justify-content-center align-items-center su-imager mr-2"
+                    (click)="nextDays()"
+                  >
+                    <img src="assets/img/next-arrow.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="overflow-auto auto-height">
+            <div class="Color-ovoverflow">
+              <div *ngFor="let element of Time">
+                <div class="d-flex flex-wrap">
+                  <h6
+                    class="m-0 col-1 text-center d-flex justify-content-center align-items-center"
+                  >
+                    <div
+                      class="p-2 ml-2 font-weight-bold Time-color"
+                      *ngIf="element.Minutes === '00'"
+                      class="m-0"
+                    >
+                      <!-- <hr class="hr-position"> -->
+                      {{ element.ConvertedTime }}
+                    </div>
+                  </h6>
+                  <div style="cursor: pointer;"
+                    class="col-11 position-relative item-radius"
+                    [ngClass]="element.Minutes === '00' ? 'Time-color' : ''"
+                  >
+                    <div
+                      class="Color-position c-pointer flex-wrap"
+                      *ngFor="let item of element.events"
+                      [ngClass]="item.Color"
+                      [popover]="today"
+                      [popoverContext]="{ item: item }"
+                      placement="bottom"
+                      [outsideClick]="true"
+                      [adaptivePosition]="true"
+                    >
+                      <div
+                        class="c-pointer d-flex justify-content-between align-items-center p-2"
+                      >
+                        <div>
+                          <p class="m-0 item-font">
+                            {{ item.Nname }}-{{ item.Vname }}
+                          </p>
+                          <p class="m-0 item-font-color">
+                            {{ item.SurgSrvDescr }}
+                          </p>
+                        </div>
+                        <p class="m-0 item-p">
+                          {{ item.Fromdatetime | date : "hh:mm a" }} -
+                          {{ item.Todatetime | date : "hh:mm a" }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="w-100">
+              <div class="mt-2 mb-2 day-height">
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #today let-item="item" class="w-100">
+  <div class="template-text-hide">
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Time :</div>
+      <p class="p-0 m-0 pl-2 color-font">
+        {{ item.Fromdatetime | date : "hh:mm a" }} -
+        {{ item.Todatetime | date : "hh:mm a" }}
+      </p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">MRN :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Patnr }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Full Name :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Nname }}-{{ item.Vname }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Room :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Baukb }}</p>
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Age :</div>
+      <!-- <p class="p-0 m-0 pl-2 color-font">{{ item.Nname }}</p> -->
+    </div>
+    <div class="d-flex mb-2">
+      <div class="font-weight-bold">Assistant Surgeon :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.SurgassistRespNam }}</p>
+    </div>
+    <!-- <div class="d-flex mb-2">
+      <div class="font-weight-bold">Operation Name :</div>
+      <p class="p-0 m-0 pl-2 color-font">{{ item.Nname }}</p>
+    </div> -->
+  </div>
+</ng-template>
+
+<!-- <div class="Color-ovoverflow">
+    <div class=" position-relative " *ngFor="let item of Time">
+         <h6 *ngIf="item.Minutes === '00'" class="">
+          <div class="p-2 ml-2 font-weight-bold Time-color">
+            <hr class="hr-color">
+            {{ item.ConvertedTime }}
+          </div>
+          </h6>
+       <div class="Color-position c-pointer" *ngFor="let item of item.events" [ngClass]="item.Color" [popover]="today" [popoverContext]="{item: item}"  placement="bottom">
+          <div class=" c-pointer d-flex justify-content-between align-items-center p-2">
+              <div>
+                <p class="m-0  item-font">{{ item.Nname }}</p>
+                <p class="m-0 item-font-color">{{ item.SurgSrvDescr }}</p>
+              </div>
+               <p class="m-0 item-p">08:00pm-09:00Pm</p>
+          </div>
+        </div>
+    </div>
+    <div class="w-100">
+    <div class="mt-2 mb-2 day-height">
+    </div>
+  </div>
+</div> -->
+
+<!--
+<div
+              *ngFor="let element of days"
+              class="d-flex p-3 w-100 justify-content-between align-items-center"
+            >
+              <div
+                class="d-flex c-pointer justify-content-center align-items-center su-imager"
+                (click)="previousDays()"
+              >
+                <img class="" src="assets/img/prev-arrow.svg" alt="" />
+              </div>
+              <div class="w-100 text-center">
+                <div class="p-0 font-weight-bold day-font">
+                  {{ element.fulldayFormat }}
+                </div>
+              </div>
+              <div
+                class="d-flex c-pointer justify-content-center align-items-center su-imager mr-2"
+                (click)="nextDays()"
+              >
+                <img src="assets/img/next-arrow.svg" alt="" />
+              </div>
+            </div> -->

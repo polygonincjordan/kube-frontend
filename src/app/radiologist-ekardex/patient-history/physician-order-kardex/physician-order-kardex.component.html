@@ -1,0 +1,35 @@
+<ng-template #physicianOrderKardexModal>
+  <div class="modal-body" style="padding: 0 !important;">
+    <div class="allergy-header">
+      <div style="
+        font-size: 23px;
+        font-weight: bold">
+        <span>Physician Orders</span>
+        </div>
+        <div style="display: flex;
+      justify-content: end;align-items: center;flex:1">
+      <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{storageService.patientData.name}}</span></li><li  class="allergy-header-item">MRN: {{storageService.patnr}}</li>
+        <li  class="allergy-header-item">Admission date: {{storageService.patientData.periodStart | date : "dd.MM.y"}}</li>
+      <li  class="close-icon allergy-header-item" style="border: none;
+        padding: 0;
+        margin: 0;flex:1"><img  src="assets/img/CloseTab.svg" class="img-size" style="width: 35px;float:right" (click)="modalRef.hide()"></li></ul>
+      </div>
+        </div>
+    <app-physician-orders
+          [occupationalGroupData]="occupationalGroupData"
+          (onSetDateFilterEvent)="phyOrderFilterList($event)"
+          (onSearchChangEvent)="onSearchChange($event)"
+        ></app-physician-orders>
+        <div
+        class="order-templete-main mt-3"
+        *ngIf="this.emergencyService.PhysicianOrders"
+        style="padding: 10px !important;"
+      >
+        <app-orders-templates
+          (reloadPhyOrderList)="reloadPhyOrderListEvent($event)"
+          [searchString]="searchString"
+          [physicianOrderList]="physicianOrderList"
+        ></app-orders-templates>
+      </div>
+  </div>
+</ng-template>

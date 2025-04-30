@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="card" style="margin-top: 15px">
+        <div class="card-body" style="padding: 16px 16px 16px 16px;">
+            <div class="table-header">
+                <span style="margin-left: 11px">Patients lisst
+                    <!-- <span style="font-size: 15px">{{ showModuleName }}</span> -->
+                </span>
+            </div>
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa
+                fa-search" aria-hidden="true"></i></span>
+                </div>
+                <input type="text" [(ngModel)]="searchString" class="form-control" placeholder="Search..."
+                    aria-label="Username" aria-describedby="basic-addon1" />
+            </div>
+            <app-main-hospitalist-list-view [searchString]="searchString" [listItem]="inHospitalistList"
+                [listType]="navTabBoxActiveValue" (reloadTableData)="reloadTable($event)"
+                [showColumnsListView]="showColumnsListView" (openModuleKardex)="redirectToeKardex($event)"
+                (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'patient-treatment')"
+                (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'discharge-process')"
+                (onClickBox)="onClickNavTabBox('07')" style="width: 100%; margin-right: 6px">
+            </app-main-hospitalist-list-view>
+
+        </div>
+    </div>
+</div>
+<!-- modal -->

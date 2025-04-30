@@ -1,0 +1,477 @@
+.e-hospi-home-table td {
+  // border: 1px solid black;
+  // min-width: 102px;
+  max-width: 267px !important;
+  overflow: hidden;
+
+  .allergy {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .dropup,
+  .dropright,
+  .dropdown,
+  .dropleft {
+    position: inherit;
+  }
+}
+
+.main-hospital-home {
+  overflow: auto;
+  max-height: 63vh;
+  // margin: 0px 6px;
+  width: 100%;
+
+  // .table {
+  //   tr {
+  //     border-bottom: 1px solid rgba(240, 242, 244, 1);
+  //     height: 50px;
+  //   }
+
+  //   thead {
+  //     background-color: #ebf5ff;
+  //     cursor: pointer;
+  //   }
+
+  //   thead,
+  //   th {
+  //     // background-color: #ebf5ff;
+  //     // position: sticky;
+  //     // top: 0;
+  //     // z-index: 1;
+
+
+  //     .sort-icon {
+  //       color: #0056b0;
+  //       // font-size: 10px;
+  //       // padding: 0px 3px;
+  //     }
+  //   }
+
+  //   tr th {
+  //     text-wrap: nowrap;
+  //     // font-size: 14px;
+  //     // font-weight: 900;
+  //     text-align: left;
+  //   }
+
+  //   .tbody {
+  //     background-color: white;
+
+
+  //   }
+
+  //   tr th,
+  //   tr td {
+  //     text-wrap: nowrap;
+  //     padding: 15px; // Adjust the padding as needed
+  //     text-align: left;
+  //   }
+
+  //   tr td:last-child {
+  //     text-align: center;
+  //     /* Example style */
+  //   }
+  // }
+
+  table {
+    table-layout: auto;
+
+    thead {
+      background: #EBF5FF;
+      position: sticky;
+      font-weight: 900;
+      color: #0056B0;
+      top: 0;
+      z-index: 3;
+      cursor: pointer;
+
+      tr {
+        th {
+          text-align: left;
+          text-wrap: nowrap;
+
+          &:first-child {
+            border-top-left-radius: 10px;
+          }
+
+          &:nth-child(1) {
+            position: sticky;
+            left: 0px; // Fix the first column header to the left
+            z-index: 3; // Ensure the first column is above other headers
+            background: #EBF5FF; // Match the background to prevent overlap issues
+          }
+
+          &:nth-child(2) {
+            position: sticky;
+            left: 95px; // Adjust based on the width of the first column
+            z-index: 3;
+            background: #EBF5FF;
+          }
+
+          &:nth-child(3) {
+            position: sticky;
+            left: 340px; // Adjust based on the cumulative width of the first two columns
+            z-index: 3;
+            background: #EBF5FF;
+          }
+
+          &:nth-child(4) {
+            position: sticky;
+            left: 450px; // Adjust based on the cumulative width of the first two columns
+            z-index: 3;
+            background: #EBF5FF;
+          }
+
+
+          // &:last-child {
+          //   border-top-right-radius: 10px;
+          //   position: sticky;
+          //   right: 0; // Adjust based on the cumulative width of the first two columns
+          //   z-index: 3;
+          //   background: #EBF5FF;
+          // }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border: 1px solid #dee2e6;
+        text-wrap: nowrap;
+        td {
+          vertical-align: middle;
+
+          &:nth-child(1) {
+            position: sticky;
+            left: 0; // Fix the first column rows to the left
+            background: #FFFFFF; // Ensure no content overlaps
+            z-index: 2;
+          }
+
+          &:nth-child(2) {
+            position: sticky;
+            left: 95px; // Match the width of the first column
+            background: #FFFFFF; // Ensure no content overlaps
+            z-index: 2;
+          }
+
+          &:nth-child(3) {
+            position: sticky;
+            left: 340px; // Match the cumulative width of the first two columns
+            background: #FFFFFF; // Ensure no content overlaps
+            z-index: 2;
+          }
+
+          &:nth-child(4) {
+            position: sticky;
+            left: 450px; // Match the cumulative width of the first two columns
+            background: #FFFFFF; // Ensure no content overlaps
+            z-index: 2;
+          }
+
+          // &:last-child {
+          //   position: sticky;
+          //   right: 0; // Match the cumulative width of the first two columns
+          //   background: #FFFFFF; // Ensure no content overlaps
+          //   z-index: 2;
+          //   text-align: right;
+          // }
+        }
+      }
+    }
+
+    // tr th,
+    // tr td {
+    //   text-wrap: nowrap;
+    //   padding: 15px; // Adjust the padding as needed
+    //   text-align: left;
+    // }
+  }
+
+  // thead tr>th {
+  //   text-align: center;
+  //   justify-content: center;
+  //   font-size: 14px;
+  //   background-color: #EBF5FF;
+  //   font-weight: 600;
+  //   color: #0056B0;
+  //   cursor: pointer;
+  //   position: sticky;
+  //   z-index: 2; // Keep the z-index for the table headers
+  //   top: 0;
+  // }
+
+  // thead tr> :first-child {
+  //   z-index: 3; // This will keep the last column on top
+  //   right: 0;
+  //   top: 0;
+  // }
+
+  // tbody tr> :first-child {
+  //   // background: #ffffff;
+  //   position: sticky;
+  //   // z-index: 3;
+  //   right: 0px;
+  //   padding: 10px;
+  // }
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+.custom-modal-header {
+  font-size: 22px;
+  color: #0056B0;
+  font-weight: bold;
+}
+
+.lab-text-overflow {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.description {
+
+  label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #7A7F84;
+  }
+}
+
+.footer {
+  .btn {
+    border-radius: 10px !important;
+    width: 110px;
+  }
+
+  .btn:hover {
+    color: unset;
+    background-color: unset;
+  }
+
+  .btn-primary {
+    background-color: #0056b0;
+  }
+
+  .btn-outline-primary {
+    border: 1px solid #0056B0;
+    background-color: white;
+  }
+}
+
+.swal-title-custom-success {
+  color: #2B7D2B;
+}
+
+::ng-deep .swal2-popup {
+  border-radius: 20px !important;
+  max-width: 450px !important;
+}
+
+.green-flag {
+  height: 32px;
+  width: 32px;
+  padding: 7px;
+  background-color: #f4f8f5;
+  border-radius: 10px;
+}
+
+.red-flag {
+  height: 32px;
+  width: 32px;
+  padding: 7px;
+  background-color: #f8f4f5;
+  border-radius: 10px;
+}
+
+.yellow-flag {
+  height: 32px;
+  width: 32px;
+  padding: 7px;
+  background-color: #f8f8f4;
+  border-radius: 10px;
+}
+
+.grey-flag {
+  height: 32px;
+  width: 32px;
+  padding: 7px;
+  background-color: rgba(171, 171, 171, 0.2);
+  border-radius: 10px;
+}
+
+.blue-flag {
+  height: 32px;
+  width: 32px;
+  padding: 7px;
+  background: rgba(0, 86, 176, 0.2);
+  border-radius: 10px;
+}
+
+.blank {
+  height: 32px;
+  width: 32px;
+}
+
+.set-width-3 {
+  width: 250px !important;
+  max-width: 250px !important;
+  min-width: 250px !important;
+}
+
+.table-row-width {
+  width: 170px !important;
+  max-width: 170px !important;
+  min-width: 170px !important;
+}
+
+.table-action-button {
+  background: #0056b0;
+  padding: 7px 15px;
+  border-radius: 5px;
+
+  i {
+    color: #FFF;
+  }
+}
+
+.arrow-color {
+  color: #0056b0;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+}
+
+
+.dropdown-menu {
+  // top: 10px !important;
+  // left: -55px !important;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 2px 25px rgba(0, 0, 0, 0.15);
+}
+
+.death-flag {
+  background-color: #DADADA !important;
+}
+
+// .dropdown-menu::before {
+//   content: "";
+//   position: absolute;
+//   border: 10px solid transparent;
+//   border-bottom-color: #fff;
+//   left: 83%;
+//   transform: translateX(-50%);
+//   top: -10px;
+//   margin: -10px 0 0;
+// }
+
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #0056b0;
+  color: #FFFFFF;
+  border-radius: 10px;
+}
+
+.minus-dropdown {
+  background-color: #0056b0;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+.box {
+  padding: 20px 20px;
+  border-radius: 12px;
+  height: 100%;
+  border: 1px solid #0056B026;
+
+  .box-title {
+    font-size: 14px;
+    color: #4F5153 !important;
+  }
+
+  .box-value {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+.card-header {
+  background-color: #d6eeff;
+  ;
+  border-radius: 10px;
+  margin-bottom: 7px;
+  font-size: 16px;
+  height: 80px;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.img-i {
+  display: flex;
+  justify-content: center;
+
+  .icon-bg {
+    width: 33px;
+    height: 33px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .info-icon-red,
+  .flag-icon-red,
+  .file-icon-red {
+    background: #fff4f4;
+
+    i {
+      color: #fb5050;
+    }
+  }
+
+  .info-icon-blue,
+  .flag-icon-blue,
+  .file-icon-blue {
+    background: #f2f6fb;
+
+    svg {
+      path {
+        fill: #0056b0;
+      }
+    }
+
+    i {
+      color: #0056b0;
+    }
+  }
+
+  .file-icon-orange {
+    background: #fcf7f0;
+  }
+
+  .flag-icon-green {
+    background: #f4f8f4;
+
+    svg {
+      path {
+        fill: #2b7d2b;
+      }
+    }
+
+    i {
+      color: #2b7d2b;
+    }
+  }
+}

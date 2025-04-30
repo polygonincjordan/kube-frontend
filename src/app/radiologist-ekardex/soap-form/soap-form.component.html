@@ -1,0 +1,152 @@
+<!-- SOAP doc modal------------------------ -->
+<ng-container *ngIf="soapDataType === 'OutPatient'">
+  <div class="main_soap">
+    <div class="head">SOAP Documents</div>
+    <div class="details">
+      <div>
+        <span class="label_box">Visit Date</span>
+        <input
+          type="text"
+          readonly
+          name=""
+          placeholder="dd.mm.yyyy"
+          [ngModel]="patientVisitData.VisitDate | date : 'dd.MM.yyyy'"
+          id=""
+        />
+        <input
+          type="date"
+          [ngModel]="patientVisitData.VisitDate | date : 'yyyy-MM-dd'"
+          (ngModelChange)="patientVisitData.VisitDate = $event"
+          name=""
+          id=""
+        />
+      </div>
+      <div class="d-flex mt-2 align-items-start">
+        <span class="label_box">Subjective</span>
+        <textarea
+          name=""
+          id=""
+          cols="48"
+          rows="3"
+          [(ngModel)]="patientVisitData.Subjective"
+        ></textarea>
+      </div>
+      <div class="d-flex mt-2 align-items-start">
+        <span class="label_box">Objective</span>
+        <textarea
+          name=""
+          id=""
+          cols="48"
+          [(ngModel)]="patientVisitData.Objective"
+          rows="3"
+        ></textarea>
+      </div>
+      <div class="d-flex mt-2 align-items-start">
+        <span class="label_box">Assesment</span>
+        <textarea
+          name=""
+          id=""
+          cols="48"
+          [(ngModel)]="patientVisitData.Assessment"
+          rows="3"
+        ></textarea>
+      </div>
+      <div class="d-flex mt-2 align-items-start">
+        <span class="label_box">Plan</span>
+        <textarea
+          name=""
+          id=""
+          cols="48"
+          [(ngModel)]="patientVisitData.Plann"
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+    <div class="bottom">
+      <button (click)="saveForm()" *ngIf="!isUpdate">Save</button>
+    <button (click)="updateSoapForm()" *ngIf="isUpdate">Save</button>
+      <button (click)="releaseForm()">Release</button>
+      <button *ngIf="!isCreateRequest && !isCopyRequest" (click)="deleteForm()">
+        Delete
+      </button>
+      <button (click)="updateForm(false)">Close</button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="soapDataType === 'InPatient'">
+  <!-- SOAP doc modal------------------------ -->
+<div class="main_soap">
+  <div class="head">SOAP Documents</div>
+  <div class="details">
+    <div>
+      <span class="label_box">Visit Date</span>
+      <input
+        type="text"
+        readonly
+        name=""
+        placeholder="dd.mm.yyyy"
+        [ngModel]="patientVisitData.VisitDate | date : 'dd.MM.yyyy'"
+        id=""
+      />
+      <input
+        type="date"
+        [ngModel]="patientVisitData.VisitDate | date : 'yyyy-MM-dd'"
+        (ngModelChange)="patientVisitData.VisitDate = $event"
+        name=""
+        id=""
+      />
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Subjective</span>
+      <textarea
+        name=""
+        id=""
+        cols="48"
+        rows="3"
+        [(ngModel)]="patientVisitData.Subjective"
+      ></textarea>
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Objective</span>
+      <textarea
+        name=""
+        id=""
+        cols="48"
+        [(ngModel)]="patientVisitData.Objective"
+        rows="3"
+      ></textarea>
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Assesment</span>
+      <textarea
+        name=""
+        id=""
+        cols="48"
+        [(ngModel)]="patientVisitData.Assessment"
+        rows="3"
+      ></textarea>
+    </div>
+    <div class="d-flex mt-2 align-items-start">
+      <span class="label_box">Plan</span>
+      <textarea
+        name=""
+        id=""
+        cols="48"
+        [(ngModel)]="patientVisitData.Plann"
+        rows="3"
+      ></textarea>
+    </div>
+  </div>
+  <div class="bottom">
+    <button (click)="saveForm()" *ngIf="!isUpdate">Save</button>
+    <button (click)="updateSoapForm()" *ngIf="isUpdate">Save</button>
+    <button (click)="releaseForm()">Release</button>
+    <button *ngIf="!isCreateRequest && !isCopyRequest" (click)="deleteForm()">
+      Delete
+    </button>
+    <button (click)="updateForm(false)">Close</button>
+  </div>
+</div>
+
+</ng-container>

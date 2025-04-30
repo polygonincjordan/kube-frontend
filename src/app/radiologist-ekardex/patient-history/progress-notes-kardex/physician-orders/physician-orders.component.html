@@ -1,0 +1,77 @@
+<div class="search-functionalitypl-0 mt-2" style="padding: 10px;">
+  <form action="" [formGroup]="formDetailGroup">
+    <div
+      class="tab-search-panel d-flex align-items-center justify-content-between" style="padding: 10px;
+      border: 5px solid #0082c8;"
+    >
+      <div class="w-100 d-flex align-items-center">
+        <div class="date-function mr-4" style="background: #dee5ea;
+        padding: 2px;
+        border-radius: 8px;
+        display: flex;
+        position: relative;">
+          <img src="assets/img/date-icon.svg" alt="" style="position: absolute;
+          top: 50%;
+          left: 20px;
+          transform: translateY(-50%);"/>
+          <input
+            #drp="bsDaterangepicker"
+            bsDaterangepicker
+            [bsConfig]="{
+              rangeInputFormat: 'DD.MM.YYYY',
+              dateInputFormat: 'DD.MM.YYYY',
+              containerClass: 'daterangepicker',
+              showWeekNumbers: false
+            }"
+            class="form-control"
+            formControlName="DateRange"
+            (ngModelChange)="onDateChange()"
+            style="    box-shadow: none;
+            border: none;
+            border-radius: 8px;
+            height: 38px;
+            padding: 5px 10px 5px 50px;
+            box-shadow: 0 0 5px 1px #0000001a;"
+          />
+          <p *ngIf="this.emergencyService.PhysicianOrders" class="m-0 d-flex h-100 align-items-center" (click)="allOrderRemoveDateFilter()">All Orders</p>
+          <p *ngIf="this.emergencyService.ProgressNotes" class="m-0 d-flex h-100 align-items-center" (click)="allOrderRemoveDateFilter()">All Notes</p>
+        </div>
+        <div class="search-functionality col-md-3 ml-3 pl-0">
+          <img src="assets/img/pres-search-icon.svg" alt="" style="position: absolute;
+          top: 50%;
+          left: 15px;
+          transform: translateY(-50%);"/>
+          <input
+            type="text"
+            (input)="onSearchChange($event)"
+            formControlName="SearchData"
+            placeholder="Search"
+            class="form-control w-100"
+            id="searchFilter"
+            style="height: 42px;
+            font: 600 14px/1.5 Nunito,sans-serif;
+            color: #848f96;
+            border-radius: 8px!important;
+            box-shadow: none;
+            padding: 10px 10px 10px 42px;"
+          />
+        </div>
+        <div class="select-functionality text-left">
+          <ng-select
+            [searchable]="true"
+            (ngModelChange)="onDateChange()"
+            formControlName="SelectDropdown"
+            placeholder="Occupational Group"
+          >
+            <ng-option
+              *ngFor="let data of occupationalGroupData"
+              [value]="data.Group"
+              >{{ data.Text }}</ng-option
+            >
+          </ng-select>
+        </div>
+      </div>
+      <i aria-hidden="true" class="fa fa-refresh refresh-icon cursor-pointer mr-3" (click)="resetFilter()"></i>
+    </div>
+  </form>
+</div>

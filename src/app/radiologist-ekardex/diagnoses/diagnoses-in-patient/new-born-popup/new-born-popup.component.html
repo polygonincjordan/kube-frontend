@@ -1,0 +1,18 @@
+
+<div class="main_soap">
+    <div class="head physician-head">
+      <div>
+        Newborn Physician Assessment 
+      </div>
+      <div class="bottom physician-ass">
+        <button type="button" (click)="saveNewBornDocument('1')">Save</button>
+        <button type="button" (click)="releaseNewborn('2')">Release</button>
+        <!-- <button type="button" *ngIf="isDelete" (click)="savePhysicianAssessmentForm('delete')">Delete</button> -->
+        <button type="button"(click)="activeModal.dismiss('Cross click')">Close</button>
+      </div>
+    </div>
+    <div class="details">
+      <app-newborn-assessment #newBornComp (successEvent)="reloadList($event)" ></app-newborn-assessment>
+    </div>
+</div>
+ 

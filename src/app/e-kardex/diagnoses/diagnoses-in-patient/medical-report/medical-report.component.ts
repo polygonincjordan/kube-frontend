@@ -51,21 +51,32 @@ export class MedicalReportComponent implements OnInit,OnChanges {
           }
         );
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes.soapFormEvent.currentValue == 'add') {
-      this.createMedDoc(false);
-    }
-    if(changes.soapFormEvent.currentValue == 'edit') {
-      this.updateMedDoc();
-    }
 
-    if(changes.soapFormEvent.currentValue == 'release') {
-      if(this.admissionService.isCloneMedicalDoc) {
-        this.createMedDoc(true)
-      } else {
-        this.releaseMedDoc()
-      }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // if(changes.soapFormEvent.currentValue == 'add') {
+    //   this.createMedDoc(false);
+    // }
+    // if(changes.soapFormEvent.currentValue == 'edit') {
+    //   this.updateMedDoc();
+    // }
+
+    // if(changes.soapFormEvent.currentValue == 'release') {
+    //   if(this.admissionService.isCloneMedicalDoc) {
+    //     this.createMedDoc(true)
+    //   } else {
+    //     this.releaseMedDoc()
+    //   }
+    // }
 
     if (this.admissionService.isEditMedicalDoc || this.admissionService.isCloneMedicalDoc) {
       // this.getMedReportData();

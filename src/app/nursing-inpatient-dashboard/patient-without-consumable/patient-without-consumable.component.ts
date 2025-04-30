@@ -23,6 +23,8 @@ export class PatientWithoutConsumableComponent implements OnInit {
   public filteredPatients: Array<PatientWithouConsumables> = [];
   public financialCategory: Array<any> = [];
   public statucList: Array<any> = [];
+  public wardList: Array<any> = [];
+  public roomList: Array<any> = [];
   public statusValueArr: Array<any> = [];
   public categoryValueArr: Array<any> = [];
 
@@ -67,12 +69,18 @@ export class PatientWithoutConsumableComponent implements OnInit {
           this.patientWithoutConsumableList.forEach((ele: any) => {
             this.financialCategory.push(ele?.FinancecategoryName);
             this.statucList.push(ele?.StatusText);
+            this.wardList.push(ele?.Floor);
+            this.roomList.push(ele?.BedidText);
           });
           this.financialCategory = Array.from(new Set(this.financialCategory.filter(category => category.trim() !== '')));
           this.statucList = Array.from(new Set(this.statucList.filter(category => category.trim() !== '')));
+          this.wardList = Array.from(new Set(this.wardList.filter(category => category.trim() !== '')));
+          this.roomList = Array.from(new Set(this.roomList.filter(category => category.trim() !== '')));
           const value = {
             filterCategoryList: this.financialCategory,
-            filterStatusList: this.statucList
+            filterStatusList: this.statucList,
+            filterRoomList: this.roomList,
+            filterWardList: this.wardList,
           };
           this.dataShareService.sendFilterType(FilterType.PatientWithNoConsumable$, true, value);
           this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
@@ -162,14 +170,15 @@ export class PatientWithoutConsumableComponent implements OnInit {
   public filterListData(event) {
    const statusFilter = event.Status;
    const fCategoryFilter = event.FCategory;
-   const room = event.Rooms
+   const room = event.RoomidText
    const Physician = event.Physician
    this.patientWithoutConsumableList = this.patientWithoutConsumableListClone.filter((item) => {
         const statusMatch = statusFilter ? item.StatusText.includes(statusFilter) : true;
         const physicianMatch = Physician ? item.PhysicianName.includes(Physician) : true;
+        const wardMatch = Physician ? item.PhysicianName.includes(Physician) : true;
         const roomMatch = room && room.length > 0 ? room.includes(item.RoomidText) : true;
         const fCategoryMatch = fCategoryFilter && fCategoryFilter.length > 0 ? fCategoryFilter.includes(item.FinancecategoryName) : true;
-        return statusMatch && fCategoryMatch && roomMatch && physicianMatch;
+        return statusMatch && fCategoryMatch && roomMatch && physicianMatch && wardMatch;
     });
   this.sendErPatientCount.emit(this.patientWithoutConsumableList.length);
   }

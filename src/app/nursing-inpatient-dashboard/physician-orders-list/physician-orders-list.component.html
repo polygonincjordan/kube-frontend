@@ -11,7 +11,9 @@
             <th scope="col" style="padding-left: 11px;">Patient Name</th>
             <th scope="col" style="padding-left: 0px;">MRN</th>
             <th scope="col" style="padding-left: 0px;">Case #</th>
+            <th scope="col" style="padding-left: 0px;">Ward <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortRoom()"></i></th>
             <th scope="col" style="padding-left: 0px;">Room <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortRoom()"></i></th>
+            <th scope="col" style="padding-left: 0px;">Bed <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortRoom()"></i></th>
             <th scope="col" style="padding-left: 0px;">Physician Order Text</th>
             <th scope="col" style="padding-left: 0px;">Order Status</th>
             <th scope="col" style="padding-left: 0px;">Created by <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortCreatedBy()"></i></th>
@@ -27,7 +29,9 @@
             <td class="border-top-none" style="padding-left: 1px;">{{ item.PatientName }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Patient }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Falnr }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ item.Floor }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.RoomidText }}</td>
+            <td class="border-top-none" style="padding-left: 1px;">{{ item.BedidText }}</td>
             <td class="border-top-none" style="padding-left: 1px;" [title]="item.OrderShortText">{{ item.OrderShortText }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.StatusText }}</td>
             <td class="border-top-none" style="padding-left: 1px;">{{ item.Erusr }}</td>

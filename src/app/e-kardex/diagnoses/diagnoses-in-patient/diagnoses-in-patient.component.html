@@ -49,7 +49,7 @@
       </div>
       <div class="right-button-group" *ngIf="inPatientFormInput === 'Medical Report'">
         <button type="button" (click)="selectedPatient?.DokstText == 'In Work' ? updateMedicalReport() : saveMedicalReport()">Save</button>
-        <button type="button" (click)="releaseMedicalReport()">Release</button>
+        <button type="button" (click)="releaseMedicalReport()" *ngIf="selectedPatient?.DokstText == 'In Work'">Release</button>
         <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteMedicalReporteDoc(selectedPatient?.Dockey)">Delete</button>
         <button type="button"(click)="closeInPatientForm()">Close</button>
       </div>

@@ -1,0 +1,164 @@
+<div id="app-container" [ngClass]="sidebar.containerClassnames == 'menu-default sub-hidden' ? 'menu-default sub-hidden' : 'menu-default' ">
+    <main class="mt-0 mb-0">
+      <app-topnav></app-topnav>
+      <div style="padding:0 35px">
+        <div class="row justify-content-between main_row">
+          <div class="e-kardex-header-left col-8 col-sm-4 col-md-2" style="margin-bottom: 5px;">
+            <div class="card h-100 justify-content-center">
+              <app-pateint-bmi [patient]="patient"></app-pateint-bmi>
+            </div>
+          </div>
+          <div class="e-kardex-header-right col-12 col-sm-6 col-md-9 mb-2 p-0 ml-45">
+            <div class="card d-flex flex-row mb-4 py-2 h-100">
+              <!-- vitals signs--------------- -->
+              <div class="min-width-fit-content">
+                <div class="w-max font-bold mb-2">Vitals Signs</div>
+                <div class="d-flex justify-content-center cursor-pointer">
+                  <span class="text-xl mr-3" style="    position: relative;
+                  top: -4px;">
+                    <img src="assets/img/er-vital.png" (click)="openModalVital($event)" width="21px" [title]="'View Vitals History'">
+                  </span>
+                  <div class="dropdown setting_dropdown" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                    <span type="button" class="simple-icon-settings setting_btn" id="dropdownBasic1" [title]="'Show/Hide Vitals'" ngbDropdownToggle>
+                    </span>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" onClose>
+                      <ng-container *ngFor="let itemCatalog of catalog">
+                        <div *ngIf="itemCatalog.Display" class="custom-switch custom-switch-primary dropdown-item-toggle">
+                          <input class="custom-switch-input" (change)="
+                              toggleSlide(
+                                patient?.isInPatient
+                                  ? itemCatalog?.IPCaseType
+                                  : itemCatalog?.OPCaseType,
+                                itemCatalog
+                              )
+                            " [checked]="
+                              patient?.isInPatient
+                                ? itemCatalog?.IPCaseType
+                                : itemCatalog?.OPCaseType
+                            " [id]="itemCatalog.CatItemKey" type="checkbox" />
+                          <label class="custom-switch-btn" [for]="itemCatalog.CatItemKey"></label>
+                          <span>{{ itemCatalog?.SettItemName }} </span>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <app-vitals-card-list [listVitals]="listVitals" class="overflow-hidden"></app-vitals-card-list>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main_dashboard">
+        <app-patient-history></app-patient-history>
+        <app-diagnoses class="diagnoses-section" style="display: flex;
+      flex-direction: column;height:100%;"></app-diagnoses>
+  
+  
+      </div>
+    </main>
+    <app-sidebar></app-sidebar>
+  
+    <!-- vitals tabs modal--------------------------- -->
+    <ng-template #content let-modal>
+      <div class="modal-body">
+        <div class="main_tabs_modal">
+          <div class="inner_tabs">
+            <ul ngbNav #nav="ngbNav" class="nav-pills" orientation="vertical">
+              <h6>Readings</h6>
+              <li ngbNavItem="" *ngFor="let vital of listVitals; let i = index">
+                <a ngbNavLink [ngClass]="{ red_border: vital?.isAbnormal }">
+                  <span>
+                    <h5>
+                      {{ vital?.PairVital ? vital?.PairKeyName : vital.ItemName }}
+                    </h5>
+                    <p>{{ vital.ValDateTimeUTC | date : "dd.MM.yyyy HH:mm" }}</p>
+                  </span>
+                  <span class="text-right">
+                    <h5>
+                      <app-vertical-arrow-indicator [props]="{ process: vital.ValRangeType }">
+                      </app-vertical-arrow-indicator>{{
+                      vital?.PairVital
+                      ? vital?.LastValue + "/" + vital?.PairVital?.LastValue
+                      : vital.LastValue
+                      }}
+                    </h5>
+                    <p>{{ vital.UnitText }}</p>
+                  </span>
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="tabs_inner_content">
+                    <h6>HeartRate (bpm)</h6>
+                    <p>Last Readings: 3years ago 22.07.2019 at 15:18</p>
+                    <div>
+                      <div class="row_tabs">
+                        <div ngbNav #nav="ngbNav" class="nav-tabs">
+              <li ngbNavItem>
+                <a ngbNavLink>Hour</a>
+                <ng-template ngbNavContent>
+                  <div class="text-center mt-5">
+                    <img src="assets/img/not-found-medical.svg" class="w-50" />
+                    <p>No information for last Range Selected</p>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>Day</a>
+                <ng-template ngbNavContent>
+                  <div class="text-center mt-5">
+                    <img src="assets/img/not-found-medical.svg" class="w-50" />
+                    <p>No information for last Range Selected</p>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>Week</a>
+                <ng-template ngbNavContent>
+                  <div class="text-center mt-5">
+                    <img src="assets/img/not-found-medical.svg" class="w-50" />
+                    <p>No information for last Range Selected</p>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>Month</a>
+                <ng-template ngbNavContent>
+                  <div class="text-center mt-5">
+                    <img src="assets/img/not-found-medical.svg" class="w-50" />
+                    <p>No information for last Range Selected</p>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <a ngbNavLink>Year</a>
+                <ng-template ngbNavContent>
+                  <div class="text-center mt-5">
+                    <img src="assets/img/not-found-medical.svg" class="w-50" />
+                    <p>No information for last Range Selected</p>
+                  </div>
+                </ng-template>
+              </li>
+              <li ngbNavItem>
+                <span ngbNavLink class="span_date"><input type="date" name="" id="" /></span>
+                <ng-template ngbNavContent>
+                  <div class="text-center mt-5">
+                    <img src="assets/img/not-found-medical.svg" class="w-50" />
+                    <p>No information for last Range Selected</p>
+                  </div>
+                </ng-template>
+              </li>
+          </div>
+          <div [ngbNavOutlet]="nav"></div>
+        </div>
+      </div>
+  </div>
+  </ng-template>
+  </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="tab_content"></div>
+  </div>
+  </div>
+  </div>
+  </ng-template>
+  </div>
+  <app-er-vitals #erVitalsModal></app-er-vitals>
