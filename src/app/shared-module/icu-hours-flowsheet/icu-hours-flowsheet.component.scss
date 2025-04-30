@@ -483,3 +483,9 @@ body {
     margin: 0px 5px;
     text-align: center;
   }
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }

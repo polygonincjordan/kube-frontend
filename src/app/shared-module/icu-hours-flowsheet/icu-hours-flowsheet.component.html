@@ -681,6 +681,8 @@
                         type="checkbox"
                         id="noScaleAppicable"
                         class="mr-2"
+                        [(ngModel)]="isNoLabApplicable"
+                        [ngModelOptions]="{standalone: true}"
                       />
                       <label class="m-0">No lab test applicable</label>
                     </div>
@@ -693,7 +695,8 @@
                       <div
                         class="icon-pdf"
                         style="background-color: #e4edf5"
-                        (click)="addRow()"
+                        (click)="!isNoLabApplicable && addRow()"
+                        [class.disabled]="isNoLabApplicable"
                       >
                         <img
                           src="assets/img/Add.svg"
@@ -719,47 +722,45 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let codeItems of code; let i = index">
-                        <td><input type="text" class="form-control" /></td>
-                        <td><input type="text" class="form-control" /></td>
-                        <td><input type="text" class="form-control" /></td>
-                        <td><input type="text" class="form-control" /></td>
+                        <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" /></td>
+                        <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" /></td>
+                        <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" /></td>
+                        <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" /></td>
                         <td>
                           <div class="header-date p-0">
-                            <span
-                              style="
-                                position: relative;
-                                top: 32px;
-                                right: 80px;
-                                float: right;
-                                margin-top: -26px;
-                                font-size: 18px;
-                                z-index: 1;
-                              "
-                            >
-                              <img src="assets/img/Calender.svg" alt="" />
-                            </span>
-                            <input
-                              class="form-control ml-0 col-1"
-                              style="color: #000; border-radius: 8px"
-                              type="text"
-                              placeholder=""
-                              [minDate]=""
-                              [maxDate]=""
-                              #dp="bsDatepicker"
-                              style="min-width: 200px; height: 40px !important"
-                              bsDatepicker
-                            
-                              [bsConfig]="{
-                                showWeekNumbers: false,
-                                dateInputFormat: 'DD.MM.YYYY'
-                              }"
-                            />
-                          </div>
+                              <span
+                                style="
+                                  position: relative;
+                                  top: 32px;
+                                  right: 80px;
+                                  float: right;
+                                  margin-top: -26px;
+                                  font-size: 18px;
+                                  z-index: 1;
+                                "
+                              >
+                                <img src="assets/img/Calender.svg" alt="" />
+                              </span>
+                              <input
+                                class="form-control ml-0 col-1"
+                                style="color: #000; border-radius: 8px"
+                                type="text"
+                                placeholder=""
+                                [minDate]=""
+                                [maxDate]=""
+                                [disabled]="isNoLabApplicable"
+                                #dp="bsDatepicker"
+                                style="min-width: 200px; height: 40px !important"
+                                bsDatepicker
+                                [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY HH:mm', selectFromOtherMonth: true }"
+                              />
+                            </div>
                         </td>
                     
                             <td>
-                                <img  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
-                                (click)="removeCode(i)">
+                                <img  (click)="!isNoLabApplicable && removeCode(i)"
+                                [class.disabled]="isNoLabApplicable"  class="all-notes cursor-pointer" src="assets/img/Delete.svg"
+                                >
                               </td>
                       </tr>
                     </tbody>
@@ -1055,12 +1056,12 @@
                 <thead style="background-color: #e4edf5; color: black">
                   <tr>
                     <th>Hour</th>
-                    <th>Sensory Reception</th>
-                    <th>Moisture</th>
-                    <th>Activity</th>
-                    <th>Mobility</th>
-                    <th>Nutrition</th>
-                    <th>Friction & Shear</th>
+                    <th style="width: 10%;">Sensory Reception</th>
+                    <th style="width: 10%;">Moisture</th>
+                    <th style="width: 10%;">Activity</th>
+                    <th style="width: 10%;">Mobility</th>
+                    <th style="width: 10%;">Nutrition</th>
+                    <th style="width: 10%;">Friction & Shear</th>
                     <th>Total</th>
                     <th>Signature</th>
                     <th>Action</th>
@@ -1075,7 +1076,7 @@
                        
                       />
                     </td>
-                    <td class="w-10">
+                    <td >
                       <ng-select
                         [items]="sensoryReceptionList"
                         bindLabel="label"
@@ -1085,7 +1086,7 @@
                       >
                       </ng-select>
                     </td>
-                    <td class="w-10">
+                    <td >
                       <ng-select
                         [items]="moistureList"
                         bindLabel="label"
@@ -1095,7 +1096,7 @@
                       >
                       </ng-select>
                     </td>
-                    <td class="w-10">
+                    <td >
                       <ng-select
                         [items]="activityList"
                         bindLabel="label"
@@ -1105,7 +1106,7 @@
                       >
                       </ng-select>
                     </td>
-                    <td class="w-10">
+                    <td >
                       <ng-select
                         [items]="mobilityList"
                         bindLabel="label"
@@ -1115,7 +1116,7 @@
                       >
                       </ng-select>
                     </td>
-                    <td class="w-10">
+                    <td >
                       <ng-select
                         [items]="nutritionList"
                         bindLabel="label"
@@ -1125,7 +1126,7 @@
                       >
                       </ng-select>
                     </td>
-                    <td class="w-10">
+                    <td >
                       <ng-select
                         [items]="frictionList"
                         bindLabel="label"

@@ -12,10 +12,10 @@ export class LaborRoomFlowSheetComponent implements OnInit {
   ngOnInit(): void {
   }
   statusDescriptionOptions = [
-    { value: 0, label: '0 Normal' },
-    { value: 1, label: '1 Birth Defects' },
-    { value: 2, label: '2 Premature' },
-    { value: 3, label: '3 Post Mature' }
+    { value: 0, label: 'Normal' },
+    { value: 1, label: 'Birth Defects' },
+    { value: 2, label: 'Premature' },
+    { value: 3, label: 'Post Mature' }
   ];
   code = [
     { code: 'A001', admission: false, discharge: false, working: false, preop: false, surgery: false, cause: false, department: false, hospital: false },

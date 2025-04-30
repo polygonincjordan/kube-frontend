@@ -215,61 +215,61 @@ export class NicuNursingFlowSheetComponent implements OnInit {
   ];
 
   eyesPatchOptions = [
-    { value: 0, label: '0 Right' },
-    { value: 1, label: '1 Left' },
-    { value: 2, label: '2 Prone' },
-    { value: 3, label: '3 Supine' },
-    { value: 4, label: '4 Upright' },
+    { value: 0, label: 'Right' },
+    { value: 1, label: 'Left' },
+    { value: 2, label: 'Prone' },
+    { value: 3, label: 'Supine' },
+    { value: 4, label: 'Upright' },
   ];
 
   residualOptions = [
-    { value: 0, label: '0 Oscillating' },
-    { value: 1, label: '1 Bubbling' },
-    { value: 2, label: '2 Not Functioning' },
+    { value: 0, label: 'Oscillating' },
+    { value: 1, label: 'Bubbling' },
+    { value: 2, label: 'Not Functioning' },
   ];
 
   latchOnOptions = [
-    { value: 0, label: '0 Good' },
-    { value: 1, label: '1 Fair' },
-    { value: 2, label: '2 Poor' },
-    { value: 3, label: '3 Other' },
+    { value: 0, label: 'Good' },
+    { value: 1, label: 'Fair' },
+    { value: 2, label: 'Poor' },
+    { value: 3, label: 'Other' },
   ];
 
   suckingOptions = [
-    { value: 0, label: '0 Good' },
-    { value: 1, label: '1 Fair' },
-    { value: 2, label: '2 Poor' },
-    { value: 3, label: '3 Other' },
+    { value: 0, label: 'Good' },
+    { value: 1, label: 'Fair' },
+    { value: 2, label: 'Poor' },
+    { value: 3, label: 'Other' },
   ];
 
   swallowOptions = [
-    { value: 0, label: '0 Good' },
-    { value: 1, label: '1 Fair' },
-    { value: 2, label: '2 Poor' },
-    { value: 3, label: '3 Other' },
+    { value: 0, label: 'Good' },
+    { value: 1, label: 'Fair' },
+    { value: 2, label: 'Poor' },
+    { value: 3, label: 'Other' },
   ];
 
   ivfOptions = [
-    { value: 0, label: '0 NS 0.9%' },
-    { value: 1, label: '1 GS 0.9%' },
-    { value: 2, label: '2 GS 0.45%' },
-    { value: 3, label: '3 GS 0.18%' },
-    { value: 4, label: '4 DW 5%' },
-    { value: 5, label: '5 DW 10%' },
-    { value: 6, label: '6 DW 25%' },
-    { value: 7, label: '7 DW 7.5%' },
-    { value: 8, label: '8 DW 12.5%' },
-    { value: 9, label: '9 DW 15%' },
-    { value: 10, label: '10 DW 20%' },
-    { value: 11, label: '11 Hypertonic Saline' },
-    { value: 12, label: '12 Distilled Water' },
+    { value: 0, label: 'NS 0.9%' },
+    { value: 1, label: 'GS 0.9%' },
+    { value: 2, label: 'GS 0.45%' },
+    { value: 3, label: 'GS 0.18%' },
+    { value: 4, label: 'DW 5%' },
+    { value: 5, label: 'DW 10%' },
+    { value: 6, label: 'DW 25%' },
+    { value: 7, label: 'DW 7.5%' },
+    { value: 8, label: 'DW 12.5%' },
+    { value: 9, label: 'DW 15%' },
+    { value: 10, label: 'DW 20%' },
+    { value: 11, label: 'Hypertonic Saline' },
+    { value: 12, label: 'Distilled Water' },
   ];
 
-  siteOptions3 = [
-    { value: 0, label: '0 Cannula' },
-    { value: 1, label: '1 A-line' },
-    { value: 2, label: '2 UAC' },
-    { value: 3, label: '3 UVC' },
+  siteOptions32 = [
+    { value: 0, label: 'Cannula' },
+    { value: 1, label: 'A-line' },
+    { value: 2, label: 'UAC' },
+    { value: 3, label: 'UVC' },
   ];
   public scalesList: any[] = [
     {
@@ -311,7 +311,8 @@ export class NicuNursingFlowSheetComponent implements OnInit {
   bloodGasesMainList = [1, 2, 3, 4, 5];
   GlucoCheckMainList = [1, 2, 3, 4, 5];
   ChestDrainsMainList = [1, 2, 3, 4, 5];
-
+  
+  isNoLabApplicable: boolean = false;
 
   NurseAssessmentMainList = [1, 2, 3, 4, 5]; 
   ParenteralMainList = [1, 2, 3, 4, 5]; 
@@ -482,6 +483,41 @@ export class NicuNursingFlowSheetComponent implements OnInit {
   removeSafetyMainRow(index: number) {
     this.SafetyMainList.splice(index, 1);
   }
-  
-  
+  selectedSite: { [index: number]: number } = {};
+  selectedSiteSec: { [index: number]: number } = {};
+  selectedSiteThird: { [index: number]: number } = {};
+selectedSiteCheck: { [index: number]: string } = {};
+selectedSiteCheckSec: { [index: number]: string } = {};
+selectedSiteCheckThird: { [index: number]: string } = {};
+  siteCheckMap = {
+    0: ['Left Lower', 'Left Upper', 'Right Lower', 'Right Upper'],
+    1: ['Draws adequately', 'Unable to draw', 'Extremities','Draws Sluggishly', 'Extremities pink','Extremities cool'],
+    2: ['Draws adequately', 'Unable to draw', 'Extremities','Draws Sluggishly', 'Extremities pink','Extremities cool'],
+    3: ['Draws adequately', 'Unable to draw', 'Extremities','Draws Sluggishly', 'Extremities pink','Extremities cool']
+  };
+
+  siteOptions3 = [
+    { value: 0, label: 'Cannula' },
+    { value: 1, label: 'A-line' },
+    { value: 2, label: 'UAC' },
+    { value: 3, label: 'UVC' },
+  ];
+
+  onSiteChange(index: number) {
+    // Clear previous site check value when site changes
+    this.selectedSiteCheck[index] = '';
+  }
+  onSiteChange1(index: number) {
+    // Clear previous site check value when site changes
+    this.selectedSiteCheckSec[index] = '';
+  }
+  onSiteChange2(index: number) {
+    // Clear previous site check value when site changes
+    this.selectedSiteCheckThird[index] = '';
+  }
+
+   setDateInAction(data: Date, index: number) {
+      const CurrentDateTime = data;
+      
+    }
 }

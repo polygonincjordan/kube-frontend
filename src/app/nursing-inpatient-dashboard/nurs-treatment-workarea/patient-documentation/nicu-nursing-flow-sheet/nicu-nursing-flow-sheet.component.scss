@@ -248,3 +248,14 @@
     width: 90px;
     border: none;
   }
+
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .max-height350{
+    max-height:386px;
+    }

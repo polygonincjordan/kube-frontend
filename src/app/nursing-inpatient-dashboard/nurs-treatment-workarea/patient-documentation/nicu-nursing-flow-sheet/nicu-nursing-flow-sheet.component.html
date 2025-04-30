@@ -183,6 +183,7 @@
             <i class="fa fa-plus"></i> Add
           </button>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -203,13 +204,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of enviroTempList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -219,6 +219,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
       </div>
 
       <div *ngIf="activeTab === 'vitals'">
@@ -258,7 +259,7 @@
                 <th scope="col">Measured Value</th>
                 <th scope="col">Normal Range</th>
                 <th scope="col">Date/Time</th>
-                <th scope="col"></th>
+                <!-- <th scope="col"></th> -->
               </tr>
             </thead>
             <tbody style="background-color: #fbfcff">
@@ -341,7 +342,7 @@
                     pointer-events: none;
                   "
                 ></td>
-                <td
+                <!-- <td
                   style="
                     padding: 10px !important;
                     width: 3%;
@@ -349,7 +350,7 @@
                   "
                 >
                   <img src="assets/img/Delete.svg" />
-                </td>
+                </td> -->
               </tr>
             </tbody>
             <tr class="past-med-input">
@@ -381,11 +382,11 @@
                   pointer-events: none;
                 "
               ></td>
-              <td
+              <!-- <td
                 style="padding: 10px !important; width: 3%; text-align: center"
               >
                 <img src="assets/img/Delete.svg" />
-              </td>
+              </td> -->
             </tr>
           </table>
         </div>
@@ -399,6 +400,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -420,7 +422,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of SuctionList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -472,7 +473,7 @@
                 >
                 </ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -483,6 +484,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'cpt'">
         <div class="">
@@ -492,6 +494,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -509,7 +512,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of cptMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -521,7 +523,7 @@
                 >
                 </ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -531,6 +533,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
       </div>
 
       <div *ngIf="activeTab === 'oximeterSize'">
@@ -542,6 +545,7 @@
           </div>
         </div>
         <div class="width: 100%;">
+          <div class="table-responsive max-height350">
           <table class="table table-bordered">
             <thead
               style="
@@ -559,7 +563,6 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of oximeterSizeList; let i = index">
-               
                 <td><input type="time" class="form-control" /></td>
                 <td>
                   <ng-select
@@ -571,7 +574,7 @@
                   >
                   </ng-select>
                 </td>
-                <td >
+                <td>
                   <img
                     class="all-notes cursor-pointer"
                     src="assets/img/Delete.svg"
@@ -581,6 +584,7 @@
               </tr>
             </tbody>
           </table>
+        </div>
         </div>
       </div>
 
@@ -592,6 +596,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -609,7 +614,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of respirationsMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -621,7 +625,7 @@
                 >
                 </ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -632,6 +636,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'retractions'">
         <div class="">
@@ -641,6 +646,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -658,7 +664,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of retractionsMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -670,7 +675,7 @@
                 >
                 </ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -681,6 +686,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'breathSound'">
         <div class="">
@@ -690,6 +696,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -708,7 +715,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of breathSoundMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -730,7 +736,7 @@
                 >
                 </ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -741,6 +747,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'endotracheal'">
         <div class="">
@@ -750,6 +757,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -768,7 +776,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of endotrachealMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -781,7 +788,7 @@
                 </ng-select>
               </td>
               <td><input type="text" class="form-control" id="" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -792,6 +799,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'a&Bs'">
         <div class="">
@@ -801,6 +809,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -822,7 +831,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of aBsMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -856,7 +864,7 @@
                 </ng-select>
               </td>
               <td><input type="text" class="form-control" id="" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -867,6 +875,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'ventilators'">
         <div class="">
@@ -876,6 +885,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -887,7 +897,7 @@
           >
             <tr>
               <th>Time</th>
-              <th style="width:15%">Mode</th>
+              <th style="width: 15%">Mode</th>
               <th>FiO2</th>
               <th>Liter Flow</th>
               <th>Rate</th>
@@ -904,7 +914,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of ventilatorsMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -927,7 +936,7 @@
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -938,6 +947,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'bloodGases'">
         <div class="">
@@ -947,6 +957,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -958,7 +969,7 @@
           >
             <tr>
               <th>Time</th>
-              <th style="width:15%">Site</th>
+              <th style="width: 15%">Site</th>
               <th>PH</th>
               <th>PCO2</th>
               <th>PO2</th>
@@ -971,7 +982,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of bloodGasesMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -990,7 +1000,7 @@
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
               <td><input type="text" class="form-control" id="" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -1001,6 +1011,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'glucoCheck'">
         <div class="">
@@ -1010,6 +1021,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -1027,10 +1039,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of GlucoCheckMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td><input type="text" class="form-control" id="" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -1041,6 +1052,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'chestDrains'">
         <div class="">
@@ -1050,6 +1062,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -1068,7 +1081,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of ChestDrainsMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -1090,7 +1102,7 @@
                 >
                 </ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -1101,11 +1113,12 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab === 'significantLAbReslt'">
         <div class="row justify-content-between mb-3">
           <div class="form-group">
-            <input type="checkbox" class="mr-1" name="" />
+            <input type="checkbox" [(ngModel)]="isNoLabApplicable" [ngModelOptions]="{standalone: true}" class="mr-1" name="" />
             <div class="label">No lab tests applicable</div>
           </div>
           <div>
@@ -1130,33 +1143,45 @@
               <th>Value</th>
               <th>Value Configuration</th>
               <th>Range</th>
-              <th>Date/Time</th>
+              <th style="width: 10%;">Date/Time</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of enviroTempList; let i = index">
-             
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-            </tr>
-            <tr>
-             
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-            </tr>
-            <tr>
-             
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
-              <td><input type="text" class="form-control" id="" /></td>
+              <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" id="" /></td>
+              <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" id="" /></td>
+              <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" id="" /></td>
+              <td><input type="text" class="form-control" [disabled]="isNoLabApplicable" id="" /></td>
+              <td>
+                <div class="header-date p-0">
+                    <span
+                      style="
+                        position: relative;
+                        top: 32px;
+                        right: 10px;
+                        float: right;
+                        margin-top: -26px;
+                        font-size: 18px;
+                        z-index: 1;
+                      "
+                    >
+                      <img src="assets/img/Calender.svg" alt="" />
+                    </span>
+                    <input
+                      class="form-control ml-0 col-1"
+                      style="color: #000; border-radius: 8px"
+                      type="text"
+                      placeholder=""
+                      [minDate]=""
+                      [maxDate]=""
+                      #dp="bsDatepicker"
+                      style="min-width: 200px; height: 40px !important"
+                      [disabled]="isNoLabApplicable"
+                      bsDatepicker
+                      [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY HH:mm', selectFromOtherMonth: true }"
+                    />
+                  </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -1685,7 +1710,8 @@
             </button>
           </div>
         </div>
-        <table class="table table-bordered table-responsive">
+        <div class="table-responsive max-height350">
+        <table class="table table-bordered">
           <thead
             style="
               position: sticky;
@@ -1696,33 +1722,32 @@
           >
             <tr>
               <th>Time</th>
-              <th>IVF 1</th>
-              <th>Comment</th>
-              <th>site</th>
-              <th>Site Check</th>
-              <th>Ordering Rate</th>
-              <th>Hourly Total</th>
-              <th>Running Total</th>
-              <th>IVF 2</th>
-              <th>Comment</th>
-              <th>site</th>
-              <th>Site Check</th>
-              <th>Ordering Rate</th>
-              <th>Hourly Total</th>
-              <th>Running Total</th>
-              <th>IVF 3</th>
-              <th>Comment</th>
-              <th>site</th>
-              <th>Site Check</th>
-              <th>Ordering Rate</th>
-              <th>Hourly Total</th>
-              <th>Running Total</th>
+              <th style="min-width:150px">IVF 1</th>
+              <th style="min-width:150px">Comment</th>
+              <th style="min-width:150px">site</th>
+              <th style="min-width:150px">Site Check</th>
+              <th style="min-width:150px">Ordering Rate</th>
+              <th style="min-width:150px">Hourly Total</th>
+              <th style="min-width:150px">Running Total</th>
+              <th style="min-width:150px">IVF 2</th>
+              <th style="min-width:150px">Comment</th>
+              <th style="min-width:150px">site</th>
+              <th style="min-width:150px">Site Check</th>
+              <th style="min-width:150px">Ordering Rate</th>
+              <th style="min-width:150px">Hourly Total</th>
+              <th style="min-width:150px">Running Total</th>
+              <th style="min-width:150px">IVF 3</th>
+              <th style="min-width:150px">Comment</th>
+              <th style="min-width:150px">site</th>
+              <th style="min-width:150px">Site Check</th>
+              <th style="min-width:150px">Ordering Rate</th>
+              <th style="min-width:150px">Hourly Total</th>
+              <th style="min-width:150px">Running Total</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of ParenteralMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -1741,10 +1766,21 @@
                   bindValue="value"
                   placeholder="Select "
                   style="width: 100%"
+                  [(ngModel)]="selectedSite[i]"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="onSiteChange(i)"
                 >
                 </ng-select>
               </td>
-              <td><input type="text" class="form-control" /></td>
+              <td>
+                <ng-select
+                  [disabled]="!selectedSite[i] && selectedSite[i] !== 0"
+                  [items]="siteCheckMap[selectedSite[i]]"
+                  placeholder="Select site check"
+                  [(ngModel)]="selectedSiteCheck[i]"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ng-select>
+              </td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -1765,10 +1801,21 @@
                   bindValue="value"
                   placeholder="Select "
                   style="width: 100%"
+                  [(ngModel)]="selectedSiteSec[i]"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="onSiteChange2(i)"
                 >
                 </ng-select>
               </td>
-              <td><input type="text" class="form-control" /></td>
+              <td>
+                <ng-select
+                  [disabled]="!selectedSiteSec[i] && selectedSiteSec[i] !== 0"
+                  [items]="siteCheckMap[selectedSiteSec[i]]"
+                  placeholder="Select site check"
+                  [(ngModel)]="selectedSiteCheckSec[i]"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ng-select>
+              </td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -1789,14 +1836,27 @@
                   bindValue="value"
                   placeholder="Select "
                   style="width: 100%"
+                  [(ngModel)]="selectedSiteThird[i]"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="onSiteChange2(i)"
                 >
                 </ng-select>
+              </td>
+              <td>
+                <ng-select
+                  [disabled]="
+                    !selectedSiteThird[i] && selectedSiteThird[i] !== 0
+                  "
+                  [items]="siteCheckMap[selectedSiteThird[i]]"
+                  placeholder="Select site check"
+                  [(ngModel)]="selectedSiteCheckThird[i]"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ng-select>
               </td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
-              <td><input type="text" class="form-control" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -1807,6 +1867,7 @@
           </tbody>
         </table>
       </div>
+      </div>
       <div *ngIf="activeTab2 === 'medications'">
         <div class="">
           <div class="d-flex ml-3 justify-content-end">
@@ -1815,6 +1876,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -1838,7 +1900,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of MedicationsMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -1847,7 +1908,7 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -1859,6 +1920,7 @@
           </tbody>
         </table>
       </div>
+      </div>
       <div *ngIf="activeTab2 === 'enternal'">
         <div class="">
           <div class="d-flex ml-3 justify-content-end">
@@ -1867,6 +1929,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -1880,13 +1943,13 @@
               <th>Time</th>
               <th>Enternal</th>
               <th>Formula</th>
-              <th style="width:15%">Feeding tube size</th>
+              <th style="width: 15%">Feeding tube size</th>
               <th>method</th>
               <th>BM</th>
               <th>Comment</th>
               <th>Form</th>
 
-              <th style="width:15%">Residual</th>
+              <th style="width: 15%">Residual</th>
               <th>Refed</th>
               <th>Latch On</th>
               <th>Sucking</th>
@@ -1896,7 +1959,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of EnternalMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -1921,7 +1983,7 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
-             
+
               <td>
                 <ng-select
                   [items]="residualOptions"
@@ -1959,7 +2021,7 @@
                   style="width: 100%"
                 ></ng-select>
               </td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -1970,6 +2032,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab2 === 'output'">
         <div class="">
@@ -1979,6 +2042,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -2007,7 +2071,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of OutputMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -2029,7 +2092,7 @@
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -2040,6 +2103,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab2 === 'infuntCare'">
         <div class="">
@@ -2049,6 +2113,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -2079,7 +2144,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of InfantMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -2151,7 +2215,7 @@
                 ></ng-select>
               </td>
               <td><input type="text" class="form-control" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -2162,6 +2226,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab2 === 'devCare'">
         <div class="">
@@ -2171,6 +2236,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -2193,7 +2259,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of DevMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -2233,7 +2298,7 @@
                 ></ng-select>
               </td>
               <td><input type="text" class="form-control" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -2244,6 +2309,7 @@
           </tbody>
         </table>
       </div>
+      </div>
 
       <div *ngIf="activeTab2 === 'photoTherapy'">
         <div class="">
@@ -2253,6 +2319,7 @@
             </button>
           </div>
         </div>
+        <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -2273,7 +2340,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of PhototherapyMainList; let i = index">
-             
               <td><input type="time" class="form-control" /></td>
               <td>
                 <ng-select
@@ -2295,7 +2361,7 @@
                 ></ng-select>
               </td>
               <td><input type="text" class="form-control" /></td>
-              <td >
+              <td>
                 <img
                   class="all-notes cursor-pointer"
                   src="assets/img/Delete.svg"
@@ -2305,6 +2371,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
       </div>
 
       <div *ngIf="activeTab2 === 'scales'">
@@ -2392,6 +2459,7 @@
                           </button>
                     </div>
                 </div> -->
+                <div class="table-responsive max-height350">
         <table class="table table-bordered">
           <thead
             style="
@@ -2411,7 +2479,6 @@
           </thead>
           <tbody>
             <tr>
-             
               <td>
                 <input type="text" value="Cardiac" class="form-control" />
               </td>
@@ -2421,7 +2488,6 @@
               <td><input type="text" class="form-control" /></td>
             </tr>
             <tr>
-             
               <td>
                 <input type="text" value="Respiratory" class="form-control" />
               </td>
@@ -2431,7 +2497,6 @@
               <td><input type="text" class="form-control" /></td>
             </tr>
             <tr>
-             
               <td>
                 <input type="text" value="Apnea Delay" class="form-control" />
               </td>
@@ -2441,7 +2506,6 @@
               <td><input type="text" class="form-control" /></td>
             </tr>
             <tr>
-             
               <td>
                 <input type="text" value="Saturation" class="form-control" />
               </td>
@@ -2451,7 +2515,6 @@
               <td><input type="text" class="form-control" /></td>
             </tr>
             <tr>
-             
               <td>
                 <input
                   type="text"
@@ -2465,7 +2528,6 @@
               <td><input type="text" class="form-control" /></td>
             </tr>
             <tr>
-             
               <td><input type="text" value="Others" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
               <td><input type="text" class="form-control" /></td>
@@ -2474,6 +2536,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
       </div>
 
       <div *ngIf="activeTab2 === 'equipmentChecks'">
