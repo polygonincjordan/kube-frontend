@@ -1,0 +1,28 @@
+<ng-template #erBedModal>
+  <div class="emergency-beds-popup" role="document">
+    <div class="modal-content">
+      <div class="emergency-beds-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Emergency Beds</h5>
+           <div class="emergency-beds-header-right-buttons">
+        <button type="button" class="user-button">
+          <img src="assets/img/collpse-user-icon.png" style="position: relative;
+          right: 4px;width: 41px;" (click)="SaveBedForPatient()">
+        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeErBed()">
+          <img src="assets/img/CloseTab.svg">
+        </button>
+      </div>
+      </div>
+      <div class="emergency-beds-body">
+       <div [ngClass]="(item.Patnr == '' && !item.isSelected) ? 'patient-number empty-box':(item.Patnr == '' && item.isSelected)?'patient-number empty-box select-empty-box':'patient-number'" *ngFor="let item of patientDetails;let i=index" (click)="selectBedForPatient(i,item)"> 
+        <img src="assets/img/greenbed.svg" class="top-icon" alt="Bed" *ngIf="item.Patnr">
+        <img src="assets/img/bluebed.svg" class="top-icon" alt="Bed" *ngIf="!item.Patnr">
+        <span class="numbers-of-colum" [title]="item.ZimmrNm">{{item.ZimmrNm}} </span>
+        <span class="numbers-of-colum" [title]="item.PatnrNm">{{item.PatnrNm || '--'}}</span>
+        <h3>{{item.Patnr || '--'}}</h3>
+       </div>   
+
+      </div>
+    </div>
+  </div>
+  </ng-template>

@@ -1,0 +1,128 @@
+<div class="edash-rightSide">
+  <div class="search-section w-100">
+    <div class="container-fluid check-in-table d-flex">
+      <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" />
+      </div>
+      <div class="header-button">
+        <button class="btn">Receive Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid d-flex p-0">
+  <div class="w-100">
+    <div class="row medicationRow admin-dose d-flex">
+      <div [ngClass]="rightside?'w-50':'w-100'" style="overflow: auto;
+        max-height: 61vh">
+       <table class="table checkin-table custom-table-striped table-responsive-sm">
+        <thead>
+          <tr class="checkin-table-header">
+            <th scope="col" style="padding-left: 11px;">
+              MRN
+            </th>
+            <th scope="col" style="padding-left: 0px; ">
+              Patient
+            </th>
+            <th scope="col" style="padding-left: 0px; ">
+              DOB
+            </th>
+            <th scope="col" style="padding-left: 0px; ">
+              Room/Bad
+            </th>
+            <th scope="col" style="padding-left: 0px; ">
+              Allergy
+            </th>
+            <th scope="col" style="padding-left: 0px;">Diagnosis</th>
+            <th scope="col" style="padding-left: 0px; ">
+              Physician
+            </th>
+            <th scope="col" style="padding-left: 0px; ">
+              Assigned Nurse
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listItem | filter:searchString ; let i = index" (click)="openRightside(item)">
+            <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patnr">
+              {{item?.Patnr }}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;" [title]="item.Patname"> {{item?.Patname }}</td>
+            <td class="border-top-none" style="padding-left: 1px;" [title]="getDate(item.PatientDob) | date : 'dd.MM.y'">
+              {{ getDate(item.PatientDob) | date : "dd.MM.y" }}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;" [title]="item.RoomidText || item.BedidText">
+              {{ item?.RoomidText }} {{item?.BedidText}}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;" [title]="item.Allergies">
+              {{ item?.Allergies}}
+            </td>
+            <td class="border-top-none allergy" style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden;" [title]="item.Diagnosis">
+              {{ item?.Diagnosis }}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;" [title]="item.AttendingDoctorName">
+              {{ item?.AttendingDoctorName}}
+            </td>
+            <td class="border-top-none" style="padding-left: 1px;" [title]="item.NurseName">
+              {{ item?.NurseName}}
+          
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="ERlistData?.length == 0" style="text-align: center">
+        No results
+      </div>
+      </div>
+      <div class="w-50" *ngIf="rightside">
+        <div class="event-component w-100">
+          <app-administered-does-event ></app-administered-does-event>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #phyordertemplate>
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: white">
+        Removing Patient from “Medication Administration” list
+      </h4>
+    </div>
+    <div class="modal-body" style="padding: 0px;">
+      <div class="row" style="display: block; padding: 0 0 0 12px">
+        <p style="margin: 0; font-weight: bold; color: #82949e">
+          Are you sure you want to Remove “{{phyOrderData.PatientName}}” from this list?
+        </p>
+        <!-- <p style="color: navy; font-weight: bold; word-break: break-word">
+          {{ phyOrderData.OrderShortText }}
+        </p> -->
+      </div>
+
+      <div class="modal-footer" style="padding: 5px 0 0 0;border-top: 1px solid #d7d7d7;">
+        <div style="display: flex">
+          <span style="display: flex">
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="removePhysicianOrder(phyOrderData)"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background-color: #0082c8; border: #0082c8"
+              (click)="modalRef.hide()"
+            >
+              Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+ 
+
+  

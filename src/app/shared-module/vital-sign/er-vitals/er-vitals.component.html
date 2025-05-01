@@ -7,7 +7,7 @@
           <div class="arrows">
             <h6 class="m-0">Vital Signs</h6>
           </div>
-          <ul class="list-simple">
+          <ul class="list-simple" *ngIf="hideAction">
             <li (click)="EditVitalList()"><img class="img-size" src="assets/img/Examinations.svg" >Change Examination</li>
             <li (click)="confirmationForDelete(deleteVitalSignModal)"><img class="img-size" src="assets/img/CancelExamination.svg" >Cancel Examination
             </li>

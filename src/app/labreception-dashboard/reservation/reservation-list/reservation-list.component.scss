@@ -1,0 +1,122 @@
+.order-templete-main {
+    table {
+      border-collapse: separate;
+      border-spacing: 2px;
+      padding: 10px;
+      // padding: 0px 35px 0px 0px;
+      thead {
+        background: #e4edf5 !important;
+        position: sticky;
+        top: 0;
+        z-index: 9;
+  
+        tr {
+          th {
+            font-weight: 700;
+            font-size: larger;
+            // width: auto;
+            &:nth-child(1) {
+              width: 2%;
+            }
+            &:nth-child(2) {
+                width: 15%;
+              }
+              &:nth-child(3) {
+                width: 10%;
+              }
+  
+            &:nth-child(4) {
+              width: 15%;
+            }
+  
+            &:nth-child(5) {
+              width: 15%;
+            }
+  
+            &:nth-child(6) {
+              width: 15%;
+            }
+            &:nth-child(7) {
+              width: 4%;
+            }
+          }
+        }
+      }
+  
+      tbody {
+        background-color: #fbfcff;
+  
+        tr {
+          font-weight: 600;
+          
+  
+          td {
+            padding: 4px 10px;
+  
+            &:nth-child(1) {
+              input[type="checkbox"] {
+              }
+            }
+  
+            &:nth-child(2) {
+              width: 5% !important;
+            }   
+  
+            &:nth-child(3) {
+            }
+  
+            &:nth-child(6) {
+              
+            }
+  
+            &:nth-child(8) {
+             
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  
+  .toggle {
+    position: absolute;
+    right: 17px;
+    // background: #274cae;
+    border-radius: 27px;
+    font-weight: 700;
+    height: 28px;
+    width: 28px;
+    z-index: 10;
+  
+    img {
+      position: relative;
+      z-index: 99;
+      width: 28px;
+    }
+  }
+  
+  table {
+    border-spacing: 0px;
+    table-layout: fixed;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  th {
+    border: 1px solid black;
+  }
+  
+  td {
+    border: 1px solid black;
+    word-wrap: break-word;
+  }
+  
+  .modal-header {
+    display: flex;
+    padding: 17px;
+    background-color: #0082c8;
+    color: white;
+    border-radius: 16px 16px 0 0;
+  }
+  

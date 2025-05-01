@@ -721,7 +721,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   modelFormOpen(paitentData: any, oldversion?: boolean, template?: TemplateRef<any>) {
-    this.selectedPatient = paitentData;
+    this.selectedPatient = {...paitentData};
     if (this.editing) {
       Swal.fire({
         text: "Are you sure you want to close without saving?",
@@ -771,6 +771,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   modelOpenProcess(paitentData:any, oldversion?: boolean, template?: TemplateRef<any>) {
+    console.log(this.selectedPatient, "this.selectedPatient")
     if(paitentData?.Dtid == "ZMED_PHASM") {
       if(!paitentData.Released) {
         this.admissionService.isEditPhysicianForm = true;

@@ -1,0 +1,145 @@
+@import url('../patient-profile.component.scss');
+
+.medication-radiology-table {
+    td:nth-child(1) {
+      width: 240px !important;
+      max-width: 240px !important;
+      min-width: 240px !important;
+    }
+    td:nth-child(2) {
+      width: 130px !important;
+      max-width: 130px !important;
+      min-width: 130px !important;
+    }
+    td:nth-child(3) {
+      width: 130px !important;
+      max-width: 130px !important;
+      min-width: 130px !important;
+    }
+    td:nth-child(4) {
+      width: 130px !important;
+      max-width: 130px !important;
+      min-width: 130px !important;
+    }
+    td:nth-child(5) {
+      width: 130px !important;
+      max-width: 130px !important;
+      min-width: 130px !important;
+    }
+    td:nth-child(6) {
+      width: 130px !important;
+      max-width: 130px !important;
+      min-width: 130px !important;
+    }
+    td:nth-child(7) {
+      width: 130px !important;
+      max-width: 130px !important;
+      min-width: 130px !important;
+    }
+  }
+
+  .order-details-table {
+    overflow: auto;
+    max-height: 80vh;
+    margin: 0px 6px;
+  
+    .abnormal-class {
+      color: red !important;
+    }
+  }
+
+  .ma-border {
+    margin: 22px 35px 22px 35px !important;
+  }
+  
+  .h-30 {
+    height: 25px !important;
+    font-size: 12px !important;
+  }
+  
+  .table {
+    .main_row {
+      line-height: 24px;
+      th {
+        padding: 4px !important;
+      }
+    } 
+    tr td {
+      max-width: 300px;
+    }
+  
+    tr td:nth-child(10) {
+      width: 105px !important;
+    }
+  
+    tr td:nth-child(5) {
+      width: 159px !important;
+    }
+      
+    // thead {
+    //   background: #0082c8 !important;
+    //   color: white;
+    //   position: sticky;
+    //   top: 0;
+    //   z-index: 9 !important;
+    // }
+  
+  }
+  .top-bottom-border {
+    border-top: 1px solid #000000 !important;
+    border-bottom: 1px solid #000000 !important;
+  }
+
+  .border-end {
+    border-right: 1px solid #000000 !important;
+  }
+
+  .border-start {
+    border-left: 1px solid #000000 !important;
+  }
+  
+  .main-table-th {
+    width: 100px;
+  }
+  
+  .order-details-table {
+    overflow: auto;
+    max-height: 28vh;
+    margin: 0px 6px;
+  
+    .abnormal-class {
+      color: red !important;
+    }
+  }
+  
+  .lab-text-overflow{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  
+  
+  .update-risk-save-btn {
+    border: 1px solid;
+    background: #0056b0;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 16px px;
+    font-weight: 700;
+    border-radius: 24px;
+  }
+
+  .modal-body{
+    p{
+      margin: 0px;
+        font-size: 15px;
+        padding: 20px;
+        font-weight: bold;
+        color: black;
+    }
+  }
+  
+  .modal-footer {
+    border: none;
+    padding: 1rem !important;
+  }

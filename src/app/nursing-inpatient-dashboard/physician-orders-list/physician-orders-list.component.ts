@@ -645,12 +645,13 @@ export class PhysicianOrdersListComponent implements OnInit{
    }
 
   filterPhysicianOrders(event) { 
-    const { wardNo, Physician } = event;
+    const { wardNo, Physician, FWard } = event;
     this.dataOnTableForPhyOrder = this.dataOnTableForPhyOrderClone.filter((item: any) => {
         const matchesPhysician = Physician.length === 0 || Physician.includes(item.Erusr);
+        const matchesPhysicianWard = FWard.length === 0 || FWard.includes(item.Floor);
         const matchesWardNo = !wardNo || item.RoomidText === wardNo;
         
-        return matchesPhysician && matchesWardNo;
+        return matchesPhysician && matchesWardNo && matchesPhysicianWard;
     });
    }
   

@@ -1,5 +1,5 @@
 import { element } from 'protractor';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { StorageService } from '@services/storage.service';
@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 })
 export class PastMedicalComponent implements OnInit {
   @ViewChild('pastMedicalKardexModal', { static: true }) pastMedicalKardexModal: TemplateRef<any>;
+    @Input() hideAction = true;
+  
   modalRef: BsModalRef;
   modalRefForProblem: BsModalRef;
   pastMedList: any;

@@ -355,7 +355,7 @@
     *ngIf="!reservation"
     [ngStyle]="{ display: erSetting ? 'none' : 'flex' }"
   >
-  <span *ngIf="checkin" style="display: flex;font-size: 16px;margin-right: 13px;gap: 8px;" title="Search in Er list">
+  <span *ngIf="checkin" style="display: flex;font-size: 16px;margin-right: 13px;gap: 8px;" title="Show Patients Without Assigned Rooms">
     <input style="width: 16px;" type="checkbox" [(ngModel)]="isShowRooms" [value]="false" (change)="showRooms()" />
     <label class="m-0" >All Rooms </label>
   </span>
@@ -727,12 +727,12 @@
           id="inputGroupSelect01"
           formControlName="wardNo"
         >
-          <option selected value="">Choose Room</option>
+          <!-- <option selected value="">Choose Room</option> -->
           <option [value]="item" *ngFor="let item of phyOrderRoomsList">
             {{ item }}
           </option>
         </select>
-        <p style="margin: auto; margin-top: 5px">Visit Status</p>
+        <!-- <p style="margin: auto; margin-top: 5px">Visit Status</p>
         <select
           class="custom-select"
           id="inputGroupSelect01"
@@ -743,7 +743,7 @@
           <option value="New Admissions">New Admissions</option>
           <option value="Planned discharge">Planned Discharge</option>
           <option value="Recently discharged">Recently Discharged</option>
-        </select>
+        </select> -->
         <!-- <p style="margin: auto; margin-top: 5px">Physician</p>
         <select class="custom-select" id="inputGroupSelect02" formControlName="Physician" >
           <option selected value="">Choose Physician</option>
@@ -751,7 +751,21 @@
             {{ item }}
           </option>
         </select> -->
-        <p style="margin: auto; margin-top: 5px">Physician</p>
+        <div>
+          <p style="margin: auto; margin-top: 5px">Ward</p>
+          <ng-select
+            class=""
+            id="inputGroupSelect01"
+            formControlName="FWard"
+            [multiple]="true"
+          >
+            <ng-option [value]="item.Status" *ngFor="let item of phyWardList">
+              {{ item.Status }}
+            </ng-option>
+          </ng-select>
+        </div>
+
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
         <ng-select
           class=""
           id="inputGroupSelect01"
@@ -823,7 +837,7 @@
             {{ item }}
           </option>
         </select>
-        <p style="margin: auto; margin-top: 5px">Visit Status</p>
+        <!-- <p style="margin: auto; margin-top: 5px">Visit Status</p>
         <select
           class="custom-select"
           id="inputGroupSelect01"
@@ -834,8 +848,18 @@
           <option value="New Admissions">New Admissions</option>
           <option value="Planned discharge">Planned Discharge</option>
           <option value="Recently discharged">Recently Discharged</option>
+        </select> -->
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
+        <select
+          class="custom-select"
+          id="inputGroupSelect02"
+          formControlName="Floor"
+        >
+          <option [value]="item" *ngFor="let item of phyWardList">
+            {{ item }}
+          </option>
         </select>
-        <p style="margin: auto; margin-top: 5px">Physician</p>
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
         <select
           class="custom-select"
           id="inputGroupSelect02"

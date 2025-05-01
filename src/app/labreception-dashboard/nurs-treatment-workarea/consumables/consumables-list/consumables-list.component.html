@@ -1,0 +1,101 @@
+<div class="order-templete-main mt-3">
+  <div class="toggle" (click)="addNewConsumable()">
+    <img title="Visits & Admissions Timeline" src="assets/img/add-circle.svg" class="ng-star-inserted" />
+  </div>
+  <form [formGroup]="consumableHistoryForm">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th colspan="1" scope="col">
+            <div class="d-flex align-items-center">
+              <div class="position-relative label-with-check">
+                <input type="checkbox" class="position-absolute" formControlName="isAllSelected"
+                  (change)="isAllchecked($event)" [checked]="consumableHistoryForm.value.isAllSelected">
+                <span class="d-inline-block bg-white mr-2 align-bottom"></span>
+              </div>
+            </div>
+          </th>
+          <th colspan="1" scope="col">Material Code</th>
+          <th colspan="4" scope="col">Material Description</th>
+          <th colspan="1" scope="col">Stock</th>
+          <th colspan="1" scope="col">UoM</th>
+          <th colspan="1" scope="col">Quantity</th>
+          <th colspan="1" scope="col">Batch Number</th>
+          <th colspan="1" scope="col">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>Action</div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <ng-container formGroupName="PatMatCosmpNmm7HdToItmNav"
+        *ngIf="consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'] && consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'].length">
+        <tbody formArrayName="results">
+          <ng-container
+            *ngFor="let product of consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']; let i = index"
+            [formGroupName]="i">
+            <tr>
+              <td>
+                <div class="d-flex  align-items-center">
+                  <div class="position-relative label-with-check">
+                    <input type="checkbox" class="position-absolute" formControlName="isSelected"
+                      [checked]="product.value.isSelected" (change)="isSelectedItem()">
+                    <span class="d-inline-block bg-white mr-2 align-bottom"></span>
+                  </div>
+                </div>
+              </td>
+              <td colspan="1">
+                <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
+                  [clearable]="true" [searchable]="true" formControlName="Matnr"
+                  (search)="searchMaterial($event.term, wordType.MaterialCode$, i)"
+                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Matnr">
+                  <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
+                    {{item.Maktx}}</ng-option>
+                </ng-select>
+              </td>
+              <td colspan="4">
+                <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
+                  [clearable]="true" [searchable]="true" formControlName="Arktx"
+                  (search)="searchMaterial($event.term, wordType.MaterialName$, i)"
+                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Matnr + '' + product.value.Arktx">
+                  <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
+                    {{item.Maktx}}</ng-option>
+                </ng-select>
+              </td>
+              <td colspan="1">
+                <input class="form-control" type="text" formControlName="Stock" [title]="product.value.Stock"
+                  [disabled]="true" [readOnly]="true">
+              </td>
+              <td colspan="1">
+                <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
+                [clearable]="true" [searchable]="true" formControlName="Meins">
+                <ng-option *ngFor="let item of UOMList" [value]="item.Meinh">
+                  {{item.Meinh}}-{{item.Msehl}}
+                </ng-option>
+                </ng-select>
+              </td>
+              <td colspan="1">
+                <input class="form-control" type="text" (keypress)="allowDecimalsOnly($event)"  formControlName="Menge"
+                  [title]="product.value.Menge" required>
+                <div *ngIf="consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').invalid &&
+              consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').touched"
+                  class="text-danger">
+                  Quantity is required.
+                </div>
+              </td>
+              <td colspan="1">
+                <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
+                  [clearable]="true" [searchable]="true" formControlName="Charg" [title]="product.value.Charg">
+                </ng-select>
+
+              </td>
+              <td colspan="1">
+                <img [src]="'assets/img/Delete.svg'" class="all-notes cursor-pointer" (click)="removeRow($event, i)" />
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </ng-container>
+    </table>
+  </form>
+</div>

@@ -43,6 +43,13 @@ export const rootRoutes: Routes = [
     loadChildren: () =>
       import('../radiologist-ekardex/radiologist-ekardex.module').then((m) => m.RadiologistEkardexModule),
   },
+  {
+    path: 'labreception-dashboard',
+    // canActivate: [AuthGuard],
+    component: RootComponent,
+    loadChildren: () =>
+      import('../labreception-dashboard/labreception-dashboard.module').then((m) => m.LabreceptionDashboardModule),
+  },
   
   {
     path: 'e-order',

@@ -1,0 +1,82 @@
+.main{
+    // border: 1px solid black;
+    height: 100vh;
+    .first-row{
+        display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    // padding: 10px;
+    .conent{
+        border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    // text-align: center;
+
+    label{
+        margin: 0px;
+    font-weight: bold;
+
+    }
+    }
+    }
+    .checkin-table {
+        thead {
+          position: sticky;
+          top: 0;
+          z-index: 9 !important;
+          background-color: white;
+        }
+      
+        .checkin-table-header {
+          background-color: #3b4551 !important;
+          font-size: 12px;
+          font-weight: bold;
+          color: #ffffff;
+        }
+      }
+
+      .check-in-table {
+        max-height: 72vh;
+        overflow: auto;
+      }
+
+      .custom-table-striped tbody tr:nth-child(even) {
+        background-color: #f8fbff; /* Light background color for odd rows */
+      }
+      
+      .custom-table-striped tbody tr:nth-child(odd) {
+        background-color: #ffffff; /* White background color for even rows */
+      }
+      .border-top-none {
+        border-top: none !important;
+      }
+
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fbfcff !important;
+      }
+
+      .table-section{
+        padding-top: 10px;
+      }
+      
+      table {
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        border: none !important;
+      }
+
+      table th:first-child {
+        border-top-left-radius: 10px !important; /* Adjust the border radius as needed */
+      }
+    
+      table th:last-child {
+        border-top-right-radius: 10px !important; /* Adjust the border radius as needed */
+      }
+
+      .table th, .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 0px solid #dee2e6 !important;
+    }
+}

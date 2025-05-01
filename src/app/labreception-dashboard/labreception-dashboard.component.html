@@ -1,0 +1,646 @@
+<app-header *ngIf="selectedModule !== 'treatmentarea' && selectedModule !== 'dischargeorder'"></app-header>
+<!-- treatment header -->
+<div [ngClass]="
+(treatmentarea || dischargeorder) ? 'treatment-header mt-3' : 'treatment-old-header'
+" *ngIf="treatmentarea || dischargeorder">
+    <div class="col-md-9">
+        <div class="row" style="color: white;font-size: 15px;
+font-weight: bold;width: 99%;">
+            <span class="col-md-5" style="margin-left: 15px;cursor: pointer;"
+                (click)="openPatientInfo(additionalPatientInfo)">{{patient.name}}</span>
+            <span class="col-md-4" style="margin-left: 14px;text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;" title={{patient.allergyInfo}}>Allergies: {{patient.allergyInfo || '-'}}</span>
+            <span class="col-md-2" style="margin-left: 14px;">{{patient?.location?.room || '-'}}</span>
+        </div>
+        <div class="row" style="color: white;font-size: 15px;
+font-weight: bold;width: 99%;">
+            <span class="col-md-5" style="margin-left: 15px;    text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;">MRN: {{patient.id}}<span style="margin-left: 50px;" [title]="patient?.gender">{{
+                    patient?.gender
+                    }}</span></span>
+            <span class="col-md-2" style="margin-left: 14px;text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;" [title]="patient?.primDiaTxt">Dx: {{ patient?.primDiaTxt }}</span>
+            <span class="col-md-2"
+                style="margin-left: 14px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+                [title]="caseNumberReturn(patient?.case)">Case#: {{ caseNumberReturn(patient?.case) }}</span>
+            <span class="col-md-2" style="margin-left: 27px;
+border: 1px solid;
+border-radius: 16px;
+padding: 3px 13px 3px 13px;
+background-color: #1768bc;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;" [title]="patient.financeCat">{{patient.financeCat || '-'}}</span>
+
+        </div>
+    </div>
+    <div class="col-md-1" style="padding: 0;color: white;
+  font-size: 12px;
+  font-weight: bold;">
+        <div>Height : {{patient?.height?.value || 'N/A'}}{{patient?.height?.unit}}</div>
+        <div>Weight : {{patient?.weight?.value || 'N/A'}}{{patient?.weight?.unit}}</div>
+        <div>BMI : {{patient?.bmi?.value || 'N/A'}}{{patient?.bmi?.unit}}</div>
+    </div>
+    <div class="col-md-2" style="padding: 0;">
+        <img src="assets/img/er-treatment.png" style="width: 189px;
+height: 78px;
+float: right;" />
+    </div>
+</div>
+<div [ngClass]="(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || reservation) ? 'checkin-header' : 'er-header'"
+    *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || reservation">
+    <div *ngIf="checkin && erhistory && reservation" class="col-md-4"
+        style="font-size: 18px; font-weight: bold; padding: 0; padding-left: 20px;">
+        {{ day }} {{ currentDate | date : "dd.MM.y" }}
+        <span *ngIf="ErPatientCount">
+            ({{ ErPatientCount }}
+            <span *ngIf="ErPatientCount > 1 || ErPatientCount == 0">Patients</span><span
+                *ngIf="ErPatientCount == 1">Patient</span>)
+        </span>
+    </div>
+
+    <div class="col-md-4" *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses" style="font-size: 15px;
+  font-weight: bold;padding: 0;text-align: center;display: flex;position: relative;
+      left: 33px;align-items: baseline;gap:10px"><i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px;
+      font-size: 18px;cursor: pointer;" (click)="previousDate()"></i>
+        <form [formGroup]="formDetailGroup">
+            <div class="date-function" style="background: #dee5ea;
+      padding: 2px;
+      border-radius: 8px;
+      display: flex;
+      position: relative;">
+                <!-- <img src="assets/img/date-icon.svg" alt=""> -->
+                <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+          'DD.MM.YYYY', containerClass: 'daterangepickerdata ', showWeekNumbers:
+          false}" class="form-control" formControlName="DateRange" />
+                <p class="m-0 d-flex h-100 align-items-center" (click)="onTodayEventData()" style="padding: 8px 30px;
+          color: #7f9abf;
+          cursor: pointer;">Today</p>
+            </div>
+        </form>
+
+        <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
+                  font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingDate()"></i>
+        <span *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
+            ({{ErHistoryPatientCount}} Patients)
+        </span>
+        <span *ngIf="ErHistoryPatientCount == 1">
+            ({{ErHistoryPatientCount}} Patient)
+        </span>
+    </div>
+    <div *ngIf="reservation" class="d-flex w-100">
+        <div *ngIf="reservation" class="d-flex justify-content-center"
+            style="text-align: center; font-size: 21px; font-weight: bold;width: 94%;margin-left: 95px;">
+            {{headerLabel.length ? headerLabel:''}}
+        </div>
+        <div class="" style="display: flex; justify-content: end; align-items: center;margin-right: 5px;">
+            <div style="
+          width: 90px;
+          color: black;
+          background-color: #f2f4f6;
+          border-radius: 15px;
+          padding: 4px;
+          font-size: 15px;
+          cursor: pointer;
+          text-align: center;
+        " (click)="refreshCheckIn()">
+                <i class="fa fa-refresh" aria-hidden="true" style="cursor: pointer"></i>
+                <span class="ml-1">Refresh</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5" style="text-align: center; font-size: 21px; font-weight: bold" *ngIf="!reservation">
+        {{headerLabel.length ? headerLabel :"Lab Reception Dashboard"}}
+    </div>
+
+    <div class="col-md-3" style="display: flex; justify-content: end; align-items: center" *ngIf="!reservation">
+        <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;"
+            *ngIf="!reservation" title="User's Settings" id="configurationButton"
+            (click)="clickShowConfiguration();$event.stopPropagation()"></i>
+        <i class="fa fa-filter" aria-hidden="true" style="font-size: 20px; margin-right: 14px" *ngIf="!reservation"
+            (click)="showFilterFn($event)"></i>
+        <span *ngIf="erhistory" style="
+    display: inline-block;
+    font-size: 19px;
+    margin-right: 13px;
+" title="Search in Er list"><i aria-hidden="true" class="fa fa-search" (click)="openPatientSearch()"></i></span>
+        <div style="
+        width: 90px;
+        color: black;
+        background-color: #f2f4f6;
+        border-radius: 15px;
+        padding: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        text-align: center;
+      " (click)="refreshCheckIn()">
+            <i class="fa fa-refresh" aria-hidden="true" style="cursor: pointer"></i>
+            <span class="ml-1">Refresh</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="showConfiguration" class="card config p-3" style="border: none !important; background: #fff !important;"
+    id="configurationCard">
+    <div class="card-body" style="padding: 7px" (click)="$event.stopPropagation();">
+        <div class="mb-2" style="
+        display: flex;
+        justify-content: space-between;
+        height: 25px;
+      ">
+            <h5 class="card-title">Configuration Options</h5>
+            <span style="position: relative; bottom: 4px">
+                <img src="assets/img/refresh.png" style="width: 29px" (click)="refreshConfig();" />
+                <img src="assets/img/save.png" style="width: 19px" (click)="createConfig()" />
+            </span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 out-patient-config-select ward-list-select">
+                <div class="mb-2">
+                    <label class="mb-1" for="wardSelect">Physician</label>
+                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForPhysician"
+                        [placeholder]="'Physician'" [(ngModel)]="selectedPhysicianConf" [data]="assignUsersList">
+                    </ng-multiselect-dropdown>
+                    <!-- {{jsonString(selectedPhysicianConf)}} -->
+                </div>
+                <div>
+                    <label class="mb-1" for="wardSelect">Speciality</label>
+                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpeciality"
+                        [placeholder]="'Speciality'" [(ngModel)]="selectedSpecialityConf" [data]="specialityList">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" style="
+    width: 15rem;
+    position: absolute;
+    z-index: 999;
+    right: 25px;
+    color: black;
+    font-size: 12px;
+  " *ngIf="showfilter && checkin" (click)="$event.stopPropagation()">
+    <div class="card-body" style="padding: 4px 21px 21px 21px">
+        <div class="">
+            <!-- <div>
+      <span style="margin: 0">Filter Patients</span>
+      <span style="float: right; font-size: 20px"><i
+          class="fa fa-times"
+          aria-hidden="true"
+         (click)="showFilterFn($event) " ></i></span>
+    </div> -->
+            <form [formGroup]="filterForm">
+                <!-- <p style="margin: auto; margin-top: 5px">Triage</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="Triage" [multiple]="true">
+          <ng-option [value]="item.Triage" *ngFor="let item of allTriageData">
+            {{ item.Allergen }}
+          </ng-option>
+        </ng-select> -->
+
+                <p style="margin: auto; margin-top: 5px">Physician</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
+                    <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+                    <ng-option [value]="item.NamString" *ngFor="let item of allDoctorList">
+                        {{ item.Doctor }}
+                    </ng-option>
+                    <!-- <ng-option [value]="item.NamString" *ngFor="let item of assignUsersList">
+            {{ item.NamString }}
+          </ng-option> -->
+                </ng-select>
+                <p style="margin: auto; margin-top: 5px">Status</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
+                    <!-- <ng-option selected value="">Choose Status</ng-option> -->
+                    <ng-option [value]="item.Status" *ngFor="let item of allStatus">
+                        {{ item.Status }}
+                    </ng-option>
+                </ng-select>
+                <p style="margin: auto; margin-top: 5px">Financial Category</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="FCategory" [multiple]="true">
+                    <!-- <ng-option value="">Choose Financial Category</ng-option> -->
+                    <ng-option [value]="item.Status" *ngFor="let item of allFinCategoryList">
+                        {{ item.Category }}
+                    </ng-option>
+                </ng-select>
+                <div class="mt-2" style="display: flex; justify-content: space-around">
+                    <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                        (click)="filterList()">
+                        Filter
+                    </button>
+                    <button class="btn btn-primary" style="    background-color: #0082c8;
+    border: #0082c8;" (click)="clearFilter()">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="card" style="
+width: 15rem;
+position: absolute;
+z-index: 999;
+right: 25px;
+color: black;
+font-size: 12px;
+" *ngIf="showfilter && erhistory" (click)="$event.stopPropagation()">
+    <div class="card-body" style="padding: 4px 21px 21px 21px">
+        <div class="">
+            <!-- <div>
+      <span style="margin: 0">Filter Patients</span>
+      <span style="float: right; font-size: 20px"><i
+          class="fa fa-times"
+          aria-hidden="true"
+         (click)="showFilterFn($event) " ></i></span>
+    </div> -->
+            <form [formGroup]="filterForm">
+                <!-- <p style="margin: auto; margin-top: 5px">Triage</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="Triage" [multiple]="true">
+          <ng-option [value]="item.Triage" *ngFor="let item of allTriageData">
+            {{item.Allergen}}
+          </ng-option>
+        </ng-select> -->
+                <p style="margin: auto; margin-top: 5px">Physician</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
+                    <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+                    <ng-option [value]="item.Doctor" *ngFor="let item of assignUsersList">
+                        {{item.Doctor}}
+                    </ng-option>
+                </ng-select>
+                <p style="margin: auto; margin-top: 5px">Status</p>
+                <ng-select class="" id="inputGroupSelect02" formControlName="Status" [multiple]="true">
+                    <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+                    <ng-option [value]="item.Status" *ngFor="let item of allStatus">
+                        {{item.Status}}
+                    </ng-option>
+                </ng-select>
+                <p style="margin: auto; margin-top: 5px">Financial Category</p>
+                <ng-select class="" id="inputGroupSelect03" formControlName="FCategory">
+                    <!-- <ng-option value="">Choose Financial Category</ng-option> -->
+                    <ng-option [value]="item.Category" *ngFor="let item of allFinCategoryList">
+                        {{ item.Category }}
+                    </ng-option>
+                </ng-select>
+                <div class="mt-2" style="display: flex; justify-content: space-around">
+                    <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                        (click)="filterList()">
+                        Filter
+                    </button>
+                    <button class="btn btn-primary" style="background-color: #0082c8;border: #0082c8;"
+                        (click)="clearFilter()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="
+width: 15rem;
+position: absolute;
+z-index: 999;
+right: 25px;
+color: black;
+font-size: 12px;
+" *ngIf="showfilter && LabResults" (click)="$event.stopPropagation()">
+    <div class="card-body" style="padding: 4px 21px 21px 21px">
+        <div class="">
+            <!-- <div>
+      <span style="margin: 0">Filter Patients</span>
+      <span style="float: right; font-size: 20px"><i
+          class="fa fa-times"
+          aria-hidden="true"
+         (click)="showFilterFn($event) " ></i></span>
+    </div> -->
+            <form [formGroup]="filterFormLab">
+                <p style="margin: auto; margin-top: 5px">Rooms</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="Rooms" [multiple]="true">
+                    <!-- <ng-option selected value="">Choose Triage</ng-option> -->
+                    <ng-option [value]="item" *ngFor="let item of filterBehraumList">
+                        {{item}}
+                    </ng-option>
+                </ng-select>
+
+                <p style="margin: auto; margin-top: 5px">Physician</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
+                    <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+                    <ng-option [value]="item" *ngFor="let item of filterBehpersonList">
+                        {{item}}
+                    </ng-option>
+                </ng-select>
+                <p style="margin: auto; margin-top: 5px">Order Status</p>
+                <ng-select class="" id="inputGroupSelect01" formControlName="ItemStatus">
+                    <ng-option value="">Choose</ng-option>
+                    <ng-option [value]="item" *ngFor="let item of filterStatusList"> {{item}}</ng-option>
+
+                </ng-select>
+                <!-- <p style="margin: auto; margin-top: 5px">Creation Date</p>
+      <div class="date-function" style="background: #dee5ea;
+
+                border-radius: 8px;
+                display: flex;
+               ">
+                  <input #drp="bsDaterangepicker" bsDaterangepicker
+                    [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+                    'DD.MM.YYYY', containerClass: 'daterangepickerlab ', showWeekNumbers:
+                    false}" class="form-control" formControlName="CreationDate" />
+
+                </div> -->
+                <div class="mt-2" style="display: flex; justify-content: space-around">
+                    <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                        (click)="filterList()">
+                        Filter
+                    </button>
+                    <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;"
+                        (click)="clearFilter()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="
+width: 15rem;
+position: absolute;
+z-index: 999;
+right: 0px;
+color: black;
+font-size: 12px;
+" *ngIf="showfilter && PhysicianOrder">
+    <div class="card-body" style="padding: 4px 21px 21px 21px">
+        <div class="">
+            <div>
+                <span style="margin: 0">My In-patient filter</span>
+                <span style="margin-left: 68px; font-size: 20px"><i class="fa fa-times" aria-hidden="true"
+                        (click)="showFilterFn($event)"></i></span>
+            </div>
+            <form [formGroup]="form">
+                <p style="margin: auto; margin-top: 5px">Date from</p>
+                <input formControlName="admittedFrom" class="form-control" type="text" placeholder="" [minDate]=""
+                    [maxDate]="dateTo" [(bsValue)]="dateFrom" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+        showWeekNumbers: false,
+        dateInputFormat: 'DD.MM.YYYY'
+        }" />
+
+                <p style="margin: auto; margin-top: 5px">Date To</p>
+                <input formControlName="admittedTo" class="form-control" type="text" placeholder="" [minDate]="dateFrom"
+                    [maxDate]="" #dp="bsDatepicker" bsDatepicker [(bsValue)]="dateTo" [bsConfig]="{
+        showWeekNumbers: false,
+        dateInputFormat: 'DD.MM.YYYY'
+        }" />
+                <p style="margin: auto; margin-top: 5px">Ward</p>
+                <select class="custom-select" id="inputGroupSelect01" formControlName="wardNo">
+                    <option selected value="">Choose ward</option>
+                    <option [value]="item.Ward" *ngFor="let item of getWards">
+                        {{ item.Name }}
+                    </option>
+                </select>
+                <p style="margin: auto; margin-top: 5px">Patient's Status</p>
+                <select class="custom-select" id="inputGroupSelect01" formControlName="patientStatus">
+                    <option selected value="">Choose status</option>
+                    <option value="Admitted">Admitted</option>
+                    <option value="New Admissions">New Admissions</option>
+                    <option value="Planned discharge">Planned Discharge</option>
+                    <option value="Recently discharged">
+                        Recently Discharged
+                    </option>
+                </select>
+                <div style="display: flex; justify-content: space-around">
+                    <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                        (click)="filterList()">
+                        Filter
+                    </button>
+                    <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
+    border: #0082c8;" (click)="clearFilter()">
+      Clear
+    </button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="card" style="
+width: 15rem;
+position: absolute;
+z-index: 999;
+right: 0px;
+color: black;
+font-size: 12px;
+" *ngIf="showfilter && AdministeredDoses">
+    <div class="card-body" style="padding: 4px 21px 21px 21px">
+        <div class="">
+            <div>
+                <span style="margin: 0">In-Patient Filter</span>
+                <span style="margin-left: 68px; font-size: 20px"><i class="fa fa-times" aria-hidden="true"
+                        (click)="showFilterFn($event)"></i></span>
+            </div>
+            <form [formGroup]="AdministeredDosesform">
+                <p style="margin: auto; margin-top: 5px">Date from</p>
+                <input formControlName="admittedFrom" class="form-control" type="text" placeholder="" [minDate]=""
+                    [maxDate]="dateTo" [(bsValue)]="dateFrom" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+        showWeekNumbers: false,
+        dateInputFormat: 'DD.MM.YYYY'
+        }" />
+
+                <p style="margin: auto; margin-top: 5px">Date To</p>
+                <input formControlName="admittedTo" class="form-control" type="text" placeholder="" [minDate]="dateFrom"
+                    [maxDate]="" #dp="bsDatepicker" bsDatepicker [(bsValue)]="dateTo" [bsConfig]="{
+        showWeekNumbers: false,
+        dateInputFormat: 'DD.MM.YYYY'
+        }" />
+                <p style="margin: auto; margin-top: 5px">Ward</p>
+
+                <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings" [placeholder]="'Ward'"
+                    formControlName="wardNo" [data]="getWards">
+                </ng-multiselect-dropdown>
+
+                <p style="margin: auto; margin-top: 5px">
+                    Attending Physician
+                </p>
+                <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForAttendPhy"
+                    [placeholder]="'Choose Physician'" formControlName="patientStatus" [data]="inAttendPhyList">
+                </ng-multiselect-dropdown>
+                <div>
+                    <p style="margin: auto; margin-top: 5px">Speciality</p>
+                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
+                        [placeholder]="'Choose Speciality'" formControlName="specialty" [data]="getSpecialtyData">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div style="display: flex; justify-content: space-around">
+                    <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                        (click)="inPatientListByFilter()">
+                        Filter
+                    </button>
+                    <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
+    border: #0082c8;" (click)="clearFilter()">
+      Clear
+    </button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div [ngClass]="
+(checkin || erhistory ||  LabResults || PhysicianOrder || AdministeredDoses || reservation) ? 'checkin-edash-main' : 'treatment-edash-main p-0'
+">
+    <div class="edash-leftSide">
+        <div class="col-xm-1">
+            <div style="height: 50px; margin-top: 8px; margin-bottom: 6px">
+                <img [src]="
+            checkin
+              ? 'assets/img/nur-check-grey.png'
+              : 'assets/img/nur-emr-checked-blue.svg'
+          " data-bs-toggle="tooltip" data-bs-placement="right" title="Checked In" [ngClass]="checkin ? '' : ''"
+                    (click)="selectModule('checkin')" />
+            </div>
+            <div style="height: 50px; margin-bottom: 6px">
+                <img [src]="
+            treatmentarea
+              ? 'assets/img/nur-emr-hart.svg'
+              : 'assets/img/nur-treatment-blue.png'
+          " data-bs-toggle="tooltip" data-bs-placement="right" title="Treatment Workarea"
+                    [ngClass]="treatmentarea ? '' : ''" (click)="selectModule('treatmentarea')" />
+            </div>
+            <div style="height: 50px; margin-bottom: 6px">
+                <img [src]="LabResults ? 'assets/img/iconLan-3.svg' : 'assets/img/iconLab-2.svg'" data-bs-toggle="tooltip"
+                  data-bs-placement="right" title="Lab Extraction" (click)="selectModule('LabResults')" />
+                <!-- <span class="notification-dot" style="bottom: 55px;" *ngIf="phyOrder != 0">{{ phyOrder }}</span> -->
+              </div>
+            <div style="height: 50px; margin-bottom: 6px">
+                <img [src]="
+            erhistory ? 'assets/img/nur-emr-history-white.svg' : 'assets/img/nur-emr-history-blue.svg'
+          " data-bs-toggle="tooltip" data-bs-placement="right" title="Checked Out" [ngClass]="erhistory ? '' : ''"
+                    (click)="selectModule('erhistory')" />
+            </div>
+            <!-- <div style="height: 50px; margin-bottom: 6px">
+        <img [src]="
+            appointments
+              ? 'assets/img/Calendar-Icon/Drop-down-fields-1.svg'
+              : 'assets/img/Calendar-Icon/Drop-down-fields.svg'
+          " data-bs-toggle="tooltip" data-bs-placement="right" title="Appointments" [ngClass]="appointments ? '' : ''"
+          (click)="selectModule('appointments')" />
+      </div> -->
+            <!-- <div style="height: 50px; margin-bottom: 6px">
+        <img [src]="erSetting ? 'assets/img/nur-emr-setting-white.svg' : 'assets/img/nur-emr-setting.svg'"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="User configuration" class=""
+          (click)="selectModule('erSetting')" />
+      </div> -->
+            <div style="height: 50px; margin-bottom: 6px">
+                <img [src]="reservation ? 'assets/img/reservation-normal.svg' : 'assets/img/reservation-white.svg'"
+                    data-bs-toggle="tooltip" data-bs-placement="right" title="Reservation" width="45px" class=""
+                    (click)="selectModule('reservation')" />
+            </div>
+        </div>
+    </div>
+
+    <app-check-in (sendErPatientCount)="collectErPatientCount($event)"
+        (redirectCheckInData)="collectCheckInData($event)" style="width: calc(100% - 60px)"
+        *ngIf="checkin"></app-check-in>
+    <app-reservation style="width: calc(100% - 60px)" *ngIf="reservation"></app-reservation>
+    <app-lab-results (dataToParent)="receiveDataFromChild($event)" (redirectCheckInData)="collectCheckInData($event)"
+        style="width: calc(100% - 60px)" *ngIf="LabResults"></app-lab-results>
+    <app-physician-orders-list (dataToParent)="receiveDataFromChild($event)"
+        (redirectCheckInData)="collectCheckInData($event)" style="width: calc(100% - 60px)"
+        *ngIf="PhysicianOrder"></app-physician-orders-list>
+    <app-administered-doses [listItem]="missedMedPatientList" *ngIf="AdministeredDoses"
+        style="width: calc(100% - 60px)"></app-administered-doses>
+    <app-nurs-treatment-workarea style="width: calc(100% - 78px);" *ngIf="treatmentarea"
+        (redirectTreatmentPatientData)="collectTreatmentPatientData($event)"></app-nurs-treatment-workarea>
+    <app-er-history style="width: calc(100% - 78px);" *ngIf="erhistory"
+        (redirectCheckInData)="collectCheckInData($event)" (redirectVisitData)="collectErPatientSearchData($event)"
+        (sendErPatientCount)="collectErHistPatientCount($event)"></app-er-history>
+    <appointments-list style="width: calc(100% - 55px);" *ngIf="appointments"></appointments-list>
+</div>
+<ng-template #additionalPatientInfo>
+    <div style="
+  border: 1px solid #3b82f6;
+  padding: 8px;
+  background: #3b82f6;
+  text-align: center;
+"><span style="
+  color: white;
+  font-size: 22px;
+">Patient's Information</span></div>
+    <div class="modal-body patient-info">
+        <div class="mb-3 row">
+            <div class="col-md-6 row m-0">
+                <label for="staticEmail" class="col-sm-5">Name:</label>
+                <div class="col-sm-7">
+                    <span>{{patient?.name}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 row m-0">
+                <label for="staticEmail" class="col-sm-5">Mobile No.:</label>
+                <div class="col-sm-7">
+                    <span>{{patient?.phone || 'N/A'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-md-6 row m-0">
+                <label for="staticEmail" class="col-sm-5">Marital Status:</label>
+                <div class="col-sm-7">
+                    <span>{{patient?.maritalStatus || 'N/A'}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 row m-0">
+                <label for="staticEmail" class="col-sm-5">Telephone #:</label>
+                <div class="col-sm-7">
+                    <span>{{patient?.telephone || 'N/A'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-md-6 row m-0">
+                <label for="staticEmail" class="col-sm-5">Nationality:</label>
+                <div class="col-sm-7">
+                    <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+                </div>
+            </div>
+            <div class="col-md-6 row m-0">
+                <label for="staticEmail" class="col-sm-5">Email:</label>
+                <div class="col-sm-7">
+                    <span>{{patient?.email || 'N/A'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-md-10 row m-0">
+                <label for="staticEmail" class="col-sm-3">Address:</label>
+                <div class="col-sm-9">
+                    <span>{{patient?.address || 'N/A'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5">
+            <h4 class="information-kin">Next of Kin Information</h4>
+            <div class="mb-3 row">
+                <div class="col-md-6 row m-0">
+                    <label for="staticEmail" class="col-sm-5">Name:</label>
+                    <div class="col-sm-7">
+                        <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+                    </div>
+                </div>
+                <div class="col-md-6 row m-0">
+                    <label for="staticEmail" class="col-sm-5">Relationship:</label>
+                    <div class="col-sm-7">
+                        <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-md-6 row m-0">
+                    <label for="staticEmail" class="col-sm-5">Mobile #:</label>
+                    <div class="col-sm-7">
+                        <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-group p-3" style="text-align: -webkit-center;">
+            <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+        </div>
+    </div>
+</ng-template>

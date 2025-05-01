@@ -28,6 +28,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ErVitalsComponentComman implements OnInit {
   @Input() class = '';
   @Input() control = true;
+  @Input() hideAction = true;
   chartDataConfig: ChartdataService;
   chart: string[] = [];
   DiastolicChart:string[] = []

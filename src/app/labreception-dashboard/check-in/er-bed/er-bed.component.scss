@@ -1,0 +1,129 @@
+.modal-dialog.emergency-beds-popup {
+    // width: 80%;
+    max-width: 96%;
+    // margin: 50px auto;
+}
+.emergency-beds-popup .modal-content {
+    padding: 20px;
+    border-radius: 24px;
+}
+.emergency-beds-header {
+    display: flex;
+    width: 100%;
+}
+.emergency-beds-popup .emergency-beds-header .modal-title {
+    font-size: 30px;
+    font-weight: bold;
+    width: 100%;
+}
+.emergency-beds-popup .emergency-beds-header .emergency-beds-header-right-buttons {
+    width: 100%;
+    text-align: right;
+}
+.emergency-beds-header-right-buttons button.close {
+    // background: #fc3027;
+    opacity: 1;
+    width: 45px;
+    height: 45px;
+    border-radius: 50px;
+    text-align: center;
+    line-height: 0px;
+}
+.emergency-beds-header-right-buttons button img {
+    width: 44px;
+}
+.emergency-beds-header-right-buttons button.user-button {
+    // background: #0056b3;
+    opacity: 1;
+    width: 45px;
+    height: 45px;
+    border-radius: 50px;
+    text-align: center;
+    line-height: 0px;
+    border: 0px;
+    margin-right: 10px;
+}
+.emergency-beds-header-right-buttons button.close:hover, .emergency-beds-header-right-buttons button.user-button:hover {
+    // background-color: #d50404;
+}
+.emergency-beds-body {
+    border: 3px solid #d9d9d9;
+    border-radius: 15px;
+    background: #fff;
+    padding: 10px 20px;
+    margin: 20px 0px 10px;
+    height: 493px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+.emergency-beds-body .patient-number {
+    width: 18.6%;
+    display: inline-block;
+    margin: 20px 5px 0px 5px;
+    vertical-align: top;
+    background: #eeffed;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+.emergency-beds-body .patient-number img.top-icon {
+    display: block;
+    margin: 0px auto;
+    width: 70px;
+    height: 70px;
+    background: #fff;
+    border-radius: 50px;
+    object-fit: contain;
+    padding: 15px;
+    margin-bottom: 5px;
+}
+.emergency-beds-body .patient-number span.numbers-of-colum {
+    color: #252b2b;
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+    width: 158px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.emergency-beds-body .patient-number h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #2e3339;
+    margin: 5px 0px;
+}
+.emergency-beds-body .patient-number h3 span {
+    display: block;
+    color: #818c9e;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 5px 0px;
+}
+.emergency-beds-body .patient-number.empty-box {
+    background: #d9f4ff;
+}
+.emergency-beds-body .patient-number.empty-box.select-empty-box {
+    background: #0056b3;
+}
+.emergency-beds-body .patient-number.empty-box.select-empty-box span.numbers-of-colum, .emergency-beds-body .patient-number.empty-box.select-empty-box h3, .emergency-beds-body .patient-number.empty-box.select-empty-box h3 span {
+    color: #fff;
+}
+
+
+
+/*SCROLL BAR CSS START*/
+.emergency-beds-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.emergency-beds-body::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+.emergency-beds-body::-webkit-scrollbar-thumb {
+  background-color:#0056b3;
+  border-radius: 20px;
+  border: 2px solid #eeeeee;
+}
+/*SCROLL BAR CSS CLOSE*/
