@@ -1,0 +1,923 @@
+<div class="edash-rightSide" style="background-color: white;border-radius: 0px 10px 10px 0px;">
+  <div class="edash-mainContent" style="display: flex;">
+    <div class="container-fluid">
+      <div class="row position-relative" style="font-weight: bold;
+      padding: 4px;">
+        <div class="col-sm-1.5 tab-default"
+          [ngClass]="this.emergencyService.patientProfile?'tab-change' : 'tab-default'"
+          (click)="tabChange('patientProfile')" style="cursor: pointer;">
+          <img src="assets/img/black-Folder.svg" class="tab-img">
+          Orders Profile
+        </div>
+        <div class="col-sm-1.5 tab-default"
+          [ngClass]="this.emergencyService.clinicalOrders?'tab-change' : 'tab-default'"
+          (click)="tabChange('clinicalOrders')" style="cursor: pointer;">
+          <img src="assets/img/clinic_order_tab.png" class="tab-img">
+          Clinical Orders
+        </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.Services?'tab-change' : 'tab-default'"
+          style="cursor: pointer;" (click)="tabChange('Services')">
+          <img src="assets/img/CPOE.svg" class="tab-img" *ngIf="!this.emergencyService.cpoe">
+          <img src="assets/img/white-CPOE.svg" class="tab-img" *ngIf="this.emergencyService.cpoe">
+          Services
+        </div>
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.cpoe?'tab-change' : 'tab-default'"
+          style="cursor: pointer;">
+          <img src="assets/img/CPOE.svg" class="tab-img" *ngIf="!this.emergencyService.cpoe">
+          <img src="assets/img/white-CPOE.svg" class="tab-img" *ngIf="this.emergencyService.cpoe">
+          e-Orders
+        </div> -->
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.ePrescription?'tab-change' : 'tab-default'"
+          (click)="tabChange('ePrescription')" style="cursor: pointer;">
+          <img src="assets/img/CPOE.svg" class="tab-img" *ngIf="!this.emergencyService.ePrescription">
+          <img src="assets/img/white-CPOE.svg" class="tab-img" *ngIf="this.emergencyService.ePrescription">
+          e-Prescription
+        </div> -->
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.orderdetails?'tab-change' : 'tab-default'" (click)="tabChange('orderdetails')"
+          style="cursor: pointer;">
+          <img src="assets/img/OrdersProfile.svg" class="tab-img" *ngIf="!this.emergencyService.orderdetails">
+          <img src="assets/img/white-OrdersProfile.svg" class="tab-img" *ngIf="this.emergencyService.orderdetails">
+          Orders Profile
+        </div> -->
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.ProgressNotes?'tab-change' : 'tab-default'"
+          style="cursor: pointer;" (click)="tabChange('ProgressNotes')">
+          <img src="assets/img/Progressnotes.svg" class="tab-img" *ngIf="!this.emergencyService.ProgressNotes">
+          <img src="assets/img/white-Progressnotes.svg" class="tab-img" *ngIf="this.emergencyService.ProgressNotes">
+          Progress Notes
+        </div>
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.PhysicianOrders?'tab-change' : 'tab-default'"
+          style="cursor: pointer;" (click)="tabChange('PhysicianOrders')">
+          <img src="assets/img/PhysicianOrders.svg" class="tab-img" *ngIf="!this.emergencyService.PhysicianOrders">
+          <img src="assets/img/white-PhysicianOrders.svg" class="tab-img" *ngIf="this.emergencyService.PhysicianOrders">
+          Physician Orders
+        </div> -->
+
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.Diagnosis?'tab-change' : 'tab-default'"
+          (click)="tabChange('Diagnosis')" style="cursor: pointer;">
+          <img src="assets/img/Diagnosis_black.svg" class="tab-img" *ngIf="!this.emergencyService.Diagnosis">
+          <img src="assets/img/Diagnosis.svg" class="tab-img" *ngIf="this.emergencyService.Diagnosis">
+          Diagnosis
+        </div>
+        <!-- <div class="col-sm-1.5 ml-2 tab-default"
+          [ngClass]="this.emergencyService.Documentation?'tab-change' : 'tab-default'"
+          (click)="tabChange('Documentation')" style="cursor: pointer;">
+          <img src="assets/img/Document.svg" class="tab-img" (click)="tabChange('Documentation')">
+          Documentation
+        </div> -->
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.Consumables?'tab-change' : 'tab-default'"
+          style="cursor: pointer;" (click)="tabChange('Consumables')">
+          <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.Consumables">
+          <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.Consumables">
+          Consumables
+        </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.vitalSign?'tab-change' : 'tab-default'"
+          style="cursor: pointer;" (click)="tabChange('vitalSign')">
+          <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
+          <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
+          Vital Signs
+        </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.HistoryAssessment ? 'tab-change' : 'tab-default'"
+          style="cursor: pointer" (click)="tabChange('HistoryAssessment')">
+          <img src="assets/img/history_assessment.jfif" class="tab-img"
+            *ngIf="!this.emergencyService.HistoryAssessment" />
+          <img src="assets/img/history_assessment.jfif" class="tab-img"
+            *ngIf="this.emergencyService.HistoryAssessment" />
+          History Assessment
+        </div>
+      </div>
+      <div *ngIf="this.emergencyService.OrderSet">
+        <div class="border-box" style="width: auto;">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-4" style="padding-left: 0;">
+                <div class="input-group mb-3">
+                  <img src="assets/img/pres-search-icon.svg" alt=""
+                    style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%);z-index:99">
+                  <input type="text" class="form-control" placeholder="Search..." aria-label="Username"
+                    aria-describedby="basic-addon1" style="    height: 38px;
+                      font: 600 14px/1.5 Nunito,sans-serif;
+                      color: #848f96;
+                      border-radius: 8px!important;
+                      box-shadow: none;
+                      padding: 10px 10px 10px 42px;" (input)="SearchOrderSets()" [(ngModel)]="searchOrderSets">
+                </div>
+              </div>
+              <div style="
+              display: flex;
+              justify-content: end;
+              align-items: end;
+              padding-bottom: 6px;
+              position: absolute;
+              bottom: 8px;right:9px;gap: 8px; ">
+                <button type="button" class="btn btn-primary" style="background-color: #0056b0; border: #0056b0"
+                  (click)="checkForSubtitles()">Create
+                  Order</button>
+                <button type="button" class="btn btn-primary" style="background-color: #0056b0; border: #0056b0"
+                  (click)="getOrderSet()">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="">
+              <div style="
+              font-size: 14px;
+    margin-top: 3px;
+    font-weight: bold;
+            ">
+                Proposed Set:
+              </div>
+            </div>
+            <div class="col-md-10 d-flex pl-0" style="gap:10px">
+              <div class="border-box" *ngFor="let item of getOrderSetData">
+                <img src="assets/img/Plus.svg" (click)="selectSet(item)" *ngIf="!item.isSelect" style="width: 18px;" />
+                <img src="assets/img/Selected-Plus.svg" style="width: 18px;" (click)="selectSet(item)"
+                  *ngIf="item.isSelect" />
+                <span>
+                  {{ item.Name }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4" style="max-height: 150px; overflow: auto">
+              <div style="
+              font-size: 14px;
+    margin-top: 3px;
+    font-weight: bold;
+            ">
+                Favourite Set:
+              </div>
+              <div *ngFor="let fav of getFavSetData">
+                <img src="assets/img/in-patient-dropdown.png" (click)="selectFavSet(fav)" *ngIf="!fav.isSelect" />
+                <img src="assets/img/selected.png" style="width: 24px; height: 23px" (click)="selectFavSet(fav)"
+                  *ngIf="fav.isSelect" />
+                <span>
+                  {{ fav.Name }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-box mt-2" style="width:auto">
+          <div class="d-flex mt-2" *ngIf="showSelected">
+            <div *ngFor="let item of allSubtitlesSets; let i = index;" class="d-flex" style="width: fit-content;
+          gap: 4px;">
+              <div>
+                <span style="
+              color: #0e5fb4;
+              border-radius: 8px;
+              background-color: #e4edf5;
+              width: 30px;
+              height: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              "><i aria-hidden="true" class="fa fa-plus c-pointer" *ngIf="!item.isSelect"
+                    (click)="changeSubtitle(item,i)"></i>
+                  <i class="fa fa-minus c-pointer" aria-hidden="true" *ngIf="item.isSelect"
+                    (click)="changeSubtitle(item,i)"></i>
+                </span>
+              </div>
+              <div class="d-flex" style="
+            height: 30px;
+            font-size: 20px;
+            margin-right: 2em;
+            align-items: center;
+    gap: 20px;
+    background-color: #fbfcff;
+    border: 1px solid #f2f3f6;
+    border-radius: 7px;
+    padding: 0 8px;
+      ">
+                <span style="font-size: 16px;">{{item.Name}}</span>
+                <span class="mr-1"><input type="checkbox" [(ngModel)]="item.Autoselect" class="form-check"
+                    (ngModelChange)="actionOnSubtitle(item,i)"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 20px; max-height: 62vh; overflow: overlay">
+            <div class="col-md-12">
+              <div class="accordion" id="accordionExample">
+                <div class="card medication-table">
+                  <div class="card-header cardheader" id="headingOne" style="    display: flex;
+                justify-content: space-between;">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-color" type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                        (click)="showAccor()">
+                        Medication
+                      </button>
+                    </h2>
+                    <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="MedAccor == 'collapse'" data-toggle="collapse"
+                      data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                      (click)="showAccor()"></i>
+                    <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="MedAccor == 'collapse show'" data-toggle="collapse"
+                      data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                      (click)="showAccor()"></i>
+                  </div>
+                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <form action="" [formGroup]="medicationform">
+                      <div class="card-body" style="padding-top: 0">
+                        <table class="medication-table w-100">
+                          <tbody formArrayName="medicationItems">
+                            <tr class="borderbottom"
+                              *ngFor="let item of medicationform.get('medicationItems')['controls']; let i = index;"
+                              [formGroupName]="i">
+                              <td class="p-0"
+                                *ngIf="selectedStid == medicationItems['controls'][i]['controls']['Stid'].value">
+                                <table class="w-100">
+                                  <tr>
+                                    <td class="align-middle w-70 p-1">
+                                      <table class="w-100">
+                                        <tr>
+                                          <td class="align-middle border-0 p-1" colspan="1">
+                                            <span class="d-flex fontsize align-items-center p-0
+                                        position-relative pt-2">
+                                              <span class="input-text-field d-inline-block align-top
+                                          ">
+                                                <input type="checkbox" class="form-check" formControlName="isChecked" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 p-1" colspan="3">
+                                            <span class="d-flex fontsize align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Medication
+                                                Name</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100
+                                           ">
+                                                <input type="text" class="form-control" formControlName="Drugname"
+                                                  [title]="medicationItems['controls'][i]['controls']['Drugname'].value" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-20 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Formula</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <input type="text" class="form-control" formControlName="FormulaText" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-20 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Route</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <ng-select [searchable]="true" appendTo="body" formControlName="Route"
+                                                  class="" style="min-width: 120px !important;">
+                                                  <ng-option *ngFor=" let routeDropdownItem of
+                                addministrationService.routeDropdownList" [value]="routeDropdownItem.Aprouid">
+                                                    {{ routeDropdownItem.Descr }}
+                                                  </ng-option>
+                                                </ng-select>
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-12 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Dosage</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <input type="text" class="form-control" formControlName="Dosage"
+                                                  style="padding: 0px;text-align: center;"
+                                                  (keypress)="onlyNumberKey($event)" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-18 p-1">
+                                            <span class="d-flex align-items-center p-0 fontsize
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Dosage Unit</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100
+                                          ">
+                                                <ng-select [searchable]="true" formControlName="DosageUnit"
+                                                  appendTo="body" style="    min-width: 95px !important;">
+                                                  <ng-option *ngFor=" let medicationDosageUnit of
+                                dosageUnitListOrderSet" [value]="medicationDosageUnit.Meinh">
+                                                    {{ medicationDosageUnit.Mseht }}
+                                                  </ng-option>
+                                                </ng-select>
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 p-1" colspan="2"
+                                            style="max-width:162px !important">
+                                            <span class="d-flex align-items-center p-0 fontsize
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Frequency</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100
+                                          ">
+                                                <ng-select [searchable]="true" formControlName="Frequency"
+                                                  appendTo="body"
+                                                  [title]="medicationItems['controls'][i]['controls']['FrequencyText'].value">
+                                                  <ng-option *ngFor=" let medicationFrequency of
+                                addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
+                                                    {{ medicationFrequency.OptionField
+                                                    }}
+                                                  </ng-option>
+                                                </ng-select>
+                                              </span>
+                                            </span>
+                                          </td>
+
+                                        </tr>
+                                        <tr>
+                                          <td></td>
+                                          <!--  -->
+                                          <td class="align-middle border-0 w-12 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Duration</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <input type="text" class="form-control" formControlName="Duration"
+                                                  style="text-align: center;" (keypress)="onlyNumberKey($event)" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-18 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Duration Unit</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <ng-select [searchable]="true" formControlName="DurationUnit"
+                                                  appendTo="body">
+                                                  <ng-option *ngFor=" let medicationDurationUnit of
+                                addministrationService.durationUnitList" [value]="medicationDurationUnit.Unit">
+                                                    {{ medicationDurationUnit.Text }}
+                                                  </ng-option>
+                                                </ng-select>
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-17 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Valid On</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <input type="text" class="form-control" formControlName="ValidOn"
+                                                  (keypress)="onlyNumberKey($event)" style="text-align: center;" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-17 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Valid Till</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100">
+                                                <input type="text" class="form-control" class="form-control"
+                                                  formControlName="ValidTill" (keypress)="onlyNumberKey($event)"
+                                                  style="text-align: center;" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-14 p-1"
+                                            style="min-width: 140px !important;">
+                                            <span class="d-flex align-items-center p-0
+                                      position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Order Purpose</span>
+                                              <span class="input-text-field d-inline-block
+                                        align-top
+                                        w-100">
+                                                <input style="background-color: #e9ecef" type="text"
+                                                  value="Administration" class="form-control eorderMedicine" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="align-middle border-0 w-25 p-1">
+                                            <span class="d-flex align-items-center p-0
+                                        position-relative pt-2">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Priority</span>
+                                              <span class="input-text-field d-inline-block align-top
+                                          w-100
+                                          ">
+
+                                                <ng-select [searchable]="true" formControlName="Priority"
+                                                  appendTo="body">
+                                                  <ng-option *ngFor=" let priorityOptions of
+                                priorityArray" [value]="priorityOptions.Value">
+                                                    {{ priorityOptions.Desc }}
+                                                  </ng-option>
+                                                </ng-select>
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td class="w-40" style="top:3px;
+                                    position: relative;">
+                                            <div class="position-relative d-flex
+                                          align-items-center pt-2 " style="border: 1px solid #ced4da;
+                                          border-radius: 7px;
+                                          padding: 4px 2px;
+                                          height: 36px;">
+                                              <input type="checkbox" class="" style="pointer-events: none;">
+
+                                              <label class="m-0 pr-1 color ml-1" style="font-size: 14px;
+                                          font-weight: bold;
+                                          color: #8B7D80;">Complex</label>
+                                              <div style="margin-left: 3px;
+                                          margin-right: 3px;"><img src="assets/img/Group.svg"
+                                                  style="width: 18px;cursor: pointer;">
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="w-40" colspan="2" style="text-align: right;
+                                    width: fit-content !important;">
+                                            <div class="position-relative
+                                          d-flex align-items-center pt-2 " style="border: 1px solid #ced4da;
+                                          border-radius: 7px;
+                                          padding: 4px 2px;
+                                          height: 36px;top: 3px;">
+                                              <input type="checkbox" class="" style="
+                                          height: auto;
+                                      ">
+                                              <label class="m-0 pr-1 color ml-1" style="font-size: 13px;
+                                          font-weight: bold;
+                                          color: #8B7D80;">Additional dose now</label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                    <td class="align-middle w-30 p-2">
+                                      <table class="border-0 w-100">
+                                        <tr>
+                                          <td class="align-middle border-0 p-1" colspan="4">
+                                            <div class="d-flex align-items-center
+                                        position-relative" style="gap: 8px;">
+                                              <div class="position-relative d-flex
+                                          align-items-center" style="border: 1px solid #ced4da;
+                                          border-radius: 7px;
+                                          padding: 4px 4px;
+                                          height: 36px;">
+                                                <input type="checkbox" class="" formControlName="Prn"
+                                                  (ngModelChange)="updatePRN($event,i)">
+
+                                                <label class="m-0 pr-1 color">PRN</label>
+                                              </div>
+                                              <span class="d-flex align-items-center p-0 w-100
+                                          position-relative pt-2" style="margin-top: -8px;">
+                                                <span *ngIf="i===0" class="input-title z-indexlabel">PRN
+                                                  Condition</span>
+                                                <span class="input-text-field d-inline-block
+                                            align-top
+                                            w-100">
+                                                  <input type="text" class="form-control" formControlName="Prncond"
+                                                    [title]="medicationItems.value[i].Prncond" />
+                                                </span>
+                                              </span>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td colspan="2">
+                                            <span class="d-flex align-items-center p-0 w-100
+                                      position-relative pt-2" style="top: 2px;">
+                                              <span *ngIf="i===0" class="input-title z-indexlabel">Additional
+                                                Info</span>
+                                              <span class="input-text-field d-inline-block
+                                        align-top
+                                        w-100">
+                                                <input type="text" class="form-control" formControlName="Descr"
+                                                  [title]="medicationItems.value[i].Descr"
+                                                  (click)="openAddInfo(additionalInfo,medicationform,i)" />
+                                              </span>
+                                            </span>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="card medication-table">
+                  <div class="card-header cardheader" id="headingTwo" style="    display: flex;
+                justify-content: space-between;">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-color" type="button" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                        (click)="showAccor()">
+                        Radiology
+                      </button>
+                    </h2>
+                    <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="RadAccor == 'collapse'" data-toggle="collapse"
+                      data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"
+                      (click)="showAccor()"></i>
+                    <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="RadAccor == 'collapse show'" data-toggle="collapse"
+                      data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"
+                      (click)="showAccor()"></i>
+                  </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body" style="padding-top: 0">
+                      <form [formGroup]="radform">
+                        <div class="branchSection branchSectiontwo mt-2" formArrayName="radItems" *ngFor="
+                        let item of radform.get('radItems')['controls'];
+                        let i = index
+                      ">
+                          <!-- <div class="grayHeading">Radiology</div> -->
+                          <div [formGroupName]="i" class="edash-disF beforeLine"
+                            *ngIf="selectedStid == radItems['controls'][i]['controls']['Stid'].value">
+                            <div class="checkbox">
+                              <input type="checkbox" formControlName="isChecked" />
+                            </div>
+                            <div class="input wi155">
+                              <label *ngIf="i==0">Service description</label>
+                              <input type="text" class="form-control grayBg" formControlName="ServiceText"
+                                style="    background-color: #e9ecef !important;"
+                                [title]="radItems['controls'][i]['controls']['ServiceText'].value" />
+                            </div>
+                            <div class="input wi120">
+                              <label *ngIf="i==0">Code</label>
+                              <input type="text" class="form-control grayBg" formControlName="Talst"
+                                style="background-color: #e9ecef !important;" />
+                            </div>
+                            <div class="input wi120">
+                              <label *ngIf="i==0">Category</label>
+                              <input type="text" class="form-control grayBg" formControlName="TrtoeText"
+                                style="background-color:white;background-color: #e9ecef !important;"
+                                [title]="radItems['controls'][i]['controls']['TrtoeText'].value" />
+                            </div>
+                            <div class="input">
+                              <label *ngIf="i==0">Valid On</label>
+                              <input type="text" class="form-control grayBg" formControlName="ValidOn"
+                                style="width:70px;background-color:white;text-align: center;" />
+                            </div>
+                            <div class="input">
+                              <label *ngIf="i==0">Valid Till</label>
+                              <input type="text" class="form-control grayBg" formControlName="ValidTill"
+                                style="width:70px;background-color:white;text-align: center;" />
+                            </div>
+                            <div class="input">
+                              <label *ngIf="i==0" style="z-index:9 !important">Localization</label>
+                              <ng-select [searchable]="true" formControlName="Localization" appendTo="body"
+                                style="width:133px;background-color:white"
+                                [title]="radItems['controls'][i]['controls']['LocalizationText'].value" (change)="showLocalizationTextForRad(localizationListOrderSet,
+                              $event, i)">
+                                <ng-option *ngFor=" let item of
+                                localizationListOrderSet" [value]="item.Dialo">
+                                  {{ item.Dialotext }}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="input" style="width: 40%;">
+                              <label *ngIf="i==0">Additional Info</label>
+                              <input type="text" class="form-control form-control grayBg" formControlName="AddInfo"
+                                style="background-color:white;" [title]="radItems.value[i].AddInfo"
+                                (click)="openAddInfo(additionalInfo,radform,i)" />
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card medication-table">
+                  <div class="card-header cardheader" id="headingThree" style="    display: flex;
+                justify-content: space-between;">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-color" type="button" data-toggle="collapse"
+                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                        (click)="showAccor()">
+                        Laboratory
+                      </button>
+                    </h2>
+                    <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="LabAccor == 'collapse'" data-toggle="collapse"
+                      data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree"
+                      (click)="showAccor()"></i>
+                    <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="LabAccor == 'collapse show'" data-toggle="collapse"
+                      data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree"
+                      (click)="showAccor()"></i>
+                  </div>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                    data-parent="#accordionExample">
+                    <div class="card-body" style="padding-top: 0">
+                      <form [formGroup]="labform">
+                        <div class="branchSection branchSectiontwo mt-2" formArrayName="labItems" *ngFor="
+                        let item of labform.get('labItems')['controls'];
+                        let i = index
+                      ">
+                          <!-- <div class="grayHeading">Radiology</div> -->
+                          <div [formGroupName]="i" class="edash-disF beforeLine"
+                            *ngIf="selectedStid == labItems['controls'][i]['controls']['Stid'].value">
+                            <div class="checkbox">
+                              <input type="checkbox" formControlName="isChecked" />
+                            </div>
+                            <div class="input wi155">
+                              <label *ngIf="i===0">Service description</label>
+                              <input type="text" class="form-control grayBg" formControlName="ServiceText"
+                                style="    background-color: #e9ecef !important;"
+                                [title]="labItems['controls'][i]['controls']['ServiceText'].value" />
+                            </div>
+                            <div class="input wi120">
+                              <label *ngIf="i===0">Code</label>
+                              <input type="text" class="form-control grayBg" formControlName="Talst"
+                                style="    background-color: #e9ecef !important;" />
+                            </div>
+                            <div class="input wi120">
+                              <label *ngIf="i===0">Category</label>
+                              <input type="text" class="form-control grayBg" formControlName="TrtoeText"
+                                [title]="labItems['controls'][i]['controls']['TrtoeText'].value"
+                                style="    background-color: #e9ecef !important;" />
+                            </div>
+                            <div class="input">
+                              <label *ngIf="i==0">Valid On</label>
+                              <input type="text" class="form-control grayBg" formControlName="ValidOn"
+                                style="width:70px;background-color:white;text-align: center;" />
+                            </div>
+                            <div class="input">
+                              <label *ngIf="i==0" style="z-index:9 !important">Localization</label>
+                              <ng-select [searchable]="true" formControlName="Localization" appendTo="body"
+                                style="width:133px;background-color:white"
+                                [title]="labItems['controls'][i]['controls']['LocalizationText'].value" (change)="showLocalizationTextForLab(localizationListOrderSet,
+                              $event, i)">
+                                <ng-option *ngFor=" let item of
+                                localizationListOrderSet" [value]="item.Dialo">
+                                  {{ item.Dialotext }}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="d-flex checkbox" style="gap: 4px;">
+                              <input type="checkbox" formControlName="Fasting" />
+                              <label style="margin-top:7px">Fasting</label>
+                            </div>
+                            <div class="d-flex checkbox" style="gap: 4px;margin-left: 5px;">
+                              <input type="checkbox" formControlName="Cycle" />
+                              <label style="margin-top:7px">Cycle</label>
+                            </div>
+                            <div class="input wi120">
+                              <label *ngIf="i===0">Code</label>
+                              <input type="text" class="form-control grayBg" style="width:85px" />
+                            </div>
+                            <div class="input wi120">
+                              <label *ngIf="i===0">Days</label>
+                              <input type="text" class="form-control grayBg" formControlName="CycleDays"
+                                style="width:47px;text-align: center;" />
+                            </div>
+                            <div class="input" style="width: 40%;">
+                              <label *ngIf="i==0">Additional Info</label>
+                              <input type="text" class="form-control form-control grayBg" formControlName="AddInfo"
+                                style="background-color:white;" [title]="labItems.value[i].AddInfo"
+                                (click)="openAddInfo(additionalInfo,labform,i)" />
+                            </div>
+                            <div class="d-flex checkbox" style="gap: 4px;">
+                              <input type="checkbox" />
+                              <label style="margin-top:7px">Urgent</label>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card medication-table">
+                  <div class="card-header cardheader" id="headingFive" style="    display: flex;
+                justify-content: space-between;">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-color" type="button" data-toggle="collapse"
+                        data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive"
+                        (click)="showAccor()">
+                        Physician Order
+                      </button>
+                    </h2>
+                    <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="PhyAccor == 'collapse'" data-toggle="collapse"
+                      data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"
+                      (click)="showAccor()"></i>
+                    <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="PhyAccor == 'collapse show'" data-toggle="collapse"
+                      data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"
+                      (click)="showAccor()"></i>
+                  </div>
+                  <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                    <div class="card-body" style="padding-top: 0">
+                      <form [formGroup]="phyOrderform">
+                        <div class="branchSection branchSectiontwo mt-2" formArrayName="phyOrderitems" *ngFor="
+                        let item of phyOrderform.get('phyOrderitems')[
+                          'controls'
+                        ];
+                        let i = index
+                      ">
+                          <!-- <div class="grayHeading">Physician Orders</div> -->
+                          <div [formGroupName]="i" class="edash-disF beforeLine"
+                            *ngIf="selectedStid == phyOrderitems['controls'][i]['controls']['Stid'].value">
+                            <div class="checkbox">
+                              <input type="checkbox" formControlName="isChecked" />
+                            </div>
+                            <div class="input wi200">
+                              <label>Order Text</label>
+                              <input type="text" class="form-control grayBg" formControlName="ZphysOrder"
+                                [title]="phyOrderitems['controls'][i]['controls']['ZphysOrder'].value" />
+                            </div>
+                            <div class="input wi120">
+                              <label>Occp. Group</label>
+                              <select formControlName="ProfGroup" type="text" class="form-control grayBg"
+                                style="height:36px">
+                                <option *ngFor="let item of occupationalGroupData" [ngValue]="item.Group">
+                                  {{ item.Text }}
+                                </option>
+                              </select>
+                              <!-- <input type="text" class="form-control grayBg" formControlName="ProfGroup"> -->
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="card medication-table">
+                  <div class="card-header cardheader" id="headingFour" style="    display: flex;
+                justify-content: space-between;">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-color" type="button" data-toggle="collapse"
+                        data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"
+                        (click)="showAccor()">
+                        Procedures & Services
+                      </button>
+                    </h2>
+                    <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="SerAccor == 'collapse'" data-toggle="collapse"
+                      data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour"
+                      (click)="showAccor()"></i>
+                    <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
+                  font-size: 21px;color:#7a7f84" *ngIf="SerAccor == 'collapse show'" data-toggle="collapse"
+                      data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour"
+                      (click)="showAccor()"></i>
+                  </div>
+                  <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                    <div class="card-body" style="padding-top: 0">
+                      <form [formGroup]="servicesform">
+                        <div class="branchSection branchSectiontwo mt-2" formArrayName="servicesItems" *ngFor="
+                        let item of servicesform.get('servicesItems')[
+                          'controls'
+                        ];
+                        let i = index
+                      ">
+                          <!-- <div class="grayHeading">Radiology</div> -->
+                          <div [formGroupName]="i" class="edash-disF beforeLine"
+                            *ngIf="selectedStid == servicesItems['controls'][i]['controls']['Stid'].value">
+                            <div class="checkbox">
+                              <input type="checkbox" formControlName="isChecked" />
+                            </div>
+                            <div class="input wi155">
+                              <label>Service description</label>
+                              <input type="text" class="form-control grayBg" formControlName="ServiceText"
+                                style="    background-color: #e9ecef !important;"
+                                [title]="servicesItems['controls'][i]['controls']['ServiceText'].value" />
+                            </div>
+                            <div class="input wi120">
+                              <label>Code</label>
+                              <input type="text" class="form-control grayBg" formControlName="Service"
+                                style="    background-color: #e9ecef !important;" />
+                            </div>
+                            <div class="input wi120">
+                              <label>Category</label>
+                              <input type="text" class="form-control grayBg" formControlName="Subcategory"
+                                style="    background-color: #e9ecef !important;" />
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="order-templete-main mt-3" *ngIf="this.emergencyService.orderdetails">
+        <app-order-details></app-order-details>
+      </div> -->
+      <!-- <div class="order-templete-main" *ngIf="this.emergencyService.cpoe">
+        <app-cpoe></app-cpoe>
+      </div> -->
+      <ng-container *ngIf="this.emergencyService.ePrescription">
+        <app-e-prescription></app-e-prescription>
+      </ng-container>
+
+      <ng-container *ngIf="this.emergencyService.Consumables">
+        <app-consumables></app-consumables>
+        <app-consumables-history *ngIf="isConsumableAction == '1'"></app-consumables-history>
+        <app-consumables-list *ngIf="isConsumableAction == '2'"></app-consumables-list>
+      </ng-container>
+
+      <div class="order-templete-main" *ngIf="this.emergencyService.patientProfile">
+        <app-patient-profile [showPatients]="showPatients"
+          (assignPatient)="assignPatient($event)"></app-patient-profile>
+      </div>
+      <div *ngIf="this.emergencyService.clinicalOrders">
+        <app-e-order-main></app-e-order-main>
+      </div>
+
+      <ng-container *ngIf="this.emergencyService.PhysicianOrders">
+        <app-physician-orders [occupationalGroupData]="occupationalGroupData"
+          (onSetDateFilterEvent)="phyOrderFilterList($event)"
+          (onSearchChangEvent)="onSearchChange($event)"></app-physician-orders>
+      </ng-container>
+      <div class="order-templete-main mt-3" *ngIf="this.emergencyService.PhysicianOrders">
+        <app-orders-templates (reloadPhyOrderList)="reloadPhyOrderListEvent($event)" [searchString]="searchString"
+          [physicianOrderList]="physicianOrderList"></app-orders-templates>
+      </div>
+      <ng-container *ngIf="this.emergencyService.ProgressNotes">
+        <app-physician-orders (onSetDateFilterEventForProgressNotes)="
+                progressNotesFilterList($event)
+              " (onSetDateFilterEvent)="progressNotesFilterList($event)"
+          [occupationalGroupData]="occupationalGroupData" (onSearchChangEvent)="onSearchChange($event)"
+          (onSearchChangEventForProgressNotes)="onSearchChange($event)"></app-physician-orders>
+      </ng-container>
+      <div class="order-templete-main mt-3" *ngIf="this.emergencyService.ProgressNotes">
+        <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList"
+          [occupationalGroupData]="occupationalGroupData"></app-progress-notes>
+      </div>
+      <ng-container *ngIf="this.emergencyService.Diagnosis">
+        <app-diagnosis (enCounterPatient)="checkPatientCounter($event)"
+          (onSearchChangEventForDiagnosis)="onSearchChange($event)"></app-diagnosis>
+      </ng-container>
+      <div class="order-templete-main mt-3" *ngIf="this.emergencyService.Diagnosis">
+        <app-diagnosis-list [searchString]="searchString"
+          [checkCounterPatient]="checkCounterPatient"></app-diagnosis-list>
+      </div>
+      <ng-container *ngIf="this.emergencyService.Documentation">
+        <app-documentation></app-documentation>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.Services">
+        <op-services></op-services>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.vitalSign">
+        <app-er-vitals-comman [hideAction]="hideAction"></app-er-vitals-comman>
+      </ng-container>
+      <ng-container *ngIf="this.emergencyService.HistoryAssessment">
+        <app-history-assessment [hideAction]="hideAction"></app-history-assessment>
+      </ng-container>
+    </div>
+    <div style="background-color: #fff;width: 35%;max-height: 75vh; overflow: auto;" *ngIf="showPatients">
+      <div style="background-color: #0082c8;color: white;    text-align: center;
+      height: 43px;
+      font-size: 18px;
+      line-height: 38px;">Assigned Patients</div>
+      <div class="container-fluid">
+        <div class="">
+          <div class="">
+            <div class="edash-listView" *ngFor="let item of treatmentPatientData" (click)="refreshPatientData(item);">
+              <div style="display: flex;cursor: pointer;">
+                <div class="col-md-8">
+                  <span><strong>{{item.PatientName
+                      }}</strong></span><br>
+                  <div><strong><span>MRN-{{item.Patnr}}</span>
+                    </strong>
+                  </div>
+                  <div><strong><span>Status-{{item.StatusText}}</span>
+
+                    </strong>
+                  </div>
+                </div>
+                <div class="col-md-4" style="text-align: end;">
+                  <span><strong>({{item.Gender}},{{item.Age}})</strong></span><br>
+                  <span [ngStyle]="{'background-color': item.TriageColor}" class="assi-align"
+                    *ngIf="item.Triage != ''">{{item.Triage}}</span>
+                  <!-- <span><strong>{{item.RoomidText}}</strong></span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<ng-template #additionalInfo>
+  <div class="additional-input additional-input p-3">
+    <label for="additionalInfo w-100">Additional Information</label>
+    <textarea type="text" [(ngModel)]="selectedAddInfo" #additionalInfo class="w-100"></textarea>
+  </div>
+  <div class="button-group d-flex justify-content-end p-3">
+    <button class="d-flex
+      align-items-center mr-2" (click)="saveAddinfo()">Save</button>
+    <button class="d-flex align-items-center" (click)="modalRef.hide()">Cancel</button>
+  </div>
+</ng-template>

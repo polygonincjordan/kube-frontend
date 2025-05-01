@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
@@ -20,6 +20,7 @@ export class HistoryAssessmentComponent implements OnInit {
   @ViewChild('familyHistoryKardexId') familyHistoryKardex: FamilyHistoryComponent;
   @ViewChild('allergyModal', { static: true }) allergyModal: TemplateRef<any>;
   @ViewChild('riskModal', { static: true }) riskModal: TemplateRef<any>;
+  @Input() hideAction = true;
   allergyform: FormGroup;
   updateAllergyForm: FormGroup;
   updateRiskForm: FormGroup;

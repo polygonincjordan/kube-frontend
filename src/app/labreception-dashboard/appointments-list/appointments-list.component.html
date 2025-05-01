@@ -1,0 +1,163 @@
+<div class="container-fluid appointment-bg p-4 appointments-content ">
+  <div class="row h-100">
+    <div class="col-3">
+      <div class="w-100 h-100 d-flex align-items-center justify-content-start flex-column">
+        <div class="appointment-popup p-4 mb-4 w-100">
+          <h2 class="title">Filter</h2>
+          <div class="d-flex flex-column selector-wrapper">
+            <ng-select class="common-input overflow-hidden">
+              <ng-option>
+                test
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="appointment-popup p-4 w-100 h-100 d-flex flex-column align-items-center justify-content-between">
+          <div class="w-100 h-100">
+            <h2 class="title">Doctor</h2>
+            <div class="d-flex flex-column selector-wrapper">
+              <ng-select [multiple]="true" [markFirst]="true" bindLabel="NamString" [closeOnSelect]="false"
+                [searchable]="true" [selectOnTab]="true" [(ngModel)]="selectedOptions" bindLabel="name"
+                (ngModelChange)="loadDataForDisplayedDate(currentDate , $event);setDoctorDataBasedOnDate(currentDate)">
+                <ng-option *ngFor="let item of outpatientNursingService.assignUsersList" [value]="item.NamString">
+                  {{item.NamString}}
+                </ng-option>
+              </ng-select>
+            </div>
+            <div class="mt-2">
+              <div class="selected-doctors py-2" *ngFor="let doctor of doctorDelete">
+                <p class="m-0 doctors-name position-relative">{{ doctor.NamString }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="date-picker-box">
+            <!-- <bs-daterangepicker-inline [bsValue]="currentDate" [bsConfig]="{displayMonths: 1, showWeekNumbers: false}"
+              class="w-100 datepicker" ></bs-daterangepicker-inline> -->
+            <bs-daterangepicker-inline [bsValue]="bsInlineRangeValue" [(ngModel)]="selectedDate"
+              [bsConfig]="{displayMonths: 1, showWeekNumbers: false}"
+              class="w-100 datepicker" (bsValueChange)="appointmentsSet($event)"></bs-daterangepicker-inline>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-9" style="height: 840px;
+    overflow: auto;">
+      <div class="mb-3 position-sticky no-appointment z-indexlabel" style="top: 0;">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <button type="button" class="next-preview mr-3" (click)="showPreviousDate()" [disabled]="startDate === currentDate">
+              <img src="assets/img/next-icon.svg" width="10"> Previous
+            </button>
+            <div>
+              <button type="button" class="date-year-btn">{{ currentDate | date: 'dd-MM-yyyy' }}</button>
+            </div>
+            <button type="button" class="next-preview ml-3" (click)="showNextDate()" [disabled]="endDate === currentDate">
+              Next <img src="assets/img/preview.svg" width="10">
+            </button>
+          </div>
+          <div class="d-flex align-items-center">
+            <h3 class="mr-3 mb-0 title">Clinics Appointments</h3>
+          </div>
+          <div class="d-flex align-items-center">
+            <ng-select class="input-dropdown" [markFirst]="false">
+              <ng-option *ngFor="let item of day">
+                {{item.data}}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="avalabel-main">
+        <div class="avalabel-main-col">
+          <div class="available-docotrs-status position-sticky" style="top: 37px;">
+            <div class="container-fluid">
+              <div class="row p-0 ">
+                <div class="col-1">
+                  <div class="d-flex align-items-center justify-content-center h-100">
+                    <button type="submit" class="btn">
+                      <img src="assets/img/next-icon.svg" alt width="8" class="next">
+                    </button>
+                  </div>
+                </div>
+                <div class="col-10 doctors-main">
+                  <div class="container-fluid">
+                    <div class="row flex-nowrap">
+                      <div *ngIf="!selectedOptions || selectedOptions.length === 0" class="col-md-5" style="text-align: center; font-size: 19px; color: white; white-space: nowrap; margin: 10px auto;" >No Doctor is Selected</div>
+                      <div class="col-3" *ngFor="let doctor of doctorDelete; let last = last">
+                        <div class="d-flex align-items-center justify-content-center p-3">
+                          <h5 class="m-0 text-white" title="{{doctor.NamString}}">{{doctor.NamString}}</h5>
+                          <ng-container *ngIf="last">
+                            <!-- <button type="submit" class="btn next-btn position-absolute">
+                              <img src="assets/img/preview.svg" alt width="8" class="next">
+                            </button> -->
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="d-flex align-items-center justify-content-center h-100">
+                    <button type="submit" class="btn ">
+                      <img src="assets/img/preview.svg" alt width="8" class="next">
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="available-docotrs-calendar pt-3">
+              <div class="container-fluid">
+                <div class="h-100 ">
+                  <div *ngIf="!selectedOptions || selectedOptions.length === 0" class="col-md-5"  style="text-align: center; font-size: 15px; color:black; white-space: nowrap; margin: 10px auto;" >No Appointments to view for the selected period</div>
+                 <div class="row flex-nowrap" *ngFor="let element of configurationData;let i = index">
+                    <div class="col-1" *ngIf="element.Doctors && element.Doctors.length">
+                      <div class="appointment-row p-2 text-center" [ngClass]="i === configurationData.length - 1 ? 'height' : ''">
+                        <h3>{{element.parseTime}}</h3>
+                      </div>
+                    </div>
+                    <div class="col-11 px-0  doctors-main">
+                      <div class="container-fluid">
+                        <div class="row docotrs-scroll flex-nowrap">
+                          <div class="col-3 p-2" *ngFor="let event of element.Doctors">
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                              <ng-container *ngIf="event && event.Patnr && event.PatnrName && event.StatuText">
+                                <div class="appointment-content w-100" [ngClass]="event.Color">
+                                  <p class="appoin-time m-0">Visit Type: {{ event.ApptType }}</p>
+                                  <div class="mt-3 pb-3">
+                                    <div class="appoint-details">
+                                      <label>MRN: <span>{{ event.Patnr }}</span></label>
+                                    </div>
+                                    <div class="appoint-details">
+                                      <label>Pat Name: <span>{{ event.PatnrName }}</span></label>
+                                    </div>
+                                    <div class="appoint-details">
+                                      <label>Status : <span>{{ event.StatuText }}</span></label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-container>
+                              <ng-container *ngIf="!event || !event.Patnr || !event.PatnrName || !event.StatuText">
+                                <div class="appointment-content w-100">
+                                  <div class="no-appointment">
+                                  <p class="appoin-time m-0 d-flex justify-content-center" style="padding: 56px;">No Appointments to view for the selected period</p>
+                                </div>
+                                </div>
+                            </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

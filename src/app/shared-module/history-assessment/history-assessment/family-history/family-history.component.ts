@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { StorageService } from '@services/storage.service';
@@ -44,6 +44,8 @@ interface IFamilyHistory {
 })
 export class FamilyHistoryComponent implements OnInit {
   @ViewChild('familyHistoryKardexModal', { static: true }) pastSurgicalcalKardexModal: TemplateRef<any>;
+  @Input() hideAction = true;
+  
   modalRef: BsModalRef;
   familyHistroyList: IFamilyHistory[] = [];
   registerForm: FormGroup;

@@ -1,0 +1,382 @@
+<ng-template #drugEventMain>
+  <div class="modal-body modal-hidden">
+    <div class="mb-2 mt-2">
+      <div style="border: solid 2px
+      #0082c8;border-radius: 6px;padding: 5px 10px;font-size: 14px;font-weight: bold;display: flex;
+   justify-content: center;">
+        <div>
+          <span style="font-weight: bold;color: #7b8087;">Patient:</span>
+          <span style="color: black;">{{storageService.patientData.name}}</span>
+          <span style="margin-left: 4em;font-weight: bold;color: #7b8087;">MRN:</span>
+          <span style="color: black;">{{storageService.patientData.id}}</span>
+          <span style="margin-left: 4em;font-weight: bold;color: #7b8087;">DOB:</span>
+          <span style="color: black;">{{storageService.patientData.birthDate | date : "dd.MM.yyy"}}</span>
+          <span style="margin-left: 4em;font-weight: bold;color: #7b8087;">Allergies:</span>
+          <span style="color: black;    display: inline-block;
+       text-overflow: ellipsis;
+       overflow: hidden;
+       white-space: nowrap;
+       position: relative;
+       top: 6px;" [title]="storageService.patientData.allergyInfo">{{storageService.patientData.allergyInfo}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row drug-hight position-relative">
+      <div class="col-md-3" style="border-right: 2px solid;font-size: 15px;
+      font-weight: bold;">
+        <!-- <div  [disabled]="isEndedDisabled" [ngClass]="administered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('Administered')">
+          <span>Administer</span>
+        </div> -->
+        <button class="w-100 color-data" [ngClass]="administered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+          (click)="changeEvents('Administered')">
+          <span class="span-dr">Administer</span>
+        </button>
+        <div [ngClass]="qadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('QAdministered')">
+          <span>Q. Administer</span>
+        </div>
+        <div [ngClass]="notadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('NotAdministered')">
+          <span>Not Administered</span>
+        </div>
+        <button [disabled]="isDisabledFsource" class="w-100 color-data" [ngClass]="addsupply ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+          (click)="changeEvents('AddSupply')">
+          <span class="span-dr">Additional Supply</span>
+        </button>
+        <button [disabled]="isDisabledFsource" class="w-100 color-data"
+          [ngClass]="drugreturn ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('DrugReturn')"><span
+            class="span-dr">Drug
+            Return</span>
+        </button>
+      </div>
+      <div class="col-md-9" style="font-weight: bold;color:#69727b">
+        <form action="" [formGroup]="administratiForm">
+          <div style="border-bottom: 2px solid;">
+            <div class="mb-1 d-flex justify-content-between">
+              <div class=" d-flex m-0 p-0 w-100">
+                <label for="inputPassword" class="col-form-label addMedia w-15 mr-3">Medication</label>
+                <input type="text" class="form-control event-font w-60 data" id="inputPassword" formControlName="Descrlt" readonly>
+              </div>
+              <div class=" w-50">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="CombineofDose"
+                  title="{{administratiForm.value.CombineofDose}}" readonly>
+                <!-- <ng-select [searchable]="true" class="event-font input-data" formControlName="N1znr">
+                  <ng-option *ngFor=" let medicationFrequency of
+                    addministrationService.CombineofDose" [value]="medicationFrequency.CycleKey">
+                    {{ medicationFrequency.OptionField}}
+                  </ng-option>
+                </ng-select> -->
+              </div>
+            </div>
+            <div class="mb-1 d-flex justify-content-between">
+              <label for="inputPassword" class=" col-form-label w-13 mar-data">Planned Dose</label>
+              <div class=" mr-3 dose-data" style="width: 45.5%; margin-left: 8px;">
+                <input type="text" class="form-control event-font data" id="inputPassword" formControlName="Admindose" readonly>
+              </div>
+
+              <label for="inputPassword" class="col-form-label w-15">Planned Time</label>
+              <div class="w-38">
+                <!-- <input type="text" class="form-control event-font" id="inputPassword" formControlName="Rbtad" readonly> -->
+                <input type="text" class="form-control event-font " formControlName="time"
+                  [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat:'DD.MM.YYYY HH:mm:ss', selectFromOtherMonth: true}"
+                  bsDatepicker [isDisabled]="true" readonly />
+              </div>
+            </div>
+          </div>
+          <!-- admin -->
+          <div class="mt-2" *ngIf="administered" formGroupName="Administrator">
+            <div class="mb-1 d-flex justify-content-between">
+              <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
+              <div class="w-47 mr-3">
+                <div class="d-flex">
+                  <div class=" w-100">
+                    <!-- <ng-select [searchable]="true" formControlName="Quanunit" class="event-font">
+                      <ng-option *ngFor=" let medicationDurationUnit of
+                            addministrationService.durationUnitList" [value]="administratiForm.value.Unit">
+                        {{ medicationDurationUnit.Text }}
+                      </ng-option>
+                    </ng-select> -->
+                    <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Rdrugdq">
+                  </div>
+                  <div class="ml-1 w-100">
+                    <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Quanunit"
+                      readonly>
+                  </div>
+                </div>
+              </div>
+              <label for="inputPassword" class=" col-form-label w-15">Change Reason</label>
+              <div class="w-40">
+                <ng-select formControlName="Rdosdif" [readonly]="isEndedDisabled" class=" event-font input-data" id="inputPassword"
+                  (click)="this.AdministerDoseReason()">
+                  <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
+                    {{ administeredReason.Descr }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="mb-1 d-flex justify-content-between">
+              <label for="inputPassword" class=" col-form-label w-14">Admin Time</label>
+              <div class="w-47 mr-3">
+                <!-- <input type="text" class="form-control event-font" id="inputPassword" formControlName="Rbdad"> -->
+                <!-- <input type="text" class="form-control event-font" title="{{administratiForm.value.Rbdad}}" formControlName="Rbdad" [bsConfig]="{withTimepicker:
+                true,showWeekNumbers:false,
+                dateInputFormat:
+                'DD.MM.YYYY HH:mm:ss'}" bsDatepicker /> -->
+                <input type="text" class="form-control event-font" type="text" title="{{administratiForm.value.Rbdad}}" formControlName="Rbdad"
+                  [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}" bsDatepicker
+                  [isDisabled]="administratiForm.value.Descr ==='Administered' ? true : false" [readonly]="isEndedDisabled" />
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-15">Change Reason</label>
+              <div class="w-40">
+                <ng-select formControlName="Rtimdif" [readonly]="isEndedDisabled" class=" event-font input-data" id="inputPassword"
+                  (click)="this.AdministerTimeReason()">
+                  <ng-option *ngFor=" let administeredReason  of
+                  TimeReason" [value]="administeredReason.Rcodeid">
+                    {{ administeredReason.Descr }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="mb-1 d-flex w-100">
+              <div class="w-12">
+                <label for="inputPassword">Check Cond.</label>
+              </div>
+              <div class="w-90 d-flex">
+                <div class="d-flex justify-content-end mr-3">
+                  <input type="checkbox" formControlName="Prn" [readOnly]="isEndedDisabled">
+                </div>
+                <div class="w-100">
+                  <input type="text" formControlName="Prncond" [readOnly]="true" [disabled]="true" class="form-control event-font">
+                </div>
+              </div>
+            </div>
+            <!-- <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label w-12" style="margin-left: 12px">Comments</label>
+              <div class="" style="width: 83%;">
+                <input type="text" class="form-control event-font" formControlName="Adnotestx" id="inputPassword">
+              </div>
+            </div> -->
+            <div class="mb-1 d-flex">
+              <label for="inputPassword" class=" col-form-label w-12">Comments</label>
+              <div class="" style="width: 88.5%;">
+                <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Adnotestx">
+              </div>
+            </div>
+            <div class="mb-1 d-flex justify-content-between">
+              <label for="inputPassword" class="col-form-label w-14">Admin User</label>
+              <div class="w-47 mr-3 ">
+                <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Meresp1" readonly>
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-14">Fill Source</label>
+              <div class="w-40">
+                <!--<input type="text" class="form-control event-font" id="inputPassword" formControlName="Fsource"> -->
+                <ng-select type="text" [readonly]="isEndedDisabled" (change)="FillSourcedata(administratiForm.value.Administrator)"
+                  formControlName="Fsource" class="event-font input-data" id="inputPassword">
+                  <ng-option *ngFor=" let administeredDrugReason  of
+                  FillSource" [value]="administeredDrugReason.Fsource">
+                    {{ administeredDrugReason.Fsource }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="mb-1 d-flex">
+              <label for="inputPassword" class=" col-form-label w-12">Witnessed by</label>
+              <div class="w-40">
+                <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Meresp2" readonly>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <!-- not admin -->
+          <div class="mt-2" *ngIf="notadministered" formGroupName="NotAdminister">
+            <div class="mb-1 d-flex justify-content-between">
+              <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
+              <div class="w-47 mr-3">
+                <div class="d-flex">
+                  <div class=" w-100">
+                    <input type="text" class="form-control event-font" id="inputPassword" formControlName="Rdrugdq" readonly>
+                  </div>
+                  <div class="ml-1 w-100">
+                    <input type="text" class="form-control event-font" id="inputPassword" formControlName="Quanunit" readonly>
+                  </div>
+                </div>
+              </div>
+              <label for="inputPassword" class=" col-form-label w-15">Change Reason</label>
+              <div class="w-40">
+                <ng-select formControlName="Rdosdif" class=" event-font input-data" id="inputPassword" (click)="this.AdministerDoseReason()">
+                  <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
+                    {{ administeredReason.Descr }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <!-- <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Reason</label>
+              <div class="" style="width: 85.5%;
+          margin-left: 43px;">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Adnotestx">
+              </div>
+            </div> -->
+            <div class="mb-1 d-flex">
+              <label for="inputPassword" class=" col-form-label w-12">Comments</label>
+              <div class="" style="width: 88.5%;">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Adnotestx">
+              </div>
+            </div>
+            <div class="mb-1 d-flex">
+              <label for="inputPassword" class=" col-form-label w-12">Admin User </label>
+              <div class="w-40">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Meresp1" readonly>
+              </div>
+            </div>
+            <div class="mb-1 d-flex">
+              <label for="inputPassword" class=" col-form-label w-12">Witnessed by</label>
+              <div class="w-40">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Meresp2" readonly>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <!-- drug return -->
+          <div class="mt-2" *ngIf="drugreturn" formGroupName="DrugAdminister">
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Return Qty</label>
+              <div class="col-sm-5 ml-4">
+                <input type="number" class="form-control event-font" id="inputPassword" formControlName="Pamount">
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-11">Return Unit</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Pamountu">
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Return Reason</label>
+              <div class="" style=" width: 72%;
+          margin-left: 17px;">
+                <!-- <input type="text" class="form-control" id="inputPassword" formControlName="Rcodeid"> -->
+                <ng-select type="text" formControlName="Rcodeid" class="event-font input-data" id="inputPassword">
+                  <ng-option *ngFor=" let administeredDrugReason  of
+                  DrugReason" [value]="administeredDrugReason.Rcodeid">
+                    {{ administeredDrugReason.Descr }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Request Status</label>
+              <div class="col-sm-5">
+                <!-- <input type="text" class="form-control event-font" id="inputPassword" formControlName="Status"> -->
+                <ng-select type="text" formControlName="Status"
+                  class="event-font input-data" id="inputPassword">
+                  <ng-option *ngFor=" let administeredDrugReason  of
+                  RequestStatus" [value]="administeredDrugReason.Dvalue">
+                    {{ administeredDrugReason.Dtext }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-9">Fill Source</label>
+              <div class="col-sm-4">
+                <!-- <input type="text" class="form-control event-font" id="inputPassword" formControlName="Fsource"> -->
+                <ng-select type="text" (change)="FillSourcedata(administratiForm.value.DrugAdminister)" formControlName="Fsource"
+                  class="event-font input-data" id="inputPassword">
+                  <ng-option *ngFor=" let administeredDrugReason  of
+                  FillSource" [value]="administeredDrugReason.Fsource">
+                    {{ administeredDrugReason.Fsource }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class="col-form-label ml-3">Material Code</label>
+              <div class="col-sm-5" style="margin-left: 7px;">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Material" readonly>
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-9">Batch #</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Batch" readonly>
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">User Name</label>
+              <div class="col-sm-5" style="margin-left: 24px;">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Empid" readonly>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <!-- addition supply -->
+          <div class="mt-2" *ngIf="addsupply" formGroupName="AdditionalSupply">
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Request Date</label>
+              <div class="col-sm-5 ml-2">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Pdate"
+                  [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY'}" bsDatepicker>
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-11">Request Time</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control event-font pull-right" id="inputPassword" formControlName="Ptime"
+                  [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'HH:mm:ss', selectFromOtherMonth: true}" bsDatepicker
+                  [isDisabled]="true">
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Request Reason</label>
+              <div class="" style=" width: 80%;
+          margin-left: 8px;">
+                <!-- <input class="form-control" id="inputPassword"> -->
+                <ng-select type="text" formControlName="Rcodeid" class="event-font input-data" id="inputPassword" (click)="this.RequestReasonaction()">
+                  <ng-option *ngFor=" let administeredReason  of
+                  ReasonSet" [value]="administeredReason.Rcodeid">
+                    {{ administeredReason.Descr }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Request Qty</label>
+              <div class="col-sm-5" style="margin-left: 14px;">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Pamount">
+              </div>
+
+              <label for="inputPassword" class=" col-form-label w-11">Request Unit</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Pamountu">
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">User Name</label>
+              <div class="col-sm-5" style="margin-left: 24px;">
+                <input type="text" class="form-control event-font" id="inputPassword" formControlName="Empid" readonly>
+              </div>
+            </div>
+            <div class="mb-1 row">
+              <label for="inputPassword" class=" col-form-label ml-3">Ward OU</label>
+              <div class="col-sm-5" style="margin-left: 32px;">
+                <!-- <input type="text" class="form-control event-font" id="inputPassword" formControlName="Nursingou"> -->
+                <ng-select class="event-font input-data" formControlName="Nursingou">
+                  <ng-option *ngFor=" let administrativeOrdering of
+                        AdminiOrderingList" [value]="administrativeOrdering.Orgid">
+                    {{ administrativeOrdering.Orgna}}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <div class=" d-flex justify-content-end p-3 position-absolute position-dru">
+            <button class="save-risk d-flex
+          align-items-center mr-2" (click)="Administerdata()">Save</button>
+            <button class="save-risk d-flex align-items-center" (click)="modalRef.hide()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<app-emar-witness #Witnessid></app-emar-witness>

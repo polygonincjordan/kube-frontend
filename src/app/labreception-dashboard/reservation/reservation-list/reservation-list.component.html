@@ -1,0 +1,92 @@
+<div class="order-templete-main mt-3">
+  <div class="toggle" (click)="addNewConsumable()">
+    <img title="Visits & Admissions Timeline" src="assets/img/add-circle.svg" class="ng-star-inserted" />
+  </div>
+  <form [formGroup]="reservationForm">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th colspan="1" scope="col">
+            <div class="d-flex align-items-center">
+              <div class="position-relative label-with-check w-100">
+                <input type="checkbox" class="position-absolute" formControlName="isAllSelected"
+                  (change)="isAllchecked($event)" [checked]="reservationForm.value.isAllSelected" style="margin-top: 5px;margin-left: 2px;">
+                <span class="d-inline-block bg-white mr-2 align-bottom"></span>
+              </div>
+            </div>
+          </th>
+          <th colspan="1" scope="col">Material</th>
+          <th colspan="1" scope="col">Quantity</th>
+          <th colspan="1" scope="col">Unit of Entry (UnE)</th>
+          <th colspan="1" scope="col">Plant</th>
+          <th colspan="1" scope="col">Issuing Storage Location</th>
+          <th colspan="1" scope="col">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>Action</div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <ng-container formGroupName="reservationToItem"
+        *ngIf="reservationForm.get('reservationToItem').get('results')['controls'] && reservationForm.get('reservationToItem').get('results')['controls'].length">
+        <tbody formArrayName="results">
+          <ng-container
+            *ngFor="let product of reservationForm.get('reservationToItem').get('results')['controls']; let i = index"
+            [formGroupName]="i">
+            <tr>
+              <td>
+                <div class="d-flex  align-items-center">
+                  <div class="position-relative label-with-check w-100">
+                    <input type="checkbox" class="position-absolute" formControlName="isSelected"
+                      [checked]="product.value.isSelected" (change)="isSelectedItem()" style="margin-top: 10px;margin-left: 4px;">
+                    <span class="d-inline-block bg-white mr-2 align-bottom"></span>
+                  </div>
+                </div>
+              </td>
+              <td colspan="1">
+                <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
+                  [clearable]="true" [searchable]="true" formControlName="Matnr"
+                  (search)="searchMaterial($event.term, wordType.MaterialCode$, i)"
+                  [title]="product.get('Matnr').value?.Maktx" (change)="setValueOfUnit($event,i)">
+                  <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
+                    {{item.Maktx}}</ng-option>
+                </ng-select>
+              </td>
+              <td colspan="1">
+                <input class="form-control" type="text" numbersOnly formControlName="Menge"
+                  [title]="product.value.Menge" required>
+                <div *ngIf="reservationForm.get('reservationToItem.results')['controls'][i].get('Menge').invalid &&
+                    reservationForm.get('reservationToItem.results')['controls'][i].get('Menge').touched"
+                  class="text-danger">
+                  Quantity is required.
+                </div>
+              </td>
+              <td colspan="1">
+                <input class="form-control" type="text" formControlName="Meins" [title]="product.value.Meins"
+                  [disabled]="true" [readOnly]="true">
+              </td>
+              <td colspan="1">
+                <input class="form-control" type="text" formControlName="plant" [title]="product.value.plant"
+                  [disabled]="true" [readOnly]="true">
+              </td>
+              
+              <td colspan="1">
+                <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
+                  [clearable]="true" [searchable]="true" formControlName="sloc" [title]="product.value.sloc">
+                  <ng-option *ngFor="let item of storageLocationList" [value]="item.Lgort">
+                    <span [title]="item.Lgort + '-' + item.Lgobe">
+                    {{ item.Lgort }} - {{ item.Lgobe }}
+                    </span>
+                  </ng-option>
+                </ng-select>
+              </td>
+              <td colspan="1" class="d-flex justify-content-center">
+                <img [src]="'assets/img/Delete.svg'" class="all-notes cursor-pointer" (click)="removeRow($event, i)" />
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </ng-container>
+    </table>
+  </form>
+</div>

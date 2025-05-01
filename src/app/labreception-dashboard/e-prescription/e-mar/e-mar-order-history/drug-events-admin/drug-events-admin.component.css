@@ -1,0 +1,96 @@
+.events-leftbar-inactive {
+    box-shadow: 2px 2px 6px 3px skyblue;
+    height: 34px;
+    border-radius: 13px;
+    text-align: center;
+    line-height: 34px;
+  }
+  
+  .events-leftbar-active {
+    box-shadow: 2px 2px 6px 3px skyblue;
+    height: 34px;
+    border-radius: 13px;
+    text-align: center;
+    line-height: 34px;
+    background: linear-gradient(180deg, #2758fd, #2856fa 60%, #2144c8 85%) !important;
+    color: white !important;
+  }
+  
+  .event-font {
+    font-size: 11px;
+    font-weight: bold;
+  }
+  
+  ::ng-deep .input-data .ng-select-container {
+    border-radius: 5px !important;
+  }
+  
+  ::ng-deep .ep-error-message,
+  .ep-error-message .ng-select-container {
+    border-color: red !important;
+  }
+  
+  .modal-hidden {
+    height: 472px;
+  }
+  
+  .mar-data {
+    margin-left: -5px;
+  }
+  
+  .data {
+    margin-right: 10px;
+  }
+  
+  .drug-hight {
+    height: 372px;
+  }
+  
+  .position-dru {
+    bottom: 0;
+    right: 0;
+  }
+  
+  .color-data {
+    background: #fff;
+    border: none;
+    color: black;
+  }
+  
+  .span-dr {
+    line-height: 34px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  .form-dru {
+    width: 87%;
+  }
+  
+  
+  @media only screen and (max-width: 1880px) {
+    .dose-data {
+      margin-left: 3px !important;
+    }
+  
+    .form-dru {
+      width: 85% !important;
+    }
+  }
+  
+  @media only screen and (max-width: 1542px) {
+    .dose-data {
+      margin-left: 11px !important;
+    }
+  
+    .form-dru {
+      width: 84% !important;
+    }
+  }
+  
+  @media only screen and (max-width: 1880px) {
+    .addMedia {
+      width:14% !important ;
+    }
+  }
+  

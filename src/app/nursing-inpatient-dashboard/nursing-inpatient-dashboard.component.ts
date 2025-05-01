@@ -148,6 +148,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   dropdownSettingsForSpeciality = {};
   actionTypeSubscription$: Subscription;
   phyOrderRoomsList: any;
+  phyWardList: any;
   updatedDate: any;
   modalRef: BsModalRef;
   reservation: boolean = false;
@@ -182,6 +183,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       wardNo: [''],
       patientStatus: [''],
       Physician: [''],
+      FWard: [''],
+      RoomidText: ['']
     });
     this.singleData = this.formBuilder.group({
       fromDate:[new Date()]
@@ -190,6 +193,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       wardNo: [''],
       patientStatus: [''],
+      Floor: [''],
     });
     this.dropdownSettingsForSpecialty = {
       singleSelection: false,
@@ -872,6 +876,15 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         (accumulator: string[], currentValue) => {
           if (!accumulator.includes(currentValue.RoomidText)) {
             accumulator.push(currentValue.RoomidText);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.phyWardList = this.labReceivedData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue.Floor)) {
+            accumulator.push(currentValue.Floor);
           }
           return accumulator;
         },
