@@ -148,18 +148,18 @@ export class MedicalReportComponent implements OnInit,OnChanges {
           error: (err: any) => {
             this.sharedService.waringSwallModel(`Error ${err}`);
             this.sharedService.waringSwallModel(
-              `PUT Error at Correspondence document : ${err}`
+              `PUT Error at Medical Report : ${err}`
             );
           },
           complete: () => {
             resolve(true);
             if (actiontype === 'edit') {
               this.sharedService.successSwallModel(
-                'Correspondence document updated successfully'
+                'Medical Report updated successfully'
               );
             } else {
               this.sharedService.successSwallModel(
-                'Correspondence document created successfully'
+                'Medical Report created successfully'
               );
             }
           },
@@ -182,18 +182,18 @@ export class MedicalReportComponent implements OnInit,OnChanges {
           error: (err: any) => {
             this.sharedService.waringSwallModel(`Error ${err}`);
             this.sharedService.waringSwallModel(
-              `PUT Error at Medical Report document : ${err}`
+              `PUT Error at Medical Report : ${err}`
             );
           },
           complete: () => {
             resolve(true);
             if (actiontype === 'edit') {
               this.sharedService.successSwallModel(
-                'Medical Report document updated successfully'
+                'Medical Report updated successfully'
               );
             } else {
               this.sharedService.successSwallModel(
-                'Medical Report document created successfully'
+                'Medical Report created successfully'
               );
             }
           },
@@ -215,18 +215,18 @@ export class MedicalReportComponent implements OnInit,OnChanges {
           error: (err: any) => {
             this.sharedService.waringSwallModel(`Error ${err}`);
             this.sharedService.waringSwallModel(
-              `PUT Error at Medical Report document : ${err}`
+              `PUT Error at Medical Report : ${err}`
             );
           },
           complete: () => {
             resolve(true);
             if (actiontype === 'edit') {
               this.sharedService.successSwallModel(
-                'Medical Report document updated successfully'
+                'Medical Report updated successfully'
               );
             } else {
               this.sharedService.successSwallModel(
-                'Medical Report document created successfully'
+                'Medical Report created successfully'
               );
             }
           },

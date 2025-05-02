@@ -82,6 +82,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   noReleaseDoc: boolean = false;
   rxEmr: boolean = false;
   isShowRooms: boolean = false;
+  isShowWards: boolean = false;
   showfilter = false;
   selectedModule: any;
   currentDate: Date;
@@ -729,6 +730,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   showRooms() {
     this.CheckInComponent.showAllRooms(this.isShowRooms);
   }
+  showWards() {
+    this.CheckInComponent.showAllWards(this.isShowWards);
+  }
 
   countForPhysicianOrder() {
     let jsonObj = {
@@ -769,11 +773,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         },
         []
       );
-
       this.filterBehraumList = this.labReceivedData.reduce(
         (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue.Behraum)) {
-            accumulator.push(currentValue.Behraum);
+          if (!accumulator.includes(currentValue.RoomidText)) {
+            accumulator.push(currentValue.RoomidText);
           }
           return accumulator;
         },
@@ -883,8 +886,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       );
       this.phyWardList = this.labReceivedData.reduce(
         (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue.Floor)) {
-            accumulator.push(currentValue.Floor);
+          if (!accumulator.includes(currentValue.AttendingDoctorName)) {
+            accumulator.push(currentValue.AttendingDoctorName);
           }
           return accumulator;
         },
