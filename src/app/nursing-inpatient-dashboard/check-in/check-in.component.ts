@@ -843,7 +843,18 @@ export class CheckInComponent implements OnInit {
       this.inHospitalistListDeepClone = this.inHospitalistListClone;
       this.sendErPatientCount.emit(this.inHospitalistList.length);
     } else {
-      this.inHospitalistList = this.inHospitalistListClone.filter(item => item.Roomid && item.Bedid);
+      this.inHospitalistList = this.inHospitalistListClone.filter(item => item.Roomid);
+      this.inHospitalistListDeepClone = this.inHospitalistList;
+      this.sendErPatientCount.emit(this.inHospitalistList.length);
+    }
+  }
+  showAllWards(isShowWards?: any) {
+    if(isShowWards) {
+      this.inHospitalistList = this.inHospitalistListClone;
+      this.inHospitalistListDeepClone = this.inHospitalistListClone;
+      this.sendErPatientCount.emit(this.inHospitalistList.length);
+    } else {
+      this.inHospitalistList = this.inHospitalistListClone.filter(item => item.Floor);
       this.inHospitalistListDeepClone = this.inHospitalistList;
       this.sendErPatientCount.emit(this.inHospitalistList.length);
     }

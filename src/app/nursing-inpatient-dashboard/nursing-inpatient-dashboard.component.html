@@ -359,6 +359,10 @@
     <input style="width: 16px;" type="checkbox" [(ngModel)]="isShowRooms" [value]="false" (change)="showRooms()" />
     <label class="m-0" >All Rooms </label>
   </span>
+  <span *ngIf="checkin" style="display: flex;font-size: 16px;margin-right: 13px;gap: 8px;" title="Show Patients Without Assigned Wards">
+    <input style="width: 16px;" type="checkbox" [(ngModel)]="isShowWards" [value]="false" (change)="showWards()" />
+    <label class="m-0" >All Wards </label>
+  </span>
   <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i>
     <i
       class="fa fa-filter"
@@ -652,7 +656,7 @@
             </ng-option>
           </ng-select>
         </div>
-        <div>
+        <!-- <div>
           <p style="margin: auto; margin-top: 5px">Room</p>
           <ng-select
             class=""
@@ -664,7 +668,7 @@
               {{ item.Status }}
             </ng-option>
           </ng-select>
-        </div>
+        </div> -->
         <!-- <p style="margin: auto; margin-top: 5px">Creation Date</p>
       <div class="date-function" style="background: #dee5ea;
 
@@ -855,11 +859,12 @@
           id="inputGroupSelect02"
           formControlName="Floor"
         >
+        <option selected value="">Choose Attending Physician</option>
           <option [value]="item" *ngFor="let item of phyWardList">
             {{ item }}
           </option>
         </select>
-        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
+        <!-- <p style="margin: auto; margin-top: 5px">Attending Physician</p>
         <select
           class="custom-select"
           id="inputGroupSelect02"
@@ -869,7 +874,7 @@
           <option [value]="item" *ngFor="let item of filterBehpersonList">
             {{ item }}
           </option>
-        </select>
+        </select> -->
         <div
           style="display: flex; justify-content: space-around; margin-top: 10px"
         >
@@ -1106,6 +1111,7 @@
   ></app-physician-orders-list>
   <app-administered-doses
     *ngIf="AdministeredDoses"
+    (dataToParent)="receiveDataFromPhysicianOrdersChild($event)"
     (sendErPatientCount)="collectErHistPatientCount($event)"
     style="width: calc(100% - 60px)"
   ></app-administered-doses>
