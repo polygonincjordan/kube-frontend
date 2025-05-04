@@ -14,7 +14,9 @@ export enum UserType {
   DIYNurse = 'DIYNurse',
   DayCaseNurse = 'DCNurse',
   NursingInpatient = 'IPNurse',
-  SeniorNurse = 'SeniorNurse'
+  SeniorNurse = 'SeniorNurse',
+  LabReception = 'LabReception',
+  Radiologist = 'Radiologist',
 }
 
 export enum ActionType {

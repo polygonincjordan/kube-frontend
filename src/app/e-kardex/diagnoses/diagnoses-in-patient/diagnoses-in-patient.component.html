@@ -53,7 +53,6 @@
         <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteMedicalReporteDoc(selectedPatient?.Dockey)">Delete</button>
         <button type="button"(click)="closeInPatientForm()">Close</button>
       </div>
-
     </div>
     <ng-container *ngIf="inPatientFormInput === 'OPERT'">
       <form [formGroup]="inPatientDataSet">

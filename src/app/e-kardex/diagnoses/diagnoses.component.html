@@ -137,8 +137,8 @@
             </div>
               <div class="bottom">
                 <button type="button" (click)="selectedPatient ? updateMedicalReport() : saveMedicalReport()">Save</button>
-                <button (click)="releaseMedicalReport()" *ngIf="selectedPatient?.DokstText == 'In Work'">Release</button>
-                <button type="button" *ngIf="selectedPatient?.DokstText == 'In Work'" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
+                <button (click)="releaseMedicalReport()" *ngIf="selectedPatient">Release</button>
+                <button type="button" *ngIf="selectedPatient" (click)="deleteCorrespondenceDoc(selectedPatient?.Dockey)">Delete</button>
                 <button (click)="updateForm(false)">Close</button>
               </div>
             </div>

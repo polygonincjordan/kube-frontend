@@ -44,6 +44,7 @@ export class DocumentationListComponent implements OnInit {
   @Input() isDocumentTypeFilter: boolean;
   @Input() isExpanded;
   currentVisitDocumet: any = [];
+  currentVisitDocumetClone: any = [];
   patientProfileDocumet: any = [];
   documentTypeFilter = [];
 
@@ -409,6 +410,21 @@ export class DocumentationListComponent implements OnInit {
     return [...new Set(array)];
   }
 
+  documentFilter(event) {
+    console.log(event);
+    if(event) {
+      this.currentVisitDocumet = this.currentVisitDocumetClone.filter((element) => {
+        if (event == element.Dtid) {
+          return element;
+        }
+      });
+    } else {
+      this.currentVisitDocumet = this.currentVisitDocumetClone
+    }
+    console.log(this.currentVisitDocumet, "this.currentVisitDocumet");
+
+  }
+
   sort() {
     this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
     this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
@@ -515,6 +531,7 @@ export class DocumentationListComponent implements OnInit {
       )
       .subscribe((data: any) => {
         if (type == '2') {
+          this.currentVisitDocumetClone = data?.d.results;
           this.currentVisitDocumet = data?.d.results;
         } else {
           this.documentTypeFilterValueClone = data?.d.results;

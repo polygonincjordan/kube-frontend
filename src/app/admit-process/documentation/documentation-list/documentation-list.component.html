@@ -2,8 +2,14 @@
   <div class="col-md-6">
     <div class="document-contant">
       <div class="document-header">
-        <img width="30" src="assets/img/info-document.png" />
-        <h6 class="font-weight-bold ml-3">Current visit document</h6>
+        <div class="d-flex align-items-center">
+          <img width="30" src="assets/img/info-document.png" />
+          <h6 class="font-weight-bold ml-3">Current visit document</h6>
+        </div>
+        <ng-select class="w-30" [searchable]="true" placeholder="Document Type" (change)="documentFilter($event)">
+          <ng-option *ngFor="let data of this.admissionService.documentTypeFilter" [value]="data.Dtid">{{
+          data.DtidText }}</ng-option>
+        </ng-select>
       </div>
       <div class="document-detail-list">
         <ng-container *ngFor="let item of currentVisitDocumet | filter: searchString; let i = index ">

@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private storageService: StorageService) { }
 
   canActivate(): boolean {
-    if (!this.storageService.isLoggedIn() || !(this.storageService.getKubeRule() == UserType.SeniorHospitalist) && !(this.storageService.getKubeRule() == UserType.Physician) && !(this.storageService.getKubeRule() == UserType.FloorHospitalist) && !(this.storageService.getKubeRule() == UserType.SeniorPhysician)) {
+    if (!this.storageService.isLoggedIn() || !(this.storageService.getKubeRule() == UserType.SeniorHospitalist) && !(this.storageService.getKubeRule() == UserType.Physician) && !(this.storageService.getKubeRule() == UserType.FloorHospitalist) && !(this.storageService.getKubeRule() == UserType.SeniorPhysician) && !(this.storageService.getKubeRule() == UserType.Radiologist) && !(this.storageService.getKubeRule() == UserType.LabReception)) {
       localStorage.clear();
       this.router.navigateByUrl('');
     }
