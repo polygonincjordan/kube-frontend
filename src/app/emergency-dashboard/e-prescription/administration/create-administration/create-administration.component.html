@@ -119,13 +119,13 @@
                           <span class="input-text-field d-inline-block align-top
                             w-100
                             font-weight-bolder">
-                            <ng-select [appendTo]="'body'" [searchable]="true" formControlName="Quanunit" [ngClass]="item.touched &&
+                            <ng-select [searchable]="true" [appendTo]="'body'" formControlName="Quanunit" [ngClass]="item.touched &&
                               item.get('Quanunit').errors &&
                               isFormSubmitted ?
                               'ep-error-message': ''" [readonly]="item.value.Complex" [disabled]="item.value.Complex" (change)="onChangeDosageUnit(item.get('AgentidResult').value,
                               $event, i)">
                               <ng-option *ngFor=" let medicationDosageUnit of
-                                item.get('AgentidResult').value" [value]="medicationDosageUnit.Meinh">
+                                item.get('AgentidResult').value" [value]="medicationDosageUnit">
                                 {{ medicationDosageUnit.OptionField }}
                               </ng-option>
                             </ng-select>

@@ -97,6 +97,8 @@ export class AdministeredDosesComponent implements OnInit{
   cartPopUpDetail: any;
   drugArray:any;
   checkValue:boolean = true;
+  private indexOfReceive:number;
+  private itemOfReceive:any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -192,6 +194,13 @@ export class AdministeredDosesComponent implements OnInit{
     this.emergencyService.getReceviceCart(fromDate,toDate,timeFrom,timeTo,data.nurseUnit).subscribe((res:any)=>{
      if(res){
       this.cartList = res.d?.results
+      if(this.itemOfReceive && this.indexOfReceive){
+        let data = this.cartList.find((item)=>{
+          return item.Cartid==this.itemOfReceive.Cartid;
+        });
+        this.selectedColData = undefined;
+        this.selectDateColumn(this.indexOfReceive,data)
+      }
      }
     },(_error: any) => {})
   }
@@ -265,6 +274,9 @@ export class AdministeredDosesComponent implements OnInit{
      if(e.isChecked){
       delete e.isChecked;
       this.emergencyService.addReceviceCart(e).subscribe((res:any)=>{
+        if(res){
+          this.getReceviceCartList();
+        }
       },( error: any)=>{})
      }
 
@@ -278,6 +290,9 @@ export class AdministeredDosesComponent implements OnInit{
        delete e.isChecked;
        e.Missed = "X";
        this.emergencyService.addReceviceCart(e).subscribe((res:any)=>{
+        if(res){
+          this.getReceviceCartList();
+        }
        },( error: any)=>{})
       }
     })
@@ -300,10 +315,14 @@ export class AdministeredDosesComponent implements OnInit{
     if (this.selectedColData === index) {
       this.selectedColData = undefined;
       this.cardSection= false
+      this.indexOfReceive =  null;
+      this.itemOfReceive =  null;
     } else {
       this.selectedColData = index;
       this.cardSection= true
       this.childCartDetails = data;
+      this.indexOfReceive =  index;
+      this.itemOfReceive =  data;
     }
   }
   getDate(value) {
