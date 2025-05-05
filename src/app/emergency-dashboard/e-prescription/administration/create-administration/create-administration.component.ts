@@ -265,7 +265,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           Result_Drug_Name: event.data.Drugname,
           Formatdescr: event.data.Formatdescr,
           // Routedescr: event.data.Routedescr,
-          Agentid: event.data.Agentid,
+          // Agentid: event.data.Agentid,
           Drugid: event.data.Drugid
         });
       });
@@ -280,8 +280,10 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
               }
             });
             this.drugArray.controls[event.index].patchValue({
+              Agentid:resp.body.d.results[0].Agentid ? resp.body.d.results[0].Agentid : '',
               AgentidResult: resp.body.d.results,
-              Quanunit: resp.body.d.results[0].Meinh,
+              Quanunit: resp.body.d.results[0],
+              // Quanunit: resp.body.d.results[0]Meinh,
               Quan: resp.body.d.results[0].Quant && parseInt(resp.body.d.results[0].Quant) === Number(resp.body.d.results[0].Quant) ? parseInt(resp.body.d.results[0].Quant) : Number(resp.body.d.results[0].Quant)
             });
           }
@@ -313,7 +315,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   }
 
   onChangeDosageUnit(data: any, event: any, index: number) {
-    const selectedDosage = data.find(d => d.Meinh === event)
+    // const selectedDosage = data.find(d => d.Meinh === event)
+    const selectedDosage = data.find(d => d.Agentid === event.Agentid)
+
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
       this.drugArray.controls[index].patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
@@ -321,7 +325,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       })
     } else {
       this.drugArray.controls[index].patchValue({
-        Agentid: this.defaultAgentId
+        Agentid: ""
+        // Agentid: this.defaultAgentId
       })
     }
   }
@@ -335,7 +340,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }
       event.forEach(element => {
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-        this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
+        this.onChangeDosageUnit(data, element, index)
+        // this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
       });
       this.drugArray.controls[index].patchValue({
         Quan: Math.floor(event[0].deftimDose),
@@ -361,7 +367,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[0].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
+        this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`), Agentid:this.drugArray.value[index].Agentid }]);
         const selectedData = [];
         if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
           selectedData.push("0(08:00)")
@@ -605,6 +611,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.Orgfa = this.addministrationService.medicationAdministrative.OrderingDept,
             element.Orgpf = this.addministrationService.medicationAdministrative.OrderingTo,
             element.Dosdef = element.deftimcycleData && element.deftimcycleData.length ? element.Dosdef : "";
+            element.Quanunit = element?.Quanunit?.Meinh ? element?.Quanunit?.Meinh : element?.Quanunit;
           delete element.Formatdescr;
           delete element.Result_Drug_Name;
           delete element.IsmoDetails;
@@ -855,7 +862,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
                     Drugid: validData.Drugid,
                     Seqno: "1",
                     Quan: validData.Quan,
-                    Quanunit: validData.Quanunit,
+                    Quanunit: validData?.Quanunit?.Meinh ? validData?.Quanunit?.Meinh : validData?.Quanunit,
+                    // Quanunit: validData.Quanunit,
                     N1znr: validData.N1znr,
                     Pdur: validData.Pdur,
                     Pduru: validData.Pduru !== null ? validData.Pduru : null,
@@ -878,7 +886,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
                   Drugid: validData.Drugid,
                   Seqno: "1",
                   Quan: validData.Quan,
-                  Quanunit: validData.Quanunit,
+                  Quanunit: validData?.Quanunit?.Meinh ? validData?.Quanunit?.Meinh : validData?.Quanunit,
+                  // Quanunit: validData.Quanunit,
                   N1znr: validData.N1znr,
                   Pdur: validData.Pdur,
                   Pduru: validData.Pduru !== null ? validData.Pduru : null,
@@ -989,4 +998,3 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     if (this.subscription) { this.subscription.unsubscribe(); }
   }
 }
-
