@@ -826,10 +826,10 @@ export class CheckInComponent implements OnInit {
 
         let IPList: any[] = patientList;
         this.inHospitalistList = IPList.filter(item => item.PatientstatusDischarged !== 'X');
-        this.inHospitalistList = IPList.filter(item => item.Roomid && item.Bedid);
+        this.inHospitalistList = IPList.filter(item => item.Roomid && item.Floor);
         let IPListClone: any[] = patientList;
         this.inHospitalistListClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X');
-        this.inHospitalistListDeepClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X' && item.Roomid && item.Bedid);
+        this.inHospitalistListDeepClone = IPListClone.filter(item => item.PatientstatusDischarged !== 'X' && item.Roomid && item.Floor);
         this.sendErPatientCount.emit(this.inHospitalistList.length);
         this.dataToParent.emit(this.inHospitalistListClone);
         this.lastIndex = this.inHospitalistList.length - 1;

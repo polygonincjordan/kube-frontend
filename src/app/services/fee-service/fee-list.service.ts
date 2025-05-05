@@ -2529,6 +2529,11 @@ export class FeeListService {
         success = JSON.parse(resp._body);
       }
       if (success.d.results.length > 0) {
+        success.d.results.sort((a, b) => {
+          let dateA = new Date(parseInt(a.Ibgdt.replace("/Date(", "").replace(")/", ""), 10));
+          let dateB = new Date(parseInt(b.Ibgdt.replace("/Date(", "").replace(")/", ""), 10));
+          return dateB.getTime() - dateA.getTime(); // recent date first
+        });
         success.d.results.forEach((obj: any) => {
           obj.date = this.getDate(obj.Ibgdt) ? this.datePipe.transform(this.getDate(obj.Ibgdt).toString().replace(/\//g, ''), 'yyyy-MM-dd') : this.datePipe.transform(new Date(), 'yyyy-MM-dd');
           obj.time = this.getDate(obj.Ibgdt) ? this.datePipe.transform(this.getDate(obj.Ibgdt).toString().replace(/\//g, ''), 'HH:mm') : this.datePipe.transform(new Date(), 'HH:mm');
@@ -2536,7 +2541,7 @@ export class FeeListService {
         this.historyOrders = success.d.results;
         this.spinner.hide();
       }
-    }, (_error: any) => {
+    }, (_error: any) => { 
       this.spinner.hide();
       // this._loader.hideLoader();
     });

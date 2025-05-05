@@ -97,7 +97,9 @@ export class InPatientDashboardComponent implements OnInit {
   dataOnTableForPhyOrder = [];
   getConfigToolWardList: any;
   getConfigToolSpecialtyList: any;
+  getConfigToolPhysicianList: any;
   specialtySelectForConfig = [];
+  attendingSelectForConfig = [];
   Admissions = false;
   Newadmissions = false;
   Planneddischarges = false;
@@ -146,6 +148,7 @@ export class InPatientDashboardComponent implements OnInit {
   physicianOrderPatientList: any[] = [];
   specialtyArraySplit: any;
   specialtyListConfig: any;
+  physicianArraySplit: any;
   inHospitalist: any[] = [];
   inLDRAttendPhyList: any;
   constructor(
@@ -361,6 +364,17 @@ export class InPatientDashboardComponent implements OnInit {
     return specialty;
   }
 
+  getPhysicianList(columnList) {
+    let physician = '';
+    columnList.forEach((element: any) => {
+      let specialtyConfigSplit = element.Fieldname.split("-");
+      if (specialtyConfigSplit[0] == "PhysicianConfig") {
+        physician = specialtyConfigSplit[1];
+      }
+    })
+    return physician;
+  }
+
   getConfigTools() {
     let jsonObj = {
       Compid: 'IPHOSP',
@@ -371,7 +385,9 @@ export class InPatientDashboardComponent implements OnInit {
         //_success = JSON.parse(_success._body);
         this.getConfigToolWardList = _success.d.results[0].Ward;
         let specialtyData = this.getSpecialtyList(_success.d.results[0].ConfigHeaderItem.results);
+        let physicianData = this.getPhysicianList(_success.d.results[0].ConfigHeaderItem.results);
         this.getConfigToolSpecialtyList = specialtyData;
+        this.getConfigToolPhysicianList = physicianData;
         this.loadData(_success.d.results[0].Ward, specialtyData);
         // this.loadDataWithAttendPhyList();
         this.getWardDataFromApi = _success.d.results[0].Ward;
@@ -563,6 +579,9 @@ export class InPatientDashboardComponent implements OnInit {
     let specialtyDetails: any = this.commaSeparatForSpecialtyConf(this.specialtySelectForConfig);
     this.postSelectedCol.push({ Variantid: '', Fieldname: `SpecialtyConfig-${specialtyDetails}` });
 
+    let attendingDetails: any = this.commaSeparatForAttendPhy(this.attendingSelectForConfig);
+    this.postSelectedCol.push({ Variantid: '', Fieldname: `PhysicianConfig-${attendingDetails}` });
+
     let jsonObj = {
       Variantid: this.Variantid,
       Varianrname: '',
@@ -618,6 +637,7 @@ export class InPatientDashboardComponent implements OnInit {
     this.showColumnsListView.Study_name_model = false;
     this.showColumnsListView.Speciality_model = true;
     this.postSelectedCol.push({ Variantid: '', Fieldname: "Speciality" });
+    this.postSelectedCol.push({ Variantid: '', Fieldname: "PhysicianConfig" });
     this.showColumnsListView.Isolation_model = true;
     this.postSelectedCol.push({ Variantid: '', Fieldname: "Isolation" });
     this.showColumnsListView.LOS_model = false;
@@ -640,9 +660,11 @@ export class InPatientDashboardComponent implements OnInit {
     this.showColumnsListView.Attending_Doctor = false;
     this.showColumnsListView.Case_Diagnosis = false;
     this.showColumnsListView.Case_Diagnosis_modal = false;
+    this.wardSelectForConfig = [];
+    this.specialtySelectForConfig = [];
+    this.attendingSelectForConfig = [];
     this.postSelectedCol.push({ Variantid: '', Fieldname: "Admission diagnosis" });
     // this.postSelectedCol.push({ Variantid: '5003', Fieldname: "Ward" });
-    this.wardSelectForConfig = [];
     this.saveConfigTools();
   }
 
@@ -661,7 +683,7 @@ export class InPatientDashboardComponent implements OnInit {
       patient: ['']
     });
 
-    this.inPatientListByFilter(ward, specialtyData);
+    this.inPatientListByFilter(ward, specialtyData, this.getConfigToolPhysicianList);
     this.getCountsByType(this.graphChartCountType);
   }
 
@@ -698,6 +720,7 @@ export class InPatientDashboardComponent implements OnInit {
       )
       .subscribe((data: any[]) => {
         this.inAttendPhyList = data;
+        console.log(this.inAttendPhyList, "inAttendPhyList")
         this.checkFormValueOnAttendPhyList();
       });
     // this.getCountsByType(this.graphChartCountType);
@@ -725,24 +748,24 @@ export class InPatientDashboardComponent implements OnInit {
     }
   }
 
-  inPatientListByFilter(ward?, specialtyData?) {
+  inPatientListByFilter(ward?, specialtyData?, getConfigToolPhysicianList?) {
     if (this.notExecutedPhysicianOrder) {
-      this.initialfilterData(ward, '05', specialtyData);
+      this.initialfilterData(ward, '05', specialtyData, this.getConfigToolPhysicianList);
       return
     }
 
     if (this.abnormalLabResult) {
-      this.initialfilterData(ward, '02', specialtyData);
+      this.initialfilterData(ward, '02', specialtyData, this.getConfigToolPhysicianList);
       return;
     }
 
     if (this.abnormalRadFindings) {
-      this.initialfilterData(ward, '03', specialtyData);
+      this.initialfilterData(ward, '03', specialtyData, this.getConfigToolPhysicianList);
       return;
     }
 
     if (this.missedMediDoses) {
-      this.initialfilterData(ward, '04', specialtyData);
+      this.initialfilterData(ward, '04', specialtyData, this.getConfigToolPhysicianList);
       return;
     }
 
@@ -754,12 +777,12 @@ export class InPatientDashboardComponent implements OnInit {
       // patient:''
       // })
       // this.form.reset();
-      this.initialfilterData(ward, '', specialtyData);
+      this.initialfilterData(ward, '', specialtyData, this.getConfigToolPhysicianList);
       return;
     }
   }
 
-  initialfilterData(ward?, type?, specialtyData?) {
+  initialfilterData(ward?, type?, specialtyData?, getConfigToolPhysicianList?) {
     this.searchString = '';
     let admittedFrom = '';
     let admittedTo = '';
@@ -769,6 +792,9 @@ export class InPatientDashboardComponent implements OnInit {
 
     if (ward) {
       wardNo = ward;
+    }
+    if (getConfigToolPhysicianList) {
+      physician = getConfigToolPhysicianList;
     }
 
     if (this.f.admittedFrom.value) {
@@ -831,6 +857,30 @@ export class InPatientDashboardComponent implements OnInit {
                 specialty: arraySpec
               })
 
+            }
+          }
+
+          if (getConfigToolPhysicianList) {
+            this.physicianArraySplit = physician;
+            this.attendingSelectForConfig = [];
+
+            this.inAttendPhyList.filter((element) => {
+              if (this.physicianArraySplit.includes(element.Gpart)) {
+                this.attendingSelectForConfig.push(element);
+              }
+            });
+            if (this.attendingSelectForConfig.length) {
+              let arraySpec = [];
+              this.attendingSelectForConfig.forEach((value) => {
+                if (this.inAttendPhyList.some(f => f.Gpart == value.Gpart))
+                  arraySpec.push({
+                    Gpart: value.Gpart,
+                    Name: value.Name
+                  });
+              });
+              this.form.patchValue({
+                patientStatus: arraySpec
+              })
             }
           }
         }
@@ -1053,7 +1103,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.missedMediDoses = false;
       this.notExecutedPhysicianOrder = false;
       this.notReleasedDoc = false;
-      this.inPatientListByFilter(this.getConfigToolWardList, this.getConfigToolSpecialtyList);
+      this.inPatientListByFilter(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       // this.initialPatientList(value);
       // this.getConfigTools();
       this.form.controls['admittedFrom'].enable();
@@ -1069,7 +1119,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.missedMediDoses = false;
       this.notExecutedPhysicianOrder = false;
       this.notReleasedDoc = false;
-      this.initialfilterData(this.getConfigToolWardList, '02', this.getConfigToolSpecialtyList);
+      this.initialfilterData(this.getConfigToolWardList, '02', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       // this.initialPatientList(value);
       // this.getConfigTools();
       this.form.controls['admittedFrom'].enable();
@@ -1086,7 +1136,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.notExecutedPhysicianOrder = false;
       this.notReleasedDoc = false;
       // this.initialPatientList(value);
-      this.initialfilterData(this.getConfigToolWardList, '03', this.getConfigToolSpecialtyList);
+      this.initialfilterData(this.getConfigToolWardList, '03', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       // this.getConfigTools();
       this.form.controls['admittedFrom'].enable();
       this.form.controls['admittedTo'].enable();
@@ -1104,7 +1154,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.notExecutedPhysicianOrder = false;
       this.notReleasedDoc = false;
       // this.initialPatientList(value);
-      this.initialfilterData(this.getConfigToolWardList, '04', this.getConfigToolSpecialtyList);
+      this.initialfilterData(this.getConfigToolWardList, '04', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       // this.getConfigTools('Missed_Medications_Doses');
       this.form.controls['admittedFrom'].enable();
       this.form.controls['admittedTo'].enable();
@@ -1135,7 +1185,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.abnormalRadFindings = false;
       this.missedMediDoses = false;
       this.notReleasedDoc = false;
-      this.initialfilterData(this.getConfigToolWardList, '05', this.getConfigToolSpecialtyList);
+      this.initialfilterData(this.getConfigToolWardList, '05', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       //this.initialPatientList(value, this.getConfigToolWardList);
       // this.getConfigTools('Not_Executed_Physician_Order');
       // this.form.controls['admittedFrom'].disable();
@@ -1167,33 +1217,33 @@ export class InPatientDashboardComponent implements OnInit {
   realoadTable(event) {
     if (event == 'Not_Executed_Physician_Order') {
       this.countOfNavModules();
-      this.initialfilterData(this.getConfigToolWardList, '05');
+      this.initialfilterData(this.getConfigToolWardList, '05', this.getConfigToolPhysicianList);
     }
 
     if (event === 'physicianOrder') {
-      this.initialfilterData(this.getConfigToolWardList, '05');
+      this.initialfilterData(this.getConfigToolWardList, '05', this.getConfigToolPhysicianList);
     }
 
     if (event === 'pdfTable') {
-      this.initialfilterData(this.getConfigToolWardList, '02');
+      this.initialfilterData(this.getConfigToolWardList, '02', this.getConfigToolPhysicianList);
     }
 
     if (event === 'radTable') {
-      this.initialfilterData(this.getConfigToolWardList, '03');
+      this.initialfilterData(this.getConfigToolWardList, '03', this.getConfigToolPhysicianList);
     }
   }
 
   reloadTable(event) {
     if (event == 'pdfTable') {
-      this.initialfilterData(this.getConfigToolWardList, '02');
+      this.initialfilterData(this.getConfigToolWardList, '02', this.getConfigToolPhysicianList);
     }
 
     if (event == 'radTable') {
-      this.initialfilterData(this.getConfigToolWardList, '03');
+      this.initialfilterData(this.getConfigToolWardList, '03', this.getConfigToolPhysicianList);
     }
 
     if (event == 'radTable') {
-      this.initialfilterData(this.getConfigToolWardList, '04');
+      this.initialfilterData(this.getConfigToolWardList, '04', this.getConfigToolPhysicianList);
     }
   }
   inPatientLDRListByFilter(){

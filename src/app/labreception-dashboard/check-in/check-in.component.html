@@ -25,27 +25,28 @@
             <th class="w-5" style="padding-left: 0px; text-align: center">
               Time <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
             </th>
-            <th class="w-5" style=" text-align: center">Risk</th>
-            <th class="w-5" style="text-align: center">
-              Allergy
-            </th>
-            <th class="w-5" style="text-align: center">
-              Vital
-            </th>
-            <th class="w-10" style="padding-left: 19px">
-              Speciality <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
-            </th>
             <th class="w-5" style="padding-left: 0px; text-align: center">
               Visit type <i class="fa fa-sort" aria-hidden="true" (click)="sort('Besuchsarttext')"></i>
             </th>
             <th class="w-8 pl-4">
               Status <i class="fa fa-sort" aria-hidden="true" (click)="sort('StatusTxt')"></i>
             </th>
-            <th class="w-6" style="padding-left: 0px">
-              Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
+            <th class="w-10" style="padding-left: 19px">
+              Speciality <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i>
             </th>
+            <!-- <th class="w-5" style=" text-align: center">Risk</th>
+            <th class="w-5" style="text-align: center">
+              Allergy
+            </th>
+            <th class="w-5" style="text-align: center">
+              Vital
+            </th>
+   -->
             <th class="w-10" style="padding-left: 33px">
               Attending Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
+            </th>
+            <th class="w-6" style="padding-left: 0px">
+              Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="sortCategory()"></i>
             </th>
             <th class="w-15" style="text-align: center">Actions</th>
           </tr>
@@ -68,7 +69,19 @@
               style="padding-left: 0px; text-align: center; vertical-align: middle;" [title]="getTime(item.ZeitIntern)">
               {{ getTime(item.ZeitIntern) }}
             </td>
-            <td class="border-left p-2"
+            <td class="border-top-none p-2">
+              {{item.Besuchsarttext}}
+            </td>
+            <td class="border-top-none p-1 p-2">
+              <span
+                [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start': '', item.StatusTxt == 'Called' ? 'status-called' : '']">
+                {{ item.StatusTxt }}
+              </span>
+            </td>
+            <td [title]="item.BehraumKb" class="border-top-none">
+              {{ item.Clinic }}
+            </td>
+            <!-- <td class="border-left p-2"
               [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : '' "
               style="vertical-align: middle;">
               <span>
@@ -85,31 +98,14 @@
             <td class="border-right p-2" scope="row" style="padding-left: 0px; vertical-align: middle;"
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
-            </td>
+            </td> -->
             <!-- (click)="openModalForErBed(item)" -->
-            <td [title]="item.BehraumKb" class="border-top-none">
-              {{ item.Clinic }}
-            </td>
+  
             <!-- <td class="border-top-none p-2">
               <ng-select class="d-grid soap-form-select" [addTag]="true" (change)="openModalForErBed(item)" [(ngModel)]="item.BehraumKb" [selectOnTab]="true" [clearable]="true" [editableSearchTerm]="true">
                   <ng-option [title]="item.BehraumKb" [value]="item.BehraumKb">{{item.BehraumKb}}</ng-option>
               </ng-select>
             </td> -->
-            <td class="border-top-none p-2">
-              {{item.Besuchsarttext}}
-            </td>
-            <td class="border-top-none p-1 p-2">
-              <span
-                [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start': '', item.StatusTxt == 'Called' ? 'status-called' : '']">
-                {{ item.StatusTxt }}
-              </span>
-              <!-- <ng-select class="d-grid soap-form-select" [(ngModel)]="item.StatusTxt" [addTag]="true"  [selectOnTab]="true" [clearable]="true" [editableSearchTerm]="true">
-                <ng-option [title]="item.StatusTxt" [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start': '', item.StatusTxt == 'Called' ? 'status-called' : '']">{{item.StatusTxt}}</ng-option>
-              </ng-select> -->
-            </td>
-            <td scope="row" [title]="item.ZzfinCat" class="border-top-none p-2 " style="vertical-align: middle;">
-              {{ item.ZzfinCat }}
-            </td>
             <td class="border-top-none p-2">
               <!-- <ng-select class="d-grid soap-form-select" [addTag]="true"  [selectOnTab]="true" [clearable]="true" [editableSearchTerm]="true">
                 <ng-option ></ng-option>
@@ -117,6 +113,9 @@
               <span>
                 {{item.Behpersname}}
               </span>
+            </td>
+            <td scope="row" [title]="item.ZzfinCat" class="border-top-none p-2 " style="vertical-align: middle;">
+              {{ item.ZzfinCat }}
             </td>
             <td class="border-left border-right p-2"
               [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">

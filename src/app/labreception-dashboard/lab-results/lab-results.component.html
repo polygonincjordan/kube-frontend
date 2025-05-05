@@ -8,19 +8,15 @@
         <table class="table checkin-table custom-table-striped">
           <thead>
             <tr class="checkin-table-header">
-              <th scope="col" style="padding-left: 11px;">
-                Created On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
-              </th>
-              <th scope="col" style="padding-left: 0px; ">
-                Created At <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
-              </th>
               <th scope="col" style="padding-left: 0px; ">
                 Patient Name
               </th>
               <th scope="col" style="padding-left: 0px; ">
                 MRN
               </th>
-              <th scope="col" style="padding-left: 0px;">Room/Bed</th>
+              <th scope="col" style="padding-left: 0px; ">
+                Case#
+              </th>
               <th scope="col" style="padding-left: 0px; ">
                 Order Description
               </th>
@@ -33,11 +29,18 @@
               <th scope="col" style="padding-left: 0px;">
                 Service Status
               </th>
-              <th scope="col" style="padding-left: 0px;">
-                Created by
-              </th>
               <th scope="col">
                 Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPhysician()"></i>
+              </th>
+              <th scope="col" style="padding-left: 11px;">
+                Created On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
+              </th>
+              <th scope="col" style="padding-left: 0px; ">
+                Created At <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatient1()"></i>
+              </th>
+              <!-- <th scope="col" style="padding-left: 0px;">Room/Bed</th> -->
+              <th scope="col" style="padding-left: 0px;">
+                Created by
               </th>
               <th scope="col">
                 Actions
@@ -47,18 +50,14 @@
           &nbsp;
           <tbody>
             <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-              <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" [ngClass]="" class="border-top-none" (click)="redirectToTreatByName(item)">
-                {{ getDate(item.Datum) | date : "dd.MM.y" }}
-              </td>
-              <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
               <td class="border-top-none" style="padding-left: 1px;">
                 {{ item.Patient }}
               </td>
               <td scope="row" class="border-top-none" style="padding-left: 1px;">
                 {{ item.Patnr }}
               </td>
-              <td scope="row" class="border-top-none">
-                {{ item.Zimmr }} {{ item.Bett }}
+              <td scope="row" class="border-top-none" style="padding-left: 1px;">
+                {{ item.Patnr }}
               </td>
               <td scope="row" class="border-top-none" style="padding-left: 1px;">
                 {{ item.Leitx }}
@@ -72,11 +71,18 @@
               <td class="border-top-none" style="padding-left: 1px;">
                 {{ item.Lststatus }}
               </td>
+              <td class="border-top-none" [title]="getTimeSinceOrdered(item)">
+                {{ getTimeSinceOrdered(item) }}
+              </td>
               <td class="border-top-none" style="padding-left: 1px;">
                 {{ item.Erusr }}
               </td>
-              <td class="border-top-none" [title]="getTimeSinceOrdered(item)">
-                {{ getTimeSinceOrdered(item) }}
+              <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" [ngClass]="" class="border-top-none" (click)="redirectToTreatByName(item)">
+                {{ getDate(item.Datum) | date : "dd.MM.y" }}
+              </td>
+              <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
+              <td scope="row" class="border-top-none">
+                {{ item.Zimmr }} {{ item.Bett }}
               </td>
               <td style="width: 1%" >
                 <div style="display: flex; justify-content: end; line-height: 14px">

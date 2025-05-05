@@ -143,6 +143,10 @@ export class LoginComponent implements AfterViewInit {
         });
     }  else if (getKubeRule == UserType.SeniorNurse) {
       this.router.navigate(['/nursing-inpatient-dashboard'], {});
+    }  else if (getKubeRule == UserType.LabReception) {
+      this.router.navigate(['/labreception-dashboard'], {});
+    }  else if (getKubeRule == UserType.Radiologist) {
+      this.router.navigate(['/radiologist'], {});
     }
   }
 }

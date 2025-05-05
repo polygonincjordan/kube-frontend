@@ -332,6 +332,10 @@
                       [placeholder]="'Choose Speciality'" [(ngModel)]="specialtySelectForConfig"
                       [data]="specialtyListConfig" (onSelect)="onItemSelect1($event)">
                     </ng-multiselect-dropdown>
+                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForAttendPhy"
+                      [placeholder]="'Choose Attending Physician'" [(ngModel)]="attendingSelectForConfig"
+                      [data]="inAttendPhyList" (onSelect)="onItemSelect1($event)">
+                    </ng-multiselect-dropdown>
                   </div>
                 </div>
               </div>

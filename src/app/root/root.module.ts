@@ -32,20 +32,20 @@ export const rootRoutes: Routes = [
   {
     path: 'radiologist',
     component: RootComponent,
-    // canActivate: [AuthEMRGuard],
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('../radiologist-dashboard/radiologist-dashboard.module').then((m) => m.RadiologistDashboardModule),
   },
   {
     path: 'radiologist-ekardex',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: RootComponent,
     loadChildren: () =>
       import('../radiologist-ekardex/radiologist-ekardex.module').then((m) => m.RadiologistEkardexModule),
   },
   {
     path: 'labreception-dashboard',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: RootComponent,
     loadChildren: () =>
       import('../labreception-dashboard/labreception-dashboard.module').then((m) => m.LabreceptionDashboardModule),

@@ -16,16 +16,17 @@
             <th scope="col" style="padding-left: 0px;text-align: center;">Date</th>
             <th scope="col" style="padding-left: 0px;text-align: center;min-width:50px">Time <i class="fa fa-sort ml-1"
                 aria-hidden="true" (click)="sortTime()"></i></th>
-            <th scope="col">Risk</th>
+            <th class="w-5" style="padding-left: 0px; text-align: center">
+              Visit type <i class="fa fa-sort" aria-hidden="true" ></i>
+            </th>
+            <!-- <th scope="col">Risk</th>
             <th scope="col" style="padding-left: 0px;text-align: center">Allergy</th>
-            <!-- <th scope="col" style="padding-left: 0px;text-align: center">Triage <i class="fa fa-sort" aria-hidden="true" (click)="sortTriage()"></i></th> -->
-            <th scope="col" style="padding-left: 0px;text-align: center;">Vitals</th>
-            <!-- <th scope="col" style="padding-left: 0px;text-align: center">Room <i class="fa fa-sort" aria-hidden="true" (click)="sortRoom()"></i></th> -->
+            <th scope="col" style="padding-left: 0px;text-align: center;">Vitals</th> -->
             <th scope="col" style="padding-left: 0px;text-align: center">Status</th>
-            <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true"
-                (click)="sortCategory()"></i></th>
             <th scope="col">Attending Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
             </th>
+            <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true"
+                (click)="sortCategory()"></i></th>
             <!-- <th scope="col" style="padding-left: 0px;">Diagnosis</th> -->
             <!-- <th scope="col" style="padding-left: 0px;">Waiting Time <i class="fa fa-sort" aria-hidden="true" (click)="sortWaitTime()"></i></th> -->
             <th scope="col" style="text-align: center;">Actions</th>
@@ -44,32 +45,29 @@
             </td>
             <td class="border-top-none" scope="row" style="width: 5%;padding-left: 0px;text-align: center;">
               {{getTime(item.ZeitIntern)}}</td>
-            <td class="border-left" style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;"
+              <td class="border-top-none p-2">
+                {{item.Besuchsarttext}}
+              </td>
+            <!-- <td class="border-left" style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;"
                 [title]="item.RiskInformation" (click)="openModalForRisk(riskModal,item)"></td>
             <td style="padding-left: 0px;text-align: center; width: 3%;"
               [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  "><img
                 src="assets/img/Allergy.svg" style="width: 23px;" [title]="item.Allergies"
                 (click)="openModalForAllergy(allergyModal,item)"></td>
-            <!-- <td style="padding-left: 0px;width:4%;text-align: center;" [ngClass]="i === 0 ? 'border-top' : lastIndex === i ? 'border-bottom' : ''  ">
-              <span [style.background-color]="item?.TriageColor" class="triage-circle" title="Triage">{{item?.TriagePriorityCode}}</span>
-              <img src="assets/img/er-triage.png" style="width: 30px;" *ngIf="!item?.TriagePriorityCode" title="No Triage">
-              </td> -->
             <td scope="row" style="padding-left: 0px;text-align: center; width: 3%;"><img src="assets/img/er-vital.png"
-                style="width: 23px;" (click)="openModalVital(item)" title="Vitals"></td>
-            <!-- <td class="border-top-none" style="width: 7%;">
-              {{item.BehraumKb}}
-              </td> -->
+                style="width: 23px;" (click)="openModalVital(item)" title="Vitals"></td> -->
+       
             <td class="border-top-none" style="width: 10%;padding-left: 0px;text-align: center;">
               <span
                 [ngClass]="[item.StatusTxt == 'Physician Start' ? 'status-physician-start' : '',  item.StatusTxt == 'Called' ? 'status-called' : '',item.StatusTxt == 'Checked Out' ? 'status-checkedout' :'']">
                 {{item.StatusTxt}}
               </span>
             </td>
-            <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">
-              {{item.ZzfinCat}}
-            </td>
             <td class="border-top-none" style="width: 14%;">
               {{item.Behpersname}}
+            </td>
+            <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">
+              {{item.ZzfinCat}}
             </td>
             <!-- <td class="border-top-none"  scope="row" style="max-width: 107px;
               padding-left: 0px;

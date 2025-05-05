@@ -255,7 +255,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
 
-
+  
 
   saveReleaseGeneratePayload() {
     if (this.surgeryTableData && this.surgeryTableData.length) {
