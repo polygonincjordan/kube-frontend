@@ -13,6 +13,9 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { catchError, of } from 'rxjs';
+import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { SharedService } from '@services/shared.service';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation',
@@ -20,10 +23,12 @@ import { catchError, of } from 'rxjs';
   styleUrls: ['./documentation.component.scss'],
 })
 export class DocumentationComponent implements OnInit {
+  @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @Output() onSearchDocument = new EventEmitter();
   @Output() isDocumentTypeFilter = new EventEmitter(false);
   @Output() onDateFilter = new EventEmitter();
   @Output() formEvent = new EventEmitter();
+
   @ViewChild('soapDocument', { static: true })
   soapDocument: SopaDocumentComponent;
 
@@ -46,15 +51,17 @@ export class DocumentationComponent implements OnInit {
     private patientVisitService: PatientVisitService,
     private storageService: StorageService,
     private inPatientConfigurationService: InPatientConfigurationService,
-    private emergencyService:EmergencyService,
+    private emergencyService: EmergencyService,
+    private dayCaseDashboardService: DayCaseDashboardService,
+    private sharedService: SharedService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
-        this.storageService.setEinri(params['einri']);
-        this.storageService.setFalnr(params['falnr']);
-        this.storageService.setLfdnr(params['lfdnr']);
-        this.storageService.setPatnr(params['patnr']);
-      
+      this.storageService.setEinri(params['einri']);
+      this.storageService.setFalnr(params['falnr']);
+      this.storageService.setLfdnr(params['lfdnr']);
+      this.storageService.setPatnr(params['patnr']);
+
     });
   }
 
@@ -118,7 +125,7 @@ export class DocumentationComponent implements OnInit {
       this.formEvent.next('add');
     } else if (type == 'edit') {
       this.formEvent.next('edit');
-    } else if(type == 'copy') {
+    } else if (type == 'copy') {
       this.formEvent.next('copy');
       this.admissionService.clearVarValue();
       this.admissionService.isPDFObstetricRisk = false;
@@ -129,8 +136,8 @@ export class DocumentationComponent implements OnInit {
   }
 
   deleteSelectData() {
-    if(this.admissionService.selectedCurrentDocDetails) {
-      if(this.admissionService.selectedCurrentDocDetails.DokstText == 'Released') return;
+    if (this.admissionService.selectedCurrentDocDetails) {
+      if (this.admissionService.selectedCurrentDocDetails.DokstText == 'Released') return;
       Swal.fire({
         text: 'Are you sure you want to delete?',
         icon: 'warning',
@@ -138,7 +145,7 @@ export class DocumentationComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         customClass: 'myalertpopup',
-      }).then((result)=>{
+      }).then((result) => {
         if (result.value) {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_SOAP') {
             this.deleteSoapDoc();
@@ -149,7 +156,7 @@ export class DocumentationComponent implements OnInit {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_PHDIS') {
             this.deleteDichargeSum();
           }
-          if(this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_MEDRP'){
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_MEDRP') {
             this.deleteMedicalDoc();
           }
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_OBPPT') {
@@ -188,15 +195,46 @@ export class DocumentationComponent implements OnInit {
             console.log(this.admissionService.selectedCurrentDocDetails);
             this.deleteTransferAssessDocument();
           }
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
+            this.deleteNeonatalDischarge();
+          }
         }
       });
     }
   }
 
+  directReleaseNeonatalDischargeDoc() {
+     this.dayCaseDashboardService
+      .fetcNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+            this.dayCaseDashboardService.saveNeonatalDischargeDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Neonatal Discharge Summary released successfully');
+              this.admissionService.isRealoadData.next(true);
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
   deleteDichargeSum() {
     this.inPatientConfigurationService.deleteInPatientPhdisData(
       this.admissionService.selectedCurrentDocDetails.Dockey
-    ).then((res)=>{
+    ).then((res) => {
       this.admissionService.isRealoadData.next(true);
     })
   }
@@ -220,7 +258,7 @@ export class DocumentationComponent implements OnInit {
     let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
     return new Date(timestamp);
   }
-  
+
   isSameDate(date1: Date, date2: Date): boolean {
     return date1.toDateString() === date2.toDateString();
   }
@@ -229,7 +267,7 @@ export class DocumentationComponent implements OnInit {
   saveEducationForm() {
     this.admissionService.isSaveEducationData.next(true);
   }
-  saveMedicalForm(){
+  saveMedicalForm() {
     this.admissionService.isSaveMedicalDocumnet.next(true);
   }
   saveSoapDocument() {
@@ -252,7 +290,7 @@ export class DocumentationComponent implements OnInit {
           patientData.Released = 'X';
           this.patientVisitService
             .savePatientVisitData(patientData)
-            .then((res: any) => {});
+            .then((res: any) => { });
         }
       });
   }
@@ -290,7 +328,7 @@ export class DocumentationComponent implements OnInit {
   }
 
   toReleaseSoapDoc() {
-    if(this.admissionService.selectedCurrentDocDetails.DokstText == 'Released') return;
+    if (this.admissionService.selectedCurrentDocDetails.DokstText == 'Released') return;
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_SOAP') {
       this.soapDocumentRelease();
     }
@@ -335,12 +373,15 @@ export class DocumentationComponent implements OnInit {
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NICAD') {
       this.releaseNicu();
     }
+    if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
+      this.directReleaseNeonatalDischargeDoc();
+    }
   }
 
   releaseEducatonAss() {
-    this.admissionService.getDocuEducationDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any)=>{
+    this.admissionService.getDocuEducationDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
       console.log(res, "--");
-      
+
       let d: any = {
         d: res?.d?.results[0],
       };
@@ -380,18 +421,18 @@ export class DocumentationComponent implements OnInit {
   }
 
   releaseObste() {
-      this.admissionService
-        .getObstetricData(this.admissionService.selectedCurrentDocDetails.Dockey)
-        .subscribe((resp) => {
-          if (resp && resp.results && resp.results.length) {
-            let obstetricData = resp.results[0];
-            obstetricData.DocStatus = '2';
-            this.admissionService
-              .updateObstetricDoc(obstetricData).subscribe((resp) => {
-                this.admissionService.isRealoadData.next(true);
-              });
-          }
-        });
+    this.admissionService
+      .getObstetricData(this.admissionService.selectedCurrentDocDetails.Dockey)
+      .subscribe((resp) => {
+        if (resp && resp.results && resp.results.length) {
+          let obstetricData = resp.results[0];
+          obstetricData.DocStatus = '2';
+          this.admissionService
+            .updateObstetricDoc(obstetricData).subscribe((resp) => {
+              this.admissionService.isRealoadData.next(true);
+            });
+        }
+      });
   }
 
   releaseObsVteAnt() {
@@ -407,53 +448,53 @@ export class DocumentationComponent implements OnInit {
             });
         }
       });
-}
+  }
 
-getUserConfigSetting() {
-  this.userConfigurationService
-    .getUserConfigData()
-    .pipe(
-      untilDestroyed(this),
-      catchError((err) => {
-        return of([]);
-      })
-    )
-    .subscribe((userconfig: UserConfig) => {
-      this.userConfig = userconfig;
-      // this.periodParameterMonthSelectValue =
-      //   this.userconfig.PeriodParameterMonth;
-    });
-}
+  getUserConfigSetting() {
+    this.userConfigurationService
+      .getUserConfigData()
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((userconfig: UserConfig) => {
+        this.userConfig = userconfig;
+        // this.periodParameterMonthSelectValue =
+        //   this.userconfig.PeriodParameterMonth;
+      });
+  }
 
-getOperationReport() {
-  this.admissionService
-    .getPatientVisitDataByDocKey(
-      this.admissionService.selectedCurrentDocDetails.Dockey,
-      this.paramsObject.einri,
-      this.paramsObject.patnr
-    )
-    .subscribe((res: any) => {
-      if (res.PATDOCTOOPERRPTDOCDETAIL.results.length) {
-        let operation: any = {
-          patientFormData: res.PATDOCTOOPERRPTDOCDETAIL.results[0]
-        }
-        this.admissionService
-      .saveOperationReport(
-        operation,
-        this.userConfig,
-        true,
-        this.paramsObject,
-        this.admissionService.selectedCurrentDocDetails.Dockey
+  getOperationReport() {
+    this.admissionService
+      .getPatientVisitDataByDocKey(
+        this.admissionService.selectedCurrentDocDetails.Dockey,
+        this.paramsObject.einri,
+        this.paramsObject.patnr
       )
       .subscribe((res: any) => {
-        this.admissionService.cancelAllForm();
-        this.admissionService.isSaveEducationData.next(true);
-        this.admissionService.isRealoadData.next(true);
+        if (res.PATDOCTOOPERRPTDOCDETAIL.results.length) {
+          let operation: any = {
+            patientFormData: res.PATDOCTOOPERRPTDOCDETAIL.results[0]
+          }
+          this.admissionService
+            .saveOperationReport(
+              operation,
+              this.userConfig,
+              true,
+              this.paramsObject,
+              this.admissionService.selectedCurrentDocDetails.Dockey
+            )
+            .subscribe((res: any) => {
+              this.admissionService.cancelAllForm();
+              this.admissionService.isSaveEducationData.next(true);
+              this.admissionService.isRealoadData.next(true);
+            });
+          // this.inPatientOrrptDataSet.patchValue(res.PATDOCTOOPERRPTDOCDETAIL.results[0])
+        }
       });
-        // this.inPatientOrrptDataSet.patchValue(res.PATDOCTOOPERRPTDOCDETAIL.results[0])
-      }
-    });
-}
+  }
 
   dischargeSumRelease() {
     this.inPatientConfigurationService
@@ -490,7 +531,7 @@ getOperationReport() {
       return date;
     }
   }
-  allOrderRemoveDateFilter() {}
+  allOrderRemoveDateFilter() { }
 
   showMainHeader() {
     if (
@@ -502,11 +543,12 @@ getOperationReport() {
       !this.admissionService.isAddEditObstetricRisk &&
       !this.admissionService.isAddEditObsVteAnt &&
       !this.admissionService.isAddEditObsGynForm &&
-      !this.admissionService.isAddEditOperationReport&&
-      !this.admissionService.isAddEditDocVisitForm&&
-      !this.admissionService.isAddEditNeonatal&&
-      !this.admissionService.isAddEditNeonatalMR&&
-      !this.admissionService.isAddEditTransferAssestForm
+      !this.admissionService.isAddEditOperationReport &&
+      !this.admissionService.isAddEditDocVisitForm &&
+      !this.admissionService.isAddEditNeonatal &&
+      !this.admissionService.isAddEditNeonatalMR &&
+      !this.admissionService.isAddEditTransferAssestForm &&
+      !this.admissionService.isAddEditNeonatalDischarge
 
     ) {
       return true;
@@ -515,12 +557,12 @@ getOperationReport() {
   }
 
   deleteForm() {
-    this.admissionService.deleteOperationReportDoc(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res)=>{
+    this.admissionService.deleteOperationReportDoc(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res) => {
       this.admissionService.isRealoadData.next(true);
     })
   }
-   // medical
-   deleteMedicalDoc() {
+  // medical
+  deleteMedicalDoc() {
     this.emergencyService
       .deleteMedReport(this.admissionService.selectedCurrentDocDetails)
       .subscribe(() => {
@@ -534,7 +576,7 @@ getOperationReport() {
       return;
     }
     const json = {
-      Dockey:this.admissionService.selectedCurrentDocDetails.Dockey,
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
     }
     this.emergencyService
       .getMedReportData(json
@@ -552,107 +594,107 @@ getOperationReport() {
       });
   }
   // obs gyn
-   deleteObsGynDoc() {
+  deleteObsGynDoc() {
     this.admissionService
       .deleteObsGynDoc(this.admissionService.selectedCurrentDocDetails)
       .subscribe(() => {
         this.admissionService.isRealoadData.next(true);
       });
   }
-  releaseObsGynDoc(){
-      if (
-        this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
-      ) {
-        return;
-      }
-      const json = {
-        Einri:this.storageService.einri,
-      Falnr:this.storageService.falnr
-      }
-      this.admissionService
-        .getObsGynData(json
-        )
-        .subscribe((patientResult: any) => {
-          let patientData = patientResult?.results[0];
-          if (patientData) {
-            patientData['DocStatus'] = '2';
-            this.admissionService
-              .releaseObsGynDoc(patientData)
-              .subscribe((res: any) => {
-                this.admissionService.isRealoadData.next(true);
-              });
-          }
-        });
+  releaseObsGynDoc() {
+    if (
+      this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
+    ) {
+      return;
+    }
+    const json = {
+      Einri: this.storageService.einri,
+      Falnr: this.storageService.falnr
+    }
+    this.admissionService
+      .getObsGynData(json
+      )
+      .subscribe((patientResult: any) => {
+        let patientData = patientResult?.results[0];
+        if (patientData) {
+          patientData['DocStatus'] = '2';
+          this.admissionService
+            .releaseObsGynDoc(patientData)
+            .subscribe((res: any) => {
+              this.admissionService.isRealoadData.next(true);
+            });
+        }
+      });
   }
   // 
-   // neo natal
-   deleteNeoNatalDoc() {
+  // neo natal
+  deleteNeoNatalDoc() {
     this.admissionService
       .deleteNeoNatalDoc(this.admissionService.selectedCurrentDocDetails)
       .subscribe(() => {
         this.admissionService.isRealoadData.next(true);
       });
   }
-  releaseNeoNatalDoc(){
-      if (
-        this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
-      ) {
-        return;
-      }
-      const json = {
-        Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
-      }
-      this.admissionService
-        .getNeoNatalData(json
-        )
-        .subscribe((patientResult: any) => {
-          let patientData = patientResult?.d?.results[0];
-          if (patientData) {
-            patientData['DocStatus'] = '2';
-            this.admissionService
-              .releaseNeoNatalDoc(patientData)
-              .subscribe((res: any) => {
-                this.admissionService.isRealoadData.next(true);
-              });
-          }
-        });
+  releaseNeoNatalDoc() {
+    if (
+      this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
+    ) {
+      return;
+    }
+    const json = {
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
+    }
+    this.admissionService
+      .getNeoNatalData(json
+      )
+      .subscribe((patientResult: any) => {
+        let patientData = patientResult?.d?.results[0];
+        if (patientData) {
+          patientData['DocStatus'] = '2';
+          this.admissionService
+            .releaseNeoNatalDoc(patientData)
+            .subscribe((res: any) => {
+              this.admissionService.isRealoadData.next(true);
+            });
+        }
+      });
   }
   //
-   // neo natal medical report
-   deleteNeoNatalMRDoc() {
+  // neo natal medical report
+  deleteNeoNatalMRDoc() {
     this.admissionService
       .deleteNeoNatalMRDoc(this.admissionService.selectedCurrentDocDetails)
       .subscribe(() => {
         this.admissionService.isRealoadData.next(true);
       });
   }
-  releaseNeoNatalMRDoc(){
-      if (
-        this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
-      ) {
-        return;
-      }
-      const json = {
-        Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
-      }
-      this.admissionService
-        .getNeoNatalMRData(json
-        )
-        .subscribe((patientResult: any) => {
-          let patientData = patientResult?.d?.results[0];
-          if (patientData) {
-            patientData['DocStatus'] = '2';
-            this.admissionService
-              .releaseNeoNatalMRDoc(patientData)
-              .subscribe((res: any) => {
-                this.admissionService.isRealoadData.next(true);
-              });
-          }
-        });
+  releaseNeoNatalMRDoc() {
+    if (
+      this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
+    ) {
+      return;
+    }
+    const json = {
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
+    }
+    this.admissionService
+      .getNeoNatalMRData(json
+      )
+      .subscribe((patientResult: any) => {
+        let patientData = patientResult?.d?.results[0];
+        if (patientData) {
+          patientData['DocStatus'] = '2';
+          this.admissionService
+            .releaseNeoNatalMRDoc(patientData)
+            .subscribe((res: any) => {
+              this.admissionService.isRealoadData.next(true);
+            });
+        }
+      });
   }
   //
-   // physician assessment 
-   deletePhysicianAssessDoc() {
+  // physician assessment 
+  deletePhysicianAssessDoc() {
     this.admissionService
       .deletePhysicianAssessDoc(this.admissionService.selectedCurrentDocDetails)
       .subscribe(() => {
@@ -682,6 +724,31 @@ getOperationReport() {
       });
   }
 
+  // Delete Neonatal Discharge Document
+  async deleteNeonatalDischarge() {
+    await this.dayCaseDashboardService.deleteNeonatalDischargeDocument(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe(
+      (_success: any) => {
+        Swal.fire({
+          text: "Document is deleted successfully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        this.admissionService.isRealoadData.next(true);
+      },
+      (_error: any) => {
+        Swal.fire({
+          text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        this.admissionService.isRealoadData.next(true);
+      }
+    );
+
+  }
+
   deleteTransferAssessDocument() {
     this.admissionService
       .deleteTransferDoc(this.admissionService.selectedCurrentDocDetails)
@@ -690,33 +757,33 @@ getOperationReport() {
       });
   }
 
-  releasePhysicianAssessDoc(){
-      if (
-        this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
-      ) {
-        return;
-      }
-      const json = {
-        Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
-      }
-      this.admissionService
-        .getPhysicianData(json
-        )
-        .subscribe((patientResult: any) => {
-          let patientData = patientResult?.results[0];
-          if (patientData) {
-            patientData['DocStatus'] = '2';
-            this.admissionService
-              .releasePhysicianDoc(patientData)
-              .subscribe((res: any) => {
-                this.admissionService.isRealoadData.next(true);
-              });
-          }
-        });
+  releasePhysicianAssessDoc() {
+    if (
+      this.admissionService.selectedCurrentDocDetails.DokstText === 'Released'
+    ) {
+      return;
+    }
+    const json = {
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
+    }
+    this.admissionService
+      .getPhysicianData(json
+      )
+      .subscribe((patientResult: any) => {
+        let patientData = patientResult?.results[0];
+        if (patientData) {
+          patientData['DocStatus'] = '2';
+          this.admissionService
+            .releasePhysicianDoc(patientData)
+            .subscribe((res: any) => {
+              this.admissionService.isRealoadData.next(true);
+            });
+        }
+      });
   }
 
-  releaseVisitNoteDoc(){
-    if ( this.admissionService.selectedCurrentDocDetails.DokstText === 'Released') {
+  releaseVisitNoteDoc() {
+    if (this.admissionService.selectedCurrentDocDetails.DokstText === 'Released') {
       return;
     }
     const json = {
@@ -727,33 +794,33 @@ getOperationReport() {
       .subscribe((patientResult: any) => {
         this.admissionService.isRealoadData.next(true);
       });
-}
+  }
 
-releaseNewBorn() {
-  this.emergencyService.getNewBornDetail(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
-    let d: any = {
-      d: res?.d?.results[0],
-    };
-    d.d.DocStatus = '2';
-    this.admissionService.createNewBorn(d).subscribe(
-      (result) => {
-        this.admissionService.isRealoadData.next(true);
-      }
-    );
-  })
-}
-releaseNicu() {
-  this.emergencyService.getNicuDetail(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
-    let d: any = {
-      d: res?.d?.results[0],
-    };
-    d.d.DocStatus = '2';
-    this.admissionService.createNicuSet(d).subscribe(
-      (result) => {
-        this.admissionService.isRealoadData.next(true);
-      }
-    );
-  })
-}
+  releaseNewBorn() {
+    this.emergencyService.getNewBornDetail(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.admissionService.createNewBorn(d).subscribe(
+        (result) => {
+          this.admissionService.isRealoadData.next(true);
+        }
+      );
+    })
+  }
+  releaseNicu() {
+    this.emergencyService.getNicuDetail(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.admissionService.createNicuSet(d).subscribe(
+        (result) => {
+          this.admissionService.isRealoadData.next(true);
+        }
+      );
+    })
+  }
   //
 }

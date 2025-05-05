@@ -18,6 +18,8 @@ import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { StorageService } from '../storage.service';
 import { TemplateModel } from './interfaces/template-model';
+import { ActionType, WordType } from '@services/interfaces/common.enum';
+import { DataShareService } from '@services/data-share.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +35,7 @@ export class AdmissionService {
   public clearSoapEvent = new BehaviorSubject(false);
   public isClearSelectedDoc = new BehaviorSubject(false);
 
-  public documentTypeDrop = new BehaviorSubject({documentType: '', dateRange: '', selectedDocumentOU : '', selectedCreatedBy: '', previousPeriodValue: ''});
+  public documentTypeDrop = new BehaviorSubject({ documentType: '', dateRange: '', selectedDocumentOU: '', selectedCreatedBy: '', previousPeriodValue: '' });
   public documentDateRangeFilter = new BehaviorSubject('');
 
   documentTypeFilter: any[] = [];
@@ -47,10 +49,10 @@ export class AdmissionService {
   public Diagnosis: boolean = false;
   public Documentation: boolean = false;
   public vitalSign: boolean = false;
-  public isAddEditMedicalForm : boolean = false;
-  public isDischargeProcess : boolean = false;
+  public isAddEditMedicalForm: boolean = false;
+  public isDischargeProcess: boolean = false;
 
-  public isAddEditSopaDocument : boolean = false;
+  public isAddEditSopaDocument: boolean = false;
   public isEditSoapDoc: boolean = false;
   public isCloneSoapDoc: boolean = false;
   public isAddEditMedicalDocument: boolean = false;
@@ -60,6 +62,10 @@ export class AdmissionService {
   public isAddEditDischargeSummery: boolean = false;
   public isEditDischargeSummery: boolean = false;
   public isCloneDischargeSummery: boolean = false;
+
+  public isAddEditNeonatalDischarge: boolean = false;
+  public isEditNeonatalDischarge: boolean = false;
+  public isCloneNeonatalDischarge: boolean = false;
 
   public isAddEditObstetricRisk: boolean = false;
   public isEditObstetricRisk: boolean = false;
@@ -116,6 +122,7 @@ export class AdmissionService {
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
+    private dataShareService: DataShareService
   ) {
     this.phyOrderForm();
 
@@ -500,11 +507,12 @@ export class AdmissionService {
   }
 
   educationAddForm(actionType: string) {
+
     // if(this.selectedCurrentDocDetails.DtidText == "Document Attachmen" && actionType == "add"){
     //   this.popupdata.openModalForSpecialNotes
     // }
-    if(this.selectedCurrentDocDetails) {
-      if (this.selectedCurrentDocDetails.NodocText == 'N/A' && actionType =='edit') {
+    if (this.selectedCurrentDocDetails) {
+      if (this.selectedCurrentDocDetails.NodocText == 'N/A' && actionType == 'edit') {
         return;
       }
 
@@ -586,6 +594,27 @@ export class AdmissionService {
           this.isCloneDischargeSummery = true;
         } else {
           this.isCloneDischargeSummery = false;
+        }
+      } else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_NEODS') {
+        if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') return;
+        if (actionType == 'edit') {
+          this.isEditNeonatalDischarge = true;
+        } else {
+          this.isEditNeonatalDischarge = false;
+        }
+
+        if (actionType == 'clone' && this.selectedCurrentDocDetails.DokstText != 'Released') return;
+        this.isAddEditNeonatalDischarge = !this.isAddEditNeonatalDischarge;
+
+        if (actionType == 'clone') {
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedCurrentDocDetails.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+          this.isCloneNeonatalDischarge = true;
+        } else {
+          this.isCloneNeonatalDischarge = false;
         }
       } else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_OBPPT') {
         if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') return;
@@ -762,8 +791,8 @@ export class AdmissionService {
         } else {
           this.isCloneNewBornForm = false;
         }
-      } 
-       else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_ATCHM') {
+      }
+      else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_ATCHM') {
         this.document.next(true);
       }
     }
@@ -811,16 +840,19 @@ export class AdmissionService {
     this.isCloneVisitForm = false;
     this.isEditVisitForm = false;
 
-    this.isAddEditTransferAssestForm=false;
-    this.isEditTransferAssestForm=false;
-    this.isCloneTransferAssestForm=false;
-    this.isAddNicuForm=false;
-    this.isEditNicuForm=false;
-    this.isCloneNicuForm=false;
+    this.isCloneNeonatalDischarge = false;
+    this.isEditNeonatalDischarge = false;
+    this.isAddEditNeonatalDischarge = false;
+    this.isAddEditTransferAssestForm = false;
+    this.isEditTransferAssestForm = false;
+    this.isCloneTransferAssestForm = false;
+    this.isAddNicuForm = false;
+    this.isEditNicuForm = false;
+    this.isCloneNicuForm = false;
 
-     this.isNewBornForm = false;
-     this.isEditBornForm = false;
-     this.isCloneNewBornForm = false;
+    this.isNewBornForm = false;
+    this.isEditBornForm = false;
+    this.isCloneNewBornForm = false;
 
   }
 
@@ -859,9 +891,13 @@ export class AdmissionService {
     this.isAddEditDocVisitForm = false;
     this.isCloneVisitForm = false;
     this.isEditVisitForm = false;
+
+    this.isCloneNeonatalDischarge = false;
+    this.isEditNeonatalDischarge = false;
+    this.isAddEditNeonatalDischarge = false;
   }
 
- //getDocumentDetails
+  //getDocumentDetails
 
   getDicumentDetails(einri: string, type: string, patnr: string, dodate: string, falnr: string) {
     const url = `${environment.eKardexApiUrl}/admission/getProfileDocsSet?einri=${einri}&type=${type}&patnr=${patnr}&falnr=${falnr}&dodate=${dodate}`;
@@ -1215,7 +1251,7 @@ export class AdmissionService {
 
   // obs gyn apis
 
-   createObsGyn(payload) {
+  createObsGyn(payload) {
     return this.http.post(`${environment.eKardexApiUrl}/eHospitalist/createObsGyn`, payload, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
       catchError((error: HttpErrorResponse) => {
@@ -1460,7 +1496,7 @@ export class AdmissionService {
     const url = `${environment.eKardexApiUrl}/eHospitalist/deleteTransferDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
 
   getNewBornDocument(Dockey) {
@@ -1531,37 +1567,37 @@ export class AdmissionService {
     const url = `${environment.eKardexApiUrl}/createNewBornPhysicalDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
   createUrinary(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createBundlesDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
   createCvcMainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createCvcMainDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
   createNurseAssMainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createNurseAssMainDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
   createCriticalPainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createCriticalPainDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
   createNicuSet(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createNicuSet`;
     return this.http.post(url, json, {
       withCredentials: true,
-    }); 
+    });
   }
 
 }

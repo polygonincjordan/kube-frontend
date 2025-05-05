@@ -25,6 +25,7 @@ import { StorageService } from '@services/storage.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation-list',
@@ -32,6 +33,7 @@ import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-d
   styleUrls: ['./documentation-list.component.scss'],
 })
 export class DocumentationListComponent implements OnInit {
+  @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @ViewChild('diagnosisHistory', { static: true })
   diagnosisHistory: DiagnosisHistoryPopupComponent;
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
@@ -94,6 +96,7 @@ export class DocumentationListComponent implements OnInit {
   isImageFrame: boolean = false;
   previousPeriodValue: any = 'Overall';
   documentTypeFilterValueClone: any[] = [];
+  currentVisitDocumentNameList: any[] = [];
   createdDocumentUserList: any = [];
   departmentOUList = [
     "CARMDAMC", "", "F21IUAMC"
@@ -222,7 +225,7 @@ export class DocumentationListComponent implements OnInit {
     console.log(event);
     if(event) {
       this.currentVisitDocumet = this.currentVisitDocumetClone.filter((element) => {
-        if (event == element.Dtid) {
+        if (event == element.DtidText) {
           return element;
         }
       });
@@ -529,7 +532,9 @@ export class DocumentationListComponent implements OnInit {
         if (type == '2') {
           this.currentVisitDocumetClone = data?.d.results;
           this.currentVisitDocumet = data?.d.results;
-
+          this.currentVisitDocumentNameList = Array.from(
+            new Set(this.currentVisitDocumet.map(res => res.DtidText))
+          );
         } else {
           this.documentTypeFilterValueClone = data?.d.results;
           // this.documentTypeFilterValue = _success.d.results;
@@ -947,6 +952,32 @@ export class DocumentationListComponent implements OnInit {
         });
   }
 
+  saveNeonatalDischarge() {
+    let docStatus = '1';
+    // if(this.selectedDocData?.Dockey) docStatus = '3';
+    this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
+      if (formValue) {
+        
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Neonatal Discharge Summary:', error);
+    });
+  }
+
+  releaseNeonatalDischarge() {
+    let docStatus = '2';
+    // if(this.selectedDocData?.Dockey) docStatus = '3';
+    this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
+      if (formValue) {
+        
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Neonatal Discharge Summary:', error);
+    });
+  }
+
   showDocumentList() {
     if (
       !this.admissionService.isAddEditEducationAsset &&
@@ -964,7 +995,8 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddEditTransferAssestForm &&
       !this.admissionService.isAddEditNewbornAssessment &&
       !this.admissionService.isAddNicuForm &&
-      !this.admissionService.isNewBornForm 
+      !this.admissionService.isNewBornForm && 
+      !this.admissionService.isAddEditNeonatalDischarge
     ) {
       return true;
     }

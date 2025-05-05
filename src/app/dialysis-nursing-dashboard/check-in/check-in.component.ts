@@ -28,6 +28,7 @@ import { environment } from 'src/environments/environment';
 import { ProgressNotePopupComponent } from './progress-note-popup/progress-note-popup.component';
 import { SessionStorageService } from '@services/session-storage.service';
 import { SharedService } from '@services/shared.service';
+import { EEmrService } from '@services/e-emr.service';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -95,6 +96,7 @@ export class CheckInComponent implements OnInit {
   activelabLabelData:any
   pdfData: any;
   printUrl: any;
+  selectedDate: any;
 
   dischargeTypeList = [
     {
@@ -118,6 +120,36 @@ export class CheckInComponent implements OnInit {
       value: 'RD'
     },
   ]
+  statusList = [
+    {
+      label: 'Planned',
+      value: '20'
+    },
+    {
+      label: 'Checked In',
+      value: '30'
+    },
+    {
+      label: 'Called',
+      value: '55'
+    },
+    {
+      label: 'Nurse Completed',
+      value: '58'
+    },
+    {
+      label: 'Physician Start',
+      value: '60'
+    },
+    {
+      label: 'Physician End',
+      value: '65'
+    },
+    {
+      label: 'Checked Out',
+      value: '70'
+    },
+  ]
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -126,7 +158,8 @@ export class CheckInComponent implements OnInit {
     private patientService: PatientService,
     private _route: ActivatedRoute,
     private sessionStorage:SessionStorageService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private _dataServices: EEmrService,
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -386,6 +419,7 @@ export class CheckInComponent implements OnInit {
         admissionStatusModel: this.admissionStatusModel // Pass data into the modal
       }
     };
+    
     this.modalRefForRisk = this.modalService.show(template, config);
     this.changeStatusForm = this.formBuilder.group({
       Einri: [this.admissionStatusModel?.Einri],
@@ -420,55 +454,81 @@ export class CheckInComponent implements OnInit {
     }
   }
 
-  changeStatus(visitStat: string) {
-    let visitStatCode: number;
+  // changeStatus(visitStat: string) {
+  //   let visitStatCode: number;
     
-    switch (visitStat.toLowerCase()) {
-        case 'planned arrival':
-            visitStatCode = 97;
-            break;
-        case 'actual arrival':
-            visitStatCode = 98;
-            break;
-        case 'planned discharge':
-            visitStatCode = 99;
-            break;
-        case 'actual discharge':
-            visitStatCode = 96;
-            break;
-        default:
-            visitStatCode = null; // Handle undefined cases
-    }
-     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
-    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+  //   // switch (visitStat.toLowerCase()) {
+  //   //     case 'planned arrival':
+  //   //         visitStatCode = 97;
+  //   //         break;
+  //   //     case 'actual arrival':
+  //   //         visitStatCode = 98;
+  //   //         break;
+  //   //     case 'planned discharge':
+  //   //         visitStatCode = 99;
+  //   //         break;
+  //   //     case 'actual discharge':
+  //   //         visitStatCode = 96;
+  //   //         break;
+  //   //     default:
+  //   //         visitStatCode = null; // Handle undefined cases
+  //   // }
+  //    let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+  //   createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+  //   const json = {
+  //     Einri: this.admissionStatusModel.Einri,
+  //     Falnr: this.admissionStatusModel.Falnr,
+  //     Lfdnr: this.admissionStatusModel.Lfdnr,
+  //     AdmStatusCode: this.changeStatusForm.value.AdmStatusCode,
+  //     Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
+  //     Bwizt: createTime,
+  //     Kztxt: this.changeStatusForm.value.Kztxt,
+  //     Bwart: this.changeStatusForm.value.Bwart,
+  //     Pernr: this.admissionStatusModel.BehArzt,
+  //   };
+
+  //   if(!json?.Bwart) {
+  //     delete json.Bwart
+  //   }
+
+  //   this.emergencyService.changeAdmissionStatus(json).subscribe({
+  //     next: (_success: any) => {
+  //       this.getErList()
+  //       this.modalService.hide();
+  //     },
+  //     error: (err: any) => {
+  //       if(!this.changeStatusForm.get('Bwizt')?.value){
+  //         this.sharedService.errorSwallModel('Error:Please Enter the Time').then((result) => { })
+  //       }else{
+
+  //         this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+  //       }
+  //     }
+  //   });
+
+  // }
+
+  changeStatus(event: any) {
     const json = {
-      Einri: this.admissionStatusModel.Einri,
-      Falnr: this.admissionStatusModel.Falnr,
-      Lfdnr: this.admissionStatusModel.Lfdnr,
-      AdmStatusCode: visitStatCode.toString(),
-      Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
-      Bwizt: createTime,
-      Kztxt: this.changeStatusForm.value.Kztxt,
-      Bwart: this.changeStatusForm.value.Bwart,
-      Pernr: this.admissionStatusModel.BehArzt,
+      "Einri": event.Einri,
+      "Falnr": event.Falnr,
+      "Patnr": event.Patnr,
+      "Lfdnr": '00001',
+      "VisitStat": this.changeStatusForm.value.AdmStatusCode,
+      "Sdate": new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
+      "Stime": 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
     };
-
-    if(!json?.Bwart) {
-      delete json.Bwart
-    }
-
-    this.emergencyService.changeAdmissionStatus(json).subscribe({
+    this._dataServices.changeStatus(json).subscribe({
       next: (_success: any) => {
-        this.getErList()
-        this.modalService.hide();
+        this.modalRefForRisk?.hide();
+        this.getErList(this.selectedDate);
       },
       error: (err: any) => {
-        if(!this.changeStatusForm.get('Bwizt')?.value){
-          this.sharedService.errorSwallModel('Error:Please Enter the Time').then((result) => { })
-        }else{
-
-          this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
-        }
+        this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => {
+          if (result.value) {
+            this.modalService.hide();
+          }
+        })
       }
     });
 
@@ -788,7 +848,9 @@ export class CheckInComponent implements OnInit {
     );
   }
 
-  getErList(date?: any) {    
+  getErList(date?: any) {
+    console.log(date, "--------------")
+    this.selectedDate = date;
     this.emergencyService.dialysisTAget(this.parseDate(date[0]),this.parseDate(date[1])).subscribe((_success:any)=>{
       this.ERlistData = [];
       if (_success.d.results.length > 0) {
@@ -825,6 +887,8 @@ export class CheckInComponent implements OnInit {
   }
 
   getSelectedDates(dates) {
+    this.selectedDate = dates;
+    console.log(this.selectedDate, "this.selectedDate")
     this.getErList(dates);
   }
 
