@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-d
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { ActionType } from '@services/interfaces/common.enum';
+import { AdmissionService } from '@services/admission/admission.service';
 
 @Component({
   selector: 'app-neonatal-disch-document',
@@ -17,7 +18,8 @@ import { ActionType } from '@services/interfaces/common.enum';
 })
 export class NeonatalDischDocumentComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
-
+  @Input() soapFormEvent: string;
+  @Output() reloadTableList = new EventEmitter();
   neonatalDischarge: FormGroup;
   selectedTabName: string = 'Skin';
   isChecked: any;
@@ -74,7 +76,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, private storageService: StorageService, private datePipe: DatePipe,
-    private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService) {
+    private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService, private admissionService: AdmissionService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -101,6 +103,36 @@ export class NeonatalDischDocumentComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
   }
+
+    ngOnChanges(changes: SimpleChanges) {
+      if(changes.soapFormEvent.currentValue == 'add') {
+        if(this.admissionService.isCloneNeonatalDischarge) {
+        this.createNeonatalDischargeDocument('3')
+        }
+        else {
+          this.createNeonatalDischargeDocument('1')
+        }
+      }
+      if(changes.soapFormEvent.currentValue == 'edit') {
+        this.createNeonatalDischargeDocument('1')
+      }
+  
+      if(changes.soapFormEvent.currentValue == 'release') {
+        if(this.admissionService.isCloneNeonatalDischarge) {
+          this.createNeonatalDischargeDocument('5')
+        } else {
+          if(this.admissionService.isEditNeonatalDischarge) {
+            this.createNeonatalDischargeDocument('2')
+          } else {
+            this.createNeonatalDischargeDocument('4')
+          }
+        }
+      }
+  
+      if (this.admissionService.isEditNeonatalDischarge || this.admissionService.isCloneNeonatalDischarge) {
+        this.getNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey);
+      }
+    }
 
   initForm(data?) {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
@@ -679,6 +711,10 @@ export class NeonatalDischDocumentComponent implements OnInit {
           },
           complete: () => {
             resolve(true);
+            this.reloadTableList.next(true);
+            this.admissionService.cancelAllForm();
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.admissionService?.clearSoapEvent?.next(true);
             if (actiontype === 'edit') {
               this.sharedService.successSwallModel(
                 'Neonatal Discharge document updated successfully'

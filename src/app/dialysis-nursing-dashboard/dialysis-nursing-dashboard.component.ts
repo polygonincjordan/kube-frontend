@@ -1137,7 +1137,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     this.ErHistoryComponent?.getSelectedDates(this.formgroupData.DateRange);
     this.LabResultsComponent?.getSelectedDates(this.formgroupData.DateRange)
-    this.CheckInComponent.getSelectedDates(this.formgroupData.DateRange);
+    this.CheckInComponent?.getSelectedDates(this.formgroupData.DateRange);
     this.PhysicianOrdersListComponent?.getErList(this.formgroupData.DateRange)
     this.AdministeredDosesComponent?.getMedicationAdministrationlist(this.formgroupData.DateRange);
     this.BedComponent?.getErList(this.formgroupData.DateRange);
