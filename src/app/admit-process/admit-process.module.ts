@@ -60,6 +60,7 @@ import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { NicuAssessmentDocumentComponent } from './documentation/documentation-list/nicu-assessment-document/nicu-assessment-document.component';
 import { NicuErVitalsComponent } from './documentation/documentation-list/nicu-assessment-document/er-vitals/er-vitals.component';
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
+import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -124,7 +125,8 @@ export const ePrescriptionRoutes: Routes = [
     NgMultiSelectDropDownModule.forRoot(),
     NewbornAssessmentModule,
     VitalSignModule,
-    NeonatalDischDocumentModule
+    NeonatalDischDocumentModule,
+    PaediatricsAdmDocumentModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

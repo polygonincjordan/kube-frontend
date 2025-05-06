@@ -548,6 +548,7 @@ export class DocumentationComponent implements OnInit {
       !this.admissionService.isAddEditNeonatal &&
       !this.admissionService.isAddEditNeonatalMR &&
       !this.admissionService.isAddEditTransferAssestForm &&
+      !this.admissionService.isAddEditDocPaediatricsAdmissionForm &&
       !this.admissionService.isAddEditNeonatalDischarge
 
     ) {

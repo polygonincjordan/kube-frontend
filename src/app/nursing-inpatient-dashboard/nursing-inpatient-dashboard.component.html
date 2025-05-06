@@ -363,7 +363,7 @@
     <input style="width: 16px;" type="checkbox" [(ngModel)]="isShowWards" [value]="false" (change)="showWards()" />
     <label class="m-0" >All Wards </label>
   </span>
-  <i class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i>
+  <i *ngIf="checkin" class="fa fa-cog cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-right: 14px;" title="User's Settings" id="configurationButton" (click)="clickShowConfiguration();$event.stopPropagation()"></i>
     <i
       class="fa fa-filter"
       aria-hidden="true"
@@ -566,6 +566,12 @@
         <p style="margin: auto; margin-top: 5px">Ward</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+        <p style="margin: auto; margin-top: 5px">Room</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="RoomidText" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInRoomidTextFilterData">
             {{ item }}
           </ng-option>
         </ng-select>
@@ -838,6 +844,17 @@
         >
           <option selected value="">Choose Room</option>
           <option [value]="item" *ngFor="let item of phyOrderRoomsList">
+            {{ item }}
+          </option>
+        </select>
+
+        <p style="margin: auto; margin-top: 5px">Ward</p>
+        <select
+          class="custom-select"
+          id="inputGroupSelect01"
+          formControlName="Floor"
+        >
+          <option [value]="item" *ngFor="let item of phyWardList">
             {{ item }}
           </option>
         </select>

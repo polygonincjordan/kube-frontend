@@ -219,3 +219,11 @@ table {
     font-size: 16px;
     font-weight: 600;
 }
+
+.patient_name {
+  margin-left: 0%;
+    width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
