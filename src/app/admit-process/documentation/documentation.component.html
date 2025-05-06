@@ -264,3 +264,17 @@
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>
 </div>
+
+<!-- Oparation report -->
+
+<div class="education-assess" *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
+  <strong>Paediatrics Admission Assessment</strong>
+  <div>
+    <button class="sort-btn" (click)="addEditForm('save')"
+      *ngIf="!this.admissionService.isEditPaediatricsAdmissionForm">Save</button>
+    <button class="sort-btn" (click)="addEditForm('edit')"
+      *ngIf="this.admissionService.isEditPaediatricsAdmissionForm">Save</button>
+    <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+    <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+  </div>
+</div>

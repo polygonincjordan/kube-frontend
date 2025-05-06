@@ -149,6 +149,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   dropdownSettingsForSpeciality = {};
   actionTypeSubscription$: Subscription;
   phyOrderRoomsList: any;
+  phyOrderWardList: any;
   phyWardList: any;
   updatedDate: any;
   modalRef: BsModalRef;
@@ -430,44 +431,48 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
     this._dataServices.getConfigTools(jsonObj).subscribe(
       (_success: any) => {
-        //_success = JSON.parse(_success._body);
-        this.getConfigToolWardList = _success.d.results[0].Ward;
-        let specialtyData = this.getSpecialtyList(_success.d.results[0].ConfigHeaderItem.results);
-        this.getConfigToolSpecialtyList = specialtyData;
-        // this.loadData(_success.d.results[0].Ward, specialtyData);
-        // this.loadDataWithAttendPhyList();
-        this.Variantid = _success.d.results[0].Variantid;
-
-        this.getWardDataFromApi = _success.d.results[0].Ward;
-        if (_success.d.results != null && _success.d.results.length > 0) {
-          this.arraySplit = _success.d.results[0].Ward.split(',');
-          this.wardSelectForConfig = [];
-          this.getWards.filter((element) => {
-            if (this.arraySplit.includes(element.Ward)) {
-              this.wardSelectForConfig.push(element);
-            }
-          });
-          this.specialtyArraySplit = specialtyData;
-          this.specialtySelectForConfig = [];
-
-          this.specialtyListConfig.filter((element) => {
-            if (this.specialtyArraySplit.includes(element.Orgid)) {
-              this.specialtySelectForConfig.push(element);
-            }
-          });
-          this.columnsList = _success.d.results[0].ConfigHeaderItem.results;
-          this.postSelectedCol = [];
-          this.columnsList.forEach((value) => {
-            this.postSelectedCol.push({
-              Variantid: '',
-              Fieldname: value.Fieldname,
+        if(_success.d.results.length) {
+          //_success = JSON.parse(_success._body);
+          this.getConfigToolWardList = _success.d.results[0].Ward;
+          let specialtyData = this.getSpecialtyList(_success.d.results[0].ConfigHeaderItem.results);
+          this.getConfigToolSpecialtyList = specialtyData;
+          // this.loadData(_success.d.results[0].Ward, specialtyData);
+          // this.loadDataWithAttendPhyList();
+          this.Variantid = _success.d.results[0].Variantid;
+  
+          this.getWardDataFromApi = _success.d.results[0].Ward;
+          if (_success.d.results != null && _success.d.results.length > 0) {
+            this.arraySplit = _success.d.results[0].Ward.split(',');
+            this.wardSelectForConfig = [];
+            this.getWards.filter((element) => {
+              if (this.arraySplit.includes(element.Ward)) {
+                this.wardSelectForConfig.push(element);
+              }
             });
-          });
-          this.emergencyService.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList;
-          this.emergencyService.getConfigToolWardList = this.getConfigToolWardList;
+            this.specialtyArraySplit = specialtyData;
+            this.specialtySelectForConfig = [];
+  
+            this.specialtyListConfig.filter((element) => {
+              if (this.specialtyArraySplit.includes(element.Orgid)) {
+                this.specialtySelectForConfig.push(element);
+              }
+            });
+            this.columnsList = _success.d.results[0].ConfigHeaderItem.results;
+            this.postSelectedCol = [];
+            this.columnsList.forEach((value) => {
+              this.postSelectedCol.push({
+                Variantid: '',
+                Fieldname: value.Fieldname,
+              });
+            });
+            this.emergencyService.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList;
+            this.emergencyService.getConfigToolWardList = this.getConfigToolWardList;
+            this.CheckInComponent?.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.formgroupData.DateRange);
+            this.ErHistoryComponent?.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.formgroupData.DateRange);
+          }
+        } else {
           this.CheckInComponent?.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.formgroupData.DateRange);
           this.ErHistoryComponent?.getHospitalList(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.formgroupData.DateRange);
-
         }
       },
       (_error: any) => { }
@@ -1558,7 +1563,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     }
     if(this.checkin) {
       this.CheckInComponent?.getSelectedDates(
-        this.formgroupData.DateRange, this.getConfigToolWardList, this.getConfigToolSpecialtyList
+        event, this.getConfigToolWardList, this.getConfigToolSpecialtyList
       );
     }
     if(this.LabResults) {

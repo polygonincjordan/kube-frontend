@@ -2046,14 +2046,120 @@ export class ErHistoryComponent implements OnInit {
   //     }
   // }
 
+  // filterListData(event) {
+  //   const { FCategory, Physician, Status, RoomidText } = event;
+  //     this.inHospitaDischargelistList = this.inHospitaDischargelistListClone.filter((item:any) => {
+  //     const matchesKostrName = !FCategory || item?.FinancialCategory.includes(FCategory);
+  //     const matchesBehArztName = !Physician || item?.AttendingDoctorName.includes(Physician);
+  //     const matchRoom = !RoomidText || item?.RoomidText.includes(RoomidText);
+  //     return matchesKostrName && matchesBehArztName && matchRoom;
+  //   });
+  //   this.sendErPatientCount.emit( this.inHospitaDischargelistList.length);
+  // }
+  financialValueArr: any
+  roomidTextValueArr: any
+  wardValueArr: any = [];
+  specialtyValueArr: any = [];
   filterListData(event) {
-    const { FCategory, Physician, Status } = event;
-      this.inHospitaDischargelistList = this.inHospitaDischargelistListClone.filter((item:any) => {
-      const matchesKostrName = !FCategory || item?.FinancialCategory.includes(FCategory);
-      const matchesBehArztName = !Physician || item?.AttendingDoctorName.includes(Physician);
-      return matchesKostrName && matchesBehArztName;
-    });
-    this.sendErPatientCount.emit( this.inHospitaDischargelistList.length);
+    this.triageValueArr = [];
+    this.physicianValueArr = [];
+    this.statusValueArr = [];
+    this.financialValueArr = [];
+    this.roomidTextValueArr = [];
+    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText) {
+      let filterValue = this.inHospitaDischargelistListClone;
+      if (event.Physician && event.Physician?.length) {
+        event.Physician.forEach((physicianValue) => {
+          this.physicianValueArr.push(
+            filterValue.filter((element) => {
+              if (element.AttendingDoctorName === physicianValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.physicianValueArr.flat();
+      }
+      if (event.RoomidText && event.RoomidText?.length) {
+        event.RoomidText.forEach((physicianValue) => {
+          this.roomidTextValueArr.push(
+            filterValue.filter((element) => {
+              if (element.RoomidText === physicianValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.roomidTextValueArr.flat();
+      }
+      if (event.Status && event.Status?.length) {
+        event.Status.forEach((statusValue) => {
+          this.statusValueArr.push(
+            filterValue.filter((element) => {
+              if (element.patientStatus == statusValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.statusValueArr.flat();
+      }
+      if (event.FWard && event.FWard?.length) {
+        event.FWard.forEach((wardValue) => {
+          this.wardValueArr.push(
+            filterValue.filter((element) => {
+              if (element.Floor == wardValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.wardValueArr.flat();
+      }
+      if (event.FSpecialty && event.FSpecialty?.length) {
+        event.FSpecialty.forEach((wardValue) => {
+          this.specialtyValueArr.push(
+            filterValue.filter((element) => {
+              if (element.DeptouDesc == wardValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.specialtyValueArr.flat();
+      }
+      if (event.FCategory && event.FCategory?.length) {
+        event.FCategory.forEach((statusValue) => {
+          this.financialValueArr.push(
+            filterValue.filter((element) => {
+              if (element.FinancialCategory == statusValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.financialValueArr.flat();
+
+        // if (event.FCategory == 'Self-Pay') {
+        //   filterValue = filterValue.filter((element: any) => {
+        //     if (element.FinancialCategory === 'Self-Pay') {
+        //       return element;
+        //     }
+        //   });
+        // } else {
+        //   filterValue = filterValue.filter((element: any) => {
+        //     if (element.FinancialCategory !== 'Self-Pay') {
+        //       return element;
+        //     }
+        //   });
+        // }
+      }
+      this.inHospitaDischargelistList = filterValue;
+      this.sendErPatientCount.emit(this.inHospitaDischargelistList.length);
+    } else {
+      this.inHospitaDischargelistList = this.inHospitaDischargelistListClone;
+      this.sendErPatientCount.emit(this.inHospitaDischargelistList.length);
+    }
   }
 // assigned to doctor
 openAssignDoc( template: TemplateRef<any>,data){

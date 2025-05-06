@@ -530,6 +530,14 @@ export class DocumentationListComponent implements OnInit {
       )
       .subscribe((data: any) => {
         if (type == '2') {
+          data?.d?.results.forEach((res) => {
+            if(res.Dtid === 'ZMED_NEODS') {
+              res.DtidText = 'Neonatal Discharge Summary'
+            }
+            if(res.Dtid === 'ZMED_PHDIS') {
+              res.DtidText = 'Physician Discharge Summary'
+            }
+          })
           this.currentVisitDocumetClone = data?.d.results;
           this.currentVisitDocumet = data?.d.results;
           this.currentVisitDocumentNameList = Array.from(
@@ -827,6 +835,36 @@ export class DocumentationListComponent implements OnInit {
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
     }
+    // Neonatal Progress Note
+    else if (item.Dtid == 'ZMED_NEODS') {
+      this.pdfUrl = '';
+      this.dayCaseDashboardService
+        .NeonatalDischargeDocPDF(item.Dockey)
+        .subscribe((data: any) => {
+          this.pdfUrlType = 'pdf';
+          this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+          // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   'data:application/pdf;base64,' + data.d.AttachmentData
+          // );
+          const config: ModalOptions = {
+            class: 'modal-dialog-centered modal-xl pdfmodal-size',
+          };
+          this.pdfTemplateRef = this.modalService.show(template, config);
+        });
+ 
+      // this.admissionService
+      //   .getNeoNatalReleasedPdf(json)
+      //   .pipe(
+      //     untilDestroyed(this),
+      //     catchError((err) => {
+      //       return of([]);
+      //     })
+      //   )
+      //   .subscribe((data: any) => {
+      //     this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+      //     this.pdfTemplateRef = this.modalService.show(template, config);
+      //   });
+    }
 
     // Neonatal Medical Report
     else if (item.Dtid == 'ZMED_NEOMD') {
@@ -845,7 +883,7 @@ export class DocumentationListComponent implements OnInit {
           this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
-    }else if (item.Dtid == 'ZMED_PHASM') {
+    } else if (item.Dtid == 'ZMED_PHASM') {
       const json = {
         Dockey: item.Dockey,
       };
@@ -870,6 +908,7 @@ export class DocumentationListComponent implements OnInit {
       })
     }
   }
+
 
   pdfUrlConvertToBlob(pdfValue) {
     let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
@@ -996,6 +1035,7 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddEditNewbornAssessment &&
       !this.admissionService.isAddNicuForm &&
       !this.admissionService.isNewBornForm && 
+      !this.admissionService.isAddEditDocPaediatricsAdmissionForm && 
       !this.admissionService.isAddEditNeonatalDischarge
     ) {
       return true;

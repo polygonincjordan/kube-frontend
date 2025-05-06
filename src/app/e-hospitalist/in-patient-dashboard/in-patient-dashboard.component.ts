@@ -383,134 +383,138 @@ export class InPatientDashboardComponent implements OnInit {
     this._EMRServices.getConfigTools(jsonObj).subscribe(
       (_success: any) => {
         //_success = JSON.parse(_success._body);
-        this.getConfigToolWardList = _success.d.results[0].Ward;
-        let specialtyData = this.getSpecialtyList(_success.d.results[0].ConfigHeaderItem.results);
-        let physicianData = this.getPhysicianList(_success.d.results[0].ConfigHeaderItem.results);
-        this.getConfigToolSpecialtyList = specialtyData;
-        this.getConfigToolPhysicianList = physicianData;
-        this.loadData(_success.d.results[0].Ward, specialtyData);
-        // this.loadDataWithAttendPhyList();
-        this.getWardDataFromApi = _success.d.results[0].Ward;
-        if (_success.d.results != null && _success.d.results.length > 0) {
-          this.arraySplit = _success.d.results[0].Ward.split(',');
-          this.wardSelectForConfig = [];
-          this.getWards.filter((element) => {
-            if (this.arraySplit.includes(element.Ward)) {
-              this.wardSelectForConfig.push(element);
-            }
-          });
-          if (this.wardSelectForConfig.length) this.form.patchValue({
-            wardNo: this.wardSelectForConfig
-          })
-
-
-
-          this.Variantid = _success.d.results[0].Variantid;
-          this.columnsList = _success.d.results[0].ConfigHeaderItem.results;
-
-          if (_success.d.results[0].Bedlist == '1') {
-            this.showColumnsListView.Listview_modal = this.showList = false;
-            this.showColumnsListView.Bedview_modal = true;
-          } else {
-            this.showColumnsListView.Listview_modal = this.showList = true;
-            this.showColumnsListView.Bedview_modal = false;
-          }
-
-          this.postSelectedCol = [];
-          this.columnsList.forEach((value) => {
-            this.postSelectedCol.push({
-              Variantid: '',
-              Fieldname: value.Fieldname,
+        if(_success.d?.results.length) {
+          this.getConfigToolWardList = _success.d?.results[0]?.Ward;
+          let specialtyData = this.getSpecialtyList(_success.d?.results[0]?.ConfigHeaderItem.results);
+          let physicianData = this.getPhysicianList(_success.d?.results[0]?.ConfigHeaderItem.results);
+          this.getConfigToolSpecialtyList = specialtyData;
+          this.getConfigToolPhysicianList = physicianData;
+          this.loadData(_success.d?.results[0]?.Ward, specialtyData);
+          // this.loadDataWithAttendPhyList();
+          this.getWardDataFromApi = _success.d?.results[0]?.Ward;
+          if (_success.d.results != null && _success.d.results.length > 0) {
+            this.arraySplit = _success.d?.results[0]?.Ward.split(',');
+            this.wardSelectForConfig = [];
+            this.getWards.filter((element) => {
+              if (this.arraySplit.includes(element.Ward)) {
+                this.wardSelectForConfig.push(element);
+              }
             });
-          });
-
-          this.columnsList.find((value) => {
-            if (value.Fieldname == 'Admission diagnosis') {
-              this.showColumnsListView.Admission_diagnosis = true;
-              this.showColumnsListView.Admission_diagnosis_model = true;
+            if (this.wardSelectForConfig.length) this.form.patchValue({
+              wardNo: this.wardSelectForConfig
+            })
+  
+  
+  
+            this.Variantid = _success.d?.results[0]?.Variantid || [];
+            this.columnsList = _success.d?.results[0]?.ConfigHeaderItem.results || [];
+  
+            if (_success.d.results[0].Bedlist == '1') {
+              this.showColumnsListView.Listview_modal = this.showList = false;
+              this.showColumnsListView.Bedview_modal = true;
+            } else {
+              this.showColumnsListView.Listview_modal = this.showList = true;
+              this.showColumnsListView.Bedview_modal = false;
             }
-            if (value.Fieldname == 'Admitted At') {
-              this.showColumnsListView.Admitted_At = true;
-              this.showColumnsListView.Admitted_At_model = true;
-            }
-            if (value.Fieldname == 'Allergy') {
-              this.showColumnsListView.Allergy = true;
-              this.showColumnsListView.Allergy_model = true;
-            }
-            if (value.Fieldname == 'Case') {
-              this.showColumnsListView.Case = true;
-              this.showColumnsListView.Case_model = true;
-            }
-            if (value.Fieldname == 'Days for isolation') {
-              this.showColumnsListView.Days_for_isolation = true;
-              this.showColumnsListView.Days_for_isolation_model = true;
-            }
-            if (value.Fieldname == 'Days since surgery') {
-              this.showColumnsListView.Days_since_surgery = true;
-              this.showColumnsListView.Days_since_surgery_model = true;
-            }
-            if (value.Fieldname == 'Doctor') {
-              this.showColumnsListView.Doctor = true;
-              this.showColumnsListView.Doctor_model = true;
-            }
-            if (value.Fieldname == 'Emergency Admission') {
-              this.showColumnsListView.Emergency_Admission = true;
-              this.showColumnsListView.Emergency_Admission_model = true;
-            }
-            if (value.Fieldname == 'Financial Category') {
-              this.showColumnsListView.Financial_Category = true;
-              this.showColumnsListView.Financial_Category_model = true;
-            }
-            if (value.Fieldname == 'Isolation') {
-              this.showColumnsListView.Isolation = true;
-              this.showColumnsListView.Isolation_model = true;
-            }
-            if (value.Fieldname == 'Last surgery date') {
-              this.showColumnsListView.Last_surgery_date = true;
-              this.showColumnsListView.Last_surgery_date_model = true;
-            }
-            if (value.Fieldname == 'LOS') {
-              this.showColumnsListView.LOS = true;
-              this.showColumnsListView.LOS_model = true;
-            }
-            if (value.Fieldname == 'Planned discharge') {
-              this.showColumnsListView.Planned_discharge = true;
-              this.showColumnsListView.Planned_discharge_model = true;
-            }
-            if (value.Fieldname == 'Risk Factor') {
-              this.showColumnsListView.Risk_Factor = true;
-              this.showColumnsListView.Risk_Factor_model = true;
-            }
-            if (value.Fieldname == 'Isolation') {
-              this.showColumnsListView.Isolation = true;
-              this.showColumnsListView.Isolation_model = true;
-            }
-
-            if (value.Fieldname == 'Speciality') {
-              this.showColumnsListView.Speciality = true;
-              this.showColumnsListView.Speciality_model = true;
-            }
-            if (value.Fieldname == 'Study Flag') {
-              this.showColumnsListView.Study_name = true;
-              this.showColumnsListView.Study_name_model = true;
-            }
-            if (value.Fieldname == 'Treatment diagnosis') {
-              this.showColumnsListView.Treatment_diagnosis = true;
-              this.showColumnsListView.Treatment_diagnosis_model = true;
-            }
-            if (value.Fieldname == 'VIP') {
-              this.showColumnsListView.VIP = true;
-              this.showColumnsListView.VIP_model = true;
-            }
-            if (value.Fieldname == 'Attending Doctor') {
-              this.showColumnsListView.Attending_Doctor = true;
-              this.showColumnsListView.Attending_Doctor_modal = true;
-            }
-            if (value.Fieldname == 'Case Diagnosis') {
-              this.showColumnsListView.Case_Diagnosis = true;
-              this.showColumnsListView.Case_Diagnosis_modal = true;
-            }
-          });
+  
+            this.postSelectedCol = [];
+            this.columnsList.forEach((value) => {
+              this.postSelectedCol.push({
+                Variantid: '',
+                Fieldname: value.Fieldname,
+              });
+            });
+  
+            this.columnsList.find((value) => {
+              if (value.Fieldname == 'Admission diagnosis') {
+                this.showColumnsListView.Admission_diagnosis = true;
+                this.showColumnsListView.Admission_diagnosis_model = true;
+              }
+              if (value.Fieldname == 'Admitted At') {
+                this.showColumnsListView.Admitted_At = true;
+                this.showColumnsListView.Admitted_At_model = true;
+              }
+              if (value.Fieldname == 'Allergy') {
+                this.showColumnsListView.Allergy = true;
+                this.showColumnsListView.Allergy_model = true;
+              }
+              if (value.Fieldname == 'Case') {
+                this.showColumnsListView.Case = true;
+                this.showColumnsListView.Case_model = true;
+              }
+              if (value.Fieldname == 'Days for isolation') {
+                this.showColumnsListView.Days_for_isolation = true;
+                this.showColumnsListView.Days_for_isolation_model = true;
+              }
+              if (value.Fieldname == 'Days since surgery') {
+                this.showColumnsListView.Days_since_surgery = true;
+                this.showColumnsListView.Days_since_surgery_model = true;
+              }
+              if (value.Fieldname == 'Doctor') {
+                this.showColumnsListView.Doctor = true;
+                this.showColumnsListView.Doctor_model = true;
+              }
+              if (value.Fieldname == 'Emergency Admission') {
+                this.showColumnsListView.Emergency_Admission = true;
+                this.showColumnsListView.Emergency_Admission_model = true;
+              }
+              if (value.Fieldname == 'Financial Category') {
+                this.showColumnsListView.Financial_Category = true;
+                this.showColumnsListView.Financial_Category_model = true;
+              }
+              if (value.Fieldname == 'Isolation') {
+                this.showColumnsListView.Isolation = true;
+                this.showColumnsListView.Isolation_model = true;
+              }
+              if (value.Fieldname == 'Last surgery date') {
+                this.showColumnsListView.Last_surgery_date = true;
+                this.showColumnsListView.Last_surgery_date_model = true;
+              }
+              if (value.Fieldname == 'LOS') {
+                this.showColumnsListView.LOS = true;
+                this.showColumnsListView.LOS_model = true;
+              }
+              if (value.Fieldname == 'Planned discharge') {
+                this.showColumnsListView.Planned_discharge = true;
+                this.showColumnsListView.Planned_discharge_model = true;
+              }
+              if (value.Fieldname == 'Risk Factor') {
+                this.showColumnsListView.Risk_Factor = true;
+                this.showColumnsListView.Risk_Factor_model = true;
+              }
+              if (value.Fieldname == 'Isolation') {
+                this.showColumnsListView.Isolation = true;
+                this.showColumnsListView.Isolation_model = true;
+              }
+  
+              if (value.Fieldname == 'Speciality') {
+                this.showColumnsListView.Speciality = true;
+                this.showColumnsListView.Speciality_model = true;
+              }
+              if (value.Fieldname == 'Study Flag') {
+                this.showColumnsListView.Study_name = true;
+                this.showColumnsListView.Study_name_model = true;
+              }
+              if (value.Fieldname == 'Treatment diagnosis') {
+                this.showColumnsListView.Treatment_diagnosis = true;
+                this.showColumnsListView.Treatment_diagnosis_model = true;
+              }
+              if (value.Fieldname == 'VIP') {
+                this.showColumnsListView.VIP = true;
+                this.showColumnsListView.VIP_model = true;
+              }
+              if (value.Fieldname == 'Attending Doctor') {
+                this.showColumnsListView.Attending_Doctor = true;
+                this.showColumnsListView.Attending_Doctor_modal = true;
+              }
+              if (value.Fieldname == 'Case Diagnosis') {
+                this.showColumnsListView.Case_Diagnosis = true;
+                this.showColumnsListView.Case_Diagnosis_modal = true;
+              }
+            });
+          }
+        } else {
+          this.loadData('', '');
         }
       },
       (_error: any) => { }
@@ -574,8 +578,14 @@ export class InPatientDashboardComponent implements OnInit {
         return itm;
       }
     });
+    let elPhysician = this.postSelectedCol.find((itm) => {
+      if (itm.Fieldname.includes('PhysicianConfig')) {
+        return itm;
+      }
+    });
 
     if (el) this.postSelectedCol.splice(this.postSelectedCol.indexOf(el), 1);
+    if (elPhysician) this.postSelectedCol.splice(this.postSelectedCol.indexOf(elPhysician), 1);
     let specialtyDetails: any = this.commaSeparatForSpecialtyConf(this.specialtySelectForConfig);
     this.postSelectedCol.push({ Variantid: '', Fieldname: `SpecialtyConfig-${specialtyDetails}` });
 

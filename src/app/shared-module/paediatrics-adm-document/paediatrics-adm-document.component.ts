@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommanService } from '@services/comman.service';
@@ -19,6 +19,7 @@ import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.com
 import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { Subscription } from 'rxjs';
 import { ErVitalsComponent } from './er-vitals/er-vitals.component';
+import { AdmissionService } from '@services/admission/admission.service';
 
 @Component({
   selector: 'app-paediatrics-adm-document',
@@ -29,7 +30,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   public nursingAdmissionForm: FormGroup;
   public TOINFECTION: FormArray;
   public TOMEDICATION: FormArray;
-
+  @Input() soapFormEvent: string;
+  @Output() reloadTableList = new EventEmitter();
   toAllergyArr: any = [];
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
@@ -218,6 +220,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     private dataShareService: DataShareService,
     private dayCaseDashboard: DayCaseDashboardService,
     private modalService: BsModalService,
+    private admissionService: AdmissionService,
     private ePrescriptionService: EPrescriptionService
   ) {
     this._route.queryParams.subscribe((params) => {
@@ -251,6 +254,36 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // if (changes.soapFormEvent.currentValue == 'add') {
+    //   if (this.admissionService.isCloneNeonatalDischarge) {
+    //     this.createNeonatalDischargeDocument('3')
+    //   }
+    //   else {
+    //     this.createNeonatalDischargeDocument('1')
+    //   }
+    // }
+    // if (changes.soapFormEvent.currentValue == 'edit') {
+    //   this.createNeonatalDischargeDocument('1')
+    // }
+
+    // if (changes.soapFormEvent.currentValue == 'release') {
+    //   if (this.admissionService.isCloneNeonatalDischarge) {
+    //     this.createNeonatalDischargeDocument('5')
+    //   } else {
+    //     if (this.admissionService.isEditNeonatalDischarge) {
+    //       this.createNeonatalDischargeDocument('2')
+    //     } else {
+    //       this.createNeonatalDischargeDocument('4')
+    //     }
+    //   }
+    // }
+
+    // if (this.admissionService.isEditNeonatalDischarge || this.admissionService.isCloneNeonatalDischarge) {
+    //   this.getNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey);
+    // }
   }
 
   initForm() {
@@ -507,7 +540,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     this.TOINFECTION.push(this.itemFormArrayFieldForInfectious());
   }
 
-  
+
   defaultAddRow() {
     for (let index = 0; index < 3; index++) {
       this.addItemRow();
@@ -525,16 +558,16 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     this.TOMEDICATION.push(this.itemFormArrayFieldForMedication());
   }
 
-    itemFormArrayFieldForMedication(): FormGroup {
-      return this.formBuilder.group({
-        Dockey: [''],
-        vaccination: [''],
-        othervaccination: [''],
-        status: [''],
-        date: [false],
-      });
-    }
-  
+  itemFormArrayFieldForMedication(): FormGroup {
+    return this.formBuilder.group({
+      Dockey: [''],
+      vaccination: [''],
+      othervaccination: [''],
+      status: [''],
+      date: [false],
+    });
+  }
+
   addTableRow(event: any) {
     if (event == 'Vaccination History') {
       this.addItemRow();

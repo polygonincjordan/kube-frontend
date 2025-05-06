@@ -414,7 +414,7 @@ export class CheckInComponent implements OnInit {
   public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
     this.admissionStatusModel = data;
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-md add-habit-size',
+      class: 'modal-dialog-centered add-habit-size modal-xl',
       initialState: {
         admissionStatusModel: this.admissionStatusModel // Pass data into the modal
       }

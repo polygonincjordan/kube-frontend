@@ -142,6 +142,9 @@
 <div *ngIf="admissionService.isAddNicuForm">
   <app-nicu-assessment-document [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded" (realodEducationList)="realodEducationList($event)"></app-nicu-assessment-document>
 </div>
+<div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
+  <app-paediatrics-adm-document [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatrics-adm-document>
+</div>
 
 <ng-template #labpdfmodal>
   <div class="modal-body">

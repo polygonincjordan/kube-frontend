@@ -108,6 +108,10 @@ export class AdmissionService {
   public isCloneVisitForm: boolean = false;
   public isEditVisitForm: boolean = false;
 
+  public isAddEditDocPaediatricsAdmissionForm: boolean = false;
+  public isClonePaediatricsAdmissionForm: boolean = false;
+  public isEditPaediatricsAdmissionForm: boolean = false;
+
   public isAddEditTransferAssestForm: boolean = false;
   public isAddEditNewbornAssessment: boolean = false;
   public isCloneTransferAssestForm: boolean = false;
@@ -792,6 +796,25 @@ export class AdmissionService {
           this.isCloneNewBornForm = false;
         }
       }
+      else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_PDASM') {
+        if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') {
+          return;
+        }
+
+        if (actionType == 'edit') {
+          this.isEditPaediatricsAdmissionForm = true;
+        } else {
+          this.isClonePaediatricsAdmissionForm = false;
+        }
+
+        if (actionType == 'clone' && this.selectedCurrentDocDetails.DokstText != 'Released') return;
+        this.isAddEditDocPaediatricsAdmissionForm = !this.isAddEditDocPaediatricsAdmissionForm;
+        if (actionType == 'clone') {
+          this.isClonePaediatricsAdmissionForm = true;
+        } else {
+          this.isClonePaediatricsAdmissionForm = false;
+        }
+      }
       else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_ATCHM') {
         this.document.next(true);
       }
@@ -854,6 +877,10 @@ export class AdmissionService {
     this.isEditBornForm = false;
     this.isCloneNewBornForm = false;
 
+    this.isEditPaediatricsAdmissionForm = false;
+    this.isAddEditDocPaediatricsAdmissionForm = false;
+    this.isClonePaediatricsAdmissionForm = false;
+
   }
 
   clearVarValue() {
@@ -895,6 +922,10 @@ export class AdmissionService {
     this.isCloneNeonatalDischarge = false;
     this.isEditNeonatalDischarge = false;
     this.isAddEditNeonatalDischarge = false;
+
+    this.isEditPaediatricsAdmissionForm = false;
+    this.isAddEditDocPaediatricsAdmissionForm = false;
+    this.isClonePaediatricsAdmissionForm = false;
   }
 
   //getDocumentDetails
