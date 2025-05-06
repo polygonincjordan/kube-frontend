@@ -54,6 +54,7 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   initForm() {
+    let EmployeeResp = this._storageService.getGpart();
     this.progressNoteForm = this.formBuider.group({
       PatientId: [this.paramsObj.patientId],
       CaseId: [this.paramsObj.caseid],
@@ -64,7 +65,7 @@ export class ProgressNotesComponent implements OnInit {
       DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
       Text: ['', [Validators.required]],
       Category: [],
-      EmployeeResp: ['9000000000'],
+      EmployeeResp: [EmployeeResp],
     });
   }
 
@@ -137,7 +138,7 @@ export class ProgressNotesComponent implements OnInit {
         const actionDate = new Date(this.progressNoteForm.value.ActionDate);
         actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
         this.progressNoteForm.value.ActionDate = actionDate.toISOString().split('.')[0];
-  
+
         this._dataServices.createProgressEntry(this.progressNoteForm.value)
           .subscribe(
             (_success: any) => {

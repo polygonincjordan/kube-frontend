@@ -213,7 +213,7 @@ export class AdministeredDosesComponent implements OnInit{
     this.emergencyService.getReceviceCart(fromDate,toDate,timeFrom,timeTo,data.nurseUnit).subscribe((res:any)=>{
      if(res){
       this.cartList = res.d?.results
-      if(this.itemOfReceive && this.indexOfReceive){
+      if(this.itemOfReceive && this.indexOfReceive.toString()){
         let data = this.cartList.find((item)=>{
           return item.Cartid==this.itemOfReceive.Cartid;
         });

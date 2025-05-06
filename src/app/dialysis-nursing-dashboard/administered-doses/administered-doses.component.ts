@@ -83,16 +83,20 @@ export class AdministeredDosesComponent implements OnInit{
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
   isExpanded: boolean;
-value: any;
+  value: any;
   selectedColData: any;
   isSelected=false;
   cardSection: boolean;
   isCollapsed: boolean[] = [];
+  isCollapseded: boolean = false;
   cartForm: FormGroup;
   receiveCartData:any[]=[];
   toContentData:any[]=[];
   cartData:any;
-
+  private indexOfReceive:number;
+  private itemOfReceive:any;
+  public receviceCartForm:FormGroup
+  childCartDetails: any;
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -135,13 +139,21 @@ value: any;
       Repdt: [''],
     });
 
-    let currentTime = this.datePipe.transform(new Date(), "hh:mm"); 
+    let currentTime = this.datePipe.transform(new Date(), "hh:mm");
     this.cartForm = this.formBuilder.group({
       FromDt: [new Date()],
       ToDt: [new Date()],
       FromTm: ['00:00'],
       ToTm: ['23:59'],
       Nursingou: ['F2DTUAMC']
+    })
+
+    this.receviceCartForm = this.formBuilder.group({
+      dateFrom: [new Date()],
+      dateTo: [new Date()],
+      timeFrom: ['00:00'],
+      timeTo: ['23:59'],
+      nurseUnit: ['EMEEUAMC']
     })
   }
   ngOnInit(): void {
@@ -176,16 +188,29 @@ value: any;
    })
   }
 
-  getReceviceCartList(){
-    const dateFrom = this.formatDate(this.cartForm.get('FromDt').value);
-    const dateTo = this.formatDate(this.cartForm.get('ToDt').value);
-    const timeFrom = this.formatTime(this.cartForm.get('FromTm').value);
-    const timeTo = this.formatTime(this.cartForm.get('ToTm').value);
-    const nurseUnit = this.cartForm.get('Nursingou').value ? this.cartForm.get('Nursingou').value : null;
+  getReceviceCartList() {
+    let data = this.receviceCartForm.value
+    const timeFrom = this.formatTimeToISO8601(data.timeFrom);
+    const timeTo = this.formatTimeToISO8601(data.timeTo);
+    const fromDate = `${new DatePipe('en-US').transform(
+      data.dateFrom ? data.dateFrom : new Date().setDate(new Date().getDate()),
+      'yyyy-MM-dd'
+    )}T00:00:00`
+    const toDate = `${new DatePipe('en-US').transform(
+      data.dateTo ? data.dateTo : new Date().setDate(new Date().getDate()),
+      'yyyy-MM-dd'
+    )}T00:00:00`
 
-    this.emergencyService.getReceviceCart(dateFrom,dateTo,timeFrom,timeTo,nurseUnit).subscribe({
-      next : (res:any) => {
-        this.receiveCartData=res.d.results;
+    this.emergencyService.getReceviceCart(fromDate, toDate, timeFrom, timeTo, data.nurseUnit).subscribe({
+      next: (res: any) => {
+        this.receiveCartData = res.d.results;
+        if (this.itemOfReceive && this.indexOfReceive.toString()) {
+          let data = this.receiveCartData.find((item) => {
+            return item.Cartid == this.itemOfReceive.Cartid;
+          });
+          this.selectedColData = undefined;
+          this.selectDateColumn(this.indexOfReceive, data)
+        }
       },
       error: (error) => {
         console.log(error);
@@ -200,33 +225,37 @@ value: any;
       FromTm:'',
       ToTm:''
     })
+    this.receviceCartForm.get('dateFrom').setValue(new Date());
+    this.receviceCartForm.get('dateTo').setValue(new Date());
+    this.receviceCartForm.get('timeFrom').setValue('00:00');
+    this.receviceCartForm.get('timeTo').setValue('23:59');
     // this.getReceviceCartList();
     this.receiveCartData=null;
     this.toContentData = null;
 
     this.modalRef.hide();
   }
-  
+
   formatDateFromTimestamp(timestamp: string): string {
-    const regex = /\/Date\((\d+)\)\//; 
+    const regex = /\/Date\((\d+)\)\//;
     const match = regex.exec(timestamp);
-    
+
     if (match && match[1]) {
       const milliseconds = parseInt(match[1], 10);
       const date = new Date(milliseconds);
       const day = date.getDate();
-      const month = date.getMonth() + 1; 
+      const month = date.getMonth() + 1;
       const year = date.getFullYear();
-  
+
       const formattedDay = day < 10 ? '0' + day : day.toString();
       const formattedMonth = month < 10 ? '0' + month : month.toString();
-  
+
       return formattedDay + '-' + formattedMonth + '-' + year;
 
     }
-    return ''; 
+    return '';
   }
-  
+
 
   formatDate(dateTimeString){
     if(dateTimeString){
@@ -302,21 +331,21 @@ value: any;
   filterListData(event) {
     let filterValue = this.filteredPatients;
     if(event.wardNo || event.patientStatus || event.Physician)
-  
+
       if(event.wardNo && event.wardNo?.length){
         filterValue = filterValue.filter((item: any) => {
           // return event.wardNo.includes(item.RoomidText);
           return event.wardNo ==item.RoomidText;
         });
       }
-      
+
       if(event.patientStatus && event.patientStatus?.length){
         filterValue = filterValue.filter((item: any) => {
           // return event.patientStatus.includes(item.VisitStatus);
           return event.patientStatus ==item.VisitStatus;
         });
       }
-      
+
       if(event.Physician && event.Physician?.length){
         filterValue = filterValue.filter((item: any) => {
           // return event.Physician.includes(item.AttendingDoctorName);
@@ -333,14 +362,19 @@ value: any;
   selectDateColumn(index: number, item:any) {
     if (this.selectedColData === index) {
       this.selectedColData = undefined;
-      this.cardSection= false
+      this.cardSection= false;
+      this.indexOfReceive =  null;
+      this.itemOfReceive =  null;
     } else {
       this.selectedColData = index;
       this.cardSection= true
+      this.indexOfReceive =  index;
+      this.itemOfReceive =  item;
+      this.childCartDetails = item;
     }
     this.toContentData = item;
   }
-  
+
   getDate(value) {
     if (value) {
       var str = value;
@@ -391,5 +425,55 @@ value: any;
    toggleAccordion(index: number): void {
     this.isCollapsed[index] = !this.isCollapsed[index];
   }
-  
+
+
+  addReceviceCard() {
+    this.receiveCartData.forEach((e) => {
+      if (e.isChecked) {
+        delete e.isChecked;
+        this.emergencyService.addReceviceCart(e).subscribe((res: any) => {
+          if (res) {
+            this.getReceviceCartList();
+          }
+        }, (error: any) => { })
+      }
+    })
+  }
+
+  addReceviceMissedCard() {
+    this.receiveCartData.forEach((e) => {
+      if (e.isChecked) {
+        delete e.isChecked;
+        e.Missed = "X";
+        this.emergencyService.addReceviceCart(e).subscribe((res: any) => {
+          if (res) {
+            this.getReceviceCartList();
+          }
+        }, (error: any) => { })
+      }
+    })
+  }
+
+  formatTimeToISO8601(time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    const duration = `PT${hours}H${minutes}M00S`;
+    return duration;
+  }
+
+  getTime(value) {
+    if (value) {
+      var str = value;
+      var str = str.replace(/[PT]/g, '');
+      var str = str.replace(/[H]/g, ':');
+      var str = str.replace(/[M]/g, ':');
+      var str = str.replace(/[S]/g, '');
+      var str = str.split(':');
+      var finalstr = str[0] + ':' + str[1];
+      return finalstr;
+    }
+  }
+
+  checkboxChangedMedication(event: any, item: any) {
+    this.receiveCartData.find(x => x.CartExtId == item.CartExtId).isChecked = event.target.checked;
+  }
 }

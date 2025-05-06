@@ -194,7 +194,7 @@ export class AdministeredDosesComponent implements OnInit{
     this.emergencyService.getReceviceCart(fromDate,toDate,timeFrom,timeTo,data.nurseUnit).subscribe((res:any)=>{
      if(res){
       this.cartList = res.d?.results
-      if(this.itemOfReceive && this.indexOfReceive){
+      if(this.itemOfReceive && this.indexOfReceive.toString()){
         let data = this.cartList.find((item)=>{
           return item.Cartid==this.itemOfReceive.Cartid;
         });
@@ -240,7 +240,7 @@ export class AdministeredDosesComponent implements OnInit{
                 let item=res.d.results[i];
                 item.isChecked = false;
                 if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
-                  let EventSet = resp.body.d.results.filter(record => item.Meordid==record.Meordid && record.Mesid === "200");
+                  let EventSet = resp.body.d.results.filter(record => item.Meordid==record.Meordid && (record.Mesid === "200" || record.Mesid === "302" || record.Mesid === "309" || record.Mesid === "310" || record.Mesid === "317" || record.Mesid === "320"  || record.Mesid === "330" || record.Mesid === "350" || record.Mesid === "100"));
                   if (EventSet && EventSet.length > 0) {
                     item.EventSet = [EventSet[0]];
                   }
