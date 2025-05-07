@@ -52,7 +52,7 @@ export class EMarOrderNurseComponent {
 
 
   constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) { }
- 
+
 
   // filterEventsdata() {
   // if (this.filterConfigdata.Active || this.filterConfigdata.Suspended || this.filterConfigdata.Ended || this.filterConfigdata.Cancelled) {
@@ -67,11 +67,11 @@ export class EMarOrderNurseComponent {
   // }
   ngOnInit() {
     console.log(this.ePrescriptionService.selectedItems,"seleelelelelelele");
-    
+
   }
 
   processData(data: MedicationData[], events: MedicationEventData[]) {
-    
+
     if (data && data.length) {
       data.forEach((item: MedicationData) => {
         item.ViewOrderDate = this.datePipe.transform(this.parseDate(item.Movdf), 'dd.MM.yyyy');
@@ -313,5 +313,14 @@ export class EMarOrderNurseComponent {
       }
     }
     return null;
+  }
+
+  handleRefreshData() {
+    this.ePrescriptionService.loadMARData();
+    this.ePrescriptionService.loadMAREventData(this.ePrescriptionService.formgroupData.DateRange);
+    let data = this.ePrescriptionService.prescriptionList;
+    this.processData(data.medicationData, data.eventData);
+    this.filterConfig = this.ePrescriptionService.checkedFilterData;
+    this.setCurrentDateData();
   }
 }

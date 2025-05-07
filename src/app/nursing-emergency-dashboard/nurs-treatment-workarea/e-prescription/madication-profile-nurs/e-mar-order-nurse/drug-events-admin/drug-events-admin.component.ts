@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
@@ -30,6 +30,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public FillSource: any[] = [];
   @ViewChild('drugEventMain', { static: true }) drugEventMain: TemplateRef<any>;
   @ViewChild('Witnessid') Witnessid: EmarWitnessComponent;
+  @Output() refreshData = new EventEmitter<any>();
   administered: boolean = true;
   qadministered: boolean = false;
   notadministered: boolean = false;
@@ -177,7 +178,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp1: new FormControl(this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
       }),
@@ -281,7 +282,7 @@ export class DrugEventsAdminComponent implements OnInit {
                   this.LoginSubscription = this.authService
                     .emrLogin(resp.username, resp.password)
                     .subscribe({
-                      next: (data) => { 
+                      next: (data) => {
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('Administrator').patchValue({
                           Meresp2: parseData.d.NameFirst
@@ -297,7 +298,7 @@ export class DrugEventsAdminComponent implements OnInit {
                           const { Quanunit, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)
                         }
-                       
+
                       },
                       error: (err) => {
                         const errorBody = JSON.parse(err._body);
@@ -335,7 +336,7 @@ export class DrugEventsAdminComponent implements OnInit {
                     .emrLogin(resp.username, resp.password)
                     .subscribe({
                       next: (data) => {
-                        
+
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('NotAdminister').patchValue({
                           Meresp2: parseData.d.NameFirst
@@ -452,7 +453,8 @@ export class DrugEventsAdminComponent implements OnInit {
           customClass: 'myalertpopup',
           icon: 'success'
         }).then(() => {
-          this.modalRef.hide()
+          this.modalRef.hide();
+          this.refreshData.emit();
         })
       },
       error: (error: any) => {
