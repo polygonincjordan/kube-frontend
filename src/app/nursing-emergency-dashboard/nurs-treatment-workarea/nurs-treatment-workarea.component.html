@@ -885,7 +885,7 @@
           (onSearchChangEventForProgressNotes)="onSearchChange($event)"></app-physician-orders>
       </ng-container>
       <div class="order-templete-main mt-3" *ngIf="this.emergencyService.ProgressNotes">
-        <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList"
+        <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList" (dataToParents)="dataGetEvent($event)"
           [occupationalGroupData]="occupationalGroupData"></app-progress-notes>
       </div>
       <ng-container *ngIf="this.emergencyService.Diagnosis">

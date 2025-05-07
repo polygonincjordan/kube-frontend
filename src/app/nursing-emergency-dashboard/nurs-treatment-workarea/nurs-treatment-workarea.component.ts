@@ -15,6 +15,7 @@ import { SidebarService } from '@services/sidebar.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 import swal from 'sweetalert2';
 @UntilDestroy()
 @Component({
@@ -95,6 +96,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   firstIndex: number;
   actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
+  unsavedProgressNote: boolean = false;
+
   constructor(public emergencyService: EmergencyService, public cpoeService: CpoeService, private formBuilder: FormBuilder, private _dataServices: EEmrService, public sidebarService: SidebarService,
     private dataShareService: DataShareService,
     public ePrescriptionService: EPrescriptionService,
@@ -1033,47 +1036,75 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     // }
   }
   tabChange(tabName?) {
+    console.log("call");
+
     if (tabName == 'ProgressNotes') {
       this.getProgressNotesData();
-      this.emergencyService.tabPanelNavigation('ProgressNotes');
+      this.calltab('ProgressNotes')
     } else if (tabName == 'PhysicianOrders') {
       this.phyOrderTableList();
-      this.emergencyService.tabPanelNavigation('PhysicianOrders');
+      this.calltab('PhysicianOrders')
     } else if (tabName == 'OrderSet') {
-      this.emergencyService.tabPanelNavigation('OrderSet');
+      this.calltab('OrderSet')
     } else if (tabName == 'CPOE') {
-      this.emergencyService.tabPanelNavigation('CPOE');
+      this.calltab('CPOE');
     } else if (tabName == 'ePrescription') {
-      this.emergencyService.tabPanelNavigation('ePrescription');
+      this.calltab('ePrescription')
     } else if (tabName == 'orderdetails') {
-      this.emergencyService.tabPanelNavigation('orderdetails');
+      this.calltab('orderdetails')
     } else if (tabName == 'Diagnosis') {
-      this.emergencyService.tabPanelNavigation('Diagnosis');
+      this.calltab('Diagnosis');
     } else if (tabName == 'Documentation') {
-      this.emergencyService.tabPanelNavigation('Documentation');
-      // if ( this.documentationComp != undefined) {
-      //   this.documentationComp.ngOnInit();
-      // }
+      this.calltab('Diagnosis');
     } else if (tabName == 'Lab') {
-      this.emergencyService.tabPanelNavigation('Lab');
       this.openModuleLabChart();
+      this.calltab('Lab');
     } else if (tabName == 'Rad') {
-      this.emergencyService.tabPanelNavigation('Rad');
       this.openModuleRad();
+      this.calltab('Rad');
     } else if (tabName == 'patientProfile') {
-      this.emergencyService.tabPanelNavigation('patientProfile');
+      this.calltab('patientProfile');
     } else if (tabName == 'Consumables') {
-      this.emergencyService.tabPanelNavigation('Consumables');
+      this.calltab('Consumables');
     } else if (tabName == 'Services') {
-      this.emergencyService.tabPanelNavigation('Services');
-    }  else if(tabName == 'vitalSign'){
-      this.emergencyService.tabPanelNavigation('VitalSign');
-    }  else if(tabName == 'HistoryAssessment'){
-      this.emergencyService.tabPanelNavigation('HistoryAssessment');
+      this.calltab('Services');
+    } else if (tabName == 'vitalSign') {
+      this.calltab('VitalSign');
+    } else if (tabName == 'HistoryAssessment') {
+      this.calltab('HistoryAssessment');
+    } else if (tabName == 'DietMealOrdering') {
+      this.calltab('DietMealOrdering');
     }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;
+  }
+
+  dataGetEvent(data) {
+    this.unsavedProgressNote = data
+  }
+
+  async calltab(tabName) {
+    if (this.unsavedProgressNote) {
+      const result = await Swal.fire({
+        title: 'Confirm',
+        text: 'Are you sure you want to leave without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      });
+      if (result.isConfirmed) {
+        this.unsavedProgressNote = false;
+        this.emergencyService.tabPanelNavigation(tabName);
+      } else {
+        return;
+      }
+    } else {
+      this.unsavedProgressNote = false;
+      this.emergencyService.tabPanelNavigation(tabName);
+    }
   }
 
   refreshPatientData(data) {

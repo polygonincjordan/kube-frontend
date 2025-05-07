@@ -137,6 +137,7 @@ import { HistoryAssessmentModule } from '../shared-module/history-assessment/his
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-plan-document/nursing-care-plan-document.module';
 import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
+import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 
 
 const route: Routes = [
@@ -241,7 +242,8 @@ const route: Routes = [
     EOrderMainComponent,
     EOrderSearchlistComponent,
     CreateEorderComponent,
-    EOrderHistoryComponent
+    EOrderHistoryComponent,
+    ReceiveCartComponent
   ],
   providers: [
     EmergencyService,

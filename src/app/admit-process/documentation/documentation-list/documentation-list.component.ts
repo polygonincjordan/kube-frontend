@@ -126,6 +126,8 @@ export class DocumentationListComponent implements OnInit {
       if(res) {
         this.selectedIndex = undefined;
         this.admissionService.isClearSelectedDoc.next(false);
+        this.documentFilter('');
+
       }
     })
    admissionService.document.subscribe((res)=>{
@@ -232,9 +234,9 @@ export class DocumentationListComponent implements OnInit {
     } else {
       this.currentVisitDocumet = this.currentVisitDocumetClone
     }
-    console.log(this.currentVisitDocumet, "this.currentVisitDocumet");
-
   }
+
+  
 
   dateFormate(dt: any) {
     return dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();

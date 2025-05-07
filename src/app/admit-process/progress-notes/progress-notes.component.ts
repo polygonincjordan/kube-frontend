@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 })
 export class ProgressNotesComponent implements OnInit {
   @Input() occupationalGroupData: any = new EventEmitter();
+  @Output() dataToParents = new EventEmitter<any>();
   @Input() ProgressNotesList: ProgressNotesListModel[];
   @Input() searchString: any;
   progressNoteForm: FormGroup;
@@ -37,6 +38,8 @@ export class ProgressNotesComponent implements OnInit {
   notAuthUpdateTemp: boolean = true;
   modalRefUpdateName: BsModalRef;
   templateRefName: TemplateRef<any>;
+  unsavedProgressNote: boolean = false;
+
   constructor(
     private formBuider: FormBuilder,
     private _admissionservice: AdmissionService,
@@ -58,6 +61,10 @@ export class ProgressNotesComponent implements OnInit {
     // this.getProgressNotesData();
     this.getCategoryList();
     this.getProgressNotesTemplateList();
+    this.progressNoteForm.get('Text')?.valueChanges.subscribe(value => {
+      this.unsavedProgressNote = !!value; // true if there's any text
+      this.dataToParents.emit(this.unsavedProgressNote);
+    });
   }
 
   initForm() {
@@ -152,6 +159,8 @@ export class ProgressNotesComponent implements OnInit {
                 this.initForm();
                 this.getProgressNotesData();
                 this.templteContent = null;
+                this.unsavedProgressNote = false;
+                this.dataToParents.emit(this.unsavedProgressNote);
                 this._admissionservice.successSwalModel(
                   'Progress Note got created'
                 );

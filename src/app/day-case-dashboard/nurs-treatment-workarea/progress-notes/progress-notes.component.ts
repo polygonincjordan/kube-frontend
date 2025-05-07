@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -22,6 +22,7 @@ import { catchError, of } from 'rxjs';
 })
 export class ProgressNotesComponent implements OnInit {
   @Input() occupationalGroupData: any = new EventEmitter();
+  @Output() dataToParents = new EventEmitter<any>();
   @Input() ProgressNotesList: ProgressNotesListModel[];
   @Input() searchString: any;
   progressNoteForm: FormGroup;
@@ -31,6 +32,8 @@ export class ProgressNotesComponent implements OnInit {
   templateList: ProgressNotesTemplateModel[];
   templteContent: any;
   userProfileDetail: any;
+  unsavedProgressNote: boolean = false;
+
   constructor(
     private formBuider: FormBuilder,
     public emergencyService: EmergencyService,
@@ -52,6 +55,10 @@ export class ProgressNotesComponent implements OnInit {
     // this.getProgressNotesData();
     this.getCategoryList();
     this.getProgressNotesTemplateList();
+    this.progressNoteForm.get('Text')?.valueChanges.subscribe(value => {
+      this.unsavedProgressNote = !!value; // true if there's any text
+      this.dataToParents.emit(this.unsavedProgressNote)
+    });
   }
 
   initForm() {
@@ -148,6 +155,8 @@ export class ProgressNotesComponent implements OnInit {
                 this.initForm();
                 this.getProgressNotesData();
                 this.templteContent = '';
+                this.unsavedProgressNote = false;
+                this.dataToParents.emit(this.unsavedProgressNote);
                 this.emergencyService.successSwalModel(
                   'Progress note is created successfully'
                 );

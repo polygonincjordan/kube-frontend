@@ -59,7 +59,7 @@
             <app-orders-templates (reloadPhyOrderList)="reloadPhyOrderListEvent($event)" [searchString]="searchString" [physicianOrderList]="physicianOrderList"></app-orders-templates>
           </div>
           <div class="order-templete-main mt-3" *ngIf="this._admissionservice.ProgressNotes">
-            <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList" [occupationalGroupData]="occupationalGroupData"></app-progress-notes>
+            <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList" [occupationalGroupData]="occupationalGroupData" (dataToParents)="dataGetEvent($event)"></app-progress-notes>
           </div>
           <div class="order-templete-main mt-3" *ngIf="this._admissionservice.isDischargeProcess">
             <create-discharge-order [medicationData]="ePrescriptionService.medicationPopupSaveData" [templateData]="ePrescriptionService.templatePopupSaveData"></create-discharge-order>
