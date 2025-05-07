@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProgressNotesListModel } from '@services/admission/interfaces/template-model';
 import { StorageService } from '@services/storage.service';
 import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @UntilDestroy()
 @Component({
@@ -45,6 +46,7 @@ export class AdmitProcessComponent implements OnInit {
   isDocumentTypeFilter: boolean = false;
   inHospitalist: any[] = [];
   inLDRAttendPhyList: any;
+  unsavedProgressNote: any = false;
   constructor(
     public sidebarService: SidebarService,
     public eprescriptionService: EPrescriptionService,
@@ -444,19 +446,51 @@ export class AdmitProcessComponent implements OnInit {
 
   tabChange(tabName: string) {
     if (tabName == 'ProgressNotes') {
-      this._admissionservice.tabPanelNavigation('ProgressNotes');
+      this.calltab('ProgressNotes');
+      // this._admissionservice.tabPanelNavigation('ProgressNotes');
     } else if (tabName == 'PhysicianOrders') {
-      this._admissionservice.tabPanelNavigation('PhysicianOrders');
+      this.calltab('PhysicianOrders');
+      // this._admissionservice.tabPanelNavigation('PhysicianOrders');
     } else if (tabName == 'Diagnosis') {
-      this._admissionservice.tabPanelNavigation('Diagnosis');
+      this.calltab('Diagnosis');
+      // this._admissionservice.tabPanelNavigation('Diagnosis');
     } else if (tabName == 'Documentation') {
-      this._admissionservice.tabPanelNavigation('Documentation');
+      this.calltab('Documentation');
+      // this._admissionservice.tabPanelNavigation('Documentation');
     } else if (tabName == 'vitalSign') {
-      this._admissionservice.tabPanelNavigation('vitalSign');
+      this.calltab('vitalSign');
+      // this._admissionservice.tabPanelNavigation('vitalSign');
     }
     this.onSearchChange('');
     this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;
+  }
+
+  dataGetEvent(data) {
+    this.unsavedProgressNote = data
+  }
+
+  async calltab(tabName) {
+    if (this.unsavedProgressNote) {
+      const result = await Swal.fire({
+        title: 'Confirm',
+        text: 'Are you sure you want to leave without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      });
+      if (result.isConfirmed) {
+        this.unsavedProgressNote = false;
+        this._admissionservice.tabPanelNavigation(tabName);
+      } else {
+        return;
+      }
+    } else {
+      this.unsavedProgressNote = false;
+      this._admissionservice.tabPanelNavigation(tabName);
+    }
   }
 
   onDateFilter(event) {

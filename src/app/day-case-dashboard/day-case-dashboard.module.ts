@@ -120,6 +120,7 @@ import { PatientsDietMealComponentNew } from './nurs-treatment-workarea/diet-mea
 import { DislikePreferenceComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/dislike-preference/dislike-preference.component';
 import { CompanionMealOrderingComponentNew } from './nurs-treatment-workarea/diet-meal-order-new/companion-meal-ordering/companion-meal-ordering.component';
 import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
+import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 
 const route: Routes = [
   {
@@ -209,6 +210,7 @@ const route: Routes = [
     PatientsDietMealComponentNew,
     DislikePreferenceComponentNew,
     CompanionMealOrderingComponentNew,
+    ReceiveCartComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

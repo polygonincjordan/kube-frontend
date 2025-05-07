@@ -227,3 +227,8 @@ table {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+::ng-deep .add-habit-size {
+  width: 100% !important;
+  min-width: 50% !important
+}

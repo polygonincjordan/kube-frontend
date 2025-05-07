@@ -1085,24 +1085,25 @@ console.log('Full URL:', fullUrl);
   
   tabChange(tabName?) {
     console.log("call");
+    
     if (tabName == 'ProgressNotes') {
       this.getProgressNotesData();
       this.calltab('ProgressNotes')
     } else if (tabName == 'PhysicianOrders') {
-      this.calltab('PhysicianOrders')
       this.phyOrderTableList();
+      this.calltab('PhysicianOrders')
     } else if (tabName == 'OrderSet') {
       this.calltab('OrderSet')
     } else if (tabName == 'CPOE') {
-      this.calltab('CPOE')
+      this.calltab('CPOE');
     } else if (tabName == 'ePrescription') {
       this.calltab('ePrescription')
     } else if (tabName == 'orderdetails') {
       this.calltab('orderdetails')
     } else if (tabName == 'Diagnosis') {
-      this.calltab('Diagnosis')
+      this.emergencyService.tabPanelNavigation('Diagnosis');
     } else if (tabName == 'Documentation') {
-      this.calltab('Documentation')
+      this.emergencyService.tabPanelNavigation('Documentation');
       // if ( this.documentationComp != undefined) {
       //   this.documentationComp.ngOnInit();
       // }
@@ -1113,24 +1114,18 @@ console.log('Full URL:', fullUrl);
       this.emergencyService.tabPanelNavigation('Rad');
       this.openModuleRad();
     } else if (tabName == 'patientProfile') {
-      this.calltab('patientProfile')
+      this.emergencyService.tabPanelNavigation('patientProfile');
     } else if (tabName == 'Consumables') {
-      this.calltab('Consumables')
-    } else if (tabName == 'IOCharts') {
-      this.calltab('IOCharts')
-    } else if (tabName == 'DietMealOrdering') {
-      this.calltab('DietMealOrdering')
+      this.emergencyService.tabPanelNavigation('Consumables');
     } else if (tabName == 'Services') {
-      this.calltab('Services')
+      this.emergencyService.tabPanelNavigation('Services');
     }  else if(tabName == 'vitalSign'){
-      this.calltab('VitalSign')
-    }  else if(tabName == 'IOChartsPlus'){
-      this.calltab('IOChartsPlus')
-    }  else if(tabName == 'DietMealOrderingPlus'){
-      this.calltab('DietMealOrderingPlus')
-    }  else if(tabName == 'HistoryAssessment'){
-      this.calltab('HistoryAssessment')
-    }
+      this.emergencyService.tabPanelNavigation('VitalSign');
+    } else if(tabName == 'HistoryAssessment'){
+      this.emergencyService.tabPanelNavigation('HistoryAssessment');
+    }  else if (tabName == 'DietMealOrdering') {
+      this.emergencyService.tabPanelNavigation('DietMealOrdering');
+    } 
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;

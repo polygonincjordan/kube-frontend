@@ -83,6 +83,7 @@ import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
+import { ReceiveCartComponent } from './e-prescription/receive-cart/receive-cart.component';
 
 const route: Routes = [
   {
@@ -143,7 +144,8 @@ const route: Routes = [
     ReservationComponent,
     ReservationListComponent,
     HistoryListComponent,
-    EmarWitnessComponent
+    EmarWitnessComponent,
+    ReceiveCartComponent
   ],
   providers: [EmergencyService, FeeListService,OutpatientNursingService, EPrescriptionService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService, DataShareService],
   imports: [

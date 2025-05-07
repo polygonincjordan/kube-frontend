@@ -9,6 +9,7 @@ import { EEmrService } from '@services/e-emr.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProgressNotesListModel } from '@services/admission/interfaces/template-model';
 import { CreateDischargeOrderComponent } from './discharge-order/create-discharge-order/create-discharge-order.component';
+import Swal from 'sweetalert2';
 
 @UntilDestroy()
 @Component({
@@ -38,6 +39,8 @@ export class DischargeProcessComponent implements OnInit {
   filterDateValue: any;
   soapFormEvent: any;
   isDocumentTypeFilter: boolean = false;
+  unsavedProgressNote: boolean = false;
+
   checkCounterPatient: any={
     isEnCounterCheck: true, isPatientCheck: false
   };
@@ -376,23 +379,51 @@ export class DischargeProcessComponent implements OnInit {
 
   tabChange(tabName: string) {
     if (tabName == 'ProgressNotes') {
-      this._admissionservice.tabPanelNavigation('ProgressNotes');
+      this.calltab('ProgressNotes');
+      // this._admissionservice.tabPanelNavigation('ProgressNotes');
     } else if (tabName == 'PhysicianOrders') {
-      this._admissionservice.tabPanelNavigation('PhysicianOrders');
+      this.calltab('PhysicianOrders');
+      // this._admissionservice.tabPanelNavigation('PhysicianOrders');
     } else if (tabName == 'Diagnosis') {
-      this._admissionservice.tabPanelNavigation('Diagnosis');
-      this.ePrescriptionService.loadDischargePanelData();
+      this.calltab('Diagnosis');
+      // this._admissionservice.tabPanelNavigation('Diagnosis');
     } else if (tabName == 'Documentation') {
-      this._admissionservice.tabPanelNavigation('Documentation');
-    } else if (tabName == 'discharge') {
-      this._admissionservice.tabPanelNavigation('discharge');
-      this.ePrescriptionService.loadDischargePanelData();
-    }  else if (tabName == 'vitalSign') {
-      this._admissionservice.tabPanelNavigation('vitalSign');
+      this.calltab('Documentation');
+      // this._admissionservice.tabPanelNavigation('Documentation');
+    } else if (tabName == 'vitalSign') {
+      this.calltab('vitalSign');
+      // this._admissionservice.tabPanelNavigation('vitalSign');
     }
     this.onSearchChange('');
     this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;
+  }
+
+  dataGetEvent(data) {
+    this.unsavedProgressNote = data
+  }
+
+  async calltab(tabName) {
+    if (this.unsavedProgressNote) {
+      const result = await Swal.fire({
+        title: 'Confirm',
+        text: 'Are you sure you want to leave without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      });
+      if (result.isConfirmed) {
+        this.unsavedProgressNote = false;
+        this._admissionservice.tabPanelNavigation(tabName);
+      } else {
+        return;
+      }
+    } else {
+      this.unsavedProgressNote = false;
+      this._admissionservice.tabPanelNavigation(tabName);
+    }
   }
 
   handleSidebarToggle() {
