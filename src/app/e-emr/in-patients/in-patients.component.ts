@@ -1253,6 +1253,40 @@ export class InPatientsComponent implements OnInit {
     this.dataOnTable.sort((a, b) => 0 - (a > b ? -1 : 1));
   }
 
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.dataOnTable.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.dataOnTable.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
   sortingTable(fieldName) {
     if (!this.asc) {
       this.asc = true;

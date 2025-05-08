@@ -1067,7 +1067,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     } else if (tabName == 'Diagnosis') {
       this.calltab('Diagnosis');
     } else if (tabName == 'Documentation') {
-      this.calltab('Diagnosis');
+      this.calltab('Documentation');
     } else if (tabName == 'Lab') {
       this.openModuleLabChart();
       this.calltab('Lab');

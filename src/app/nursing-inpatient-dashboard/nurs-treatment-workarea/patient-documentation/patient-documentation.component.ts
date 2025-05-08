@@ -337,7 +337,7 @@ export class PatientDocumentationComponent implements OnInit {
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];
 
-  selectedDocument: any = ''
+  selectedDocument: any;
 
   documentFilterList = [
     {
@@ -496,10 +496,10 @@ export class PatientDocumentationComponent implements OnInit {
       label: 'Pediatrics Admission Assessment',
       value: 'PEAA'
     },
-    {
-      label: 'Paediatric Physician Assessment',
-      value: 'PEPA'
-    },
+    // {
+    //   label: 'Paediatric Physician Assessment',
+    //   value: 'PEPA'
+    // },
     {
       label: 'Obstetric Fall Risk Assessment',
       value: 'OFRA'

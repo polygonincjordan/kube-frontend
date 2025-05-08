@@ -103,6 +103,7 @@ export class DocumentationListComponent implements OnInit {
   sortedDocuments: any;
   asc: boolean = true;
   desc: boolean = false;
+  currentVisitDocumentNameList: any[];
   constructor(
     private patientHistoryService:PatientHistoryService,
     private storageService:StorageService,
@@ -123,6 +124,7 @@ export class DocumentationListComponent implements OnInit {
       if (res) {
         this.selectedIndex = undefined;
         this.admissionService.isClearSelectedDoc.next(false);
+        this.documentFilter('');
       }
     })
     this.createAttachmentForm = this.formBuilder.group({
@@ -414,15 +416,13 @@ export class DocumentationListComponent implements OnInit {
     console.log(event);
     if(event) {
       this.currentVisitDocumet = this.currentVisitDocumetClone.filter((element) => {
-        if (event == element.Dtid) {
+        if (event == element.DtidText) {
           return element;
         }
       });
     } else {
       this.currentVisitDocumet = this.currentVisitDocumetClone
     }
-    console.log(this.currentVisitDocumet, "this.currentVisitDocumet");
-
   }
 
   sort() {
@@ -531,8 +531,22 @@ export class DocumentationListComponent implements OnInit {
       )
       .subscribe((data: any) => {
         if (type == '2') {
+          data?.d?.results.forEach((res) => {
+            if(res.Dtid === 'ZMED_NEODS') {
+              res.DtidText = 'Neonatal Discharge Summary'
+            }
+            if(res.Dtid === 'ZMED_PHDIS') {
+              res.DtidText = 'Physician Discharge Summary'
+            }
+            if(res.Dtid === 'ZMED_PDASM') {
+              res.DtidText = 'Paediatrics Physician Admission Assessment'
+            }
+          })
           this.currentVisitDocumetClone = data?.d.results;
           this.currentVisitDocumet = data?.d.results;
+          this.currentVisitDocumentNameList = Array.from(
+            new Set(this.currentVisitDocumet.map(res => res.DtidText))
+          );
         } else {
           this.documentTypeFilterValueClone = data?.d.results;
           // this.documentTypeFilterValue = _success.d.results;

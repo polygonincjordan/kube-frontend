@@ -762,7 +762,7 @@
                 </td>
                 <td>{{ item.Floor }}</td>
                 <td>{{ item.RoomidText }}</td>
-                <td>{{ getDate(item.Admdatetime) | date : "dd.MM.y" }}</td>
+                <td>{{ getDate(item.Admdatetime) | date : "dd.MM.yyyy" }}</td>
                 <td *ngIf="ipConsultation">{{ item.VkgidStatus == 'Done' ? 'Completed' : item.VkgidStatus == 'Confirmed' ? 'Requested' : '' }}</td>
                 <td
                   data-bs-toggle="tooltip"

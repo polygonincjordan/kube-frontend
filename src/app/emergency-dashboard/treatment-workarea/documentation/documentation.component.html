@@ -193,14 +193,19 @@ min-width: 10%;">
         *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument">
         <div class="col-md-6 pl-0">
           <div class="box-col document-overflow">
-            <div class="d-flex doc-header">
-              <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
-                  style="font-size: 15px;font-weight: bold;color:white"></i></div>
-              <h2 style="font-weight: bold;">Current Visit Document</h2>
+            <div class="d-flex doc-header" style="justify-content: space-between;">
+              <div class="d-flex doc-header">
+                <div class="header-file"><i class="fa fa-file-text-o" aria-hidden="true"
+                    style="font-size: 15px;font-weight: bold;color:white"></i></div>
+                <h2 style="font-weight: bold;">Current Visit Document</h2>
+              </div>
+              <ng-select [(ngModel)]="selectedDocument" class="w-30" placeholder="Search a document to create">
+                <ng-option *ngFor="let item of documentFilterList" [value]="item.value">{{ item?.label }}</ng-option>
+              </ng-select>
             </div>
             <div
               [ngClass]="phyAssess ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              (click)="selectAssessment('phy',latestDocList[0])">
+              (click)="selectAssessment('phy',latestDocList[0])" *ngIf="!selectedDocument || selectedDocument == 'EPA'">
               <div class="col-md-4">ER Physician Assessment (v{{latestDocList[0]?.Zversion}}):</div>
               <div class="col-md-2 status-color">{{latestDocList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2">{{getDate(latestDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -217,7 +222,7 @@ min-width: 10%;">
             <div
               [ngClass]="medReport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               (click)="selectAssessment('medreport',medlatestDocList[0])" style="
-  font-weight: bold;">
+  font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'MER'">
               <div class="col-md-4">Medical Report:</div>
               <div class="col-md-2 status-color">{{medlatestDocList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2">{{getDate(medlatestDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -230,7 +235,7 @@ min-width: 10%;">
               </div>
             </div>
             <div class="box-col d-flex mt-2 docs-event" style="
-  font-weight: bold;">
+  font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'EDS'">
               <div class="col-md-4">ER Discharge Summary:</div>
               <div class="col-md-2 status-color">N/A</div>
               <div class="col-md-2"></div>
@@ -239,7 +244,7 @@ min-width: 10%;">
             <div
               [ngClass]="educationAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="
-  font-weight: bold;" (click)="selectAssessment('nursing',educationAssList[0])">
+  font-weight: bold;" (click)="selectAssessment('nursing',educationAssList[0])" *ngIf="!selectedDocument || selectedDocument == 'EDA'">
               <div class="col-md-4">Education Assessment {{educationAssList[0]?.Zversion ?
                 dockVer(educationAssList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{educationAssList[0]?.StatusTxt || 'N/A'}}</div>
@@ -255,7 +260,7 @@ min-width: 10%;">
           <!--  Correspondence Document -->
             <div
               [ngClass]="isCorrespondenceDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isCorrespondenceDocument',latestCorrespondenceList[0])">
+              style="font-weight: bold;" (click)="selectAssessment('isCorrespondenceDocument',latestCorrespondenceList[0])" *ngIf="!selectedDocument || selectedDocument == 'COD'">
               <div class="col-md-4"> Correspondence Document {{latestCorrespondenceList[0]?.Zversion ?
                   dockVer(latestCorrespondenceList[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{latestCorrespondenceList[0]?.StatusTxt || 'N/A'}}</div>
@@ -270,7 +275,7 @@ min-width: 10%;">
                 *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
               </div>
             </div>
-            <div class="box-col d-flex mt-2 docs-event"
+            <div class="box-col d-flex mt-2 docs-event" *ngIf="!selectedDocument || selectedDocument == 'ATD'"
               [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="
   font-weight: bold;" (click)="selectAssessment('attachments','')">
@@ -296,7 +301,7 @@ min-width: 10%;">
             <div>
               <div class="m-0" style=" justify-content: right;"
                 *ngFor="let item of sortedDocuments | filter:searchString;">
-                <div class="mt-3 pl-2" style="width: 100px; font-weight: bold;">{{ item.date | date: "dd-MM-y" }}</div>
+                <div class="mt-3 pl-2" style="width: 100px; font-weight: bold; color: #00008B;">{{ item.date | date: "dd-MM-y" }}</div>
                 <div class="box-col d-flex c-pointer p-2 mt-1" style="font-weight: bold;"
                   *ngFor="let member of item.documents">
                   <div class="col-md-4 pr-0 pl-0" (click)="getPatientProfileData(member)" [title]="member.Dktxt">{{

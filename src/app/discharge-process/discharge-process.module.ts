@@ -73,6 +73,8 @@ import { PhysicianPastMedicalComponent } from './documentation/documentation-lis
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { DocVisitNoteComponent } from './documentation/documentation-list/doc-visit-note/doc-visit-note.component';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
+import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
+import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -147,7 +149,9 @@ export const ePrescriptionRoutes: Routes = [
     NgMultiSelectDropDownModule.forRoot(),
     NgbCollapseModule,
     NgxExtendedPdfViewerModule,
-    VitalSignModule
+    VitalSignModule,
+    NeonatalDischDocumentModule,
+    PaediatricPhysicianAssessmentModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService,
     ErDischargeordersService, AddministrationService, PatientService, PatientHistoryService,

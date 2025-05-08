@@ -837,6 +837,38 @@ export class CheckInComponent implements OnInit {
       });
   }
 
+  showRoomsChecked: boolean = false;
+  showWardsChecked: boolean = false;
+  onRoomCheckboxChange(isChecked: boolean) {
+    this.showRoomsChecked = isChecked;
+    this.filterHospitalistList();
+  }
+  
+  onWardCheckboxChange(isChecked: boolean) {
+    this.showWardsChecked = isChecked;
+    this.filterHospitalistList();
+  }
+
+  filterHospitalistList() {
+    let filteredList = this.inHospitalistListClone;
+  
+    if(!this.showRoomsChecked && !this.showWardsChecked) {
+      filteredList = filteredList.filter(item => item.Roomid && item.Floor);
+    }
+
+    if (this.showRoomsChecked && this.showWardsChecked) {
+      filteredList = this.inHospitalistListClone;
+    } else if (!this.showRoomsChecked) {
+      filteredList = filteredList.filter(item => item.Roomid);
+    } else if (!this.showWardsChecked) {
+      filteredList = filteredList.filter(item => item.Floor);
+    }
+  
+    this.inHospitalistList = filteredList;
+    this.inHospitalistListDeepClone = filteredList;
+    this.sendErPatientCount.emit(filteredList.length);
+  }
+
   showAllRooms(isShowRooms?: any) {
     if(isShowRooms) {
       this.inHospitalistList = this.inHospitalistListClone;

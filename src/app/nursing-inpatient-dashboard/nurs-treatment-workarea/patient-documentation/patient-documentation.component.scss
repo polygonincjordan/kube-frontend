@@ -814,3 +814,7 @@ h4.top-head-h4 {
   color: red;
   font-size: 12px;
 }
+
+:host ::ng-deep .ng-select .ng-placeholder {
+  font-size: 12px !important;
+}

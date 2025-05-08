@@ -77,11 +77,17 @@
               font-weight: bold;background-color: #939da178;" class="checkinrow-input" [value]="item.Behpersname" disabled> -->
               </td>
               <td  class="border-top-none">{{item.ZznurseName}}</td>
-              <td class="border-top-none"  scope="row" style="max-width: 107px;
+              <!-- <td class="border-top-none"  scope="row" style="max-width: 107px;
               padding-left: 0px;
               text-overflow: ellipsis;
               overflow: hidden;
-              white-space: nowrap;cursor: pointer;" [title]="item.Diagnosis" (click)="showDiagnosis(item)">{{item.Diagnosis}}</td>
+              white-space: nowrap;cursor: pointer;" [title]="item." >{{item.Diagnosis}}</td> -->
+              <td class="border-left text-center" (click)="showDiagnosis(item)">
+                <span *ngIf="item?.Diagnosis">
+                  <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.Diagnosis" />
+                </span>
+                <span *ngIf="!item?.Diagnosis">N/A</span>
+              </td>
           <td scope="row" style="width: 10%; padding-left: 0px" [title]="item.assignedTime" class="border-top-none">
             <div [ngClass]="item.assignedTime ? 'waiting-time-td':''" title="Waiting Time">
               {{ item.assignedTime }}

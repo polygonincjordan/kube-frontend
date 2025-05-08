@@ -17,6 +17,7 @@
            <th scope="col">Risk</th>
            <th scope="col" style="padding-left: 0px;text-align: center">Allergy</th>
            <th scope="col" style="padding-left: 0px;text-align: center;">Vitals</th>
+           <th scope="col" style="padding-left: 0px;">Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Diagnosis')"></i></th>
            <th scope="col" style="padding-left: 0px">Ward <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Floor')"></i></th>
            <th scope="col" style="padding-left: 0px;">Room <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('RoomidText')"></i></th>
            <th scope="col" style="padding-left: 0px;">Bed <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('BedidText')"></i></th>
@@ -25,7 +26,6 @@
            <th scope="col" style="padding-left: 0px;">Financial Cat.<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('FinancialCategory')"></i></th>
            <th scope="col" style="width: 14%;">Attending Physician <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AttendingDoctorName')"></i></th>
            <th scope="col" style="width: 14%;">LOS<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDays')"></i></th>
-           <th scope="col" style="padding-left: 0px;">Diagnosis <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Diagnosis')"></i></th>
            <th scope="col" style="padding-left: 0px;">Financial Clearance <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZzfinClear')"></i></th>
            <th scope="col" style="padding-left: 0px;">Discharge Type <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DischargeType')"></i></th>
            <th scope="col" style="padding-left: 0px;">Discharge Time <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('DischargeTime')"></i></th>
@@ -80,7 +80,12 @@
               <td class="border-top-none"  style="width: 3%;"><img src="assets/img/Risk.svg" style="width: 23px;" [title]="item.RiskInformation" (click)="openModalForRisk(riskModal,item)"></td>
               <td style="padding-left: 0px;text-align: center; "><img src="assets/img/Allergy.svg" style="width: 23px;" [title]="item.Allergies" (click)="openModalForAllergy(allergyModal,item)"></td>
               <td class="border-top-none" scope="row" style="padding-left: 0px;text-align: center;"><img src="assets/img/er-vital.png" style="width: 23px;" (click)="openModalVital(item)" title="Vitals"></td>
-             
+              <td class="border-left text-center" (click)="showDiagnosis(item)">
+                <span *ngIf="item?.Diagnosis">
+                  <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.Diagnosis" />
+                </span>
+                <span *ngIf="!item?.Diagnosis">N/A</span>
+              </td>
               <td style="padding-left: 0px" [title]="item.Floor" class="border-top-none">{{ item.Floor }}</td>
               <td style="padding-left: 0px" [title]="item.RoomidText" class="border-top-none">{{ item.RoomidText }}</td>
               <td style="padding-left: 0px" [title]="item.BedidText" class="border-top-none">{{ item.BedidText }}</td> 
@@ -89,11 +94,12 @@
               <td class="border-top-none" scope="row" style="width:10%;padding-left: 0px;">{{item.FinancialCategory}}</td>
               <td class="border-top-none" style="width: 14%;">{{item.AttendingDoctorName}}</td>
               <td [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
-                <td class="border-top-none"  scope="row" style="max-width: 107px;
+                <!-- <td class="border-top-none"  scope="row" style="max-width: 107px;
                 padding-left: 0px;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                white-space: nowrap;cursor: pointer;" [title]="item.Diagnosis" (click)="showDiagnosis(item)">{{item.Diagnosis}}</td>
+                white-space: nowrap;cursor: pointer;" [title]="item.Diagnosis" >{{item.Diagnosis}}</td> -->
+  
                 <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
                 <td class="border-top-none" style="width: 10%;">{{item.DischargeType}}</td>
                 <td class="border-top-none" style="width: 10%;">{{getTime(item.DischargeTime)}}</td>

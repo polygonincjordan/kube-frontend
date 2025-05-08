@@ -1,3 +1,16 @@
+.checkin-table {
+
+  &:nth-child(1) {
+    width: 300px !important;
+    max-width: 300px !important;
+    min-width: 300px !important;
+    border: none;
+    // background: #fbfcff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
 .save-risk {
   border: 1px solid;
   background: #3b82f6;

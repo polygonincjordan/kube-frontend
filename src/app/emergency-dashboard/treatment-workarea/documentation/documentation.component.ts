@@ -98,6 +98,33 @@ export class DocumentationComponent implements OnInit {
   previousPeriodValue: any = 'Overall';
   selectedDocumentOU: any;
   selectedCreatedBy: any;
+  selectedDocument: any;
+  documentFilterList = [
+    {
+      label: 'ER Physician Assessment',
+      value: 'EPA'
+    },
+    {
+      label: 'Medical Report',
+      value: 'MER'
+    },
+    {
+      label: 'ER Discharge Summary',
+      value: 'EDS'
+    },
+    {
+      label: 'Education Assessment',
+      value: 'EDA'
+    },
+    {
+      label: 'Correspondence Document',
+      value: 'COD'
+    },
+    {
+      label: 'Attachments Document',
+      value: 'ATD'
+    }
+  ]
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];

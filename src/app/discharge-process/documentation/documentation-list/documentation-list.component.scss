@@ -457,3 +457,7 @@ h4.top-head-h4 {
 ::ng-deep ngx-extended-pdf-viewer .page {
   cursor: default !important;
 }
+
+:host ::ng-deep .ng-select .ng-placeholder {
+  font-size: 12px !important;
+}

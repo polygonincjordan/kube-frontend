@@ -153,7 +153,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -170,7 +171,42 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
+        "ValidVers": "0000",
+        "Bcpid": "C0050568120581EE8B8E4B9B228DEECC5",
+        "Extid": "HEIGHT",
+        "Name": "Height",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "cm",
+        "NormalRange": "00.000 - 00.000",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
+        "ValidVers": "0000",
+        "Bcpid": "C0050568120581EE8B8E4B5DCAA436CC5",
+        "Extid": "WEIGHT",
+        "Name": "Weight",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "kg",
+        "NormalRange": "00.000 - 00.000",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -187,7 +223,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -204,7 +241,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -221,7 +259,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -238,7 +277,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -255,7 +295,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
         "Einri": "",
@@ -271,7 +312,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
         "Einri": "",
@@ -287,7 +329,8 @@ export class ErVitalsComponentComman implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       }
     ];
     this.openModalForErVital()
