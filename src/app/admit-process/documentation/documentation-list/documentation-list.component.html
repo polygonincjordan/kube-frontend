@@ -6,7 +6,7 @@
           <img width="30" src="assets/img/info-document.png" />
           <h6 class="font-weight-bold ml-3">Current visit document</h6>
         </div>
-        <ng-select class="w-30" [searchable]="true" placeholder="Document Type" (change)="documentFilter($event)">
+        <ng-select class="w-30" [searchable]="true" placeholder="Search a document to create" (change)="documentFilter($event)">
           <ng-option *ngFor="let data of currentVisitDocumentNameList" [value]="data">{{
           data }}</ng-option>
         </ng-select>
@@ -143,7 +143,7 @@
   <app-nicu-assessment-document [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded" (realodEducationList)="realodEducationList($event)"></app-nicu-assessment-document>
 </div>
 <div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
-  <app-paediatrics-adm-document [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatrics-adm-document>
+  <app-paediatric-physician-assessment [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatric-physician-assessment>
 </div>
 
 <ng-template #labpdfmodal>

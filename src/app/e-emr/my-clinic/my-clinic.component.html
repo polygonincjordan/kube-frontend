@@ -179,7 +179,7 @@
               ">
               <tr>
                 <th scope="col" style="text-align: center;width: 6%;">Date <i class="fa fa-sort" aria-hidden="true"
-                    (click)="sort()"></i></th>
+                    (click)="commanSorting('DATUM')"></i></th>
                 <th scope="col" style="text-align: center;width: 4%;">Time <i class="fa fa-sort" aria-hidden="true"
                     (click)="sortTime()"></i></th>
                 <th scope="col" *ngIf="VisitType">Visit Type <i class="fa fa-sort" aria-hidden="true"
@@ -191,7 +191,7 @@
                 <th scope="col" style="text-align: center;width: 1%;" *ngIf="Case">Case</th>
                 <th scope="col">Patient <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i></th>
                 <th scope="col" *ngIf="AttendingPhysician">Attn. Phy.</th>
-                <th scope="col" style="width: 8%;">Financial Category</th>
+                <th scope="col" style="width: 8%;">Financial Category</th>  
                 <th scope="col" *ngIf="Diagnosis">Diagnosis</th>
                 <th scope="col" *ngIf="comment">Comment</th>
                 <th scope="col">Actions</th>
@@ -208,7 +208,13 @@
                 <td (click)="openModuleKardex(item)">{{ item.PATIENT }}</td>
                 <td *ngIf="AttendingPhysician">{{ item.BEHPERSNAME }}</td>
                 <td>{{ item.ZZFIN_CAT }}</td>
-                <td *ngIf="Diagnosis">{{ item.ANFDIAGNOSE }}</td>
+                <!-- <td *ngIf="Diagnosis">{{ item.ANFDIAGNOSE }}</td> -->
+                <td class="border-left text-center">
+                  <span *ngIf="item?.Diagnosis">
+                    <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.ANFDIAGNOSE" />
+                  </span>
+                  <span *ngIf="!item?.Diagnosis">N/A</span>
+                </td>
                 <td>{{item.BEMERKUNG}}</td>
                 <td>
 

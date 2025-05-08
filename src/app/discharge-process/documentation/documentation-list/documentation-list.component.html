@@ -6,9 +6,9 @@
           <img width="30" src="assets/img/info-document.png" />
           <h6 class="font-weight-bold ml-3">Current visit document</h6>
         </div>
-        <ng-select class="w-30" [searchable]="true" placeholder="Document Type" (change)="documentFilter($event)">
-          <ng-option *ngFor="let data of this.admissionService.documentTypeFilter" [value]="data.Dtid">{{
-          data.DtidText }}</ng-option>
+        <ng-select class="w-30" [searchable]="true" placeholder="Search a document to create" (change)="documentFilter($event)">
+          <ng-option *ngFor="let data of currentVisitDocumentNameList" [value]="data">{{
+          data }}</ng-option>
         </ng-select>
       </div>
       <div class="document-detail-list">
@@ -129,6 +129,13 @@
 <div *ngIf="admissionService.isAddEditNeonatalMR">
   <app-neonatal-medical-report [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-neonatal-medical-report>
 </div>
+<div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
+  <app-paediatric-physician-assessment [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatric-physician-assessment>
+</div>
+<div *ngIf="admissionService.isAddEditNeonatalDischarge">
+  <app-neonatal-disch-document [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-neonatal-disch-document>
+</div>
+
 <ng-template #labpdfmodal>
   <div class="modal-body">
     <ngx-extended-pdf-viewer

@@ -103,7 +103,13 @@
             </td>
             <td style="padding-left: 0px" [title]="item.Zimmkub" class="border-top-none">{{ item.Zimmkub }}</td>
             <td style="padding-left: 0px" [title]="item.Orgfakb" class="border-top-none">{{ item.Orgfakb }}</td>
-            <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td>
+            <!-- <td style="padding-left: 0px" [title]="item.Diagnose" class="border-top-none">{{ item.Diagnose }}</td> -->
+            <td class="border-left text-center">
+              <span *ngIf="item?.Diagnose">
+                <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.Diagnose" />
+              </span>
+              <span *ngIf="!item?.Diagnose">N/A</span>
+            </td>
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
             <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>

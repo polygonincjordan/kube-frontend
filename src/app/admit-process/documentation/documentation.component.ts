@@ -775,7 +775,7 @@ export class DocumentationComponent implements OnInit {
         if (patientData) {
           patientData['DocStatus'] = '2';
           this.admissionService
-            .releasePhysicianDoc(patientData)
+            .createPhysicianData(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
             });

@@ -733,10 +733,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   showRooms() {
-    this.CheckInComponent.showAllRooms(this.isShowRooms);
+    this.CheckInComponent.onRoomCheckboxChange(this.isShowRooms);
   }
   showWards() {
-    this.CheckInComponent.showAllWards(this.isShowWards);
+    this.CheckInComponent.onWardCheckboxChange(this.isShowWards);
   }
 
   countForPhysicianOrder() {

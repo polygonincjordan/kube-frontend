@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommanService } from '@services/comman.service';
@@ -32,6 +32,8 @@ export class PaediatricPhysicianAssessmentComponent implements OnInit {
   public nursingAdmissionForm: FormGroup;
   public TOINFECTION: FormArray;
   public TOMEDICATION: FormArray;
+  @Input() soapFormEvent: string;
+  @Output() reloadTableList = new EventEmitter();
 
   toAllergyArr: any = [];
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;

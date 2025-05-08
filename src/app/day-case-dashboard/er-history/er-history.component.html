@@ -68,11 +68,17 @@
             <!-- <input type="text" style="width: 100%;height: 28px;font-size: 10px;
               font-weight: bold;background-color: #939da178;" class="checkinrow-input" [value]="item.Behpersname" disabled> -->
               </td>
-              <td class="border-top-none"  scope="row" style="max-width: 107px;
+              <!-- <td class="border-top-none"  scope="row" style="max-width: 107px;
               padding-left: 0px;
               text-overflow: ellipsis;
               overflow: hidden;
-              white-space: nowrap;cursor: pointer;" [title]="item.Diagnose" (click)="showDiagnosis(item)">{{item.Diagnose}}</td>
+              white-space: nowrap;cursor: pointer;" [title]="item.Diagnose" (click)="showDiagnosis(item)">{{item.Diagnose}}</td> -->
+              <td class="border-left text-center" (click)="showDiagnosis(item)">
+                <span *ngIf="item?.Diagnose" >
+                  <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.Diagnose" />
+                </span>
+                <span *ngIf="!item?.Diagnose">N/A</span>
+              </td>
               <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
               <td class="border-top-none" style="width: 10%;">{{item.DischargeType}}</td>
               <td class="border-top-none" style="width: 10%;">{{getTime(item.DischargeTime)}}</td>
