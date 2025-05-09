@@ -51,7 +51,7 @@ export class ComplexOrderComponent implements OnInit, OnDestroy {
       Drugid: new FormControl(this.complexValueArray.Drugid),
       Seqno: new FormControl(""),
       Quan: new FormControl("0", [Validators.required, Validators.min(0)]),
-      Quanunit: new FormControl(this.complexValueArray.Quanunit),
+      Quanunit: new FormControl(this.complexValueArray?.Quanunit?.Meinh ? this.complexValueArray?.Quanunit?.Meinh : ""),
       N1znr: new FormControl(this.complexValueArray.N1znr, Validators.required),
       Pdur: new FormControl(""),
       Pduru: new FormControl(this.complexValueArray.Pduru !== null || this.complexValueArray.Pduru !== "" ? this.complexValueArray.Pduru : null),
@@ -362,7 +362,7 @@ export interface ComplexData {
   Drugid: string;
   Seqno: string;
   Quan: string;
-  Quanunit: string;
+  Quanunit: string | any;
   N1znr: string;
   Pdur: string;
   Pduru: string;

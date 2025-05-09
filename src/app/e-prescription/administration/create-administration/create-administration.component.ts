@@ -707,6 +707,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             element.Orgfa = this.addministrationService.medicationAdministrative.OrderingDept,
               element.Orgpf = this.addministrationService.medicationAdministrative.OrderingTo,
               element.Dosdef = element.deftimcycleData && element.deftimcycleData.length ? element.Dosdef : "";
+              element.Quanunit = element?.Quanunit?.Meinh ? element?.Quanunit?.Meinh : element?.Quanunit;
             delete element.Formatdescr;
             delete element.Result_Drug_Name;
             delete element.IsmoDetails;
