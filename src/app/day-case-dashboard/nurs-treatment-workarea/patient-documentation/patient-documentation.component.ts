@@ -194,6 +194,53 @@ export class PatientDocumentationComponent implements OnInit {
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];
+  selectedDocument: any;
+  documentFilterList = [
+    {
+      label: 'Surgical Passport',
+      value: 'SUP'
+    },
+    {
+      label: 'Education Assessment',
+      value: 'EDA'
+    },
+    {
+      label: 'Nursing Care Plan',
+      value: 'NCP'
+    },
+    {
+      label: 'Nursing Discharge Summary',
+      value: 'NDS'
+    },
+    {
+      label: 'Braden Scale',
+      value: 'BSC'
+    },
+    {
+      label: 'Attachments Document',
+      value: 'ATD'
+    },
+    {
+      label: 'Morse Fall Scale',
+      value: 'MFS'
+    },
+    {
+      label: 'Nursing Admission Assessment',
+      value: 'NAA'
+    },
+    {
+      label: 'CPR Document',
+      value: 'CPD'
+    },
+    {
+      label: 'Glasgow Coma Scale',
+      value: 'GCS'
+    },
+    {
+      label: 'Pre-Cardiac Cath Checklist',
+      value: 'PCCC'
+    },
+  ]
   createdDocumentUserList: any = [];
   departmentOUList: any = [];
 

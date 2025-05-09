@@ -165,10 +165,9 @@
                     <input
                       class="form-control"
                       formControlName="BirthWeight"
-                      [ngClass]="{ 'is-invalid': isInvalid('BirthWeight') }"
                       (keypress)="restrictToNumeric($event)"
                     />
-                    <div *ngIf="isInvalid('BirthWeight')" class="invalid-feedback">Invalid value</div>
+                    <!-- <div *ngIf="isInvalid('BirthWeight')" class="invalid-feedback">Invalid value</div> -->
                   </div>
                   <div class="col-md-3">
                     <ng-select
@@ -188,10 +187,9 @@
                     <input
                       class="form-control"
                       formControlName="HeadCircum"
-                      [ngClass]="{ 'is-invalid': isInvalid('HeadCircum') }"
                       (keypress)="restrictToNumeric($event)"
                     />
-                    <div *ngIf="isInvalid('HeadCircum')" class="invalid-feedback">Invalid value</div>
+                    <!-- <div *ngIf="isInvalid('HeadCircum')" class="invalid-feedback">Invalid value</div> -->
                   </div>
                   <div class="col-md-3">
                     <label>CM</label>
@@ -207,10 +205,9 @@
                     <input
                       class="form-control"
                       formControlName="BabyLength"
-                      [ngClass]="{ 'is-invalid': isInvalid('BabyLength') }"
                       (keypress)="restrictToNumeric($event)"
                     />
-                    <div *ngIf="isInvalid('BabyLength')" class="invalid-feedback">Invalid value</div>
+                    <!-- <div *ngIf="isInvalid('BabyLength')" class="invalid-feedback">Invalid value</div> -->
                   </div>
                   <div class="col-md-3">
                     <label>CM</label>
@@ -224,10 +221,9 @@
                     <input
                       class="form-control"
                       formControlName="ChestCircum"
-                      [ngClass]="{ 'is-invalid': isInvalid('ChestCircum') }"
                       (keypress)="restrictToNumeric($event)"
                     />
-                    <div *ngIf="isInvalid('ChestCircum')" class="invalid-feedback">Invalid value</div>
+                    <!-- <div *ngIf="isInvalid('ChestCircum')" class="invalid-feedback">Invalid value</div> -->
                   </div>
                   <div class="col-md-3">
                     <label>CM</label>
@@ -243,10 +239,9 @@
                     <input
                       class="form-control"
                       formControlName="Gestation"
-                      [ngClass]="{ 'is-invalid': isInvalid('Gestation') }"
                       (keypress)="restrictToNumeric($event)"
                     />
-                    <div *ngIf="isInvalid('Gestation')" class="invalid-feedback">Invalid value</div>
+                    <!-- <div *ngIf="isInvalid('Gestation')" class="invalid-feedback">Invalid value</div> -->
                   </div>
                   <div class="col-md-3">
                     <label>Weeks</label>
