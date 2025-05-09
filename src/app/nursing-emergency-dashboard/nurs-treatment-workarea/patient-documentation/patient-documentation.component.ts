@@ -167,6 +167,58 @@ export class PatientDocumentationComponent implements OnInit {
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];
+
+  selectedDocument: any;
+  documentFilterList = [
+    {
+      label: 'Emergency Nursing Document',
+      value: 'END'
+    },
+    {
+      label: 'Glasgow Coma Scale',
+      value: 'GCS'
+    },
+    {
+      label: 'Face Pain Scale',
+      value: 'FPS'
+    },
+    {
+      label: 'Numeric Rating Scale',
+      value: 'NRS'
+    },
+    {
+      label: 'Braden Scale',
+      value: 'BRS'
+    },
+    {
+      label: 'Education Assessment',
+      value: 'EDA'
+    },
+    {
+      label: 'Attachments Document',
+      value: 'ATD'
+    },
+    {
+      label: 'Nurse Endorsement',
+      value: 'NED'
+    },
+    {
+      label: 'Surgical Passport',
+      value: 'SUP'
+    },
+    {
+      label: 'Pain Assessment',
+      value: 'PAA'
+    },
+    {
+      label: 'Pediatric Early Warning Scale',
+      value: 'PEWS'
+    },
+    {
+      label: 'CPR Document',
+      value: 'CPD'
+    },
+  ]
   createdDocumentUserList: any = [];
   departmentOUList: any = [];
   

@@ -180,6 +180,49 @@ export class PatientDocumentationComponent implements OnInit {
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
   ];
+  selectedDocument: any;
+  documentFilterList = [
+    {
+      label: 'Braden Scale',
+      value: 'BRS'
+    },
+    {
+      label: 'Attachments Document',
+      value: 'ATD'
+    },
+    {
+      label: 'Dialysis Assessment',
+      value: 'DIA'
+    },
+    {
+      label: 'Morse Fall Scale',
+      value: 'MFS'
+    },
+    {
+      label: 'Nursing Admission Assessment',
+      value: 'NAA'
+    },
+    {
+      label: 'Hemo Catheter',
+      value: 'HEC'
+    },
+    {
+      label: 'IC Bundle for Hemodialysis Fistula/Graft',
+      value: 'ICHF'
+    },
+    {
+      label: 'CPR Document',
+      value: 'CPD'
+    },
+    {
+      label: 'Nursing Care Plan',
+      value: 'NCP'
+    },
+    {
+      label: 'Pre-Cardiac Cath Checklist',
+      value: 'PCCC'
+    }
+  ]
   createdDocumentUserList: any = [];
   departmentOUList: any = [];
 
