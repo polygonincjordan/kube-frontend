@@ -26,6 +26,7 @@ export class InPatientDashboardComponent implements OnInit {
   showConfiguration: boolean = false;
   showList: boolean = true;
   inHospitalistList: Array<HospitalistType> = [];
+  inArrivalslistList: any = [];
   navTabBoxActiveValue: string = '02';
   graphChartCountType: string = '1';
   form: FormGroup;
@@ -348,6 +349,8 @@ export class InPatientDashboardComponent implements OnInit {
         return 'Dialysis Patients';
       case '07':
         return 'LDR Patients';
+      case '08':
+        return 'Arrivals';
       default:
         break;
     }
@@ -830,71 +833,80 @@ export class InPatientDashboardComponent implements OnInit {
       speciality = specialtyData;
     }
 
-    this.hospitalistService.getIpListSetAPI(this.navTabBoxActiveValue, admittedFrom, admittedTo, wardNo, physician, speciality, type)
-      .subscribe((data: any) => {
-        this.showFilter = false;
-        if (this.navTabBoxActiveValue == '06') {
-          this.inHospitalistList = data?.d.results;
-        } else {
-          this.dataOnTableForLabPatients = data?.d.results[0].ToLabList.results;
-          this.radPatientList = data?.d.results[0]?.ToRadList?.results;
-          this.inHospitalistList = data?.d.results[0].ToIPList.results;
-          this.getSpecialtyData = data?.d.results[0].ToDept.results;
-          this.inAttendPhyList = data?.d.results[0].ToPhysician.results;
-          this.missedMedPatientList = data?.d.results[0]?.ToMedList?.results;
-          this.physicianOrderPatientList = data?.d.results[0]?.ToPordList?.results;
-
-          if (specialtyData) {
-            this.specialtyArraySplit = speciality;
-            this.specialtySelectForConfig = [];
-
-            this.specialtyListConfig.filter((element) => {
-              if (this.specialtyArraySplit.includes(element.Orgid)) {
-                this.specialtySelectForConfig.push(element);
-              }
-            });
-            if (this.specialtySelectForConfig.length) {
-              let arraySpec = [];
-              this.specialtySelectForConfig.forEach((value) => {
-                if (this.getSpecialtyData.some(f => f.Deptou == value.Orgid))
-                  arraySpec.push({
-                    Deptou: value.Orgid,
-                    DeptouDesc: value.Orgna
-                  });
+    if(this.navTabBoxActiveValue == '08') {
+      this.hospitalistService.getArrivalListSetAPI('1', 'F31IUAMC' ,'2025-05-10T00:00:00')
+        .subscribe((data: any) => { 
+          console.log(data, "data")
+          this.inArrivalslistList = data?.d?.results;
+        })
+    } else {
+      this.hospitalistService.getIpListSetAPI(this.navTabBoxActiveValue, admittedFrom, admittedTo, wardNo, physician, speciality, type)
+        .subscribe((data: any) => {
+          this.showFilter = false;
+          if (this.navTabBoxActiveValue == '06') {
+            this.inHospitalistList = data?.d.results;
+          } else {
+            this.dataOnTableForLabPatients = data?.d.results[0].ToLabList.results;
+            this.radPatientList = data?.d.results[0]?.ToRadList?.results;
+            this.inHospitalistList = data?.d.results[0].ToIPList.results;
+            this.getSpecialtyData = data?.d.results[0].ToDept.results;
+            this.inAttendPhyList = data?.d.results[0].ToPhysician.results;
+            this.missedMedPatientList = data?.d.results[0]?.ToMedList?.results;
+            this.physicianOrderPatientList = data?.d.results[0]?.ToPordList?.results;
+  
+            if (specialtyData) {
+              this.specialtyArraySplit = speciality;
+              this.specialtySelectForConfig = [];
+  
+              this.specialtyListConfig.filter((element) => {
+                if (this.specialtyArraySplit.includes(element.Orgid)) {
+                  this.specialtySelectForConfig.push(element);
+                }
               });
-
-              this.form.patchValue({
-                specialty: arraySpec
-              })
-
+              if (this.specialtySelectForConfig.length) {
+                let arraySpec = [];
+                this.specialtySelectForConfig.forEach((value) => {
+                  if (this.getSpecialtyData.some(f => f.Deptou == value.Orgid))
+                    arraySpec.push({
+                      Deptou: value.Orgid,
+                      DeptouDesc: value.Orgna
+                    });
+                });
+  
+                this.form.patchValue({
+                  specialty: arraySpec
+                })
+  
+              }
+            }
+  
+            if (getConfigToolPhysicianList) {
+              this.physicianArraySplit = physician;
+              this.attendingSelectForConfig = [];
+  
+              this.inAttendPhyList.filter((element) => {
+                if (this.physicianArraySplit.includes(element.Gpart)) {
+                  this.attendingSelectForConfig.push(element);
+                }
+              });
+              if (this.attendingSelectForConfig.length) {
+                let arraySpec = [];
+                this.attendingSelectForConfig.forEach((value) => {
+                  if (this.inAttendPhyList.some(f => f.Gpart == value.Gpart))
+                    arraySpec.push({
+                      Gpart: value.Gpart,
+                      Name: value.Name
+                    });
+                });
+                this.form.patchValue({
+                  patientStatus: arraySpec
+                })
+              }
             }
           }
+        });
+    }
 
-          if (getConfigToolPhysicianList) {
-            this.physicianArraySplit = physician;
-            this.attendingSelectForConfig = [];
-
-            this.inAttendPhyList.filter((element) => {
-              if (this.physicianArraySplit.includes(element.Gpart)) {
-                this.attendingSelectForConfig.push(element);
-              }
-            });
-            if (this.attendingSelectForConfig.length) {
-              let arraySpec = [];
-              this.attendingSelectForConfig.forEach((value) => {
-                if (this.inAttendPhyList.some(f => f.Gpart == value.Gpart))
-                  arraySpec.push({
-                    Gpart: value.Gpart,
-                    Name: value.Name
-                  });
-              });
-              this.form.patchValue({
-                patientStatus: arraySpec
-              })
-            }
-          }
-        }
-      });
 
     // this.hospitalistService.getInHospitalistData$
     //   .pipe(

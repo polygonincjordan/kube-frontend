@@ -20,6 +20,9 @@
       <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '07' ? 'active-tab':''" title="LDR"
         [subText]="inHospitalist.length" url="assets/img/ldr-icon.png"
         (onClickBox)="onClickNavTabBox('07')"></app-icon-nav-tab>
+      <app-icon-nav-tab [ngClass]="navTabBoxActiveValue === '08' ? 'active-tab':''" title="Arrivals"
+        [subText]="inHospitalist.length" url="assets/img/ldr-icon.png"
+        (onClickBox)="onClickNavTabBox('08')"></app-icon-nav-tab>
     </div>
     <div style="display: flex; justify-content: center; align-items: center">
       <button class="btn btn-primary" id="graphAnalysisButton" style="
@@ -46,8 +49,11 @@
     <div class="card" style="margin-top: 15px">
       <div class="card-body" style="padding: 0 16px 16px 16px">
         <div class="table-header">
-          <span style="margin-left: 11px">{{getHospitalistTableTitle()}} <span *ngIf="!selectTab">-
+          <span *ngIf="navTabBoxActiveValue !== '08'" style="margin-left: 11px">{{getHospitalistTableTitle()}} <span *ngIf="!selectTab">-
               ({{navTabBoxActiveValue !== '07' ? inHospitalistList?.length : inHospitalist?.length}})</span>
+            {{selectTab}}</span>
+          <span *ngIf="navTabBoxActiveValue == '08'" style="margin-left: 11px">{{getHospitalistTableTitle()}} <span *ngIf="!selectTab">-
+              ({{inArrivalslistList?.length}})</span>
             {{selectTab}}</span>
           <!-- Admitted Patients -->
           <div class="table-icon config-box">
@@ -453,7 +459,7 @@
             aria-label="Username" aria-describedby="basic-addon1" />
         </div>
 
-        <div class="d-flex">
+        <div class="d-flex" *ngIf="navTabBoxActiveValue != '08'">
           <div class="notif-card">
             <div class="notif-icon" [ngClass]="home ? 'selected-notif-icon': ''">
               <img class="img-style cursor-pointer" src="assets/img/home.jpg" data-bs-toggle="tooltip"
@@ -510,6 +516,91 @@
               (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
               (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'discharge-process')" (onClickBox)="onClickNavTabBox('07')"
               style="width: 100%; margin-right: 6px"></app-main-hospitalist-list-view>
+          </div>
+
+          <div *ngIf="home">
+            <app-main-hospitalist-bed-view *ngIf="!showList" [searchString]="searchString" style="width: 100%"
+              [listItem]="inHospitalistList" (openModuleKardex)="redirectToeKardex($event)"
+              (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
+              (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"></app-main-hospitalist-bed-view>
+          </div>
+
+          <div class="w-100" *ngIf="abnormalLabResult" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-patient-lab (openModuleKardex)="redirectToeKardex($event)" (reloadTableData)="reloadTable($event)" [searchString]="searchString"
+              [listItem]="dataOnTableForLabPatients"></app-patient-lab>
+          </div>
+
+          <div class="w-100" *ngIf="abnormalRadFindings" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-patient-rad-reports (openModuleKardex)="redirectToeKardex($event)" [radPatientList]="radPatientList" [searchString]="searchString"
+              (reloadTableData)="reloadTable($event)"></app-patient-rad-reports>
+          </div>
+
+          <div *ngIf="notExecutedPhysicianOrder" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-in-patients (openModuleKardex)="redirectToeKardex($event)" [listItem]="physicianOrderPatientList" [searchString]="searchString"
+              (reloadTableData)="realoadTable($event)" style="width: 100%; margin-right: 6px"></app-in-patients>
+          </div>
+
+          <div class="w-100" *ngIf="missedMediDoses" style="overflow: auto; max-height: 61vh; width: 100%">
+            <missed-medications-doses [listItem]="missedMedPatientList" [searchString]="searchString"
+              (openModuleKardex)="redirectToeKardex($event)" (reloadTableData)="realoadTable($event)"
+              (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
+              (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"></missed-medications-doses>
+          </div>
+        </div>
+        <div class="d-flex" *ngIf="navTabBoxActiveValue == '08'">
+          <div class="notif-card">
+            <div class="notif-icon" [ngClass]="home ? 'selected-notif-icon': ''">
+              <img class="img-style cursor-pointer" src="assets/img/home.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="My InPatients" (click)="navModule('home')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Abnormal Lab Results" (click)="navModule('home')"
+              url="assets/img/lab.png"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="abnormalLabResult ? 'selected-notif-icon': ''">
+              <span class="rounded-circle notif-value" *ngIf="labCount != 0">{{labCount}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/lab.png" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Abnormal/Pending Lab Results"
+                (click)="navModule('Abnormal_Lab_Results')" />
+              <!-- <div class="red-dot"></div> -->
+            </div>
+            <!-- <app-icon-box-side-menu title="Abnormal Lab Results" (click)="navModule('home')"
+              url="assets/img/lab.png"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="abnormalRadFindings ? 'selected-notif-icon': ''">
+              <span class="rounded-circle notif-value" *ngIf="radCount != 0">{{radCount}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/icon_radiology.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Abnormal/Pending Rad Findings"
+                (click)="navModule('Abnormal_Rad_Findings')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Abnormal Rad Findings"
+              url="assets/img/icon_radiology.jpg"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="missedMediDoses ? 'selected-notif-icon': ''">
+              <span class="rounded-circle notif-value" *ngIf="missedDosesCount != 0">{{missedDosesCount}}</span>
+              <img class="img-style cursor-pointer pt-2" src="assets/img/drugs.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Missed/Not Administered Doses"
+                (click)="navModule('Missed_Medications_Doses')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Missed Medications Doses"
+              url="assets/img/drugs.jpg"></app-icon-box-side-menu> -->
+            <div class="notif-icon" [ngClass]="notReleasedDoc ? 'selected-notif-icon': ''">
+              <img class="img-style cursor-pointer" src="assets/img/docu.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Missing/Not Released Documents"
+                (click)="navModule('Not_Released_Documents')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Missing/Not Released Documents"
+              url="assets/img/docu.jpg"></app-icon-box-side-menu> -->
+            <div [ngClass]="notExecutedPhysicianOrder ? 'selected-notif-icon': ''" class="notif-icon">
+              <span class="rounded-circle notif-value" *ngIf="phyOrderCount != 0">{{phyOrderCount}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/phord.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Not Executed Physician Order"
+                (click)="navModule('Not_Executed_Physician_Order')" />
+            </div>
+            <!-- <app-icon-box-side-menu title="Not Executed Physician Order"
+              url="assets/img/phord.jpg"></app-icon-box-side-menu> -->
+          </div>
+
+          <div *ngIf="showList && home" style="width: 100%; height: calc(100vh - 300px); overflow: auto;">
+            <app-arrival-main-list [searchString]="searchString" [listItem]="inArrivalslistList"
+              [listType]="navTabBoxActiveValue" 
+              style="width: 100%; margin-right: 6px"></app-arrival-main-list>
           </div>
 
           <div *ngIf="home">
