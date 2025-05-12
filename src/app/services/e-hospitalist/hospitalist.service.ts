@@ -268,6 +268,14 @@ export class HospitalistService {
       withCredentials: true,
     });
   }
+
+  getArrivalListSetAPI(casetype: string, orgpf: string, date: string) {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/getArrivalList?casetype=${casetype}&orgpf=${orgpf}&date=${date}`;
+
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
   getMedicationAdministrationSet(Deptcode?:any,fromDate?:any, toDate?:any){
     let urlWithParams = ''
 

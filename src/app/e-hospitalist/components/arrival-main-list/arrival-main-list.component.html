@@ -1,0 +1,222 @@
+<table id="table" class="e-hospi-home-table table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th scope="col">MRN<i (click)="onSortClick($event,'Patnr')" class="my-icon fa fa-chevron-up"></i>
+            </th>
+            <!-- 1 -->
+            <th scope="col" class="set-width-3">Patient/Sex/Age<i (click)="onSortClick($event,'Pnamec1')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+
+            <th scope="col">Arrived On<i (click)="onSortClick($event,'Datetime')" class="my-icon fa fa-chevron-up"></i>
+            </th>
+            <!-- 2 -->
+            <th scope="col">Birthdate<i (click)="onSortClick($event,'Gbdat')" class="my-icon fa fa-chevron-up"></i></th>
+            <!-- 3 -->
+            <th scope="col" class="set-width-3">Attending Physician<i (click)="onSortClick($event,'BEH_ARZT')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <!-- 4 -->
+            <th scope="col">Departmental OU<i (click)="onSortClick($event,'Orgfakb')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <!-- 5 -->
+            <th scope="col">Financial Category<i (click)="onSortClick($event,'ZZFIN_CAT')"
+                    class="my-icon fa fa-chevron-up"></i>
+            </th>
+            <!-- 6 -->
+            <th scope="col">Movement Type<i (click)="onSortClick($event,'Bwatx')" class="my-icon fa fa-chevron-up"></i>
+            </th>
+            <!-- 7 -->
+            <th scope="col">Nursing Org. Unit <i (click)="onSortClick($event,'Orgpfkb')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <!-- 8 -->
+            <th scope="col" class="allergy"
+                style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Room</th>
+            <!-- 9 -->
+            <th scope="col" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">
+                Bed
+            </th>
+            <!-- 10 -->
+            <th scope="col" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">
+                Risk</th>
+            <!-- 11 -->
+            <th scope="col">R</th>
+            <!-- 12 -->
+            <th scope="col">D</th>
+            <!-- 13 -->
+            <th scope="col">R</th>
+            <!-- 14 -->
+            <!-- 15 -->
+            <th scope="col">MT</th>
+            <!-- 16 -->
+            <th scope="col">Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of listItem | filter : searchString">
+            <td>{{item.Patnr}}</td>
+            <td>{{item.Pnamec1}}</td>
+            <td>{{item.Datetime}}</td>
+            <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td>
+            <td>{{item.BEH_ARZT}}</td>
+            <td>{{item.Orgfakb}}</td>
+            <td>{{item.ZZFIN_CAT}}</td>
+            <td>{{item.Bwatx}}</td>
+            <td>{{item.Orgpfkb}}</td>
+            <td>{{item.ZIMMKUB}}</td>
+            <td>{{item.BETTKUB}}</td>
+            <td class="border-left" style="width: 3%">
+                <span>
+                    <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
+                        (click)="openModalForRisk(riskModal,item)" [title]="item.RiskpIcon" />
+                </span>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{item.Bwart}}</td>
+            <td>{{item.Orgfakb}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<ng-template #riskModal>
+    <div>
+        <div class="allergy-header">
+            <div style="font-size: 23px; font-weight: bold">
+                <span>Risk History</span>
+            </div>
+            <div class="risk-history-main">
+                <ul class="allergy-header-ul d-flex">
+                    <li class="allergy-header-item" style="margin-left: 10%">
+                        Patient Name : <span>{{ selectedERList?.Pnamec }}</span>
+                    </li>
+                    <li class="allergy-header-item">MRN: {{ selectedERList?.Patnr }}</li>
+                    <li class="allergy-header-item">
+                        Admission date:
+                        {{ getDate(selectedERList?.Gbdat) | date : "dd.MM.y" }}
+                    </li>
+                    <li class="close-icon allergy-header-item">
+                        <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" style="padding: 0 11px 0px">
+        <form [formGroup]="updateRiskForm" (keydown.enter)="$event.preventDefault()">
+            <div class="mt-3 mb-3 update-risk-main">
+                <div class="row create-form-inputs">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Risk code" style="height: 33px"
+                            formControlName="Rsfna"
+                            [ngClass]="updateRiskForm.get('Rsfna').errors && isFormValidError ? 'ep-error-message': ''"
+                            (dblclick)="openCommonModal(commonColModal, 'RiskCode')"
+                            (keyup.enter)="openCommonModal(commonColModal, 'RiskCode')" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control risk-short-disc" placeholder="Short description"
+                            formControlName="Rsfkb" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control risk-short-disc" placeholder="Risk description"
+                            formControlName="Rsfna" />
+                    </div>
+                </div>
+                <div class="row create-form-inputs">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" placeholder="Reported on" [minDate]="" [maxDate]=""
+                            #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+                            [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                            style="height: 33px" />
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4" style="text-align: end">
+                        <button class="update-risk-save-btn" (click)="saveRiskJsonFormat()">Save</button>
+                        <button class="update-risk-save-btn" (click)="resetUpdateRiskForm()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="riskform" style="max-height: 296px; overflow: auto">
+            <table class="table table-bordered risk-table">
+                <thead style="background-color: #e4edf5; color: black; text-align: center">
+                    <tr>
+                        <th scope="col">Risk Code</th>
+                        <th scope="col">Short Description</th>
+                        <th scope="col">Risk Description</th>
+                        <th scope="col">Reported On</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody style="background-color: #fbfcff">
+                    <ng-container formArrayName="riskFormitems">
+                        <ng-container *ngFor="let item of riskform.get('riskFormitems')['controls']; let i = index">
+                            <tr [formGroupName]="i">
+                                <td class="risk-item-rsfnr">
+                                    <ng-select appendTo="body" placeholder="Search" formControlName="Rsfnr"
+                                        title="aaaaaaaa">
+                                        <ng-option *ngFor="let riskV of riskValues" [value]="riskV.Rsfnr">
+                                            {{ riskV.Rsfna }}
+                                        </ng-option>
+                                    </ng-select>
+                                </td>
+                                <td class="risk-item-rsfkb">
+                                    <input type="text" class="form-control" formControlName="Rsfkb"
+                                        [title]="item.get('Rsfkb').value" />
+                                </td>
+                                <td class="risk-item-rsfna">
+                                    <input type="text" class="form-control" formControlName="Rsfna"
+                                        [title]="item.get('Rsfna').value" />
+                                </td>
+                                <td class="risk-item-repdt">
+                                    <input class="form-control" style="background-color: #e9ecef !important;"
+                                        type="text" #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+                                        [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"
+                                        [title]="item.get('Repdt').value" />
+                                </td>
+                                <td class="risk-item-image">
+                                    <img class="cursor-pointer" src="assets/img/allergy-edit.svg"
+                                        (click)="selectValueFromRiskTable(riskList[i])" title="Edit" />
+                                    <img class="cursor-pointer" src="assets/img/Delete.svg"
+                                        (click)="confirmationForRiskDelete('D', riskList[i])" style="margin-left: 11px"
+                                        title="Delete" />
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</ng-template>
+
+
+<ng-template #commonColModal>
+    <div class="modal-body p-0">
+        <div class="infoModel-title" style="background: #0056b0">
+            <h4 class="m-0 pl-3">{{ colName }}</h4>
+        </div>
+        <div class="search-functionality search-image-comman col-md-10 pl-0 mt-2"
+            *ngIf="this.colName == 'Allergen' || this.colName == 'RiskCode'">
+            <img src="assets/img/pres-search-icon.svg" alt="" />
+            <input type="text" placeholder="Search" id="searchFilter" class="form-control w-100"
+                [(ngModel)]="searchString" (input)="someMethod(searchString)" />
+        </div>
+        <div style="max-height: 30em; overflow: auto; padding: 11px">
+            <table class="table table-bordered">
+                <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
+                    <tr>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody style="background: #fbfcff">
+                    <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
+                        <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText ||
+                            item.SoaText ||
+                            item.TypText || item.Rsfna}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-template>\
