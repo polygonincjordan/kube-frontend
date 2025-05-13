@@ -1,5 +1,5 @@
 <div class="e-order-history-content" *ngIf="customData && customData.length">
-  <div class="e-order-history-panel" *ngFor="let keyData of customData">
+  <div class="e-order-history-panel" *ngFor="let keyData of customData; let i = index">
     <div class="e-order-inner-panel" *ngIf="keyData.type !== 'MED' &&
       keyData.type !== 'TEMPLATE'">
       <div class="e-order-title">
@@ -93,7 +93,12 @@
                         />
                     </span>
                   </td>
-                  <td class="align-middle border-0">
+                  <td class="align-middle border-0 d-flex">
+                    <span
+                      class="trash-icon"
+                      (click)="eOrderServ.onAddOrderCheckboxOrder(true, element)">
+                        <img src="assets/img/add.png" />
+                      </span>
                     <span
                       class="trash-icon"
                       (click)="eorderService.onDeleteOrder(element)">
@@ -101,7 +106,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 448 512">
                         <path
-                          d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96
+                          d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96  
                           32 96H416c17.7 0 32-14.3
                           32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0
                           284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416

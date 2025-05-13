@@ -1175,7 +1175,12 @@ export class eOrderService {
     // this.loadFavouriteData()
   }
 
-  onAddOrderCheckbox(event: any, element: any) {
+  generateId(length = 8) {
+    return Math.random().toString(36).substr(2, length);
+  }
+
+  onAddOrderCheckbox(event: any, element: any, ) {
+    // element['duplicateId'] = this.generateId();
     element['isSelected'] = event.target.checked;
     if (event.target.checked) {
       let object: any = {
@@ -1225,11 +1230,44 @@ export class eOrderService {
           object['borderColor'] = 'rgb(164, 93, 187)';
           break;
       }
-      this.onInsertOrder(object);
+      this.onInsertOrder(object, 'isAllDataRemove');
     }
   }
 
-  onInsertOrder(insertdata: any) {
+  onAddOrderCheckboxOrder(event: any, element: any) {
+    // element['duplicateId'] = this.generateId();
+    element['isSelected'] = true;
+    this.eOrdersMaster.push(element);
+    this.eOrdersMaster = this.eOrdersMaster.map((res, index) => {
+      return {
+        ...res,
+        duplicateId: this.generateId()
+      };
+    });
+      let object: any = {
+        date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        time: this.datePipe.transform(new Date(), 'HH:mm'),
+        note: '',
+        borderColor: '',
+        isSelected: Boolean,
+        locationtype: this.localizationList,
+        frequency: this.frequencyObject,
+        dataType: 'searchListData',
+        editItem: false,
+      };
+      for (var childProps in element) {
+        object[childProps] = element[childProps];
+      }
+      object['isSelected'] = true;
+      if (element.type !== 'MED') {
+        this.loadServiceDetails(object);
+      } else {
+        this.loadMedicalDetails(object);
+        this.onInsertOrder(object);
+      }
+  }
+
+  onInsertOrder(insertdata: any, isAllData?: any) {
     if (insertdata.type !== 'fees' && !insertdata.Orgid && insertdata.dataType !== 'CopyFeeHistoryData' && insertdata.dataType !== 'EditFeeHistoryData') {
       if (!this.eOrdersMaster) {
         this.eOrdersMaster = [];
@@ -1268,13 +1306,19 @@ export class eOrderService {
       } else {
         if (insertdata.type !== 'MED') {
           if (this.eOrdersMaster.length) {
-            const removeAt = this.eOrdersMaster.findIndex(
-              (d: any) =>
-                d['clinOrdTypId'] === insertdata.clinOrdTypId &&
-                d['service'] === insertdata.service
-            );
-            if (removeAt >= 0) {
-              this.eOrdersMaster.splice(removeAt, 1);
+            if(isAllData == 'isAllDataRemove') {
+              this.eOrdersMaster = this.eOrdersMaster.filter(
+                (d: any) => d.serviceDescr !== insertdata.serviceDescr
+              );
+            } else {
+              const removeAt = this.eOrdersMaster.findIndex(
+                (d: any) =>
+                  (d['clinOrdTypId'] === insertdata.clinOrdTypId &&
+                    d['service'] === insertdata.service) && d['duplicateId'] === insertdata.duplicateId
+              );
+              if (removeAt >= 0) {
+                this.eOrdersMaster.splice(removeAt, 1);
+              }
             }
           }
         } else {
@@ -2089,11 +2133,16 @@ export class eOrderService {
     if (deletedata.type === 'fees' || (deletedata.Lnrls && deletedata.Lnrls !== "")) {
       if (this.feeServiceOrderData && this.feeServiceOrderData.length && deletedata.Lnrls !== '') {
         const removeAt = this.feeServiceOrderData.findIndex(
-          (d: any) => d['Ktxt1'] === deletedata.Ktxt1
+          (d: any) => d['Ktxt1'] === deletedata.Ktxt1 || d['duplicateId'] === deletedata.duplicateId
         );
         if (removeAt >= 0) {
           this.feeServiceOrderData.splice(removeAt, 1);
-          deletedata.isSelected = false;
+          let duplicates:[] = this.eOrdersMaster?.filter((obj, index, self) =>
+            index !== self.findIndex(o => o.serviceDescr === obj.serviceDescr)
+          );
+          if(duplicates.length) deletedata.isSelected = true
+          else deletedata.isSelected = false
+          // deletedata.isSelected = false;
           this.onInsertOrder(deletedata);
           this.updateSearchListOnDelete(deletedata, deletedata.type);
         }
@@ -2104,11 +2153,16 @@ export class eOrderService {
         const removeAt = this.eOrdersMaster.findIndex(
           (d: any) =>
             d['clinOrdTypId'] === deletedata.clinOrdTypId &&
-            d['service'] === deletedata.service
+            d['service'] === deletedata.service && d['duplicateId'] === deletedata.duplicateId
         );
         if (removeAt >= 0) {
           this.eOrdersMaster.splice(removeAt, 1);
-          deletedata.isSelected = false;
+           let duplicates:[] = this.eOrdersMaster?.filter((obj, index, self) =>
+            index !== self.findIndex(o => o.serviceDescr === obj.serviceDescr)
+          );
+          if(duplicates.length) deletedata.isSelected = true
+          else deletedata.isSelected = false
+          // deletedata.isSelected = false;
           this.onInsertOrder(deletedata);
           this.updateSearchListOnDelete(deletedata, deletedata.type);
         }
@@ -2156,7 +2210,12 @@ export class eOrderService {
             d['isSelected']
         );
         if (labData) {
-          labData.isSelected = false;
+          let duplicates = this.eOrdersMaster?.filter((obj, index, self) =>
+            index !== self.findIndex(o => o.serviceDescr === obj.serviceDescr)
+          );
+          if(duplicates) labData.isSelected = true
+          else labData.isSelected = false
+          // labData.isSelected = false;
         }
         break;
       case 'RAD':
@@ -2167,7 +2226,11 @@ export class eOrderService {
             d['isSelected']
         );
         if (radData) {
-          radData.isSelected = false;
+            let duplicates = this.eOrdersMaster?.filter((obj, index, self) =>
+            index !== self.findIndex(o => o.serviceDescr === obj.serviceDescr)
+          );
+          if(duplicates) labData.isSelected = true
+          else labData.isSelected = false
         }
         break;
       case 'PROC':

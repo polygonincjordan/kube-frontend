@@ -103,7 +103,7 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     // }else     if (this.admissionService.isCloneNeonatal && !isrelease) {
     //   createJson['DocStatus'] = '3';
     // } 
-
+     createJson.AttendPhy = this.storageService.getGpart();
     if (createJson["Dockey"] === null || createJson["Dockey"] === undefined || createJson["Dockey"] === "") {
       if (isrelease) {
         createJson['DocStatus'] = '4';
@@ -174,6 +174,7 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     )}T00:00:00`;
     createtime = updateJson.Timee.split(':');
     updateJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
+    updateJson.AttendPhy = this.storageService.getGpart();
    
     this.admissionService.releaseNeoNatalDoc(updateJson).subscribe(()=>{
       this.admissionService.cancelAllForm();
