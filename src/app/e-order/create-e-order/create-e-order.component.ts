@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { DataService } from '@services/data.service';
 import { eOrderService } from '@services/eorder.service';
 import { EventService } from '@services/event.service';
@@ -9,7 +9,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   templateUrl: './create-e-order.component.html',
   styleUrls: ['./create-e-order.component.scss'],
 })
-export class CreateEorderComponent {
+export class CreateEorderComponent implements OnChanges {
   public data: any = [];
   @Input('customData') customData: any;
 selectedDosageUnit:string;
@@ -19,6 +19,7 @@ selectedDosageUnit:string;
     public dataservice: DataService,
     public events: EventService,
     public eorderService: eOrderService,
+    public eOrderServ: eOrderService,
     public modalService: BsModalService
   ) { }
   modalRef?: BsModalRef | null;
@@ -28,6 +29,16 @@ selectedDosageUnit:string;
       class: 'modal-lg',
     });
   }
+
+    ngOnChanges(changes: SimpleChanges): void {
+      console.log(this.customData, "customData")
+    }
+
+    addNewitem(customData, element, index) {
+      console.log(this.eorderService.eOrders, element, "element")
+      this.eorderService.eOrders[index].groupItem.push(element);
+
+    }
 
   findSelectedDosageUnit(dosageUnit:any[],defaultUnit:string){
    let selectedUnit= dosageUnit.find((ele)=>{ele.unit === defaultUnit});
