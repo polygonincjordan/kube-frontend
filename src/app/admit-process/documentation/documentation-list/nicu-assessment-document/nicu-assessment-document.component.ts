@@ -6,6 +6,7 @@ import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
 import { NicuErVitalsComponent } from './er-vitals/er-vitals.component';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -119,7 +120,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
 
   
   docKey: any;
-  toVitalsArr: any;
+  public toVitalsArr: any = [];
   isChecked: any;
   genderString: any;
   isFemale: boolean;
@@ -850,6 +851,58 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   
       }
   }
+
+  public importVitalsData(data) {
+    data.forEach((el) => {
+      this.toVitalsArr = this.toVitalsArr.concat({
+        Dockey: '',
+        Vdescription: el.Name,
+        MeasuredValue: el.ValueFormatted,
+        NormalRange: el.NormalRange,
+        DateTime: `${new DatePipe('en-US').transform(
+          this.getDate(el.Date),
+          'dd.MM.yyyy'
+        )}/${this.parseTime(el.Time)}`,
+        Vunit: el.UnitTxt,
+      });
+    });
+  }
+
+  public getDate(value) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
+    }
+  }
+
+  public parseTime(data: string) {
+    // Check if data is valid and matches the expected format
+    if (!data || data.length !== 11 || data[4] !== 'H' || data[7] !== 'M' || data[10] !== 'S') {
+      return null;
+    }
+
+    // Extract hours, minutes, and seconds from the input string
+    const hours = parseInt(data.slice(2, 4), 10);
+    const minutes = parseInt(data.slice(5, 7), 10);
+    const seconds = parseInt(data.slice(8, 10), 10);
+
+    // Check if extracted values are valid numbers
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return null;
+    }
+
+    // Format hours, minutes, and seconds with leading zeros if necessary
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    // Construct the formatted time string
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    return null;
+  }
+
   toggleRadioMultiple(controlName: string, value: string,textinput?:string) {
     if (this.nicuForm.get(controlName)?.value === value) {
       this.nicuForm.get(controlName)?.setValue(null);
@@ -884,6 +937,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       next: (data: any) => {
         if(data){
           this.initForm(data?.results[0]);
+          this.toVitalsArr = data?.results[0].TOVITALSIGNS.results;
         }
       },
       error: (err: any) => {
