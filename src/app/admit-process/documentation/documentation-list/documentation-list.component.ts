@@ -888,7 +888,8 @@ export class DocumentationListComponent implements OnInit {
           this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
-    } else if (item.Dtid == 'ZMED_PHASM') {
+    } 
+    else if (item.Dtid == 'ZMED_PHASM') {
       const json = {
         Dockey: item.Dockey,
       };
@@ -904,7 +905,25 @@ export class DocumentationListComponent implements OnInit {
           this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
-    } else if(item.Dtid == 'ZMED_VISIT') {
+    } 
+    else if (item.Dtid == 'ZMED_NICAD') {
+      const json = {
+        Dockey: item.Dockey,
+      };
+      this.admissionService
+        .getNicuAddNoteDocPDF(json)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((data: any) => {
+          this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+          this.pdfTemplateRef = this.modalService.show(template, config);
+        });
+    } 
+    else if(item.Dtid == 'ZMED_VISIT') {
       this.admissionService
       .getPatientProfilePDF(item.Dockey)
       .subscribe((_success: any) => {

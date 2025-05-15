@@ -1041,7 +1041,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   }
     let payload = {
       ...formData,
-      Dockey : actionType === 'edit' ||  actionType === 'copy' ? this.docKey : '',
+      Dockey : actionType === 'edit' ||  actionType === 'copy' ? this.docKey ? this.docKey : '' : '',
       Dtid : 'ZMED_NICAD',
       Einri: this.paramsObject.einri,
       Patnr: this.paramsObject.patnr,
@@ -1061,8 +1061,8 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         this.realodEducationList.next(true);
         },
         error: (err: any) => {
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at Nicu : ${err}`);
+         const errorMsg = err?.error?.message?.value || 'Unknown error';
+         this.sharedService.waringSwallModel(`PUT Error at Nicu: ${errorMsg}`);
         },
         complete: () => {
           resolve(true);

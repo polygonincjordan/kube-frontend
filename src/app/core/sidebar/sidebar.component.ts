@@ -88,12 +88,12 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   openModuleLabChart() {
-
+     const falnrValue = this.FALNR && this.FALNR.trim() !== '' ? this.FALNR : '0000000000';
     window.open(
       environment.labChartUrl + 'patnr=' +
       this.PATNR +
       '&falnr=' +
-      this.FALNR +
+      falnrValue +
       '&einri=' +
       this.EINRI +
       '&lfdnr=' +

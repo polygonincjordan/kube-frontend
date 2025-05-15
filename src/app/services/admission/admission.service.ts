@@ -1474,6 +1474,12 @@ export class AdmissionService {
       withCredentials: true,
     });
   }
+  getNicuAddNoteDocPDF(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/getNicuAddNoteDocPDF`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
 
 
   releaseVisitNoteDoc(json) {
