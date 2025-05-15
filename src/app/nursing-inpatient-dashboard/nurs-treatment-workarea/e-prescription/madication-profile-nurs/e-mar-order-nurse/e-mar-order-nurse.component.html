@@ -49,11 +49,11 @@
               <div class="order-data-part">
                 <div class="row">
                   <div class="col-md-7 pr-1">
-                    <div class="e-mar-Order-data d-flex flex-wrap h-100">
+                    <div class="e-mar-Order-data d-flex flex-wrap h-100" [ngClass]="{'pointer': element.Prn === true}">
                       <!-- {{element.Mesid}} -->
                       <h4 class="m-0 w-100">{{element.Descrlt}}</h4>
                       <p class="m-0 w-100"
-                        title="{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}} {{element.Unit}}{{'- ' + element.Routedescr}}{{'- ' + element.Formatdescr}}{{'- ' + element.N1ztxt}}{{'- ' + element.Userst}}{{element.Prncond ? '-' : '' }}{{element.Prncond}}">
+                        title="{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}} {{element.Unit}}{{'- ' + element.Routedescr}}{{'- ' + element.Formatdescr}}{{'- ' + element.N1ztxt}}{{'- ' + element.Userst}}{{element.Prncond ? '-' : '' }}{{element.Prncond}} {{element.Prn === true ? 'PRN ': ''}}{{element.Prncond ? '(' : '' }}{{element.Prncond}}{{element.Prncond ? ')' : '' }}">
                         {{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}}{{element.Unit}}
                         {{element.Routedescr ? '-' : '' }} {{element.Routedescr}}
                         {{element.Formatdescr ? '-' : '' }}{{element.Formatdescr}}
@@ -62,10 +62,10 @@
                     </div>
                   </div>
                   <div class="col-md-5 pl-1">
-                    <div class="e-mar-Order-data d-flex flex-wrap h-100 c-pointer">
+                    <div class="e-mar-Order-data d-flex flex-wrap h-100 c-pointer" [ngClass]="{'pointer': element.Prn === true}">
                       <p class="m-0 w-100">{{element.ViewOrderDate}}</p>
                       <p class="m-0 w-100">{{element.TherapeCls}}</p>
-                      <p class="m-0 w-100">{{element.Descr}}</p>
+                      <p class="m-0 w-100">{{element.Descr}} <span *ngIf="element.Prn === true"><img (click)="element.Prn === true ?  handlePrnClick(element.Schedule, element)  : ''"  src="../../../../../assets/img/chat-add.svg" alt=""></span> </p>
                     </div>
                   </div>
                 </div>

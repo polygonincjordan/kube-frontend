@@ -180,7 +180,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Rbtad: new FormControl(''),
         Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(item.Events.Rtimdif),
-        Fsource: new FormControl(item.Events.Fsource),
+        Fsource: new FormControl(item.Events.Fsource == null ? '' : item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
         Meresp1: new FormControl(item.Events.AdmEmp),
@@ -298,7 +298,8 @@ export class DrugEventsAdminComponent implements OnInit {
                             Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
-                            Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`
+                            Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
+                            Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
                           }
                           const { Quanunit, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)

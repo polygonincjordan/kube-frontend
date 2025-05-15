@@ -1,0 +1,15 @@
+.overflow-elipsis {
+  width: 260px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+  border-color: #e000ff !important;
+}
