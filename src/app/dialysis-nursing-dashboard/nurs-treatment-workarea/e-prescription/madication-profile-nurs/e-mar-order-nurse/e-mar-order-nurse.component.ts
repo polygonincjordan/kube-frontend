@@ -278,6 +278,13 @@ export class EMarOrderNurseComponent {
     // }
   }
 
+    public handlePrnClick(schedule, element): void {
+    if (element) {
+      const filteredSchedule = schedule.filter((data) => data.Events);
+      this.openModalForDrugEvent(filteredSchedule[0], element);
+    }
+  }
+
 
   showErrorPopup(title: any, text: any, messageType) {
     return swal.fire({

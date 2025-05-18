@@ -210,10 +210,10 @@
                 <td>{{ item.ZZFIN_CAT }}</td>
                 <!-- <td *ngIf="Diagnosis">{{ item.ANFDIAGNOSE }}</td> -->
                 <td class="border-left text-center" *ngIf="Diagnosis">
-                  <span *ngIf="item?.Diagnosis">
+                  <span *ngIf="item?.ANFDIAGNOSE">
                     <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.ANFDIAGNOSE" />
                   </span>
-                  <span *ngIf="!item?.Diagnosis">N/A</span>
+                  <span *ngIf="!item?.ANFDIAGNOSE">N/A</span>
                 </td>
                 <td  *ngIf="comment">{{item.BEMERKUNG}}</td>
                 <td>
