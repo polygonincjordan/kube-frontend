@@ -298,7 +298,8 @@ export class DrugEventsAdminComponent implements OnInit {
                             Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
-                            Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`
+                            Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
+                             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
                           }
                           const { Quanunit, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)
@@ -321,7 +322,8 @@ export class DrugEventsAdminComponent implements OnInit {
             Meresp1: this.getUserConfigData.VMA,
             Meresp2: "",
             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
-            Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`
+            Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
+             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
           }
           const { Quanunit, Prncond, ...payload } = PayloadData;
           this.AdministerEventaction("The event has been Administered!", payload)
@@ -385,7 +387,8 @@ export class DrugEventsAdminComponent implements OnInit {
       const PayloadData = {
         ...this.administratiForm.get('DrugAdminister').value,
         Empid: this.getUserConfigData.VMA,
-        Pamount:`${this.administratiForm.get('DrugAdminister').value.Pamount}`
+        Pamount:`${this.administratiForm.get('DrugAdminister').value.Pamount}`,
+         Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
         // Pamount: (this.administratiForm.get('DrugAdminister').value.Pamount === '' || this.administratiForm.get('DrugAdminister').value.Pamount === null) ? '0.000' : `${this.administratiForm.get('DrugAdminister').value.Pamount}`,
       }
       this.DrugReturnEventaction("Your Return Request has been Submitted!", PayloadData)

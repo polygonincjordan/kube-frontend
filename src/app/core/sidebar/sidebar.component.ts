@@ -1,4 +1,11 @@
-import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { SidebarService } from '@services/sidebar.service';
@@ -13,7 +20,7 @@ import { UserType } from '@services/interfaces/common.enum';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit, OnChanges {
-  @Input() navTabBoxActiveValue: any
+  @Input() navTabBoxActiveValue: any;
   sidebarSubscription: Subscription;
   currentUrl: string;
   urlParts: string[];
@@ -25,7 +32,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   EINRI = this.storageService.einri;
   LFDBW = this.storageService.lfdnr;
   isAdmitProcess: any;
-  redirectUrl : string = '/admit-process';
+  redirectUrl: string = '/admit-process';
   // @HostListener('window:resize', ['$event'])
   // handleWindowResize(event: any): void {
   //   if (event && !event.isTrusted) {
@@ -68,41 +75,49 @@ export class SidebarComponent implements OnInit, OnChanges {
     this.currentUrl = this.router.url.split('?')[0];
   }
   ngOnInit(): void {
-    this.isAdmitProcess = localStorage.getItem('admit_process')
+    this.isAdmitProcess = localStorage.getItem('admit_process');
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes?.navTabBoxActiveValue.currentValue == '02' || changes?.navTabBoxActiveValue.currentValue == '03') {
+    if (
+      changes?.navTabBoxActiveValue.currentValue == '02' ||
+      changes?.navTabBoxActiveValue.currentValue == '03'
+    ) {
       this.redirectUrl = '/admit-process';
-    } else if(changes?.navTabBoxActiveValue.currentValue == '04' || changes?.navTabBoxActiveValue.currentValue == '05') {
+    } else if (
+      changes?.navTabBoxActiveValue.currentValue == '04' ||
+      changes?.navTabBoxActiveValue.currentValue == '05'
+    ) {
       this.redirectUrl = '/discharge-process';
     } else {
       this.redirectUrl = '/admit-process';
     }
     console.log(this.redirectUrl);
-    
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.ePrescriptionActive = this.PatientService.HeaderConfigurationData?.episodeOfCare.caseTypeTxt === "Inpatient Case";
+      this.ePrescriptionActive =
+        this.PatientService.HeaderConfigurationData?.episodeOfCare
+          .caseTypeTxt === 'Inpatient Case';
     }, 3000);
   }
 
   openModuleLabChart() {
-     const falnrValue = this.FALNR && this.FALNR.trim() !== '' ? this.FALNR : '0000000000';
+    const falnrValue =
+      this.FALNR && this.FALNR.trim() !== '' ? this.FALNR : '0000000000';
     window.open(
-      environment.labChartUrl + 'patnr=' +
-      this.PATNR +
-      '&falnr=' +
-      falnrValue +
-      '&einri=' +
-      this.EINRI +
-      '&lfdnr=' +
-      this.LFDBW +
-      '&appl=LABCHART',
+      environment.labChartUrl +
+        'patnr=' +
+        this.PATNR +
+        '&falnr=' +
+        falnrValue +
+        '&einri=' +
+        this.EINRI +
+        '&lfdnr=' +
+        this.LFDBW +
+        '&appl=LABCHART',
       '_blank'
     );
   }
-
 
   openModuleRad() {
     window.open(
@@ -111,16 +126,18 @@ export class SidebarComponent implements OnInit, OnChanges {
     );
   }
   openEPrescription() {
-    const userType = this.storageService.getKubeRule()
-    let redirectPoint = "";
-    if ([UserType.SeniorPhysician].includes(userType)) {
+    const userType = this.storageService.getKubeRule();
+    let redirectPoint = '';
+    const allowedUserTypes = [
+      UserType.Physician,
+      UserType.FloorHospitalist,
+      UserType.ERHospitalist,
+      UserType.SeniorPhysician,
+      UserType.SeniorHospitalist,
+    ];
+    if (allowedUserTypes.includes(userType)) {
       redirectPoint = 'e-prescription?';
     }
-    // else if (userType === UserType.opnurse) {
-    //   redirectPoint = 'out-patient-nursing?';
-    // } else if (userType === UserType.ERNurse) {
-    //   redirectPoint = 'nursing-emergncy-dashboard?';
-    // }
 
     const queryParams = `patnr=${this.PATNR}&falnr=${this.FALNR}&einri=${this.EINRI}&lfdnr=${this.LFDBW}&nav=Treatmentarea`;
     const url = redirectPoint + queryParams;
