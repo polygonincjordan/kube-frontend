@@ -13,6 +13,8 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { catchError, of } from 'rxjs';
+import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { SharedService } from '@services/shared.service';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation',
@@ -45,6 +47,8 @@ export class DocumentationComponent implements OnInit {
     private storageService: StorageService,
     private inPatientConfigurationService: InPatientConfigurationService,
     private emergencyService:EmergencyService,
+    private dayCaseDashboardService: DayCaseDashboardService,
+    private sharedService: SharedService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -185,10 +189,37 @@ export class DocumentationComponent implements OnInit {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_VISIT') {
             this.deleteVisitNoteDocument();
           }
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
+            this.deleteNeonatalDischarge();
+          }
         }
       });
     }
   }
+
+  async deleteNeonatalDischarge() {
+      await this.dayCaseDashboardService.deleteNeonatalDischargeDocument(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe(
+        (_success: any) => {
+          Swal.fire({
+            text: "Document is deleted successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.admissionService.isRealoadData.next(true);
+        },
+        (_error: any) => {
+          Swal.fire({
+            text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+          this.admissionService.isRealoadData.next(true);
+        }
+      );
+  
+    }
 
   deleteDichargeSum() {
     this.inPatientConfigurationService.deleteInPatientPhdisData(
@@ -307,6 +338,37 @@ export class DocumentationComponent implements OnInit {
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_VISIT') {
       this.releaseVisitNoteDoc();
     }
+     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
+      this.directReleaseNeonatalDischargeDoc();
+    }
+  }
+
+  directReleaseNeonatalDischargeDoc() {
+     this.dayCaseDashboardService
+      .fetcNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+            this.dayCaseDashboardService.saveNeonatalDischargeDocument({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Neonatal Discharge Summary released successfully');
+              this.admissionService.isRealoadData.next(true);
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
   }
 
   releaseEducatonAss() {

@@ -880,6 +880,22 @@ export class DocumentationListComponent implements OnInit {
         this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
         this.pdfTemplateRef = this.modalService.show(template, config);
       })
+    }// Neonatal Progress Note
+    else if (item.Dtid == 'ZMED_NEODS') {
+      this.pdfUrl = '';
+      this.dayCaseDashboardService
+        .NeonatalDischargeDocPDF(item.Dockey)
+        .subscribe((data: any) => {
+          this.pdfUrlType = 'pdf';
+          this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+          // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   'data:application/pdf;base64,' + data.d.AttachmentData
+          // );
+          const config: ModalOptions = {
+            class: 'modal-dialog-centered modal-xl pdfmodal-size',
+          };
+          this.pdfTemplateRef = this.modalService.show(template, config);
+        });
     }
   }
 
@@ -981,7 +997,8 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddEditTransferAssestForm &&
       !this.admissionService.isAddEditNewbornAssessment &&
       !this.admissionService.isAddNicuForm &&
-      !this.admissionService.isNewBornForm 
+      !this.admissionService.isNewBornForm &&
+      !this.admissionService.isAddEditNeonatalDischarge 
     ) {
       return true;
     }

@@ -620,6 +620,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNewBorn();
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
+    this.getIntraOpNurRecSetMainDoc();
     this.getNurseAssMainDoc();
     this.getCriticalPainDoc();
     this.getPediatricWarningScore();
@@ -786,6 +787,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getCvcMainDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.cvcMainList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getIntraOpNurRecSetMainDoc() {
+    this.emergencyService.getIntraOpNurRecSetMainDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.nurseIntraMainList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -2097,6 +2110,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNewBorn();
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
+    this.getIntraOpNurRecSetMainDoc();
     this.getNurseAssMainDoc();
     this.getCriticalPainDoc();
     this.getLatestAssessmentPA();
