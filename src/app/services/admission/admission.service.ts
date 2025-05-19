@@ -511,7 +511,6 @@ export class AdmissionService {
   }
 
   educationAddForm(actionType: string) {
-
     // if(this.selectedCurrentDocDetails.DtidText == "Document Attachmen" && actionType == "add"){
     //   this.popupdata.openModalForSpecialNotes
     // }
@@ -1556,6 +1555,15 @@ export class AdmissionService {
   }
   getCvcMainDetail(Dockey) {
     return this.http.get(`${environment.eKardexApiUrl}/getCvcMainDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+  getIntraOpNurRecSetDetail(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getIntraOpNurRecSetDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
       catchError((error: HttpErrorResponse) => {
         console.error(error);

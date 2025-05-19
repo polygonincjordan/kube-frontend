@@ -1126,6 +1126,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteIntraOpNurRecSetDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteIntraOpNurRecSetDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   deleteNurseAssMainDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteNurseAssMainDoc?Dockey=${json}`, {
       withCredentials: true,
@@ -1203,6 +1208,11 @@ export class EmergencyService {
   }
   getCvcMainDoc(json): Observable<any> {
     return this.http.post(this.url + 'getCvcMainDoc', json, {
+      withCredentials: true,
+    });
+  }
+  getIntraOpNurRecSetMainDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getIntraOpNurRecSetMainDoc', json, {
       withCredentials: true,
     });
   }
