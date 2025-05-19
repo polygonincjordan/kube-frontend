@@ -77,9 +77,7 @@ export class ReceiveCartComponent implements OnInit {
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
       nurseUnit: ['']
-    });
-    console.log(checkindata, "checkindata");
-    
+    });    
     this.setCodeByDescription(checkindata.Floor);
   }
 

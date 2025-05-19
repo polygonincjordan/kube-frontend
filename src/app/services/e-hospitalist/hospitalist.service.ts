@@ -276,6 +276,13 @@ export class HospitalistService {
       withCredentials: true,
     });
   }
+  getSurgeryWorkListSetAPI() {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/getSurgeryWorkList`;
+
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
   getMedicationAdministrationSet(Deptcode?:any,fromDate?:any, toDate?:any){
     let urlWithParams = ''
 

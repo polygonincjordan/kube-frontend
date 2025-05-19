@@ -116,7 +116,7 @@
     erSetting ||
     analysis ||
     noReleaseDoc ||
-    reservation
+    reservation || isArrival
       ? 'checkin-header'
       : 'er-header'
   "
@@ -130,7 +130,7 @@
     erSetting ||
     analysis ||
     noReleaseDoc ||
-    reservation
+    reservation || isArrival
   "
 >
   <!-- <div
@@ -287,6 +287,45 @@
     <span *ngIf="ErHistoryPatientCount == 1">
       ({{ ErHistoryPatientCount }} Patient)
     </span>
+  </div>
+    <div
+    class="col-md-4"
+    *ngIf="isArrival"
+    style="
+      font-size: 15px;
+      font-weight: bold;
+      padding: 0;
+      text-align: center;
+      display: flex;
+      position: relative;
+      left: 33px;
+      align-items: baseline;
+      gap: 10px;
+    "
+  >
+    <form [formGroup]="singleData">
+      <div
+        class="date-function"
+        style="
+          background: #dee5ea;
+          padding: 2px;
+          border-radius: 8px;
+          display: flex;
+          position: relative;
+        "
+      >
+        <!-- <img src="assets/img/date-icon.svg" alt=""> -->
+        <input class="form-control" style="font-weight: 800; color: #000" type="text" formControlName="fromDate" (bsValueChange)="changeDate($event)"
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"
+                  />
+      </div>
+    </form>
+    <!-- <span *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
+      ({{ ErHistoryPatientCount }} Patients)
+    </span>
+    <span *ngIf="ErHistoryPatientCount == 1">
+      ({{ ErHistoryPatientCount }} Patient)
+    </span> -->
   </div>
   <div *ngIf="reservation" class="d-flex w-100">
     <div
@@ -945,6 +984,21 @@
           (click)="selectModule('checkin')"
         />
       </div>
+      <div style="height: 50px; margin-bottom: 6px; background: #0056b0; border-radius: 10px; padding: 10px; margin: 5px;">
+        <img
+          [src]="
+            isArrival
+              ? 'assets/img/arrival_tab.png'
+              : 'assets/img/arrival_tab.png'
+          "
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Arrivals"
+          width="26px"
+          class=""
+          (click)="selectModule('arrival')"
+        />
+      </div>
       <div style="height: 50px; margin-bottom: 6px">
         <img
           [src]="
@@ -1116,9 +1170,11 @@
     (sendErPatientCount)="collectErHistPatientCount($event)"
     (dataToParent)="receiveDataFromChild($event)"
     (redirectCheckInData)="collectCheckInData($event)"
-    style="width: calc(100% - 60px)"
+    style="width: calc(100% - 110px)"
     *ngIf="LabResults"
   ></app-lab-results>
+
+  <app-arrival-main-list *ngIf="isArrival" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
   <app-physician-orders-list
     (sendErPatientCount)="collectErHistPatientCount($event)"
     (dataToParent)="receiveDataFromPhysicianOrdersChild($event)"

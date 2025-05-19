@@ -23,19 +23,53 @@ export class ReceiveCartComponent implements OnInit {
   selectedColData: any;
   childCartDetails: any;
   constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private storageService: StorageService) { }
-
+ nurseUnitList = [
+    { code: "4THFL-C", description: "4th Floor-Zone C-IP" },
+    { code: "4THFLVIP", description: "4th Floor-Zone B-VIP" },
+    { code: "6FL-NURS", description: "6th Floor Nursery Unit" },
+    { code: "6FL-OROU", description: "6th Floor LDR Operation Rooms" },
+    { code: "CATTUAMC", description: "Cath Lab Unit" },
+    { code: "F9GOTAMC", description: "Major OT (GRAL)" },
+    { code: "LDRASMTU", description: "6th Floor LDR Birthing Unit" },
+    { code: "LDRINTOU", description: "6th Floor Neonatal Intermediat" },
+    { code: "F21IUAMC", description: "2nd Floor-Zone C-IP" },
+    { code: "F31IUAMC", description: "3rd Floor-Zone C-IP" },
+    { code: "F3CIUAMC", description: "3rd Floor IDU" },
+    { code: "F51IUAMC", description: "5th Floor-Zone C-IP" },
+    { code: "F5VIUAMC", description: "5th Floor-Zone B-IP" },
+    { code: "F6CIUAMC", description: "6th Floor-Zone C-IP" },
+    { code: "F7IIUAMC", description: "7th Class 2-3 Medical/Surgical" },
+    { code: "F9DIUAMC", description: "9th Floor Day Surgery" },
+    { code: "F9GOTAMC", description: "Major OT (GRAL)" },
+    { code: "F9IIUAMC", description: "9th Floor ICU Area" },
+    { code: "F2DTUAMC", description: "2nd Floor Dialysis" },
+  ];
   ngOnInit(): void {
     this.initForm()
   }
 
   initForm() {
+    let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+
     this.receviceCartForm = this.formBuilder.group({
       dateFrom: [new Date()],
       dateTo: [new Date()],
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
-      nurseUnit: [this.storageService.patientData.deptOrgUnit]
+      nurseUnit: ['F2DTUAMC']
     })
+    
+    // this.setCodeByDescription(checkindata.Floor);
+  }
+
+  setCodeByDescription(desc: string) {
+    const matchedUnit = this.nurseUnitList.find(unit =>
+      unit.description.toLowerCase().includes(desc.toLowerCase().trim())
+    );
+
+    if (matchedUnit) {
+      this.receviceCartForm.patchValue({ nurseUnit: matchedUnit.code });
+    }
   }
 
   refreshList() {

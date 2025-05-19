@@ -38,6 +38,7 @@ import { PatientWithoutDocumentsComponent } from './patient-without-documents/pa
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NursTreatmentWorkareaComponent } from './nurs-treatment-workarea/nurs-treatment-workarea.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 
 @UntilDestroy()
 @Component({
@@ -56,6 +57,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   PatientWithoutConsumableComponent;
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
+  @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
   getCheckInData: any;
   getCheckInStatusFilterData: any;
   getCheckInRoomidTextFilterData: any;
@@ -80,6 +82,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   noConsumables: boolean = false;
   LabResults: boolean = false;
   noReleaseDoc: boolean = false;
+  isArrival: boolean = false;
   rxEmr: boolean = false;
   isShowRooms: boolean = false;
   isShowWards: boolean = false;
@@ -1006,6 +1009,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.updatedDate = [new Date(), new Date()];
     } else if (this.selectedModule === 'reservation') {
       this.emergencyService?.callHistoryList();
+    } else if (this.selectedModule === 'arrival') {
+       this.arrivalMainListComponent?.arrivalList(
+        new Date()
+      );
     }
     // Resetting filter form values
     this.filterForm.patchValue({
@@ -1061,6 +1068,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   selectModule(module) {
+    this.isArrival = false;
     this.selectedModule = module;
     // this.emergencyService.tabPanelNavigation('OrderSet');
     this.defaultSelectedDateRange.push(
@@ -1280,6 +1288,24 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = true;
+    } else if (module == 'arrival') {
+      this.headerLabel = '';
+      this.currentDate = new Date();
+      this.singleData.get('fromDate').patchValue(new Date());
+      this.checkin = false;
+      this.treatmentarea = false;
+      this.erhistory = false;
+      this.PhysicianOrder = false;
+      this.AdministeredDoses = false;
+      this.dischargeorder = false;
+      this.erSetting = false;
+      this.rxEmr = false;
+      this.analysis = false;
+      this.noConsumables = false;
+      this.LabResults = false;
+      this.noReleaseDoc = false;
+      this.reservation = false;
+      this.isArrival = true;
     }
     this.refreshFormGroup();
     this.closeAndRefresh();
@@ -1584,6 +1610,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     if(this.noConsumables) {
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
         this.formgroupData.DateRange
+      );
+    }
+    if(this.isArrival) {
+      this.arrivalMainListComponent?.arrivalList(
+        this.updatedDate
       );
     }
   }

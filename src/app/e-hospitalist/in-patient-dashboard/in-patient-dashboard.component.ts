@@ -27,6 +27,7 @@ export class InPatientDashboardComponent implements OnInit {
   showList: boolean = true;
   inHospitalistList: Array<HospitalistType> = [];
   inArrivalslistList: any = [];
+  inSurgeryWorklist: any = [];
   navTabBoxActiveValue: string = '02';
   graphChartCountType: string = '1';
   form: FormGroup;
@@ -838,6 +839,11 @@ export class InPatientDashboardComponent implements OnInit {
         .subscribe((data: any) => { 
           console.log(data, "data")
           this.inArrivalslistList = data?.d?.results;
+        })
+    } else if(this.navTabBoxActiveValue == '09'){
+      this.hospitalistService.getSurgeryWorkListSetAPI()
+        .subscribe((data: any) => { 
+          this.inSurgeryWorklist = data?.d?.results;
         })
     } else {
       this.hospitalistService.getIpListSetAPI(this.navTabBoxActiveValue, admittedFrom, admittedTo, wardNo, physician, speciality, type)
