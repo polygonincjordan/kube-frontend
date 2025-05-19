@@ -97,6 +97,26 @@ export class AdministeredDosesComponent implements OnInit{
   private itemOfReceive:any;
   public receviceCartForm:FormGroup
   childCartDetails: any;
+    nurseUnitList = [
+      '4THFL-C',
+      '4THFLVIP',
+      '6FL-NURS',
+      '6FL-OROU',
+      'CATTUAMC',
+      'F9GOTAMC',
+      'LDRASMTU',
+      'LDRINTOU',
+      'F21IUAMC',
+      'F31IUAMC',
+      'F3CIUAMC',
+      'F51IUAMC',
+      'F6CIUAMC',
+      'F7IIUAMC',
+      'F9DIUAMC',
+      'F9IIUAMC',
+      'F2DTUAMC',
+    ]
+  
   constructor(
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
@@ -153,7 +173,7 @@ export class AdministeredDosesComponent implements OnInit{
       dateTo: [new Date()],
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
-      nurseUnit: ['EMEEUAMC']
+      nurseUnit: ['F2DTUAMC']
     })
   }
   ngOnInit(): void {

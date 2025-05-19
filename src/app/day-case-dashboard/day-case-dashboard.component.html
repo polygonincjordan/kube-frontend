@@ -50,9 +50,9 @@ float: right;" />
 </div>
 <!--  -->
 <div [ngClass]="
-(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || reservation) ? 'checkin-header' : 'er-header'
+(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || reservation || isArrival) ? 'checkin-header' : 'er-header'
 "
-  *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis|| noReleaseDoc || reservation">
+  *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis|| noReleaseDoc || reservation || isArrival">
   <div *ngIf="checkin" class="col-md-4" style="font-size: 18px; font-weight: bold; padding: 0; padding-left: 20px;">
     {{ defaultSelectedDateRange[0] | date : "dd.MM.y" }}-{{ defaultSelectedDateRange[1] | date : "dd.MM.y" }}
     <span *ngIf="ErPatientCount">
@@ -113,7 +113,7 @@ float: right;" />
   </div>
 
   <!-- new date -->
-  <div class="col-md-4" *ngIf="erhistory || noReleaseDoc">
+  <div class="col-md-4" *ngIf="erhistory || noReleaseDoc || isArrival">
     <div class="singleData">
       <i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 0px;
       font-size: 18px;cursor: pointer;" (click)="previoussingleData()"></i>
@@ -455,7 +455,7 @@ font-size: 12px;
   </div>
 </div>
 <div [ngClass]="
-(checkin || erhistory ||  LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc) ? 'checkin-edash-main' : 'treatment-edash-main'
+(checkin || erhistory ||  LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || isArrival) ? 'checkin-edash-main' : 'treatment-edash-main'
 " style="overflow: hidden;">
   <div class="edash-leftSide">
     <div class="col-xm-1 left-box" style="text-align: center">
@@ -466,6 +466,16 @@ font-size: 12px;
               : 'assets/img/nur-emr-checked-blue.svg'
           " data-bs-toggle="tooltip" data-bs-placement="right" title="Checked In" [ngClass]="checkin ? '' : ''"
           (click)="selectModule('checkin')" />
+      </div>
+      <div [ngClass]="isArrival ? 'arrival_active' : 'arrival_d'">
+        <img [src]="isArrival ? 'assets/img/arrival_tab.png' : 'assets/img/arrival_tab.png'"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Arrivals"
+          width="26px"
+          class=""
+          (click)="selectModule('arrival')"
+        />
       </div>
       <div style="height: 50px; margin-bottom: 6px">
         <img [src]="
@@ -566,6 +576,8 @@ font-size: 12px;
   <app-patient-without-documents style="width: calc(100% - 78px);" *ngIf="noReleaseDoc"
     (sendErNoDocumentCount)="collectErPatientCount($event)" (dataToParent)="receiveDataFromPatientWithoutDocumentChild($event)"
     (redirectCheckInData)="collectCheckInData($event)"></app-patient-without-documents>
+  <app-arrival-main-list *ngIf="isArrival" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
+
 
 </div>
 

@@ -1,82 +1,93 @@
-<table id="table" class="e-hospi-home-table table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th scope="col">MRN<i (click)="onSortClick($event,'Patnr')" class="my-icon fa fa-chevron-up"></i>
-            </th>
-            <!-- 1 -->
-            <th scope="col" class="set-width-3">Patient/Sex/Age<i (click)="onSortClick($event,'Pnamec1')"
-                    class="my-icon fa fa-chevron-up"></i></th>
+<div class="edash-rightSide">
+    <div class="edash-mainContent">
+        <div class="container-fluid check-in-table">
+            <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
+                <img src="assets/img/pres-search-icon.svg" alt="" />
+                <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" />
+            </div>
+            <table class="table checkin-table custom-table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">MRN  <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Patnr')"></i>
+                        </th>
+                        <!-- 1 -->
+                        <th scope="col" class="set-width-3">Patient/Sex/Age <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Pnamec1')"></i></th>
 
-            <th scope="col">Arrived On<i (click)="onSortClick($event,'Datetime')" class="my-icon fa fa-chevron-up"></i>
-            </th>
-            <!-- 2 -->
-            <th scope="col">Birthdate<i (click)="onSortClick($event,'Gbdat')" class="my-icon fa fa-chevron-up"></i></th>
-            <!-- 3 -->
-            <th scope="col" class="set-width-3">Attending Physician<i (click)="onSortClick($event,'BEH_ARZT')"
-                    class="my-icon fa fa-chevron-up"></i></th>
-            <!-- 4 -->
-            <th scope="col">Departmental OU<i (click)="onSortClick($event,'Orgfakb')"
-                    class="my-icon fa fa-chevron-up"></i></th>
-            <!-- 5 -->
-            <th scope="col">Financial Category<i (click)="onSortClick($event,'ZZFIN_CAT')"
-                    class="my-icon fa fa-chevron-up"></i>
-            </th>
-            <!-- 6 -->
-            <th scope="col">Movement Type<i (click)="onSortClick($event,'Bwatx')" class="my-icon fa fa-chevron-up"></i>
-            </th>
-            <!-- 7 -->
-            <th scope="col">Nursing Org. Unit <i (click)="onSortClick($event,'Orgpfkb')"
-                    class="my-icon fa fa-chevron-up"></i></th>
-            <!-- 8 -->
-            <th scope="col" class="allergy"
-                style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Room</th>
-            <!-- 9 -->
-            <th scope="col" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">
-                Bed
-            </th>
-            <!-- 10 -->
-            <th scope="col">Risk</th>
-            <!-- 11 -->
-            <!-- <th scope="col">R</th> -->
-            <!-- 12 -->
-            <th scope="col">Medical Record Exists</th>
-            <!-- 13 -->
-            <th scope="col">Documents Exists</th>
-            <!-- 14 -->
-            <!-- 15 -->
-            <!-- <th scope="col">MT</th> -->
-            <!-- 16 -->
-            <th scope="col">Comment</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of listItem | filter : searchString">
-            <td>{{item.Patnr}}</td>
-            <td>{{item.Pnamec1}}</td>
-            <td>{{item.Datetime}}</td>
-            <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td>
-            <td>{{item.BEH_ARZT}}</td>
-            <td>{{item.Orgfakb}}</td>
-            <td>{{item.ZZFIN_CAT}}</td>
-            <td>{{item.Bwatx}}</td>
-            <td>{{item.Orgpfkb}}</td>
-            <td>{{item.ZIMMKUB}}</td>
-            <td>{{item.BETTKUB}}</td>
-            <td class="border-left" style="width: 3%">
-                <span>
-                    <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
-                        (click)="openModalForRisk(riskModal,item)" [title]="riskInformation(item.RiskpIcon)" />
-                </span>
-            </td>
-            <!-- <td></td> -->
-            <td></td>
-            <td></td>
-            <!-- <td>{{item.Bwart}}</td> -->
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-
+                        <th scope="col">Arrived On <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Datetime')"></i>
+                        </th>
+                        <!-- 2 -->
+                        <th scope="col">Birthdate <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Gbdat')"></i></th>
+                        <!-- 3 -->
+                        <th scope="col" class="set-width-3">Attending Physician <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('BEH_ARZT')"></i></th>
+                        <!-- 4 -->
+                        <th scope="col">Departmental OU <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Orgfakb')"></i></th>
+                        <!-- 5 -->
+                        <th scope="col">Financial Category <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZZFIN_CAT')"></i>
+                        </th>
+                        <!-- 6 -->
+                        <th scope="col">Movement Type <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Orgpfkb')"></i>
+                        </th>
+                        <!-- 7 -->
+                        <th scope="col">Nursing Org. Unit  <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZIMMKUB')"></i></th>
+                        <!-- 8 -->
+                        <th scope="col" class="allergy"
+                            style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">
+                            Room</th>
+                        <!-- 9 -->
+                        <th scope="col"
+                            style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">
+                            Bed
+                        </th>
+                        <!-- 10 -->
+                        <th scope="col">Risk</th>
+                        <!-- 11 -->
+                        <!-- <th scope="col">R</th> -->
+                        <!-- 12 -->
+                        <th scope="col">Medical Record Exists</th>
+                        <!-- 13 -->
+                        <th scope="col">Documents Exists</th>
+                        <!-- 14 -->
+                        <!-- 15 -->
+                        <!-- <th scope="col">MT</th> -->
+                        <!-- 16 -->
+                        <th scope="col">Comment</th>
+                    </tr>
+                </thead>
+                &nbsp;
+                <tbody>
+                    <tr *ngFor="let item of inArrivalslistList | filter : searchString">
+                        <td>{{item.Patnr}}</td>
+                        <td>{{item.Pnamec1}}</td>
+                        <td>{{item.Datetime}}</td>
+                        <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{item.BEH_ARZT}}</td>
+                        <td>{{item.Orgfakb}}</td>
+                        <td>{{item.ZZFIN_CAT}}</td>
+                        <td>{{item.Bwatx}}</td>
+                        <td>{{item.Orgpfkb}}</td>
+                        <td>{{item.ZIMMKUB}}</td>
+                        <td>{{item.BETTKUB}}</td>
+                        <td class="border-left" style="width: 3%">
+                            <span>
+                                <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
+                                    (click)="openModalForRisk(riskModal,item)"
+                                    [title]="riskInformation(item.RiskpIcon)" />
+                            </span>
+                        </td>
+                        <!-- <td></td> -->
+                        <td></td>
+                        <td></td>
+                        <!-- <td>{{item.Bwart}}</td> -->
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="inArrivalslistList?.length == 0" style="text-align: center">
+                No results
+            </div>
+        </div>
+    </div>
+</div>
 
 <ng-template #riskModal>
     <div>

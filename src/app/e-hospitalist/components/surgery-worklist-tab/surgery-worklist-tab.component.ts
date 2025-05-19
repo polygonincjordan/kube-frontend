@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  OnChanges,
   Input,
   Output,
   EventEmitter,
@@ -9,25 +8,18 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
-import { HospitalistType } from '../../../services/e-hospitalist/interfaces/hospitalist';
-import { environment } from 'src/environments/environment';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EEmrService } from '@services/e-emr.service';
-import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
-  selector: 'app-arrival-main-list',
-  templateUrl: './arrival-main-list.component.html',
-  styleUrls: ['./arrival-main-list.component.scss']
+  selector: 'app-surgery-worklist-tab',
+  templateUrl: './surgery-worklist-tab.component.html',
+  styleUrls: ['./surgery-worklist-tab.component.scss']
 })
-export class ArrivalMainListComponent implements OnInit {
+export class SurgeryWorklistTabComponent implements OnInit {
+
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
 
@@ -508,23 +500,23 @@ export class ArrivalMainListComponent implements OnInit {
   }
 
 
-  onSortClick(event,col: string) {
+  onSortClick(event, col: string) {
     let target = event.currentTarget,
       classList = target.classList;
     if (classList.contains('fa-chevron-up') && this.sortable) {
       classList.remove('fa-chevron-up');
       classList.add('fa-chevron-down');
-      this.sortDir=-1;
+      this.sortDir = -1;
     } else if (classList.contains('fa-chevron-down') && this.sortable) {
       classList.add('fa-chevron-up');
       classList.remove('fa-chevron-down');
-      this.sortDir=1;
+      this.sortDir = 1;
     } else {
-            classList.remove('fa-chevron-down');
+      classList.remove('fa-chevron-down');
       classList.remove('fa-chevron-up');
     }
 
-      this.SortData(col);
+    this.SortData(col);
   }
 
   riskInformation(text: any) {
@@ -569,5 +561,6 @@ export class ArrivalMainListComponent implements OnInit {
       return date;
     }
   }
+
 
 }

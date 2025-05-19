@@ -9,7 +9,6 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
-import { HospitalistType } from '../../../services/e-hospitalist/interfaces/hospitalist';
 import { environment } from 'src/environments/environment';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EEmrService } from '@services/e-emr.service';
@@ -21,6 +20,8 @@ import { catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-arrival-main-list',
@@ -77,11 +78,13 @@ export class ArrivalMainListComponent implements OnInit {
 
   sortable = true;
   riskItemsArr: any[];
+  inArrivalslistList: any[];
   riskList: any[];
-  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService) { }
+  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService) { }
 
   ngOnInit(): void {
     this.initForm();
+    this.arrivalList(new Date());
   }
 
   initForm() {
@@ -96,6 +99,50 @@ export class ArrivalMainListComponent implements OnInit {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
     });
+  }
+// 2025-05-10T00:00:00
+  arrivalList(date?) {
+    let dateFormate = `${new DatePipe('en-US').transform(date, 'yyyy-MM-dd')}T00:00:00`;
+    console.log(dateFormate, date, "dateFormate")
+    this.hospitalistService.getArrivalListSetAPI('1', 'F31IUAMC', dateFormate)
+      .subscribe((data: any) => {
+        this.inArrivalslistList = data?.d?.results;
+      })
+  }
+
+  asc: boolean;
+   commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.inArrivalslistList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.inArrivalslistList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
   }
 
   saveRiskJsonFormat() {
@@ -508,23 +555,23 @@ export class ArrivalMainListComponent implements OnInit {
   }
 
 
-  onSortClick(event,col: string) {
+  onSortClick(event, col: string) {
     let target = event.currentTarget,
       classList = target.classList;
     if (classList.contains('fa-chevron-up') && this.sortable) {
       classList.remove('fa-chevron-up');
       classList.add('fa-chevron-down');
-      this.sortDir=-1;
+      this.sortDir = -1;
     } else if (classList.contains('fa-chevron-down') && this.sortable) {
       classList.add('fa-chevron-up');
       classList.remove('fa-chevron-down');
-      this.sortDir=1;
+      this.sortDir = 1;
     } else {
-            classList.remove('fa-chevron-down');
+      classList.remove('fa-chevron-down');
       classList.remove('fa-chevron-up');
     }
 
-      this.SortData(col);
+    this.SortData(col);
   }
 
   riskInformation(text: any) {

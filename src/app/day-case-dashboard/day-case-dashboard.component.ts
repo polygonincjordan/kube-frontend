@@ -27,6 +27,7 @@ import { PatientWithoutDocumentsComponent } from './patient-without-documents/pa
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NursTreatmentWorkareaComponent } from './nurs-treatment-workarea/nurs-treatment-workarea.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 
 @UntilDestroy()
 @Component({
@@ -44,6 +45,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(PatientWithoutConsumableComponent) PatientWithoutConsumableComponent;
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
+  @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
+  
   getCheckInData: any;
   getCheckInStatusFilterData: any;
   singleformgroupData: any;
@@ -131,6 +134,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   updatedDate: any;
   modalRef: BsModalRef;
   reservation: boolean = false;
+  isArrival: boolean = false;
 
   constructor(
     private orderDashboardService: OrdersDashboardService,
@@ -206,6 +210,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       if(data.fromDate){
         this.ErHistoryComponent?.getErList(this.singleformgroupData.fromDate);
          this.PatientWithoutDocumentsComponent?.getPatientWithoutDocuments(this.singleformgroupData.fromDate)
+         this.arrivalMainListComponent?.arrivalList(this.singleformgroupData.fromDate)
 
       }
     })
@@ -698,6 +703,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   }
 
   selectModule(module) {
+    this.isArrival = false;
     this.selectedModule = module;
     // this.emergencyService.tabPanelNavigation('OrderSet');
     this.defaultSelectedDateRange.push(new Date().setDate(new Date().getDate() - 1));
@@ -901,6 +907,24 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation= true;
+    } else if (module == 'arrival') {
+      this.headerLabel = '';
+      this.currentDate = new Date();
+      this.singleData.get('fromDate').patchValue(new Date());
+      this.checkin = false;
+      this.treatmentarea = false;
+      this.erhistory = false;
+      this.PhysicianOrder = false;
+      this.AdministeredDoses = false;
+      this.dischargeorder = false;
+      this.erSetting = false;
+      this.rxEmr = false;
+      this.analysis = false;
+      this.noConsumables = false;
+      this.LabResults = false;
+      this.noReleaseDoc = false;
+      this.reservation = false;
+      this.isArrival = true;
     }
     this.refreshFormGroup();
     this.closeAndRefresh();

@@ -178,6 +178,7 @@ import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-
 import { IcuHoursFlowsheetModule } from '../shared-module/icu-hours-flowsheet/icu-hours-flowsheet.module';
 import { NicuNursingFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/nicu-nursing-flow-sheet/nicu-nursing-flow-sheet.component';
 import { LaborRoomFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/labor-room-flow-sheet.component';
+import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 
 
 const route: Routes = [
@@ -307,7 +308,8 @@ const route: Routes = [
     PostCathRadialComponent,
     PostCathFemoralComponent,
     NicuNursingFlowSheetComponent,
-    LaborRoomFlowSheetComponent
+    LaborRoomFlowSheetComponent,
+    ArrivalMainListComponent
   ],
   providers: [
     EmergencyService,
