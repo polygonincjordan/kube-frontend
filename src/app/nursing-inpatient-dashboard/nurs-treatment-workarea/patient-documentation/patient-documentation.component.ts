@@ -69,9 +69,9 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
   @ViewChild(NursingAssessmentComponent) NursingAssessmentComp: NursingAssessmentComponent;
-  // @ViewChild(CriticalCarePainComponent) CriticalCarePainComp: CriticalCarePainComponent;
-  // @ViewChild(MaternityEarlyWarningSignComponent) CriticalCarePainComp: MaternityEarlyWarningSignComponent
-  @ViewChild(IntraOperativeRecordComponent) CriticalCarePainComp: IntraOperativeRecordComponent
+  @ViewChild(CriticalCarePainComponent) CriticalCarePainComp: CriticalCarePainComponent;
+  @ViewChild(MaternityEarlyWarningSignComponent) maternityEarlyWarningSignComp: MaternityEarlyWarningSignComponent
+  @ViewChild(IntraOperativeRecordComponent) NurseIntraComp: IntraOperativeRecordComponent
   @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
   @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
   @ViewChild(MorseFallScaleComponent) morseFallScaleC: MorseFallScaleComponent;
@@ -87,6 +87,8 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @ViewChild(CvcInsertionComponent) CvcInsertionDocumentComp: CvcInsertionComponent;
   @ViewChild(NursAssessmentRestraintsComponent) NurseAssMainComp: NursAssessmentRestraintsComponent;
+
+ 
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -621,6 +623,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
     this.getIntraOpNurRecSetMainDoc();
+    this.getMewsSetMainDoc();
     this.getNurseAssMainDoc();
     this.getCriticalPainDoc();
     this.getPediatricWarningScore();
@@ -799,6 +802,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getIntraOpNurRecSetMainDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.nurseIntraMainList = _success.d.results
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getMewsSetMainDoc() {
+    this.emergencyService.getMewsSetMainDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.maternitySignMainList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -1296,21 +1311,21 @@ export class PatientDocumentationComponent implements OnInit {
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
-      this.selectAssessment('isNurseIntra', this.CriticalPainList[0])
+      this.selectAssessment('isNurseIntra', this.nurseIntraMainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
-      this.selectAssessment('isNurseIntra', this.CriticalPainList[0])
+      this.selectAssessment('isNurseIntra', this.nurseIntraMainList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
-      this.getPatientProfileData(this.CriticalPainList[0]);
-    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
-      this.selectAssessment('isMaternitySign', this.CriticalPainList[0])
+      this.getPatientProfileData(this.nurseIntraMainList[0]);
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Maternity$) {
+      this.selectAssessment('isMaternitySign', this.maternitySignMainList[0])
       this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
-      this.selectAssessment('isMaternitySign', this.CriticalPainList[0])
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Maternity$) {
+      this.selectAssessment('isMaternitySign', this.maternitySignMainList[0])
       this.openDocument('edit');
-    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
-      this.getPatientProfileData(this.CriticalPainList[0]);
+    } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Maternity$) {
+      this.getPatientProfileData(this.maternitySignMainList[0]);
     } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isPostAnesthesia', this.CriticalPainList[0])
       this.openDocument('create');
@@ -2009,7 +2024,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openMaternitySign) {
-      this.NurseAssMainComp?.ngOnDestroy();
+      this.maternityEarlyWarningSignComp?.ngOnDestroy();
     }
     if (this.openPostAnesthesia) {
       this.NurseAssMainComp?.ngOnDestroy();
@@ -2048,7 +2063,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openNurseIntra) {
-      this.NurseAssMainComp?.ngOnDestroy();
+      this.NurseIntraComp?.ngOnDestroy();
     }
     if (this.openCriticalPain) {
       this.CriticalCarePainComp?.ngOnDestroy();
@@ -2111,6 +2126,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
     this.getIntraOpNurRecSetMainDoc();
+    this.getMewsSetMainDoc();
     this.getNurseAssMainDoc();
     this.getCriticalPainDoc();
     this.getLatestAssessmentPA();
@@ -2478,7 +2494,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseAssMainDoc();
+          this.deleteIntraOpNurRecSetDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -2486,7 +2502,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releaseNursingIntraOperativeDetail();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2499,7 +2515,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openNurseIntra = true;
-        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+        this.NurseIntraComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
@@ -2523,7 +2539,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseAssMainDoc();
+          this.deleteMewsSetDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -2531,7 +2547,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releaseMewsMainDetail();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2544,7 +2560,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openMaternitySign = true;
-        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+        this.maternityEarlyWarningSignComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
@@ -5147,7 +5163,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openNurseIntra) {
         let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+        this.NurseIntraComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -5158,7 +5174,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openMaternitySign) {
         let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+        this.maternityEarlyWarningSignComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -5675,7 +5691,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openNurseIntra) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+        this.NurseIntraComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -5684,7 +5700,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openMaternitySign) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+        this.maternityEarlyWarningSignComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6081,7 +6097,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openNurseIntra) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+        this.NurseIntraComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6090,7 +6106,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openMaternitySign) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+        this.maternityEarlyWarningSignComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6605,7 +6621,7 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     } else if (this.openNurseIntra) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.NurseIntraComp.createDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -6614,7 +6630,7 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     } else if (this.openMaternitySign) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.maternityEarlyWarningSignComp.createDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -7275,6 +7291,74 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  async deleteMewsSetDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteMewsSetDoc(this.maternitySignMainList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+  async deleteIntraOpNurRecSetDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteIntraOpNurRecSetDoc(this.nurseIntraMainList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
   async deleteNurseAssMainDoc() {
     Swal.fire({
       title: 'Confirm',
@@ -7822,6 +7906,34 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  releaseNursingIntraOperativeDetail() {
+    this.admissionService.getIntraOpNurRecSetDetail(this.nurseIntraMainList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.admissionService.createIntraOpNurRecSetDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
+  releaseMewsMainDetail() {
+    this.admissionService.getMewsSetDetail(this.maternitySignMainList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.admissionService.createMewsSetDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
   releaseCriticalPainDetail() {
     this.admissionService.getCriticalPainDetail(this.CriticalPainList[0].Dockey).subscribe((res: any) => {
       delete res?.results[0]?.__metadata;
@@ -7879,6 +7991,26 @@ export class PatientDocumentationComponent implements OnInit {
   }
   newVersionDirectReleasedCriticalCarePain() {
     this.CriticalCarePainComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating IC maintenance:', error);
+    });
+  }
+  newVersionDirectReleasedMewsMainDetail() {
+    this.maternityEarlyWarningSignComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating IC maintenance:', error);
+    });
+  }
+  newVersionDirectReleasedgetNurseIntraDetail() {
+    this.NurseIntraComp.createDoc('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }
@@ -8122,6 +8254,39 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .getNurseAssMainPdf(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+  getNurseIntraPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getNurseIntraPdf(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+   getMewsSetMainPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getMewsSetMainPdf(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);

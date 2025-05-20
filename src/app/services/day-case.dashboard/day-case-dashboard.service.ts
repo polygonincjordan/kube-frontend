@@ -61,6 +61,18 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+  getNurseIntraPdf(dockey: string) {
+    const url = `${this.url}getNurseIntraPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+  getMewsSetMainPdf(dockey: string) {
+    const url = `${this.url}getMewsSetMainPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
   getCriticalPainPdf(dockey: string) {
     const url = `${this.url}getCriticalPainPdf?dockey=${dockey}`;
     return this.http.get(url, {
