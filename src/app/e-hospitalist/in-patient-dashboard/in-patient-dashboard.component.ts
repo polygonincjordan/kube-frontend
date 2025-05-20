@@ -1,5 +1,5 @@
 import { StorageService } from './../../services/storage.service';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { HospitalistService } from '../../services/e-hospitalist/hospitalist.service';
 import { AttendingPhysician, HospitalistDataCount, HospitalistType, WardList } from '../../services/e-hospitalist/interfaces/hospitalist';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -14,6 +14,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { PatientService } from '@services/e-kardex/patient.service';
+import { ArrivalMainListComponent } from '../components/arrival-main-list/arrival-main-list.component';
 @UntilDestroy()
 @Component({
   selector: 'in-patient-dashboard',
@@ -21,16 +22,21 @@ import { PatientService } from '@services/e-kardex/patient.service';
   styleUrls: ['./in-patient-dashboard.component.scss'],
 })
 export class InPatientDashboardComponent implements OnInit {
+  @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
+  
   showGraphicalAnalysis: boolean = false;
   showFilter: boolean = false;
   showConfiguration: boolean = false;
   showList: boolean = true;
   inHospitalistList: Array<HospitalistType> = [];
   inArrivalslistList: any = [];
+  inArrivalslistListClone: any = [];
   inSurgeryWorklist: any = [];
   navTabBoxActiveValue: string = '02';
   graphChartCountType: string = '1';
   form: FormGroup;
+  filterForm: FormGroup;
+  
   hospitalCountData: HospitalistDataCount;
   wardSelectForConfig: any[] = [];
 
@@ -136,6 +142,7 @@ export class InPatientDashboardComponent implements OnInit {
 
   dateFrom: Date;
   dateTo: Date;
+  arrivalDate: Date = new Date();
   dataOnTableForLabPatients = [];
   patientMrn: string;
   showfilter: boolean = false;
@@ -224,6 +231,16 @@ export class InPatientDashboardComponent implements OnInit {
       defaultOpen: false,
       selectAllText: 'All',
     };
+
+    this.filterForm = this.formBuilder.group({
+      Physician: [''],
+      Status: [''],
+      FCategory: [''],
+      FWard: [''],
+      FSpecialty: [''],
+      RoomidText: [''],
+      CaseType: ['']
+    });
   }
 
   @HostListener('document:click', ['$event'])
@@ -352,6 +369,8 @@ export class InPatientDashboardComponent implements OnInit {
         return 'LDR Patients';
       case '08':
         return 'Arrivals';
+      case '09':
+        return 'Surgery Worklist';
       default:
         break;
     }
@@ -796,6 +815,67 @@ export class InPatientDashboardComponent implements OnInit {
     }
   }
 
+  changeDate(event: any) {
+    console.log(event)
+    this.arrivalDate = event;
+    this.initialfilterData('', '', '', this.getConfigToolPhysicianList);
+  }
+
+  filterData() {
+    if (
+      this.filterForm.value.Physician || this.filterForm.value.Status || this.filterForm.value.FCategory ||
+      this.filterForm.value.FWard || this.filterForm.value.FSpecialty || this.filterForm.value.RoomidText || this.filterForm.value.CaseType
+    ) {
+      let filterValue = this.inArrivalslistListClone;
+      if (this.filterForm.value.Physician?.length) {
+        filterValue = filterValue.filter(item =>
+          this.filterForm.value.Physician.includes(item.BehArzt?.trimStart())
+        );
+      }
+
+      if (this.filterForm.value.RoomidText?.length) {
+        filterValue = filterValue.filter(item =>
+          this.filterForm.value.RoomidText.includes(item.Zimmkub?.trimStart())
+        );
+      }
+
+      if (this.filterForm.value.CaseType?.length) {
+        filterValue = filterValue.filter(item =>
+          this.filterForm.value.CaseType.includes(item.Fatyptxt)
+        );
+      }
+
+      if (this.filterForm.value.FWard?.length) {
+        filterValue = filterValue.filter(item =>
+          this.filterForm.value.FWard.includes(item.Bettkub)
+        );
+      }
+
+      if (this.filterForm.value.FSpecialty?.length) {
+        filterValue = filterValue.filter(item =>
+          this.filterForm.value.FSpecialty.includes(item.Orgfakb)
+        );
+      }
+
+      if (this.filterForm.value.FCategory?.length) {
+        filterValue = filterValue.filter(item =>
+          this.filterForm.value.FCategory.includes(item.ZzfinCat)
+        );
+      }
+
+      this.inArrivalslistList = filterValue;
+    } else {
+      this.inArrivalslistList = this.inArrivalslistListClone;
+    }
+
+  }
+
+  getCheckInStatusFilterData: any; 
+  getCaseTypeFilterData: any; 
+  getCheckInRoomidTextFilterData: any;
+  getCheckInFinancialFilterData: any;
+  getCheckInWardFilterData: any;
+  getCheckInSpecialtyFilterData: any;
   initialfilterData(ward?, type?, specialtyData?, getConfigToolPhysicianList?) {
     this.searchString = '';
     let admittedFrom = '';
@@ -835,11 +915,41 @@ export class InPatientDashboardComponent implements OnInit {
     }
 
     if(this.navTabBoxActiveValue == '08') {
-      this.hospitalistService.getArrivalListSetAPI('1', 'F31IUAMC' ,'2025-05-10T00:00:00')
+      let dateFormate = `${new DatePipe('en-US').transform(this.arrivalDate, 'yyyy-MM-dd')}T00:00:00`;
+      this.hospitalistService.getArrivalListSetAPI('1', '' , dateFormate)
         .subscribe((data: any) => { 
           console.log(data, "data")
+          this.inArrivalslistListClone = [...data?.d?.results];
           this.inArrivalslistList = data?.d?.results;
-        })
+          const pushIfValid = (acc: string[], val: any) => {
+          const value = val?.toString().trim();
+            if (value && !acc.includes(value)) {
+              acc.push(value);
+            }
+            return acc;
+          };
+
+          this.getCaseTypeFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Fatyptxt), []
+          );
+
+          this.getCheckInRoomidTextFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Zimmkub), []
+          );
+
+          this.getCheckInFinancialFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
+          );
+
+          this.getCheckInWardFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Bettkub), []
+          );
+
+          this.getCheckInSpecialtyFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
+          );
+
+      })
     } else if(this.navTabBoxActiveValue == '09'){
       this.hospitalistService.getSurgeryWorkListSetAPI()
         .subscribe((data: any) => { 

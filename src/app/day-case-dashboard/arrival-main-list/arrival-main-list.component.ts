@@ -31,6 +31,8 @@ import { DatePipe } from '@angular/common';
 export class ArrivalMainListComponent implements OnInit {
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
+  @Output() sendErPatientCount = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -79,6 +81,7 @@ export class ArrivalMainListComponent implements OnInit {
   sortable = true;
   riskItemsArr: any[];
   inArrivalslistList: any[];
+  inArrivalslistListClone: any[];
   riskList: any[];
   constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService) { }
 
@@ -101,13 +104,67 @@ export class ArrivalMainListComponent implements OnInit {
     });
   }
 // 2025-05-10T00:00:00
-  arrivalList(date?) {
+  arrivalList(date?: any) {
     let dateFormate = `${new DatePipe('en-US').transform(date, 'yyyy-MM-dd')}T00:00:00`;
     console.log(dateFormate, date, "dateFormate")
-    this.hospitalistService.getArrivalListSetAPI('1', 'F31IUAMC', dateFormate)
+    this.hospitalistService.getArrivalListSetAPI('3', '', dateFormate)
       .subscribe((data: any) => {
+        this.inArrivalslistListClone = data?.d?.results;
         this.inArrivalslistList = data?.d?.results;
+        this.dataToParent.emit(this.inArrivalslistListClone);
+        this.sendErPatientCount.emit(this.inArrivalslistList.length);
       })
+  }
+
+  filterListData(event) {
+    if (
+      event.Physician || event.Status || event.FCategory ||
+      event.FWard || event.FSpecialty || event.RoomidText || event.CaseType
+    ) {
+      let filterValue = this.inArrivalslistListClone;
+
+      if (event.Physician?.length) {
+        filterValue = filterValue.filter(item =>
+          event.Physician.includes(item.BehArztName?.trimStart())
+        );
+      }
+
+      if (event.RoomidText?.length) {
+        filterValue = filterValue.filter(item =>
+          event.RoomidText.includes(item.Zimmkub?.trimStart())
+        );
+      }
+
+      if (event.CaseType?.length) {
+        filterValue = filterValue.filter(item =>
+          event.CaseType.includes(item.Fatyptxt)
+        );
+      }
+
+      if (event.FWard?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FWard.includes(item.Bettkub)
+        );
+      }
+
+      if (event.FSpecialty?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FSpecialty.includes(item.Orgfakb)
+        );
+      }
+
+      if (event.FCategory?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FCategory.includes(item.ZzfinCat)
+        );
+      }
+
+      this.inArrivalslistList = filterValue;
+    } else {
+      this.inArrivalslistList = this.inArrivalslistListClone;
+    }
+
+    this.sendErPatientCount.emit(this.inArrivalslistList.length);
   }
 
   asc: boolean;

@@ -707,11 +707,19 @@ export class CheckInComponent implements OnInit {
     this.getErList(dates);
   }
 
+  financialValueArr: any = [];
+  roomidTextValueArr: any = [];
+  wardValueArr: any = [];
+  specialtyValueArr: any = [];
   filterListData(event) {
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
-    if (event.Physician || event.Status || event.FCategory) {
+    this.financialValueArr = [];
+    this.roomidTextValueArr = [];
+    this.wardValueArr = [];
+    this.specialtyValueArr = [];
+    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText || event.CaseType) {
       let filterValue = this.ERlistDataClone;
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
@@ -725,12 +733,23 @@ export class CheckInComponent implements OnInit {
         });
         filterValue = this.physicianValueArr.flat();
       }
-
-      if (event.Status && event.Status?.length) {
-        event.Status.forEach((statusValue) => {
+      if (event.RoomidText && event.RoomidText?.length) {
+        event.RoomidText.forEach((physicianValue) => {
+          this.roomidTextValueArr.push(
+            filterValue.filter((element) => {
+              if (element.Zimmkub === physicianValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.roomidTextValueArr.flat();
+      }
+      if (event.CaseType && event.CaseType?.length) {
+        event.CaseType.forEach((statusValue) => {
           this.statusValueArr.push(
             filterValue.filter((element) => {
-              if (element.AdmissionStatus == statusValue) {
+              if (element.CaseType == statusValue) {
                 return element;
               }
             })
@@ -738,20 +757,55 @@ export class CheckInComponent implements OnInit {
         });
         filterValue = this.statusValueArr.flat();
       }
+      if (event.FWard && event.FWard?.length) {
+        event.FWard.forEach((wardValue) => {
+          this.wardValueArr.push(
+            filterValue.filter((element) => {
+              if (element.Bettkub == wardValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.wardValueArr.flat();
+      }
+      if (event.FSpecialty && event.FSpecialty?.length) {
+        event.FSpecialty.forEach((wardValue) => {
+          this.specialtyValueArr.push(
+            filterValue.filter((element) => {
+              if (element.Orgfakb == wardValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.specialtyValueArr.flat();
+      }
       if (event.FCategory && event.FCategory?.length) {
-        if (event.FCategory == 'Self-Pay') {
-          filterValue = filterValue.filter((element: any) => {
-            if (element.KostrName === 'Self-Pay') {
-              return element;
-            }
-          });
-        } else {
-          filterValue = filterValue.filter((element: any) => {
-            if (element.KostrName !== 'Self-Pay') {
-              return element;
-            }
-          });
-        }
+        event.FCategory.forEach((statusValue) => {
+          this.financialValueArr.push(
+            filterValue.filter((element) => {
+              if (element.ZzfinCat == statusValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.financialValueArr.flat();
+
+        // if (event.FCategory == 'Self-Pay') {
+        //   filterValue = filterValue.filter((element: any) => {
+        //     if (element.FinancialCategory === 'Self-Pay') {
+        //       return element;
+        //     }
+        //   });
+        // } else {
+        //   filterValue = filterValue.filter((element: any) => {
+        //     if (element.FinancialCategory !== 'Self-Pay') {
+        //       return element;
+        //     }
+        //   });
+        // }
       }
       this.ERlistData = filterValue;
       this.sendErPatientCount.emit(this.ERlistData.length);
@@ -760,6 +814,7 @@ export class CheckInComponent implements OnInit {
       this.sendErPatientCount.emit(this.ERlistData.length);
     }
   }
+
 
   sortTime() {
     if (!this.asc) {
