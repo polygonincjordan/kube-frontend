@@ -111,6 +111,16 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Maternity Early Warning Sign'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedMewsMainDetail()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Intra-Operative Record'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedgetNurseIntraDetail()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pain Assesment'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleased()">
               Release
@@ -1087,7 +1097,7 @@
              <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
              <div class="col-md-1 d-flex">
                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(nurseIntraMainList[0]?.Dockey)"
+                 (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
                  *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
                    <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
@@ -1107,7 +1117,7 @@
              <div class="col-md-3">{{maternitySignMainList[0]?.PhyNm || '-'}}</div>
              <div class="col-md-1 d-flex">
                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(maternitySignMainList[0]?.Dockey)"
+                 (click)="getMewsSetMainPdf(maternitySignMainList[0]?.Dockey)"
                  *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
                    <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""

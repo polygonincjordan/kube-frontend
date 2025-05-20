@@ -1,25 +1,23 @@
-<form [formGroup]="criticalForm">
-  <div class="scale-container p-2">
-    <h6 class="scale-result">Scale Information</h6>
-    <div class="row">
-      <label>Scale Name</label>
-      <input class="col-md-5 form-control" type="text" value="Maternity Early Warning Sign" disabled />
-    </div>
-    <div class="row">
-      <label>Date</label>
-      <input type="text" class="col-2 form-control" bsDatepicker
-        [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
-      <input type="text" class="col-2 form-control ml-2" bsDatepicker
-        [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
-    </div>
-    <div class="row">
-      <label>Realized by </label>
-      <input class="col-md-3 form-control" type="text" [value]="realized" disabled />
-      <input class="col-md-5 form-control ml-2" type="text" [value]="realizedDescription" disabled />
-    </div>
+<div class="scale-container p-2">
+  <h6 class="scale-result">Scale Information</h6>
+  <div class="row">
+    <label>Scale Name</label>
+    <input class="col-md-5 form-control" type="text" value="Maternity Early Warning Sign" disabled />
   </div>
-
-</form>
+  <div class="row">
+    <label>Date</label>
+    <input type="text" class="col-2 form-control" bsDatepicker
+    [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
+    <input type="text" class="col-2 form-control ml-2" bsDatepicker
+    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
+  </div>
+  <div class="row">
+    <label>Realized by </label>
+    <input class="col-md-3 form-control" type="text" value="realized" disabled />
+    <input class="col-md-5 form-control ml-2" type="text" value="realizedDescription" disabled />
+  </div>
+</div>
+<form [formGroup]="criticalForm">
 <div class="mews-container">
 <!-- MEWS Table -->
 <div class="mews-table">
@@ -30,79 +28,99 @@
     <div>1</div>
     <div>3</div>
   </div>
-  <!-- Example Row: Respiratory Rate -->
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Respiratory Rate/Minute</div>
-    <div class="position-set"><input type="radio" name="resp" /> 10–20</div>
-    <div class="position-set"><input type="radio" name="resp" /> 21–30</div>
-    <div class="position-set"><input type="radio" name="resp" />30 or 10</div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Oxygen Saturation</div>
-    <div class="position-set"><input type="radio" name="resp" /> 90–100</div>
-    <div class="position-set"><input type="radio" name="resp" /> 91–94</div>
-    <div class="position-set"><input type="radio" name="resp" /></div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Heart rate/Minute</div>
-    <div class="position-set"><input type="radio" name="resp" /> 51–90</div>
-    <div class="position-set"><input type="radio" name="resp" /> 100–120 or 40-50</div>
-    <div class="position-set"><input type="radio" name="resp" /> >120 or <40 </div>
-  </div>
-  <div class="mews-row">
-      <div class="col-md-12 p-0">Systolic BP</div>
-      <div class="position-set"><input type="radio" name="resp" /> 100–150</div>
-      <div class="position-set"><input type="radio" name="resp" /> 151-159 or 90-99</div>
-      <div class="position-set"><input type="radio" name="resp" /> >159 or <90 </div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Diastolic BP</div>
-    <div class="position-set"><input type="radio" name="resp" /> 41-89 </div>
-    <div class="position-set"><input type="radio" name="resp" /> 90-109</div>
-    <div class="position-set"><input type="radio" name="resp" /> >109 or <= 40 </div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Temperature</div>
-    <div class="position-set"><input type="radio" name="resp" /> 96-97.9 </div>
-    <div class="position-set"><input type="radio" name="resp" /> 35-35.9 or 38-38.9</div>
-    <div class="position-set"><input type="radio" name="resp" /> >38.9 </div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">level of Consciousness</div>
-    <div class="position-set"></div>
-    <div class="position-set"><input type="radio" name="resp" /> Responds to Voice</div>
-    <div class="position-set"><input type="radio" name="resp" /> Respond to pain/unresponsive </div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Urine Output ml/hour</div>
-    <div class="position-set"><input type="radio" name="resp" /> Not measured</div>
-    <div class="position-set"><input type="radio" name="resp" /> <30 </div>
-    <div class="position-set"><input type="radio" name="resp" /></div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Amniotic fluid (if rupture of membrane)</div>
-    <div class="position-set"><input type="radio" name="resp" /> Clear; Odorless</div>
-    <div class="position-set"></div>
-    <div class="position-set"><input type="radio" name="resp" /> Red / Pink / Green; Offensive </div>
-  </div>
-  <div class="mews-row">
-    <div class="col-md-12 p-0">Lochia(note: only for post-natal patients</div>
-    <div class="position-set"><input type="radio" name="resp" /> Normal / Moderate</div>
-    <div class="position-set"></div>
-    <div class="position-set"><input type="radio" name="resp" /> Heavy or Foul</div>
-  </div>
+  <!-- Respiratory Rate -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Respiratory Rate/Minute</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="RespiratoryRate" value="0" /> 10–20</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="RespiratoryRate" value="1" /> 21–30</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="RespiratoryRate" value="3" /> >30 or <10</div>
+</div>
+
+<!-- Oxygen Saturation -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Oxygen Saturation</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="OxygenSaturation" value="0" /> 95–100</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="OxygenSaturation" value="1" /> 91–94</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="OxygenSaturation" value="3" /> <90</div>
+</div>
+
+<!-- Heart Rate -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Heart rate/Minute</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="HeartRate" value="0" /> 51–99</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="HeartRate" value="1" /> 100–120 or 40–50</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="HeartRate" value="3" /> >120 or <40</div>
+</div>
+
+<!-- Systolic BP -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Systolic BP</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="SystolicBp" value="0" /> 100–150</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="SystolicBp" value="1" /> 151–159 or 90–99</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="SystolicBp" value="3" /> >159 or <90</div>
+</div>
+
+<!-- Diastolic BP -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Diastolic BP</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="DiastolicBp" value="0" /> 41–89</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="DiastolicBp" value="1" /> 90–109</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="DiastolicBp" value="3" /> >109 or ≤40</div>
+</div>
+
+<!-- Temperature -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Temperature</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="Temperature" value="0" /> 36–37.9</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="Temperature" value="1" /> 35–35.9 or 38–38.9</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="Temperature" value="3" /> >38.9</div>
+</div>
+
+<!-- Level of Consciousness -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Level of Consciousness</div>
+  <div class="position-set"><!-- No 0 score option --></div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="LevelConsciousness" value="1" /> Responds to Voice</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="LevelConsciousness" value="3" /> Responds to pain / unresponsive</div>
+</div>
+
+<!-- Urine Output -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Urine Output (ml/hour)</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="UrineOutput" value="0" /> Not measured</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="UrineOutput" value="1" /> &lt;30</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="UrineOutput" value="3" /> &lt;10</div>
+</div>
+
+<!-- Amniotic Fluid -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Amniotic fluid (if rupture of membrane)</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="AmnioticFluid" value="0" /> Clear; Odorless</div>
+  <div class="position-set"><!-- No 1 score option --></div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="AmnioticFluid" value="3" /> Red / Pink / Green; Offensive</div>
+</div>
+
+<!-- Lochia -->
+<div class="mews-row">
+  <div class="col-md-12 p-0">Lochia (only for post-natal patients)</div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="Lochia" value="0" /> Normal / Moderate</div>
+  <div class="position-set"><!-- No 1 score option --></div>
+  <div class="position-set"><input type="radio" (change)="calculateScore()" formControlName="Lochia" value="3" /> Heavy or Foul</div>
+</div>
+
    <!-- Scale Result and Recommendations -->
    <h6 class="scale-result">Scale Result</h6>
    <div class="row p-0 m-0">
     
       <label class="col-md-1"><strong>Total Score:</strong></label>
-       <input class="col-md-4" type="text" value="12" readonly />
+       <input class="col-md-4" type="text"  readonly formControlName="TotalScore"/>
      
-     <input type="text" class="col-md-4 ml-2" value="High level Response" readonly/>
+     <input type="text" class="col-md-4 ml-2" formControlName="ScoreDescription" readonly/>
    </div>
    <div class="row p-0 m-0">
     <label class="col-md-1">Recommendations</label>
-    <textarea class="col-md-5"  name="" rows="4"></textarea>
+    <textarea class="col-md-5"  name="" rows="6" formControlName="Recommendations" readonly></textarea>
   </div>
 </div>
 </div>
+</form>

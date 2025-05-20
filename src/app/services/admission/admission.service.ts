@@ -1571,6 +1571,15 @@ export class AdmissionService {
       })
     );
   }
+  getMewsSetDetail(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getMewsSetDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
   getNurseAssMainDetail(Dockey) {
     return this.http.get(`${environment.eKardexApiUrl}/getNurseAssMainDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
@@ -1626,6 +1635,12 @@ export class AdmissionService {
       withCredentials: true,
     });
   }
+  createIntraOpNurRecSetDoc(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createIntraOpNurRecSetDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
   createNurseAssMainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createNurseAssMainDoc`;
     return this.http.post(url, json, {
@@ -1634,6 +1649,12 @@ export class AdmissionService {
   }
   createCriticalPainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createCriticalPainDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+  createMewsSetDoc(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createMewsSetDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
     });

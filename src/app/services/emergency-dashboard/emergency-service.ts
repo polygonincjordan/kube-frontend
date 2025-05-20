@@ -22,6 +22,7 @@ import {
 //import { StorageService } from '../../services/storage.service';
 import { TemplateModel } from '@services/admission/interfaces/template-model';
 import { truncate } from 'fs/promises';
+import { WebService } from '@services/web.service';
 
 @Injectable()
 export class EmergencyService {
@@ -55,7 +56,8 @@ export class EmergencyService {
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
-    private storageService: StorageService
+    private storageService: StorageService,
+     private webService: WebService
   ) {
     this.phyOrderForm();
 
@@ -214,6 +216,20 @@ export class EmergencyService {
       {
         withCredentials: true,
       }
+    );
+  }
+
+  login(username: string, password: string): Observable<any> {
+    let headers = {};
+    let custHeaders = {
+      Authorization: 'Basic ' + btoa(username + ':' + password),
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'sap-client': 210,
+    };
+    return this.webService.get(
+      `mdLoginUser?Uname=${encodeURIComponent(username)}&Password=${encodeURIComponent(password)}`,
+      custHeaders
     );
   }
 
@@ -1126,6 +1142,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteMewsSetDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteMewsSetDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   deleteIntraOpNurRecSetDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteIntraOpNurRecSetDoc?Dockey=${json}`, {
       withCredentials: true,
@@ -1213,6 +1234,11 @@ export class EmergencyService {
   }
   getIntraOpNurRecSetMainDoc(json): Observable<any> {
     return this.http.post(this.url + 'getIntraOpNurRecSetMainDoc', json, {
+      withCredentials: true,
+    });
+  }
+  getMewsSetMainDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getMewsSetMainDoc', json, {
       withCredentials: true,
     });
   }
