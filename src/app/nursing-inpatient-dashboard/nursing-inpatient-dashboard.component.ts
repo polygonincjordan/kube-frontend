@@ -59,7 +59,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
   getCheckInData: any;
-  getCheckInStatusFilterData: any;
+  getCheckInStatusFilterData: any; 
+  getCaseTypeFilterData: any; 
   getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
   getCheckInWardFilterData: any;
@@ -244,7 +245,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: [''],
       FWard: [''],
       FSpecialty: [''],
-      RoomidText: ['']
+      RoomidText: [''],
+      CaseType: ['']
     });
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
@@ -806,52 +808,57 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   receiveDatatoCheckIn(data?: string) {
     if (data && data.length) {
       this.getCheckInData = data;
-      this.getCheckInStatusFilterData = this.getCheckInData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue?.patientStatus)) {
-            accumulator.push(currentValue?.patientStatus);
-          }
-          return accumulator;
-        },
-        []
-      );
-      this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
-        (accumulator: string[], currentValue) => {
-          let roomText = currentValue?.RoomidText?.trim();
-          if (roomText && !accumulator.includes(roomText)) {
-            accumulator.push(roomText);
-          }
-          return accumulator;
-        },
-        []
-      );
-      this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue?.FinancialCategory)) {
-            accumulator.push(currentValue?.FinancialCategory);
-          }
-          return accumulator;
-        },
-        []
-      );
-      this.getCheckInWardFilterData = this.getCheckInData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue?.Floor)) {
-            accumulator.push(currentValue?.Floor);
-          }
-          return accumulator;
-        },
-        []
-      );
-      this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue?.DeptouDesc)) {
-            accumulator.push(currentValue?.DeptouDesc);
-          }
-          return accumulator;
-        },
-        []
-      );
+
+      const pushIfValid = (acc: string[], val: any) => {
+        const value = val?.toString().trim();
+        if (value && !acc.includes(value)) {
+          acc.push(value);
+        }
+        return acc;
+      };
+
+      if (this.isArrival) {
+        this.getCaseTypeFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Fatyptxt), []
+        );
+
+        this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Zimmkub), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
+        );
+
+        this.getCheckInWardFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Bettkub), []
+        );
+
+        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
+        );
+
+      } else {
+        this.getCheckInStatusFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
+        );
+
+        this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.RoomidText), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.FinancialCategory), []
+        );
+
+        this.getCheckInWardFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Floor), []
+        );
+
+        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.DeptouDesc), []
+        );
+      }
     }
   }
 
@@ -942,7 +949,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.PatientWithoutDocumentsComponent?.filterListData(
         this.filterFormNoReleased.value
       );
-    } else {
+    } else if (this.selectedModule == 'arrival') {
+      this.arrivalMainListComponent.filterListData(this.filterForm.value);
+    }  else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
     this.showfilter = false;
@@ -952,6 +961,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.refreshFormGroup();
     if (this.selectedModule == 'checkin') {
       this.CheckInComponent.filterListData(this.filterForm.value);
+    } 
+    if (this.selectedModule == 'arrival') {
+      this.arrivalMainListComponent.filterListData(this.filterForm.value);
     } 
   }
 
@@ -1021,7 +1033,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: '',
       FWard: '',
       FSpecialty: '',
-      RoomidText:''
+      RoomidText:'',
+      CaseType:''
     });
     this.filterFormLab.patchValue({
       Rooms: '',
@@ -1495,7 +1508,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: [''],
       FWard: [''],
       FSpecialty: [''],
-      RoomidText: ['']
+      RoomidText: [''],
+      CaseType: ['']
     });
   }
 
@@ -1510,6 +1524,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   previousDate() {
+    if(this.isArrival) {
+      var date1 = this.singleData.get('fromDate').value
+      this.singleData.get('fromDate').patchValue(new Date(date1.setDate(date1.getDate() - 1)));
+      this.arrivalMainListComponent?.arrivalList(this.singleData.value.fromDate);
+    }
+
     if(this.erhistory) {
       var date1 = this.formDetailGroup.get('DateRange').value[0];
       var date2 = this.formDetailGroup.get('DateRange').value[1];
@@ -1620,6 +1640,13 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   upcomingDate() {
+    if(this.isArrival) {
+      var date1 = this.singleData.get('fromDate').value;
+      this.singleData.get('fromDate').patchValue(new Date(date1.setDate(date1.getDate() + 1)));
+      this.arrivalMainListComponent?.arrivalList(this.singleData.value.fromDate);
+      return;
+    }
+
     if(this.erhistory) {
       // if (
       //   +this.formDetailGroup.get('DateRange').value[0] ==
