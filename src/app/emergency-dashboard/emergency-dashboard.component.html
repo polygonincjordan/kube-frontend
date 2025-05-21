@@ -281,44 +281,42 @@ font-size: 12px;
 <div [ngClass]="
 (treatmentarea || dischargeorder) ? 'treatment-header' : 'treatment-old-header'
 " *ngIf="treatmentarea || dischargeorder">
-  <div class="col-md-9">
+  <div class="col-md-10">
     <div class="row" style="color: white;font-size: 15px;
 font-weight: bold;width: 99%;">
-      <span class="col-md-5" style="margin-left: 15px;">{{patient.name}}</span>
-      <span class="col-md-4" style="margin-left: 14px;text-overflow: ellipsis;
-overflow: hidden;
-white-space: nowrap;" title={{patient.allergyInfo}}>Allergies: {{patient.allergyInfo || '-'}}</span>
-      <span class="col-md-2" style="margin-left: 14px;">{{patient?.location?.room || '-'}}</span>
-    </div>
-    <div class="row" style="color: white;font-size: 15px;
-font-weight: bold;width: 99%;">
-      <span class="col-md-5" style="margin-left: 15px;    text-overflow: ellipsis;
+    <div class="col-md-4 row m-0">
+      <span class="w-100" style="margin-left: 15px;" (click)="openPatientInfo(additionalPatientInfo)">{{patient.name}}</span>
+         <span class="w-100" style="margin-left: 15px;    text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;">MRN: {{patient.id}}<span style="margin-left: 50px;" [title]="patient?.gender">{{ patient?.gender
           }}</span></span>
-      <span class="col-md-2" style="margin-left: 14px;text-overflow: ellipsis;
-overflow: hidden;
-white-space: nowrap;" [title]="patient?.primDiaTxt">Dx: {{ patient?.primDiaTxt }}</span>
-<span class="col-md-2" style="margin-left: 14px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
-[title]="caseNumberReturn(patient?.case)">Case#: {{ caseNumberReturn(patient?.case) }}</span>
-      <span class="col-md-2" style="margin-left: 27px;
-border: 1px solid;
-border-radius: 16px;
-padding: 3px 13px 3px 13px;
-background-color: #1768bc;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;" [title]="patient.financeCat">{{patient.financeCat || '-'}}</span>
-
     </div>
-  </div>
-  <div class="col-md-1" style="padding: 0;color: white;
+    <div class="col-md-4 row m-0">
+      <span class="w-100" style="margin-left: 14px;text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" 
+          title={{patient.allergyInfo}}>Allergies: {{patient.allergyInfo || '-'}}</span>
+      <span class="w-50" style="margin-left: 14px;text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" 
+        [title]="patient?.primDiaTxt">Dx: {{ patient?.primDiaTxt }}</span>
+        <span class="w-40" style="margin-left: 14px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+          [title]="caseNumberReturn(patient?.case)">Case#: {{ caseNumberReturn(patient?.case) }}</span>
+    </div>
+    <div class="col-md-3 row m-0">
+      <span class="w-100" style="margin-left: 14px;">{{patient?.location?.room || '-'}}</span>
+      <div class="" style="color: white;font-size: 15px; font-weight: bold;width: 99%;">
+        <span class="col-md-2" style="margin-left: 27px; border: 1px solid; border-radius: 16px; padding: 3px 13px 3px 13px; background-color: #1768bc;
+          text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" [title]="patient.financeCat">{{patient.financeCat || '-'}}</span>
+      </div>
+    </div>
+      <div class="col-md-1" style="padding: 0;color: white;
   font-size: 12px;
   font-weight: bold;">
    <div>Height : {{patient?.height?.value || 'N/A'}}{{patient?.height?.unit}}</div>
    <div>Weight : {{patient?.weight?.value || 'N/A'}}{{patient?.weight?.unit}}</div>
    <div>BMI : {{patient?.bmi?.value || 'N/A'}}{{patient?.bmi?.unit}}</div>
   </div>
+    </div>
+
+  </div>
+
   <div class="col-md-2" style="padding: 0;">
     <img src="assets/img/er-treatment.png" style="width: 189px;
 height: 78px;
@@ -375,3 +373,94 @@ float: right;" />
       <!-- <app-order-details style="width: calc(100% - 90px); background-color: #fff; margin-top: 10px;" *ngIf="ordersprofiledada"></app-order-details> -->
 </div>
 <!-- </div> -->
+<ng-template #additionalPatientInfo>
+  <div style="
+  border: 1px solid #3b82f6;
+  padding: 8px;
+  background: #3b82f6;
+  text-align: center;
+"><span style="
+  color: white;
+  font-size: 22px;
+">Patient's Information</span></div>
+  <div class="modal-body patient-info">
+    <div class="mb-3 row">
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Name:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.name}}</span>
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Mobile No.:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.phone || 'N/A'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Marital Status:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.maritalStatus || 'N/A'}}</span>
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Telephone #:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.telephone || 'N/A'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Nationality:</label>
+        <div class="col-sm-7">
+          <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+        </div>
+      </div>
+      <div class="col-md-6 row m-0">
+        <label for="staticEmail" class="col-sm-5">Email:</label>
+        <div class="col-sm-7">
+          <span>{{patient?.email || 'N/A'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <div class="col-md-10 row m-0">
+        <label for="staticEmail" class="col-sm-3">Address:</label>
+        <div class="col-sm-9">
+          <span>{{patient?.address || 'N/A'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5">
+      <h4 class="information-kin">Next of Kin Information</h4>
+      <div class="mb-3 row">
+        <div class="col-md-6 row m-0">
+          <label for="staticEmail" class="col-sm-5">Name:</label>
+          <div class="col-sm-7">
+            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          </div>
+        </div>
+        <div class="col-md-6 row m-0">
+          <label for="staticEmail" class="col-sm-5">Relationship:</label>
+          <div class="col-sm-7">
+            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="col-md-6 row m-0">
+          <label for="staticEmail" class="col-sm-5">Mobile #:</label>
+          <div class="col-sm-7">
+            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button-group p-3" style="text-align: -webkit-center;">
+      <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+    </div>
+  </div>
+</ng-template>

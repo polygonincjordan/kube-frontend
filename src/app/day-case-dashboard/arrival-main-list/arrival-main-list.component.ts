@@ -143,7 +143,7 @@ export class ArrivalMainListComponent implements OnInit {
 
       if (event.FWard?.length) {
         filterValue = filterValue.filter(item =>
-          event.FWard.includes(item.Bettkub)
+          event.FWard.includes(item.Orgpfkb)
         );
       }
 

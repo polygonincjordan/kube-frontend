@@ -42,6 +42,7 @@ import { ProgressNotesComponent } from './components/main-hospitalist-list-view/
 import { DocumentingDeliveryComponent } from './components/main-hospitalist-list-view/documenting-delivery/documenting-delivery.component';
 import { ArrivalMainListComponent } from './components/arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './components/surgery-worklist-tab/surgery-worklist-tab.component';
+import { NurErAllergyComponent } from './components/surgery-worklist-tab/nur-er-allergy/nur-er-allergy.component';
 
 export const eHospitalistRoutes: Routes = [
   { path: '**', component: InPatientDashboardComponent },
@@ -90,7 +91,8 @@ export const eHospitalistRoutes: Routes = [
     ProgressNotesComponent,
     DocumentingDeliveryComponent,
     ArrivalMainListComponent,
-    SurgeryWorklistTabComponent
+    SurgeryWorklistTabComponent,
+    NurErAllergyComponent
     // HeaderComponent
   ],
 })

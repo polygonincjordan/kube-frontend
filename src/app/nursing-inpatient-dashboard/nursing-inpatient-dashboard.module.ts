@@ -179,6 +179,7 @@ import { IcuHoursFlowsheetModule } from '../shared-module/icu-hours-flowsheet/ic
 import { NicuNursingFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/nicu-nursing-flow-sheet/nicu-nursing-flow-sheet.component';
 import { LaborRoomFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/labor-room-flow-sheet.component';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
+import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 
 
 const route: Routes = [
@@ -309,7 +310,8 @@ const route: Routes = [
     PostCathFemoralComponent,
     NicuNursingFlowSheetComponent,
     LaborRoomFlowSheetComponent,
-    ArrivalMainListComponent
+    ArrivalMainListComponent,
+    SurgeryWorklistTabComponent
   ],
   providers: [
     EmergencyService,

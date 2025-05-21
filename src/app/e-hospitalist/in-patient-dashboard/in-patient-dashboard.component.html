@@ -491,10 +491,10 @@
                           >
                             <!-- <ng-option selected value="">Choose Physician</ng-option> -->
                             <ng-option
-                              [value]="item.Name"
-                              *ngFor="let item of inAttendPhyList"
+                              [value]="item"
+                              *ngFor="let item of attendingPhysicianList"
                             >
-                              {{ item.Name }}
+                              {{ item }}
                             </ng-option>
                           </ng-select>
                            <p style="margin: auto; margin-top: 5px">Specialty</p>

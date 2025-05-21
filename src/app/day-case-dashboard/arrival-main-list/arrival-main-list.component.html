@@ -18,8 +18,8 @@
                                 (click)="commanSorting('Fatyptxt')"></i></th>
                         <th scope="col">Arrived On <i class="fa fa-sort" aria-hidden="true"
                                 (click)="commanSorting('Datetime')"></i></th>
-                        <th scope="col">Birthdate <i class="fa fa-sort" aria-hidden="true"
-                                (click)="commanSorting('Gbdat')"></i></th>
+                        <!-- <th scope="col">Birthdate <i class="fa fa-sort" aria-hidden="true"
+                                (click)="commanSorting('Gbdat')"></i></th> -->
                         <th scope="col" class="set-width-3">Attending Physician <i class="fa fa-sort" aria-hidden="true"
                                 (click)="commanSorting('BehArztName')"></i></th>
                         <th scope="col">Departmental OU <i class="fa fa-sort" aria-hidden="true"
@@ -52,7 +52,7 @@
                         <td>{{item.Falnr}}</td>
                         <td>{{item.Fatyptxt}}</td>
                         <td>{{item.Datetime}}</td>
-                        <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td>
+                        <!-- <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td> -->
                         <td>{{item.BehArztName}}</td>
                         <td>{{item.Orgfakb}}</td>
                         <td>{{item.ZzfinCat}}</td>

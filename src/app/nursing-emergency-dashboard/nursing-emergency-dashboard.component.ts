@@ -124,7 +124,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   updatedDate: any;
   reservation: boolean = false;
   modalRef: BsModalRef;
-  
+  getKubeRule = this.storageService.getKubeRule();
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,

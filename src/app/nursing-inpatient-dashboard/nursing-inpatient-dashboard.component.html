@@ -116,7 +116,7 @@
     erSetting ||
     analysis ||
     noReleaseDoc ||
-    reservation || isArrival
+    reservation || isArrival || isSurgeryWork
       ? 'checkin-header'
       : 'er-header'
   "
@@ -130,7 +130,7 @@
     erSetting ||
     analysis ||
     noReleaseDoc ||
-    reservation || isArrival
+    reservation || isArrival || isSurgeryWork
   "
 >
   <!-- <div
@@ -290,7 +290,7 @@
   </div>
     <div
     class="col-md-4"
-    *ngIf="isArrival"
+    *ngIf="isArrival || isSurgeryWork"
     style="
       font-size: 15px;
       font-weight: bold;
@@ -320,10 +320,10 @@
       <i class="fa fa-chevron-right" aria-hidden="true"
         style="padding-top: 11px; font-size: 18px; cursor: pointer; z-index: 99" (click)="upcomingDate()"></i>
     <span *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
-      Arrivals ({{ ErHistoryPatientCount }} Patients)
+      {{getHeaderTitleName()}} ({{ ErHistoryPatientCount }} Patients)
     </span>
     <span *ngIf="ErHistoryPatientCount == 1">
-      Arrivals ({{ ErHistoryPatientCount }} Patient)
+      {{getHeaderTitleName()}} ({{ ErHistoryPatientCount }} Patient)
     </span>
   </div>
   <div *ngIf="reservation" class="d-flex w-100">
@@ -440,43 +440,25 @@
   </div>
 </div>
 
-<div
-  class="card"
-  style="
+<div class="card" style="
     width: 15rem;
     position: absolute;
     z-index: 999;
     right: 25px;
     color: black;
     font-size: 12px;
-  "
-  *ngIf="showfilter && (checkin || isArrival) "
-  (click)="$event.stopPropagation()"
->
+  " *ngIf="showfilter && (checkin || isArrival || isSurgeryWork) " (click)="$event.stopPropagation()">
   <div class="card-body p-0">
     <div class="">
       <div class="d-flex justify-content-between align-items-center p-2 background_aliceblue">
         <span style="margin: 0; font-size: 16px; font-weight: 600;">Filter</span>
-        <span style="margin-left: 68px; font-size: 20px"
-          ><i
-            class="fa fa-times"
-            aria-hidden="true"
-            (click)="showFilterFn($event)"
-          ></i
-        ></span>
+        <span style="margin-left: 68px; font-size: 20px"><i class="fa fa-times" aria-hidden="true"
+            (click)="showFilterFn($event)"></i></span>
       </div>
       <form [formGroup]="filterForm" class="p-2">
         <p *ngIf="!isArrival" style="margin: auto; margin-top: 5px">Admission Status</p>
-        <ng-select *ngIf="!isArrival"
-          class=""
-          id="inputGroupSelect01"
-          formControlName="Status"
-          [multiple]="true"
-        >
-          <ng-option
-            [value]="item"
-            *ngFor="let item of getCheckInStatusFilterData"
-          >
+        <ng-select *ngIf="!isArrival" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInStatusFilterData">
             {{ item }}
           </ng-option>
         </ng-select>
@@ -488,33 +470,25 @@
           </ng-option>
         </ng-select>
 
-        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
-        <ng-select
-          class=""
-          id="inputGroupSelect01"
-          formControlName="Physician"
-          [multiple]="true"
-        >
+        <p *ngIf="!isArrival" style="margin: auto; margin-top: 5px">Attending Physician</p>
+        <ng-select *ngIf="!isArrival" class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
-          <ng-option
-            [value]="item.NamString"
-            *ngFor="let item of assignUsersList"
-          >
+          <ng-option [value]="item.NamString" *ngFor="let item of assignUsersList">
             {{ item.NamString }}
           </ng-option>
         </ng-select>
-    
+
+        <p *ngIf="isArrival" style="margin: auto; margin-top: 5px">Attending Physician</p>
+        <ng-select *ngIf="isArrival" class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
+          <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+          <ng-option [value]="item" *ngFor="let item of attendingPhysicianList">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
         <p *ngIf="isArrival" style="margin: auto; margin-top: 5px">Case Type</p>
-        <ng-select *ngIf="isArrival"
-          class=""
-          id="inputGroupSelect01"
-          formControlName="CaseType"
-          [multiple]="true"
-        >
-          <ng-option
-            [value]="item"
-            *ngFor="let item of getCaseTypeFilterData"
-          >
+        <ng-select *ngIf="isArrival" class="" id="inputGroupSelect01" formControlName="CaseType" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCaseTypeFilterData">
             {{ item }}
           </ng-option>
         </ng-select>
@@ -527,17 +501,9 @@
         </ng-select>
 
         <p style="margin: auto; margin-top: 5px">Rooms</p>
-        <ng-select
-          class=""
-          id="inputGroupSelect01"
-          formControlName="RoomidText"
-          [multiple]="true"
-        >
+        <ng-select class="" id="inputGroupSelect01" formControlName="RoomidText" [multiple]="true">
           <!-- <ng-option selected value="">Choose Status</ng-option> -->
-          <ng-option
-            [value]="item"
-            *ngFor="let item of getCheckInRoomidTextFilterData"
-          >
+          <ng-option [value]="item" *ngFor="let item of getCheckInRoomidTextFilterData">
             {{ item }}
           </ng-option>
         </ng-select>
@@ -548,16 +514,13 @@
             {{ item }}
           </ng-option>
         </ng-select>
-  
+
         <div class="mt-2" style="display: flex; justify-content: space-around">
-          <button
-            class="btn btn-primary"
-            style="background-color: #0082c8; border: #0082c8"
-            (click)="filterList()"
-          >
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;" (click)="clearFilter()">Reset</button>
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;"
+            (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>
@@ -1013,6 +976,21 @@
           (click)="selectModule('arrival')"
         />
       </div>
+      <div [ngClass]="isSurgeryWork ? 'arrival_active' : 'arrival_d'">
+        <img
+          [src]="
+            isSurgeryWork
+              ? 'assets/img/surgeryworklist_tab.jpg'
+              : 'assets/img/surgeryworklist_tab.jpg'
+          "
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Surgery Worklist"
+          width="26px"
+          class=""
+          (click)="selectModule('surgeryWork')"
+        />
+      </div>
       <div style="height: 50px; margin-bottom: 6px">
         <img
           [src]="
@@ -1152,7 +1130,7 @@
           data-bs-toggle="tooltip" data-bs-placement="right" title="Assignment" class=""
           (click)="selectModule('erSetting')" />
       </div> -->
-      <div style="height: 50px; margin-bottom: 6px">
+      <div style="height: 50px; margin-bottom: 6px" *ngIf="getKubeRule == 'SeniorNurse'">
         <img
           [src]="
             reservation
@@ -1189,6 +1167,7 @@
   ></app-lab-results>
 
   <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
+  <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
   <app-physician-orders-list
     (sendErPatientCount)="collectErHistPatientCount($event)"
     (dataToParent)="receiveDataFromPhysicianOrdersChild($event)"

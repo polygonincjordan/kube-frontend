@@ -1053,6 +1053,32 @@ export class MyClinicComponent implements OnInit {
     XLSX.utils.book_append_sheet(workbook, ws, "test");
     XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
   }
+
+  exportToExcelCheckOut(nameofFile: string = 'my-clinic', fileExtention: string = 'xlsx'): void {
+    const eventArray = this.dataOnTableForCheckOut;
+    const mappedEvents = eventArray.map(event => {
+      return {
+          DATUM: this.convertTimestampToDate(event.DATUM),
+          ZEIT_INTERN: event.ZEIT_INTERN,
+          BESUCHSARTTEXT: event.BESUCHSARTTEXT,
+          BESSTATTEXT: event.BESSTATTEXT,
+          PATNR: event.PATNR,
+          FALNR: event.FALNR,
+          PATIENT: event.PATIENT,
+          BEHPERSNAME: event.BEHPERSNAME,
+          ZZFIN_CAT: event.ZZFIN_CAT,
+          ANFDIAGNOSE: event.ANFDIAGNOSE,
+          BEMERKUNG: event.BEMERKUNG,
+      };
+  });
+    let Heading = [['Date', 'Time' , 'Visit Type','Visit Status','MRN','Case','Patient','Attn. Phy.','Financial Category','Diagnosis','Comment']];
+    const workbook = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, Heading);
+    XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: 'A2', skipHeader: true });
+    XLSX.utils.book_append_sheet(workbook, ws, "test");
+    XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
+  }
   convertTimestampToDate(timestamp: any): string {
     if (typeof timestamp === 'string' && timestamp.startsWith('/Date(') && timestamp.endsWith(')/')) {
         const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);

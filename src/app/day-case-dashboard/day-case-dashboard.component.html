@@ -50,9 +50,9 @@ float: right;" />
 </div>
 <!--  -->
 <div [ngClass]="
-(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || reservation || isArrival) ? 'checkin-header' : 'er-header'
+(checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || reservation || isArrival || isSurgeryWork) ? 'checkin-header' : 'er-header'
 "
-  *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis|| noReleaseDoc || reservation || isArrival">
+  *ngIf="checkin || erhistory || LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis|| noReleaseDoc || reservation || isArrival || isSurgeryWork">
   <div *ngIf="checkin" class="col-md-4" style="font-size: 18px; font-weight: bold; padding: 0; padding-left: 20px;">
     {{ defaultSelectedDateRange[0] | date : "dd.MM.y" }}-{{ defaultSelectedDateRange[1] | date : "dd.MM.y" }}
     <span *ngIf="ErPatientCount">
@@ -113,11 +113,11 @@ float: right;" />
   </div>
 
   <!-- new date -->
-  <div class="col-md-4" *ngIf="erhistory || noReleaseDoc || isArrival">
+  <div class="col-md-4" *ngIf="erhistory || noReleaseDoc || isArrival || isSurgeryWork">
     <div class="singleData">
-      <i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 0px;
+      <i class="fa fa-chevron-left" *ngIf="!isSurgeryWork" aria-hidden="true" style="padding-top: 0px;
       font-size: 18px;cursor: pointer;" (click)="previoussingleData()"></i>
-    <form [formGroup]="singleData">
+    <form [formGroup]="singleData" *ngIf="!isSurgeryWork">
       <div class="date-function" style="background: #dee5ea;
       padding: 2px;
       border-radius: 8px;
@@ -135,7 +135,7 @@ float: right;" />
       </div>
     </form>
 
-    <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 0px;
+    <i *ngIf="!isSurgeryWork" class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 0px;
                   font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingsingleData()"></i>
     <div *ngIf="erhistory || isArrival">
       <span style="white-space: nowrap;" *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
@@ -143,6 +143,14 @@ float: right;" />
       </span>
       <span style="white-space: nowrap;" *ngIf="ErHistoryPatientCount == 1">
         <span *ngIf="isArrival">Arrivals</span> ({{ErHistoryPatientCount}} Patient)
+      </span>
+    </div>
+    <div *ngIf="isSurgeryWork">
+      <span style="white-space: nowrap;" *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
+        <span *ngIf="isArrival">Surgery Worklist</span> ({{ErHistoryPatientCount}} Patients)
+      </span>
+      <span style="white-space: nowrap;" *ngIf="ErHistoryPatientCount == 1">
+        <span *ngIf="isArrival">Surgery Worklist</span> ({{ErHistoryPatientCount}} Patient)
       </span>
     </div>
    <div *ngIf="PhysicianOrder || noReleaseDoc">
@@ -213,7 +221,7 @@ float: right;" />
     right: 25px;
     color: black;
     font-size: 12px;
-  " *ngIf="showfilter && (checkin || isArrival)" (click)="$event.stopPropagation()">
+  " *ngIf="showfilter && (checkin || isArrival || isSurgeryWork)" (click)="$event.stopPropagation()">
   <div class="card-body" style="padding: 4px 21px 21px 21px">
     <div class="">
       <div class="d-flex justify-content-between align-items-center">
@@ -253,10 +261,10 @@ float: right;" />
         >
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
           <ng-option
-            [value]="item.NamString"
-            *ngFor="let item of assignUsersList"
+            [value]="item"
+            *ngFor="let item of attendingPhysicianList"
           >
-            {{ item.NamString }}
+            {{ item }}
           </ng-option>
         </ng-select>
     
@@ -518,7 +526,7 @@ font-size: 12px;
   </div>
 </div>
 <div [ngClass]="
-(checkin || erhistory ||  LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || isArrival) ? 'checkin-edash-main' : 'treatment-edash-main'
+(checkin || erhistory ||  LabResults || PhysicianOrder || AdministeredDoses || noConsumables || erSetting || analysis || noReleaseDoc || isArrival || isSurgeryWork) ? 'checkin-edash-main' : 'treatment-edash-main'
 " style="overflow: hidden;">
   <div class="edash-leftSide">
     <div class="col-xm-1 left-box" style="text-align: center">
@@ -543,6 +551,21 @@ font-size: 12px;
           width="26px"
           class=""
           (click)="selectModule('arrival')"
+        />
+      </div>
+         <div [ngClass]="isSurgeryWork ? 'arrival_active' : 'arrival_d'">
+        <img
+          [src]="
+            isSurgeryWork
+              ? 'assets/img/surgeryworklist_tab.jpg'
+              : 'assets/img/surgeryworklist_tab.jpg'
+          "
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Surgery Worklist"
+          width="26px"
+          class=""
+          (click)="selectModule('surgeryWork')"
         />
       </div>
       <div style="height: 50px; margin-bottom: 6px">
@@ -611,7 +634,7 @@ font-size: 12px;
           data-bs-toggle="tooltip" data-bs-placement="right" title="Assignment" class=""
           (click)="selectModule('erSetting')" />
       </div> -->
-      <div style="height: 50px; margin-bottom: 6px">
+      <div style="height: 50px; margin-bottom: 6px" *ngIf="getKubeRule == 'SeniorNurse'">
         <img [src]="reservation ? 'assets/img/reservation-normal.svg' : 'assets/img/reservation-white.svg'"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Reservation" width="45px" class=""
           (click)="selectModule('reservation')" />
@@ -645,6 +668,7 @@ font-size: 12px;
     (sendErNoDocumentCount)="collectErPatientCount($event)" (dataToParent)="receiveDataFromPatientWithoutDocumentChild($event)"
     (redirectCheckInData)="collectCheckInData($event)"></app-patient-without-documents>
   <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
+  <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
 
 
 </div>

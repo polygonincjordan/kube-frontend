@@ -160,6 +160,7 @@ export class InPatientDashboardComponent implements OnInit {
   physicianArraySplit: any;
   inHospitalist: any[] = [];
   inLDRAttendPhyList: any;
+  attendingPhysicianList: any;
   constructor(
     private _EMRServices: EEmrService,
     private hospitalistService: HospitalistService,
@@ -829,7 +830,7 @@ export class InPatientDashboardComponent implements OnInit {
       let filterValue = this.inArrivalslistListClone;
       if (this.filterForm.value.Physician?.length) {
         filterValue = filterValue.filter(item =>
-          this.filterForm.value.Physician.includes(item.BehArzt?.trimStart())
+          this.filterForm.value.Physician.includes(item.BehArztName?.trimStart())
         );
       }
 
@@ -847,7 +848,7 @@ export class InPatientDashboardComponent implements OnInit {
 
       if (this.filterForm.value.FWard?.length) {
         filterValue = filterValue.filter(item =>
-          this.filterForm.value.FWard.includes(item.Bettkub)
+          this.filterForm.value.FWard.includes(item.Orgpfkb)
         );
       }
 
@@ -942,7 +943,11 @@ export class InPatientDashboardComponent implements OnInit {
           );
 
           this.getCheckInWardFilterData = this.inArrivalslistList.reduce(
-            (acc: string[], cur) => pushIfValid(acc, cur?.Bettkub), []
+            (acc: string[], cur) => pushIfValid(acc, cur?.Orgpfkb), []
+          );
+
+          this.attendingPhysicianList = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
           );
 
           this.getCheckInSpecialtyFilterData = this.inArrivalslistList.reduce(

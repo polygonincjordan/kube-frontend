@@ -278,29 +278,47 @@
   <div class="modal-header">
     <h3>Checked-out Patients List</h3>
   </div>
-  <div style="font-size: 15px;
-  font-weight: bold;padding: 0;text-align: center;display: flex;
-      align-items: baseline;gap:10px"><i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px;
-      font-size: 18px;cursor: pointer;" (click)="previousDateForCheckout()"></i>
-    <form [formGroup]="checkOutForm">
-      <div class="date-function" style="background: #dee5ea;
-      
-      border-radius: 8px;
-      display: flex;
-     ">
-        <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
-          'DD.MM.YYYY', containerClass: ' ', showWeekNumbers:
-          false}" class="form-control" formControlName="DateRange" (ngModelChange)="handleGetChangeDateForCheckOut($event)" />
-        <p class="m-0" (click)="onTodayEventDataForCheckout()" style="padding: 8px 30px;
-          color: #7f9abf;
-          cursor: pointer;">Today</p>
+  <div class="row m-0" style="background: linear-gradient(to right, #7080a7, #0082c8, #0082c8, #8398cd); padding: 10px;">
+    <div class="col-md-8" style="font-size: 15px;
+    font-weight: bold;padding: 0;text-align: center;display: flex;
+        align-items: baseline;gap:10px"><i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px;
+        font-size: 18px;cursor: pointer; color: #fff;" (click)="previousDateForCheckout()"></i>
+      <form [formGroup]="checkOutForm">
+        <div class="date-function" style="background: #dee5ea;
+        
+        border-radius: 8px;
+        display: flex;
+       ">
+          <input #drp="bsDaterangepicker" bsDaterangepicker [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
+            'DD.MM.YYYY', containerClass: ' ', showWeekNumbers:
+            false}" class="form-control" formControlName="DateRange" (ngModelChange)="handleGetChangeDateForCheckOut($event)" />
+          <p class="m-0" (click)="onTodayEventDataForCheckout()" style="padding: 8px 30px;
+            color: #7f9abf;
+            cursor: pointer;">Today</p>
+        </div>
+      </form>
+  
+  
+      <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
+                    font-size: 18px;cursor: pointer;z-index: 99; color: #fff;" (click)="upcomingDateForCheckout()"></i>
+  
+    </div>
+    <div class="col-md-1 d-flex align-items-center justify-content-end">
+     <span style="margin-right: 15px">
+            <img src="assets/img/excel.png" alt="" style="width: 20px;" (click)="exportToExcelCheckOut()"
+              title="Export to excel">
+          </span>
+    </div>
+    <div class="col-md-3">
+        <div class="input-group mb-1">
+        <div class="input-group-prepend">
+          <span style="background: #fff;" class="input-group-text" id="basic-addon1"><i class="fa
+              fa-search" aria-hidden="true"></i></span>
+        </div>
+        <input type="text" [(ngModel)]="searchString" class="form-control" placeholder="Search..." aria-label="Username"
+          aria-describedby="basic-addon1" />
       </div>
-    </form>
-
-
-    <i class="fa fa-chevron-right" aria-hidden="true" style="padding-top: 11px;
-                  font-size: 18px;cursor: pointer;z-index: 99;" (click)="upcomingDateForCheckout()"></i>
-
+    </div>
   </div>
   <div class="modal-body row m-0 p-2">
     <div class="col-lg-12 col-md-6 col-sm-12" style="overflow: auto; max-height: 61vh;min-height: 61vh;">

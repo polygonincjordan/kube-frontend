@@ -13,6 +13,7 @@
             <th colspan="1" scope="col">Status</th>
             <th colspan="1" scope="col">Comment</th>
             <th colspan="1" scope="col">Created By</th>
+            <th colspan="1" scope="col">Quantity</th>
             <th colspan="1" scope="col">
               <div class="d-flex align-items-center justify-content-between">
                 <div>Action</div>
@@ -41,8 +42,11 @@
               <td colspan="1">
                 <input class="form-control " [value]="item.Erusr" type="text" [disabled]="true" [title]="item.Erusr"/>
               </td>
-              <td class="align-middle border-0" >
-                <div class="trash-icon">
+              <td colspan="1">
+                <input class="form-control "  type="text" [disabled]="true"/>
+              </td>
+              <td class="align-middle border-0 cursor-pointer" >
+                <div class="trash-icon"  (click)="confirmationForRiskDelete(item)">
                   <img src="./assets/img/Delete.svg">
                 </div>
               </td>

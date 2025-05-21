@@ -3,6 +3,7 @@ import { Component, Inject, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { FeeListService } from '@services/fee-service/fee-list.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-service-history',
@@ -35,7 +36,20 @@ export class ServiceHistoryComponent implements OnInit {
     });
     this.selectedData = data;
   }
-
+  confirmationForRiskDelete(item, index) {
+    Swal.fire({
+      text: 'Are you sure you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup',
+    }).then((result) => {
+      if (result.value) {
+        this.deleteItem(index);
+      }
+    });
+  }
   getStatusValue(item: any) {
     if(item == "") {
       return "Released";

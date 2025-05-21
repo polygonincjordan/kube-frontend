@@ -103,9 +103,11 @@ export class ArrivalMainListComponent implements OnInit {
       riskFormitems: new FormArray([]),
     });
   }
+  selectedDate: any;
 // 2025-05-10T00:00:00
   arrivalList(date?: any) {
-    let dateFormate = `${new DatePipe('en-US').transform(date, 'yyyy-MM-dd')}T00:00:00`;
+    this.selectedDate = date;
+    let dateFormate = `${new DatePipe('en-US').transform(this.selectedDate, 'yyyy-MM-dd')}T00:00:00`;
     console.log(dateFormate, date, "dateFormate")
     this.hospitalistService.getArrivalListSetAPI('1', '', dateFormate)
       .subscribe((data: any) => {
@@ -132,7 +134,7 @@ export class ArrivalMainListComponent implements OnInit {
 
     if (event.Physician?.length) {
       filterValue = filterValue.filter(item =>
-        event.Physician.includes(item.BehArzt?.trimStart())
+        event.Physician.includes(item.BehArztName?.trimStart())
       );
     }
 
@@ -150,7 +152,7 @@ export class ArrivalMainListComponent implements OnInit {
 
     if (event.FWard?.length) {
       filterValue = filterValue.filter(item =>
-        event.FWard.includes(item.Bettkub)
+        event.FWard.includes(item.Orgpfkb)
       );
     }
 
@@ -282,6 +284,7 @@ export class ArrivalMainListComponent implements OnInit {
             this.resetRiskForm();
             this.resetUpdateRiskForm();
             this.getRiskList(this.selectedERList);
+            this.arrivalList(this.selectedDate);
             Swal.fire({
               text: 'Saved successfully',
               icon: 'success',
@@ -305,6 +308,7 @@ export class ArrivalMainListComponent implements OnInit {
           this.resetRiskForm();
           this.resetUpdateRiskForm();
           this.getRiskList(this.selectedERList);
+          this.arrivalList(this.selectedDate);
           Swal.fire({
             text: 'Deleted successfully',
             icon: 'success',
@@ -326,6 +330,7 @@ export class ArrivalMainListComponent implements OnInit {
           this.resetRiskForm();
           this.resetUpdateRiskForm();
           this.getRiskList(this.selectedERList);
+          this.arrivalList(this.selectedDate);
           Swal.fire({
             text: 'Saved successfully',
             icon: 'success',

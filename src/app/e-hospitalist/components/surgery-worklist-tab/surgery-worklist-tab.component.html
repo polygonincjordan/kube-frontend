@@ -1,19 +1,29 @@
 <table id="table" class="e-hospi-home-table table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col" class="set-width-3">Patient/Sex/Age<i (click)="onSortClick($event,'Pnamec1')" class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col" class="set-width-3">Patient/Sex/Age<i (click)="onSortClick($event,'Pnamec1')"
+                    class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">MRN<i (click)="onSortClick($event,'Patnr')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Case<i (click)="onSortClick($event,'Falnr')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col" class="set-width-3">Attending Physician<i (click)="onSortClick($event,'BEH_ARZT')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col" class="set-width-3">Specialty<i (click)="onSortClick($event,'BEH_ARZT')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col">Admission Date/Time<i (click)="onSortClick($event,'Datetime')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col" class="allergy" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Room</th>
-            <th scope="col" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Bed</th>
-            <th scope="col">Procedure Name<i (click)="onSortClick($event,'Gbdat')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col">Planned Date/Time<i (click)="onSortClick($event,'Orgfakb')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col">Performing Unit<i (click)="onSortClick($event,'ZZFIN_CAT')" class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col" class="set-width-3">Attending Physician<i (click)="onSortClick($event,'BEH_ARZT')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col" class="set-width-3">Specialty<i (click)="onSortClick($event,'Anpoe')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col">Admission Date/Time<i (click)="onSortClick($event,'Gbdat')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <!-- <th scope="col" class="allergy" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Room</th>
+            <th scope="col" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Bed</th> -->
+            <th scope="col">Procedure Name<i (click)="onSortClick($event,'Gbdat')" class="my-icon fa fa-chevron-up"></i>
+            </th>
+            <th scope="col">Planned Date/Time<i (click)="onSortClick($event,'Orgfakb')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col">Performing Unit<i (click)="onSortClick($event,'ZZFIN_CAT')"
+                    class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Status<i (click)="onSortClick($event,'Bwatx')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col">Diagnosis <i (click)="onSortClick($event,'Orgpfkb')" class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col">Finacial Category<i (click)="onSortClick($event,'ZzfinCat')"
+                    class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col">Diagnosis <i (click)="onSortClick($event,'Orgpfkb')" class="my-icon fa fa-chevron-up"></i>
+            </th>
             <th scope="col">Allergy</th>
             <th scope="col">Risk</th>
             <th scope="col">Comment</th>
@@ -25,25 +35,31 @@
             <td>{{item.Pnamec1}}</td>
             <td>{{item.Patnr}}</td>
             <td>{{item.Falnr}}</td>
-            <td>{{item.Datetime}}</td>
-            <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td>
-            <td>{{item.BEH_ARZT}}</td>
-            <td>{{item.Orgfakb}}</td>
-            <td>{{item.ZZFIN_CAT}}</td>
-            <td>{{item.Bwatx}}</td>
-            <td>{{item.Orgpfkb}}</td>
-            <td>{{item.ZIMMKUB}}</td>
-            <td>{{item.BETTKUB}}</td>
+            <td></td>
+            <td>{{item.Anpoe}}</td>
+            <td>{{item.Gbdat}}</td>
+            <td>{{item.SrvBez}}</td>
+            <td>{{item.Afndt}}</td>
+            <td>{{item.N1ptint}}</td>
+            <td>{{item.Zzprstatus}}</td>
+            <td>{{item.ZzfinCat}}</td>
+            <td class="border-left text-center">
+                <span *ngIf="item?.Diagnosis">
+                    <img [src]="'assets/img/diagnosis_blue.svg'" class="risk-icon" [title]="item.Diagnosis" />
+                </span>
+                <span *ngIf="!item?.Diagnosis">N/A</span>
+            </td>
+             <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;">
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'" style="width: 23px"
+                (click)="openModalForAllergy('', item)" />
+            </td>
             <td class="border-left" style="width: 3%">
                 <span>
                     <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
                         (click)="openModalForRisk(riskModal,item)" [title]="riskInformation(item.RiskpIcon)" />
                 </span>
             </td>
-            <!-- <td></td> -->
             <td></td>
-            <td></td>
-            <!-- <td>{{item.Bwart}}</td> -->
             <td></td>
         </tr>
     </tbody>
@@ -161,6 +177,7 @@
     </div>
 </ng-template>
 
+<app-nur-er-allergy #nurErAllergy ></app-nur-er-allergy>
 
 <ng-template #commonColModal>
     <div class="modal-body p-0">
@@ -190,4 +207,4 @@
             </table>
         </div>
     </div>
-</ng-template>\
+</ng-template>

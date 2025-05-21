@@ -360,8 +360,8 @@ export class CheckInComponent implements OnInit {
     }
     this.riskJson = [
       {
-        Patnr: this.selectedERList.Patnr,
-        Lfdnr: finallfdnrValue,
+        Patnr: this.selectedERList.Mrn,
+        Lfdnr: this.selectedERList.Lfdnr,
         Rsfnr: this.updateRiskForm.controls.Rsfnr.value,
         Rsfna: this.updateRiskForm.controls.Rsfna.value,
         Rsfkb: this.updateRiskForm.controls.Rsfkb.value,
@@ -393,7 +393,7 @@ export class CheckInComponent implements OnInit {
         });
       } else {
         const json = {
-          Patnr: this.selectedERList.Patnr,
+          Patnr: this.selectedERList.Mrn,
           PatRiskHdrToItmNav: {
             results: this.riskJson,
           },
@@ -403,6 +403,7 @@ export class CheckInComponent implements OnInit {
             this.resetRiskForm();
             this.resetUpdateRiskForm();
             this.getRiskList(this.selectedERList);
+            this.getErList();
             Swal.fire({
               text: 'Saved successfully',
               icon: 'success',
@@ -416,7 +417,7 @@ export class CheckInComponent implements OnInit {
       }
     } else if (this.riskJson[0]['Mode'] == 'D') {
       const json = {
-        Patnr: this.selectedERList.Patnr,
+        Patnr: this.selectedERList.Mrn,
         PatRiskHdrToItmNav: {
           results: this.riskJson,
         },
@@ -425,6 +426,7 @@ export class CheckInComponent implements OnInit {
         (_success: any) => {
           this.resetRiskForm();
           this.resetUpdateRiskForm();
+          this.getErList();
           this.getRiskList(this.selectedERList);
           Swal.fire({
             text: 'Deleted successfully',
@@ -437,7 +439,7 @@ export class CheckInComponent implements OnInit {
       );
     } else {
       const json = {
-        Patnr: this.selectedERList.Patnr,
+        Patnr: this.selectedERList.Mrn,
         PatRiskHdrToItmNav: {
           results: this.riskJson,
         },
@@ -447,6 +449,7 @@ export class CheckInComponent implements OnInit {
           this.resetRiskForm();
           this.resetUpdateRiskForm();
           this.getRiskList(this.selectedERList);
+          this.getErList();
           Swal.fire({
             text: 'Saved successfully',
             icon: 'success',
@@ -543,7 +546,7 @@ export class CheckInComponent implements OnInit {
     this.riskJson = [];
     this.riskJson = [
       {
-        Patnr: this.selectedERList.Patnr,
+        Patnr: this.selectedERList.Mrn,
         Lfdnr: item.Lfdnr,
         Rsfnr: item.Rsfnr,
         Rsfna: item.Rsfna,
@@ -738,8 +741,8 @@ export class CheckInComponent implements OnInit {
 
   getRiskList(data) {
     const json = {
-      einri: data.Einri,
-      patnr: data.Patnr,
+      einri: data.Institute,
+      patnr: data.Mrn,
     };
     this.emergencyService.getRiskList(json).subscribe(
       (_success: any) => {

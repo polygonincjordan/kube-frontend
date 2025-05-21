@@ -39,6 +39,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NursTreatmentWorkareaComponent } from './nurs-treatment-workarea/nurs-treatment-workarea.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
+import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 
 @UntilDestroy()
 @Component({
@@ -58,12 +59,15 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
+  @ViewChild(SurgeryWorklistTabComponent) surgeryWorklistTabComponent;
+  
   getCheckInData: any;
   getCheckInStatusFilterData: any; 
   getCaseTypeFilterData: any; 
   getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
   getCheckInWardFilterData: any;
+  attendingPhysicianList: any;
   getCheckInSpecialtyFilterData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
@@ -84,6 +88,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   LabResults: boolean = false;
   noReleaseDoc: boolean = false;
   isArrival: boolean = false;
+  isSurgeryWork: boolean = false;
   rxEmr: boolean = false;
   isShowRooms: boolean = false;
   isShowWards: boolean = false;
@@ -161,7 +166,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   showConfiguration: boolean = false;
   singleformgroupData: any;
   wardSelectForConfig: any[] = [];
-
+  getKubeRule: any = this.storageService.getKubeRule();
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,
@@ -831,7 +836,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         );
 
         this.getCheckInWardFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.Bettkub), []
+          (acc: string[], cur) => pushIfValid(acc, cur?.Orgpfkb), []
+        );
+
+        this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
         );
 
         this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
@@ -1025,6 +1034,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
        this.arrivalMainListComponent?.arrivalList(
         new Date()
       );
+    } else if (this.selectedModule === 'surgeryWork') {
+       this.surgeryWorklistTabComponent?.surgeryListData();
     }
     // Resetting filter form values
     this.filterForm.patchValue({
@@ -1082,6 +1093,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
   selectModule(module) {
     this.isArrival = false;
+    this.isSurgeryWork = false;
     this.selectedModule = module;
     // this.emergencyService.tabPanelNavigation('OrderSet');
     this.defaultSelectedDateRange.push(
@@ -1319,6 +1331,25 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = false;
       this.reservation = false;
       this.isArrival = true;
+    } else if (module == 'surgeryWork') {
+      this.headerLabel = '';
+      this.currentDate = new Date();
+      this.singleData.get('fromDate').patchValue(new Date());
+      this.checkin = false;
+      this.treatmentarea = false;
+      this.erhistory = false;
+      this.PhysicianOrder = false;
+      this.AdministeredDoses = false;
+      this.dischargeorder = false;
+      this.erSetting = false;
+      this.rxEmr = false;
+      this.analysis = false;
+      this.noConsumables = false;
+      this.LabResults = false;
+      this.noReleaseDoc = false;
+      this.reservation = false;
+      this.isArrival = false;
+      this.isSurgeryWork = true;
     }
     this.refreshFormGroup();
     this.closeAndRefresh();
@@ -1345,6 +1376,14 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     console.log(checkindata, 'checkindata');
 
     this.navigateToTreatmentArea(checkindata);
+  }
+
+  getHeaderTitleName() {
+    if(this.isArrival) {
+      return 'Arrivals';
+    } else if(this.isSurgeryWork) {
+      return 'Surgery Worklist'
+    }
   }
 
   get f() {
