@@ -13,6 +13,7 @@
             <th colspan="1" scope="col">Status<i class="fa fa-sort" style="margin-left: 5px" aria-hidden="true" (click)="sortingItem('Planned')"></i></th>
             <th colspan="1" scope="col">Comment</th>
             <th colspan="1" scope="col">Created By<i class="fa fa-sort" style="margin-left: 5px" aria-hidden="true" (click)="sortingItem('Erusr')"></i></th>
+            <th colspan="1" scope="col">Quantity</th>
             <th colspan="1" scope="col">
               <div class="d-flex align-items-center justify-content-between">
                 <div>Action</div>
@@ -41,9 +42,12 @@
               <td colspan="1">
                 <input class="form-control " [value]="item.Erusr" type="text" [disabled]="true" [title]="item.Erusr"/>
               </td>
+              <td colspan="1">
+                <input class="form-control " type="text" [disabled]="true"/>
+              </td>
               <td class="align-middle border-0" >
-                <div class="trash-icon">
-                  <img src="./assets/img/Delete.svg"  (click)="deleteItem(i)">
+                <div class="trash-icon" (click)="confirmationForRiskDelete(item, i)">
+                  <img src="./assets/img/Delete.svg" >
                 </div>
               </td>
             </tr>

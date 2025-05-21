@@ -13,6 +13,7 @@
               <!-- <th scope="col">Time</th> -->
               <!-- <th scope="col">Status</th> -->
               <th scope="col">Comment</th>
+              <th scope="col">Quantity</th>
               <!-- <th scope="col">Created By</th> -->
               <th scope="col">
                 <div class="d-flex align-items-center justify-content-between">
@@ -39,10 +40,13 @@
                 <td>
                   <input type="text" class="form-control" placeholder="Comment" [(ngModel)]="element.note" [title]="element.note"/>
                 </td>
+                <td>
+                  <input type="text" class="form-control" placeholder="Quantity" />
+                </td>
                 <!-- <td>
                   <input type="text" class="form-control" [(ngModel)]="element.createdBy" disabled="true" />
                 </td> -->
-                <td class="align-middle border-0" >
+                <td class="align-middle border-0 cursor-pointer" >
                   <div class="trash-icon" (click)="feeListService.onDeleteOrder(element)">
                     <img src="./assets/img/Delete.svg">
                   </div>

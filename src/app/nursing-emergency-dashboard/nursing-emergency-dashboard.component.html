@@ -537,7 +537,7 @@ font-size: 12px;
           data-bs-toggle="tooltip" data-bs-placement="right" title="Assignment" class=""
           (click)="selectModule('erSetting')" />
       </div>
-      <div style="height: 50px; margin-bottom: 6px">
+      <div style="height: 50px; margin-bottom: 6px" *ngIf="getKubeRule == 'SeniorNurse'">
         <img [src]="reservation ? 'assets/img/reservation-normal.svg' : 'assets/img/reservation-white.svg'"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Reservation" width="45px" class=""
           (click)="selectModule('reservation')" />

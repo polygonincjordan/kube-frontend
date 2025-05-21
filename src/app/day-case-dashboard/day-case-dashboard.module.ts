@@ -122,6 +122,7 @@ import { CompanionMealOrderingComponentNew } from './nurs-treatment-workarea/die
 import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
+import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 
 const route: Routes = [
   {
@@ -212,7 +213,8 @@ const route: Routes = [
     DislikePreferenceComponentNew,
     CompanionMealOrderingComponentNew,
     ReceiveCartComponent,
-    ArrivalMainListComponent
+    ArrivalMainListComponent,
+    SurgeryWorklistTabComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

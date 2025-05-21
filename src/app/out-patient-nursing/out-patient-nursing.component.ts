@@ -120,6 +120,9 @@ export class OutPatientNursingComponent implements OnInit {
   dropdownSettingsForSpeciality: any = {};
   dropdownSettingsForPhysician: any = {};
   actionTypeSubscription$: Subscription;
+
+  getKubeRule = this.storageService.getKubeRule();
+
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,

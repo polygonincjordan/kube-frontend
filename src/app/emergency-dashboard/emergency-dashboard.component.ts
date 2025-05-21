@@ -1,6 +1,6 @@
 import { StorageService } from '@services/storage.service';
 import { ErHistoryComponent } from './er-history/er-history.component';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Patient } from '@services/e-kardex/interfaces/patient';
@@ -17,6 +17,7 @@ import { Title } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 @UntilDestroy()
 @Component({
   selector: 'app-emergency-dashboard',
@@ -60,8 +61,10 @@ export class EmergencyDashboardComponent implements OnInit {
   public formDetailGroup: any;
   public formgroupData: any = {};
   showfilter=false;
-  filterForm:FormGroup
-  constructor(private _route: ActivatedRoute, private datePipe: DatePipe,
+  filterForm:FormGroup;
+  modalRef:BsModalRef;
+  
+  constructor(private _route: ActivatedRoute, private datePipe: DatePipe, private modalService: BsModalService,
     private _router: Router,private emergencyService:EmergencyService,private patientService: PatientService,public ePrescriptionService:ErDischargeordersService,private elementRef: ElementRef,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private formBuilder: FormBuilder,private titleService: Title,) {
       this.formDetailGroup = new FormGroup({
         'SearchData': new FormControl(''),
@@ -106,6 +109,10 @@ export class EmergencyDashboardComponent implements OnInit {
     this.getAssignSurgeonList();
     this.dataForTriage();
     this.dataForStatus();
+  }
+  openPatientInfo( template: TemplateRef<any>,){
+    const config: ModalOptions = { class: 'modal-dialog-centered patient-info-modal-size' };
+    this.modalRef = this.modalService.show(template,config);
   }
   selectModule(module){
     this.selectedModule = module;

@@ -129,7 +129,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
   updatedDate: any;
   reservation: boolean = false;
   modalRef: BsModalRef;
-
+  getKubeRule = this.storageService.getKubeRule();
   constructor(
     private orderDashboardService: OrdersDashboardService,
     private formBuilder: FormBuilder,

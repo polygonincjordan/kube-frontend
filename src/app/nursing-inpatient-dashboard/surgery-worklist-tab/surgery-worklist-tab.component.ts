@@ -12,7 +12,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import Swal from 'sweetalert2';
-import { NurErAllergyComponent } from './nur-er-allergy/nur-er-allergy.component';
+import { NurErAllergyComponent } from '../check-in/nur-er-allergy/nur-er-allergy.component';
+import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 
 @Component({
   selector: 'app-surgery-worklist-tab',
@@ -24,6 +25,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
+  @Output() dataToParent = new EventEmitter<any>();
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -72,10 +74,20 @@ export class SurgeryWorklistTabComponent implements OnInit {
   sortable = true;
   riskItemsArr: any[];
   riskList: any[];
-  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService) { }
+  inSurgeryWorklist: any[];
+
+  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService) { }
 
   ngOnInit(): void {
     this.initForm();
+    this.surgeryListData();
+  }
+
+  surgeryListData() {
+    this.hospitalistService.getSurgeryWorkListSetAPI()
+      .subscribe((data: any) => {
+        this.inSurgeryWorklist = data?.d?.results;
+      })
   }
 
   initForm() {
@@ -380,6 +392,42 @@ export class SurgeryWorklistTabComponent implements OnInit {
     }
   }
 
+  asc: boolean;
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.inSurgeryWorklist.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.inSurgeryWorklist.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+
+
   closeRiskModal() {
     this.modalRefForRisk.hide();
     this.resetRiskForm();
@@ -392,7 +440,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
   }
 
   reload() {
-    
+
   }
 
   resetUpdateRiskForm() {
