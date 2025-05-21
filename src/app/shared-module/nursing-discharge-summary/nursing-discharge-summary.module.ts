@@ -22,7 +22,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     EnvironmentalSafetyTabComponent,
     ImportDiagnosisComponent,
   ],
-  exports: [NursingDischargeSummaryComponent],
+  exports: [NursingDischargeSummaryComponent,ImportDiagnosisComponent],
   imports: [
     CommonModule,
     FormsModule,

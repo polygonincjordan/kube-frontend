@@ -826,6 +826,47 @@
                     *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
+              
+              <!-- Nursing Intra-Operative Record -->
+            <div [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+            *ngIf="!selectedDocument || selectedDocument == 'NIOR'" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
+             <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
+               dockVer(nurseIntraMainList[0]?.Zversion) : ''}}</div>
+             <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
+             <div class="col-md-2" title="{{getTime(nurseIntraMainList[0]?.DocTime)}}">
+               {{getDate(nurseIntraMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+             </div>
+             <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
+             <div class="col-md-1 d-flex">
+                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                 (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
+                 *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
+                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
+                   <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                     id=""></select>
+                 </div>
+             </div>
+           </div>
+           <!-- maternity early warning sign -->
+           <div [ngClass]="isMaternitySign ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+            *ngIf="!selectedDocument || selectedDocument == 'MEWS'" (click)="selectAssessment('isMaternitySign',maternitySignMainList[0])">
+             <div class="col-md-4">Maternity Early Warning Sign {{maternitySignMainList[0]?.Zversion ?
+               dockVer(maternitySignMainList[0]?.Zversion) : ''}}</div>
+             <div class="col-md-2 status-color">{{maternitySignMainList[0]?.StatusTxt || 'N/A'}}</div>
+             <div class="col-md-2" title="{{getTime(maternitySignMainList[0]?.DocTime)}}">
+               {{getDate(maternitySignMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+             </div>
+             <div class="col-md-3">{{maternitySignMainList[0]?.PhyNm || '-'}}</div>
+             <div class="col-md-1 d-flex">
+                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                 (click)="getMewsSetMainPdf(maternitySignMainList[0]?.Dockey)"
+                 *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'"></i>
+                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
+                   <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                     id=""></select>
+                 </div>
+             </div>
+           </div>
               <!-- Pediatrics Fall Risk Assessment_SCA_FALLP -->
               <div
                 [ngClass]="isPediatricsFall ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -1085,46 +1126,6 @@
                 </div>
               </div>
 
-              <!-- Nursing Intra-Operative Record -->
-            <div [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'NIOR'" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
-             <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
-               dockVer(nurseIntraMainList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span>:</div>
-             <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(nurseIntraMainList[0]?.DocTime)}}">
-               {{getDate(nurseIntraMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
-                 *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
-                   <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
-           </div>
-           <!-- maternity early warning sign -->
-           <div [ngClass]="isMaternitySign ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'MEWS'" (click)="selectAssessment('isMaternitySign',maternitySignMainList[0])">
-             <div class="col-md-4">Maternity Early Warning Sign {{maternitySignMainList[0]?.Zversion ?
-               dockVer(maternitySignMainList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-             <div class="col-md-2 status-color">{{maternitySignMainList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(maternitySignMainList[0]?.DocTime)}}">
-               {{getDate(maternitySignMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{maternitySignMainList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="getMewsSetMainPdf(maternitySignMainList[0]?.Dockey)"
-                 *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
-                   <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
-           </div>
            <!-- Post Anesthesia Care Record -->
            <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'PACR'" (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">

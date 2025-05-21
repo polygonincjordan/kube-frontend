@@ -236,8 +236,8 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   initForm(data?){
     this.nicuForm = this.formBuilder.group({
       Orgdo: ['F21IUAMC'],
-      Datee: [data?.Datee || null],
-      Timee: [data?.Timee || null],
+      Datee: [this.getDate(data?.Datee) || null],
+      Timee: [this.parseTime(data?.Timee) || null],
       ReasonAdm: [data?.ReasonAdm || ''],
       Ga: [data?.Ga || ''],
       GaDays: [data?.GaDays || ''],
@@ -245,10 +245,10 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       CgaDays: [data?.CgaDays || ''],
       ChronoAge: [data?.ChronoAge || ''],
       Gender: [data?.Gender || ''],
-      BirthDate: [data?.BirthDate || null],
-      BirthTime: [data?.BirthTime || null],
-      AdmDate: [data?.AdmDate || null],
-      AdmTime: [data?.AdmTime || null],
+      BirthDate: [this.getDate(data?.BirthDate) || null],
+      BirthTime: [this.parseTime(data?.BirthTime) || null],
+      AdmDate: [this.getDate(data?.AdmDate) || null],
+      AdmTime: [this.parseTime(data?.AdmTime) || null],
       PlaceBirth: [data?.PlaceBirth || ''],
       BirthWeight: [data?.BirthWeight || ''],
       BirthWgtUnit: [data?.BirthWgtUnit || ''],
@@ -539,6 +539,8 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         // Comments : [data?.Comments || ''],
     })
   }
+
+  
 
   toggleInput(checkboxName: string, inputName: string) {
     const checkboxControl = this.nicuForm.get(checkboxName);
@@ -1035,6 +1037,9 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   });
   if(formData.BirthTime){
    formData.BirthTime= this.convertTimeToDuration(formData.BirthTime)
+  }
+  if(formData.AdmTime){
+   formData.AdmTime= this.convertTimeToDuration(formData.AdmTime)
   }
   if(formData.Timee){
    formData.Timee= this.convertTimeToDuration(formData.Timee)

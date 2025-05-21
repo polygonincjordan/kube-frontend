@@ -181,6 +181,7 @@ import { LaborRoomFlowSheetComponent } from './nurs-treatment-workarea/patient-d
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 
 
+
 const route: Routes = [
   {
     path: '',

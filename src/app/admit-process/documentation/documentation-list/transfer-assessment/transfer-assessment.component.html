@@ -44,9 +44,15 @@
         <label class="admission-date"> Delivering Unit </label>
       </div>
       <div class="col-6">
-        <span class="box-simple-input"
-          ><input type="text" placeholder="" formControlName="DelUnit" />
-        </span>
+        <ng-select
+  [items]="orgUnits"
+  bindLabel="name"
+  bindValue="code"
+  placeholder="Select Org Unit"
+  formControlName="DelUnit"
+  >
+  
+</ng-select>
       </div>
     </div>
   </div>
@@ -56,9 +62,16 @@
         <label class="admission-date"> Receiving Unit</label>
       </div>
       <div class="col-6">
-        <span class="box-simple-input"
-          ><input type="text" placeholder="" formControlName="RecUnit" />
-        </span>
+       
+          <ng-select
+  [items]="orgUnits"
+  bindLabel="name"
+  bindValue="code"
+  placeholder="Select Org Unit"
+  formControlName="RecUnit"
+  >
+  
+</ng-select>
       </div>
     </div>
   </div>
@@ -173,7 +186,6 @@
       <!-- <button class="create-diagnosis" (click)="openModalVital()" [disabled]="enableCreateVitals">Create & Import</button> -->
       <button
         class="create-diagnosis"
-        (click)="openModalVital()"
         [disabled]="enableCreateVitals"
       >
         Create & Import
@@ -258,7 +270,7 @@
         style="text-align: center"
       >
         <td>{{ item.OrderType }}</td>
-        <td style="width: 270px">{{ item.Description }}</td>
+        <td style="width: 270px">{{ item.Descr }}</td>
         <td style="text-align: center; pointer-events: none">
           <input
             type="checkbox"
@@ -285,6 +297,48 @@
         <td>{{ item.Cycle }}</td>
         <!-- <td></td> -->
       </tr>
+    </tbody>
+  </table>
+</div>
+<div class="section">
+  <div class="section-title">Examination </div>
+  <div
+    class="d-flex mb-2"
+    style="justify-content: space-between; padding-right: 22px"
+  >
+    <div style="display: flex; align-items: center; gap: 10px">
+      <!-- <input type="checkbox" style="width: 36px;
+                      height: 22px;" formControlName="NoVitalSigns" (change)="handleCheckboxVitals()" [attr.disabled]="toVitalsArr.length >0 ? true:null"/> -->
+      <input
+        type="checkbox"
+        style="width: 36px; height: 22px"
+        (change)="handleCheckboxVitals()"
+        [attr.disabled]="medicationImportDrugArray?.length > 0 ? true : null"
+      />
+      <label class="admitting-physician">No examination applicable</label>
+    </div>
+    <div>
+      <button class="create-diagnosis">
+        Create & Import
+      </button>
+    </div>
+  </div>
+  <table class="table table-bordered past-table">
+    <thead style="background-color: #e4edf5; color: black; text-align: center">
+      <tr>
+        <th>Examination Type</th>
+          <th>Department</th>
+          <th>Date/Time</th>
+          <th>Import</th>
+          <th>View</th>
+          <th>Create</th>
+          <th>Change</th>
+      </tr>
+    </thead>
+    <tbody style="background-color: hsl(225, 100%, 99%)">
+     <tr>
+      
+     </tr>
     </tbody>
   </table>
 </div>
@@ -426,29 +480,31 @@
                 <option value="2">Yes</option>
               </select>
             </li>
-            <li>
-              <span class="content-box">Isolation </span>
-              <select
-                class="content-select"
-                formControlName="Isolationn"
-                aria-label="Default select example"
-              >
-                <option value="0">N/A</option>
-                <option value="1">No</option>
-                <option value="2">Yes</option>
-              </select>
-              &nbsp; &nbsp;
-
-              <span class="content-box1">Type of Isolation </span>
-              <span>
-                <input
-                  type="text"
+              <li>
+                <span class="content-box">Isolation </span>
+                <select
                   class="content-select"
-                  formControlName="IsolationType"
-                  placeholder=""
-                />
-              </span>
-            </li>
+                  formControlName="Isolationn"
+                  aria-label="Default select example"
+                  (change)="onIsolationChange($event)"
+                >
+                  <option value="0">N/A</option>
+                  <option value="1">No</option>
+                  <option value="2">Yes</option>
+                </select>
+                &nbsp; &nbsp;
+
+                <span class="content-box1">Type of Isolation </span>
+                <span>
+                  <input
+                    type="text"
+                    class="content-select"
+                    formControlName="IsolationType"
+                    placeholder=""
+                    [readOnly]="this.transferAssessForm.get('Isolationn').value != '2'"
+                  />
+                </span>
+              </li>
             <li>
               <span class="content-box">Continuous Monitoring</span>
               <select
