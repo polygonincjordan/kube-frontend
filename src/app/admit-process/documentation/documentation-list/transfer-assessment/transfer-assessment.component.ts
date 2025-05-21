@@ -1,5 +1,14 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdmissionService } from '@services/admission/admission.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
@@ -11,23 +20,24 @@ import { PhysicianErVitalsComponent } from '../physician-form/physician-er-vital
 @Component({
   selector: 'app-transfer-assessment',
   templateUrl: './transfer-assessment.component.html',
-  styleUrls: ['./transfer-assessment.component.scss']
+  styleUrls: ['./transfer-assessment.component.scss'],
 })
 export class TransferAssessmentComponent implements OnInit {
   @Output() realodEducationList = new EventEmitter();
-  @ViewChild('erVitalsModal', { static: true }) erVitalsModal: PhysicianErVitalsComponent;
+  @ViewChild('erVitalsModal', { static: true })
+  erVitalsModal: PhysicianErVitalsComponent;
   @Input() searchString: string;
   @Input() soapFormEvent: string = '';
   medicationOrderCase: any;
   medicationImportDrugArray: any;
- scalesArray: any[]=[];
+  scalesArray: any[] = [];
 
   enableCreateVitals: any;
   modalRefUpdateName: BsModalRef;
   modalRefScales: BsModalRef;
 
   transferAssessForm: FormGroup;
-  selectedScales:any[]=[];
+  selectedScales: any[] = [];
   selectedMedicationOrder: any[] = [];
   drugArray: any[] = [];
   toAllergyArr: any = [];
@@ -36,13 +46,46 @@ export class TransferAssessmentComponent implements OnInit {
   toMedication: any = [];
   toScaleArr: any[] = [];
   toProc: any = [];
+  orgUnits = [
+  { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
+  { code: '4THFLVIP', name: '4th Floor-Zone B-VIP' },
+  { code: '6FL-NICU', name: '6th Floor NICU' },
+  { code: '6FL-NURS', name: '6th Floor Nursery Unit' },
+  { code: '6FL-OROU', name: '6th Floor LDR Operation Rooms' },
+  { code: 'F02AGAMC', name: '2nd Floor' },
+  { code: 'F03AGAMC', name: '3rd Floor' },
+  { code: 'F04GAMC', name: '4th Floor' },
+  { code: 'F05AGAMC', name: '5th Floor' },
+  { code: 'F06AGAMC', name: '6th Floor' },
+  { code: 'F07AGAMC', name: '7th Floor' },
+  { code: 'F09AGAMC', name: '9th Floor' },
+  { code: 'F21IUAMC', name: '2nd Floor-Zone C-IP' },
+  { code: 'F2DAGAMC', name: '2nd Floor Dialysis' },
+  { code: 'F2DTUAMC', name: '2nd Floor Dialysis' },
+  { code: 'F31IUAMC', name: '3rd Floor-Zone C-IP' },
+  { code: 'F3CIUAMC', name: '3rd Floor-Zone B-IP' },
+  { code: 'F3IAGAMC', name: 'Infusion Bay Area' },
+  { code: 'F3TTUAMC', name: 'Infusion Bay Treatment Unit' },
+  { code: 'F51IUAMC', name: '5th Floor-Zone C-IP' },
+  { code: 'F5VIUAMC', name: '5th Floor-Zone B-IP' },
+  { code: 'F6CIUAMC', name: '6th Floor-Zone C-IP' },
+  { code: 'F7IIUAMC', name: '7th Class 2-3 Medical/Surgical' },
+  { code: 'F9DAGAMC', name: '9th Floor Day Surgery Area' },
+  { code: 'F9DIUAMC', name: '9th Floor Day Surgery' },
+  { code: 'F9GOTAMC', name: 'Major OT (GRAL)' },
+  { code: 'F9IIUAMC', name: '9th Floor ICU Area' },
+];
+
+selectedOrgUnit: any;
+
   constructor(
     public modalService: BsModalService,
     public storageService: StorageService,
     private formBuilder: FormBuilder,
     private admissionService: AdmissionService,
     private datePipe: DatePipe,
-    public ePrescriptionService: EPrescriptionService,) { }
+    public ePrescriptionService: EPrescriptionService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -57,7 +100,7 @@ export class TransferAssessmentComponent implements OnInit {
     }
 
     if (changes.soapFormEvent.currentValue == 'release') {
-      if (this.admissionService.isEditPhysicianForm) {
+      if (this.admissionService.isEditTransferAssestForm) {
         this.releaseTransferAssessForm();
       } else {
         this.createTransferAssessForm(true);
@@ -89,65 +132,92 @@ export class TransferAssessmentComponent implements OnInit {
         ),
       ],
       Timee: [this.datePipe.transform(new Date(), 'hh:mm')],
-      DelUnit:[""] ,
-      RecUnit:[""],
-      TransReason: [""],
-      SummaryInte:[""],
-      Wheelchair:[""],
-      Stretcher:[""],
-      Oxygen:[""],
-      Isolationn:[""],
-      IsolationType:[""],
-      ContiMonitoring:[""],
-      OtherRequir:[""],
-      AttendPhy:[""],
-      DocStatus:[""],
-      CarePlan:[""],
-      TransferCond:[""],
-      PatAsses:[""]
+      DelUnit: [''],
+      RecUnit: [''],
+      TransReason: [''],
+      SummaryInte: [''],
+      Wheelchair: [''],
+      Stretcher: [''],
+      Oxygen: [''],
+      Isolationn: [''],
+      IsolationType: [''],
+      ContiMonitoring: [''],
+      OtherRequir: [''],
+      AttendPhy: [''],
+      DocStatus: [''],
+      CarePlan: [''],
+      TransferCond: [''],
+      PatAsses: [''],
     });
   }
 
-  initTransferAssesstForm() {
-
-  }
+  initTransferAssesstForm() {}
 
   getTransferData() {
     let json = {
       Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
     };
-    this.admissionService.getTansferAssessData(json).subscribe((patientResult) => {
-      console.log(patientResult);
-      this.toVitalsArr = patientResult?.results[0].TOVITALSIGNS?.results;
-      this.medicationImportDrugArray = patientResult?.results[0].TOMEDICATION?.results;
-      this.toScaleArr=patientResult?.results[0].TOSCALE?.results;
-      this.transferAssessForm.patchValue(patientResult?.results[0]);
-      this.transferAssessForm.patchValue({
-        Dockey: patientResult?.results[0]?.Dockey,
-        Datee: this.getDate(patientResult?.results[0]?.Datee),
-        Timee: this.getTime(patientResult?.results[0]?.Timee),
+    this.admissionService
+      .getTansferAssessData(json)
+      .subscribe((patientResult) => {
+        console.log(patientResult);
+        this.toVitalsArr = patientResult?.results[0].TOVITALSIGNS?.results;
+        this.medicationImportDrugArray =
+          patientResult?.results[0].TOMED?.results.map((element) => ({
+            Dockey: '',
+            OrderType: element.OrderType,
+            Descr: element.Descr,
+            HomeMedication: false,
+            PatientOwnMed: false,
+            Dose: element.Dose,
+            Validity: element.Validity,
+            Route: element.Routedescr,
+            Amount: '',
+            Rate: '',
+            Therapy: '00000',
+            Id: '',
+            OrderingPhysician: element.RespEmp,
+            Cycle: element.CycleTxt,
+          }));
+
+        this.scalesArray = patientResult?.results[0].TOSCALE?.results.map(
+          (element) => ({
+            Scaletype: element.ScaleType,
+            LastScore: element.LastScore,
+            ScoreDesc: element.ScoreDesc,
+            DateTime: element.Datetimee,
+          })
+        );
+        this.transferAssessForm.patchValue(patientResult?.results[0]);
+        this.transferAssessForm.patchValue({
+          Dockey: patientResult?.results[0]?.Dockey,
+          Datee: this.getDate(patientResult?.results[0]?.Datee),
+          Timee: this.getTime(patientResult?.results[0]?.Timee),
+        });
       });
-    });
   }
+
   async createTransferAssessForm(isrelease: boolean) {
 
     let createJson = this.transferAssessForm.value;
-console.log(createJson)
-    if (createJson["Dockey"] === null || createJson["Dockey"] === undefined || createJson["Dockey"] === "") {
+    console.log(createJson);
+    if (
+      createJson['Dockey'] === null ||
+      createJson['Dockey'] === undefined ||
+      createJson['Dockey'] === ''
+    ) {
       if (isrelease) {
         createJson['DocStatus'] = '4';
       } else {
         createJson['DocStatus'] = '1';
       }
     } else {
-
       if (this.admissionService.isCloneTransferAssestForm && isrelease) {
         createJson['DocStatus'] = '5';
       }
       if (this.admissionService.isCloneTransferAssestForm && !isrelease) {
         createJson['DocStatus'] = '3';
       }
-
     }
 
     if (createJson.Datee != '') {
@@ -163,24 +233,37 @@ console.log(createJson)
         'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     }
 
-
-
     createJson['TOVITALSIGNS'] = this.toVitalsArr;
     createJson['TOPROCE'] = [];
     createJson['TOEXAM'] = [];
-    createJson['TOMED'] = this.medicationImportDrugArray;
-    createJson['TOSCALE'] = [];
+    createJson['TOMED'] = this.medicationImportDrugArray.map((med) => ({
+      Dockey: '',
+      OrderType: med.OrderType,
+      Descr: med.Description, // assuming this is the correct mapping
+      Dose: med.Dose,
+      CycleTxt: med.Cycle, // static value as per your example
+      Validity: med.Validity,
+      RespEmp: med.OrderingPhysician, // assuming that's what you want
+      Route: med.Route,
+      Rate: med.Rate || '',
+    }));
+    createJson['TOSCALE'] = this.scalesArray.map((element) => ({
+      Dockey: '',
+      ScaleType: element.ScaleType,
+      LastScore: element.LastScore,
+      ScoreDesc: element.ScoreDesc,
+      Datetimee: element.Datetimee,
+    }));
     await this.admissionService
       .createTansferAssessData(createJson)
       .subscribe((x) => {
-        console.log(x)
+        console.log(x);
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
       });
   }
-
 
   async updateTransferAssessForm() {
     let updateJson = this.transferAssessForm.value;
@@ -200,23 +283,36 @@ console.log(createJson)
     updateJson['TOVITALSIGNS'] = this.toVitalsArr;
     updateJson['TOPROCE'] = [];
     updateJson['TOEXAM'] = [];
-    updateJson['TOMED'] = this.medicationImportDrugArray;
-    updateJson['TOSCALE'] = [];
-    await this.admissionService
-      .updateTransferDoc(updateJson)
-      .subscribe(() => {
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
-      });
+    updateJson['TOMED'] = this.medicationImportDrugArray.map((med) => ({
+      Dockey: '',
+      OrderType: med.OrderType,
+      Descr: med.Description, // assuming this is the correct mapping
+      Dose: med.Dose,
+      CycleTxt: med.Cycle, // static value as per your example
+      Validity: med.Validity,
+      RespEmp: med.OrderingPhysician, // assuming that's what you want
+      Route: med.Route,
+      Rate: med.Rate || '',
+    }));
+    updateJson['TOSCALE'] = this.scalesArray.map((element) => ({
+      Dockey: '',
+      ScaleType: element.ScaleType,
+      LastScore: element.LastScore,
+      ScoreDesc: element.ScoreDesc,
+      Datetimee: element.Datetimee,
+    }));
+    await this.admissionService.updateTransferDoc(updateJson).subscribe(() => {
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.admissionService.clearSoapEvent.next(true);
+      this.realodEducationList.next(true);
+    });
   }
   async releaseTransferAssessForm() {
     let updateJson = this.transferAssessForm.value;
     let createtime = '';
-    updateJson['DocStatus'] = '2';
     if (updateJson.Datee != '') {
-      updateJson['Datee'] = `${new DatePipe('en-US').transform(
+      updateJson.Datee = `${new DatePipe('en-US').transform(
         updateJson.Datee,
         'yyyy-MM-dd'
       )}T00:00:00`;
@@ -226,15 +322,29 @@ console.log(createJson)
       updateJson.Timee =
         'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     }
-    updateJson['TOALLERGIES'] = this.toAllergyArr;
+    updateJson['DocStatus'] = '1';
     updateJson['TOVITALSIGNS'] = this.toVitalsArr;
-    updateJson['TOPHYEXAM'] = this.transferAssessForm.value.TOPHYEXAM.results;
-    // updateJson['TODIAGNOSES'] = this.toDiagnosisArr;
-    updateJson['TOPMEDCOND'] = this.toMedication;
-    // updateJson['TOPSURGERIHIST'] = this.toPastSurgical;
-    // updateJson['TOFAMILYHIST'] = this.toFamilyHistory;
-    updateJson['TOMEDICATION'] = this.medicationImportDrugArray;
-    this.admissionService.releasePhysicianDoc(updateJson).subscribe(() => {
+    updateJson['TOPROCE'] = [];
+    updateJson['TOEXAM'] = [];
+    updateJson['TOMED'] = this.medicationImportDrugArray.map((med) => ({
+      Dockey: '',
+      OrderType: med.OrderType,
+      Descr: med.Description, // assuming this is the correct mapping
+      Dose: med.Dose,
+      CycleTxt: med.Cycle, // static value as per your example
+      Validity: med.Validity,
+      RespEmp: med.OrderingPhysician, // assuming that's what you want
+      Route: med.Route,
+      Rate: med.Rate || '',
+    }));
+    updateJson['TOSCALE'] = this.scalesArray.map((element) => ({
+      Dockey: '',
+      ScaleType: element.ScaleType,
+      LastScore: element.LastScore,
+      ScoreDesc: element.ScoreDesc,
+      Datetimee: element.Datetimee,
+    }));
+    this.admissionService.releaseTransferDoc(updateJson).subscribe(() => {
       this.admissionService.cancelAllForm();
       this.admissionService.selectedCurrentDocDetails = '';
       this.admissionService.clearSoapEvent.next(true);
@@ -255,16 +365,34 @@ console.log(createJson)
   loadScalesData() {
     // this.selectedScales = [];
     this.toScaleArr = [];
-    const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${this.ePrescriptionService.parameters.patnr}`, false, false, false, false).subscribe((resp: any) => {
-     console.log(resp)
-      if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
-        //this.configurationData = resp.body.d.results;
-        this.toScaleArr = resp.body.d.results;
-        // this.medicationImportDrugArray=[];
-       //http://amcqaemr01.ach.jo:8000/sap/opu/odata/sap/ZN_TRANSFER_ASSES_SRV/PatScalesSet?$filter=Patnr
-      }
-      //   this.filterEvents();
-    }, () => { scalesOrders.unsubscribe(); });
+    const scalesOrders: Subscription = this.ePrescriptionService
+      .loadData(
+        `e-prescription/ScalesList?Patnr=${this.ePrescriptionService.parameters.patnr}`,
+        false,
+        false,
+        false,
+        false
+      )
+      .subscribe(
+        (resp: any) => {
+          console.log(resp);
+          if (
+            resp.body &&
+            resp.body.d &&
+            resp.body.d.results &&
+            resp.body.d.results.length
+          ) {
+            //this.configurationData = resp.body.d.results;
+            this.toScaleArr = resp.body.d.results;
+            // this.medicationImportDrugArray=[];
+            //http://amcqaemr01.ach.jo:8000/sap/opu/odata/sap/ZN_TRANSFER_ASSES_SRV/PatScalesSet?$filter=Patnr
+          }
+          //   this.filterEvents();
+        },
+        () => {
+          scalesOrders.unsubscribe();
+        }
+      );
   }
   openModal(template: TemplateRef<any>) {
     const config: ModalOptions = {
@@ -276,20 +404,35 @@ console.log(createJson)
     // this.medicationImportDrugArray=[];
   }
 
-
-
   loadMedicationHistoryData() {
     this.selectedMedicationOrder = [];
     this.drugArray = [];
-    const profileOrderHistory: Subscription = this.ePrescriptionService.loadData(`e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`, false, false, false, false).subscribe((resp: any) => {
-      if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
-        //this.configurationData = resp.body.d.results;
-        this.drugArray = resp.body.d.results;
-        // this.medicationImportDrugArray=[];
-
-      }
-      //   this.filterEvents();
-    }, () => { profileOrderHistory.unsubscribe(); });
+    const profileOrderHistory: Subscription = this.ePrescriptionService
+      .loadData(
+        `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`,
+        false,
+        false,
+        false,
+        false
+      )
+      .subscribe(
+        (resp: any) => {
+          if (
+            resp.body &&
+            resp.body.d &&
+            resp.body.d.results &&
+            resp.body.d.results.length
+          ) {
+            //this.configurationData = resp.body.d.results;
+            this.drugArray = resp.body.d.results;
+            // this.medicationImportDrugArray=[];
+          }
+          //   this.filterEvents();
+        },
+        () => {
+          profileOrderHistory.unsubscribe();
+        }
+      );
   }
 
   openModalVital() {
@@ -304,21 +447,19 @@ console.log(createJson)
     this.erVitalsModal.openModalForErVital(item);
   }
 
-
   handleCheckboxVitals() {
-  throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.');
   }
   // toVitalsArr: any[]=[];
-  deleteVitalsFromTable(_t73: any,_t74: number) {
-  throw new Error('Method not implemented.');
+  deleteVitalsFromTable(_t73: any, _t74: number) {
+    throw new Error('Method not implemented.');
   }
   onDateChange($event: any) {
     //  throw new Error('Method not implemented.');
   }
   fillCommentBox(arg0: string) {
-  throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.');
   }
-
 
   importVitalsData(data) {
     data.forEach((el) => {
@@ -358,7 +499,7 @@ console.log(createJson)
     }
   }
   isChecked(item: any): boolean {
-    return this.selectedMedicationOrder.some(x => x.Meordid == item.Meordid);
+    return this.selectedMedicationOrder.some((x) => x.Meordid == item.Meordid);
   }
 
   collectMedicationIData(event, item) {
@@ -366,66 +507,71 @@ console.log(createJson)
       this.selectedMedicationOrder.push(item);
       // this.medicationImportDrugArray.push(item);
     } else {
-      const indexOf = this.selectedMedicationOrder.findIndex(x => x.Meordid == item.Meordid);
-      if (indexOf !== -1)
-        this.selectedMedicationOrder.splice(indexOf, 1);
+      const indexOf = this.selectedMedicationOrder.findIndex(
+        (x) => x.Meordid == item.Meordid
+      );
+      if (indexOf !== -1) this.selectedMedicationOrder.splice(indexOf, 1);
       // this.medicationImportDrugArray.splice(index, 1);
     }
   }
 
   medicationImport() {
-    // this.medicationImportDrugArray =  this.drugArray ;
-    // this.drugArray.forEach(element => {
-    this.selectedMedicationOrder.forEach(element => {
-      this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
-        "Dockey": "",
-        "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
-        "Description": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
-        "HomeMedication": false,
-        "PatientOwnMed": false,
-        "Dose": element.Quan + element.Quanunit,
-        "Validity": `${new DatePipe('en-US').transform(
+    if (!this.medicationImportDrugArray) {
+      this.medicationImportDrugArray = [];
+    }
+
+    this.selectedMedicationOrder.forEach((element) => {
+      this.medicationImportDrugArray.push({
+        Dockey: '',
+        OrderType:
+          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        Descr:
+          element.Descrlt +
+          element.Quan +
+          element.Quanunit +
+          element.Routedescr +
+          element.N1id,
+        HomeMedication: false,
+        PatientOwnMed: false,
+        Dose: element.Quan + element.Quanunit,
+        Validity: `${new DatePipe('en-US').transform(
           this.getDate(element.StartD),
           'dd.MM.yyyy'
-        )}` + '-' + `${new DatePipe('en-US').transform(
+        )}-${new DatePipe('en-US').transform(
           this.getDate(element.EndD),
           'dd.MM.yyyy'
         )}`,
-        "Route": element.Routedescr,
-        "Amount": "",
-        "Rate": "",
-        "Therapy": "00000",
-        "Id": "",
-        "OrderingPhysician": element.EmpRespNm,
-        "Cycle": element.N1id
+        Route: element.Routedescr,
+        Amount: '',
+        Rate: '',
+        Therapy: '00000',
+        Id: '',
+        OrderingPhysician: element.EmpRespNm,
+        Cycle: element.N1id,
       });
     });
     this.modalRefUpdateName.hide();
   }
 
-
-
-
   collectAllMedicationIData(event: any) {
     if (event.target.checked) {
-      this.selectedMedicationOrder = (Object.assign([], this.drugArray));
+      this.selectedMedicationOrder = Object.assign([], this.drugArray);
     } else {
       this.selectedMedicationOrder = [];
     }
   }
 
   scalesImport() {
-
     // this.scalesArray = [] ;
     // this.drugArray.forEach(element => {
-    this.selectedScales.forEach(element => {
-      console.log(element)
+    this.selectedScales.forEach((element) => {
+      console.log(element);
       this.scalesArray = this.scalesArray.concat({
-        "Dockey": "",
-        "ScaleType": element.Scaletype ,
-        "ScoreDesc": element.ScoreDesc ,
-        "Datetimee": element.DateTime,
-        "LastScore": element.Score,
+        Dockey: '',
+        ScaleType: element.Scaletype,
+        ScoreDesc: element.ScoreDesc,
+        Datetimee: element.DateTime,
+        LastScore: element.Score,
       });
     });
     this.modalRefScales.hide();
@@ -433,24 +579,36 @@ console.log(createJson)
 
   collectAllScalesData(event: any) {
     if (event.target.checked) {
-      this.selectedScales = (Object.assign([], this.toScaleArr));
+      this.selectedScales = Object.assign([], this.toScaleArr);
     } else {
       this.selectedScales = [];
     }
   }
 
   isCheckedScale(item: any): boolean {
-    return this.selectedScales.some(x => x.Scaletype == item.Scaletype);
+    return this.selectedScales.some((x) => x.Scaletype == item.Scaletype);
   }
 
   collectScalesIData(event, item) {
     if (event.target.checked) {
       this.selectedScales.push(item);
     } else {
-      const indexOf = this.selectedScales.findIndex(x => x.Scaletype == item.Scaletype);
-      if (indexOf !== -1)
-        this.selectedScales.splice(indexOf, 1);
+      const indexOf = this.selectedScales.findIndex(
+        (x) => x.Scaletype == item.Scaletype
+      );
+      if (indexOf !== -1) this.selectedScales.splice(indexOf, 1);
     }
   }
 
+  onIsolationChange(event: Event) {
+  const selectedValue = (event.target as HTMLSelectElement).value;
+  const isoTypeControl = this.transferAssessForm.get('IsolationType');
+
+  if (selectedValue === '2') {
+    isoTypeControl?.enable();
+  } else {
+    isoTypeControl?.disable();
+    isoTypeControl?.reset();
+  }
+}
 }

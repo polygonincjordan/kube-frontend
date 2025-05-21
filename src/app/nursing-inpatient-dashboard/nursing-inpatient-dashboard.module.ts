@@ -182,6 +182,7 @@ import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 
 
+
 const route: Routes = [
   {
     path: '',

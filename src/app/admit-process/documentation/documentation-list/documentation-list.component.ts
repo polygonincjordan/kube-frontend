@@ -906,6 +906,23 @@ export class DocumentationListComponent implements OnInit {
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
     } 
+    else if (item.Dtid == 'ZMED_TRFAS') {
+      const json = {
+        Dockey: item.Dockey,
+      };
+      this.admissionService
+        .getTransferAssSetDocPDF(json)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((data: any) => {
+          this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+          this.pdfTemplateRef = this.modalService.show(template, config);
+        });
+    } 
     else if (item.Dtid == 'ZMED_NICAD') {
       const json = {
         Dockey: item.Dockey,

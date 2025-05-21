@@ -1473,6 +1473,12 @@ export class AdmissionService {
       withCredentials: true,
     });
   }
+  getTransferAssSetDocPDF(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/getTransferAssSetDocPDF`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
   getNicuAddNoteDocPDF(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/eHospitalist/getNicuAddNoteDocPDF`;
     return this.http.post(url, json, {
@@ -1519,6 +1525,15 @@ export class AdmissionService {
   }
   updateTransferDoc(json) {
     return this.http.post(`${environment.eKardexApiUrl}/eHospitalist/updateTransferDoc`, json, { withCredentials: true }).pipe(
+      map((data: any) => { return data }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+  releaseTransferDoc(json) {
+    return this.http.post(`${environment.eKardexApiUrl}/eHospitalist/releaseTransferDoc`, json, { withCredentials: true }).pipe(
       map((data: any) => { return data }),
       catchError((error: HttpErrorResponse) => {
         console.error(error);

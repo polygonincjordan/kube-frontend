@@ -1,20 +1,25 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
+import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { ImportDiagnosisComponent } from 'src/app/shared-module/nursing-discharge-summary/diagnosis-tab/import-diagnosis/import-diagnosis.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-intra-operative-record',
@@ -23,31 +28,32 @@ import { Subscription } from 'rxjs';
 })
 export class IntraOperativeRecordComponent implements OnInit {
   @Output() successEvent: EventEmitter<any> = new EventEmitter<any>();
+   @ViewChild('diagnosisNotesKardexId')diagnosisNotesKardex: ImportDiagnosisComponent;
   public equipment = [
     { value: '1', label: 'No' },
     { value: '0', label: 'Yes' },
   ];
   yesNoOptions = [
     { value: '0', label: 'Yes' },
-    { value: 1, label: 'No' },
+    { value: '1', label: 'No' },
   ];
 
   classifications = [
     { value: '0', label: 'Intermediate' },
-    { value: 1, label: 'Major Plus' },
-    { value: 2, label: 'Complex Major' },
-    { value: 3, label: 'Minor' },
+    { value: '1', label: 'Major Plus' },
+    { value: '2', label: 'Complex Major' },
+    { value: '3', label: 'Minor' },
   ];
 
   surgeryTypes = [
     { value: '0', label: 'Elective' },
-    { value: 1, label: 'Emergency' },
+    { value: '1', label: 'Emergency' },
     { value: 2, label: 'Urgent' },
   ];
 
   surgeryRoomTypes = [
     { value: '0', label: 'Sterilized' },
-    { value: 1, label: 'Destilized' },
+    { value: '1', label: 'Destilized' },
   ];
 
   positions = [
@@ -118,7 +124,8 @@ export class IntraOperativeRecordComponent implements OnInit {
     public admissionService: AdmissionService,
     private sharedService: SharedService,
     private dataShareService: DataShareService,
-    public emergencyService: EmergencyService
+    public emergencyService: EmergencyService,
+    public administrationService:AddministrationService
   ) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -159,6 +166,16 @@ export class IntraOperativeRecordComponent implements OnInit {
     const seconds = String(now.getSeconds()).padStart(2, '0');
     this.currentTime = `${hours}:${minutes}:${seconds}`;
   }
+
+  calculateTotal() {
+  const site = this.criticalForm.get('FProcedureSite')?.value === '0' ? 1 : 0;
+  const oxygen = this.criticalForm.get('FOpenOxygen')?.value === '0' ? 1 : 0;
+  const ignition = this.criticalForm.get('FIgnitionSource')?.value === '0' ? 1 : 0;
+
+  const total = site + oxygen + ignition;
+
+  this.criticalForm.get('FTotal')?.setValue(total, { emitEvent: false });
+}
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -232,9 +249,9 @@ export class IntraOperativeRecordComponent implements OnInit {
 
       // FIRE RISK section
       FDate: [this.getDate(data?.FDate) || this.CurrentDateAndTime],
-      FProcedureSite: [data?.FProcedureSite || ''],
-      FOpenOxygen: [data?.FOpenOxygen || ''],
-      FIgnitionSource: [data?.FIgnitionSource || ''],
+      FProcedureSite: [data?.FIgnitionSource ?? ''],
+      FOpenOxygen: [data?.FOpenOxygen ?? ''],
+      FIgnitionSource: [data?.FIgnitionSource ?? ''],
       FTotal: [data?.FTotal || 0],
       FComments: [data?.FComments || ''],
 
@@ -360,53 +377,6 @@ export class IntraOperativeRecordComponent implements OnInit {
       TOCOUNT: this.formBuilder.array([]),
       TODRAINS: this.formBuilder.array([]),
       TOSPECIMENS: this.formBuilder.array([]),
-    });
-    for (let i = 0; i < 5; i++) {
-      this.addDrain();
-      this.addPacks();
-      this.addImplants();
-      this.addCount();
-      this.addSpecimens();
-      this.addInstrument();
-    }
-  }
-
-  init(data?) {
-    this.criticalForm = this.formBuilder.group({
-      MotherBg: [''],
-      EquipmentText: [''],
-      Problem: [false],
-      ProblemText: [''],
-      AppliedL: [''],
-      AppliedR: [''],
-      rightLine: [false],
-      leftLine: [false],
-      Tourniquet: [''],
-      Tourniquettext: [''],
-      otherassetT: [''],
-      otherasset: [false],
-      asset: [false],
-      assetT: [''],
-      otherS: [false],
-      otherT: [''],
-      na: [false],
-      naT: [''],
-      otherIv: [false],
-      otherIvT: [''],
-      Hair: [''],
-      HairT: [''],
-      Position: [''],
-      PositionT: [''],
-      drains: this.formBuilder.array([]),
-      Packs: this.formBuilder.array([]),
-      Implants: this.formBuilder.array([]),
-      Count: this.formBuilder.array([]),
-      Instrument: this.formBuilder.array([]),
-      Specimens: this.formBuilder.array([]),
-      drainsDrop: [''],
-      na1: [false],
-      PacksDrop: [''],
-      Implantsdrop: [''],
     });
     for (let i = 0; i < 5; i++) {
       this.addDrain();
@@ -613,8 +583,341 @@ export class IntraOperativeRecordComponent implements OnInit {
         DocStatus: status,
       };
 
+      let paay = {
+        "Dockey" : "MED000000000000001000000088700000",
+        "Dtid" : "ZMED_INTOP",
+        "Einri" : "1000",
+        "Patnr" : "1101",
+        "Falnr" : "1402",
+        "Lfdnr" : "00001",
+        "Orgdo" : "F21IUAMC",
+        "AttendPhy" : "9000000020",
+        "DocStatus" : "",
+        "SDate" : "\/Date(1747094400000)\/",
+        "SsiTime" : "PT09H12M14S",
+        "SsiPatientId" : true,
+        "SsiProcedureName" : true,
+        "SsiProcedureSide" : true,
+        "SsiProcedureSite" : true,
+        "SsiConsentFromSigned" : true,
+        "SsiPreAnaesthesia" : true,
+        "SsiEquipment" : true,
+        "SsiAirway" : true,
+        "SsiAspiration" : true,
+        "SsiRiskBlood" : true,
+        "SsiAllergies" : true,
+        "SsiAnaesthesiaEquipment" : true,
+        "SsiVerificationCritical" : true,
+        "SsiVerificationExistence" : true,
+        "StTime" : "PT09H12M25S",
+        "StTeamOrientation" : true,
+        "StIdConfirmation" : true,
+        "StProcedureName" : true,
+        "StProcedureSide" : true,
+        "StProcedureSite" : true,
+        "StAnticipated" : true,
+        "StAntibiotic" : true,
+        "StImageDisplayed" : true,
+        "StImplantsReady" : true,
+        "StSWhatAre" : true,
+        "StSHowLong" : true,
+        "StSWhatIs" : true,
+        "StAAreThere" : true,
+        "StNHasSterility" : true,
+        "StNAreThere" : true,
+        "SsoTime" : "PT09H12M43S",
+        "SsoProcedureName" : true,
+        "SsoInstrumentCount" : true,
+        "SsoSpecimenLabelled" : true,
+        "SsoEquipmentProblems" : "0",
+        "SsoEquipmentProblemsTxt" : "test",
+        "SsoProblemEncountered" : true,
+        "SsoProblemEncounteredTxt" : "test",
+        "SsoKeyConcerns" : true,
+        "FDate" : "\/Date(1747094400000)\/",
+        "FProcedureSite" : "0",
+        "FOpenOxygen" : "0",
+        "FIgnitionSource" : "0",
+        "FTotal" : 3,
+        "FComments" : "test",
+        "Iod1NoDiagnoses" : false,
+        "Iod1NoProcedure" : false,
+        "Iod2Date" : "\/Date(1747094400000)\/",
+        "Iod2Surgery" : "0",
+        "Iod2RoomNo" : "AUDOPAMC",
+        "Iod2RoomType" : "0",
+        "Iod2Classification" : "0",
+        "Iod2Positioning" : "7",
+        "Iod2PositioningTxt" : "TEst",
+        "Iod2SSafetyBelts" : true,
+        "Iod2SLateralSupport" : true,
+        "Iod2SWarmingDevices" : true,
+        "Iod2SPillows" : true,
+        "Iod2SLeft" : true,
+        "Iod2SRight" : true,
+        "Iod2SGelPads" : true,
+        "Iod2SHeadRest" : true,
+        "Iod2SArmBoards" : true,
+        "Iod2SOther" : true,
+        "Iod2SOtherTxt" : "test",
+        "Iod2PArms" : true,
+        "Iod2PAxilla" : true,
+        "Iod2PHeals" : true,
+        "Iod2PHips" : true,
+        "Iod2PKnees" : true,
+        "Iod2PHead" : true,
+        "Iod2PShoulders" : true,
+        "Iod2POther" : true,
+        "Iod2POtherTxt" : "TEst",
+        "Iod2HairClipping" : "0",
+        "Iod2HairClippingTxt" : "test",
+        "Iod2SkPovidoneIodine" : true,
+        "Iod2SkChlorhexidine" : true,
+        "Iod2SkOther" : true,
+        "Iod2SkOtherTxt" : "Test",
+        "Iod2WarmingBlanket" : "0",
+        "Iod2ElectroCautry" : "0",
+        "Iod2AssetsNo" : true,
+        "Iod2AssetsNoTxt" : "1231",
+        "Iod2PaArm" : true,
+        "Iod2PaLeg" : true,
+        "Iod2PaButtocks" : true,
+        "Iod2PaLeft" : true,
+        "Iod2PaRight" : true,
+        "Iod2PaOther" : true,
+        "Iod2PaOtherTxt" : "tset",
+        "Iod2SkinCondition" : "0",
+        "Iod2TTourniquet" : "0",
+        "Iod2TAssetNo" : "1231",
+        "Iod2TAppliedBy" : "test",
+        "Iod2TLeftLimb" : true,
+        "Iod2TLTimeApplied" : "PT09H20M38S",
+        "Iod2TLTimeInflated" : "PT09H20M41S",
+        "Iod2TLPressure" : "12",
+        "Iod2TLTimeDeflated" : "PT09H20M48S",
+        "Iod2TLTimeRemoved" : "PT09H20M51S",
+        "Iod2TRightLimb" : true,
+        "Iod2TRTimeApplied" : "PT09H20M55S",
+        "Iod2TRTimeInflated" : "PT09H20M58S",
+        "Iod2TRPressure" : "13",
+        "Iod2TRTimeDeflated" : "PT09H21M05S",
+        "Iod2TRTimeRemoved" : "PT09H21M09S",
+        "Iod2TImplants" : "0",
+        "Iod2TSkinClosure" : "0",
+        "Iod2TType" : "0",
+        "Iod2TMethod" : "0",
+        "Iod2TOthers" : "test",
+        "Iod2TSwabs" : "1",
+        "Iod2TSuction" : "2",
+        "Iod2TTotal" : "3",
+        "Iod2TDrains" : "0",
+        "Iod2TPacks" : "0",
+        "Iod2TIfIncorrectTxt" : "test",
+        "Iod2TSpecimensNa" : false,
+        "Iod2TLscsNa" : false,
+        "Iod2TLscsBabyGender" : "1",
+        "Iod2TLscsWeight" : "40.000",
+        "Iod2TLscsBirthTime" : "PT09H24M03S",
+        "Iod2TLscsIdentification" : "0",
+        "Iod2TLscsBy" : "test",
+        "Iod2TLscsBabyDischarge" : "2",
+        "Iod2TLscsBabyDischargeTxt" : "test",
+        "Iod2TCirculatingNurse" : "NurseName",
+        "Iod2TScrubNurse" : "NurseName",
+        "PodGkIntact" : true,
+        "PodGkBurns" : true,
+        "PodGkBlister" : true,
+        "PodGkEcchymosis" : true,
+        "PodGkAbrasions" : true,
+        "PodLocation" : "LOc",
+        "PodDischargedTo" : "3",
+        "PodDischargedToTxt" : "test",
+        "PodRWoundStatus" : true,
+        "PodRTed" : true,
+        "PodRDressing" : true,
+        "PodRPatientMedical" : true,
+        "PodRUrinaryCatheter" : true,
+        "PodRXRay" : true,
+        "PodRNgt" : true,
+        "PodRIv" : true,
+        "PodROthers" : true,
+        "PodROthersTxt" : "test",
+        "PodHandoverBy" : "HandoverBy",
+        "PodHandoverByTime" : "PT09H38M44S",
+        "PodReceivedBy" : "PodReceivedBy",
+        "PodReceivedByTime" : "PT09H38M47S",
+        "TOPROCEDURE" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/ProceduresSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/ProceduresSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Procedures"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Id" : "1",
+              "Code" : "12",
+              "Catalogg" : "1",
+              "Timestamp" : "",
+              "Description" : "TEst",
+              "Remarks" : "test",
+              "Anesthesia" : "test"
+            }
+          ]
+        },
+        "TODIAGNOSES" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/DiagnosesSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/DiagnosesSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Diagnoses"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "DCode" : "A00.0",
+              "DDescription" : "Cholera due to Vibrio cholerae 01, biovar cholerae",
+              "DRemarks" : "testttt",
+              "DAdmission" : true,
+              "DDischarge" : true,
+              "DWorking" : true,
+              "DPreoperative" : true,
+              "DSurgery" : true,
+              "DDeath" : true,
+              "DDepartment" : true,
+              "DHospital" : true
+            }
+          ]
+        },
+        "TOPACKS" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/PacksSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/PacksSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Packs"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Type" : "tset",
+              "No" : "001",
+              "Site" : "left"
+            },
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/PacksSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/PacksSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Packs"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Type" : "tset",
+              "No" : "001",
+              "Site" : "left"
+            }
+          ]
+        },
+        "TOIMPLANTS" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/ImplantsSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/ImplantsSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Implants"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Type" : "test",
+              "Size" : "12",
+              "Quantity" : "1"
+            }
+          ]
+        },
+        "TOINSTRUMENT_SET" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/InstrumentSetSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/InstrumentSetSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.InstrumentSet"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "InstrumentSets" : "2",
+              "CycleNumber" : 2,
+              "PackedBy" : "9000000010",
+              "PackedByName" : "Maha,Ayyoub"
+            }
+          ]
+        },
+        "TOCOUNT" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/CountSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/CountSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Count"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Item" : "",
+              "IniCorrect" : "1",
+              "IniIncorrect" : "1",
+              "SecCorrect" : "1",
+              "SecIncorrect" : "1",
+              "FinCorrect" : "1",
+              "FinIncorrect" : "1"
+            }
+          ]
+        },
+        "TOSURGICALTEAM" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/SurgicalTeamSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/SurgicalTeamSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.SurgicalTeam"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Code" : "10",
+              "Description" : "test",
+              "EmployeeResp" : "9000000020",
+              "EmployeeName" : "Test",
+              "DateIn" : "\/Date(1747094400000)\/",
+              "TimeIn" : "PT09H12M14S",
+              "DateOut" : "\/Date(1747094400000)\/",
+              "TimeOut" : "PT09H12M14S"
+            }
+          ]
+        },
+        "TODRAINS" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/DrainsSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/DrainsSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Drains"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Type" : "test",
+              "Size" : "10",
+              "Site" : "1"
+            }
+          ]
+        },
+        "TOSPECIMENS" : {
+          "results" : [
+            {
+              "__metadata" : {
+                "id" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/SpecimensSet('MED000000000000001000000088700000')",
+                "uri" : "http://ACHDEVEMR01.ach.jo:8000/sap/opu/odata/sap/ZN_INTRA_OP_NUR_REC_SRV/SpecimensSet('MED000000000000001000000088700000')",
+                "type" : "ZN_INTRA_OP_NUR_REC_SRV.Specimens"
+              },
+              "Dockey" : "MED000000000000001000000088700000",
+              "Type" : "0",
+              "SpecimenSamples" : "1"
+            }
+          ]
+        }
+
+      }
+
       this.subscription = this.admissionService
-        .createIntraOpNurRecSetDoc(payload)
+        .createIntraOpNurRecSetDoc(paay)
         .subscribe({
           next: (data: any) => {},
           error: (err: any) => {
@@ -681,6 +984,7 @@ export class IntraOperativeRecordComponent implements OnInit {
           const currentDate = new Date();
 
             this.criticalForm.controls['PodReceivedBy'].setValue(uname);
+            this.criticalForm.controls['Iod2TScrubNurse'].setValue(uname);
             this.criticalForm.controls['PodReceivedByTime'].setValue(currentDate.toTimeString().slice(0, 5)); // Set the current time (HH:MM format)
         }
         this.modalRef.hide();
@@ -759,4 +1063,68 @@ export class IntraOperativeRecordComponent implements OnInit {
 
     return `${formattedHours}${formattedMinutes}${formattedSeconds}`;
   }
+   public openModalForDiagnosis() {
+    if (this.criticalForm.value.Iod1NoDiagnoses) return;
+    this.diagnosisNotesKardex.openModalForDiagnosisKardex();
+  }
+
+  public deleteDiagnosisFromTable(index, i) {
+    this.toDiagnosisArr.splice(index, 1);
+  }
+ duplicates: any[];
+ @Input() toDiagnosisArr: any = []
+  importDiagnosisData(data) {
+      data.forEach((el) => {
+        this.toDiagnosisArr = this.toDiagnosisArr.concat({
+          Dockey: '',
+          DCode: el.DiagKey1,
+          DDescription: el.DiagShorttext,
+          DRemarks: el.DiagText,
+          DAdmission: el.AdmissionDia,
+          DDischarge: el.DischargeDia,
+          DWorking: el.WorkDiagInd,
+          DPreoperative: el.PreopDiagInd,
+          DSurgery: el.SurgeryDia,
+          DDeath: el.CauseOfDeath,
+          DDepartment: el.DeptMainDia,
+          DHospital: el.HospMainDia,
+        });
+      });
+      this.duplicates = [];
+      this.duplicates = this.findDuplicatesDiagnosis();
+      this.toDiagnosisArr = this.toDiagnosisArr.filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.DCode === value.DCode)
+      );
+      if (this.duplicates.length > 0) {
+        this.errorMsgForDuplicatesDiagnosis();
+      }
+    }
+  
+    findDuplicatesDiagnosis() {
+      let tempArr = [];
+      const lookup = this.toDiagnosisArr.reduce((a, e) => {
+        a[e.DCode] = ++a[e.DCode] || 0;
+        return a;
+      }, {});
+      tempArr = this.toDiagnosisArr.filter((e) => lookup[e.DCode]);
+      return tempArr.filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.DCode === value.DCode)
+      );
+    }
+  
+    errorMsgForDuplicatesDiagnosis() {
+      let codeArr = [];
+      this.duplicates.forEach((element) => {
+        codeArr.push(element.DCode);
+      });
+  
+      Swal.fire({
+        text: `${codeArr.toString()} is/are already Imported `,
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup',
+      });
+    }
 }

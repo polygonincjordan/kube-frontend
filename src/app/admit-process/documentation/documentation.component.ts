@@ -16,6 +16,7 @@ import { catchError, of } from 'rxjs';
 import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { SharedService } from '@services/shared.service';
+import { DatePipe } from '@angular/common';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation',
@@ -376,6 +377,10 @@ export class DocumentationComponent implements OnInit {
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
       this.directReleaseNeonatalDischargeDoc();
     }
+     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_TRFAS') {
+  this.releasePhysicianDoc() 
+          
+    }
   }
 
   releaseEducatonAss() {
@@ -387,6 +392,38 @@ export class DocumentationComponent implements OnInit {
       };
       d.d.DocStatus = '2';
       this.admissionService.saveEducationData(d).subscribe(
+        (result) => {
+          this.admissionService.isRealoadData.next(true);
+        }
+      );
+    })
+  }
+  releasePhysicianDoc() {
+    let json = {
+      Dockey:this.admissionService.selectedCurrentDocDetails.Dockey
+    }
+    this.admissionService.getTansferAssessData(json).subscribe((res: any) => {
+      console.log(res, "--");
+
+      let d: any = {
+        d: res?.results[0],
+      };
+      d .d.DocStatus = '2';
+      if (d.d.Datee != '') {
+  // Extract timestamp from "/Date(1747785600000)/"
+  const match = /\/Date\((\d+)\)\//.exec(d.d.Datee);
+  if (match && match[1]) {
+    const dateObj = new Date(+match[1]); // convert to Date
+    d.d.Datee = `${new DatePipe('en-US').transform(
+      dateObj,
+      'yyyy-MM-dd'
+    )}T00:00:00`;
+  } else {
+    d.d.Datee = ''; // fallback or handle invalid case
+  }
+}
+      delete d.d.__metadata;
+      this.admissionService.releaseTransferDoc(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
         }
