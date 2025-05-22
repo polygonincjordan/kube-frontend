@@ -52,7 +52,7 @@ export class EMarOrderNurseComponent {
 
 
   constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) { }
- 
+
 
   // filterEventsdata() {
   // if (this.filterConfigdata.Active || this.filterConfigdata.Suspended || this.filterConfigdata.Ended || this.filterConfigdata.Cancelled) {
@@ -65,7 +65,7 @@ export class EMarOrderNurseComponent {
   //     this.configurationData = scheduleList
   //   }
   // }
- 
+
 
   processData(data: MedicationData[], events: MedicationEventData[]) {
     if (data && data.length) {
@@ -278,9 +278,19 @@ export class EMarOrderNurseComponent {
     // }
     // else{
     this.drugEvents.openModalForDrugsEvents(item, data)
+    this.drugEvents.onClose.subscribe((res) => {
+      this.ePrescriptionService.tabPanelNavigation('eEmar');
+      this.ePrescriptionService.selectedItems=[{ item_id: 1, item_text: 'Active' }]
+      this.processData(res.medicationData.medicationData, res.medicationData.eventData)
+      this.filterConfig = res.filterData;
+      this.setCurrentDateData();
+    })
     // }
   }
 
+  ngOnDestroy(): void {
+    this.drugEvents.onClose.unsubscribe();
+  }
 
   showErrorPopup(title: any, text: any, messageType) {
     return swal.fire({
