@@ -1682,6 +1682,39 @@ export class EmergencyService {
     });
   }
 
+  // Pediatrics Fall Risk Assessment Document
+  saveFallRiskAssessment(json) {
+    return this.http.post(this.url + 'saveFallRiskAssessment', json, {
+      withCredentials: true,
+    });
+  }
+
+  getDocFallRiskAssessmentDetails(dockey) {
+    return this.http.get(this.url + `getDocFallRiskAssessmentDetails?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  fallRiskAssessmentLatestDoc(json) {
+    return this.http.get(
+      this.url + `fallRiskAssessmentLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  savePatientDelivery(json) {
+    return this.http.post(this.url + 'savePatientDelivery', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchPatientDeliveryDetail(Faln1) {
+    return this.http.get(this.url + `fetchPatientDeliveryDetail?Faln1=${Faln1}`, {
+      withCredentials: true,
+    });
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

@@ -49,6 +49,7 @@ export enum WordType {
   CopyFPS = 'CopyFacePainScale',
   CopyNRS = 'CopyNumericRatingScale',
   CopyBS = 'CopyBradenScale',
+  CopyPFR = 'CopyPFR',
   CopyEND = 'CopyEmergencyNursingDocument',
 }
 

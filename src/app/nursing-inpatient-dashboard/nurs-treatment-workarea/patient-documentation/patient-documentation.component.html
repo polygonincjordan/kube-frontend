@@ -189,7 +189,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument || openisPediatricsFallDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -872,16 +872,19 @@
                 [ngClass]="isPediatricsFall ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PFRA'" (click)="selectAssessment('isPediatricsFall',pediatricsFallList[0])">
                 <div class="col-md-4">Pediatrics Fall Risk Assessment {{pediatricsFallList[0]?.Zversion ?
-                  dockVer(pediatricsFallList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                  dockVer(pediatricsFallList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{pediatricsFallList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(pediatricsFallList[0]?.DocTime)}}">
                   {{getDate(pediatricsFallList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{pediatricsFallList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
-                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                    (click)="openCVCInsertionDocumentPdf(pediatricsFallList[0]?.Dockey)"
-                    *ngIf="pediatricsFallList[0]?.StatusTxt == 'Released'"></i>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(pediatricsFallList[0],RedirectionType.NMRTSC$)" *ngIf="pediatricsFallList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(pediatricsFallList[0]?.Dockey, pediatricsFallList[0])">
+                    <select *ngIf="pediatricsFallList.length && pediatricsFallList[0]?.StatusTxt !='N/A' && pediatricsFallList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
                 </div>
               </div>
 

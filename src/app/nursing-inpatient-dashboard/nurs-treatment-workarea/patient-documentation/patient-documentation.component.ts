@@ -49,6 +49,7 @@ import { NursAssessmentRestraintsComponent } from './nurs-assessment-restraints/
 import { CriticalCarePainComponent } from './critical-care-pain/critical-care-pain.component';
 import { MaternityEarlyWarningSignComponent } from './maternity-early-warning-sign/maternity-early-warning-sign.component';
 import { IntraOperativeRecordComponent } from './intra-operative-record/intra-operative-record.component';
+import { PediatricsFallRiskAssessmentComponent } from './pediatrics-fall-risk-assessment/pediatrics-fall-risk-assessment.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -86,6 +87,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(TimeOutChecklistComponent) TimeOutCheckListComp: TimeOutChecklistComponent;
   @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @ViewChild(CvcInsertionComponent) CvcInsertionDocumentComp: CvcInsertionComponent;
+  @ViewChild(PediatricsFallRiskAssessmentComponent) PediatricsFallRiskAssessmentComp: PediatricsFallRiskAssessmentComponent;
   @ViewChild(NursAssessmentRestraintsComponent) NurseAssMainComp: NursAssessmentRestraintsComponent;
 
  
@@ -640,6 +642,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getTimeOutCheckDocDetails();
     this.getNeonatalDischargeDocDetails();
     this.getCVCInsertionDocDetails();
+    this.getPedFallRiskDocDetails();
   }
 
   LatestMFSSet() {
@@ -878,6 +881,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService.CVCInsertionDocumentLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestCVCInsertionList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // CVC Insertion Document Latest
+  getPedFallRiskDocDetails() {
+    this.emergencyService.fallRiskAssessmentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.pediatricsFallList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -1991,6 +2007,9 @@ export class PatientDocumentationComponent implements OnInit {
     this.openInitialNursingNewbornDocument = false;
     this.isInitialNursingNewborn = false;
 
+    this.pediatricsFallList = [];
+    this.isPediatricsFall = false;
+
     this.searchString = '';
     this.dateRange = '';
     this.documentType = undefined;
@@ -2111,7 +2130,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.CvcInsertionDocumentComp.ngOnDestroy();
     }
     if (this.openisPediatricsFallDocument) {
-      this.CvcInsertionDocumentComp.ngOnDestroy();
+      this.PediatricsFallRiskAssessmentComp.ngOnDestroy();
     }
     this.getPatientProfile();
     this.getLatestAssessment();
@@ -2143,6 +2162,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getTimeOutCheckDocDetails();
     this.getNeonatalDischargeDocDetails();
     this.getCVCInsertionDocDetails();
+    this.getPedFallRiskDocDetails();
   }
 
   openDocument(action) {
@@ -4066,7 +4086,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openisPediatricsFallDocument = true;
           let valueObj = {
-            type: WordType.EditBS,
+            type: WordType.CopyPFR,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
@@ -4091,9 +4111,10 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.openisPediatricsFallDocument = true;
           let valueObj = {
-            type: WordType.CopyBS,
+            type: WordType.CopyPFR,
             docKey: this.selectedDocData.Dockey
           }
+          console.log(valueObj, "valueObj");
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
@@ -5565,7 +5586,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openisPediatricsFallDocument) {
         let docStatus = '1';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
-        this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
+        this.PediatricsFallRiskAssessmentComp.createFallRiskPed(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -5971,7 +5992,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openisPediatricsFallDocument) {
         let docStatus = '1';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
-        this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
+        this.PediatricsFallRiskAssessmentComp.createFallRiskPed(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6385,7 +6406,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openisPediatricsFallDocument) {
         let docStatus = '3';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
-        this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
+        this.PediatricsFallRiskAssessmentComp.createFallRiskPed(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6760,14 +6781,14 @@ export class PatientDocumentationComponent implements OnInit {
       });
     }
     else if (this.openisPediatricsFallDocument) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.PediatricsFallRiskAssessmentComp.createFallRiskPed('3').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
-      }).catch((error: any) => {
-        console.error('Error scale:', error);
-        console.error('Error creating Glasgow coma scale:', error);
-      });
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
     }
   }
 
@@ -8513,7 +8534,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openNeonatalDischDocument ||
       this.openTimeoutCheckDocument ||
       this.openCVCInsertionDocument ||
-      this.openisPediatricsFallDocument ||
+      // this.openisPediatricsFallDocument ||
       this.openPediatricAdmissionDocument ||
       this.openObstetricFallRiskAssessmentDocument ||
       this.openpostPatientFallAssessmentDocument ||
