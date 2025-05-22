@@ -1583,7 +1583,7 @@
                 </div>
                 <button
                   class="review-btn mb-2"
-                  (click)="addImplants()"
+                  (click)="addImplantsRow()"
                   [disabled]="criticalForm.get('Iod2TImplants')?.value != '0'"
                 >
                   <i class="fa fa-plus"></i> Add
@@ -1758,7 +1758,7 @@
                 </div>
                 <button
                   class="review-btn mb-2"
-                  (click)="addDrain()"
+                  (click)="addDrainRow()"
                   [disabled]="criticalForm.get('Iod2TDrains')?.value != '0'"
                 >
                   <i class="fa fa-plus"></i> Add
@@ -1852,7 +1852,7 @@
                   </div>
                   <button
                     class="review-btn mb-2"
-                    (click)="addPacks()"
+                    (click)="addPacksRow()"
                     [disabled]="criticalForm.get('Iod2TPacks')?.value != '0'"
                   >
                     <i class="fa fa-plus"></i> Add
@@ -1937,7 +1937,7 @@
                   class="scale-result d-flex justify-content-between align-items-center mb-2 p-0"
                 >
                   <h6 class="mb-0">Count</h6>
-                  <button class="review-btn mb-2" (click)="addCount()">
+                  <button class="review-btn mb-2" (click)="addCountRow()">
                     <i class="fa fa-plus"></i> Add
                   </button>
                 </div>
@@ -2029,7 +2029,7 @@
                   <h6 class="d-flex">Specimens</h6>
                   <button
                     class="review-btn mb-2"
-                    (click)="addSpecimens()"
+                    (click)="addSpecimensRow()"
                     [disabled]="!criticalForm.get('Iod2TSpecimensNa')?.value"
                   >
                     <i class="fa fa-plus"></i> Add
@@ -2107,7 +2107,7 @@
             >
               <div class="scale-result d-flex justify-content-between p-0">
                 <h6 class="">Instrument Sets</h6>
-                <button class="review-btn mb-2" (click)="addInstrument()">
+                <button class="review-btn mb-2" (click)="addInstrumentRow()">
                   <i class="fa fa-plus"></i> Add
                 </button>
               </div>
@@ -2281,10 +2281,10 @@
           </div>
           <div class="Safety d-flex mt-2">
             <div class="col-md-1 pl-0 mt-2 mr-2">Circulating Nurse</div>
-            <ng-select class="border-0 selectbordernone"
+            <ng-select class="border-0 selectbordernone" style="min-width: 515px;"
             formControlName="Iod2TCirculatingNurse"
             (click)="this.administrationService.employeeresponsible()">
-            <ng-option class="border-0" style="min-width: 515px;"
+            <ng-option class="border-0" 
               *ngFor=" let employeeresponsibal of
               administrationService.AdminiEmployeeresponsible"
               [value]="employeeresponsibal.Moresp1">
