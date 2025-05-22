@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 @Component({
   selector: 'app-documenting-delivery',
   templateUrl: './documenting-delivery.component.html',
@@ -8,6 +9,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 })
 export class DocumentingDeliveryComponent implements OnInit {
   activeTab: string = 'deliverydata'; // Default tab
+  @Input() data: any;
+
   public delvTypes = [
     { value: 'K', label: 'C/S' },
     { value: 'V', label: 'Forceps VD' },
@@ -15,7 +18,7 @@ export class DocumentingDeliveryComponent implements OnInit {
     { value: 'S', label: 'Not Stated' },
     { value: 'Z', label: 'Vacuum VE' }
   ];
-  
+
   public sexes = [
     { value: '1', label: 'Male' },
     { value: '2', label: 'Female' },
@@ -23,17 +26,17 @@ export class DocumentingDeliveryComponent implements OnInit {
   ];
   public apgar = [
     { value: '0', label: '0 = Very Bad' },
-    { value: '10',label: '10 = Very Good' },
- 
+    { value: '10', label: '10 = Very Good' },
+
   ];
-  
+
   public delOutcomes = [
     { value: 'L', label: 'Live' },
     { value: 'M', label: 'Miscarriage' },
     { value: 'O', label: 'Other' },
     { value: 'S', label: 'Stillbirth' }
   ];
-  
+
   public birthplaces = [
     { value: '1', label: 'Ambulance' },
     { value: '13', label: 'Cath Lab' },
@@ -62,10 +65,20 @@ export class DocumentingDeliveryComponent implements OnInit {
     { value: '3', label: 'Upon Arrival to Hospital' },
     { value: '2', label: 'While transfer to other center' }
   ];
-  
-  constructor(public activeModal: NgbActiveModal) { }
+
+  constructor(public activeModal: NgbActiveModal, private emergencyService: EmergencyService) { }
 
   ngOnInit(): void {
+    this.getPatientDeliveryDetails();
+  }
+
+  getPatientDeliveryDetails() {
+    console.log(this.data, "data");
+
+    this.emergencyService.fetchPatientDeliveryDetail(this.data?.Falnr).subscribe((res) => {
+      console.log(res);
+
+    })
   }
 
   setActiveTab(tab: string): void {

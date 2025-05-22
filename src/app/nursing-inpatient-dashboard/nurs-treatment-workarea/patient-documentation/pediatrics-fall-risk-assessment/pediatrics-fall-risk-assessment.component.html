@@ -1,230 +1,250 @@
 <form [formGroup]="pediatricsForm">
-    <div class="scale-container p-2">
-      <div class="box-container">
-        <h6 class="title-main">Scale Information</h6>
-        <div class="row">
-            <label>Scale Name</label>
-            <input class="col-md-5 form-control" type="text" value="Fall Risk Assesment - pediatrics" disabled/>
-          </div>
-          <div class="row">
-            <label>Date</label>
-            <input type="text" class="col-2 form-control" bsDatepicker
-            [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
-            [bsValue]="CurrentDateAndTime" disabled>
+  <div class="scale-container p-2">
+    <div class="box-container">
+      <h6 class="title-main">Scale Information</h6>
+      <div class="row">
+        <label>Scale Name</label>
+        <input class="col-md-5 form-control" type="text" value="Fall Risk Assesment - pediatrics" disabled />
+      </div>
+      <div class="row">
+        <label>Date</label>
+        <input type="text" class="col-2 form-control" bsDatepicker
+          [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime"
+          disabled>
         <input type="text" class="col-2 form-control ml-2" bsDatepicker
-            [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"
-            [bsValue]="CurrentDateAndTime" disabled>
-          </div>
-          <div class="row">
-            <label>Realized by </label>
-            <input class="col-md-3 form-control" type="text"  [value]="realized" disabled/>
-            <input class="col-md-5 form-control ml-2" type="text"  [value]="realizedDescription" disabled/>
-          </div>
+          [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled>
       </div>
-      <div class="box-container">
-        <h6 class="title-main">Assessment</h6>
-        <div class="">
-          <div class="d-flex align-items-center">
-            <input class="" type="checkbox" />
-            <label class="pl-2">Complete paralysis/or completely immobilized: Low fall risk prevention protocol</label>
-          </div>
-          <div class="d-flex align-items-center">
-            <input class="" type="checkbox" />
-            <label class="pl-2">Experience of fall during the hospitalization: High fall risk prevention protocol</label>
-          </div>
-          <div class="d-flex align-items-center">
-            <input class="" type="checkbox" />
-            <label class="pl-2">Dizzeness/postural hypotension/Mydriatic drug: High fall risk prevention protocol</label>
-          </div>
-          <br />
-          <p> If none of the above, do risk factor checklist</p>
-        </div>
-      </div>
-      <div class="box-container">
-        <h6 class="title-main">Risk Factor Checklist</h6>
-        <div class="row">
-          <label class="col-md-3 p-0">Characteristics</label>
-          <label class="col-md-3 p-0">Score</label>
-          <label class="col-md-3 p-0">Description</label>
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Age</label>
-          <input class="col-md-1 form-control mr-3"  type="text"  formControlName="AgeS"  />
-          <ng-select class="col-md-4 p-0" [items]="ageOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()"  formControlName="Age">
-          </ng-select>
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Gender</label>
-          <input class="col-md-1 form-control mr-3" type="text"   formControlName="GenderS" />
-          <ng-select class="col-md-4 p-0" [items]="genderOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()" formControlName="Gender" >
-          </ng-select>
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Congative Impairments</label>
-          <input class="col-md-1 form-control mr-3"  type="text"   formControlName="CongativeS" />
-          <ng-select class="col-md-4 p-0" [items]="cognitiveOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()" formControlName="Congative" >
-          </ng-select>
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Response to Surgery/Sedation/Anesthesia</label>
-          <input class="col-md-1 form-control mr-3"  type="text"   formControlName="responseS" />
-          <ng-select class="col-md-4 p-0" [items]="responseOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()" formControlName="response" >
-          </ng-select>
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Dignosis</label>
-          <input class="col-md-1 form-control mr-3"  type="text"   formControlName="DignosisS" />
-          <ng-select class="col-md-4 p-0" [items]="diagnosisOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()" formControlName="Dignosis" >
-          </ng-select>
-          <img _ngcontent-kcr-c272="" width="35px" src="assets/img/information.jfif" (click)="openModal(saveModals)" class="mr-2 cursor-pointer">
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Environmental Factors</label>
-          <input class="col-md-1 form-control mr-3"  type="text"   formControlName="EnvironmentalS" />
-          <ng-select class="col-md-4 p-0" [items]="environmentalOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()" formControlName="Environmental" >
-          </ng-select>
-          <img _ngcontent-kcr-c272="" width="35px" src="assets/img/information.jfif" (click)="openModalEnvironmental(saveModalsEnvironmental)" class="mr-2 cursor-pointer">
-        </div>
-        <div class="row">
-          <label class="col-md-3 p-0">Medication Usage</label>
-          <input class="col-md-1 form-control mr-3"  type="text"   formControlName="MedicationS" />
-          <ng-select class="col-md-4 p-0" [items]="medicationOptions" bindLabel="label" bindValue="value" (change)="calculateTotalScore()"  formControlName="Medication">
-          </ng-select>
-          <img _ngcontent-kcr-c272="" width="35px" src="assets/img/information.jfif"  (click)="openModalMedication(saveModalsMedication)" class="mr-2 cursor-pointer">
-        </div>
-      </div>
-      <div class="box-container">
-        <h6 class="title-main">Scale Result</h6>
-        <div class="row">
-          <label class="col-md-3 p-0">Total Score</label>
-          <input class="col-md-1 form-control mr-3" type="text" formControlName="TotalScore" [readOnly]="true"/>
-          <input class="col-md-3 form-control" type="text" value="High Fall Risk Prevention Protocol" disabled />
-          <img _ngcontent-kcr-c272="" width="35px" src="assets/img/information.jfif"  (click)="openModalHigh(saveModalsHigh)" class="mr-2 cursor-pointer">Std.Intervention.Protoc
-        </div>
-        <label>Comments</label>
-        <input class="col-md-6 form-control" type="text"  />
+      <div class="row">
+        <label>Realized by </label>
+        <input class="col-md-3 form-control" type="text" [value]="realized" disabled />
+        <input class="col-md-5 form-control ml-2" type="text" [value]="realizedDescription" disabled />
       </div>
     </div>
-  </form>
-
-
-
-
-
-  <ng-template #saveModals let-modal="bsModalRef">
-    <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
-      <h4 class="modal-title pull-left">Diagnosis Information</h4>
-      <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;" (click)="modalRef?.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body p-3">
-        <ol class="pl-3">
-            <li class="pb-2">1.Other Diagnosis</li>
-            <li class="pb-2">2.Psych/Behavioral Disorders</li>
-            <li>
-              3.Alterations in Oxygenation<br />
-              <small class="text-muted pb-2">
-                (Respiratory Diagnosis, Dehydration, Anemia, Anoxia, Syncope/Dizziness, etc.)
-              </small>
-            </li>
-            <li>4.Neurological Diagnosis</li>
-          </ol>
-    </div>
-    <div class="modal-footer p-3">
-        <div style="text-align: end">
-          <button class="update-risk-save-btn"  (click)="modalRef?.hide()">Cancel</button>
+    <div class="box-container">
+      <h6 class="title-main">Assessment</h6>
+      <div class="">
+        <div class="d-flex align-items-center">
+          <input class="" type="checkbox" />
+          <label class="pl-2">Complete paralysis/or completely immobilized: Low fall risk prevention protocol</label>
         </div>
-      </div>
-  </ng-template>
-
-
-  <ng-template #saveModalsEnvironmental let-modal="bsModalRef">
-    <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
-      <h4 class="modal-title pull-left">Environmental Factors</h4>
-      <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;" (click)="modalRef?.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body p-3">
-        <ol class="pl-3">
-            <li class="pb-2">1.Outpatient Area</li>
-            <li class="pb-2">2.Patient Placed in Bed</li>
-            <li class="pb-2">
-              3.Patient uses assistive or infant-Toddler in Crib or Furniture/Lighting (Tripled room)
-            </li>
-            <li>4.History of Falls or Infant-Toddler Placed in bed</li>
-          </ol>
-    </div>
-    <div class="modal-footer p-3">
-        <div style="text-align: end">
-          <button class="update-risk-save-btn"  (click)="modalRef?.hide()">Cancel</button>
+        <div class="d-flex align-items-center">
+          <input class="" type="checkbox" />
+          <label class="pl-2">Experience of fall during the hospitalization: High fall risk prevention protocol</label>
         </div>
-      </div>
-  </ng-template>
-
-
-  <ng-template #saveModalsMedication let-modal="bsModalRef">
-    <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
-      <h4 class="modal-title pull-left">Medication Usage</h4>
-      <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;" (click)="modalRef?.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body p-3">
-        <ol class="pl-3">
-            <li class="pb-2">1.Other Medications/None</li>
-            <li class="pb-2">2.One of the meds listed: Barbiturates Phenothiazines Antidepressants Laxatives/Diuretics Narcotics Hypnotics</li>
-            <li class="pb-2">
-              3.Multiple usage of: Sedatives (excluding ICU patients sedated and paralyzed)
-            </li>
-          </ol>
-    </div>
-    <div class="modal-footer p-3">
-        <div style="text-align: end">
-          <button class="update-risk-save-btn"  (click)="modalRef?.hide()">Cancel</button>
+        <div class="d-flex align-items-center">
+          <input class="" type="checkbox" />
+          <label class="pl-2">Dizzeness/postural hypotension/Mydriatic drug: High fall risk prevention protocol</label>
         </div>
-      </div>
-  </ng-template>
-
-
-  <ng-template #saveModalsHigh let-modal="bsModalRef">
-    <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
-      <h4 class="modal-title pull-left">Low and High Fall Risk Prevention Protocol</h4>
-      <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;" (click)="modalRef?.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body p-3">
-      <div>
-        <h5 style="font-weight: 700;">High Fall Risk Prevention Protocol</h5>
-        <ol class="pl-3">
-            <li class="pb-2">1.Follow pediatrics' low fall risk preventive intervention/None</li>
-            <li class="pb-2">2.Consider moving patients closer to nurses' station</li>
-            <li class="pb-2">3.Assist patients and provide staff with ambulation</li>
-            <li class="pb-2">4.Check patient minimum every 1 hour</li>
-            <li class="pb-2">5.Assessment and follow up of patient after receiving drug-induced fall by the order of a physician</li>
-            <li class="pb-2">6.Place fall prevention sign on the patient's room door frame and on the patient's cover document</li>
-          </ol>
-      </div>
-      <div>
-        <h5 style="font-weight: 700;">Low and High Fall Risk Prevention Protocol</h5>
-        <ol class="pl-3">
-            <li class="pb-2">1.Nurse call within reach, educate patients and families on its functionality</li>
-            <li class="pb-2">2.Oriented patients and family about the environment and organized the environment safe from hazards. Place the furniture in the right position.</li>
-            <li class="pb-2">3.Keep beds in low position with brakes on and bed ends in place.</li>
-            <li class="pb-2">4.Side rails x 2 or 4 up, assess large gaps, suck that a patient could get extremity or other body part entrapped, use <br> additional safety procedures. Use of non-skid footwear for ambulating patients, use of appropriate size clothing to prevent risk tripping.</li>
-            <li class="pb-2">5.Assess for adequate lighting, leave nightlight on.</li>
-            <li class="pb-2">6.Assess eliminations need, assist as needed</li>
-            <li class="pb-2">7.Educate patient/parents of fall protocol precautions</li>
-            <li class="pb-2">8.Educating and documentation in medication record about fall preventive information.</li>
-            <li class="pb-2">9.Assessment and follow-up of patients after receiving drug-induced fall by the order of a physician.</li>
-          </ol>
+        <br />
+        <p> If none of the above, do risk factor checklist</p>
       </div>
     </div>
-    <div class="modal-footer p-3">
-        <div style="text-align: end">
-          <button class="update-risk-save-btn"  (click)="modalRef?.hide()">Cancel</button>
-        </div>
+    <div class="box-container">
+      <h6 class="title-main">Risk Factor Checklist</h6>
+      <div class="row">
+        <label class="col-md-3 p-0">Characteristics</label>
+        <label class="col-md-3 p-0">Score</label>
+        <label class="col-md-3 p-0">Description</label>
       </div>
-  </ng-template>
+      <div class="row">
+        <label class="col-md-3 p-0">Age</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="AgeScore" />
+        <ng-select class="col-md-4 p-0" [items]="ageOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="AgeDesc">
+        </ng-select>
+      </div>
+      <div class="row">
+        <label class="col-md-3 p-0">Gender</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="GenderScore" />
+        <ng-select class="col-md-4 p-0" [items]="genderOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="GenderDesc">
+        </ng-select>
+      </div>
+      <div class="row">
+        <label class="col-md-3 p-0">Congative Impairments</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="CognitiveScore" />
+        <ng-select class="col-md-4 p-0" [items]="cognitiveOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="CognitiveDesc">
+        </ng-select>
+      </div>
+      <div class="row">
+        <label class="col-md-3 p-0">Response to Surgery/Sedation/Anesthesia</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="ResponseScore" />
+        <ng-select class="col-md-4 p-0" [items]="responseOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="ResponseDesc">
+        </ng-select>
+      </div>
+      <div class="row">
+        <label class="col-md-3 p-0">Dignosis</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="DiagnosisScore" />
+        <ng-select class="col-md-4 p-0" [items]="diagnosisOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="DiagnosisDesc">
+        </ng-select>
+        <img width="35px" src="assets/img/information.jfif" (click)="openModal(saveModals)" class="mr-2 cursor-pointer">
+      </div>
+      <div class="row">
+        <label class="col-md-3 p-0">Environmental Factors</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="EnvironmentalScore" />
+        <ng-select class="col-md-4 p-0" [items]="environmentalOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="EnvironmentalDesc">
+        </ng-select>
+        <img width="35px" src="assets/img/information.jfif" (click)="openModalEnvironmental(saveModalsEnvironmental)"
+          class="mr-2 cursor-pointer">
+      </div>
+      <div class="row">
+        <label class="col-md-3 p-0">Medication Usage</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="MedicationScore" />
+        <ng-select class="col-md-4 p-0" [items]="medicationOptions" bindLabel="label" bindValue="value"
+          (change)="calculateTotalScore()" formControlName="MedicationDesc">
+        </ng-select>
+        <img width="35px" src="assets/img/information.jfif" (click)="openModalMedication(saveModalsMedication)"
+          class="mr-2 cursor-pointer">
+      </div>
+    </div>
+    <div class="box-container">
+      <h6 class="title-main">Scale Result</h6>
+      <div class="row">
+        <label class="col-md-3 p-0">Total Score</label>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="TotalScore" [readOnly]="true" />
+        <input class="col-md-3 form-control" type="text" formControlName="ScoreDesc" [readOnly]="true" />
+        <img width="35px" src="assets/img/information.jfif" (click)="openModalHigh(saveModalsHigh)"
+          class="mr-2 cursor-pointer">Std.Intervention.Protoc
+      </div>
+      <label>Comments</label>
+      <input class="col-md-6 form-control" type="text" formControlName="Comments" />
+    </div>
+  </div>
+</form>
+
+
+
+
+
+<ng-template #saveModals let-modal="bsModalRef">
+  <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
+    <h4 class="modal-title pull-left">Diagnosis Information</h4>
+    <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;"
+      (click)="modalRef?.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <ol class="pl-3">
+      <li class="pb-2">1.Other Diagnosis</li>
+      <li class="pb-2">2.Psych/Behavioral Disorders</li>
+      <li>
+        3.Alterations in Oxygenation<br />
+        <small class="text-muted pb-2">
+          (Respiratory Diagnosis, Dehydration, Anemia, Anoxia, Syncope/Dizziness, etc.)
+        </small>
+      </li>
+      <li>4.Neurological Diagnosis</li>
+    </ol>
+  </div>
+  <div class="modal-footer p-3">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="modalRef?.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #saveModalsEnvironmental let-modal="bsModalRef">
+  <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
+    <h4 class="modal-title pull-left">Environmental Factors</h4>
+    <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;"
+      (click)="modalRef?.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <ol class="pl-3">
+      <li class="pb-2">1.Outpatient Area</li>
+      <li class="pb-2">2.Patient Placed in Bed</li>
+      <li class="pb-2">
+        3.Patient uses assistive or infant-Toddler in Crib or Furniture/Lighting (Tripled room)
+      </li>
+      <li>4.History of Falls or Infant-Toddler Placed in bed</li>
+    </ol>
+  </div>
+  <div class="modal-footer p-3">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="modalRef?.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #saveModalsMedication let-modal="bsModalRef">
+  <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
+    <h4 class="modal-title pull-left">Medication Usage</h4>
+    <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;"
+      (click)="modalRef?.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <ol class="pl-3">
+      <li class="pb-2">1.Other Medications/None</li>
+      <li class="pb-2">2.One of the meds listed: Barbiturates Phenothiazines Antidepressants Laxatives/Diuretics
+        Narcotics Hypnotics</li>
+      <li class="pb-2">
+        3.Multiple usage of: Sedatives (excluding ICU patients sedated and paralyzed)
+      </li>
+    </ol>
+  </div>
+  <div class="modal-footer p-3">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="modalRef?.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #saveModalsHigh let-modal="bsModalRef">
+  <div class="modal-header p-3" style="background-color: #0056b0 !important; color:#fff">
+    <h4 class="modal-title pull-left">Low and High Fall Risk Prevention Protocol</h4>
+    <button type="button" class="close pull-right" aria-label="Close" style="color: #fff !important;"
+      (click)="modalRef?.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <div>
+      <h5 style="font-weight: 700;">High Fall Risk Prevention Protocol</h5>
+      <ol class="pl-3">
+        <li class="pb-2">1.Follow pediatrics' low fall risk preventive intervention/None</li>
+        <li class="pb-2">2.Consider moving patients closer to nurses' station</li>
+        <li class="pb-2">3.Assist patients and provide staff with ambulation</li>
+        <li class="pb-2">4.Check patient minimum every 1 hour</li>
+        <li class="pb-2">5.Assessment and follow up of patient after receiving drug-induced fall by the order of a
+          physician</li>
+        <li class="pb-2">6.Place fall prevention sign on the patient's room door frame and on the patient's cover
+          document</li>
+      </ol>
+    </div>
+    <div>
+      <h5 style="font-weight: 700;">Low and High Fall Risk Prevention Protocol</h5>
+      <ol class="pl-3">
+        <li class="pb-2">1.Nurse call within reach, educate patients and families on its functionality</li>
+        <li class="pb-2">2.Oriented patients and family about the environment and organized the environment safe from
+          hazards. Place the furniture in the right position.</li>
+        <li class="pb-2">3.Keep beds in low position with brakes on and bed ends in place.</li>
+        <li class="pb-2">4.Side rails x 2 or 4 up, assess large gaps, suck that a patient could get extremity or other
+          body part entrapped, use <br> additional safety procedures. Use of non-skid footwear for ambulating patients,
+          use of appropriate size clothing to prevent risk tripping.</li>
+        <li class="pb-2">5.Assess for adequate lighting, leave nightlight on.</li>
+        <li class="pb-2">6.Assess eliminations need, assist as needed</li>
+        <li class="pb-2">7.Educate patient/parents of fall protocol precautions</li>
+        <li class="pb-2">8.Educating and documentation in medication record about fall preventive information.</li>
+        <li class="pb-2">9.Assessment and follow-up of patients after receiving drug-induced fall by the order of a
+          physician.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="modal-footer p-3">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="modalRef?.hide()">Cancel</button>
+    </div>
+  </div>
+</ng-template>

@@ -3,9 +3,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pediatrics-fall-risk-assessment',
@@ -14,7 +17,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 })
 export class PediatricsFallRiskAssessmentComponent implements OnInit {
   modalRef?: BsModalRef;
-   public pediatricsForm :FormGroup
+  public pediatricsForm: FormGroup
   ageOptions = [
     { value: '1', label: '13 year and above' },
     { value: '2', label: '7 to less than 13 years old' },
@@ -45,13 +48,13 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
     { value: '3', label: 'Patient uses assistant' },
     { value: '4', label: 'History of fall' }
   ];
-  
+
   medicationOptions = [
     { value: '1', label: 'Other medications / None' },
     { value: '2', label: 'One of the meds listed' },
     { value: '3', label: 'Multiple usage of sedatives' }
   ];
-  
+
   diagnosisOptions = [
     { value: '1', label: 'Other diagnosis' },
     { value: '2', label: 'Psych/Behavioral disorders' },
@@ -61,51 +64,126 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
   public realized: any;
   public realizedDescription: any;
   public CurrentDateAndTime: Date = new Date();
-  constructor(  public modalService: BsModalService ,private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,public admissionService:AdmissionService,private sharedService: SharedService,private dataShareService:DataShareService) { }
 
-  ngOnInit(): void {
+  private subscription: Subscription;
+  private actionTypeSubscription$: Subscription;
+  public dockeyValue: any = null;
+
+  constructor(public modalService: BsModalService, private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,
+    public admissionService: AdmissionService, private sharedService: SharedService, private dataShareService: DataShareService, private emergencyService: EmergencyService) {
     this.initForm();
-  this.realized = this.storageService.getUserProfile().Gpart;
-  this.realizedDescription = this.storageService.getUserProfile().GpartName;
+
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+      if (data != null) {
+        if (data.type == ActionType.Update$ && data.isAllow == true && data.value) {
+          if (data.value.type == WordType.CopyPFR && data.value.docKey != '') {
+            this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+            if (this.dockeyValue) {
+              this.getFallRiskPed(data.value.docKey);
+            }
+          }
+        }
+        console.log(data, "data-----------");
+        if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
+          if (data.value.type == WordType.CopyPFR && data.value.docKey != '') {
+            this.dockeyValue = data.value.docKey ? data.value.docKey : null;
+            if (this.dockeyValue) {
+              this.getFallRiskPed(data.value.docKey);
+            }
+          }
+        }
+      }
+    });
   }
 
-  initForm(){
+  public getFallRiskPed(dockey: string) {
+    // Subscribe using an object to define handlers
+    this.subscription = this.emergencyService.getDocFallRiskAssessmentDetails(dockey).subscribe({
+      next: (data: any) => {
+      this.pediatricsForm.patchValue(data?.d?.results[0])
+        // Handle successful data retrieval
+
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error fetching Glasgow Scale Data:', err);
+        this.sharedService.waringSwallModel(`GET Error at face pain scale : ${err}`);
+      },
+      complete: () => {
+        // Handle completion (optional), invoked when the observable completes
+        console.info('Face Pain Scale Data retrieval complete');
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.realized = this.storageService.getUserProfile().Gpart;
+    this.realizedDescription = this.storageService.getUserProfile().GpartName;
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }  
+     if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
+
+
+  initForm() {
     this.pediatricsForm = this.formBuilder.group({
-      Age:[''],
-      AgeS:[''],
-      Gender:[''],
-      GenderS:[''],
-      Congative:[''],
-      CongativeS:[''],
-      response:[''],
-      responseS:[''],
-      Dignosis:[''],
-      DignosisS:[''],
-      Environmental:[''],
-      EnvironmentalS:[''],
-      Medication:[''],
-      MedicationS:[''],
-      TotalScore:[''],
+      Dockey: "",
+      Dtid: "SCA_FALLP",
+      Einri: this.storageService.einri,
+      Patnr: this.storageService.patnr,
+      Falnr: this.storageService.falnr,
+      Lfdnr : this.storageService.lfdnr,
+      Orgdo: localStorage.getItem('initOrg'),
+      AttendPhy: this.storageService.getGpart(),
+      DocStatus: "",
+      CompleteParalysis: false,
+      Experience: false,
+      Dizzeness: false,
+      AgeDesc: "",
+      AgeScore: "",
+      GenderDesc: "",
+      GenderScore: "",
+      CognitiveDesc: "",
+      CognitiveScore: "",
+      ResponseDesc: "",
+      ResponseScore: "",
+      DiagnosisDesc: "",
+      DiagnosisScore: "",
+      EnvironmentalDesc: "",
+      EnvironmentalScore: "",
+      MedicationDesc: "",
+      MedicationScore: "",
+      TotalScore: "",
+      ScoreDesc: "",
+      Comments: ""
     })
   }
 
 
+
   calculateTotalScore() {
     const fieldPairs = [
-      { key: 'Age', scoreKey: 'AgeS' },
-      { key: 'Gender', scoreKey: 'GenderS' },
-      { key: 'Congative', scoreKey: 'CongativeS' },
-      { key: 'response', scoreKey: 'responseS' },
-      { key: 'Dignosis', scoreKey: 'DignosisS' },
-      { key: 'Environmental', scoreKey: 'EnvironmentalS' },
-      { key: 'Medication', scoreKey: 'MedicationS' },
+      { key: 'GenderDesc', scoreKey: 'GenderScore' },
+      { key: 'CognitiveDesc', scoreKey: 'CognitiveScore' },
+      { key: 'ResponseDesc', scoreKey: 'ResponseScore' },
+      { key: 'AgeDesc', scoreKey: 'AgeScore' },
+      { key: 'DiagnosisDesc', scoreKey: 'DiagnosisScore' },
+      { key: 'EnvironmentalDesc', scoreKey: 'EnvironmentalScore' },
+      { key: 'MedicationDesc', scoreKey: 'MedicationScore' },
     ];
-  
+
     let total = 0;
-  
+
     fieldPairs.forEach(({ key, scoreKey }) => {
       const val = this.pediatricsForm.get(key)?.value;
-  
+
       if (val && !isNaN(val)) {
         const score = parseInt(val, 10);
         total += score;
@@ -114,34 +192,71 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
         this.pediatricsForm.get(scoreKey)?.setValue('');
       }
     });
-  
+
+    const totalScore = Number(this.pediatricsForm.get('TotalScore')?.value || 0);
     this.pediatricsForm.get('TotalScore')?.setValue(String(total), { emitEvent: false });
+      if ((totalScore >= 7 && totalScore <= 11)) {
+         this.pediatricsForm.get('ScoreDesc')?.setValue('Low fall risk prevention protocol');
+       } else if (totalScore >= 12) {
+         this.pediatricsForm.get('ScoreDesc')?.setValue('High fall risk prevention protocol');
+       } else {
+         this.pediatricsForm.get('ScoreDesc')?.setValue('');
+       }
   }
-  
-  
+
+  createFallRiskPed(dockStatus): Promise<any> {
+    Object.keys(this.pediatricsForm.value).forEach(key => {
+      if (key.endsWith('Score') && typeof this.pediatricsForm.value[key] === 'number') {
+        this.pediatricsForm.value[key] = this.pediatricsForm.value[key].toString();
+      }
+    });
+    return new Promise((resolve, reject) => {
+      this.pediatricsForm.value.DocStatus = dockStatus;
+      let payload = {
+        d: this.pediatricsForm.value
+      };
+      // Subscribe using an object to define handlers
+      this.subscription = this.emergencyService.saveFallRiskAssessment(payload).subscribe({
+        next: (data: any) => {
+
+          // this.facePainValue.next(formValue); // emit value if needed...
+        },
+        error: (err: any) => {
+          // Handle errors if the request fails
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`POST Error at facepain : ${err}`);
+        },
+        complete: () => {
+            resolve(true);
+          // Handle completion (optional), invoked when the observable completes
+          this.sharedService.successSwallModel('Pediatrics Fall Risk Assessment Document create successfully');
+        }
+      });
+    });
+  }
 
 
   openModal(template: TemplateRef<any>) {
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-lg' ,
+      class: 'modal-dialog-centered modal-lg',
     };
     this.modalRef = this.modalService.show(template, config);
   }
   openModalEnvironmental(template: TemplateRef<any>) {
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-lg' ,
+      class: 'modal-dialog-centered modal-lg',
     };
     this.modalRef = this.modalService.show(template, config);
   }
   openModalMedication(template: TemplateRef<any>) {
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-lg' ,
+      class: 'modal-dialog-centered modal-lg',
     };
     this.modalRef = this.modalService.show(template, config);
   }
   openModalHigh(template: TemplateRef<any>) {
     const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-lg' ,
+      class: 'modal-dialog-centered modal-lg',
     };
     this.modalRef = this.modalService.show(template, config);
   }

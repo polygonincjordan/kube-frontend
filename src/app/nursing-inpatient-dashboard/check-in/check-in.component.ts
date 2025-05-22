@@ -1918,7 +1918,7 @@ export class CheckInComponent implements OnInit {
   openDocumentingDeliveryModel(data){
     console.log(data,"data")
     const modalRef  = this.modalServicecom.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
-    // modalRef.componentInstance.someInput = data;
+    modalRef.componentInstance.data = data;
   }
 
 

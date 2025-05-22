@@ -346,9 +346,9 @@ float: right;" />
           data-bs-placement="right" [ngClass]="ordersprofiledada ? 'er-selected-notif-icon' : 'er-notif-icon'"
           (click)="selectModule('ordersprofiledada')" />
       </div> -->
-      <div style="height: 50px;margin-bottom: 6px;">
+      <!-- <div style="height: 50px;margin-bottom: 6px;">
         <img [src]="'assets/img/black-Folder.svg'" data-bs-toggle="tooltip" data-bs-placement="right" class="er-notif-icon" />
-      </div>
+      </div> -->
       <div style="height: 50px;margin-bottom: 6px;">
         <img [src]="erhistory ? 'assets/img/Timer.svg' : 'assets/img/black-Timer.svg'" data-bs-toggle="tooltip" data-bs-placement="right"
           title="ER history" [ngClass]="erhistory ? 'er-selected-notif-icon' : 'er-notif-icon'" (click)="selectModule('erhistory')" />
@@ -357,9 +357,9 @@ float: right;" />
         <img [src]="analysis ? 'assets/img/DataManagement.svg' : 'assets/img/black-DataManagement.svg'" data-bs-toggle="tooltip" data-bs-placement="right" title="Analysis" [ngClass]="analysis ? 'er-selected-notif-icon' : 'er-notif-icon'"
           style="height: 40px !important;" (click)="selectModule('analysis')"/>
       </div>
-      <div style="height: 50px;margin-bottom: 6px;">
+      <!-- <div style="height: 50px;margin-bottom: 6px;">
         <img src="assets/img/userconfig.png" data-bs-toggle="tooltip" data-bs-placement="right" title="User configuration" class="er-notif-icon" />
-      </div>
+      </div> -->
     </div>
   </div>
   <app-treatment-workarea style="width: calc(100% - 90px);" *ngIf="treatmentarea"
