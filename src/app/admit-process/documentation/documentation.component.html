@@ -93,7 +93,7 @@
         *ngIf="!this.admissionService.isEditNicuForm">Save</button>
       <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditNicuForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('release')" disabled>Release</button>
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
   </div>

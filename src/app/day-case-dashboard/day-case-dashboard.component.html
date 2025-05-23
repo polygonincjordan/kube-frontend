@@ -667,7 +667,7 @@ font-size: 12px;
   <app-patient-without-documents style="width: calc(100% - 78px);" *ngIf="noReleaseDoc"
     (sendErNoDocumentCount)="collectErPatientCount($event)" (dataToParent)="receiveDataFromPatientWithoutDocumentChild($event)"
     (redirectCheckInData)="collectCheckInData($event)"></app-patient-without-documents>
-  <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
+  <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
   <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
 
 

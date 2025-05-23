@@ -1166,7 +1166,7 @@
     *ngIf="LabResults"
   ></app-lab-results>
 
-  <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
+  <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" (redirectCheckInData)="collectCheckInData($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
   <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
   <app-physician-orders-list
     (sendErPatientCount)="collectErHistPatientCount($event)"

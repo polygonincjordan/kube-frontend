@@ -51,6 +51,7 @@ export class CheckInComponent implements OnInit {
   @ViewChild('erBed') erBed: ErBedComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
+  @ViewChild('deliveryModal') deliveryModal: DocumentingDeliveryComponent;
   @ViewChild('triageModal') triageModal: ErTriageComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
@@ -141,6 +142,7 @@ export class CheckInComponent implements OnInit {
   pdfData: any;
   modalRefForLab: BsModalRef;
   printUrl: any;
+  selectedDate: any;
   OpenPdfModal: BsModalRef;
   inHospitalistList: any = [];
   inHospitalistListClone: any = [];
@@ -158,7 +160,7 @@ export class CheckInComponent implements OnInit {
     private dayCaseDashboardService: DayCaseDashboardService,
     public sharedService: SharedService,
     private hospitalistService: HospitalistService,
-    private _EMRServices: EEmrService,
+    private _dataServices: EEmrService,
   ) {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
@@ -804,6 +806,8 @@ export class CheckInComponent implements OnInit {
   // }
 
   getHospitalList( getConfigToolWardList?, getConfigToolSpecialtyList?, dates?) {
+    this.selectedDate = dates;
+
     console.log(this.emergencyService.getConfigToolWardList,this.emergencyService.getConfigToolSpecialtyList, dates,"---");
     
     // this.getConfigToolSpecialtyList = this.getConfigToolSpecialtyList ? this.getConfigToolSpecialtyList : getConfigToolSpecialtyList
@@ -1914,11 +1918,20 @@ export class CheckInComponent implements OnInit {
     });
   }
 
-
+  selectedDetails : any;
   openDocumentingDeliveryModel(data){
     console.log(data,"data")
-    const modalRef  = this.modalServicecom.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
-    modalRef.componentInstance.data = data;
+    this.selectedDetails = data;
+     const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    // this.selectedIconPdf = this.modalService.show(this.deliveryModal, config);
+    this.deliveryModal.openModalForDelivery('', data);
+   this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+      }
+    });
   }
 
 

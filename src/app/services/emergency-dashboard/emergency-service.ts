@@ -24,7 +24,9 @@ import { TemplateModel } from '@services/admission/interfaces/template-model';
 import { truncate } from 'fs/promises';
 import { WebService } from '@services/web.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EmergencyService {
   formDetailGroup: any;
   public callAgainAPI = false;

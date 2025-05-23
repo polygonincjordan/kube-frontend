@@ -33,6 +33,7 @@ export class ArrivalMainListComponent implements OnInit {
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() dataToParent = new EventEmitter<any>();
+  @Output() redirectCheckInData = new EventEmitter<any>();
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -83,7 +84,9 @@ export class ArrivalMainListComponent implements OnInit {
   inArrivalslistList: any[];
   inArrivalslistListClone: any[];
   riskList: any[];
-  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService) { }
+  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService,
+    private storageService: StorageService
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -500,6 +503,31 @@ export class ArrivalMainListComponent implements OnInit {
         );
       }
     }
+  }
+
+   redirectToTreatByName(data) {
+    data.Patnr = data.Patnr.padStart(10, '0');;
+    data.Einri = data.Einri ? data.Einri : '1000';
+    data.Falnr = data.Falnr.padStart(10, '0');;
+    data.Lfdnr = data.Lfdnr;
+
+    const json = {
+      Patnr: data.Patnr,
+      Einri: data.Einri,
+      Falnr: data.Falnr,
+      Lfdnr: data.Lfdnr,
+      Treatmentou: data.Orgpf,
+      redirectFor: '',
+      doctype: '',
+      action: ''
+    };
+    this.storageService.setCheckinData(data);
+    localStorage.setItem('checkindata', JSON.stringify(data));
+    localStorage.setItem('tabName', 'patientProfile');
+    this.redirectToTreatment(json);
+  }
+  redirectToTreatment(data) {
+    this.redirectCheckInData.emit(data);
   }
 
   closeRiskModal() {
