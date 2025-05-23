@@ -1,567 +1,337 @@
-<div
-  class="modal-header"
-  style="display: flex; padding: 17px; background-color: #0082c8; color: white"
->
-  <h4 class="modal-title" style="color: white">
-    Maintain Delivery Data <span class="under-deve">(Under Development)</span>
-  </h4>
-  <button
-    type="button"
-    class="close"
-    style="color: white !important"
-    (click)="activeModal.dismiss('Cross click')"
-  >
-    &times;
-  </button>
-</div>
-<div class="patient-info p-3">
-  <div class="patient-header">
-    <strong>Farah, Lama Samir Abdul-Rahim,</strong><br />
-    <strong>20.03.1990</strong>
+<ng-template #allergyModal>
+  <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white">
+    <h4 class="modal-title" style="color: white">
+      Maintain Delivery Data <span class="under-deve">(Under Development)</span>
+    </h4>
+    <button type="button" class="close" style="color: white !important">
+      &times;
+    </button>
   </div>
-  <div class="patient-details">
-    <div class="left">
-      <p><strong>Sex</strong> <span>Female</span></p>
-      <p><strong>Case</strong> <span>1353778</span></p>
+  <div class="patient-info p-3">
+    <div class="patient-header">
+      <strong>Farah, Lama Samir Abdul-Rahim,</strong><br />
+      <strong>20.03.1990</strong>
     </div>
-    <div class="right">
-      <p><strong>Admission Date</strong> <span>11.03.2025</span></p>
-      <p><strong> Discharge Date</strong> <span>11.03.2025</span></p>
+    <div class="patient-details">
+      <div class="left">
+        <p><strong>Sex</strong> <span>Female</span></p>
+        <p><strong>Case</strong> <span>1353778</span></p>
+      </div>
+      <div class="right">
+        <p><strong>Admission Date</strong> <span>11.03.2025</span></p>
+        <p><strong> Discharge Date</strong> <span>11.03.2025</span></p>
+      </div>
     </div>
   </div>
-</div>
-<div class="modal-body p-3 pb-3">
-  <!--new design-->
-  <div
-    id="exTab1"
-    style="border-bottom: 3px solid #0056b0; padding-bottom: 10px"
-  >
-    <ul class="nav nav-pills">
-      <li
-        [class.active]="activeTab === 'deliverydata'"
-        (click)="setActiveTab('deliverydata')"
-      >
-        Delivery Data
-      </li>
-      <li
-        [class.active]="activeTab === 'birthdata'"
-        (click)="setActiveTab('birthdata')"
-      >
-        Birth Data
-      </li>
-    </ul>
-  </div>
-  <div class="d-flex mt-3"></div>
-  <div class="tab-content clearfix scroll-bar">
-    <div *ngIf="activeTab === 'deliverydata'">
-      <div class="form-section">
-        <h6 class="scale-result">Birth Data</h6>
-        <div>
-          <div class="d-flex">
-            <div class="col-md-5">
-              <input
-                type="checkbox"
-                style="width: 10px !important"
-                name="resp"
-              />
-              <label for="name" class="col-md-3">Name</label>
-              <input
-                id="name"
-                class="col-md-4 mrglft30"
-                style="margin-left: 22px !important"
-                type="text"
-              />
-            </div>
-            <div class="col-md-4 d-flex">
-              <label for="name" class="mr-3 mt-3">Case</label>
-              <input id="name" type="text" readonly />
+  <form [formGroup]="deliveryForm">
+    <div class="modal-body p-3 pb-3">
+      <!--new design-->
+      <div id="exTab1" style="border-bottom: 3px solid #0056b0; padding-bottom: 10px">
+        <ul class="nav nav-pills">
+          <li [class.active]="activeTab === 'deliverydata'" (click)="setActiveTab('deliverydata')">
+            Delivery Data
+          </li>
+          <li [class.active]="activeTab === 'birthdata'" (click)="setActiveTab('birthdata')">
+            Birth Data
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex mt-3"></div>
+      <div class="tab-content clearfix scroll-bar">
+        <div *ngIf="activeTab === 'deliverydata'">
+          <div [formGroup]="TOPATDEL0" class="form-section">
+            <h6 class="scale-result">Birth Data</h6>
+            <div>
+              <div class="d-flex">
+                <div class="col-md-5">
+                  <input type="checkbox" style="width: 10px !important" name="resp" />
+                  <label for="name" class="col-md-3">Name</label>
+                  <input id="name" class="col-md-4 mrglft30" style="margin-left: 22px !important" type="text"
+                    formControlName="Vname" />
+                </div>
+                <div class="col-md-4 d-flex">
+                  <label for="name" class="mr-3 mt-3">Case</label>
+                  <input id="name" type="text" readonly formControlName="Faln1" />
+                </div>
+              </div>
+
+              <div class="d-flex mt-2">
+                <div class="col-md-5 d-flex">
+                  <label for="birthdate" class="col-md-4 mr-3" style="margin-left: 8px">Birthdate</label>
+                  <input  class="form-control" style="color: #000; border-radius: 8px;   border-color: #0056b0;" type="text" placeholder=""
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" formControlName="Gbdat" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+                </div>
+                <div class="col-md-4 d-flex">
+                  <label for="tob" class="mr-3 mt-2">ToB</label>
+                  <input id="tob" type="time" class="form-control col-md-4 p-0" formControlName="Gbtim" />
+                </div>
+                <div class="col-md-4 d-flex">
+                  <label for="sex" class="mr-3">Sex</label>
+                  <ng-select [items]="sexes" bindLabel="label" bindValue="value" placeholder="Select Sex"
+                    class="col-md-4 p-0" style="height: 32px" formControlName="Gschl">
+                  </ng-select>
+                </div>
+              </div>
+
+              <div class="form-group mt-2">
+                <label for="apgar" class="adjustStyle" style="max-width: 150px !important">Delivery Type</label>
+                <ng-select [items]="delvTypes" class="col-md-3 mrlf11 p-0"
+                  style="height: 32px; margin-left: -10px !important" bindLabel="label" bindValue="value"
+                  placeholder="Select Delivery Type" formControlName="Modus">
+                </ng-select>
+                <div class="col-md-7"></div>
+                <label><input type="checkbox" style="width: 15px" formControlName="Kztot" /> Stillbirth</label>
+              </div>
+
+              <div class="form-group mt-2">
+                <label for="weight" class="adjustStyle">Weight</label>
+                <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important"
+                  formControlName="Gbgew" />
+                <span class="mt-2">G</span>
+                <span for="length" class="mr-3 ml-3 mt-2">Length</span>
+                <input id="length" type="text" class="mr-2" style="max-width: 255px !important"
+                  formControlName="Gbgro" />
+                <span class="mt-2">CM</span>
+                <!-- <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select
+                  [items]="apgar"
+                  bindLabel="label"
+                  bindValue="value"
+                  placeholder="Select APGAR"
+                  class="col-md-2 p-0"
+                  style="height: 32px"
+                ></ng-select> -->
+              </div>
+
+              <div class="form-group mt-2">
+                <div class="d-flex">
+                  <label for="outcome" class="adjustStyle" style="margin-left: 5px !important;"></label>
+                  <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                  <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                    formControlName="Bwert" class="col-md-2 p-0" style="height: 32px;width: 300px;"></ng-select>
+                  <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                  <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                    formControlName="Bwert5" class="col-md-2 p-0" style="height: 32px;width: 300px;"></ng-select>
+                  <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                  <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                    formControlName="Bwert10" class="col-md-2 p-0" style="height: 32px;width: 300px;"></ng-select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="birthplace" class="adjustStyle">Birth Place</label>
+                <ng-select [items]="birthplaces" class="col-md-6 mrlf11 p-0" style="height: 32px" bindLabel="label"
+                  formControlName="Bthlo" bindValue="value" placeholder="Select Birthplace">
+                </ng-select>
+              </div>
+
+              <div class="form-group comment">
+                <label for="comment" class="adjustStyle">Comment</label>
+                <input id="comment" class="col-md-6 mrlf11" type="text" style="width: 100%" formControlName="Kztxt" />
+              </div>
             </div>
           </div>
 
-          <div class="d-flex mt-2">
-            <div class="col-md-5 d-flex">
-              <label
-                for="birthdate"
-                class="col-md-4 mr-3"
-                style="margin-left: 8px"
-                >Birthdate</label
-              >
-              <input id="birthdate" type="date" class="mrlf11 mrlft20" />
+          <div class="form-section">
+            <h6 class="scale-result">Delivery Data</h6>
+            <div class="form-group">
+              <label for="delivery-date" class="adjustStyle">Date</label>
+              <!-- <input id="delivery-date" class="col-md-3 mrlf11" type="date" formControlName="Endat" /> -->
+              <input  class="form-control" style="color: #000; border-radius: 8px;   border-color: #0056b0;" type="text" placeholder=""
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" formControlName="Endat" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+              <span for="name" class="ml-3 mr-3 mt-2">Time</span>
+              <input id="name" class="col-md-2" type="time" formControlName="Entim" />
             </div>
-            <div class="col-md-4 d-flex">
-              <label for="tob" class="mr-3 mt-2">ToB</label>
-              <input id="tob" type="time" class="col-md-4 p-0" />
+
+            <div class="form-group">
+              <label for="outcome" class="adjustStyle">Delivery Outcome</label>
+              <ng-select [items]="delOutcomes" bindLabel="label" bindValue="value" placeholder="Select Delivery Outcome"
+                class="col-md-3 mrlf11 p-0" style="height: 35px" formControlName="Fgtyp">
+              </ng-select>
+              <label class="d-flex"><input type="checkbox" class="mr-2" formControlName="Kzkom" /> Complications</label>
             </div>
-            <div class="col-md-4 d-flex">
-              <label for="sex" class="mr-3">Sex</label>
-              <ng-select
-                [items]="sexes"
-                bindLabel="label"
-                bindValue="value"
-                placeholder="Select Sex"
-                class="col-md-4 p-0"
-                style="height: 32px"
-              >
+
+            <div class="form-group comment">
+              <label for="delivery-comment" class="adjustStyle">Comment</label>
+              <input id="delivery-comment" class="col-md-6 mrlf11" type="text" style="width: 100%"
+                formControlName="Komtx" />
+            </div>
+          </div>
+        </div>
+        <div *ngIf="activeTab === 'birthdata'">
+          <div [formGroup]="TOPATDEL1">
+            <div class="d-flex">
+              <div class="col-md-4">
+                <input type="checkbox" style="width: 10px !important" name="resp" />
+                <label for="name" class="col-md-3">Name</label>
+                <input id="name" class="col-md-4" style="margin-left: 42px !important" type="text"
+                  formControlName="Vname" />
+              </div>
+              <div class="col-md-4 d-flex">
+                <label for="name" class="mr-3 mt-3">Case</label>
+                <input id="name" type="text" readonly formControlName="Faln1" />
+              </div>
+            </div>
+
+            <div class="d-flex mt-2">
+              <div class="col-md-4 d-flex">
+                <label for="birthdate" class="col-md-4 mr-3" style="margin-left: 8px">Birthdate</label>
+                <!-- <input id="birthdate" type="date" formControlName="Gbdat" /> -->
+                <input  class="form-control" style="color: #000; border-radius: 8px;   border-color: #0056b0;" type="text" placeholder=""
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" formControlName="Gbdat" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+              </div>
+              <div class="col-md-4 d-flex">
+                <label for="tob" class="mr-3 mt-2">ToB</label>
+                <input id="tob" type="time" class="form-control col-md-4 p-0" formControlName="Gbtim" />
+              </div>
+              <div class="col-md-4 d-flex">
+                <label for="sex" class="mr-3">Sex</label>
+                <ng-select [items]="sexes" bindLabel="label" bindValue="value" placeholder="Select Sex"
+                  class="col-md-4 p-0" style="height: 32px" formControlName="Gschl">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="apgar" class="adjustStyle">Delivery Type</label>
+              <ng-select [items]="delvTypes" class="col-md-3 mrlf11 p-0" style="height: 32px; margin-left: -5px"
+                bindLabel="label" bindValue="value" placeholder="Select Delivery Type" formControlName="Modus">
+              </ng-select>
+              <div class="col-md-7"></div>
+              <label><input type="checkbox" style="width: 15px" formControlName="Kztot" /> Stillbirth</label>
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="weight" class="adjustStyle">Weight</label>
+              <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important"
+                formControlName="Gbgew" />
+              <span class="mt-2">G</span>
+              <span for="length" class="mr-3 ml-3 mt-2">Length</span>
+              <input id="length" type="text" class="mr-2" style="max-width: 255px !important" formControlName="Gbgro" />
+              <span class="mt-2">CM</span>
+
+            </div>
+            <div class="form-group mt-2">
+              <div class="d-flex">
+                <label for="outcome" class="adjustStyle" style="margin-left: 5px !important;"></label>
+                <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                  class="col-md-2 p-0" style="height: 32px;width: 300px;" formControlName="Bwert"></ng-select>
+                <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                  class="col-md-2 p-0" style="height: 32px;width: 300px;" formControlName="Bwert5"></ng-select>
+                <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                  class="col-md-2 p-0" style="height: 32px;width: 300px;" formControlName="Bwert10"></ng-select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="birthplace" class="adjustStyle">Birth Place</label>
+              <ng-select [items]="birthplaces" class="col-md-6 mrlf11 p-0" style="height: 32px" bindLabel="label"
+                bindValue="value" placeholder="Select Birthplace" formControlName="Bthlo">
               </ng-select>
             </div>
-          </div>
 
-          <div class="form-group mt-2">
-            <label
-              for="apgar"
-              class="adjustStyle"
-              style="max-width: 150px !important"
-              >Delivery Type</label
-            >
-            <ng-select
-              [items]="delvTypes"
-              class="col-md-3 mrlf11 p-0"
-              style="height: 32px; margin-left: -10px !important"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select Delivery Type"
-            >
-            </ng-select>
-            <div class="col-md-7"></div>
-            <label
-              ><input type="checkbox" style="width: 15px" /> Stillbirth</label
-            >
-          </div>
-
-          <div class="form-group mt-2">
-            <label for="weight" class="adjustStyle">Weight</label>
-            <input
-              id="weight"
-              type="text"
-              class="mr-2 mrlf11"
-              style="max-width: 255px !important"
-            />
-            <span class="mt-2">G</span>
-            <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-            <input
-              id="length"
-              type="text"
-              class="mr-2"
-              style="max-width: 255px !important"
-            />
-            <span class="mt-2">CM</span>
-            <!-- <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-            <ng-select
-              [items]="apgar"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select APGAR"
-              class="col-md-2 p-0"
-              style="height: 32px"
-            ></ng-select> -->
-          </div>
-
-          <div class="form-group mt-2">
-            <div class="d-flex">
-              <label for="outcome" class="adjustStyle" style="margin-left: 5px !important;"></label>
-              <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-            <ng-select
-              [items]="apgar"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select APGAR"
-              class="col-md-2 p-0"
-              style="height: 32px;width: 300px;"
-            ></ng-select>
-            <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-            <ng-select
-              [items]="apgar"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select APGAR"
-              class="col-md-2 p-0"
-              style="height: 32px;width: 300px;"
-            ></ng-select>
-            <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-            <ng-select
-              [items]="apgar"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select APGAR"
-              class="col-md-2 p-0"
-              style="height: 32px;width: 300px;"
-            ></ng-select>
+            <div class="form-group comment">
+              <label for="comment" class="adjustStyle">Comment</label>
+              <input id="comment" class="col-md-6 mrlf11" type="text" style="width: 100%" formControlName="Kztxt" />
             </div>
           </div>
+          <div [formGroup]="TOPATDEL2">
+            <div class="d-flex">
+              <div class="col-md-4">
+                <input type="checkbox" style="width: 10px !important" name="resp" />
+                <label for="name" class="col-md-3">Name</label>
+                <input id="name" class="col-md-4" style="margin-left: 42px !important" type="text"
+                  formControlName="Vname" />
+              </div>
+              <div class="col-md-4 d-flex">
+                <label for="name" class="mr-3 mt-3">Case</label>
+                <input id="name" type="text" readonly formControlName="Faln1" />
+              </div>
+            </div>
 
-          <div class="form-group">
-            <label for="birthplace" class="adjustStyle">Birth Place</label>
-            <ng-select
-              [items]="birthplaces"
-              class="col-md-6 mrlf11 p-0"
-              style="height: 32px"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select Birthplace"
-            >
-            </ng-select>
+            <div class="d-flex mt-2">
+              <div class="col-md-4 d-flex">
+                <label for="birthdate" class="col-md-4 mr-3" style="margin-left: 8px">Birthdate</label>
+                <!-- <input id="birthdate" type="date" formControlName="Gbdat" /> -->
+                <input  class="form-control" style="color: #000; border-radius: 8px;   border-color: #0056b0;" type="text" placeholder=""
+                    [minDate]="" [maxDate]="" #dp="bsDatepicker" formControlName="Gbdat" bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+              </div>
+              <div class="col-md-4 d-flex">
+                <label for="tob" class="mr-3 mt-2">ToB</label>
+                <input id="tob" type="time" class="form-control col-md-4 p-0" formControlName="Gbtim" />
+              </div>
+              <div class="col-md-4 d-flex">
+                <label for="sex" class="mr-3">Sex</label>
+                <ng-select [items]="sexes" bindLabel="label" bindValue="value" placeholder="Select Sex"
+                  class="col-md-4 p-0" style="height: 32px" formControlName="Gschl">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="apgar" class="adjustStyle">Delivery Type</label>
+              <ng-select [items]="delvTypes" class="col-md-3 mrlf11 p-0" style="height: 32px; margin-left: -5px"
+                bindLabel="label" bindValue="value" placeholder="Select Delivery Type" formControlName="Modus">
+              </ng-select>
+              <div class="col-md-7"></div>
+              <label><input type="checkbox" style="width: 15px" formControlName="Kztot" /> Stillbirth</label>
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="weight" class="adjustStyle">Weight</label>
+              <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important"
+                formControlName="Gbgew" />
+              <span class="mt-2">G</span>
+              <span for="length" class="mr-3 ml-3 mt-2">Length</span>
+              <input id="length" type="text" class="mr-2" style="max-width: 255px !important" formControlName="Gbgro" />
+              <span class="mt-2">CM</span>
+
+            </div>
+            <div class="form-group mt-2">
+              <div class="d-flex">
+                <label for="outcome" class="adjustStyle" style="margin-left: 5px !important;"></label>
+                <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                  class="col-md-2 p-0" style="height: 32px;width: 300px;" formControlName="Bwert"></ng-select>
+                <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                  class="col-md-2 p-0" style="height: 32px;width: 300px;" formControlName="Bwert5"></ng-select>
+                <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
+                <ng-select [items]="apgar" bindLabel="label" bindValue="value" placeholder="Select APGAR"
+                  class="col-md-2 p-0" style="height: 32px;width: 300px;" formControlName="Bwert10"></ng-select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="birthplace" class="adjustStyle">Birth Place</label>
+              <ng-select [items]="birthplaces" class="col-md-6 mrlf11 p-0" style="height: 32px" bindLabel="label"
+                bindValue="value" placeholder="Select Birthplace" formControlName="Bthlo">
+              </ng-select>
+            </div>
+
+            <div class="form-group comment">
+              <label for="comment" class="adjustStyle">Comment</label>
+              <input id="comment" class="col-md-6 mrlf11" type="text" style="width: 100%" formControlName="Kztxt" />
+            </div>
           </div>
-
-          <div class="form-group comment">
-            <label for="comment" class="adjustStyle">Comment</label>
-            <input
-              id="comment"
-              class="col-md-6 mrlf11"
-              type="text"
-              style="width: 100%"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h6 class="scale-result">Delivery Data</h6>
-        <div class="form-group">
-          <label for="delivery-date" class="adjustStyle">Date</label>
-          <input id="delivery-date" class="col-md-3 mrlf11" type="date" />
-          <span for="name" class="ml-3 mr-3 mt-2">Time</span>
-          <input id="name" class="col-md-2" type="time" />
-        </div>
-
-        <div class="form-group">
-          <label for="outcome" class="adjustStyle">Delivery Outcome</label>
-          <ng-select
-            [items]="delOutcomes"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select Delivery Outcome"
-            class="col-md-3 mrlf11 p-0"
-            style="height: 35px"
-          >
-          </ng-select>
-          <label class="d-flex"
-            ><input type="checkbox" class="mr-2" /> Complications</label
-          >
-        </div>
-
-        <div class="form-group comment">
-          <label for="delivery-comment" class="adjustStyle">Comment</label>
-          <input
-            id="delivery-comment"
-            class="col-md-6 mrlf11"
-            type="text"
-            style="width: 100%"
-          />
-        </div>
-      </div>
-    </div>
-    <div *ngIf="activeTab === 'birthdata'">
-      <div>
-        <div class="d-flex">
-          <div class="col-md-4">
-            <input type="checkbox" style="width: 10px !important" name="resp" />
-            <label for="name" class="col-md-3">Name</label>
-            <input
-              id="name"
-              class="col-md-4"
-              style="margin-left: 42px !important"
-              type="text"
-            />
-          </div>
-          <div class="col-md-4 d-flex">
-            <label for="name" class="mr-3 mt-3">Case</label>
-            <input id="name" type="text" readonly />
-          </div>
-        </div>
-
-        <div class="d-flex mt-2">
-          <div class="col-md-4 d-flex">
-            <label
-              for="birthdate"
-              class="col-md-4 mr-3"
-              style="margin-left: 8px"
-              >Birthdate</label
-            >
-            <input id="birthdate" type="date" />
-          </div>
-          <div class="col-md-4 d-flex">
-            <label for="tob" class="mr-3 mt-2">ToB</label>
-            <input id="tob" type="time" class="col-md-4 p-0" />
-          </div>
-          <div class="col-md-4 d-flex">
-            <label for="sex" class="mr-3">Sex</label>
-            <ng-select
-              [items]="sexes"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select Sex"
-              class="col-md-4 p-0"
-              style="height: 32px"
-            >
-            </ng-select>
-          </div>
-        </div>
-
-        <div class="form-group mt-2">
-          <label for="apgar" class="adjustStyle">Delivery Type</label>
-          <ng-select
-            [items]="delvTypes"
-            class="col-md-3 mrlf11 p-0"
-            style="height: 32px; margin-left: -5px"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select Delivery Type"
-          >
-          </ng-select>
-          <div class="col-md-7"></div>
-          <label
-            ><input type="checkbox" style="width: 15px" /> Stillbirth</label
-          >
-        </div>
-
-        <div class="form-group mt-2">
-          <label for="weight" class="adjustStyle">Weight</label>
-          <input
-            id="weight"
-            type="text"
-            class="mr-2 mrlf11"
-            style="max-width: 255px !important"
-          />
-          <span class="mt-2">G</span>
-          <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-          <input
-            id="length"
-            type="text"
-            class="mr-2"
-            style="max-width: 255px !important"
-          />
-          <span class="mt-2">CM</span>
-          <!-- <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px"
-          ></ng-select> -->
-        </div>
-        <div class="form-group mt-2">
-          <div class="d-flex">
-            <label for="outcome" class="adjustStyle" style="margin-left: 5px !important;"></label>
-            <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px;width: 300px;"
-          ></ng-select>
-          <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px;width: 300px;"
-          ></ng-select>
-          <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px;width: 300px;"
-          ></ng-select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="birthplace" class="adjustStyle">Birth Place</label>
-          <ng-select
-            [items]="birthplaces"
-            class="col-md-6 mrlf11 p-0"
-            style="height: 32px"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select Birthplace"
-          >
-          </ng-select>
-        </div>
-
-        <div class="form-group comment">
-          <label for="comment" class="adjustStyle">Comment</label>
-          <input
-            id="comment"
-            class="col-md-6 mrlf11"
-            type="text"
-            style="width: 100%"
-          />
-        </div>
-      </div>
-      <div class="">
-        <div class="d-flex">
-          <div class="col-md-4">
-            <input type="checkbox" style="width: 10px !important" name="resp" />
-            <label for="name" class="col-md-3">Name</label>
-            <input
-              id="name"
-              class="col-md-4"
-              style="margin-left: 42px !important"
-              type="text"
-            />
-          </div>
-          <div class="col-md-4 d-flex">
-            <label for="name" class="mr-3 mt-3">Case</label>
-            <input id="name" type="text" readonly />
-          </div>
-        </div>
-
-        <div class="d-flex mt-2">
-          <div class="col-md-4 d-flex">
-            <label
-              for="birthdate"
-              class="col-md-4 mr-3"
-              style="margin-left: 8px"
-              >Birthdate</label
-            >
-            <input id="birthdate" type="date" class="" />
-          </div>
-          <div class="col-md-4 d-flex">
-            <label for="tob" class="mr-3 mt-2">ToB</label>
-            <input id="tob" type="time" class="col-md-4 p-0" />
-          </div>
-          <div class="col-md-4 d-flex">
-            <label for="sex" class="mr-3">Sex</label>
-            <ng-select
-              [items]="sexes"
-              bindLabel="label"
-              bindValue="value"
-              placeholder="Select Sex"
-              class="col-md-4 p-0"
-              style="height: 32px"
-            >
-            </ng-select>
-          </div>
-        </div>
-
-        <div class="form-group mt-2">
-          <label for="apgar" class="adjustStyle">Delivery Type</label>
-          <ng-select
-            [items]="delvTypes"
-            class="col-md-3 mrlf11 p-0"
-            style="height: 32px; margin-left: -5px"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select Delivery Type"
-          >
-          </ng-select>
-          <div class="col-md-7"></div>
-          <label
-            ><input type="checkbox" style="width: 15px" /> Stillbirth</label
-          >
-        </div>
-
-        <div class="form-group mt-2">
-          <label for="weight" class="adjustStyle">Weight</label>
-          <input
-            id="weight"
-            type="text"
-            class="mr-2 mrlf11"
-            style="max-width: 255px !important"
-          />
-          <span class="mt-2">G</span>
-          <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-          <input
-            id="length"
-            type="text"
-            class="mr-2"
-            style="max-width: 255px !important"
-          />
-          <span class="mt-2">CM</span>
-          <!-- <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px"
-          ></ng-select> -->
-        </div>
-
-        <div class="form-group mt-2">
-          <div class="d-flex">
-            <label for="outcome" class="adjustStyle" style="margin-left: 5px !important;"></label>
-            <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px;width: 300px;"
-          ></ng-select>
-          <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px;width: 300px;"
-          ></ng-select>
-          <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
-          <ng-select
-            [items]="apgar"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select APGAR"
-            class="col-md-2 p-0"
-            style="height: 32px;width: 300px;"
-          ></ng-select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="birthplace" class="adjustStyle">Birth Place</label>
-          <ng-select
-            [items]="birthplaces"
-            class="col-md-6 mrlf11 p-0"
-            style="height: 32px"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select Birthplace"
-          >
-          </ng-select>
-        </div>
-
-        <div class="form-group comment">
-          <label for="comment" class="adjustStyle">Comment</label>
-          <input
-            id="comment"
-            class="col-md-6 mrlf11"
-            type="text"
-            style="width: 100%"
-          />
         </div>
       </div>
     </div>
+  </form>
+
+  <pre>{{ deliveryForm.value | json }}</pre>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8 ; color: red;">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary" (click)="saveDelivery()"
+      style="background-color: #0082c8; border: #0082c8">
+      Save
+    </button>
   </div>
-</div>
-<div class="modal-footer">
-  <button
-    type="button"
-    class="btn btn-primary"
-    style="background-color: #0082c8; border: #0082c8 ; color: red;"
-    (click)="activeModal.dismiss('Cross click')"
-  >
-  Cancel
-  </button>
-  <button
-    type="button"
-    class="btn btn-primary"
-    style="background-color: #0082c8; border: #0082c8"
-  >
-    Save
-  </button>
-</div>
-<div></div>
+  <div></div>
+</ng-template>
+

@@ -9,7 +9,7 @@
         <thead>
           <tr class="checkin-table-header">
             <th scope="col">
-               Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Patname')"></i>
+              Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Patname')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               MRN
@@ -19,7 +19,7 @@
               Case# <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('CaseNumber')"></i>
             </th>
             <th scope="col">Risk</th>
-            <th scope="col" style="padding-left: 0px;" >
+            <th scope="col" style="padding-left: 0px;">
               Allergy
             </th>
             <th scope="col" style="padding-left: 0px;">
@@ -31,8 +31,8 @@
             <th scope="col" style="padding-left: 0px;">
               Isolation <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('IsolationType')"></i>
             </th>
-            <th scope="col"  style="padding-left: 0px;">
-             Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('patientStatus')"></i>
+            <th scope="col" style="padding-left: 0px;">
+              Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('patientStatus')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Date <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDate')"></i>
@@ -62,7 +62,8 @@
               Financial Cat. <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('FinancialCategory')"></i>
             </th>
             <th scope="col">
-              Attending physician <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AttendingDoctorName')"></i>
+              Attending physician <i class="fa fa-sort" aria-hidden="true"
+                (click)="commanSorting('AttendingDoctorName')"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               LOS <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDays')"></i>
@@ -79,8 +80,8 @@
         &nbsp;
         <tbody>
           <tr *ngFor="let item of inHospitalistList | filter:searchString ; let i = index">
-            <td scope="row" style="cursor: pointer"[title]="item.Patname"
-              class="border-top-none" (click)="redirectToTreatByName(item)">
+            <td scope="row" style="cursor: pointer" [title]="item.Patname" class="border-top-none"
+              (click)="redirectToTreatByName(item)">
               {{ item.Patname }}
             </td>
             <td style="padding-left: 0px" [title]="item.Mrn" class="border-top-none">{{ item.Mrn }}</td>
@@ -94,8 +95,8 @@
             </td>
             <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"
               [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  ">
-              <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'" style="width: 23px"
-                (click)="openModalForAllergy('', item)" />
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'"
+                style="width: 23px" (click)="openModalForAllergy('', item)" />
             </td>
             <td class="border-right" scope="row" style="padding-left: 0px; text-align: center"
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
@@ -109,7 +110,8 @@
             </td>
             <td class="border-left text-center">
               <span>
-                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon" [title]="item.IsolationType ? item.IsolationType : 'No Isolation'" />
+                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon"
+                  [title]="item.IsolationType ? item.IsolationType : 'No Isolation'" />
               </span>
             </td>
             <td style="padding-left: 0px" [title]="item?.patientStatus" class="border-top-none">
@@ -128,26 +130,35 @@
             <td style="padding-left: 0px" [title]="item.BedidText" class="border-top-none">{{ item.BedidText }}</td>
             <td style="padding-left: 0px" [title]="item.DeptouDesc" class="border-top-none">{{ item.DeptouDesc }}</td>
             <!-- <td style="padding-left: 0px" [title]="item.Diagnosis" class="border-top-none">{{ item.Diagnosis }}</td> -->
-     
+
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
-            <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
-            <td style="padding-left: 0px" [title]="item.FinancialCategory" class="border-top-none">{{ item.FinancialCategory }}</td>
-            <td style="padding-left: 0px" [title]="item.AttendingDoctorName" class="border-top-none">{{ item.AttendingDoctorName ? item.AttendingDoctorName:'--'}}</td>
-            <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ? item.AdmissionDays:'--'}}</td>
+            <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span
+                [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
+            <td style="padding-left: 0px" [title]="item.FinancialCategory" class="border-top-none">{{
+              item.FinancialCategory }}</td>
+            <td style="padding-left: 0px" [title]="item.AttendingDoctorName" class="border-top-none">{{
+              item.AttendingDoctorName ? item.AttendingDoctorName:'--'}}</td>
+            <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ?
+              item.AdmissionDays:'--'}}</td>
             <!-- <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td> -->
             <!-- <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td> -->
             <!-- <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td> -->
-            <td colspan="1" style="display: flex; align-items: center; text-align: center; overflow: visible !important">
+            <td colspan="1"
+              style="display: flex; align-items: center; text-align: center; overflow: visible !important">
               <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
-                <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>
+                <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer"
+                  title="Print Patient Label" />
               </div>
-              <div style="margin-left: 3px; margin-right: 3px" (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
-                <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status"/>
+              <div style="margin-left: 3px; margin-right: 3px"
+                (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
+                <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status" />
               </div>
-              <div style="margin-left: 3px; margin-right: 3px" [class.disabled]="item.Patname?.includes('(M')" 
-              [style.pointerEvents]="item.Patname?.includes('(M') ? 'none' : 'auto'"
-              [style.opacity]="item.Patname?.includes('(M') ? '0.5' : '1'" (click)="openDocumentingDeliveryModel(item)">
-                <img src="assets/img/newbornbaby.png" style="width: 25px; cursor: pointer" title="Documenting Delivery"/>
+              <div style="margin-left: 3px; margin-right: 3px" [class.disabled]="item.Patname?.includes('(M')"
+                [style.pointerEvents]="item.Patname?.includes('(M') ? 'none' : 'auto'"
+                [style.opacity]="item.Patname?.includes('(M') ? '0.5' : '1'"
+                (click)="openDocumentingDeliveryModel(item)">
+                <img src="assets/img/newbornbaby.png" style="width: 25px; cursor: pointer"
+                  title="Documenting Delivery" />
               </div>
             </td>
           </tr>
@@ -171,7 +182,8 @@
     </div>
   </div>
   <div class="modal-body" style="padding: 0 11px 0px">
-    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you want to print label for "{{activelabLabelData?.Patname}}" with MRN {{activelabLabelData?.Mrn}}</p>
+    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you
+      want to print label for "{{activelabLabelData?.Patname}}" with MRN {{activelabLabelData?.Mrn}}</p>
   </div>
   <div class="modal-footer">
     <div style="text-align: end">
@@ -185,8 +197,10 @@
   <div class="Pdf_modal">
     <iframe [src]="printUrl" width="500" height="400"></iframe>
     <div class="bottom">
-      <button style="width: 100px;" (click)="closePdfModal()"> <img src="assets/img/Frame-icone.svg" style="width: 19px; cursor: pointer" title="Print Patient Label"/><span style="margin-left:7px">Print</span></button
-      ><button style="width: 100px;"  (click)="closePdfModal()">Close</button>
+      <button style="width: 100px;" (click)="closePdfModal()"> <img src="assets/img/Frame-icone.svg"
+          style="width: 19px; cursor: pointer" title="Print Patient Label" /><span
+          style="margin-left:7px">Print</span></button><button style="width: 100px;"
+        (click)="closePdfModal()">Close</button>
     </div>
   </div>
 </ng-template>
@@ -352,6 +366,8 @@
 </ng-template>
 
 <app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
+<app-documenting-delivery #deliveryModal [data]="selectedDetails"
+  (reloadCheckin)="reload($event)"></app-documenting-delivery>
 <app-er-triage #triageModal></app-er-triage>
 <ng-template #selectIconPdf>
   <div class="modal-body">
@@ -471,15 +487,15 @@
           </div>
           <div class="col-md-8 p-0">
             <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
-              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"/>
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
-        <div class="col-md-3 row m-0 align-items-center pl-0" >
+        <div class="col-md-3 row m-0 align-items-center pl-0">
           <div class="col-md-3 p-0">
             <strong class="m-0">Time</strong>
           </div>
           <div class="col-md-9 p-0">
-            <input type="time" class="form-control" formControlName="Bwizt"  />
+            <input type="time" class="form-control" formControlName="Bwizt" />
           </div>
         </div>
         <div class="col-md-5 row m-0 align-items-center">
@@ -487,7 +503,7 @@
             <strong class="m-0">Comments</strong>
           </div>
           <div class="col-md-8 pl-0">
-            <input type="text" class="form-control" formControlName="Kztxt"  />
+            <input type="text" class="form-control" formControlName="Kztxt" />
           </div>
         </div>
       </div>
@@ -498,7 +514,7 @@
           </div>
           <div class="col-md-8 p-0">
             <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
-              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"/>
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
 
@@ -508,7 +524,7 @@
           </div>
           <div class="col-md-8 p-0">
             <ng-select formControlName="Bwart">
-              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value" >{{item?.label }}</ng-option>
+              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value">{{item?.label }}</ng-option>
             </ng-select>
           </div>
         </div>
@@ -517,7 +533,7 @@
             <strong class="m-0">Dis. Physician</strong>
           </div>
           <div class="col-md-7 pl-0">
-            <input type="text" class="form-control" formControlName="Pernr"  />
+            <input type="text" class="form-control" formControlName="Pernr" />
           </div>
         </div>
         <div class="col-md-4 row m-0 align-items-center mb-2">
@@ -525,7 +541,7 @@
             <strong class="m-0">Time</strong>
           </div>
           <div class="col-md-8 p-0">
-            <input type="time" class="form-control" formControlName="Bwizt"  />
+            <input type="time" class="form-control" formControlName="Bwizt" />
           </div>
         </div>
         <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
@@ -533,15 +549,17 @@
             <strong class="m-0">Comments</strong>
           </div>
           <div class="col-md-10 pl-0">
-            <input type="text" class="form-control" formControlName="Kztxt"  />
+            <input type="text" class="form-control" formControlName="Kztxt" />
           </div>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"  (click)="closeRiskModal()">No</button>
-    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="changeStatus(admissionStatusModel?.AdmissionStatus)">Yes</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="closeRiskModal()">No</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="changeStatus(admissionStatusModel?.AdmissionStatus)">Yes</button>
   </div>
   <div>
   </div>

@@ -337,7 +337,7 @@ export class IntraOperativeRecordComponent implements OnInit {
       Iod2TSpecimensNa: [data?.Iod2TSpecimensNa || false],
       Iod2TLscsNa: [data?.Iod2TLscsNa || false],
       Iod2TLscsBabyGender: [data?.Iod2TLscsBabyGender || ''],
-      Iod2TLscsWeight: [data?.Iod2TLscsWeight || ''],
+      Iod2TLscsWeight: [data?.Iod2TLscsWeight || '0'],
       Iod2TLscsBirthTime: [this.parseTime(data?.Iod2TLscsBirthTime) || null],
       Iod2TLscsIdentification: [data?.Iod2TLscsIdentification || ''],
       Iod2TLscsBy: [data?.Iod2TLscsBy || ''],

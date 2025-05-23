@@ -72,7 +72,12 @@
             </button>
           </div>
           <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
-            <button type="button" class="action-doc" (click)="saveDoc()">
+            <button type="button" class="action-doc" (click)="saveDoc('close')">
+              Save & Close
+            </button>
+          </div>
+          <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
+            <button type="button" class="action-doc" (click)="saveDoc('save')">
               Save
             </button>
           </div>
@@ -858,13 +863,19 @@
              </div>
              <div class="col-md-3">{{maternitySignMainList[0]?.PhyNm || '-'}}</div>
              <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                 <!-- <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                  (click)="getMewsSetMainPdf(maternitySignMainList[0]?.Dockey)"
                  *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
                    <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
                      id=""></select>
-                 </div>
+                 </div> -->
+                 <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(maternitySignMainList[0],RedirectionType.NMRTSC$)" *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
+                    <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
              </div>
            </div>
               <!-- Pediatrics Fall Risk Assessment_SCA_FALLP -->

@@ -236,7 +236,7 @@ selectedOrgUnit: any;
     createJson['TOVITALSIGNS'] = this.toVitalsArr;
     createJson['TOPROCE'] = [];
     createJson['TOEXAM'] = [];
-    createJson['TOMED'] = this.medicationImportDrugArray.map((med) => ({
+    createJson['TOMED'] = this.medicationImportDrugArray?.length ? this.medicationImportDrugArray.map((med) => ({
       Dockey: '',
       OrderType: med.OrderType,
       Descr: med.Description, // assuming this is the correct mapping
@@ -246,14 +246,14 @@ selectedOrgUnit: any;
       RespEmp: med.OrderingPhysician, // assuming that's what you want
       Route: med.Route,
       Rate: med.Rate || '',
-    }));
-    createJson['TOSCALE'] = this.scalesArray.map((element) => ({
+    })) : [];
+    createJson['TOSCALE'] = this.scalesArray?.length ? this.scalesArray.map((element) => ({
       Dockey: '',
       ScaleType: element.ScaleType,
       LastScore: element.LastScore,
       ScoreDesc: element.ScoreDesc,
       Datetimee: element.Datetimee,
-    }));
+    })) : []
     await this.admissionService
       .createTansferAssessData(createJson)
       .subscribe((x) => {

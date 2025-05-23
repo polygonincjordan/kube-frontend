@@ -564,9 +564,10 @@ span.pn-input-title {
   display: flex;
   font-weight: 700;
   height: 40px;
-  width: 80px;
+  width: 100px;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .progress-document {

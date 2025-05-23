@@ -30,6 +30,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ArrivalMainListComponent implements OnInit {
 
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
+  @Output() redirectCheckInData = new EventEmitter<any>();
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -78,7 +79,7 @@ export class ArrivalMainListComponent implements OnInit {
   sortable = true;
   riskItemsArr: any[];
   riskList: any[];
-  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService) { }
+  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -272,6 +273,31 @@ export class ArrivalMainListComponent implements OnInit {
       this.searchString = this.updateRiskForm.controls.Rsfna.value;
       this.someMethod(this.searchString);
     }
+  }
+
+  redirectToTreatByName(data) {
+    data.Patnr = data.Patnr.padStart(10, '0');;
+    data.Einri = data.Einri ? data.Einri : '1000';
+    data.Falnr = data.Falnr.padStart(10, '0');;
+    data.Lfdnr = data.Lfdnr;
+
+    const json = {
+      Patnr: data.Patnr,
+      Einri: data.Einri,
+      Falnr: data.Falnr,
+      Lfdnr: data.Lfdnr,
+      Treatmentou: data.Orgpf,
+      redirectFor: '',
+      doctype: '',
+      action: ''
+    };
+    this.storageService.setCheckinData(data);
+    localStorage.setItem('checkindata', JSON.stringify(data));
+    localStorage.setItem('tabName', 'patientProfile');
+    this.redirectToTreatment(json);
+  }
+  redirectToTreatment(data) {
+    this.redirectCheckInData.emit(data);
   }
 
   selectValueFromRiskTable(item) {
@@ -508,23 +534,23 @@ export class ArrivalMainListComponent implements OnInit {
   }
 
 
-  onSortClick(event,col: string) {
+  onSortClick(event, col: string) {
     let target = event.currentTarget,
       classList = target.classList;
     if (classList.contains('fa-chevron-up') && this.sortable) {
       classList.remove('fa-chevron-up');
       classList.add('fa-chevron-down');
-      this.sortDir=-1;
+      this.sortDir = -1;
     } else if (classList.contains('fa-chevron-down') && this.sortable) {
       classList.add('fa-chevron-up');
       classList.remove('fa-chevron-down');
-      this.sortDir=1;
+      this.sortDir = 1;
     } else {
-            classList.remove('fa-chevron-down');
+      classList.remove('fa-chevron-down');
       classList.remove('fa-chevron-up');
     }
 
-      this.SortData(col);
+    this.SortData(col);
   }
 
   riskInformation(text: any) {

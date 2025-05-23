@@ -1088,7 +1088,7 @@ export class InPatientDashboardComponent implements OnInit {
 
   redirectToeKardex(data) {
     localStorage.setItem('admit_process', JSON.stringify(false));
-    if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03') {
+    if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03' || this.navTabBoxActiveValue == '08' ) {
       this.openModuleAdmissionProcess(data, 'admit-process')
       this.patientService.isAdmitProcessSection = true;
       localStorage.setItem('admit_process', JSON.stringify(true));

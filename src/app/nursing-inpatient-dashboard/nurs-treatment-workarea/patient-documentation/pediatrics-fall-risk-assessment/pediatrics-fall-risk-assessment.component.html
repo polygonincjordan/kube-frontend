@@ -48,35 +48,35 @@
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Age</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="AgeScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="AgeScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="ageOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="AgeDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Gender</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="GenderScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="GenderScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="genderOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="GenderDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Congative Impairments</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="CognitiveScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="CognitiveScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="cognitiveOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="CognitiveDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Response to Surgery/Sedation/Anesthesia</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="ResponseScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="ResponseScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="responseOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="ResponseDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Dignosis</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="DiagnosisScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="DiagnosisScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="diagnosisOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="DiagnosisDesc">
         </ng-select>
@@ -84,7 +84,7 @@
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Environmental Factors</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="EnvironmentalScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="EnvironmentalScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="environmentalOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="EnvironmentalDesc">
         </ng-select>
@@ -93,7 +93,7 @@
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Medication Usage</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="MedicationScore" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="MedicationScore" [readOnly]="true"/>
         <ng-select class="col-md-4 p-0" [items]="medicationOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="MedicationDesc">
         </ng-select>

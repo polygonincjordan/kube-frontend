@@ -660,7 +660,7 @@
         <div class="d-flex" *ngIf="navTabBoxActiveValue == '08'">
           <div *ngIf="showList && home" style="width: 100%; height: calc(100vh - 300px); overflow: auto;">
             <app-arrival-main-list [searchString]="searchString" [listItem]="inArrivalslistList"
-              [listType]="navTabBoxActiveValue" 
+              [listType]="navTabBoxActiveValue"  (openModuleKardex)="redirectToeKardex($event)"
               style="width: 100%; margin-right: 6px"></app-arrival-main-list>
           </div>
 

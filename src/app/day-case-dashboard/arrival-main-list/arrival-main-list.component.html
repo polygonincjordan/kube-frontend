@@ -47,8 +47,8 @@
                 &nbsp;
                 <tbody>
                     <tr *ngFor="let item of inArrivalslistList | filter : searchString">
-                        <td>{{item.Pnamec1}}</td>
-                        <td>{{item.Patnr}}</td>
+                        <td (click)="redirectToTreatByName(item)">{{item.Pnamec1}}</td>
+                        <td (click)="redirectToTreatByName(item)">{{item.Patnr}}</td>
                         <td>{{item.Falnr}}</td>
                         <td>{{item.Fatyptxt}}</td>
                         <td>{{item.Datetime}}</td>
