@@ -40,6 +40,7 @@ import { NursTreatmentWorkareaComponent } from './nurs-treatment-workarea/nurs-t
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
+import { LdrViewComponent } from './ldr-view/ldr-view.component';
 
 @UntilDestroy()
 @Component({
@@ -50,6 +51,7 @@ import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-work
 export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(CheckInComponent) CheckInComponent;
   @ViewChild(ErHistoryComponent) ErHistoryComponent;
+  @ViewChild(LdrViewComponent) LdrViewComponent;
   @ViewChild(LabResultsComponent) LabResultsComponent;
   @ViewChild(PhysicianOrdersListComponent) PhysicianOrdersListComponent;
   @ViewChild(AdministeredDosesComponent) AdministeredDosesComponent;
@@ -163,6 +165,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   updatedDate: any;
   modalRef: BsModalRef;
   reservation: boolean = false;
+  LDRView: boolean = false;
   showConfiguration: boolean = false;
   singleformgroupData: any;
   wardSelectForConfig: any[] = [];
@@ -1036,6 +1039,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       );
     } else if (this.selectedModule === 'surgeryWork') {
        this.surgeryWorklistTabComponent?.surgeryListData();
+    }else if(this.selectedModule === 'LDRView'){
+      this.LdrViewComponent?.LDRListSet([new Date(), new Date()])
     }
     // Resetting filter form values
     this.filterForm.patchValue({
@@ -1118,6 +1123,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'treatmentarea') {
       this.treatmentarea = true;
       this.checkin = false;
@@ -1132,6 +1138,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'erhistory') {
       this.headerLabel = 'Inpatient Discharged Patients';
       this.formDetailGroup
@@ -1150,6 +1157,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'erSetting') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -1164,6 +1172,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'dischargeorder') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -1177,6 +1186,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'analysis') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -1191,6 +1201,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'rxEmr') {
       this.treatmentarea = false;
       this.checkin = false;
@@ -1205,6 +1216,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'noConsumables') {
       this.formDetailGroup
         .get('DateRange')
@@ -1223,6 +1235,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'LabResults') {
       this.formDetailGroup
         .get('DateRange')
@@ -1241,6 +1254,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = true;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'PhysicianOrder') {
       this.formDetailGroup
         .get('DateRange')
@@ -1261,6 +1275,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.form.controls['admittedFrom'].disable();
       this.form.controls['admittedTo'].disable();
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'AdministeredDoses') {
       this.formDetailGroup
         .get('DateRange')
@@ -1279,6 +1294,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.AdministeredDoses = true;
       this.noReleaseDoc = false;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'noReleaseDoc') {
       this.formDetailGroup
         .get('DateRange')
@@ -1299,6 +1315,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.AdministeredDoses = false;
       this.noReleaseDoc = true;
       this.reservation = false;
+      this.LDRView = false;
     } else if (module == 'reservation') {
       this.headerLabel = 'Reservation';
       this.treatmentarea = false;
@@ -1314,6 +1331,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.LabResults = false;
       this.noReleaseDoc = false;
       this.reservation = true;
+      this.LDRView = false;
     } else if (module == 'arrival') {
       this.headerLabel = '';
       this.currentDate = new Date();
@@ -1332,6 +1350,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = false;
       this.reservation = false;
       this.isArrival = true;
+      this.LDRView = false;
     } else if (module == 'surgeryWork') {
       this.headerLabel = '';
       this.currentDate = new Date();
@@ -1350,7 +1369,28 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.noReleaseDoc = false;
       this.reservation = false;
       this.isArrival = false;
+      this.LDRView = false;
       this.isSurgeryWork = true;
+    }else if (module == 'LDRView') {
+      this.headerLabel = 'LDR';
+      this.currentDate = new Date();
+      this.singleData.get('fromDate').patchValue(new Date());
+      this.checkin = false;
+      this.treatmentarea = false;
+      this.erhistory = false;
+      this.PhysicianOrder = false;
+      this.AdministeredDoses = false;
+      this.dischargeorder = false;
+      this.erSetting = false;
+      this.rxEmr = false;
+      this.analysis = false;
+      this.noConsumables = false;
+      this.LabResults = false;
+      this.noReleaseDoc = false;
+      this.reservation = false;
+      this.isArrival = false;
+      this.isSurgeryWork = false;
+      this.LDRView = true;
     }
     this.refreshFormGroup();
     this.closeAndRefresh();
@@ -1600,6 +1640,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
         this.formgroupData.DateRange
       );
+      this.LdrViewComponent?.LDRListSet(
+        this.formgroupData.DateRange
+      );
     } else {
       var date1 = this.formDetailGroup.get('DateRange').value[0];
       var date2 = this.formDetailGroup.get('DateRange').value[1];
@@ -1619,6 +1662,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
         this.formgroupData.DateRange
       );
+      this.LdrViewComponent?.LDRListSet(
+        this.formgroupData.DateRange
+      );
     }
 
     //this.currentDate = new Date(new Date().setDate(this.currentDate.getDate()-1));
@@ -1635,6 +1681,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.AdministeredDosesComponent?.getMedicationAdministrationlist(
       this.formgroupData.DateRange
     );
+    this.LdrViewComponent?.LDRListSet(
+        this.formgroupData.DateRange
+      );
     this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
       this.formgroupData.DateRange
     );
@@ -1645,6 +1694,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     if(this.erhistory) {
       this.ErHistoryComponent?.getSelectedDates(
         this.formgroupData.DateRange
+      );
+    }
+    if(this.LDRView) {
+      this.LdrViewComponent?.LDRListSet(
+       this.updatedDate
       );
     }
     if(this.checkin) {
@@ -1729,6 +1783,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
         this.formgroupData.DateRange
       );
+      this.LdrViewComponent?.LDRListSet(
+        this.formgroupData.DateRange
+      );
     } else {
       var date1 = this.formDetailGroup.get('DateRange').value[0];
       var date2 = this.formDetailGroup.get('DateRange').value[1];
@@ -1746,6 +1803,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         this.formgroupData.DateRange
       );
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
+        this.formgroupData.DateRange
+      );
+      this.LdrViewComponent?.LDRListSet(
         this.formgroupData.DateRange
       );
     }

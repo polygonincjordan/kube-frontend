@@ -1,0 +1,62 @@
+<div class="edash-rightSide">
+  <div class="edash-mainContent">
+    <div class="container-fluid check-in-table">
+      <table class="table checkin-table custom-table-striped">
+        <thead>
+          <tr class="checkin-table-header">
+        <th scope="col">Date <i (click)="onSortClick($event,'Datum')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">Time <i (click)="onSortClick($event,'Zeit')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">Visit status <i (click)="onSortClick($event,'Besstattext')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">MRN</th>
+        <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">Room <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
+        <!-- <th scope="col">Ward <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th> -->
+        <th scope="col">Attending Doctor</th>
+        <th scope="col">Financial Category <i (click)="onSortClick($event,'ZzfinCat')"  class="my-icon fa fa-chevron-up"></i></th>
+        <!-- <th class="table-row-width allergy" scope="col">Case Diagnosis</th> -->
+        <th scope="col">Risk Factory</th>
+        <th class="table-row-width allergy" scope="col">Allergy</th>
+        <th class="table-row-width allergy" scope="col">Isolation</th>
+        <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of inHospitalist">
+      <tr>
+        <td>{{ getDate(item.Datum) | date : "dd.MM.yyyy" }}</td>
+        <td>{{ item.Zeit}}</td>
+        <td>{{ item.Besstattext }}</td>
+        <td>{{ item.Patnr}}</td>
+        <td [title]="item.Patient" (click)="openModuleAdmissionProcessFromLDR(item)" style="min-width: 280px;">{{ item.Patient }}</td>
+        <td  [title]="item.BehraumKb">{{ item.BehraumKb }}</td>
+        <!-- <td>{{ item.RoomidName }}</td> -->
+        <td  [title]="item.Behpersname">{{ item.Behpersname }}</td>
+        <td  [title]="item.ZzfinCat">{{ item.ZzfinCat }}</td>
+        <!-- <td class="table-row-width allergy">{{ item.Anfdiagnose }}</td> -->
+        <td  [title]="item.RiskInformation">{{ item.RiskInformation }}</td>
+        <td  [title]=" item.Allergies" class="table-row-width allergy">{{ item.Allergies }}</td>
+        <td  [title]="item.IsolationInd" class="table-row-width allergy">{{ item.IsolationInd }}</td>
+        <td   style="text-align: center; overflow: visible !important; min-width: 80px !important;display: flex;
+        gap: 10px; ">
+          <img src="assets/img/in-patient-dropdown.png" style="width: 20px;cursor: pointer;" (click)="actionPhysicianSet(item)" title="Assign to Me">
+          <div class="dropdown">
+            <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false"></i>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+              <a class="dropdown-item c-pointer" (click)="openModuleLDRPrescription(item)">E-Prescription</a>
+              <a class="dropdown-item c-pointer" (click)="openModuleLDREOrder(item)">e-Orders</a>
+              <a class="dropdown-item c-pointer" (click)="openModuleLDRLabChart(item)">Lab Chart</a>
+              <a class="dropdown-item c-pointer" (click)="openModuleRad(item)">Radiology</a>
+              <a class="dropdown-item c-pointer"  (click)="openModalForProgressNotes(item)">Progress Entry</a>
+              <a class="dropdown-item c-pointer" (click)="openModalForPhysicianOrder(item)">Physician Orders</a>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+      </table>
+      <div *ngIf="inHospitalist?.length == 0" style="text-align: center">
+        No results
+      </div>
+    </div>
+  </div>
+</div>

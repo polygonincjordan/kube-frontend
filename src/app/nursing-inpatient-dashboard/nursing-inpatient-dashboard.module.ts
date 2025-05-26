@@ -180,6 +180,7 @@ import { NicuNursingFlowSheetComponent } from './nurs-treatment-workarea/patient
 import { LaborRoomFlowSheetComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/labor-room-flow-sheet.component';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
+import { LdrViewComponent } from './ldr-view/ldr-view.component';
 
 
 
@@ -312,7 +313,8 @@ const route: Routes = [
     NicuNursingFlowSheetComponent,
     LaborRoomFlowSheetComponent,
     ArrivalMainListComponent,
-    SurgeryWorklistTabComponent
+    SurgeryWorklistTabComponent,
+    LdrViewComponent
   ],
   providers: [
     EmergencyService,
