@@ -177,7 +177,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp1: new FormControl(item.Events.Mesid === "600" ? item.Events.Erusr : this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
       }),
@@ -193,7 +193,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Adnotestx: new FormControl(item.Events.Prncond),
         Quanunit: new FormControl(data.Unit),
-        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
       }),
       DrugAdminister: new FormGroup({
@@ -293,12 +293,12 @@ export class DrugEventsAdminComponent implements OnInit {
                             Meresp1: this.getUserConfigData.VMA,
                             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
                             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
-                            Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
+                            Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
                           }
                           const { Quanunit, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)
                         }
-                       
+
                       },
                       error: (err) => {
                         const errorBody = JSON.parse(err._body);
@@ -317,7 +317,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Meresp2: "",
             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
-             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
+             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
           }
           const { Quanunit, Prncond, ...payload } = PayloadData;
           this.AdministerEventaction("The event has been Administered!", payload)
@@ -337,7 +337,7 @@ export class DrugEventsAdminComponent implements OnInit {
                     .emrLogin(resp.username, resp.password)
                     .subscribe({
                       next: (data) => {
-                        
+
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('NotAdminister').patchValue({
                           Meresp2: parseData.d.NameFirst
@@ -382,7 +382,7 @@ export class DrugEventsAdminComponent implements OnInit {
         ...this.administratiForm.get('DrugAdminister').value,
         Empid: this.getUserConfigData.VMA,
         Pamount:`${this.administratiForm.get('DrugAdminister').value.Pamount}`,
-         Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? "" 
+         Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
         // Pamount: (this.administratiForm.get('DrugAdminister').value.Pamount === '' || this.administratiForm.get('DrugAdminister').value.Pamount === null) ? '0.000' : `${this.administratiForm.get('DrugAdminister').value.Pamount}`,
       }
       this.DrugReturnEventaction("Your Return Request has been Submitted!", PayloadData)

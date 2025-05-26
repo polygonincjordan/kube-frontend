@@ -177,7 +177,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
         Prn: new FormControl(false),
-        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp1: new FormControl(item.Events.Mesid === "600" ? item.Events.Erusr : this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
       }),
@@ -193,7 +193,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Adnotestx: new FormControl(item.Events.Prncond),
         Quanunit: new FormControl(data.Unit),
-        Meresp1: new FormControl(item.Events.AdmEmp),
+        Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
       }),
       DrugAdminister: new FormGroup({
@@ -281,7 +281,7 @@ export class DrugEventsAdminComponent implements OnInit {
                   this.LoginSubscription = this.authService
                     .emrLogin(resp.username, resp.password)
                     .subscribe({
-                      next: (data) => { 
+                      next: (data) => {
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('Administrator').patchValue({
                           Meresp2: parseData.d.NameFirst
@@ -297,7 +297,7 @@ export class DrugEventsAdminComponent implements OnInit {
                           const { Quanunit, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)
                         }
-                       
+
                       },
                       error: (err) => {
                         const errorBody = JSON.parse(err._body);
@@ -335,7 +335,7 @@ export class DrugEventsAdminComponent implements OnInit {
                     .emrLogin(resp.username, resp.password)
                     .subscribe({
                       next: (data) => {
-                        
+
                         const parseData = JSON.parse(data._body);
                         this.administratiForm.get('NotAdminister').patchValue({
                           Meresp2: parseData.d.NameFirst

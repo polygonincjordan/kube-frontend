@@ -40,6 +40,7 @@ export class EditMedicationComponent implements OnInit {
     Quanunit: "",
     N1znr: "",
     Prn: "",
+    Pom: "",
     Prncond: "",
     Moresp1: "",
     Orgfa: "",
