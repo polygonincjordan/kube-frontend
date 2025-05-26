@@ -1717,6 +1717,26 @@ export class EmergencyService {
     });
   }
 
+  saveStampDocument(json) {
+    return this.http.post(this.url + 'saveStampDocument', json, {
+      withCredentials: true,
+    });
+  }
+
+  getDocStampDetails(dockey) {
+    return this.http.get(this.url + `fetchStampDocument?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  stampLatestDoc(json) {
+    return this.http.get(
+      this.url + `fallStampLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

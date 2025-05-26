@@ -1126,6 +1126,8 @@ console.log('Full URL:', fullUrl);
       this.calltab('HistoryAssessment');
     }  else if (tabName == 'DietMealOrdering') {
       this.calltab('DietMealOrdering');
+    }  else if (tabName == 'DietMealOrderingPlus') {
+      this.calltab('DietMealOrderingPlus');
     } 
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;

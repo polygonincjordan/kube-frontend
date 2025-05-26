@@ -1095,6 +1095,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.isArrival = false;
     this.isSurgeryWork = false;
     this.selectedModule = module;
+    this.ErHistoryPatientCount = '';
     // this.emergencyService.tabPanelNavigation('OrderSet');
     this.defaultSelectedDateRange.push(
       new Date().setDate(new Date().getDate() - 1)

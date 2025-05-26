@@ -276,15 +276,15 @@ export class ArrivalMainListComponent implements OnInit {
   }
 
   redirectToTreatByName(data) {
-    data.Patnr = data.Patnr.padStart(10, '0');;
-    data.Einri = data.Einri ? data.Einri : '1000';
-    data.Falnr = data.Falnr.padStart(10, '0');;
-    data.Lfdnr = data.Lfdnr;
+    // data.Patnr = data.Patnr.padStart(10, '0');;
+    // data.Einri = data.Einri ? data.Einri : '1000';
+    // data.Falnr = data.Falnr.padStart(10, '0');;
+    // data.Lfdnr = data.Lfdnr;
 
     const json = {
-      Patnr: data.Patnr,
-      Einri: data.Einri,
-      Falnr: data.Falnr,
+      Patnr: data.Patnr.padStart(10, '0'),
+      Einri: data.Einri ? data.Einri : '1000',
+      Falnr: data.Falnr.padStart(10, '0'),
       Lfdnr: data.Lfdnr,
       Treatmentou: data.Orgpf,
       redirectFor: '',
@@ -297,7 +297,7 @@ export class ArrivalMainListComponent implements OnInit {
     this.redirectToTreatment(json);
   }
   redirectToTreatment(data) {
-    this.redirectCheckInData.emit(data);
+    this.openModuleKardex.emit(data);
   }
 
   selectValueFromRiskTable(item) {

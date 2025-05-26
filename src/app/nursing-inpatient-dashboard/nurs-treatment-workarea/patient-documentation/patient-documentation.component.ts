@@ -50,6 +50,7 @@ import { CriticalCarePainComponent } from './critical-care-pain/critical-care-pa
 import { MaternityEarlyWarningSignComponent } from './maternity-early-warning-sign/maternity-early-warning-sign.component';
 import { IntraOperativeRecordComponent } from './intra-operative-record/intra-operative-record.component';
 import { PediatricsFallRiskAssessmentComponent } from './pediatrics-fall-risk-assessment/pediatrics-fall-risk-assessment.component';
+import { MalnutritionPaediatricsComponent } from './malnutrition-paediatrics/malnutrition-paediatrics.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -89,6 +90,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(CvcInsertionComponent) CvcInsertionDocumentComp: CvcInsertionComponent;
   @ViewChild(PediatricsFallRiskAssessmentComponent) PediatricsFallRiskAssessmentComp: PediatricsFallRiskAssessmentComponent;
   @ViewChild(NursAssessmentRestraintsComponent) NurseAssMainComp: NursAssessmentRestraintsComponent;
+  @ViewChild(MalnutritionPaediatricsComponent) MalnutritionPaediatricsComp: MalnutritionPaediatricsComponent;
 
  
 
@@ -643,6 +645,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNeonatalDischargeDocDetails();
     this.getCVCInsertionDocDetails();
     this.getPedFallRiskDocDetails();
+    this.getStampDocDetails();
   }
 
   LatestMFSSet() {
@@ -894,6 +897,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.fallRiskAssessmentLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.pediatricsFallList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Stamp Document Latest
+  getStampDocDetails() {
+    this.emergencyService.stampLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.malnutritionAssList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -2163,6 +2179,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNeonatalDischargeDocDetails();
     this.getCVCInsertionDocDetails();
     this.getPedFallRiskDocDetails();
+    this.getStampDocDetails();
   }
 
   openDocument(action) {
@@ -2732,7 +2749,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openNurseInitAss = true;;
           let valueObj = {
-            type: WordType.EditNE,
+            type: WordType.EditBS,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
@@ -2753,7 +2770,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.openMalnutritionAss = true;;
           let valueObj = {
-            type: WordType.CopyEA,
+            type: WordType.CopyBS,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
@@ -5237,17 +5254,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
-      if (this.openMalnutritionAss) {
-        let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
-          if (formValue) {
-            if(btnType == 'close') this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        })
-      }
+      // if (this.openMalnutritionAss) {
+      //   let docStatus = '1';
+      //   this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+      //     if (formValue) {
+      //       if(btnType == 'close') this.refresh();
+      //     }
+      //   }).catch((error: any) => {
+      //     console.error('Error scale:', error);
+      //     console.error('Error creating Glasgow coma scale:', error);
+      //   })
+      // }
       if (this.openRichmondScale) {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
@@ -5595,6 +5612,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openMalnutritionAss) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if(btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -5756,15 +5785,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
-      if (this.openMalnutritionAss) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
-          if (formValue) {
-            if(btnType == 'close') this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error modifying Glasgow coma scale:', error);
-        });
-      }
+      // if (this.openMalnutritionAss) {
+      //   this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+      //     if (formValue) {
+      //       if(btnType == 'close') this.refresh();
+      //     }
+      //   }).catch((error: any) => {
+      //     console.error('Error modifying Glasgow coma scale:', error);
+      //   });
+      // }
       if (this.openRichmondScale) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
@@ -6001,6 +6030,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openMalnutritionAss) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if(btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
     else if (this.actionType == 'copy') {
       if (this.openGlasgowComaScale) {
@@ -6162,15 +6203,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
-      if (this.openMalnutritionAss) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
-          if (formValue) {
-            this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-        });
-      }
+      // if (this.openMalnutritionAss) {
+      //   this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+      //     if (formValue) {
+      //       this.refresh();
+      //     }
+      //   }).catch((error: any) => {
+      //     console.error('Error scale:', error);
+      //   });
+      // }
       if (this.openRichmondScale) {
         this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
@@ -6409,6 +6450,19 @@ export class PatientDocumentationComponent implements OnInit {
         this.PediatricsFallRiskAssessmentComp.createFallRiskPed(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+      if (this.openMalnutritionAss) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if(btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6690,16 +6744,16 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     }
-    else if (this.openMalnutritionAss) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
-        if (formValue) {
-          this.refresh();
-        }
-      }).catch((error: any) => {
-        console.error('Error scale:', error);
-        console.error('Error creating Glasgow coma scale:', error);
-      });
-    }
+    // else if (this.openMalnutritionAss) {
+    //   this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+    //     if (formValue) {
+    //       this.refresh();
+    //     }
+    //   }).catch((error: any) => {
+    //     console.error('Error scale:', error);
+    //     console.error('Error creating Glasgow coma scale:', error);
+    //   });
+    // }
     else if (this.openRichmondScale) {
       this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
@@ -6782,6 +6836,16 @@ export class PatientDocumentationComponent implements OnInit {
     }
     else if (this.openisPediatricsFallDocument) {
       this.PediatricsFallRiskAssessmentComp.createFallRiskPed('3').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+    }
+    else if (this.openMalnutritionAss) {
+      this.MalnutritionPaediatricsComp.createStampDocument('3').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -8541,7 +8605,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openInitialNursingNewbornDocument ||
       this.openNurseInitAss ||
       this.openDailyNurseAss ||
-      this.openMalnutritionAss ||
+      // this.openMalnutritionAss ||
       this.openPostAnesthesia ||
       this.openRichmondScale ||
       this.openisDeliverRecord ||

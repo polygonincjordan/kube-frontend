@@ -1173,9 +1173,10 @@ export class InPatientDashboardComponent implements OnInit {
     if (this.f.specialty.value) {
       speciality = this.commaSeparatForSpecialty(this.f.specialty.value);
     }
-
+  
     if(this.home) {
-      this.windowRedirect(tabName,data.Mrn, data.CaseNumber, data.Institute, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+      if(this.navTabBoxActiveValue == '08') this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+       this.windowRedirect(tabName,data.Mrn, data.CaseNumber, data.Institute, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
     } else if(this.abnormalLabResult) {
       this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
     } else if(this.abnormalRadFindings) {
