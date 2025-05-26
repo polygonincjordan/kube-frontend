@@ -194,7 +194,7 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument || openisPediatricsFallDocument"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openMalnutritionAss || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument || openisPediatricsFallDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -206,7 +206,7 @@
             </button>
           </div>
           <div class="header-btn">
-            <button type="button" class="action-doc" (click)="saveDoc()">
+            <button type="button" class="action-doc" (click)="saveDoc('close')">
               Release
             </button>
           </div>
@@ -1204,21 +1204,20 @@
            <div [ngClass]="isMalnutritionAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'STAMP'" (click)="selectAssessment('isMalnutritionAss',malnutritionAssList[0])">
              <div class="col-md-4" [title]="'Screening Tool for the Assessment of Malnutrition in Paediatrics' + (malnutritionAssList[0]?.Zversion ? dockVer(CriticalPainList[0]?.Zversion) : '')">STAMP {{malnutritionAssList[0]?.Zversion ?
-               dockVer(malnutritionAssList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+               dockVer(malnutritionAssList[0]?.Zversion) : ''}} <span class="under-deve"></span> :</div>
              <div class="col-md-2 status-color">{{malnutritionAssList[0]?.StatusTxt || 'N/A'}}</div>
              <div class="col-md-2" title="{{getTime(malnutritionAssList[0]?.DocTime)}}">
                {{getDate(malnutritionAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
              </div>
              <div class="col-md-3">{{malnutritionAssList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(malnutritionAssList[0]?.Dockey)"
-                 *ngIf="malnutritionAssList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(malnutritionAssList[0]?.Dockey, malnutritionAssList[0])">
-                   <select *ngIf="malnutritionAssList.length && malnutritionAssList[0]?.StatusTxt !='N/A' && malnutritionAssList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
+              <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(malnutritionAssList[0],RedirectionType.NMRTSC$)" *ngIf="malnutritionAssList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(malnutritionAssList[0]?.Dockey, malnutritionAssList[0])">
+                    <select *ngIf="malnutritionAssList.length && malnutritionAssList[0]?.StatusTxt !='N/A' && malnutritionAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+                </div>
            </div>
            <!-- Richmond Scale -->
            <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"

@@ -26,6 +26,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
   @Output() dataToParent = new EventEmitter<any>();
+  @Output() sendErPatientCount = new EventEmitter<any>();
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -87,6 +88,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
     this.hospitalistService.getSurgeryWorkListSetAPI()
       .subscribe((data: any) => {
         this.inSurgeryWorklist = data?.d?.results;
+        this.sendErPatientCount.next(this.inSurgeryWorklist.length);
       })
   }
 

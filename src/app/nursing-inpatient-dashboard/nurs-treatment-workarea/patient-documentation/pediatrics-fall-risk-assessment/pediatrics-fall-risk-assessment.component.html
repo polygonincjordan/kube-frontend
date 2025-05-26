@@ -48,35 +48,35 @@
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Age</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="AgeScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="AgeScore" [readOnly]="true" [disabled]="true" />
         <ng-select class="col-md-4 p-0" [items]="ageOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="AgeDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Gender</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="GenderScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="GenderScore" [readOnly]="true" [disabled]="true"/>
         <ng-select class="col-md-4 p-0" [items]="genderOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="GenderDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Congative Impairments</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="CognitiveScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="CognitiveScore" [readOnly]="true" [disabled]="true"/>
         <ng-select class="col-md-4 p-0" [items]="cognitiveOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="CognitiveDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Response to Surgery/Sedation/Anesthesia</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="ResponseScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="ResponseScore" [readOnly]="true" [disabled]="true"/>
         <ng-select class="col-md-4 p-0" [items]="responseOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="ResponseDesc">
         </ng-select>
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Dignosis</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="DiagnosisScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="DiagnosisScore" [readOnly]="true" [disabled]="true"/>
         <ng-select class="col-md-4 p-0" [items]="diagnosisOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="DiagnosisDesc">
         </ng-select>
@@ -84,7 +84,7 @@
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Environmental Factors</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="EnvironmentalScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="EnvironmentalScore" [readOnly]="true" [disabled]="true"/>
         <ng-select class="col-md-4 p-0" [items]="environmentalOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="EnvironmentalDesc">
         </ng-select>
@@ -93,7 +93,7 @@
       </div>
       <div class="row">
         <label class="col-md-3 p-0">Medication Usage</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="MedicationScore" [readOnly]="true"/>
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="MedicationScore" [readOnly]="true" [disabled]="true"/>
         <ng-select class="col-md-4 p-0" [items]="medicationOptions" bindLabel="label" bindValue="value"
           (change)="calculateTotalScore()" formControlName="MedicationDesc">
         </ng-select>
@@ -105,8 +105,8 @@
       <h6 class="title-main">Scale Result</h6>
       <div class="row">
         <label class="col-md-3 p-0">Total Score</label>
-        <input class="col-md-1 form-control mr-3" type="text" formControlName="TotalScore" [readOnly]="true" />
-        <input class="col-md-3 form-control" type="text" formControlName="ScoreDesc" [readOnly]="true" />
+        <input class="col-md-1 form-control mr-3" type="text" formControlName="TotalScore" [readOnly]="true" [disabled]="true"/>
+        <input class="col-md-3 form-control" type="text" formControlName="ScoreDesc" [readOnly]="true" [disabled]="true"/>
         <img width="35px" src="assets/img/information.jfif" (click)="openModalHigh(saveModalsHigh)"
           class="mr-2 cursor-pointer">Std.Intervention.Protoc
       </div>
