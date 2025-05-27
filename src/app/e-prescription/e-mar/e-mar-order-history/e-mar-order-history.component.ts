@@ -262,6 +262,13 @@ export class EMarOrderHistoryComponent {
   parseDate(data: string): Date {
     return data ? new Date(this.datePipe.transform(data.replace(/[^0-9]/g, '').replace(/\//g, ""), 'yyyy-MM-dd')) : null;
   }
+   public handlePrnClick(schedule, element): void {
+    if (element) {
+      const filteredSchedule = schedule.filter((data) => data.Events);
+      this.openModalForDrugEvent(filteredSchedule[0], element);
+    }
+  }
+
   // drug events
   openModalForDrugEvent(item: any, data: any) {
     // if(item.Events.Descr === 'Ended'){
