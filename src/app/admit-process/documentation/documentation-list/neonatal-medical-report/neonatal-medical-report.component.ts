@@ -26,6 +26,13 @@ export class NeonatalMedicalReportComponent implements OnInit {
     if(changes.soapFormEvent.currentValue == 'edit') {
       this.updateNeoNatalMRDoc();
     }
+    if(changes.soapFormEvent.currentValue == 'saveClose') {
+      if(this.admissionService.isEditNeonatalMR) {
+        this.updateNeoNatalMRDoc();
+      } else {
+        this.createNeoNatalMRDoc(false);
+      }
+    }
 
     if(changes.soapFormEvent.currentValue == 'release') {
       if(this.admissionService.isCloneNeonatalMR) {
@@ -162,10 +169,12 @@ export class NeonatalMedicalReportComponent implements OnInit {
     
     createJson.AdmTime = 'PT'+createatime[0] + 'H' + createatime[1] + 'M' + '00S';
    await this.admissionService.createNeoNatalMRDoc(createJson).subscribe(()=>{
-    this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
+      if(this.soapFormEvent == 'saveClose') { 
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
+      }
     })
   
   }
@@ -194,10 +203,12 @@ export class NeonatalMedicalReportComponent implements OnInit {
     updateJson.BirthTime = 'PT'+createbtime[0] + 'H' + createbtime[1] + 'M' + '00S';
     updateJson.AdmTime = 'PT'+createatime[0] + 'H' + createatime[1] + 'M' + '00S';
     await this.admissionService.updateNeoNatalMRDoc(updateJson).subscribe(()=>{
-      this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
+      if(this.soapFormEvent == 'saveClose') { 
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
+      }
     })
   } 
   async releaseNeoNatalMRDoc(){

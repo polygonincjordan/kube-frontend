@@ -26,6 +26,14 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     if(changes.soapFormEvent.currentValue == 'edit') {
       this.updateNeoNatalDoc();
     }
+    if(changes.soapFormEvent.currentValue == 'saveClose') {
+      if(this.admissionService.isEditNeonatal) {
+        this.updateNeoNatalDoc();
+      } else {
+        this.createNeoNatalDoc(false);
+      }
+    }
+
 
     if(changes.soapFormEvent.currentValue == 'release') {
       if(this.admissionService.isCloneNeonatal) {
@@ -139,10 +147,12 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     createtime = createJson.Timee.split(':');
     createJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
    await this.admissionService.createNeoNatalDoc(createJson).subscribe(()=>{
-    this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
+      if(this.soapFormEvent == 'saveClose') { 
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
+      }
     })
   
   }
@@ -157,10 +167,12 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     createtime = updateJson.Timee.split(':');
     updateJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     await this.admissionService.updateNeoNatalDoc(updateJson).subscribe(()=>{
-      this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
+       if(this.soapFormEvent == 'saveClose') { 
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
+      }
     })
   } 
   async releaseNeoNatalDoc(){

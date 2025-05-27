@@ -67,8 +67,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditEducationAsset">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditEducationAsset">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -79,8 +80,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditBornForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditBornForm">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -91,8 +93,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditNicuForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditNicuForm">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -104,8 +107,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditMedicalDoc">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditMedicalDoc">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -117,8 +121,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditPhysicianForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditPhysicianForm">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -130,8 +135,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditPhysicianForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditPhysicianForm">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -143,6 +149,7 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditSoapDoc">Save</button>
       <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditSoapDoc">Save</button>
+      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -154,8 +161,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditDischargeSummery">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditDischargeSummery">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -167,8 +175,9 @@
     <div *ngIf="!admissionService.isPDFObstetricRisk">
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditObstetricRisk">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditObstetricRisk">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -184,7 +193,8 @@
     <div *ngIf="!admissionService.isPDFObsVteAnt">
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditObsVteAnt">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsVteAnt">Save</button>
+        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsVteAnt">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -199,7 +209,8 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditObsGynDoc">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsGynDoc">Save</button>
+        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsGynDoc">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -210,6 +221,7 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditNeonatal">Save</button>
       <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditNeonatal">Save</button>
+      <button class="sort-btn" (click)="addEditForm('saveClose')" >Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -220,8 +232,9 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditNeonatalMR">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')"
+        <button class="sort-btn" (click)="addEditForm('edit')"
         *ngIf="this.admissionService.isEditNeonatalMR">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -233,7 +246,8 @@
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
         *ngIf="!this.admissionService.isEditVisitForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditVisitForm">Save</button>
+        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditVisitForm">Save</button>
+        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -245,7 +259,8 @@
   <div>
     <button class="sort-btn" (click)="addEditForm('save')"
       *ngIf="!this.admissionService.isEditTransferAssestForm">Save</button>
-    <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditTransferAssestForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditTransferAssestForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
     <button class="sort-btn" (click)="addEditForm('release')">Release</button>
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>
@@ -258,8 +273,9 @@
   <div>
     <button class="sort-btn" (click)="addEditForm('save')"
       *ngIf="!this.admissionService.isEditOperationReport">Save</button>
-    <button class="sort-btn" (click)="addEditForm('edit')"
+      <button class="sort-btn" (click)="addEditForm('edit')"
       *ngIf="this.admissionService.isEditOperationReport">Save</button>
+      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
     <button class="sort-btn" (click)="addEditForm('release')">Release</button>
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>
@@ -272,8 +288,9 @@
   <div>
     <button class="sort-btn" (click)="addEditForm('save')"
       *ngIf="!this.admissionService.isEditPaediatricsAdmissionForm">Save</button>
-    <button class="sort-btn" (click)="addEditForm('edit')"
+      <button class="sort-btn" (click)="addEditForm('edit')"
       *ngIf="this.admissionService.isEditPaediatricsAdmissionForm">Save</button>
+      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
     <button class="sort-btn" (click)="addEditForm('release')">Release</button>
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>

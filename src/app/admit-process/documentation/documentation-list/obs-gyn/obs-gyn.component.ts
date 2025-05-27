@@ -67,6 +67,13 @@ export class ObsGynComponent implements OnInit,OnChanges {
     if(changes.soapFormEvent.currentValue == 'edit') {
       this.updateObsGynDoc();
     }
+    if(changes.soapFormEvent.currentValue == 'edit') {
+      if(this.admissionService.isEditObsGynDoc) {
+        this.updateObsGynDoc();
+      } else {
+        this.createObsGynDoc(false);
+      }
+    }
 
     if(changes.soapFormEvent.currentValue == 'release') {
       if(this.admissionService.isEditObsGynDoc) {
@@ -470,10 +477,12 @@ export class ObsGynComponent implements OnInit,OnChanges {
    createJson['TODIAGNOSES'] = this.toDiagnosisArr;
    createJson['TOPHYEXAM'] = this.toPhyExamResponse();
    await this.admissionService.createObsGyn(createJson).subscribe(()=>{
-    this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
+      if(this.soapFormEvent == 'saveClose') { 
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
+      }
     })
   
   }
@@ -496,10 +505,12 @@ export class ObsGynComponent implements OnInit,OnChanges {
     updateJson['TOPHYEXAM'] = this.toPhyExamResponse();
     updateJson['TODIAGNOSES'] = this.toDiagnosisArr;
     await this.admissionService.updateObsGynDoc(updateJson).subscribe(()=>{
-      this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
+      if(this.soapFormEvent == 'saveClose') { 
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
+      }
     })
   }
 
@@ -523,7 +534,7 @@ export class ObsGynComponent implements OnInit,OnChanges {
     updateJson['TOPHYEXAM'] = this.obsGynReportForm.value.TOPHYEXAM.results;
     updateJson['TODIAGNOSES'] = this.toDiagnosisArr;
     this.admissionService.releaseObsGynDoc(updateJson).subscribe(()=>{
-      this.admissionService.cancelAllForm();
+    this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';
     this.admissionService.clearSoapEvent.next(true);
     this.realodEducationList.next(true);

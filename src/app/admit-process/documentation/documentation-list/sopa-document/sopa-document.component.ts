@@ -43,6 +43,13 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     if(changes.soapFormEvent.currentValue == 'edit') {
       this.updateDocument();
     }
+    if(changes.soapFormEvent.currentValue == 'saveClose') {
+      if(this.admissionService.isEditSoapDoc) { 
+        this.updateDocument();
+      } else {
+        this.saveDocument(false);
+      }
+    }
 
     if(changes.soapFormEvent.currentValue == 'release') {
       if(this.admissionService.isCloneSoapDoc) {
@@ -155,10 +162,12 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     await this.patientVisitService
       .savePatientVisitData(payload)
       .then((res: any) => {
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
+          if(this.soapFormEvent == 'saveClose') { 
+            this.admissionService.cancelAllForm();
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.admissionService.clearSoapEvent.next(true);
+            this.realodEducationList.next(true);
+          }
       });
   }
 
@@ -168,11 +177,14 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     await this.patientVisitService
       .updatePatientVisitData(this.soapDocForm.value)
       .then((res: any) => {
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.soapFormEvent = '';
-        this.admissionService.cancelAllForm();
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
+          if(this.soapFormEvent == 'saveClose') { 
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.soapFormEvent = '';
+            this.admissionService.cancelAllForm();
+            this.admissionService.clearSoapEvent.next(true);
+            this.realodEducationList.next(true);
+          }
+
       });
   }
 

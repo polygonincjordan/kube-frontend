@@ -14,6 +14,7 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 import Swal from 'sweetalert2';
 import { NurErAllergyComponent } from '../check-in/nur-er-allergy/nur-er-allergy.component';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-surgery-worklist-tab',
@@ -27,6 +28,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
   @Output() dataToParent = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
+  @Output() redirectCheckInData = new EventEmitter<any>();
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -77,7 +79,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
   riskList: any[];
   inSurgeryWorklist: any[];
 
-  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService) { }
+  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService, private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -104,6 +106,31 @@ export class SurgeryWorklistTabComponent implements OnInit {
     this.riskform = this.formBuilder.group({
       riskFormitems: new FormArray([]),
     });
+  }
+
+   redirectToTreatByName(data) {
+    data.Patnr = data.Patnr.padStart(10, '0');;
+    data.Einri = data.Einri ? data.Einri : '1000';
+    data.Falnr = data.Falnr.padStart(10, '0');;
+    data.Lfdnr = data.Lfdnr;
+
+    const json = {
+      Patnr: data.Patnr,
+      Einri: data.Einri,
+      Falnr: data.Falnr,
+      Lfdnr: data.Lfdnr,
+      Treatmentou: data.Orgpf,
+      redirectFor: '',
+      doctype: '',
+      action: ''
+    };
+    this.storageService.setCheckinData(data);
+    localStorage.setItem('checkindata', JSON.stringify(data));
+    localStorage.setItem('tabName', 'patientProfile');
+    this.redirectToTreatment(json);
+  }
+  redirectToTreatment(data) {
+    this.redirectCheckInData.emit(data);
   }
 
   saveRiskJsonFormat() {
