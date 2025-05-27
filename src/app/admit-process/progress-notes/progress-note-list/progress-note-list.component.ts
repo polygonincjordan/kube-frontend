@@ -130,8 +130,8 @@ export class ProgressNoteListComponent implements OnInit {
 
   deleteProgressNotePopup(template: TemplateRef<any>, note: any) {
     this.selectProgressNote = note;
-     const createdByLast4 = note.EmployeeResp?.slice(-4);
-     if (note.PatientId !== createdByLast4) {
+    let gpart =  this._storageService.getGpart()
+     if (note.PatientId !== gpart) {
     this.warningSwalModel("You are not allowed to delete others' notes");
     return; // Stop here
   }

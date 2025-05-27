@@ -247,6 +247,10 @@ export class DocumentingDeliveryComponent implements OnInit {
     this.activeTab = tab;
   }
 
+  close(){
+    this.modalRefForAllergy.hide();
+  }
+
   saveDelivery() {
     this.isFormSubmitted = true;
     if(this.deliveryForm.invalid) {

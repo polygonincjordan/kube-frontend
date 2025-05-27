@@ -4,53 +4,78 @@
       <table class="table checkin-table custom-table-striped">
         <thead>
           <tr class="checkin-table-header">
+        <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">MRN</th>
+        <th scope="col">Case#</th>
+        <th scope="col">Risk</th>
+        <th class="table-row-width allergy" scope="col">Allergy</th>
+        <th>Vital</th>
+        <!-- <th>Diagnosis</th> -->
+        <th class="table-row-width allergy" scope="col">Isolation</th>
+        <th  scope="col">Visit status <i (click)="onSortClick($event,'Besstattext')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">Date <i (click)="onSortClick($event,'Datum')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">Time <i (click)="onSortClick($event,'Zeit')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">Visit status <i (click)="onSortClick($event,'Besstattext')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">MRN</th>
-        <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
+        <!-- <th scope="col">Ward <i (click)="onSortClick($event,'RoomidName')"  class="my-icon fa fa-chevron-up"></i></th> -->
         <th scope="col">Room <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
-        <!-- <th scope="col">Ward <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th> -->
-        <th scope="col">Attending Doctor</th>
+        <th scope="col">Specialty <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">Financial Category <i (click)="onSortClick($event,'ZzfinCat')"  class="my-icon fa fa-chevron-up"></i></th>
-        <!-- <th class="table-row-width allergy" scope="col">Case Diagnosis</th> -->
-        <th scope="col">Risk Factory</th>
-        <th class="table-row-width allergy" scope="col">Allergy</th>
-        <th class="table-row-width allergy" scope="col">Isolation</th>
+        <th  scope="col">Attending Doctor</th>
         <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody *ngFor="let item of inHospitalist">
+        <tbody *ngFor="let item of inHospitalist;let i = index">
       <tr>
+        <td [title]="item.Patient"  (click)="redirectToTreatByName(item)" style="cursor:pointer">{{ item.Patient }}</td>
+        <td>{{ item.Patnr}}</td>
+        <td>{{item.Falnr}}</td>
+        <td class="border-left" style="width: 3%;text-align:center" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+              <span>
+                <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
+                  (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
+              </span>
+            </td>
+        <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"
+              [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  ">
+              <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'" (click)="openModalForAllergy('', item)"
+                style="width: 23px" />
+            </td>
+        <td class="border-right" scope="row" style="padding-left: 0px; text-align: center"
+              [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
+              <img src="assets/img/er-vital.png" style="width: 23px"  title="Vitals"  (click)="openModalVital(item)" />
+            </td>
+        <!-- <td class="table-row-width allergy">{{ item.Anfdiagnose }}</td> -->
+       <td class="border-left text-center">
+              <span>
+                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon"
+                  [title]="item.IsolationType ? item.IsolationType : 'No Isolation'" />
+              </span>
+            </td>
+        <td>{{ item.Besstattext }}</td>
         <td>{{ getDate(item.Datum) | date : "dd.MM.yyyy" }}</td>
         <td>{{ item.Zeit}}</td>
-        <td>{{ item.Besstattext }}</td>
-        <td>{{ item.Patnr}}</td>
-        <td [title]="item.Patient" (click)="openModuleAdmissionProcessFromLDR(item)" style="min-width: 280px;">{{ item.Patient }}</td>
-        <td  [title]="item.BehraumKb">{{ item.BehraumKb }}</td>
-        <!-- <td>{{ item.RoomidName }}</td> -->
-        <td  [title]="item.Behpersname">{{ item.Behpersname }}</td>
-        <td  [title]="item.ZzfinCat">{{ item.ZzfinCat }}</td>
-        <!-- <td class="table-row-width allergy">{{ item.Anfdiagnose }}</td> -->
-        <td  [title]="item.RiskInformation">{{ item.RiskInformation }}</td>
-        <td  [title]=" item.Allergies" class="table-row-width allergy">{{ item.Allergies }}</td>
-        <td  [title]="item.IsolationInd" class="table-row-width allergy">{{ item.IsolationInd }}</td>
-        <td   style="text-align: center; overflow: visible !important; min-width: 80px !important;display: flex;
-        gap: 10px; ">
-          <img src="assets/img/in-patient-dropdown.png" style="width: 20px;cursor: pointer;" (click)="actionPhysicianSet(item)" title="Assign to Me">
-          <div class="dropdown">
-            <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer" id="dropdownMenuButton" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false"></i>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-              <a class="dropdown-item c-pointer" (click)="openModuleLDRPrescription(item)">E-Prescription</a>
-              <a class="dropdown-item c-pointer" (click)="openModuleLDREOrder(item)">e-Orders</a>
-              <a class="dropdown-item c-pointer" (click)="openModuleLDRLabChart(item)">Lab Chart</a>
-              <a class="dropdown-item c-pointer" (click)="openModuleRad(item)">Radiology</a>
-              <a class="dropdown-item c-pointer"  (click)="openModalForProgressNotes(item)">Progress Entry</a>
-              <a class="dropdown-item c-pointer" (click)="openModalForPhysicianOrder(item)">Physician Orders</a>
-            </div>
-          </div>
-        </td>
+        <!-- <td  style="white-space:nowrap" [title]="item.BehraumKb">{{ item.BehraumKb }}</td> -->
+        <td style="white-space:nowrap" [title]="item.BehraumKb">{{ item.BehraumKb }}</td>
+        <td title="Obstetrics">Obstetrics</td>
+        <td [title]="item.ZzfinCat">{{ item.ZzfinCat }}</td>
+        <td [title]="item.Behpersname">{{ item.Behpersname }}</td>
+        <td colspan="1"
+              style="display: flex; align-items: center; text-align: center; overflow: visible !important">
+              <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
+                <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer"
+                  title="Print Patient Label" />
+              </div>
+              <div style="margin-left: 3px; margin-right: 3px"
+                (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
+                <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status" />
+              </div>
+              <div style="margin-left: 3px; margin-right: 3px" [class.disabled]="item.Patname?.includes('(M')"
+                [style.pointerEvents]="item.Patname?.includes('(M') ? 'none' : 'auto'"
+                [style.opacity]="item.Patname?.includes('(M') ? '0.5' : '1'"
+                (click)="openDocumentingDeliveryModel(item)">
+                <img src="assets/img/newbornbaby.png" style="width: 25px; cursor: pointer"
+                  title="Documenting Delivery" />
+              </div>
+            </td>
       </tr>
     </tbody>
       </table>
@@ -60,3 +85,297 @@
     </div>
   </div>
 </div>
+
+<!-- change Status -->
+<ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
+  <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
+    <h4 class="modal-title" style="color: white">Change Admission Status</h4>
+    <div class="risk-history-main">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item" style="margin-left: 10%">
+          Patient Name : <span>{{ admissionStatusModel.Patname }}</span>
+        </li>
+        <li class="allergy-header-item">MRN: {{ admissionStatusModel.Patnr }}</li>
+        <li class="allergy-header-item">
+          Admission date:
+          {{ getDate(admissionStatusModel.Datum) | date : "dd.MM.y" }}
+        </li>
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-body p-0 pb-3">
+    <form [formGroup]="changeStatusForm">
+      <div class="p-3">
+        <p class="m-0">Are you sure you want to change status to <strong>{{ getStatusValue() }}</strong></p>
+      </div>
+      <div class="row m-0 mb-2" *ngIf="getStatusValue() === 'Actual Arrival'">
+        <div class="col-md-4 row m-0 align-items-center ">
+          <div class="col-md-4">
+            <strong class="m-0">Date</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
+        </div>
+        <div class="col-md-3 row m-0 align-items-center pl-0">
+          <div class="col-md-3 p-0">
+            <strong class="m-0">Time</strong>
+          </div>
+          <div class="col-md-9 p-0">
+            <input type="time" class="form-control" formControlName="Bwizt" />
+          </div>
+        </div>
+        <div class="col-md-5 row m-0 align-items-center">
+          <div class="col-md-4">
+            <strong class="m-0">Comments</strong>
+          </div>
+          <div class="col-md-8 pl-0">
+            <input type="text" class="form-control" formControlName="Kztxt" />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="getStatusValue() === 'Planned Discharge' || getStatusValue() === 'Actual Discharge'">
+        <div class="col-md-4 row m-0 align-items-center mb-2">
+          <div class="col-md-4">
+            <strong class="m-0">Date</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
+        </div>
+
+        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
+          <div class="col-md-4 p-0">
+            <strong class="m-0">Dis. Type</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <ng-select formControlName="Bwart">
+              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value">{{item?.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
+          <div class="col-md-5 p-0">
+            <strong class="m-0">Dis. Physician</strong>
+          </div>
+          <div class="col-md-7 pl-0">
+            <input type="text" class="form-control" formControlName="Pernr" />
+          </div>
+        </div>
+        <div class="col-md-4 row m-0 align-items-center mb-2">
+          <div class="col-md-4">
+            <strong class="m-0">Time</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input type="time" class="form-control" formControlName="Bwizt" />
+          </div>
+        </div>
+        <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
+          <div class="col-md-2 p-0">
+            <strong class="m-0">Comments</strong>
+          </div>
+          <div class="col-md-10 pl-0">
+            <input type="text" class="form-control" formControlName="Kztxt" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="closeRiskModal()">No</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="changeStatus(admissionStatusModel?.Besstattext)">Yes</button>
+  </div>
+  <div>
+  </div>
+</ng-template>
+
+
+<ng-template #riskModal>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Risk History</span>
+      </div>
+      <div class="risk-history-main">
+        <ul class="allergy-header-ul d-flex">
+          <li class="allergy-header-item" style="margin-left: 10%">
+            Patient Name : <span>{{ selectedERList.Patname }}</span>
+          </li>
+          <li class="allergy-header-item">MRN: {{ selectedERList.Patnr }}</li>
+          <li class="allergy-header-item">
+            Admission date:
+            {{ getDate(selectedERList.Datum) | date : "dd.MM.y" }}
+          </li>
+          <li class="close-icon allergy-header-item">
+            <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <form [formGroup]="updateRiskForm" (keydown.enter)="$event.preventDefault()">
+      <div class="mt-3 mb-3 update-risk-main">
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Risk code" style="height: 33px" formControlName="Rsfna"
+              [ngClass]="updateRiskForm.get('Rsfna').errors && isFormValidError ? 'ep-error-message': ''"
+              (dblclick)="openCommonModal(commonColModal, 'RiskCode')"
+              (keyup.enter)="openCommonModal(commonColModal, 'RiskCode')" />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control risk-short-disc" placeholder="Short description"
+              formControlName="Rsfkb" />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control risk-short-disc" placeholder="Risk description"
+              formControlName="Rsfna" />
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input class="form-control" type="text" placeholder="Reported on" [minDate]="" [maxDate]=""
+              #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+              [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" style="height: 33px" />
+          </div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4" style="text-align: end">
+            <button class="update-risk-save-btn" (click)="saveRiskJsonFormat()">Save</button>
+            <button class="update-risk-save-btn" (click)="resetUpdateRiskForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="riskform" style="max-height: 296px; overflow: auto">
+      <table class="table table-bordered risk-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center">
+          <tr>
+            <th scope="col">Risk Code</th>
+            <th scope="col">Short Description</th>
+            <th scope="col">Risk Description</th>
+            <th scope="col">Reported On</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff">
+          <ng-container formArrayName="riskFormitems">
+            <ng-container *ngFor="let item of riskform.get('riskFormitems')['controls']; let i = index">
+              <tr [formGroupName]="i">
+                <td class="risk-item-rsfnr">
+                  <ng-select appendTo="body" placeholder="Search" formControlName="Rsfnr" >
+                    <ng-option *ngFor="let riskV of riskValues" [value]="riskV.Rsfnr">
+                      {{ riskV.Rsfna }}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td class="risk-item-rsfkb">
+                  <input type="text" class="form-control" formControlName="Rsfkb" [title]="item.get('Rsfkb').value" />
+                </td>
+                <td class="risk-item-rsfna">
+                  <input type="text" class="form-control" formControlName="Rsfna" [title]="item.get('Rsfna').value" />
+                </td>
+                <td class="risk-item-repdt">
+                  <input class="form-control" style="background-color: #e9ecef !important;" type="text"
+                    #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+                    [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"
+                    [title]="item.get('Repdt').value" />
+                </td>
+                <td class="risk-item-image">
+                  <img class="cursor-pointer" src="assets/img/allergy-edit.svg"
+                    (click)="selectValueFromRiskTable(riskList[i])" title="Edit" />
+                  <img class="cursor-pointer" src="assets/img/Delete.svg"
+                    (click)="confirmationForRiskDelete('D', riskList[i])" style="margin-left: 11px" title="Delete" />
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</ng-template>
+
+
+<ng-template #commonColModal>
+  <div class="modal-body p-0">
+    <div class="infoModel-title" style="background: #0056b0">
+      <h4 class="m-0 pl-3">{{ colName }}</h4>
+    </div>
+    <div class="search-functionality search-image-comman col-md-10 pl-0 mt-2"
+      *ngIf="this.colName == 'Allergen' || this.colName == 'RiskCode'">
+      <img src="assets/img/pres-search-icon.svg" alt="" />
+      <input type="text" placeholder="Search" id="searchFilter" class="form-control w-100" [(ngModel)]="searchString"
+        (input)="someMethod(searchString)" />
+    </div>
+    <div style="max-height: 30em; overflow: auto; padding: 11px">
+      <table class="table table-bordered">
+        <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
+          <tr>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff">
+          <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
+            <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText ||
+              item.TypText || item.Rsfna}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<ng-template #selectIconPdf>
+  <div class="modal-body">
+    <ngx-extended-pdf-viewer [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'" [zoom]="'80'"
+      [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
+    </ngx-extended-pdf-viewer>
+
+    <div class="mt-2" style="text-align: center">
+      <button class="btn btn-primary" (click)="selectedIconPdf.hide()"
+        style="background-color: #0082c8; border: #0082c8">
+        Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #labPrintLabel>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Print Patient Label</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <p class="m-0" style="margin: 0px;font-size: 15px;padding: 20px;font-weight: bold;color: black;">Are you sure you
+      want to print label for "{{activelabLabelData?.Patname}}" with MRN {{activelabLabelData?.Mrn}}</p>
+  </div>
+  <div class="modal-footer">
+    <div style="text-align: end">
+      <button class="update-risk-save-btn" (click)="printLabel(document)">Print</button>
+      <button class="update-risk-save-btn" (click)="closeLabModal()">Cancel</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #document>
+  <div class="Pdf_modal">
+    <iframe [src]="printUrl" width="500" height="400"></iframe>
+    <div class="bottom">
+      <button style="width: 100px;" (click)="closePdfModal()"> <img src="assets/img/Frame-icone.svg"
+          style="width: 19px; cursor: pointer" title="Print Patient Label" /><span
+          style="margin-left:7px">Print</span></button><button style="width: 100px;"
+        (click)="closePdfModal()">Close</button>
+    </div>
+  </div>
+</ng-template>
+<app-er-vitals #erVitalsModal></app-er-vitals>
+<app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
+<app-documenting-delivery #deliveryModal [data]="selectedDetails"
+  (reloadCheckin)="reload($event)"></app-documenting-delivery>

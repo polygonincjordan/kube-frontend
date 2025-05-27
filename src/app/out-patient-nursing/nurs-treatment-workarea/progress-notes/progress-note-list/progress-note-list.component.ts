@@ -8,7 +8,9 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdmissionService } from '@services/admission/admission.service';
+import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-progress-note-list',
@@ -30,7 +32,8 @@ export class ProgressNoteListComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     private _admissionservice: AdmissionService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+     public storageService:StorageService
   ) {}
 
   ngOnInit(): void {
@@ -145,8 +148,21 @@ export class ProgressNoteListComponent implements OnInit {
       reason : ['', [Validators.required]]
     })
   }
+   warningSwalModel(message: string) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Not Allowed',
+      text: message
+    });
+  }
+  
   deleteProgressNotePopup(template: TemplateRef<any>, note: any) {
     this.selectProgressNote = note;
+    let gpart = this.storageService.getGpart()
+    if (note.EmployeeResp !== gpart)  {
+      this.warningSwalModel("You are not allowed to delete others' notes");
+      return; 
+    }
     const config: ModalOptions = {
       class: 'kardex-notes-delete modal-dialog-centered',
     };

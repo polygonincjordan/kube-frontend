@@ -16,35 +16,33 @@
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+      min-width: 100px !important;
     }
 
-    &:nth-child(12) {
+    &:nth-child(5) {
       border: none;
       // background: #fbfcff;
       text-overflow: ellipsis;
       overflow: hidden;
-      max-width: 80px;
       white-space: nowrap;
     }
 
     &:nth-child(9) {
-      width: 150px !important;
-      max-width: 150px !important;
-      min-width: 150px !important;
+      width: 100px !important;
+      max-width: 100px !important;
+      min-width: 100px !important;
       border: none;
       text-overflow: ellipsis;
       overflow: hidden;
-      max-width: 80px;
       white-space: nowrap;
     }
     &:nth-child(10) {
-      width: 150px !important;
-      max-width: 150px !important;
-      min-width: 150px !important;
+      width: 95px !important;
+      max-width: 70px !important;
+      min-width: 70px !important;
       border: none;
       text-overflow: ellipsis;
       overflow: hidden;
-      max-width: 80px;
       white-space: nowrap;
     }
   }
@@ -264,7 +262,6 @@ table {
   border: 1px solid red !important;
 }
 
-
 .modal .modal-content {
   background-color: transparent !important;
 }
@@ -275,7 +272,6 @@ table {
   border-radius: 50%;
   display: inline-block;
 }
-
 
 .shape {
   display: inline-block;
@@ -310,18 +306,16 @@ table {
   padding: 0.75rem !important;
 }
 
-
 tr:nth-child(even) {
-//   background: #fff !important
+  //   background: #fff !important
 }
 
 tr:nth-child(odd) {
-//   background: #e4edf5 !important
+  //   background: #e4edf5 !important
 }
 .btn-primary {
   color: #fff !important;
 }
-
 
 ::ng-deep .modal-dialog.extra-large-modal {
   max-width: 80vw !important;

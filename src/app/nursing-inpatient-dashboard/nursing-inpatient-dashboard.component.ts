@@ -850,6 +850,26 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
         );
 
+      }else if(this.LDRView){
+        this.getCheckInStatusFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
+        );
+
+        this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.BehraumKb), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
+        );
+
+        this.getCheckInWardFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Floor), []
+        );
+
+        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.DeptouDesc), []
+        );
       } else {
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
@@ -963,7 +983,10 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       );
     } else if (this.selectedModule == 'arrival') {
       this.arrivalMainListComponent.filterListData(this.filterForm.value);
-    }  else {
+    }else if (this.selectedModule == 'LDRView'){
+      this.LdrViewComponent.filterListData(this.filterForm.value);
+    }  
+    else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
     this.showfilter = false;
@@ -974,6 +997,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     if (this.selectedModule == 'checkin') {
       this.CheckInComponent.filterListData(this.filterForm.value);
     } 
+    if (this.selectedModule == 'LDRView'){
+      this.LdrViewComponent.filterListData(this.filterForm.value);
+    }  
     if (this.selectedModule == 'arrival') {
       this.arrivalMainListComponent.filterListData(this.filterForm.value);
     } 

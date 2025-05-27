@@ -977,6 +977,21 @@
           (click)="selectModule('arrival')"
         />
       </div>
+      <div style="height: 50px; margin-bottom: 6px" [ngClass]="LDRView ? 'ldr_active' : 'ldr_d'">
+        <img
+          [src]="
+            LDRView
+              ? 'assets/img/ldr-icon.png'
+              : 'assets/img/ldr-icon.png'
+          "
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="LDR"
+          width="45px"
+          class=""
+          (click)="selectModule('LDRView')"
+        />
+      </div>
       <div [ngClass]="isSurgeryWork ? 'arrival_active' : 'arrival_d'">
         <img
           [src]="
@@ -1146,21 +1161,7 @@
           (click)="selectModule('reservation')"
         />
       </div>
-      <div style="height: 50px; margin-bottom: 6px" [ngClass]="LDRView ? 'ldr_active' : 'ldr_d'">
-        <img
-          [src]="
-            LDRView
-              ? 'assets/img/ldr-icon.png'
-              : 'assets/img/ldr-icon.png'
-          "
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-          title="LDR"
-          width="45px"
-          class=""
-          (click)="selectModule('LDRView')"
-        />
-      </div>
+      
     </div>
   </div>
   <app-check-in [getConfigToolWardList]="getConfigToolWardList" [getConfigToolSpecialtyList]="getConfigToolSpecialtyList"
@@ -1184,7 +1185,7 @@
 
   <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" (redirectCheckInData)="collectCheckInData($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
   <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
-  <app-ldr-view *ngIf="LDRView" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)"  style="width: calc(100% - 110px)"></app-ldr-view>
+  <app-ldr-view *ngIf="LDRView" (sendErPatientCount)="collectErHistPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)" (dataToParent)="receiveDatatoCheckIn($event)"  style="width: calc(100% - 110px)"></app-ldr-view>
   <app-physician-orders-list
     (sendErPatientCount)="collectErHistPatientCount($event)"
     (dataToParent)="receiveDataFromPhysicianOrdersChild($event)"

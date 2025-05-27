@@ -130,11 +130,11 @@ export class ProgressNoteListComponent implements OnInit {
 
   deleteProgressNotePopup(template: TemplateRef<any>, note: any) {
     this.selectProgressNote = note;
-     const createdByLast4 = note.EmployeeResp?.slice(-4);
-     if (note.PatientId !== createdByLast4) {
-    this.warningSwalModel("You are not allowed to delete others' notes");
-    return; // Stop here
-  }
+    let gpart =  this._storageService.getGpart()
+    if (note.EmployeeResp !== gpart)  {
+      this.warningSwalModel("You are not allowed to delete others' notes");
+      return; 
+    }
     const config: ModalOptions = {
       class: 'kardex-notes-delete modal-dialog-centered',
     };
