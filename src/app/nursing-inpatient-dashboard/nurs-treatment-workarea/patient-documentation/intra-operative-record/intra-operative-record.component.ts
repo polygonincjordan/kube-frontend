@@ -607,7 +607,6 @@ addSpecimensRow(): void {
   }
 
   public createDoc(status?: any, actionType?: any) {
-    debugger;
     return new Promise((resolve, reject) => {
       let formData = this.criticalForm.value;
       formData.SDate = formData.SDate

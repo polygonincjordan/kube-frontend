@@ -1676,8 +1676,21 @@ export class InPatientsComponent implements OnInit {
         //this.physicianOrderListFilterValue = data;
       });
   }
+   warningSwalModel(message: string) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Not Allowed',
+      text: message
+    });
+  }
+
   deleteProgressNotePopup(template: TemplateRef<any>, note: any) {
     this.selectProgressNote = note;
+    let gpart =  this.storageService.getGpart()
+    if (note.EmployeeResp !== gpart)  {
+      this.warningSwalModel("You are not allowed to delete others' notes");
+      return; 
+    }
     const config: ModalOptions = {
       class: 'modal-dialog-centered',
     };

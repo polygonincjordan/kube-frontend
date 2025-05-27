@@ -43,7 +43,7 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   progressEntryForm: FormGroup;
   phyOrderform1: FormGroup;
   items: FormArray;
-
+  changeStatusForm: FormGroup;
   ipListData: any;
   copyProgressEntry: boolean = false;
   copyProgressEntryData: any;
@@ -68,7 +68,29 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   sortOrder: string = 'asc';
   sortDir = 1;
   sortable = true;
-
+  dischargeTypeList = [
+    {
+      label: 'AMA',
+      value: 'AM',
+    },
+    {
+      label: 'Deceased',
+      value: 'EX',
+    },
+    {
+      label: 'Dis.to Ext.Hosp',
+      value: 'DE',
+    },
+    {
+      label: 'Left w/o treat',
+      value: 'LW',
+    },
+    {
+      label: 'Reg. Discharge',
+      value: 'RD',
+    },
+  ];
+  public copyMsg: string | null = null;
   constructor(
     private _dataServices: EEmrService,
     private storageService: StorageService,
@@ -274,6 +296,24 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
       '_blank'
     );
   }
+
+copyToClipboard(text: string) {
+  if (!text) return;
+
+  navigator.clipboard.writeText(text).then(() => {
+    this.copyMsg = 'Copied to clipboard!';
+    setTimeout(() => {
+      this.copyMsg = null;
+    }, 2000); 
+  }, () => {
+    this.copyMsg = 'Failed to copy!';
+    setTimeout(() => {
+      this.copyMsg = null;
+    }, 2000);
+  });
+}
+
+
   openModuleEOrder(data) {
     window.open(
       'e-order?patnr=' +
@@ -683,4 +723,115 @@ openModalForPhysicianOrder(item) {
       this.openModuleAdmissionProcessEvent.emit(newJson);
       localStorage.removeItem('tabName');
     }
+
+
+    admissionStatusModel: any;
+      modalRefForRisk: BsModalRef;
+      public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
+        this.admissionStatusModel = data;
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl',
+          initialState: {
+            admissionStatusModel: this.admissionStatusModel, // Pass data into the modal
+          },
+        };
+        this.modalRefForRisk = this.modalService.show(template, config);
+        this.changeStatusForm = this.formBuilder.group({
+          Einri: [this.admissionStatusModel?.Einri],
+          Falnr: [this.admissionStatusModel?.Falnr],
+          Lfdnr: [this.admissionStatusModel?.Lfdbw],
+          AdmStatusCode: [''],
+          Bwidt: [new Date()],
+          Bwizt: [''],
+          Kztxt: [''],
+          Bwart: [''],
+          Pernr: [this.admissionStatusModel?.Behpersname],
+        });
+    
+        this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+          if (reason === 'backdrop-click') {
+            this.closeRiskModal();
+            this.admissionStatusModel = [];
+          }
+        });
+      }
+    
+      closeRiskModal() {
+        this.modalRefForRisk.hide();
+      }
+    
+      getStatusValue() {
+        let currentStatus = this.admissionStatusModel?.Besstattext;
+        if (currentStatus === 'Planned Arrival') {
+          return 'Actual Arrival';
+        } else if (currentStatus === 'Actual Arrival') {
+          return 'Planned Discharge';
+        } else if (currentStatus === 'Planned Discharge') {
+          return 'Actual Discharge';
+        } else {
+          return '';
+        }
+      }
+    
+      changeStatus(visitStat: string) {
+        let visitStatCode: number;
+    
+        switch (visitStat.toLowerCase()) {
+          case 'planned arrival':
+            visitStatCode = 97;
+            break;
+          case 'actual arrival':
+            visitStatCode = 98;
+            break;
+          case 'planned discharge':
+            visitStatCode = 99;
+            break;
+          case 'actual discharge':
+            visitStatCode = 96;
+            break;
+          default:
+            visitStatCode = null; // Handle undefined cases
+        }
+        let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+        createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
+        const json = {
+          Einri: this.changeStatusForm.value.Einri,
+          Falnr: this.changeStatusForm.value.Falnr,
+          Lfdnr: this.changeStatusForm.value.Lfdnr,
+          AdmStatusCode: visitStatCode.toString(),
+          Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
+          Bwizt: createTime,
+          Kztxt: this.changeStatusForm.value.Kztxt,
+          Bwart: this.changeStatusForm.value.Bwart,
+          Pernr: this.admissionStatusModel?.Behpersname,
+        };
+    
+        if (!json?.Bwart) {
+          delete json.Bwart;
+        }
+    
+        this.emergencyService.changeAdmissionStatus(json).subscribe({
+          next: (_success: any) => {
+            Swal.fire({
+              text: 'Change Status Successfully',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup',
+            });
+           this.onClickBox.emit();
+            this.modalService.hide();
+          },
+          error: (err: any) => {
+            // this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+          },
+        });
+      }
+    
+      sanitizeSAPDateFormat(date: any) {
+        if (typeof date === 'string') {
+          return date;
+        } else {
+          return `\/Date(${date.getTime()})\/`;
+        }
+      }
 }

@@ -78,11 +78,10 @@
           'red-text': item.Bediconcolor == 'Red'
         }" class="td-pointer" (click)="redirectToeKardex(item)">{{ item?.Mrn }}</td>
         <!-- 3 -->
-        <td class="set-width-3"
-        [ngClass]="{
-          'purple-text': item.Bediconcolor == 'Purple',
-          'red-text': item.Bediconcolor == 'Red'
-        }" class="td-pointer"  (click)="redirectToeKardex(item)">{{ item?.Patname }}</td>
+        <td class="set-width-3 d-flex align-items-center gap-1" [ngClass]="{'purple-text': item.Bediconcolor == 'Purple','red-text': item.Bediconcolor == 'Red'}" class="td-pointer" style="display: flex;justify-content: space-between;align-items: baseline;">
+         <span (click)="redirectToeKardex(item)" style="cursor: pointer;">{{ item?.Patname }}</span>
+         <i class="fa fa-copy text-secondary" title="Copy Name" style="cursor: pointer;" (click)="copyToClipboard(item?.Patname)"></i>
+        </td>
         <!-- 4 -->
         <td>{{ item?.Floor }}</td>
         <!-- 5 -->
@@ -238,7 +237,7 @@
         <td>{{ item.Zeit}}</td>
         <td>{{ item.Besstattext }}</td>
         <td>{{ item.Patnr}}</td>
-        <td (click)="openModuleAdmissionProcessFromLDR(item)" style="min-width: 280px;">{{ item.Patient }}</td>
+        <td style="display: flex;justify-content: space-between;align-items: baseline;" (click)="openModuleAdmissionProcessFromLDR(item)" style="min-width: 280px;"><span>{{ item.Patient }}</span><i class="fa fa-copy text-secondary" title="Copy Name" style="cursor: pointer;" (click)="copyToClipboard(item?.Patname)"></i></td>
         <td>{{ item.BehraumKb }}</td>
         <!-- <td>{{ item.RoomidName }}</td> -->
         <td>{{ item.Behpersname }}</td>
@@ -249,7 +248,11 @@
         <td class="table-row-width allergy">{{ item.IsolationInd }}</td>
         <td style="text-align: center; overflow: visible !important; min-width: 80px !important;display: flex;
         gap: 10px; ">
-          <img src="assets/img/in-patient-dropdown.png" style="width: 20px;cursor: pointer;" (click)="actionPhysicianSet(item)" title="Assign to Me">
+          <img src="assets/img/in-patient-dropdown.png" style="width: 20px;height: 20px;cursor: pointer;" (click)="actionPhysicianSet(item)" title="Assign to Me">
+           <div
+                (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
+                <img src="assets/image.png" style="width: 22px;height: 22px;; cursor: pointer" title="Change Status" />
+              </div>
           <div class="dropdown">
             <i class="fa fa-ellipsis-v dropdown-toggle" aria-hidden="true" style="cursor: pointer" id="dropdownMenuButton" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false"></i>
@@ -656,6 +659,118 @@
         </table>
       </div>
     </div>
+  </div>
+</ng-template>
+<div *ngIf="copyMsg" class="copy-toast">
+  {{ copyMsg }}
+</div>
+<!-- change Status -->
+<ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
+  <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
+    <h4 class="modal-title" style="color: white">Change Admission Status</h4>
+    <div class="risk-history-main">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item" style="margin-left: 10%">
+          Patient Name : <span>{{ admissionStatusModel.Patname }}</span>
+        </li>
+        <li class="allergy-header-item">MRN: {{ admissionStatusModel.Patnr }}</li>
+        <li class="allergy-header-item">
+          Admission date:
+          {{ getDate(admissionStatusModel.Datum) | date : "dd.MM.y" }}
+        </li>
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-body p-0 pb-3">
+    <form [formGroup]="changeStatusForm">
+      <div class="p-3">
+        <p class="m-0">Are you sure you want to change status to <strong>{{ getStatusValue() }}</strong></p>
+      </div>
+      <div class="row m-0 mb-2" *ngIf="getStatusValue() === 'Actual Arrival'">
+        <div class="col-md-4 row m-0 align-items-center ">
+          <div class="col-md-4">
+            <strong class="m-0">Date</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
+        </div>
+        <div class="col-md-3 row m-0 align-items-center pl-0">
+          <div class="col-md-3 p-0">
+            <strong class="m-0">Time</strong>
+          </div>
+          <div class="col-md-9 p-0">
+            <input type="time" class="form-control" formControlName="Bwizt" />
+          </div>
+        </div>
+        <div class="col-md-5 row m-0 align-items-center">
+          <div class="col-md-4">
+            <strong class="m-0">Comments</strong>
+          </div>
+          <div class="col-md-8 pl-0">
+            <input type="text" class="form-control" formControlName="Kztxt" />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="getStatusValue() === 'Planned Discharge' || getStatusValue() === 'Actual Discharge'">
+        <div class="col-md-4 row m-0 align-items-center mb-2">
+          <div class="col-md-4">
+            <strong class="m-0">Date</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+          </div>
+        </div>
+
+        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
+          <div class="col-md-4 p-0">
+            <strong class="m-0">Dis. Type</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <ng-select formControlName="Bwart">
+              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value">{{item?.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
+          <div class="col-md-5 p-0">
+            <strong class="m-0">Dis. Physician</strong>
+          </div>
+          <div class="col-md-7 pl-0">
+            <input type="text" class="form-control" formControlName="Pernr" />
+          </div>
+        </div>
+        <div class="col-md-4 row m-0 align-items-center mb-2">
+          <div class="col-md-4">
+            <strong class="m-0">Time</strong>
+          </div>
+          <div class="col-md-8 p-0">
+            <input type="time" class="form-control" formControlName="Bwizt" />
+          </div>
+        </div>
+        <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
+          <div class="col-md-2 p-0">
+            <strong class="m-0">Comments</strong>
+          </div>
+          <div class="col-md-10 pl-0">
+            <input type="text" class="form-control" formControlName="Kztxt" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="closeRiskModal()">No</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="changeStatus(admissionStatusModel?.Besstattext)">Yes</button>
+  </div>
+  <div>
   </div>
 </ng-template>
 <app-physician-order-kardex #physicianOrderKardexId></app-physician-order-kardex>

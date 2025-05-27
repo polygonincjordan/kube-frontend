@@ -245,6 +245,10 @@ export class DocumentingDeliveryComponent implements OnInit {
     this.activeTab = tab;
   }
 
+  close(){
+    this.modalRefForAllergy.hide();
+  }
+
   saveDelivery() {
     let paylaod = this.deliveryForm.value;
     paylaod.Endat = this.sanitizeSAPDateFormat(paylaod.Endat);
