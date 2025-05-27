@@ -158,7 +158,7 @@ export class LdrViewComponent implements OnInit {
     }
     this.ePrescriptionService
       .loadData(
-        `eHospitalist/LDRListSet?Behperson=${physicianvalue}&FromDate=${'2020-01-01T00:00:00'}&ToDate=${'2025-08-27T00:00:00'}`,
+        `eHospitalist/LDRListSet?Behperson=${physicianvalue}&FromDate=${fromdatevalue}&ToDate=${todatevalue}`,
         false,
         false,
         false,
