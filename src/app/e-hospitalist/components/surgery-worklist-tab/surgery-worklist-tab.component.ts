@@ -13,6 +13,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import Swal from 'sweetalert2';
 import { NurErAllergyComponent } from './nur-er-allergy/nur-er-allergy.component';
+import { StorageService } from '@services/storage.service';
 
 @Component({
   selector: 'app-surgery-worklist-tab',
@@ -72,7 +73,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
   sortable = true;
   riskItemsArr: any[];
   riskList: any[];
-  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService) { }
+  constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -462,6 +463,27 @@ export class SurgeryWorklistTabComponent implements OnInit {
         this.closeRiskModal();
       }
     });
+  }
+
+    redirectToTreatByName(data) {
+    const json = {
+      Patnr: data.Patnr.padStart(10, '0'),
+      Einri: data.Einri ? data.Einri : '1000',
+      Falnr: data.Falnr.padStart(10, '0'),
+      Lfdnr: data.Lfdnr,
+      Treatmentou: data.Orgpf,
+      redirectFor: '',
+      doctype: '',
+      action: ''
+    };
+    this.storageService.setCheckinData(data);
+    localStorage.setItem('checkindata', JSON.stringify(data));
+    localStorage.setItem('tabName', 'patientProfile');
+    this.redirectToTreatment(json);
+  }
+
+  redirectToTreatment(data) {
+   this.openModuleKardex.emit(data);
   }
 
   addItemForRisk(element?): void {

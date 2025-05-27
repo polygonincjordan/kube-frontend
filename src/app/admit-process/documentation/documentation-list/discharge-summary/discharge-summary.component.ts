@@ -66,6 +66,9 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     if (changes.soapFormEvent.currentValue == 'add') {
       this.savePhysicianDischarge(false);
     }
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
+      this.savePhysicianDischarge(false);
+    }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
       this.savePhysicianDischarge(false);
@@ -163,9 +166,11 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         this.paramsObj
       )
       .subscribe((resp) => {
-        this.reloadTableList.next(true);
-        this.admissionService.cancelAllForm();
-        this.admissionService.clearSoapEvent.next(true);
+        if(this.soapFormEvent == 'saveClose') {    
+          this.reloadTableList.next(true);
+          this.admissionService.cancelAllForm();
+          this.admissionService.clearSoapEvent.next(true);
+        }
       }, (error: any)=>{
         this.admissionService.clearSoapEvent.next(true);
       });

@@ -127,6 +127,7 @@ export class AdmitProcessComponent implements OnInit {
 
   formEvent(event) {
     this.soapFormEvent = event;
+    console.log(this.soapFormEvent, "2");
   }
 
   documentTypeFilter(event: any) {

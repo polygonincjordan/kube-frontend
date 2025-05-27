@@ -81,7 +81,7 @@
                 [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
             </span>
             <span style="margin-right: 15px; cursor: pointer;"><img src="assets/img/excel.png"  title="Export to excel" style="width: 20px;" (click)="exportToExcel()" *ngIf="home"></span>
-            <span style="margin-right: 15px">
+            <span style="margin-right: 15px" *ngIf="navTabBoxActiveValue != '09'">
               <i class="fa fa-cog" aria-hidden="true" style="font-size: 18px;" title="User's Settings" id="configurationButton"
                 (click)="clickShowConfiguration();$event.stopPropagation()"></i>
             </span>
@@ -517,7 +517,7 @@
                 </div>
               </div>
             </span>
-            <span *ngIf="navTabBoxActiveValue != '08'" style="margin-right: 15px"><i class="fa" style="font-size: 18px;" title="Bed View" [ngClass]="!showList ? 'fa-th-list' : 'fa-bed'"
+            <span *ngIf="!['08', '09'].includes(navTabBoxActiveValue)" style="margin-right: 15px"><i class="fa" style="font-size: 18px;" title="Bed View" [ngClass]="!showList ? 'fa-th-list' : 'fa-bed'"
                 aria-hidden="true" (click)="clickShowListAndBed()"></i></span>
             <!-- fa-bed -->
           </div>
@@ -623,7 +623,7 @@
 
           <div *ngIf="showList && home" style="width: 100%; height: calc(100vh - 300px); overflow: auto;">
             <app-surgery-worklist-tab [searchString]="searchString" [listItem]="inSurgeryWorklist"
-              [listType]="navTabBoxActiveValue" 
+              [listType]="navTabBoxActiveValue" (openModuleKardex)="redirectToeKardex($event)"
               style="width: 100%; margin-right: 6px"></app-surgery-worklist-tab>
           </div>
 

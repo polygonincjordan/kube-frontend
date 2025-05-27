@@ -155,6 +155,7 @@ export class EducationFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes.soapFormEvent.currentValue, "3");
     if (changes.soapFormEvent.currentValue == 'add') {
       if(this.admissionService.isCloneEducationAsset) this.directReleasedData(false);
       else this.saveEducationFormValue(false);
@@ -162,6 +163,10 @@ export class EducationFormComponent implements OnInit, OnChanges {
     }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
+      this.saveEducationFormValue(false);
+      return;
+    }
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
       this.saveEducationFormValue(false);
       return;
     }
@@ -390,9 +395,13 @@ export class EducationFormComponent implements OnInit, OnChanges {
 
     this.admissionService.saveEducationData(d).subscribe(
       (result) => {
-        this.reloadTableList.next(true);
-        this.admissionService.cancelAllForm();
-        this.admissionService.clearSoapEvent.next(true);
+        console.log(this.soapFormEvent, "this.soapFormEvent");
+        
+        if(this.soapFormEvent == 'saveClose') { 
+          this.reloadTableList.next(true);
+          this.admissionService.cancelAllForm();
+          this.admissionService.clearSoapEvent.next(true);
+        }
       },
       (err) => {
         this.admissionService.clearSoapEvent.next(true);

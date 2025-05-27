@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -76,7 +76,7 @@ export class DocumentingDeliveryComponent implements OnInit {
 
   deliveryForm: FormGroup;
   TOPATDEL: FormArray;
-
+  isFormSubmitted: boolean = false;
   constructor(private emergencyService: EmergencyService, private storageService: StorageService,
     public formBuilder: FormBuilder, private modalService: BsModalService) { }
 
@@ -117,9 +117,9 @@ export class DocumentingDeliveryComponent implements OnInit {
       Gbdat: new Date(),
       Gbtim: currentTime,
       Gschl: "",
-      Gbgew: "",
+      Gbgew: ["", Validators.required],
       Gwein: "G",
-      Gbgro: "",
+      Gbgro: ["", Validators.required],
       Grein: "CM",
       Kztxt: "",
       Kztot: false,
@@ -180,19 +180,21 @@ export class DocumentingDeliveryComponent implements OnInit {
   }
 
   bindDeliveryData(data: any) {
+    let currentTime = new Date().getHours() + ':' + new Date().getMinutes();
+
     const result = data?.d?.results?.[0];
     if (!result) return;
 
     const deliveryItems = result?.TOPATDEL?.results || [];
 
     this.deliveryForm = this.formBuilder.group({
-      Faln1: result.Faln1,
-      Patnr: result.Patnr,
-      Endat: new Date(+result.Endat.match(/\d+/)[0]),
-      Entim: this.formatODataTime(result.Entim),
-      Fgtyp: result.Fgtyp,
-      Kzkom: result.Kzkom,
-      Komtx: result.Komtx,
+      Faln1: result?.Faln1,
+      Patnr: result?.Patnr,
+      Endat: result?.Endat ? new Date(+result?.Endat?.match(/\d+/)[0]) : new Date(),
+      Entim: result?.Entim ? this.formatODataTime(result?.Entim) : currentTime,
+      Fgtyp: result?.Fgtyp,
+      Kzkom: result?.Kzkom,
+      Komtx: result?.Komtx,
       TOPATDEL: this.formBuilder.array([])
     });
 
@@ -200,30 +202,30 @@ export class DocumentingDeliveryComponent implements OnInit {
 
     deliveryItems.forEach(item => {
       formArray.push(this.formBuilder.group({
-        Faln1: item.Faln1,
-        Lfdnr: item.Lfdnr,
-        Faln2: item.Faln2,
-        Gbdat: new Date(+item.Gbdat.match(/\d+/)[0]),
-        Gbtim: this.formatODataTime(item.Gbtim),
-        Gschl: item.Gschl,
-        Gbgew: item.Gbgew,
-        Gwein: item.Gwein,
-        Gbgro: item.Gbgro,
-        Grein: item.Grein,
-        Kztxt: item.Kztxt,
-        Kztot: item.Kztot,
-        Modus: item.Modus,
-        Bwert: item.Bwert,
-        Vname: item.Vname,
-        Bwert5: item.Bwert5,
-        Bwert10: item.Bwert10,
-        Bthlo: item.Bthlo,
-        ZzfatherFnName: item.ZzfatherFnName,
-        ZzfatherLnName: item.ZzfatherLnName,
-        Location: item.Location,
-        AttPhys: item.AttPhys,
-        Neww: item.Neww,
-        Del: item.Del
+        Faln1: item?.Faln1,
+        Lfdnr: item?.Lfdnr,
+        Faln2: item?.Faln2,
+        Gbdat: item?.Gbdat ? new Date(+item?.Gbdat?.match(/\d+/)[0]) : new Date(),
+        Gbtim: item?.Gbtim ? this.formatODataTime(item?.Gbtim) : currentTime,
+        Gschl: item?.Gschl,
+        Gbgew: item?.Gbgew,
+        Gwein: item?.Gwein,
+        Gbgro: item?.Gbgro,
+        Grein: item?.Grein,
+        Kztxt: item?.Kztxt,
+        Kztot: item?.Kztot,
+        Modus: item?.Modus,
+        Bwert: item?.Bwert,
+        Vname: item?.Vname,
+        Bwert5: item?.Bwert5,
+        Bwert10: item?.Bwert10,
+        Bthlo: item?.Bthlo,
+        ZzfatherFnName: item?.ZzfatherFnName,
+        ZzfatherLnName: item?.ZzfatherLnName,
+        Location: item?.Location,
+        AttPhys: item?.AttPhys,
+        Neww: item?.Neww,
+        Del: item?.Del
       }));
     });
 
@@ -246,13 +248,19 @@ export class DocumentingDeliveryComponent implements OnInit {
   }
 
   saveDelivery() {
+    this.isFormSubmitted = true;
+    if(this.deliveryForm.invalid) {
+      return;
+    }
+    this.isFormSubmitted = false;
     let paylaod = this.deliveryForm.value;
     paylaod.Endat = this.sanitizeSAPDateFormat(paylaod.Endat);
     paylaod.Entim = this.convertToTime(paylaod.Entim);
-    paylaod.TOPATDEL = paylaod.TOPATDEL.map(item => ({
+    paylaod.TOPATDEL = paylaod.TOPATDEL.map((item, index) => ({
       ...item,
-      Gbdat: this.sanitizeSAPDateFormat(item.Gbdat),
-      Gbtim: this.convertToTime(item.Gbtim)
+      Neww: index == 0 ? '' : 'X',
+      Gbdat: this.sanitizeSAPDateFormat(item?.Gbdat),
+      Gbtim: this.convertToTime(item?.Gbtim)
     }));
 
     this.emergencyService.savePatientDelivery(paylaod).subscribe((res) => {

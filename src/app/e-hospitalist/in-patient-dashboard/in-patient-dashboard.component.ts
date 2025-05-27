@@ -23,7 +23,7 @@ import { ArrivalMainListComponent } from '../components/arrival-main-list/arriva
 })
 export class InPatientDashboardComponent implements OnInit {
   @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
-  
+
   showGraphicalAnalysis: boolean = false;
   showFilter: boolean = false;
   showConfiguration: boolean = false;
@@ -36,7 +36,7 @@ export class InPatientDashboardComponent implements OnInit {
   graphChartCountType: string = '1';
   form: FormGroup;
   filterForm: FormGroup;
-  
+
   hospitalCountData: HospitalistDataCount;
   wardSelectForConfig: any[] = [];
 
@@ -407,7 +407,7 @@ export class InPatientDashboardComponent implements OnInit {
     this._EMRServices.getConfigTools(jsonObj).subscribe(
       (_success: any) => {
         //_success = JSON.parse(_success._body);
-        if(_success.d?.results.length) {
+        if (_success.d?.results.length) {
           this.getConfigToolWardList = _success.d?.results[0]?.Ward;
           let specialtyData = this.getSpecialtyList(_success.d?.results[0]?.ConfigHeaderItem.results);
           let physicianData = this.getPhysicianList(_success.d?.results[0]?.ConfigHeaderItem.results);
@@ -427,12 +427,12 @@ export class InPatientDashboardComponent implements OnInit {
             if (this.wardSelectForConfig.length) this.form.patchValue({
               wardNo: this.wardSelectForConfig
             })
-  
-  
-  
+
+
+
             this.Variantid = _success.d?.results[0]?.Variantid || [];
             this.columnsList = _success.d?.results[0]?.ConfigHeaderItem.results || [];
-  
+
             if (_success.d.results[0].Bedlist == '1') {
               this.showColumnsListView.Listview_modal = this.showList = false;
               this.showColumnsListView.Bedview_modal = true;
@@ -440,7 +440,7 @@ export class InPatientDashboardComponent implements OnInit {
               this.showColumnsListView.Listview_modal = this.showList = true;
               this.showColumnsListView.Bedview_modal = false;
             }
-  
+
             this.postSelectedCol = [];
             this.columnsList.forEach((value) => {
               this.postSelectedCol.push({
@@ -448,7 +448,7 @@ export class InPatientDashboardComponent implements OnInit {
                 Fieldname: value.Fieldname,
               });
             });
-  
+
             this.columnsList.find((value) => {
               if (value.Fieldname == 'Admission diagnosis') {
                 this.showColumnsListView.Admission_diagnosis = true;
@@ -510,7 +510,7 @@ export class InPatientDashboardComponent implements OnInit {
                 this.showColumnsListView.Isolation = true;
                 this.showColumnsListView.Isolation_model = true;
               }
-  
+
               if (value.Fieldname == 'Speciality') {
                 this.showColumnsListView.Speciality = true;
                 this.showColumnsListView.Speciality_model = true;
@@ -871,8 +871,8 @@ export class InPatientDashboardComponent implements OnInit {
 
   }
 
-  getCheckInStatusFilterData: any; 
-  getCaseTypeFilterData: any; 
+  getCheckInStatusFilterData: any;
+  getCaseTypeFilterData: any;
   getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
   getCheckInWardFilterData: any;
@@ -915,15 +915,15 @@ export class InPatientDashboardComponent implements OnInit {
       speciality = specialtyData;
     }
 
-    if(this.navTabBoxActiveValue == '08') {
+    if (this.navTabBoxActiveValue == '08') {
       let dateFormate = `${new DatePipe('en-US').transform(this.arrivalDate, 'yyyy-MM-dd')}T00:00:00`;
-      this.hospitalistService.getArrivalListSetAPI('1', '' , dateFormate)
-        .subscribe((data: any) => { 
+      this.hospitalistService.getArrivalListSetAPI('1', '', dateFormate)
+        .subscribe((data: any) => {
           console.log(data, "data")
           this.inArrivalslistListClone = [...data?.d?.results];
           this.inArrivalslistList = data?.d?.results;
           const pushIfValid = (acc: string[], val: any) => {
-          const value = val?.toString().trim();
+            const value = val?.toString().trim();
             if (value && !acc.includes(value)) {
               acc.push(value);
             }
@@ -954,10 +954,10 @@ export class InPatientDashboardComponent implements OnInit {
             (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
           );
 
-      })
-    } else if(this.navTabBoxActiveValue == '09'){
+        })
+    } else if (this.navTabBoxActiveValue == '09') {
       this.hospitalistService.getSurgeryWorkListSetAPI()
-        .subscribe((data: any) => { 
+        .subscribe((data: any) => {
           this.inSurgeryWorklist = data?.d?.results;
         })
     } else {
@@ -974,11 +974,11 @@ export class InPatientDashboardComponent implements OnInit {
             this.inAttendPhyList = data?.d.results[0].ToPhysician.results;
             this.missedMedPatientList = data?.d.results[0]?.ToMedList?.results;
             this.physicianOrderPatientList = data?.d.results[0]?.ToPordList?.results;
-  
+
             if (specialtyData) {
               this.specialtyArraySplit = speciality;
               this.specialtySelectForConfig = [];
-  
+
               this.specialtyListConfig.filter((element) => {
                 if (this.specialtyArraySplit.includes(element.Orgid)) {
                   this.specialtySelectForConfig.push(element);
@@ -993,18 +993,18 @@ export class InPatientDashboardComponent implements OnInit {
                       DeptouDesc: value.Orgna
                     });
                 });
-  
+
                 this.form.patchValue({
                   specialty: arraySpec
                 })
-  
+
               }
             }
-  
+
             if (getConfigToolPhysicianList) {
               this.physicianArraySplit = physician;
               this.attendingSelectForConfig = [];
-  
+
               this.inAttendPhyList.filter((element) => {
                 if (this.physicianArraySplit.includes(element.Gpart)) {
                   this.attendingSelectForConfig.push(element);
@@ -1088,11 +1088,11 @@ export class InPatientDashboardComponent implements OnInit {
 
   redirectToeKardex(data) {
     localStorage.setItem('admit_process', JSON.stringify(false));
-    if(this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03' || this.navTabBoxActiveValue == '08' ) {
+    if (this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03' || this.navTabBoxActiveValue == '08' || this.navTabBoxActiveValue == '09') {
       this.openModuleAdmissionProcess(data, 'admit-process')
       this.patientService.isAdmitProcessSection = true;
       localStorage.setItem('admit_process', JSON.stringify(true));
-    } else if(this.navTabBoxActiveValue == '04' || this.navTabBoxActiveValue == '05') {
+    } else if (this.navTabBoxActiveValue == '04' || this.navTabBoxActiveValue == '05') {
       this.openModuleAdmissionProcess(data, 'discharge-process')
     } else {
       window.open(
@@ -1116,7 +1116,7 @@ export class InPatientDashboardComponent implements OnInit {
       }
     });
   }
-  LDRListSet(fromdate?,todate?,physician?) {
+  LDRListSet(fromdate?, todate?, physician?) {
     let fromdatevalue = '';
     let todatevalue = '';
     let physicianvalue = '';
@@ -1126,20 +1126,20 @@ export class InPatientDashboardComponent implements OnInit {
         'yyyy-MM-dd'
       )}T00:00:00`
     }
-    if(todate){
+    if (todate) {
       todatevalue = `${new DatePipe('en-US').transform(
         todate,
         'yyyy-MM-dd'
       )}T00:00:00`
     }
-    if(physician){
+    if (physician) {
       physicianvalue = JSON.stringify(physician);
     }
     this.ePrescriptionService.loadData(`eHospitalist/LDRListSet?Behperson=${physicianvalue}&FromDate=${fromdatevalue}&ToDate=${todatevalue}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         this.inHospitalist = resp.body.d.results[0]?.ToLDRBu?.results;
         this.inLDRAttendPhyList = resp.body.d.results[0]?.ToPhysician?.results;
-        this.showFilter =false;
+        this.showFilter = false;
         //this.form.reset();
       }
     });
@@ -1173,18 +1173,18 @@ export class InPatientDashboardComponent implements OnInit {
     if (this.f.specialty.value) {
       speciality = this.commaSeparatForSpecialty(this.f.specialty.value);
     }
-  
-    if(this.home) {
-      if(this.navTabBoxActiveValue == '08') this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
-       this.windowRedirect(tabName,data.Mrn, data.CaseNumber, data.Institute, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
-    } else if(this.abnormalLabResult) {
-      this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
-    } else if(this.abnormalRadFindings) {
-      this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
-    } else if(this.notExecutedPhysicianOrder) {
-      this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
-    } else if(this.missedMediDoses) {
-      this.windowRedirect(tabName,data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+
+    if (this.home) {
+      if (this.navTabBoxActiveValue == '08' || this.navTabBoxActiveValue == '09') this.windowRedirect(tabName, data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+      this.windowRedirect(tabName, data.Mrn, data.CaseNumber, data.Institute, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+    } else if (this.abnormalLabResult) {
+      this.windowRedirect(tabName, data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+    } else if (this.abnormalRadFindings) {
+      this.windowRedirect(tabName, data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+    } else if (this.notExecutedPhysicianOrder) {
+      this.windowRedirect(tabName, data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
+    } else if (this.missedMediDoses) {
+      this.windowRedirect(tabName, data.Patnr, data.Falnr, data.Einri, data.Lfdnr, admittedFrom, admittedTo, wardNo, physician, speciality, data.Deptou)
     }
 
   }
@@ -1390,8 +1390,8 @@ export class InPatientDashboardComponent implements OnInit {
       this.initialfilterData(this.getConfigToolWardList, '04', this.getConfigToolPhysicianList);
     }
   }
-  inPatientLDRListByFilter(){
-    this.LDRListSet(this.form.controls.admittedFrom.value,this.form.controls.admittedTo.value,this.form.controls.patient.value);
+  inPatientLDRListByFilter() {
+    this.LDRListSet(this.form.controls.admittedFrom.value, this.form.controls.admittedTo.value, this.form.controls.patient.value);
   }
   parsePayloadFormateTime(data: string) {
     if (data && data.length) {
@@ -1402,18 +1402,18 @@ export class InPatientDashboardComponent implements OnInit {
     }
   }
   exportToExcel(nameofFile: string = 'e-hospitalist', fileExtention: string = 'xlsx'): void {
-    if(this.navTabBoxActiveValue != "05" && this.navTabBoxActiveValue != "07" && this.navTabBoxActiveValue != "06") {
+    if (this.navTabBoxActiveValue != "05" && this.navTabBoxActiveValue != "07" && this.navTabBoxActiveValue != "06") {
       this.homeExcel(nameofFile, fileExtention);
-    } else if(this.navTabBoxActiveValue == '05'){
-      this.discharges(nameofFile,fileExtention);
-    }else if(this.navTabBoxActiveValue == '06'){
-      this.releasedDoc(nameofFile,fileExtention);
-    }else if(this.navTabBoxActiveValue == '07'){
-      this.LDR(nameofFile,fileExtention);
+    } else if (this.navTabBoxActiveValue == '05') {
+      this.discharges(nameofFile, fileExtention);
+    } else if (this.navTabBoxActiveValue == '06') {
+      this.releasedDoc(nameofFile, fileExtention);
+    } else if (this.navTabBoxActiveValue == '07') {
+      this.LDR(nameofFile, fileExtention);
     }
   }
-  
-  discharges(nameofFile,fileExtention){
+
+  discharges(nameofFile, fileExtention) {
     const eventArray = this.inHospitalistList;
     const mappedEvents = eventArray.map(event => ({
       AdmissionDate: this.convertTimestampToDate(event.AdmissionDate),
@@ -1425,21 +1425,21 @@ export class InPatientDashboardComponent implements OnInit {
       RoomidText: event.RoomidText,
       AttendingDoctorName: event.AttendingDoctorName,
       DeptouDesc: event.DeptouDesc,
-      FinancialCategory:event.FinancialCategory,
-      IsolationType:event.IsolationType,
+      FinancialCategory: event.FinancialCategory,
+      IsolationType: event.IsolationType,
       AdmissionDays: event.AdmissionDays,
-      DaysIc:event.DaysIc,
-      CaseNumber:event.CaseNumber,
-      VipIcon:event.VipIcon,
-      EmergencyAdmInd:event.EmergencyAdmInd,
+      DaysIc: event.DaysIc,
+      CaseNumber: event.CaseNumber,
+      VipIcon: event.VipIcon,
+      EmergencyAdmInd: event.EmergencyAdmInd,
       SurgeryLastDate: this.convertTimestampToDate(event.SurgeryLastDate),
       SurgeryLastDays: event.SurgeryLastDays,
-      StudyFlag:event.StudyFlag,
-      DiagnosisTreatment:event.DiagnosisTreatment
+      StudyFlag: event.StudyFlag,
+      DiagnosisTreatment: event.DiagnosisTreatment
       // Admdatetime: this.convertTimestampToDateTime(event.Admdatetime),
       // DischargeDate: this.convertTimestampToDateTime(event.DischargeDate),
     }));
-    let Heading = [['Admitted on', 'Admitted at','Discharged On','MRN','Patient','Ward','Room/Bed','Attending Doctor','Speciality','Financial Category','Isolation','LOS','Days for Isolation','Case','VIP','Emergency admission','Last surgery Date','Days since surgery','Study name','Treatment Diagnosis']];
+    let Heading = [['Admitted on', 'Admitted at', 'Discharged On', 'MRN', 'Patient', 'Ward', 'Room/Bed', 'Attending Doctor', 'Speciality', 'Financial Category', 'Isolation', 'LOS', 'Days for Isolation', 'Case', 'VIP', 'Emergency admission', 'Last surgery Date', 'Days since surgery', 'Study name', 'Treatment Diagnosis']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, Heading);
@@ -1447,9 +1447,9 @@ export class InPatientDashboardComponent implements OnInit {
     XLSX.utils.book_append_sheet(workbook, ws, "test");
     XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
   }
-  releasedDoc(nameofFile,fileExtention){
+  releasedDoc(nameofFile, fileExtention) {
     const eventArray = this.inHospitalistList;
-    const mappedEvents = eventArray.map((event:any) => ({
+    const mappedEvents = eventArray.map((event: any) => ({
       Bwidt: this.convertTimestampToDate(event.Bwidt),
       Bwizt: this.convertTimestampToDate(event.Bwizt),
       StatusName: event.StatusName,
@@ -1465,7 +1465,7 @@ export class InPatientDashboardComponent implements OnInit {
       Allergies: event.Allergies,
       IsolationType: event.IsolationType,
     }));
-    let Heading = [['Date', 'Time','Visit status','MRN','Patient','Room','Attending Doctor','Financial Category','Case','Case Diagnosis','Risk Factory','Allergy','Isolation']];
+    let Heading = [['Date', 'Time', 'Visit status', 'MRN', 'Patient', 'Room', 'Attending Doctor', 'Financial Category', 'Case', 'Case Diagnosis', 'Risk Factory', 'Allergy', 'Isolation']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, Heading);
@@ -1473,7 +1473,7 @@ export class InPatientDashboardComponent implements OnInit {
     XLSX.utils.book_append_sheet(workbook, ws, "test");
     XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
   }
-  LDR(nameofFile,fileExtention){
+  LDR(nameofFile, fileExtention) {
     const eventArray = this.inHospitalist;
     const mappedEvents = eventArray.map(event => ({
       Datum: this.convertTimestampToDate(event.Datum),
@@ -1488,7 +1488,7 @@ export class InPatientDashboardComponent implements OnInit {
       Allergies: event.Allergies,
       IsolationInd: event.IsolationInd,
     }));
-    let Heading = [['Date', 'Time','Visit status','MRN','Patient Name','Room','Attending Doctor','Financial Category','Risk Factory','Allergy','Isolation']];
+    let Heading = [['Date', 'Time', 'Visit status', 'MRN', 'Patient Name', 'Room', 'Attending Doctor', 'Financial Category', 'Risk Factory', 'Allergy', 'Isolation']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, Heading);
@@ -1497,7 +1497,7 @@ export class InPatientDashboardComponent implements OnInit {
     XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
   }
 
-  homeExcel(nameofFile,fileExtention){
+  homeExcel(nameofFile, fileExtention) {
     const eventArray = this.inHospitalistList;
     const mappedEvents = eventArray.map(event => ({
       AdmissionDate: this.convertTimestampToDate(event.AdmissionDate),
@@ -1526,7 +1526,7 @@ export class InPatientDashboardComponent implements OnInit {
       // Admdatetime: this.convertTimestampToDateTime(event.Admdatetime),
       // DischargeDate: this.convertTimestampToDateTime(event.DischargeDate),
     }));
-    let Heading = [['Admitted on', 'Admitted at','MRN','Patient','Ward','Room/Bed','Attending Doctor','Speciality','Allergy','Risk Factor','Admission Diagnosis','Financial Category','Planned Discharge','Isolation','LOS','Days for Isolation','Case','VIP','Emergency admission','Last surgery Date','Days since surgery','Study name','Treatment Diagnosis']];
+    let Heading = [['Admitted on', 'Admitted at', 'MRN', 'Patient', 'Ward', 'Room/Bed', 'Attending Doctor', 'Speciality', 'Allergy', 'Risk Factor', 'Admission Diagnosis', 'Financial Category', 'Planned Discharge', 'Isolation', 'LOS', 'Days for Isolation', 'Case', 'VIP', 'Emergency admission', 'Last surgery Date', 'Days since surgery', 'Study name', 'Treatment Diagnosis']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, Heading);
@@ -1536,37 +1536,37 @@ export class InPatientDashboardComponent implements OnInit {
   }
   convertTimestampToDate(timestamp: any): string {
     if (typeof timestamp === 'string' && timestamp.startsWith('/Date(') && timestamp.endsWith(')/')) {
-        const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);
-        const date = new Date(milliseconds);
-        return this.datePipe.transform(date, 'dd.MM.y');
+      const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);
+      const date = new Date(milliseconds);
+      return this.datePipe.transform(date, 'dd.MM.y');
     } else {
-        return timestamp; // Return the original value if it's not in the expected format
+      return timestamp; // Return the original value if it's not in the expected format
     }
-}
+  }
   convertTimestampToDateTime(timestamp: any): { date: string, time: string } {
     if (typeof timestamp === 'string') {
-        // Check if the timestamp is in ISO 8601 duration format
-        if (timestamp.startsWith('PT') && timestamp.endsWith('S')) {
-            const duration = timestamp.substring(2, timestamp.length - 1); // Remove 'PT' and 'S'
-            const durationParts = duration.split(/[HMS]/); // Split by 'H', 'M', 'S'
-            const hours = parseInt(durationParts[0], 10) || 0;
-            const minutes = parseInt(durationParts[1], 10) || 0;
-            const seconds = parseInt(durationParts[2], 10) || 0;
+      // Check if the timestamp is in ISO 8601 duration format
+      if (timestamp.startsWith('PT') && timestamp.endsWith('S')) {
+        const duration = timestamp.substring(2, timestamp.length - 1); // Remove 'PT' and 'S'
+        const durationParts = duration.split(/[HMS]/); // Split by 'H', 'M', 'S'
+        const hours = parseInt(durationParts[0], 10) || 0;
+        const minutes = parseInt(durationParts[1], 10) || 0;
+        const seconds = parseInt(durationParts[2], 10) || 0;
 
-            const milliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
-            const date = new Date(milliseconds);
-            const formattedDate = this.datePipe.transform(date, 'dd.MM.yyyy');
-            const formattedTime = this.datePipe.transform(date, 'HH:mm:ss');
-            return { date: formattedDate, time: formattedTime };
-        }
-        // Check if the timestamp is in the '/Date(milliseconds)/' format
-        else if (timestamp.startsWith('/Date(') && timestamp.endsWith(')/')) {
-            const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);
-            const date = new Date(milliseconds);
-            const formattedDate = this.datePipe.transform(date, 'dd.MM.yyyy');
-            const formattedTime = this.datePipe.transform(date, 'HH:mm:ss');
-            return { date: formattedDate, time: formattedTime };
-        }
+        const milliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
+        const date = new Date(milliseconds);
+        const formattedDate = this.datePipe.transform(date, 'dd.MM.yyyy');
+        const formattedTime = this.datePipe.transform(date, 'HH:mm:ss');
+        return { date: formattedDate, time: formattedTime };
+      }
+      // Check if the timestamp is in the '/Date(milliseconds)/' format
+      else if (timestamp.startsWith('/Date(') && timestamp.endsWith(')/')) {
+        const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);
+        const date = new Date(milliseconds);
+        const formattedDate = this.datePipe.transform(date, 'dd.MM.yyyy');
+        const formattedTime = this.datePipe.transform(date, 'HH:mm:ss');
+        return { date: formattedDate, time: formattedTime };
+      }
     }
     // Return the original value if it's not in the expec
   }

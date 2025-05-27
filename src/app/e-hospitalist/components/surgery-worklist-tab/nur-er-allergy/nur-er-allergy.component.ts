@@ -88,10 +88,10 @@ export class NurErAllergyComponent implements OnInit {
     };
     this.modalRefForAllergy = this.modalService.show(this.allergyModal, config);
     this.selectedERList = data;
-    this.selectedERList.Einri = this.selectedERList.Institute;
-    this.selectedERList.Falnr = this.selectedERList.CaseNumber;
-    this.selectedERList.Patnr = this.selectedERList.Mrn;
-    this.selectedERList.Lfdbw = this.selectedERList.Lfdnr;
+    this.selectedERList.Einri = this.selectedERList.Einri;
+    this.selectedERList.Falnr = this.selectedERList.Falnr;
+    this.selectedERList.Patnr = this.selectedERList.Patnr;
+    this.selectedERList.Lfdbw = this.selectedERList.Lfdbew;
     this.userProfile = this.storageService.getUserProfile();
     this.updateAllergyForm.enable();
     this.isCheckboxesDisabled = false;

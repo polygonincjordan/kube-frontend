@@ -501,8 +501,8 @@
           </ng-option>
         </ng-select>
 
-        <p style="margin: auto; margin-top: 5px">Rooms</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="RoomidText" [multiple]="true">
+        <p *ngIf="checkin || isSurgeryWork || LDRView" style="margin: auto; margin-top: 5px">Rooms</p>
+        <ng-select *ngIf="checkin || isSurgeryWork || LDRView" class="" id="inputGroupSelect01" formControlName="RoomidText" [multiple]="true">
           <!-- <ng-option selected value="">Choose Status</ng-option> -->
           <ng-option [value]="item" *ngFor="let item of getCheckInRoomidTextFilterData">
             {{ item }}

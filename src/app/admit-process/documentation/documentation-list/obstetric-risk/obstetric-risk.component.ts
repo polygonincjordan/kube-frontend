@@ -90,6 +90,14 @@ export class ObstetricRiskComponent implements OnInit {
       return;
     }
   
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
+      if (this.admissionService.isEditObstetricRisk) {
+        this.updateObstetricDoc(true);
+      } else {
+        this.createObstetricDoc(true);
+      }
+      return;
+    }
     if (changes.soapFormEvent.currentValue == 'release') {
       if (this.admissionService.isEditObstetricRisk) {
         this.updateObstetricDoc(true);
@@ -444,9 +452,11 @@ export class ObstetricRiskComponent implements OnInit {
             if (type) {
               this.saveAndReleas(resp);
             } else {
-              this.reloadTableList.next(true);
-              this.admissionService.cancelAllForm();
-              this.admissionService.clearSoapEvent.next(true);
+              if(this.soapFormEvent == 'saveClose') { 
+                this.reloadTableList.next(true);
+                this.admissionService.cancelAllForm();
+                this.admissionService.clearSoapEvent.next(true);
+              }
             }
           },
           (error) => {
@@ -486,9 +496,11 @@ export class ObstetricRiskComponent implements OnInit {
         .updateObstetricDoc(this.obstetricForm.value)
         .subscribe(
           (resp) => {
-            this.reloadTableList.next(true);
-            this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
+            if(this.soapFormEvent == 'saveClose') { 
+              this.reloadTableList.next(true);
+              this.admissionService.cancelAllForm();
+              this.admissionService.clearSoapEvent.next(true);
+            }
           },
           (error) => {
             this.admissionService.clearSoapEvent.next(true);

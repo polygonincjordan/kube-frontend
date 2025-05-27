@@ -218,6 +218,9 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       if (changes.soapFormEvent.currentValue == 'edit') {
         this.createDoc('1','edit')
       }
+      if (changes.soapFormEvent.currentValue == 'saveClose') {
+        this.createDoc('1','edit')
+      }
       if (changes.soapFormEvent.currentValue == 'release') {
         this.createDoc('2','edit')
       }
@@ -1060,10 +1063,12 @@ export class NicuAssessmentDocumentComponent implements OnInit {
    
       this.subscription = this.admissionService.createNicuSet(payload).subscribe({
         next: (data: any) => {
-          this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
+          if(this.soapFormEvent == 'saveClose') { 
+            this.admissionService.cancelAllForm();
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.admissionService.clearSoapEvent.next(true);
+            this.realodEducationList.next(true);
+          }
         },
         error: (err: any) => {
          const errorMsg = err?.error?.message?.value || 'Unknown error';

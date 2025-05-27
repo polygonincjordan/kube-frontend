@@ -89,6 +89,9 @@ export class OperationReportComponent implements OnInit, OnChanges {
     if (changes.soapFormEvent.currentValue == 'edit') {
       this.saveOperation(false);
     }
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
+      this.saveOperation(false);
+    }
 
     if (changes.soapFormEvent.currentValue == 'release') {
       this.saveOperation(true);
@@ -279,9 +282,11 @@ export class OperationReportComponent implements OnInit, OnChanges {
         this.admissionService.selectedCurrentDocDetails.Dockey
       )
       .subscribe((res: any) => {
-        this.reloadTableList.next(true);
-          this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
+         if(this.soapFormEvent == 'saveClose') { 
+            this.reloadTableList.next(true);
+            this.admissionService.cancelAllForm();
+            this.admissionService.clearSoapEvent.next(true);
+          }
       });
   }
 
