@@ -257,6 +257,7 @@ export class LdrViewComponent implements OnInit {
   }
 
   changeStatus(visitStat: string) {
+    return
     let visitStatCode: number;
 
     switch (visitStat.toLowerCase()) {

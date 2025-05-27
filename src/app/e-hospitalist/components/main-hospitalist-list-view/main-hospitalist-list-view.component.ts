@@ -774,6 +774,7 @@ openModalForPhysicianOrder(item) {
       }
     
       changeStatus(visitStat: string) {
+        return
         let visitStatCode: number;
     
         switch (visitStat.toLowerCase()) {
