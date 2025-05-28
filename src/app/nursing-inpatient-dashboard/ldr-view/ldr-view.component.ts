@@ -288,60 +288,6 @@ export class LdrViewComponent implements OnInit {
     }
   }
 
-  // changeStatus(visitStat: string) {
-  //   return
-  //   let visitStatCode: number;
-
-  //   switch (visitStat.toLowerCase()) {
-  //     case 'planned arrival':
-  //       visitStatCode = 97;
-  //       break;
-  //     case 'actual arrival':
-  //       visitStatCode = 98;
-  //       break;
-  //     case 'planned discharge':
-  //       visitStatCode = 99;
-  //       break;
-  //     case 'actual discharge':
-  //       visitStatCode = 96;
-  //       break;
-  //     default:
-  //       visitStatCode = null; // Handle undefined cases
-  //   }
-  //   let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
-  //   createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
-  //   const json = {
-  //     Einri: this.changeStatusForm.value.Einri,
-  //     Falnr: this.changeStatusForm.value.Falnr,
-  //     Lfdnr: this.changeStatusForm.value.Lfdnr,
-  //     AdmStatusCode: visitStatCode.toString(),
-  //     Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
-  //     Bwizt: createTime,
-  //     Kztxt: this.changeStatusForm.value.Kztxt,
-  //     Bwart: this.changeStatusForm.value.Bwart,
-  //     Pernr: this.admissionStatusModel?.Behpersname,
-  //   };
-
-  //   if (!json?.Bwart) {
-  //     delete json.Bwart;
-  //   }
-
-  //   this.emergencyService.changeAdmissionStatus(json).subscribe({
-  //     next: (_success: any) => {
-  //       Swal.fire({
-  //         text: 'Change Status Successfully',
-  //         icon: 'success',
-  //         confirmButtonText: 'Ok',
-  //         customClass: 'myalertpopup',
-  //       });
-  //       this.LDRListSet();
-  //       this.modalService.hide();
-  //     },
-  //     error: (err: any) => {
-  //       // this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
-  //     },
-  //   });
-  // }
 
   changeStatus(event: any) {
     const json = {
@@ -355,14 +301,12 @@ export class LdrViewComponent implements OnInit {
     };
     this._dataServices.changeStatus(json).subscribe({
       next: (_success: any) => {
-        if(_success){
           Swal.fire({
             text: 'Change Status Successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup',
           });
-        }
         this.modalRefForRisk?.hide();
         this.LDRListSet(this.oldDate);
       },

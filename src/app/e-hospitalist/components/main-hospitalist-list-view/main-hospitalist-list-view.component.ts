@@ -815,14 +815,13 @@ openModalForPhysicianOrder(item) {
           };
           this._dataServices.changeStatus(json).subscribe({
             next: (_success: any) => {
-              if(_success){
                 Swal.fire({
                   text: 'Change Status Successfully',
                   icon: 'success',
                   confirmButtonText: 'Ok',
                   customClass: 'myalertpopup',
                 });
-              }
+              
               this.modalRefForRisk?.hide();
                 this.onClickBox.emit();
             },

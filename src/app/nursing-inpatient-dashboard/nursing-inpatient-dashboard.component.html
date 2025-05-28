@@ -457,8 +457,8 @@
             (click)="showFilterFn($event)"></i></span>
       </div>
       <form [formGroup]="filterForm" class="p-2">
-        <p *ngIf="!isArrival || LDRView" style="margin: auto; margin-top: 5px">Admission Status</p>
-        <ng-select *ngIf="!isArrival || LDRView" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
+        <p *ngIf="!isArrival && !LDRView" style="margin: auto; margin-top: 5px">Admission Status</p>
+        <ng-select *ngIf="!isArrival && !LDRView" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInStatusFilterData">
             {{ item }}
           </ng-option>
