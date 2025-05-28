@@ -457,8 +457,14 @@
             (click)="showFilterFn($event)"></i></span>
       </div>
       <form [formGroup]="filterForm" class="p-2">
-        <p *ngIf="!isArrival" style="margin: auto; margin-top: 5px">Admission Status</p>
-        <ng-select *ngIf="!isArrival" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
+        <p *ngIf="!isArrival || LDRView" style="margin: auto; margin-top: 5px">Admission Status</p>
+        <ng-select *ngIf="!isArrival || LDRView" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInStatusFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+        <p *ngIf="LDRView" style="margin: auto; margin-top: 5px">Visit Status</p>
+        <ng-select *ngIf="LDRView" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInStatusFilterData">
             {{ item }}
           </ng-option>
@@ -494,8 +500,8 @@
           </ng-option>
         </ng-select>
 
-        <p style="margin: auto; margin-top: 5px">Ward</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+        <p style="margin: auto; margin-top: 5px" *ngIf="!this.LDRView">Ward</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FWard"  *ngIf="!this.LDRView" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
             {{ item }}
           </ng-option>

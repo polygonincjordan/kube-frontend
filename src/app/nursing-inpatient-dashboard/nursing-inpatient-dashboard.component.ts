@@ -852,7 +852,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
       }else if(this.LDRView){
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
+          (acc: string[], cur) => pushIfValid(acc, cur?.Besstattext), []
+        );
+
+         this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Behpersname), []
         );
 
         this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(

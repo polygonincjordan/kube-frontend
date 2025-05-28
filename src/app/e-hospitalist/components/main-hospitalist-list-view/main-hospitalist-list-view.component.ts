@@ -90,6 +90,36 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
       value: 'RD',
     },
   ];
+  statusList = [
+    {
+      label: 'Planned',
+      value: '20'
+    },
+    {
+      label: 'Checked In',
+      value: '30'
+    },
+    {
+      label: 'Called',
+      value: '55'
+    },
+    {
+      label: 'Nurse Completed',
+      value: '58'
+    },
+    {
+      label: 'Physician Start',
+      value: '60'
+    },
+    {
+      label: 'Physician End',
+      value: '65'
+    },
+    {
+      label: 'Checked Out',
+      value: '70'
+    },
+  ]
   public copyMsg: string | null = null;
   constructor(
     private _dataServices: EEmrService,
@@ -773,60 +803,40 @@ openModalForPhysicianOrder(item) {
         }
       }
     
-      changeStatus(visitStat: string) {
-        return
-        let visitStatCode: number;
-    
-        switch (visitStat.toLowerCase()) {
-          case 'planned arrival':
-            visitStatCode = 97;
-            break;
-          case 'actual arrival':
-            visitStatCode = 98;
-            break;
-          case 'planned discharge':
-            visitStatCode = 99;
-            break;
-          case 'actual discharge':
-            visitStatCode = 96;
-            break;
-          default:
-            visitStatCode = null; // Handle undefined cases
+      changeStatus(event: any) {
+          const json = {
+            "Einri": event.Einri,
+            "Falnr": event.Falnr,
+            "Patnr": event.Patnr,
+            "Lfdnr": '00001',
+            "VisitStat": this.changeStatusForm.value.AdmStatusCode,
+            "Sdate": new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
+            "Stime": 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
+          };
+          this._dataServices.changeStatus(json).subscribe({
+            next: (_success: any) => {
+              if(_success){
+                Swal.fire({
+                  text: 'Change Status Successfully',
+                  icon: 'success',
+                  confirmButtonText: 'Ok',
+                  customClass: 'myalertpopup',
+                });
+              }
+              this.modalRefForRisk?.hide();
+                this.onClickBox.emit();
+            },
+            error: (err: any) => {
+              Swal.fire({
+                text: `Error :${err.error.error.message.value}`,
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup',
+              });
+            }
+          });
+      
         }
-        let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
-        createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
-        const json = {
-          Einri: this.changeStatusForm.value.Einri,
-          Falnr: this.changeStatusForm.value.Falnr,
-          Lfdnr: this.changeStatusForm.value.Lfdnr,
-          AdmStatusCode: visitStatCode.toString(),
-          Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
-          Bwizt: createTime,
-          Kztxt: this.changeStatusForm.value.Kztxt,
-          Bwart: this.changeStatusForm.value.Bwart,
-          Pernr: this.admissionStatusModel?.Behpersname,
-        };
-    
-        if (!json?.Bwart) {
-          delete json.Bwart;
-        }
-    
-        this.emergencyService.changeAdmissionStatus(json).subscribe({
-          next: (_success: any) => {
-            Swal.fire({
-              text: 'Change Status Successfully',
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
-            });
-           this.onClickBox.emit();
-            this.modalService.hide();
-          },
-          error: (err: any) => {
-            // this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
-          },
-        });
-      }
     
       sanitizeSAPDateFormat(date: any) {
         if (typeof date === 'string') {

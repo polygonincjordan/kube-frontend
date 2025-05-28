@@ -219,13 +219,15 @@
         <th scope="col">Time <i (click)="onSortClick($event,'Zeit')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">Visit status <i (click)="onSortClick($event,'Besstattext')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">MRN</th>
+        <th scope="col">Case#</th>
         <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">Room <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">Specialty <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- <th scope="col">Ward <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th> -->
         <th scope="col">Attending Doctor</th>
         <th scope="col">Financial Category <i (click)="onSortClick($event,'ZzfinCat')"  class="my-icon fa fa-chevron-up"></i></th>
         <!-- <th class="table-row-width allergy" scope="col">Case Diagnosis</th> -->
-        <th scope="col">Risk Factory</th>
+        <th scope="col">Risk</th>
         <th class="table-row-width allergy" scope="col">Allergy</th>
         <th class="table-row-width allergy" scope="col">Isolation</th>
         <th scope="col">Action</th>
@@ -237,8 +239,10 @@
         <td>{{ item.Zeit}}</td>
         <td>{{ item.Besstattext }}</td>
         <td>{{ item.Patnr}}</td>
-        <td style="display: flex;justify-content: space-between;align-items: baseline;" (click)="openModuleAdmissionProcessFromLDR(item)" style="min-width: 280px;"><span>{{ item.Patient }}</span><i class="fa fa-copy text-secondary" title="Copy Name" style="cursor: pointer;" (click)="copyToClipboard(item?.Patname)"></i></td>
-        <td>{{ item.BehraumKb }}</td>
+         <td>{{item.Falnr}}</td>
+        <td style="min-width: 280px;display: flex;justify-content: space-between;align-items: baseline;"><span (click)="openModuleAdmissionProcessFromLDR(item)">{{ item.Patient }}</span><i class="fa fa-copy text-secondary" title="Copy Name" style="cursor: pointer;" (click)="copyToClipboard(item?.Patname)"></i></td>
+        <td  style="white-space:nowrap">{{ item.BehraumKb }}</td>
+        <td title="Obstetrics">Obstetrics</td>
         <!-- <td>{{ item.RoomidName }}</td> -->
         <td>{{ item.Behpersname }}</td>
         <td>{{ item.ZzfinCat }}</td>
@@ -664,7 +668,6 @@
 <div *ngIf="copyMsg" class="copy-toast">
   {{ copyMsg }}
 </div>
-<!-- change Status -->
 <ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
   <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
     <h4 class="modal-title" style="color: white">Change Admission Status</h4>
@@ -686,79 +689,19 @@
   </div>
   <div class="modal-body p-0 pb-3">
     <form [formGroup]="changeStatusForm">
-      <div class="p-3">
+      <!-- <div class="p-3">
         <p class="m-0">Are you sure you want to change status to <strong>{{ getStatusValue() }}</strong></p>
-      </div>
-      <div class="row m-0 mb-2" *ngIf="getStatusValue() === 'Actual Arrival'">
-        <div class="col-md-4 row m-0 align-items-center ">
-          <div class="col-md-4">
-            <strong class="m-0">Date</strong>
+      </div> -->
+      <div>
+        <h4 class="new_status p-3">New Status</h4>
+        <div class="row m-0 align-items-center">
+          <div class="col-md-2">
+            <label class="m-0" style="font-size: 16px;">Status</label>
           </div>
-          <div class="col-md-8 p-0">
-            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
-              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
-          </div>
-        </div>
-        <div class="col-md-3 row m-0 align-items-center pl-0">
-          <div class="col-md-3 p-0">
-            <strong class="m-0">Time</strong>
-          </div>
-          <div class="col-md-9 p-0">
-            <input type="time" class="form-control" formControlName="Bwizt" />
-          </div>
-        </div>
-        <div class="col-md-5 row m-0 align-items-center">
-          <div class="col-md-4">
-            <strong class="m-0">Comments</strong>
-          </div>
-          <div class="col-md-8 pl-0">
-            <input type="text" class="form-control" formControlName="Kztxt" />
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="getStatusValue() === 'Planned Discharge' || getStatusValue() === 'Actual Discharge'">
-        <div class="col-md-4 row m-0 align-items-center mb-2">
-          <div class="col-md-4">
-            <strong class="m-0">Date</strong>
-          </div>
-          <div class="col-md-8 p-0">
-            <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
-              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
-          </div>
-        </div>
-
-        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
-          <div class="col-md-4 p-0">
-            <strong class="m-0">Dis. Type</strong>
-          </div>
-          <div class="col-md-8 p-0">
-            <ng-select formControlName="Bwart">
-              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value">{{item?.label }}</ng-option>
+          <div class="col-md-3">
+            <ng-select formControlName="AdmStatusCode">
+              <ng-option *ngFor="let item of statusList" [value]="item.value"> {{ item.label }}</ng-option>
             </ng-select>
-          </div>
-        </div>
-        <div class="col-md-4 row m-0 pl-0 align-items-center mb-2">
-          <div class="col-md-5 p-0">
-            <strong class="m-0">Dis. Physician</strong>
-          </div>
-          <div class="col-md-7 pl-0">
-            <input type="text" class="form-control" formControlName="Pernr" />
-          </div>
-        </div>
-        <div class="col-md-4 row m-0 align-items-center mb-2">
-          <div class="col-md-4">
-            <strong class="m-0">Time</strong>
-          </div>
-          <div class="col-md-8 p-0">
-            <input type="time" class="form-control" formControlName="Bwizt" />
-          </div>
-        </div>
-        <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
-          <div class="col-md-2 p-0">
-            <strong class="m-0">Comments</strong>
-          </div>
-          <div class="col-md-10 pl-0">
-            <input type="text" class="form-control" formControlName="Kztxt" />
           </div>
         </div>
       </div>
@@ -768,7 +711,7 @@
     <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
       (click)="closeRiskModal()">No</button>
     <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
-      (click)="changeStatus(admissionStatusModel?.Besstattext)">Yes</button>
+      (click)="changeStatus(admissionStatusModel)">Yes</button>
   </div>
   <div>
   </div>
