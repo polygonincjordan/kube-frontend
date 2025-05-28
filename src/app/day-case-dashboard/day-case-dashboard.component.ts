@@ -143,6 +143,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   attendingPhysicianList: any;
   getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
+  getPerformanceUnitFilterData: any;
   getKubeRule = this.storageService.getKubeRule();
   isSurgeryWork: boolean = false;
 
@@ -542,6 +543,28 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
         );
 
+      } else if(this.isSurgeryWork) {
+        
+        this.getCheckInWardFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Anpoe), []
+        );
+
+        this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+        );
+
+        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Anfoe), []
+        );
+
+        this.getPerformanceUnitFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Planoe), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
+        );
+
       } else {
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
@@ -686,7 +709,9 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     } else if (this.selectedModule == 'arrival') {
       this.arrivalMainListComponent.filterListData(this.filterForm.value);
-    } 
+    } else if (this.selectedModule === 'surgeryWork') {
+       this.surgeryWorklistTabComponent?.filterListData(this.filterForm.value);
+    }
     this.showfilter = false;
   }
 

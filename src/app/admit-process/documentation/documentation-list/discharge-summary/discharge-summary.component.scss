@@ -179,3 +179,39 @@
       background-color: white;
     }
   }
+
+  
+.section {
+      margin-bottom: 20px;
+      padding: 15px;
+    }
+    .section-title {
+         font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 2px solid;
+    border-color: #2758fc;
+    }
+    .form-label {
+      font-size: 0.9rem;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+    }
+    .btn-checkmark {
+      background-color: #198754;
+      color: white;
+      border: none;
+    }
+
+.create-diagnosis {
+  border: 1px solid;
+  background: #3b82f6;
+  color: #fff;
+  padding: 5px 20px;
+  border-radius: 4px;
+  font-weight: 700;
+  height: fit-content;
+}

@@ -111,11 +111,11 @@ export class OperationReportComponent implements OnInit, OnChanges {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
 
     this.inPatientOrrptDataSet = new FormGroup({
-      DateOfSurgery: new FormControl(new Date()),
+      DateOfSurgery: new FormControl(),
       DocKey: new FormControl(''),
       OperationPerformed: new FormControl(''),
       OperativeComplication: new FormControl(''),
-      TimeOfSurgery: new FormControl(currentTime),
+      TimeOfSurgery: new FormControl(),
       DateOfReportEntry: new FormControl(new Date()),
       SpecimenRemoved: new FormControl(''),
       BloodLoss: new FormControl(''),
@@ -282,7 +282,7 @@ export class OperationReportComponent implements OnInit, OnChanges {
         this.admissionService.selectedCurrentDocDetails.Dockey
       )
       .subscribe((res: any) => {
-         if(this.soapFormEvent == 'saveClose') { 
+         if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.reloadTableList.next(true);
             this.admissionService.cancelAllForm();
             this.admissionService.clearSoapEvent.next(true);

@@ -17,7 +17,7 @@
                 <i (click)="onSortClick($event,'Zimmkub')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col" style="width: 170px !important; max-width: 170px !important; min-width: 170px !important;">Bed 
                 <i (click)="onSortClick($event,'Bettkub')" class="my-icon fa fa-chevron-up"></i></th> -->
-            <th scope="col">Risk</th>
+            <!-- <th scope="col">Risk</th> -->
             <th scope="col">Medical Record Exists</th>
             <th scope="col">Documents Exists</th>
             <th scope="col">Comment</th>
@@ -38,13 +38,13 @@
             <td>{{item.Orgpfkb}}</td>
             <!-- <td>{{item.Zimmkub}}</td>
             <td>{{item.Bettkub}}</td> -->
-            <td class="border-left" style="width: 3%">
+            <!-- <td class="border-left" style="width: 3%">
                 <span>
                     <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
                         (click)="openModalForRisk(riskModal,item)"
                         [title]="riskInformation(item.RiskpIcon)" />
                 </span>
-            </td>
+            </td> -->
             <td>
                 <span *ngIf="item.KaIcon">
                     <img src="assets/img/ok_icon_blue.svg" style="width: 23px; cursor: pointer;"

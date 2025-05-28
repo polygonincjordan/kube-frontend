@@ -1109,7 +1109,7 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .createPhysicianData(createJson)
       .subscribe(() => {
-          if(this.soapFormEvent == 'saveClose') { 
+          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
             this.admissionService.clearSoapEvent.next(true);
@@ -1419,7 +1419,7 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .updatePhysicianData(updateJson)
       .subscribe(() => {
-         if(this.soapFormEvent == 'saveClose') { 
+         if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
             this.admissionService.clearSoapEvent.next(true);

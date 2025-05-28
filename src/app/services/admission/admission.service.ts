@@ -49,6 +49,7 @@ export class AdmissionService {
   public Diagnosis: boolean = false;
   public Documentation: boolean = false;
   public vitalSign: boolean = false;
+  public isDietMealOrdering: boolean = false;
   public isAddEditMedicalForm: boolean = false;
   public isDischargeProcess: boolean = false;
 
@@ -169,6 +170,7 @@ export class AdmissionService {
   tabPanelNavigation(tabName: any) {
     localStorage.setItem('tabName', tabName);
     this.vitalSign = false;
+    this.isDietMealOrdering = false;
     if (tabName && tabName === 'PhysicianOrders') {
       this.PhysicianOrders = true; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false;
     } else if (tabName && tabName === 'ProgressNotes') {
@@ -180,7 +182,9 @@ export class AdmissionService {
     } else if (tabName && tabName === 'discharge') {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = true;
     } else if (tabName && tabName === 'vitalSign') {
-      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false; this.vitalSign = true;
+      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false;
+    } else if (tabName && tabName === 'DietMealOrdering') {
+      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false; this.isDietMealOrdering = true;
     }
   }
 

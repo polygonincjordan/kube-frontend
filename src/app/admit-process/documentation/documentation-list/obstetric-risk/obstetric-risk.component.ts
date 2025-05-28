@@ -452,7 +452,7 @@ export class ObstetricRiskComponent implements OnInit {
             if (type) {
               this.saveAndReleas(resp);
             } else {
-              if(this.soapFormEvent == 'saveClose') { 
+              if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
                 this.reloadTableList.next(true);
                 this.admissionService.cancelAllForm();
                 this.admissionService.clearSoapEvent.next(true);
@@ -496,7 +496,7 @@ export class ObstetricRiskComponent implements OnInit {
         .updateObstetricDoc(this.obstetricForm.value)
         .subscribe(
           (resp) => {
-            if(this.soapFormEvent == 'saveClose') { 
+            if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
               this.reloadTableList.next(true);
               this.admissionService.cancelAllForm();
               this.admissionService.clearSoapEvent.next(true);

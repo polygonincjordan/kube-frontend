@@ -1,0 +1,48 @@
+<div class="d-flex flex-row align-items-center bg-tab justify-content-between mt-2 p-3">
+    <h4 class="title">Dislikes & Preference</h4>
+    <div>
+        <div>
+            <input type="checkbox" />
+            <label>No Dislikes</label>
+        </div>
+        <div>
+            <input type="checkbox" />
+            <label>No Preference</label>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary mr-2" (click)="createNewDiet('dietMeal')">
+            Create New Diet Order
+        </button>
+    </div>
+</div>
+<div id="mySidenav" class="sidenav" [ngStyle]="{ width: sidenavWidth }">
+  
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead">
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+            <tr *ngFor="let item of dislikePreferenceList">
+                <td>{{ item.type }}</td>
+                <td>{{ item?.description }}</td>
+                <td>Test</td>
+                <td class="width-100">
+                    <div>
+                        <img class="mr-2" src="assets/makassed-img/deal-view.svg" />
+                        <img class="mr-2" src="assets/makassed-img/deal-confirm.svg" />
+                        <img class="mr-2" src="assets/makassed-img/deal-edit.svg" />
+                        <img src="assets/makassed-img/deal-cancel.svg" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

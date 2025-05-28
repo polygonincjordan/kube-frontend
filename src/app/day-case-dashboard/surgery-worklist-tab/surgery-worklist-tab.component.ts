@@ -78,6 +78,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
   riskItemsArr: any[];
   riskList: any[];
   inSurgeryWorklist: any[];
+  inSurgeryWorklistClone: any[];
 
   constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService, private storageService: StorageService) { }
 
@@ -89,7 +90,9 @@ export class SurgeryWorklistTabComponent implements OnInit {
   surgeryListData() {
     this.hospitalistService.getSurgeryWorkListSetAPI()
       .subscribe((data: any) => {
+        this.inSurgeryWorklistClone = data?.d?.results;
         this.inSurgeryWorklist = data?.d?.results;
+        this.dataToParent.emit(this.inSurgeryWorklistClone);
         this.sendErPatientCount.next(this.inSurgeryWorklist.length);
       })
   }
@@ -586,6 +589,50 @@ export class SurgeryWorklistTabComponent implements OnInit {
     }
   }
 
+  filterListData(event) {
+    if (
+      event.Physician || event.Status || event.FCategory ||
+      event.FWard || event.FSpecialty || event.RoomidText || event.CaseType
+    ) {
+      let filterValue = this.inSurgeryWorklistClone;
+
+      if (event.Physician?.length) {
+        filterValue = filterValue.filter(item =>
+          event.Physician.includes(item.BehArztName?.trimStart())
+        );
+      }
+
+      if (event.FWard?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FWard.includes(item.Anpoe)
+        );
+      }
+
+      if (event.FSpecialty?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FSpecialty.includes(item.Anfoe)
+        );
+      }
+
+      if (event.CaseType?.length) {
+        filterValue = filterValue.filter(item =>
+          event.CaseType.includes(item.Planoe)
+        );
+      }
+
+      if (event.FCategory?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FCategory.includes(item.ZzfinCat)
+        );
+      }
+
+      this.inSurgeryWorklist = filterValue;
+    } else {
+      this.inSurgeryWorklist = this.inSurgeryWorklistClone;
+    }
+
+    this.sendErPatientCount.emit(this.inSurgeryWorklist.length);
+  }
 
   onSortClick(event, col: string) {
     let target = event.currentTarget,
