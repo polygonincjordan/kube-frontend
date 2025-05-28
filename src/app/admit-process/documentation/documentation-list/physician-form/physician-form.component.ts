@@ -124,6 +124,13 @@ export class PhysicianFormComponent implements OnInit {
       this.updatePhysicianForm();
     }
 
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
+      if (this.admissionService.isEditPhysicianForm) {
+        this.updatePhysicianForm();
+      } else {
+        this.createPhysicianForm(true);
+      }
+    }
     if (changes.soapFormEvent.currentValue == 'release') {
       if (this.admissionService.isEditPhysicianForm) {
         this.releasePhysicianDoc();
@@ -1102,10 +1109,12 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .createPhysicianData(createJson)
       .subscribe(() => {
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
+          if(this.soapFormEvent == 'saveClose') { 
+            this.admissionService.cancelAllForm();
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.admissionService.clearSoapEvent.next(true);
+            this.realodEducationList.next(true);
+          }
       });
   }
   toPhyExamItems() {
@@ -1410,10 +1419,13 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .updatePhysicianData(updateJson)
       .subscribe(() => {
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
+         if(this.soapFormEvent == 'saveClose') { 
+            this.admissionService.cancelAllForm();
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.admissionService.clearSoapEvent.next(true);
+            this.realodEducationList.next(true);
+          }
+ 
       });
   }
   async releasePhysicianDoc() {

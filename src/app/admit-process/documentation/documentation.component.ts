@@ -131,6 +131,9 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.clearVarValue();
       this.admissionService.isPDFObstetricRisk = false;
       this.admissionService.educationAddForm('add');
+    } else if(type == 'saveClose') {
+      this.formEvent.next('saveClose');
+      console.log(type, "1");
     } else {
       this.formEvent.next('release');
     }

@@ -148,6 +148,10 @@ export class DocVisitNoteComponent implements OnInit {
       this.saveForm(false);
       return;
     }
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
+      this.saveForm(false);
+      return;
+    }
 
    if (changes.soapFormEvent.currentValue == 'release') {
       if (this._admissionService.isEditVisitForm) {
@@ -313,9 +317,11 @@ export class DocVisitNoteComponent implements OnInit {
 
       this._admissionService.saveVisitNoteDoc(this.patientVisitFormData).subscribe(
         (result: any) => {
+            if(this.soapFormEvent == 'saveClose') {   
               this._admissionService.clearSoapEvent.next(true);
               this.reloadTableList.next(true);
               this._admissionService.cancelAllForm();
+            }
               Swal.fire({
                 title: message,
                 confirmButtonColor: '#0890c5',

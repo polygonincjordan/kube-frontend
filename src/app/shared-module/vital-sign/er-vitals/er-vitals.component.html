@@ -6,6 +6,17 @@
         <div class="secound-bar-vital-sign">
           <div class="arrows">
             <h6 class="m-0">Vital Signs</h6>
+            <img src="assets/img/back.svg" style="width: 25px;
+          border: 1px solid;
+          border-radius: 18px;
+          background: #f2f4f6;
+          " (click)="scrollLeft()">
+            <img src="assets/img/back.svg" style="width: 25px;
+          border: 1px solid;
+          margin-left: 5px;
+          border-radius: 18px;
+          background: #f2f4f6;
+          transform: rotate(180deg);" (click)="scrollRight()">
           </div>
           <ul class="list-simple" *ngIf="hideAction">
             <li (click)="EditVitalList()"><img class="img-size" src="assets/img/Examinations.svg" >Change Examination</li>

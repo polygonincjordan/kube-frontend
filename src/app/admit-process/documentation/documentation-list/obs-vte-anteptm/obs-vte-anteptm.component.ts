@@ -41,6 +41,14 @@ export class ObsVTEAnteptmComponent implements OnInit {
       return;
     }
 
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
+      if (this.admissionService.isEditObsVteAnt) {
+        this.updateObsVteAnt(true);
+      } else {
+        this.createObsVteAntDoc(true);
+      }
+      return;
+    }
     if (changes.soapFormEvent.currentValue == 'release') {
       if (this.admissionService.isEditObsVteAnt) {
         this.updateObsVteAnt(true);
@@ -128,9 +136,11 @@ export class ObsVTEAnteptmComponent implements OnInit {
         if (type) {
           this.saveAndReleas(resp);
         } else {
-          this.reloadTableList.next(true);
-          this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
+          if(this.soapFormEvent == 'saveClose') { 
+            this.reloadTableList.next(true);
+            this.admissionService.cancelAllForm();
+            this.admissionService.clearSoapEvent.next(true);
+          }
         }
       },
       (error) => {
@@ -175,9 +185,11 @@ export class ObsVTEAnteptmComponent implements OnInit {
     payload.DocStatus = '2';
     this.admissionService.updateObsVteAntDoc(payload).subscribe(
       (resp) => {
-        this.reloadTableList.next(true);
-        this.admissionService.cancelAllForm();
-        this.admissionService.clearSoapEvent.next(true);
+         if(this.soapFormEvent == 'saveClose') { 
+            this.reloadTableList.next(true);
+            this.admissionService.cancelAllForm();
+            this.admissionService.clearSoapEvent.next(true);
+          }
       },
       (error) => {
         this.admissionService.clearSoapEvent.next(true);
@@ -206,9 +218,11 @@ export class ObsVTEAnteptmComponent implements OnInit {
       .updateObsVteAntDoc(this.obsVteAnteptm.value)
       .subscribe(
         (resp) => {
-          this.reloadTableList.next(true);
-          this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
+           if(this.soapFormEvent == 'saveClose') { 
+            this.reloadTableList.next(true);
+            this.admissionService.cancelAllForm();
+            this.admissionService.clearSoapEvent.next(true);
+          }
         },
         (error) => {
           this.admissionService.clearSoapEvent.next(true);

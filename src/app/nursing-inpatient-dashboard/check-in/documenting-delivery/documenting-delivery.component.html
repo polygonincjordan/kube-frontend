@@ -44,7 +44,7 @@
             <div>
               <div class="d-flex">
                 <div class="col-md-5">
-                  <input type="checkbox" style="width: 10px !important" name="resp" />
+                  <input type="checkbox" style="width: 15px !important" name="resp" />
                   <label for="name" class="col-md-3">Name</label>
                   <input id="name" class="col-md-4 mrglft30" style="margin-left: 22px !important" type="text"
                     formControlName="Vname" />
@@ -86,11 +86,11 @@
               <div class="form-group mt-2">
                 <label for="weight" class="adjustStyle">Weight</label>
                 <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important"
-                  formControlName="Gbgew" />
+                  formControlName="Gbgew" [ngClass]="TOPATDEL0.get('Gbgew').errors && isFormSubmitted ? 'ep-error-message': ''" />
                 <span class="mt-2">G</span>
                 <span for="length" class="mr-3 ml-3 mt-2">Length</span>
                 <input id="length" type="text" class="mr-2" style="max-width: 255px !important"
-                  formControlName="Gbgro" />
+                  formControlName="Gbgro" [ngClass]="TOPATDEL0.get('Gbgro').errors && isFormSubmitted ? 'ep-error-message': ''"/>
                 <span class="mt-2">CM</span>
                 <!-- <span for="apgar" class="ml-3 mr-3 mt-2">APGAR</span>
                 <ng-select
@@ -162,7 +162,7 @@
           <div [formGroup]="TOPATDEL1">
             <div class="d-flex">
               <div class="col-md-4">
-                <input type="checkbox" style="width: 10px !important" name="resp" />
+                <input type="checkbox" style="width: 15px !important" name="resp" />
                 <label for="name" class="col-md-3">Name</label>
                 <input id="name" class="col-md-4" style="margin-left: 42px !important" type="text"
                   formControlName="Vname" />
@@ -204,10 +204,11 @@
             <div class="form-group mt-2">
               <label for="weight" class="adjustStyle">Weight</label>
               <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important"
-                formControlName="Gbgew" />
+                formControlName="Gbgew" [ngClass]="TOPATDEL1.get('Gbgew').errors && isFormSubmitted ? 'ep-error-message': ''"/>
               <span class="mt-2">G</span>
               <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-              <input id="length" type="text" class="mr-2" style="max-width: 255px !important" formControlName="Gbgro" />
+              <input id="length" type="text" class="mr-2" style="max-width: 255px !important" formControlName="Gbgro" 
+                [ngClass]="TOPATDEL1.get('Gbgro').errors && isFormSubmitted ? 'ep-error-message': ''"/>
               <span class="mt-2">CM</span>
 
             </div>
@@ -241,7 +242,7 @@
           <div [formGroup]="TOPATDEL2">
             <div class="d-flex">
               <div class="col-md-4">
-                <input type="checkbox" style="width: 10px !important" name="resp" />
+                <input type="checkbox" style="width: 15px !important" name="resp" />
                 <label for="name" class="col-md-3">Name</label>
                 <input id="name" class="col-md-4" style="margin-left: 42px !important" type="text"
                   formControlName="Vname" />
@@ -283,10 +284,11 @@
             <div class="form-group mt-2">
               <label for="weight" class="adjustStyle">Weight</label>
               <input id="weight" type="text" class="mr-2 mrlf11" style="max-width: 255px !important"
-                formControlName="Gbgew" />
+                formControlName="Gbgew" [ngClass]="TOPATDEL2.get('Gbgew').errors && isFormSubmitted ? 'ep-error-message': ''"/>
               <span class="mt-2">G</span>
               <span for="length" class="mr-3 ml-3 mt-2">Length</span>
-              <input id="length" type="text" class="mr-2" style="max-width: 255px !important" formControlName="Gbgro" />
+              <input id="length" type="text" class="mr-2" style="max-width: 255px !important" formControlName="Gbgro" 
+                [ngClass]="TOPATDEL2.get('Gbgro').errors && isFormSubmitted ? 'ep-error-message': ''"/>
               <span class="mt-2">CM</span>
 
             </div>
