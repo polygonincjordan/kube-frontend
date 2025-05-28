@@ -1063,7 +1063,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
    
       this.subscription = this.admissionService.createNicuSet(payload).subscribe({
         next: (data: any) => {
-          if(this.soapFormEvent == 'saveClose') { 
+          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
             this.admissionService.clearSoapEvent.next(true);

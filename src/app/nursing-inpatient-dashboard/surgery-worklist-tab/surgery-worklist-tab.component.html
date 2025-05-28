@@ -14,6 +14,7 @@
                          <th scope="col">Procedure Room<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Room')"></i></th>
                          <th scope="col" class="set-width-3">Attending Physician<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Pnamec1')"></i></th>
                          <th scope="col" class="set-width-3">Specialty<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Anfoe')"></i></th>
+                         <th scope="col" class="set-width-3">Ward/Unit<i (click)="onSortClick($event,'Anpoe')" class="my-icon fa fa-chevron-up"></i></th>
                          <th scope="col">Admission Date/Time<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Gbdat')"></i></th>
                          <th scope="col">Procedure Name<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('SrvBez')"></i></th>
                          <th scope="col">Planned Date/Time<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Tmpdt')"></i></th>
@@ -37,6 +38,7 @@
                         <td>{{item.Room}}</td>
                         <td></td>
                         <td>{{item.Anfoe}}</td>
+                        <td>{{item.Anpoe}}</td>
                         <td>{{getDate(item.Gbdat) | date : "dd.MM.yyyy"}}</td>
                         <td>{{item.SrvBez}}</td>
                         <td>{{getDate(item.Tmpdt) | date : "dd.MM.yyyy"}} / </td>
@@ -66,7 +68,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div *ngIf="listItem?.length == 0" style="text-align: center">
+            <div *ngIf="inSurgeryWorklist?.length == 0" style="text-align: center">
                 No results
             </div>
         </div>

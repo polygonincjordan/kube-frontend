@@ -62,6 +62,11 @@ import { NicuErVitalsComponent } from './documentation/documentation-list/nicu-a
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
 import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
+import { CompanionMealOrderingComponentNew } from './diet-meal-order-new/companion-meal-ordering/companion-meal-ordering.component';
+import { DislikePreferenceComponentNew } from './diet-meal-order-new/dislike-preference/dislike-preference.component';
+import { PatientsDietMealComponentNew } from './diet-meal-order-new/patients-diet-meal/patients-diet-meal.component';
+import { DietMealOrderComponentNew } from './diet-meal-order-new/diet-meal-order.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -106,7 +111,11 @@ export const ePrescriptionRoutes: Routes = [
     DocVisitNoteComponent,
     TransferAssessmentComponent,
     NicuAssessmentDocumentComponent,
-    NicuErVitalsComponent
+    NicuErVitalsComponent,
+    CompanionMealOrderingComponentNew,
+    DislikePreferenceComponentNew,
+    PatientsDietMealComponentNew,
+    DietMealOrderComponentNew
   ],
   imports: [
     CommonModule,
@@ -124,6 +133,7 @@ export const ePrescriptionRoutes: Routes = [
     NgxMaterialTimepickerModule,
     QuillModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    TooltipModule.forRoot(),
     NewbornAssessmentModule,
     VitalSignModule,
     NeonatalDischDocumentModule,

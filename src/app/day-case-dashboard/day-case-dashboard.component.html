@@ -229,7 +229,7 @@ float: right;" />
         <span style="margin-left: 68px; font-size: 20px"><i class="fa fa-times" aria-hidden="true"
             (click)="showFilterFn($event)"></i></span>
       </div>
-      <form [formGroup]="filterForm">
+      <form [formGroup]="filterForm" *ngIf="isArrival || checkin">
           <p *ngIf="!isArrival" style="margin: auto; margin-top: 5px">Admission Status</p>
         <ng-select *ngIf="!isArrival"
           class=""
@@ -321,6 +321,70 @@ float: right;" />
     border: #0082c8;" (click)="clearFilter()">
       Clear
     </button> -->
+        </div>
+      </form>
+
+      <form [formGroup]="filterForm" *ngIf="isSurgeryWork">
+        <p style="margin: auto; margin-top: 5px">Ward</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
+        <ng-select
+          class=""
+          id="inputGroupSelect01"
+          formControlName="Physician"
+          [multiple]="true"
+        >
+          <ng-option
+            [value]="item"
+            *ngFor="let item of attendingPhysicianList"
+          >
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Specialty</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FSpecialty" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+
+        <p style="margin: auto; margin-top: 5px">Performance Unit</p>
+        <ng-select
+          class=""
+          id="inputGroupSelect01"
+          formControlName="CaseType"
+          [multiple]="true"
+        >
+          <ng-option
+            [value]="item"
+            *ngFor="let item of getPerformanceUnitFilterData"
+          >
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Financial Category</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FCategory" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInFinancialFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+  
+        <div class="mt-2" style="display: flex; justify-content: space-around">
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
+            Filter
+        </button>
+                <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
+          border: #0082c8;" (click)="clearFilter()">
+            Clear
+          </button> -->
         </div>
       </form>
     </div>

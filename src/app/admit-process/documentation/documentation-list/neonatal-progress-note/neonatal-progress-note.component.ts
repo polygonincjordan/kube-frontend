@@ -147,7 +147,7 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     createtime = createJson.Timee.split(':');
     createJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
    await this.admissionService.createNeoNatalDoc(createJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose') { 
+      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);
@@ -167,7 +167,7 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     createtime = updateJson.Timee.split(':');
     updateJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     await this.admissionService.updateNeoNatalDoc(updateJson).subscribe(()=>{
-       if(this.soapFormEvent == 'saveClose') { 
+       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);

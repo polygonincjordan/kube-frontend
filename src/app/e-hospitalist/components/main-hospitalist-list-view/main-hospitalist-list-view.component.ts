@@ -49,6 +49,7 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   copyProgressEntryData: any;
   modalRef: BsModalRef;
   phyOrderAction: any;
+  @ViewChild('deliveryModal') deliveryModal: DocumentingDeliveryComponent;
 
   @Output() openModuleKardex = new EventEmitter();
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
@@ -166,11 +167,11 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
     );
   }
 
-    openDocumentingDeliveryModel(data){
-      console.log(data,"data")
-      const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
-      // modalRef.componentInstance.someInput = data;
-    }
+    // openDocumentingDeliveryModel(data){
+    //   console.log(data,"data")
+    //   const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
+    //   // modalRef.componentInstance.someInput = data;
+    // }
 
   SortLDRData(col: string): void {
     console.log('col--------', col);
@@ -628,6 +629,26 @@ copyToClipboard(text: string) {
           }
         );
       }
+
+  }
+
+  selectedDetails : any;
+  openDocumentingDeliveryModel(data){
+    console.log(data,"data")
+    this.selectedDetails = data;
+     const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    // this.selectedIconPdf = this.modalService.show(this.deliveryModal, config);
+    this.deliveryModal.openModalForDelivery('', data);
+   this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+      }
+    });
+  }
+
+  reload(event: any) {
 
   }
 

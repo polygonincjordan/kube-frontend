@@ -718,3 +718,4 @@
 </ng-template>
 <app-physician-order-kardex #physicianOrderKardexId></app-physician-order-kardex>
 <app-progress-notes-kardex #progressNotesKardexId></app-progress-notes-kardex>
+<app-documenting-delivery #deliveryModal [data]="selectedDetails" (reloadCheckin)="reload($event)"></app-documenting-delivery>

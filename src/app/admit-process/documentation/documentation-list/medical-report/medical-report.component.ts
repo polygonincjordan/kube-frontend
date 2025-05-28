@@ -96,7 +96,7 @@ export class MedicalReportComponent implements OnInit,OnChanges {
     let createJson = this.medReportForm.value;
     createJson['DocStatus'] = '1';
    await this.emergencyService.createMedDoc(createJson).subscribe(()=>{
-    if(this.soapFormEvent == 'saveClose') { 
+    if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
       this.admissionService.cancelAllForm();
       this.admissionService.selectedCurrentDocDetails = '';
       this.admissionService.clearSoapEvent.next(true);
@@ -109,7 +109,7 @@ export class MedicalReportComponent implements OnInit,OnChanges {
     let updateJson = this.medReportForm.value;
     updateJson['DocStatus'] = '1';
     await this.emergencyService.updateMedDoc(updateJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose') { 
+      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);
