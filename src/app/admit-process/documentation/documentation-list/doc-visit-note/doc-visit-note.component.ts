@@ -317,7 +317,7 @@ export class DocVisitNoteComponent implements OnInit {
 
       this._admissionService.saveVisitNoteDoc(this.patientVisitFormData).subscribe(
         (result: any) => {
-            if(this.soapFormEvent == 'saveClose') {   
+            if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {   
               this._admissionService.clearSoapEvent.next(true);
               this.reloadTableList.next(true);
               this._admissionService.cancelAllForm();

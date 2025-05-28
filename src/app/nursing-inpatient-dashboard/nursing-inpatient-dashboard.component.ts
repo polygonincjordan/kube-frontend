@@ -68,6 +68,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   getCaseTypeFilterData: any; 
   getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
+  getPerformanceUnitFilterData: any;
   getCheckInWardFilterData: any;
   attendingPhysicianList: any;
   getCheckInSpecialtyFilterData: any;
@@ -850,7 +851,29 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
         );
 
-      }else if(this.LDRView){
+      } else if(this.isSurgeryWork) {
+        
+        this.getCheckInWardFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Anpoe), []
+        );
+
+        this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+        );
+
+        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Anfoe), []
+        );
+
+        this.getPerformanceUnitFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Planoe), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
+        );
+
+      } else if(this.LDRView){
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
         );
@@ -985,7 +1008,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.arrivalMainListComponent.filterListData(this.filterForm.value);
     }else if (this.selectedModule == 'LDRView'){
       this.LdrViewComponent.filterListData(this.filterForm.value);
-    }  
+    }  else if (this.selectedModule === 'surgeryWork') {
+       this.surgeryWorklistTabComponent?.filterListData(this.filterForm.value);
+    }
     else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
@@ -1127,6 +1152,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.isSurgeryWork = false;
     this.selectedModule = module;
     this.ErHistoryPatientCount = '';
+    this.getCheckInWardFilterData =  [];
+    this.attendingPhysicianList =  [];
+    this.getCheckInSpecialtyFilterData =  [];
+    this.getPerformanceUnitFilterData =  [];
+    this.getCheckInFinancialFilterData =  [];
     // this.emergencyService.tabPanelNavigation('OrderSet');
     this.defaultSelectedDateRange.push(
       new Date().setDate(new Date().getDate() - 1)

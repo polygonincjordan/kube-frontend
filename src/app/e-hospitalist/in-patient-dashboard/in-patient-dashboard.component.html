@@ -515,6 +515,65 @@
                     </form>
                   </div>
                 </div>
+                 <div class="card-body" *ngIf="navTabBoxActiveValue == '09'" (click)="$event.stopPropagation()" style="padding: 4px 21px 21px 21px">
+                  <div class="">
+                    <div>
+                      <span style="margin: 0; margin-right: 6px; font-size: 20px">Surgery Worklist Filter</span>
+                    </div>
+                    <form [formGroup]="filterForm">
+                      <div>
+                        <div>
+                          <p style="margin: auto; margin-top: 5px">Ward</p>
+                          <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+                            <ng-option [value]="item" *ngFor="let item of getCheckInWardFilterData">
+                              {{ item }}
+                            </ng-option>
+                          </ng-select>
+
+                          <p style="margin: auto; margin-top: 5px">Attending Physician</p>
+                          <ng-select
+                            class=""
+                            id="inputGroupSelect01"
+                            formControlName="Physician"
+                            [multiple]="true"
+                          >
+                            <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+                            <ng-option
+                              [value]="item"
+                              *ngFor="let item of attendingPhysicianList"
+                            >
+                              {{ item }}
+                            </ng-option>
+                          </ng-select>
+                           <p style="margin: auto; margin-top: 5px">Specialty</p>
+                          <ng-select class="" id="inputGroupSelect01" formControlName="FSpecialty" [multiple]="true">
+                            <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+                              {{ item }}
+                            </ng-option>
+                          </ng-select>
+                          <p style="margin: auto; margin-top: 5px">Performing Unit</p>
+                          <ng-select class="" id="inputGroupSelect01" formControlName="PerformaceUnit" [multiple]="true">
+                            <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+                              {{ item }}
+                            </ng-option>
+                          </ng-select>
+                          <p style="margin: auto; margin-top: 5px">Financial Category</p>
+                         <ng-select class="" id="inputGroupSelect01" formControlName="FinCate" [multiple]="true">
+                           <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+                             {{ item }}
+                           </ng-option>
+                         </ng-select>
+                        <div style="display: flex; justify-content: space-around">
+                          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                            (click)="filterData()" >
+                            Filter
+                          </button>
+                        </div>
+                      </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
             </span>
             <span *ngIf="!['08', '09'].includes(navTabBoxActiveValue)" style="margin-right: 15px"><i class="fa" style="font-size: 18px;" title="Bed View" [ngClass]="!showList ? 'fa-th-list' : 'fa-bed'"

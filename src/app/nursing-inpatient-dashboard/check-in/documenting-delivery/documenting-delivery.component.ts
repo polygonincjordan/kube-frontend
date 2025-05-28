@@ -112,14 +112,14 @@ export class DocumentingDeliveryComponent implements OnInit {
 
     return this.formBuilder.group({
       Faln1: this.data?.CaseNumber,
-      Lfdnr: this.data?.Lfdnr,
+      Lfdnr: '',
       Faln2: "",
       Gbdat: new Date(),
       Gbtim: currentTime,
       Gschl: "",
-      Gbgew: ["", Validators.required],
+      Gbgew: [""],
       Gwein: "G",
-      Gbgro: ["", Validators.required],
+      Gbgro: [""],
       Grein: "CM",
       Kztxt: "",
       Kztot: false,
@@ -252,20 +252,23 @@ export class DocumentingDeliveryComponent implements OnInit {
   }
 
   saveDelivery() {
-    this.isFormSubmitted = true;
-    if(this.deliveryForm.invalid) {
-      return;
-    }
-    this.isFormSubmitted = false;
+    // this.isFormSubmitted = true;
+    // if(this.deliveryForm.invalid) {
+    //   return;
+    // }
+    // this.isFormSubmitted = false;
     let paylaod = this.deliveryForm.value;
     paylaod.Endat = this.sanitizeSAPDateFormat(paylaod.Endat);
     paylaod.Entim = this.convertToTime(paylaod.Entim);
     paylaod.TOPATDEL = paylaod.TOPATDEL.map((item, index) => ({
       ...item,
-      Neww: index == 0 ? '' : 'X',
+      Neww: item.Lfdnr ? '' : 'X',
+      Gbgew: item.Gbgew ? item.Gbgew : '0',
+      Gbgro: item.Gbgro ? item.Gbgro : '0',
       Gbdat: this.sanitizeSAPDateFormat(item?.Gbdat),
       Gbtim: this.convertToTime(item?.Gbtim)
     }));
+    paylaod.TOPATDEL = paylaod.TOPATDEL.filter(item => item.Vname && item.Vname.trim() !== '');
 
     this.emergencyService.savePatientDelivery(paylaod).subscribe((res) => {
       Swal.fire({

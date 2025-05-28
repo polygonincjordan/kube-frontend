@@ -31,6 +31,10 @@
                   <img src="./assets/img/grid-icon.svg" />
                   <p class="d-inline-block m-0">Vital Signs</p>
                 </li>
+                <li class="d-flex m-0 align-items-center" (click)="tabChange('DietMealOrdering')" [ngClass]="this._admissionservice.isDietMealOrdering ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">Diet Meal Ordering</p>
+                </li>
               </ul>
             </div>
             <div class="tab-panel">
@@ -68,6 +72,9 @@
           </div>
           <div class="order-templete-main mt-3" *ngIf="this._admissionservice.vitalSign" >
             <app-er-vitals-comman></app-er-vitals-comman>
+          </div>
+          <div class="order-templete-main mt-3" *ngIf="this._admissionservice.isDietMealOrdering" >
+            <app-diet-meal-order-new></app-diet-meal-order-new>
           </div>
         </div>
       </div>

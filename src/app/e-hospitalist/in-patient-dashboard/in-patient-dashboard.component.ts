@@ -161,6 +161,7 @@ export class InPatientDashboardComponent implements OnInit {
   inHospitalist: any[] = [];
   inLDRAttendPhyList: any;
   attendingPhysicianList: any;
+  inSurgeryWorklistClone: any[];
   constructor(
     private _EMRServices: EEmrService,
     private hospitalistService: HospitalistService,
@@ -240,7 +241,9 @@ export class InPatientDashboardComponent implements OnInit {
       FWard: [''],
       FSpecialty: [''],
       RoomidText: [''],
-      CaseType: ['']
+      CaseType: [''],
+      PerformaceUnit: [''],
+      FinCate: [''],
     });
   }
 
@@ -823,50 +826,93 @@ export class InPatientDashboardComponent implements OnInit {
   }
 
   filterData() {
-    if (
-      this.filterForm.value.Physician || this.filterForm.value.Status || this.filterForm.value.FCategory ||
-      this.filterForm.value.FWard || this.filterForm.value.FSpecialty || this.filterForm.value.RoomidText || this.filterForm.value.CaseType
-    ) {
-      let filterValue = this.inArrivalslistListClone;
-      if (this.filterForm.value.Physician?.length) {
-        filterValue = filterValue.filter(item =>
-          this.filterForm.value.Physician.includes(item.BehArztName?.trimStart())
-        );
-      }
+    if (this.navTabBoxActiveValue == '08') {
+      if (
+        this.filterForm.value.Physician || this.filterForm.value.Status || this.filterForm.value.FCategory ||
+        this.filterForm.value.FWard || this.filterForm.value.FSpecialty || this.filterForm.value.RoomidText || this.filterForm.value.CaseType
+      ) {
+        let filterValue = this.inArrivalslistListClone;
+        if (this.filterForm.value.Physician?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.Physician.includes(item.BehArztName?.trimStart())
+          );
+        }
 
-      if (this.filterForm.value.RoomidText?.length) {
-        filterValue = filterValue.filter(item =>
-          this.filterForm.value.RoomidText.includes(item.Zimmkub?.trimStart())
-        );
-      }
+        if (this.filterForm.value.RoomidText?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.RoomidText.includes(item.Zimmkub?.trimStart())
+          );
+        }
 
-      if (this.filterForm.value.CaseType?.length) {
-        filterValue = filterValue.filter(item =>
-          this.filterForm.value.CaseType.includes(item.Fatyptxt)
-        );
-      }
+        if (this.filterForm.value.CaseType?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.CaseType.includes(item.Fatyptxt)
+          );
+        }
 
-      if (this.filterForm.value.FWard?.length) {
-        filterValue = filterValue.filter(item =>
-          this.filterForm.value.FWard.includes(item.Orgpfkb)
-        );
-      }
+        if (this.filterForm.value.FWard?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.FWard.includes(item.Orgpfkb)
+          );
+        }
 
-      if (this.filterForm.value.FSpecialty?.length) {
-        filterValue = filterValue.filter(item =>
-          this.filterForm.value.FSpecialty.includes(item.Orgfakb)
-        );
-      }
+        if (this.filterForm.value.FSpecialty?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.FSpecialty.includes(item.Orgfakb)
+          );
+        }
 
-      if (this.filterForm.value.FCategory?.length) {
-        filterValue = filterValue.filter(item =>
-          this.filterForm.value.FCategory.includes(item.ZzfinCat)
-        );
-      }
+        if (this.filterForm.value.FCategory?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.FCategory.includes(item.ZzfinCat)
+          );
+        }
 
-      this.inArrivalslistList = filterValue;
+        this.inArrivalslistList = filterValue;
+      } else {
+        this.inArrivalslistList = this.inArrivalslistListClone;
+      }
     } else {
-      this.inArrivalslistList = this.inArrivalslistListClone;
+      if (
+        this.filterForm.value.Physician || this.filterForm.value.Status || this.filterForm.value.FCategory || this.filterForm.value.FinCate || this.filterForm.value.PerformaceUnit ||
+        this.filterForm.value.FWard || this.filterForm.value.FSpecialty || this.filterForm.value.RoomidText || this.filterForm.value.CaseType
+      ) {
+        let filterValue = this.inSurgeryWorklistClone;
+        if (this.filterForm.value.Physician?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.Physician.includes(item?.BehArztName?.trimStart())
+          );
+        }
+
+        if (this.filterForm.value.FWard?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.FWard.includes(item.Anpoe?.trimStart())
+          );
+        }
+
+        if (this.filterForm.value.FSpecialty?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.FSpecialty.includes(item.Anfoe)
+          );
+        }
+
+        if (this.filterForm.value.PerformaceUnit?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.PerformaceUnit.includes(item.Planoe)
+          );
+        }
+
+        if (this.filterForm.value.FCategory?.length) {
+          filterValue = filterValue.filter(item =>
+            this.filterForm.value.FCategory.includes(item.ZzfinCat)
+          );
+        }
+
+        this.inSurgeryWorklist = filterValue;
+      } else {
+        this.inSurgeryWorklist = this.inSurgeryWorklistClone;
+      }
+
     }
 
   }
@@ -877,6 +923,8 @@ export class InPatientDashboardComponent implements OnInit {
   getCheckInFinancialFilterData: any;
   getCheckInWardFilterData: any;
   getCheckInSpecialtyFilterData: any;
+  getPerformanceUnitFilterData: any;
+  getFinancialCateFilterData: any;
   initialfilterData(ward?, type?, specialtyData?, getConfigToolPhysicianList?) {
     this.searchString = '';
     let admittedFrom = '';
@@ -958,7 +1006,36 @@ export class InPatientDashboardComponent implements OnInit {
     } else if (this.navTabBoxActiveValue == '09') {
       this.hospitalistService.getSurgeryWorkListSetAPI()
         .subscribe((data: any) => {
+          this.inSurgeryWorklistClone = [...data?.d?.results];
           this.inSurgeryWorklist = data?.d?.results;
+
+          const pushIfValid = (acc: string[], val: any) => {
+            const value = val?.toString().trim();
+            if (value && !acc.includes(value)) {
+              acc.push(value);
+            }
+            return acc;
+          };
+
+          this.getCheckInWardFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Anpoe), []
+          );
+
+          this.attendingPhysicianList = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+          );
+
+          this.getCheckInSpecialtyFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Anfoe), []
+          );
+
+          this.getPerformanceUnitFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Planoe), []
+          );
+
+          this.getFinancialCateFilterData = this.inArrivalslistList.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
+          );
         })
     } else {
       this.hospitalistService.getIpListSetAPI(this.navTabBoxActiveValue, admittedFrom, admittedTo, wardNo, physician, speciality, type)

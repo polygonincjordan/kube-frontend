@@ -461,6 +461,9 @@ export class AdmitProcessComponent implements OnInit {
     } else if (tabName == 'vitalSign') {
       this.calltab('vitalSign');
       // this._admissionservice.tabPanelNavigation('vitalSign');
+    } else if (tabName == 'DietMealOrdering') {
+      this.calltab('DietMealOrdering');
+      // this._admissionservice.tabPanelNavigation('vitalSign');
     }
     this.onSearchChange('');
     this.ProgressNotesList = this.ProgressNotesListFilterValue;

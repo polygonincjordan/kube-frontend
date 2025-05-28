@@ -397,7 +397,7 @@ export class EducationFormComponent implements OnInit, OnChanges {
       (result) => {
         console.log(this.soapFormEvent, "this.soapFormEvent");
         
-        if(this.soapFormEvent == 'saveClose') { 
+        if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
           this.reloadTableList.next(true);
           this.admissionService.cancelAllForm();
           this.admissionService.clearSoapEvent.next(true);
