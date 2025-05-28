@@ -851,31 +851,19 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
         );
 
-      } else if(this.isSurgeryWork) {
-        
-        this.getCheckInWardFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.Anpoe), []
-        );
+      }else if(this.LDRView){
+        this.getCheckInStatusFilterData = [];
+        this.attendingPhysicianList = [];
+        this.getCheckInRoomidTextFilterData = [];
+        this.getCheckInSpecialtyFilterData = [];
+        this.getCheckInFinancialFilterData  =[];
 
-        this.attendingPhysicianList = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
-        );
-
-        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.Anfoe), []
-        );
-
-        this.getPerformanceUnitFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.Planoe), []
-        );
-
-        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
-        );
-
-      } else if(this.LDRView){
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []
+          (acc: string[], cur) => pushIfValid(acc, cur?.Besstattext), []
+        );
+
+         this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Behpersname), []
         );
 
         this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
