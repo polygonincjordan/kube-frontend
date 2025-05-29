@@ -222,7 +222,7 @@
         <th scope="col">Case#</th>
         <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
         <th scope="col">Room <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">Specialty <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
+        <th scope="col">Specialty <i  class="my-icon fa fa-chevron-up"></i></th>
         <!-- <th scope="col">Ward <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th> -->
         <th scope="col">Attending Doctor</th>
         <th scope="col">Financial Category <i (click)="onSortClick($event,'ZzfinCat')"  class="my-icon fa fa-chevron-up"></i></th>
@@ -242,13 +242,13 @@
          <td>{{item.Falnr}}</td>
         <td style="min-width: 280px;display: flex;justify-content: space-between;align-items: baseline;"><span (click)="openModuleAdmissionProcessFromLDR(item)">{{ item.Patient }}</span><i class="fa fa-copy text-secondary" title="Copy Name" style="cursor: pointer;" (click)="copyToClipboard(item?.Patname)"></i></td>
         <td  style="white-space:nowrap">{{ item.BehraumKb }}</td>
-        <td title="Obstetrics">Obstetrics</td>
+        <td style="white-space:nowrap" title="Obstetrics & Gynecology">Obstetrics & Gynecology</td>
         <!-- <td>{{ item.RoomidName }}</td> -->
         <td>{{ item.Behpersname }}</td>
         <td>{{ item.ZzfinCat }}</td>
         <!-- <td class="table-row-width allergy">{{ item.Anfdiagnose }}</td> -->
-        <td>{{ item.RiskInformation }}</td>
-        <td class="table-row-width allergy">{{ item.Allergies }}</td>
+        <td [title]="item?.RiskInformation">{{ item.RiskInformation }}</td>
+        <td class="table-row-width allergy" [title]="item?.Allergies">{{ item.Allergies }}</td>
         <td class="table-row-width allergy">{{ item.IsolationInd }}</td>
         <td style="text-align: center; overflow: visible !important; min-width: 80px !important;display: flex;
         gap: 10px; ">
