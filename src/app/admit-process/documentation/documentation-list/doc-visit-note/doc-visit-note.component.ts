@@ -15,6 +15,7 @@ import { SearchModalConfigurationService } from '../../../../services/e-kardex/s
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
+import { SharedService } from '@services/shared.service';
 
 @UntilDestroy()
 @Component({
@@ -109,6 +110,7 @@ export class DocVisitNoteComponent implements OnInit {
     public modalDiagnosisService: BsModalService,
     private _admissionService: AdmissionService,
     private route: ActivatedRoute,
+    private sharedService: SharedService,
     private storageService: StorageService,
     private userConfigurationService:UserConfigurationService
   ) {
@@ -317,11 +319,13 @@ export class DocVisitNoteComponent implements OnInit {
 
       this._admissionService.saveVisitNoteDoc(this.patientVisitFormData).subscribe(
         (result: any) => {
-            if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {   
-              this._admissionService.clearSoapEvent.next(true);
+            if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
               this.reloadTableList.next(true);
               this._admissionService.cancelAllForm();
             }
+            this._admissionService.isCloneVisitForm = false;
+            this._admissionService.isEditVisitForm = false;
+            this._admissionService.clearSoapEvent.next(true);
               Swal.fire({
                 title: message,
                 confirmButtonColor: '#0890c5',
@@ -336,6 +340,10 @@ export class DocVisitNoteComponent implements OnInit {
         (err) => {
           this._admissionService.clearSoapEvent.next(true);
           this._admissionService.isSaveEducationData.next(false);
+          this._admissionService.isCloneVisitForm = false;
+          this._admissionService.isEditVisitForm = false;
+          const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+          this.sharedService.waringSwallModel(`${errorMsg}`);
         }
       );
      

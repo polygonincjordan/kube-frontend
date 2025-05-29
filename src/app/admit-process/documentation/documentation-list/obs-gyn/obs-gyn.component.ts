@@ -9,6 +9,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-obs-gyn',
@@ -50,7 +51,9 @@ export class ObsGynComponent implements OnInit,OnChanges {
   modalRefForComment: BsModalRef;
   longComment='';
   formName: any;
-  constructor(private storageService: StorageService,private route: ActivatedRoute,private formBuilder: FormBuilder,public admissionService: AdmissionService,private datePipe: DatePipe,private modalService: BsModalService,) { 
+  constructor(private storageService: StorageService,private route: ActivatedRoute,private formBuilder: FormBuilder,public admissionService: AdmissionService,private datePipe: DatePipe,private modalService: BsModalService,
+    private sharedService: SharedService
+  ) { 
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -480,9 +483,17 @@ export class ObsGynComponent implements OnInit,OnChanges {
       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
       }
+      this.admissionService.clearSoapEvent.next(true);
+      this.admissionService.isEditObsGynDoc = false; 
+      this.admissionService.isCloneObsGynDoc = false;
+    }, (err) => {
+      this.admissionService.isEditObsGynDoc = false; 
+      this.admissionService.isCloneObsGynDoc = false;
+      this.admissionService.clearSoapEvent.next(true);
+      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+      this.sharedService.waringSwallModel(`${errorMsg}`);
     })
   
   }
@@ -508,9 +519,17 @@ export class ObsGynComponent implements OnInit,OnChanges {
       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
       }
+      this.admissionService.clearSoapEvent.next(true);
+      this.admissionService.isEditObsGynDoc = false; 
+      this.admissionService.isCloneObsGynDoc = false;
+    }, (err) => {
+      this.admissionService.isEditObsGynDoc = false; 
+      this.admissionService.isCloneObsGynDoc = false;
+      this.admissionService.clearSoapEvent.next(true);
+      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+      this.sharedService.waringSwallModel(`${errorMsg}`);
     })
   }
 

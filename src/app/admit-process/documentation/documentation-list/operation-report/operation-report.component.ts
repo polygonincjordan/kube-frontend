@@ -17,6 +17,7 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 import { SurgeryTeamData } from '@services/e-kardex/interfaces/inpatient-data';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
+import { SharedService } from '@services/shared.service';
 import { Subscription, catchError, of } from 'rxjs';
 import { ConfigPopup } from 'src/app/core/config-popup/config-popup.component';
 
@@ -58,6 +59,7 @@ export class OperationReportComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private userConfigurationService: UserConfigurationService,
+    private sharedService: SharedService,
     private inPatientConfigurationService: InPatientConfigurationService
   ) {
     this.route.queryParams.subscribe((params) => {
@@ -285,9 +287,18 @@ export class OperationReportComponent implements OnInit, OnChanges {
          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.reloadTableList.next(true);
             this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
           }
-      });
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneOperationReport = false;
+          this.admissionService.isEditOperationReport = false;
+        }, (error) => {
+            this.admissionService.isCloneOperationReport = false; 
+            this.admissionService.isEditOperationReport = false;
+            this.admissionService.clearSoapEvent.next(true);
+            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+            this.sharedService.waringSwallModel(`${errorMsg}`);
+        }
+    );
   }
 
   formatePayloadDateTime() {
