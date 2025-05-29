@@ -346,10 +346,14 @@
     
             <div class="form-group">
                 <label class="col-md-2 p-0">LMP</label>
-                <input class="col-md-1 p-0" type="text"   formControlName="Lmp" />
+                <!-- <input class="col-md-1 p-0" type="text"   formControlName="Lmp" /> -->
+                <input formControlName="Lmp" class="form-control" style="color: #000; border-radius: 8px"#dp="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
                 <div class="col-md-1 p-0"></div>
                 <label>EDD</label>
-                <input class="col-md-1 p-0" type="text"   formControlName="Edd" />
+                <!-- <input class="col-md-1 p-0" type="text"   formControlName="Edd" /> -->
+                <input formControlName="Edd" class="form-control" style="color: #000; border-radius: 8px"#dp="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
             </div>
     
             <h3>Investigations Review</h3>

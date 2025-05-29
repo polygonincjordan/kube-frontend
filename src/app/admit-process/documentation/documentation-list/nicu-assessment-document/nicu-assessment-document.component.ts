@@ -116,7 +116,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     {value : '1',label:'Yes'},
     {value : '2',label:'UnKnown'}
   ]
-  public motherAgeOptions = Array.from({ length: 51 }, (_, i) => ({ label: (0 + i).toString(), value: 0 + i }));
+  public motherAgeOptions = Array.from({ length: 51 }, (_, i) => ({ label: (0 + i).toString(), value: (0 + i).toString() }));
 
   
   docKey: any;
@@ -124,6 +124,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   isChecked: any;
   genderString: any;
   isFemale: boolean;
+  throwingError: boolean = false;
   constructor(private _route: ActivatedRoute,public storageService: StorageService,private formBuilder: FormBuilder,public admissionService:AdmissionService,private sharedService: SharedService) { }
 
   ngOnInit(): void {
@@ -224,10 +225,13 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       if (changes.soapFormEvent.currentValue == 'release') {
         this.createDoc('2','edit')
       }
+      console.log(changes.soapFormEvent.currentValue, this.admissionService.isEditNicuForm, this.admissionService.isCloneNicuForm , "this.admissionService.isCloneNicuForm");
+      
       if (
         this.admissionService.isCloneNicuForm ||
         this.admissionService.isEditNicuForm
       ) {
+        if(this.admissionService.isCloneNicuForm) this.throwingError = true;
         this.getDocument();
       }
   }
@@ -263,13 +267,13 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       Unavailable: [data?.Unavailable || false],
       TypeDelivery: [data?.TypeDelivery || ''],
       TypeDeliveryT: [{ value: data?.TypeDeliveryT || '', disabled: true }],
-      Conception: [''],
+      Conception: [data?.Conception || ''],
       ConceptionT: [{ value: data?.ConceptionT || '', disabled: true }],
-      TransferPlace: [''],
+      TransferPlace: [data?.TransferPlace || ''],
       TransferPlaceT: [{ value: data?.TransferPlaceT || '', disabled: true }],
       AttendingPhy: [data?.AttendingPhy || ''],
-      ObgyPhy: [data?.new || ''],
-      MotherAge: [data?.ObgyPhy || ''],
+      ObgyPhy: [data?.ObgyPhy || ''],
+      MotherAge: [data?.MotherAge || ''],
       MotherBg: [data?.MotherBg || ''],
       FatherBg: [data?.FatherBg || ''],
       AntiD: [data?.AntiD || ''],
@@ -278,8 +282,8 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       Para: [data?.Para || ''],
       Abortion: [data?.Abortion || ''],
       NoBabies: [data?.NoBabies || ''],
-      Lmp: [data?.Lmp || null],
-      Edd: [data?.Edd || null],
+      Lmp: [this.getDate(data?.Lmp) || null],
+      Edd: [this.getDate(data?.Edd) || null],
       Stds: [data?.Stds || false],
       StdYn: [{ value: data?.StdYn || '', disabled: true }],
       StdT: [{ value: data?.StdT || '', disabled: true }],
@@ -953,7 +957,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
 
 
   public createDoc(status?:any,actionType?:any){
-    if(this.admissionService.isCloneNicuForm){
+    if(this.throwingError){
       status = '3',
       actionType='copy'
     }
@@ -962,7 +966,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     //   return;
     // }
     return new Promise((resolve, reject) => {
-      let formData = this.nicuForm.value;
+      let formData = this.nicuForm.getRawValue();
    const convertDateFormat = (dateString: string): string => {
     const [day, month, year] = dateString.split('-').map(Number);
     const date = new Date(year, month - 1, day);
@@ -1052,6 +1056,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       Dockey : actionType === 'edit' ||  actionType === 'copy' ? this.docKey ? this.docKey : '' : '',
       Dtid : 'ZMED_NICAD',
       Einri: this.paramsObject.einri,
+      MotherAge: formData.MotherAge,
       Patnr: this.paramsObject.patnr,
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
@@ -1063,16 +1068,21 @@ export class NicuAssessmentDocumentComponent implements OnInit {
    
       this.subscription = this.admissionService.createNicuSet(payload).subscribe({
         next: (data: any) => {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
-            this.admissionService.clearSoapEvent.next(true);
             this.realodEducationList.next(true);
           }
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneNicuForm = false;
+          this.admissionService.isEditNicuForm = false;
         },
         error: (err: any) => {
-         const errorMsg = err?.error?.message?.value || 'Unknown error';
-         this.sharedService.waringSwallModel(`PUT Error at Nicu: ${errorMsg}`);
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneNicuForm = false;
+          this.admissionService.isEditNicuForm = false;
+          const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+          this.sharedService.waringSwallModel(`PUT Error at Nicu: ${errorMsg}`);
         },
         complete: () => {
           resolve(true);

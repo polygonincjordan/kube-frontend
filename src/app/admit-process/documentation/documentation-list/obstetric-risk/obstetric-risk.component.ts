@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -62,6 +63,7 @@ export class ObstetricRiskComponent implements OnInit {
     private admissionService: AdmissionService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
+    private sharedService: SharedService,
     private storageService: StorageService
   ) {
     this.route.queryParams.subscribe((res) => {
@@ -455,12 +457,18 @@ export class ObstetricRiskComponent implements OnInit {
               if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
                 this.reloadTableList.next(true);
                 this.admissionService.cancelAllForm();
-                this.admissionService.clearSoapEvent.next(true);
               }
+              this.admissionService.clearSoapEvent.next(true);
+              this.admissionService.isEditObstetricRisk = false; 
+              this.admissionService.isCloneObstetricRisk = false;
             }
           },
           (error) => {
+            this.admissionService.isEditObstetricRisk = false; 
+            this.admissionService.isCloneObstetricRisk = false;
             this.admissionService.clearSoapEvent.next(true);
+            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+            this.sharedService.waringSwallModel(`${errorMsg}`);
           }
         );
   }
@@ -470,13 +478,21 @@ export class ObstetricRiskComponent implements OnInit {
     payload.DocStatus = '2';
     this.admissionService.updateObstetricDoc(payload).subscribe(
       (resp) => {
-        this.reloadTableList.next(true);
-        this.admissionService.cancelAllForm();
-        this.admissionService.clearSoapEvent.next(true);
-      },
-      (error) => {
-        this.admissionService.clearSoapEvent.next(true);
-      }
+       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+              this.reloadTableList.next(true);
+              this.admissionService.cancelAllForm();
+            }
+            this.admissionService.clearSoapEvent.next(true);
+            this.admissionService.isEditObstetricRisk = false; 
+            this.admissionService.isCloneObstetricRisk = false;
+          },
+          (error) => {
+            this.admissionService.isEditObstetricRisk = false; 
+            this.admissionService.isCloneObstetricRisk = false;
+            this.admissionService.clearSoapEvent.next(true);
+            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+            this.sharedService.waringSwallModel(`${errorMsg}`);
+          }
     );
   }
 
@@ -499,11 +515,17 @@ export class ObstetricRiskComponent implements OnInit {
             if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
               this.reloadTableList.next(true);
               this.admissionService.cancelAllForm();
-              this.admissionService.clearSoapEvent.next(true);
             }
+            this.admissionService.clearSoapEvent.next(true);
+            this.admissionService.isEditObstetricRisk = false; 
+            this.admissionService.isCloneObstetricRisk = false;
           },
           (error) => {
+            this.admissionService.isEditObstetricRisk = false; 
+            this.admissionService.isCloneObstetricRisk = false;
             this.admissionService.clearSoapEvent.next(true);
+            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+            this.sharedService.waringSwallModel(`${errorMsg}`);
           }
         );
   }

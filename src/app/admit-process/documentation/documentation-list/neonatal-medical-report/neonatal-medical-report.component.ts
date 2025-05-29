@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdmissionService } from '@services/admission/admission.service';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class NeonatalMedicalReportComponent implements OnInit {
   @Output() realodEducationList = new EventEmitter();
   neoNatalForm: FormGroup;
   selectedPatientDetails: any;
-  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe) { }
+  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe, private sharedService: SharedService) { }
 
   ngOnInit() {
     this.initForm();
@@ -172,9 +173,19 @@ export class NeonatalMedicalReportComponent implements OnInit {
       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
+        this.admissionService.isEditNeonatalMR = false;
+        this.admissionService.isCloneNeonatalMR = false;
       }
+      this.admissionService.isEditNeonatalMR = false;
+      this.admissionService.isCloneNeonatalMR = false;
+      this.admissionService.clearSoapEvent.next(true);
+    }, (err) => {
+      this.admissionService.isEditNeonatalMR = false;
+      this.admissionService.isCloneNeonatalMR = false;
+      this.admissionService.clearSoapEvent.next(true);
+      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+      this.sharedService.waringSwallModel(`${errorMsg}`);
     })
   
   }
@@ -206,9 +217,17 @@ export class NeonatalMedicalReportComponent implements OnInit {
       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
       }
+      this.admissionService.isEditNeonatalMR = false;
+      this.admissionService.isCloneNeonatalMR = false;
+      this.admissionService.clearSoapEvent.next(true);
+    }, (err) => {
+      this.admissionService.isEditNeonatalMR = false;
+      this.admissionService.isCloneNeonatalMR = false;
+      this.admissionService.clearSoapEvent.next(true);
+      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+      this.sharedService.waringSwallModel(`${errorMsg}`);
     })
   } 
   async releaseNeoNatalMRDoc(){
