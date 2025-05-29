@@ -36,6 +36,15 @@
       overflow: hidden;
       white-space: nowrap;
     }
+    &:nth-child(12) {
+      max-width: 30px !important;
+      min-width: 30px !important;
+      border: none;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 10%;
+    }
     &:nth-child(10) {
       width: 95px !important;
       max-width: 70px !important;

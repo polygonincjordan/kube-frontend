@@ -32,8 +32,10 @@ import { DocumentingDeliveryComponent } from './documenting-delivery/documenting
 })
 export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
-  @ViewChild('physicianOrderKardexId') physicianOrderKardex: PhysicianOrderKardexComponent;
-  @ViewChild('progressNotesKardexId') progressNotesKardex: ProgressNotesKardexComponent;
+  @ViewChild('physicianOrderKardexId')
+  physicianOrderKardex: PhysicianOrderKardexComponent;
+  @ViewChild('progressNotesKardexId')
+  progressNotesKardex: ProgressNotesKardexComponent;
   @Input() listItem: Array<HospitalistType> = [];
   @Input() listType: string;
   @Input() LDRBirthUnit: any;
@@ -94,33 +96,33 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   statusList = [
     {
       label: 'Planned',
-      value: '20'
+      value: '20',
     },
     {
       label: 'Checked In',
-      value: '30'
+      value: '30',
     },
     {
       label: 'Called',
-      value: '55'
+      value: '55',
     },
     {
       label: 'Nurse Completed',
-      value: '58'
+      value: '58',
     },
     {
       label: 'Physician Start',
-      value: '60'
+      value: '60',
     },
     {
       label: 'Physician End',
-      value: '65'
+      value: '65',
     },
     {
       label: 'Checked Out',
-      value: '70'
+      value: '70',
     },
-  ]
+  ];
   public copyMsg: string | null = null;
   constructor(
     private _dataServices: EEmrService,
@@ -128,7 +130,7 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
     private emergencyService: EmergencyService,
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
-    private modalServiceComp: NgbModal,
+    private modalServiceComp: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -138,7 +140,7 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
       progressTime: [''],
       assignment: [''],
       occupationalGroup: [''],
-      text: ['']
+      text: [''],
     });
 
     this.phyOrderform1 = this.formBuilder.group({
@@ -163,91 +165,76 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
       orderTime: [this.currentTime],
       occupationalGroup: ['NURS'],
       physicianOrder: [''],
-    }
-    );
+    });
   }
 
-    // openDocumentingDeliveryModel(data){
-    //   console.log(data,"data")
-    //   const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
-    //   // modalRef.componentInstance.someInput = data;
-    // }
+  // openDocumentingDeliveryModel(data){
+  //   console.log(data,"data")
+  //   const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
+  //   // modalRef.componentInstance.someInput = data;
+  // }
 
   SortLDRData(col: string): void {
     console.log('col--------', col);
     if (this.sortColumn == col) {
-      if (this.sortOrder == 'asc')
-        this.sortOrder = 'desc';
-      else
-        this.sortOrder = 'asc';
-    }
-    else {
+      if (this.sortOrder == 'asc') this.sortOrder = 'desc';
+      else this.sortOrder = 'asc';
+    } else {
       this.sortColumn = col;
       this.sortOrder = 'asc';
     }
     this.LDRBirthUnit = this.LDRBirthUnit.sort((a, b) => {
-
-      if (a[col] < b[col])
-        return this.sortOrder == 'asc' ? -1 : 1;
-      if (a[col] > b[col])
-        return this.sortOrder == 'asc' ? 1 : -1;
+      if (a[col] < b[col]) return this.sortOrder == 'asc' ? -1 : 1;
+      if (a[col] > b[col]) return this.sortOrder == 'asc' ? 1 : -1;
       return 0;
-    })
+    });
   }
 
-  onSortClick(event,col: string) {
+  onSortClick(event, col: string) {
     let target = event.currentTarget,
       classList = target.classList;
     if (classList.contains('fa-chevron-up') && this.sortable) {
       classList.remove('fa-chevron-up');
       classList.add('fa-chevron-down');
-      this.sortDir=-1;
+      this.sortDir = -1;
     } else if (classList.contains('fa-chevron-down') && this.sortable) {
       classList.add('fa-chevron-up');
       classList.remove('fa-chevron-down');
-      this.sortDir=1;
+      this.sortDir = 1;
     } else {
-            classList.remove('fa-chevron-down');
+      classList.remove('fa-chevron-down');
       classList.remove('fa-chevron-up');
     }
 
-    if(this.listType == '07')
-      this.SortLDRData(col);
-    else  
-      this.SortData(col);
+    if (this.listType == '07') this.SortLDRData(col);
+    else this.SortData(col);
   }
 
   SortData(col: string): void {
     if (this.sortColumn == col) {
-      if (this.sortOrder == 'asc')
-        this.sortOrder = 'desc';
-      else
-        this.sortOrder = 'asc';
-    }
-    else {
+      if (this.sortOrder == 'asc') this.sortOrder = 'desc';
+      else this.sortOrder = 'asc';
+    } else {
       this.sortColumn = col;
       this.sortOrder = 'asc';
     }
     this.listItem = this.listItem.sort((a, b) => {
-      if (a[col] < b[col])
-        return this.sortOrder == 'asc' ? -1 : 1;
-      if (a[col] > b[col])
-        return this.sortOrder == 'asc' ? 1 : -1;
+      if (a[col] < b[col]) return this.sortOrder == 'asc' ? -1 : 1;
+      if (a[col] > b[col]) return this.sortOrder == 'asc' ? 1 : -1;
       return 0;
-    })
+    });
   }
-
 
   redirectToeKardex(data) {
     this.openModuleKardex.emit(data);
   }
-  redirectLDRToeKardex(data){
+  redirectLDRToeKardex(data) {
     const newJson = {
-      Mrn:data.Patnr,
-      Institute:data.Einri,
-      CaseNumber:data.Falnr,
-      Lfdnr:data.Lfdbw
-    }
+      Mrn: data.Patnr,
+      Institute: data.Einri,
+      CaseNumber: data.Falnr,
+      Lfdnr: data.Lfdbw,
+    };
     this.openModuleKardex.emit(newJson);
   }
   getDate(value) {
@@ -281,13 +268,13 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   redirectToeKardexDialysis(data) {
     window.open(
       'e-kardex?patnr=' +
-      data.Patnr +
-      '&falnr=' +
-      data.Falnr
-      +
-      '&einri=' +
-      data.Einri +
-      '&lfdnr=' + data.Lfdnr,
+        data.Patnr +
+        '&falnr=' +
+        data.Falnr +
+        '&einri=' +
+        data.Einri +
+        '&lfdnr=' +
+        data.Lfdnr,
       '_blank'
     );
   }
@@ -328,22 +315,21 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
     );
   }
 
-copyToClipboard(text: string) {
-  if (!text) return;
-
-  navigator.clipboard.writeText(text).then(() => {
-    this.copyMsg = 'Copied to clipboard!';
-    setTimeout(() => {
-      this.copyMsg = null;
-    }, 2000); 
-  }, () => {
-    this.copyMsg = 'Failed to copy!';
-    setTimeout(() => {
-      this.copyMsg = null;
-    }, 2000);
-  });
-}
-
+  copyToClipboard(text: string) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          this.copyMsg = 'Copied to clipboard!';
+          setTimeout(() => (this.copyMsg = null), 2000);
+        })
+        .catch(() => {
+          this.copyMsg = 'Failed to copy!';
+          setTimeout(() => (this.copyMsg = null), 2000);
+        });
+    }
+  }
 
   openModuleEOrder(data) {
     window.open(
@@ -365,18 +351,24 @@ copyToClipboard(text: string) {
     action: any
   ) {
     if (action == 'execute') {
-      const config: ModalOptions = { class: 'modal-dialog-centered execute-delete-modal' };
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered execute-delete-modal',
+      };
       this.modalRef = this.modalService.show(template, config);
     }
     if (action == 'delete') {
-      const config: ModalOptions = { class: 'modal-dialog-centered execute-delete-modal' };
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered execute-delete-modal',
+      };
       this.modalRef = this.modalService.show(template, config);
     }
     if (action == 'create') {
       this.showPhyOrderError = false;
       this.phyOrderform1.controls['physicianNumber'].disable();
       this.phyOrderform1.controls['physicianName'].disable();
-      const config: ModalOptions = { class: 'modal-dialog-centered modal-xl create-modal' };
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered modal-xl create-modal',
+      };
       this.modalRef = this.modalService.show(template, config);
       this.items = this.phyOrderform1.get('items') as FormArray;
       this.items.clear();
@@ -389,16 +381,17 @@ copyToClipboard(text: string) {
       });
     }
 
-
     this.phyOrderData = data;
     this.phyOrderAction = action;
     this.currentTime = new Date().getHours() + ':' + new Date().getMinutes();
     // this.phyOrderform1.controls.orderTime.setValue(this.currentTime);
     this.phyOrderform1.controls.physicianNumber.setValue(this.profileRes.Gpart);
-    this.phyOrderform1.controls.physicianName.setValue(this.profileRes.GpartName);
+    this.phyOrderform1.controls.physicianName.setValue(
+      this.profileRes.GpartName
+    );
     // this.phyOrderform1.controls.orderDate.setValue(new Date());
     this.occupationalGroupList();
-    this.phyOrderTableList(data)
+    this.phyOrderTableList(data);
   }
 
   phyOrderTableList(data) {
@@ -419,11 +412,10 @@ copyToClipboard(text: string) {
       });
   }
 
-  public openModalForProgressEntry(
-    template: TemplateRef<any>,
-    data: any
-  ) {
-    const config: ModalOptions = { class: 'modal-dialog-centered modal-xl progress-modal' };
+  public openModalForProgressEntry(template: TemplateRef<any>, data: any) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl progress-modal',
+    };
     this.modalRef = this.modalService.show(template, config);
     this.ipListData = data;
     this.copyProgressEntry = false;
@@ -457,10 +449,10 @@ copyToClipboard(text: string) {
 
         this.currentTime =
           new Date().getHours() + ':' + new Date().getMinutes();
-        this.addItem()
-        this.addItem()
-        this.addItem()
-        this.addItem()
+        this.addItem();
+        this.addItem();
+        this.addItem();
+        this.addItem();
       },
       (_error: any) => {}
     );
@@ -534,7 +526,7 @@ copyToClipboard(text: string) {
       )
       .subscribe((data: any[]) => {
         this.ProgressNotesList = data;
-        console.log(this.ProgressNotesList, 'this.ProgressNotesList')
+        console.log(this.ProgressNotesList, 'this.ProgressNotesList');
       });
   }
 
@@ -593,90 +585,92 @@ copyToClipboard(text: string) {
     this.copyProgressEntry = true;
     this.copyProgressEntryData = event;
     this.progressEntryForm.patchValue({
-      text: event.Text
+      text: event.Text,
     });
   }
 
   physicianOrderSet(phyOrderData, action) {
     let json;
 
-      json = {
-        PorderId: phyOrderData.PorderId,
-        CancelIndicator: true,
-        ActionExecute: '',
-        CancelReason: this.cancelReasonValue,
-      };
-      if (this.cancelReasonValue == '') {
-        this.errmsg = 'Select a Reason for Deletion';
-      } else {
-        this.modalRef.hide();
-        this._dataServices.physicianOrderSet(json).subscribe(
-          (_success: any) => {
-            Swal.fire({
-              title: 'Physician Order has been Deleted',
-              icon: 'success',
-              confirmButtonText: 'OK',
-              //preConfirm: () => {},
-            });
-          },
-          (_error: any) => {
-            Swal.fire({
-              title: 'Something went wrong',
-              icon: 'error',
-              confirmButtonText: 'OK',
-              //preConfirm: () => {},
-            });
-          }
-        );
-      }
-
+    json = {
+      PorderId: phyOrderData.PorderId,
+      CancelIndicator: true,
+      ActionExecute: '',
+      CancelReason: this.cancelReasonValue,
+    };
+    if (this.cancelReasonValue == '') {
+      this.errmsg = 'Select a Reason for Deletion';
+    } else {
+      this.modalRef.hide();
+      this._dataServices.physicianOrderSet(json).subscribe(
+        (_success: any) => {
+          Swal.fire({
+            title: 'Physician Order has been Deleted',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            //preConfirm: () => {},
+          });
+        },
+        (_error: any) => {
+          Swal.fire({
+            title: 'Something went wrong',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            //preConfirm: () => {},
+          });
+        }
+      );
+    }
   }
 
-  selectedDetails : any;
-  openDocumentingDeliveryModel(data){
-    console.log(data,"data")
+  selectedDetails: any;
+  openDocumentingDeliveryModel(data) {
+    console.log(data, 'data');
     this.selectedDetails = data;
-     const config: ModalOptions = {
+    const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl pdfmodal-size',
     };
     // this.selectedIconPdf = this.modalService.show(this.deliveryModal, config);
     this.deliveryModal.openModalForDelivery('', data);
-   this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
       if (reason === 'backdrop-click') {
         this.closeRiskModal();
       }
     });
   }
 
-  reload(event: any) {
-
-  }
+  reload(event: any) {}
 
   createPhysicianOrder() {
-    if (this.items.controls[0].value.physicianOrder == '' && this.items.controls[1].value.physicianOrder == '' && this.items.controls[2].value.physicianOrder == '' && this.items.controls[3].value.physicianOrder == '') {
+    if (
+      this.items.controls[0].value.physicianOrder == '' &&
+      this.items.controls[1].value.physicianOrder == '' &&
+      this.items.controls[2].value.physicianOrder == '' &&
+      this.items.controls[3].value.physicianOrder == ''
+    ) {
       this.showPhyOrderError = true;
-    }
-    else {
-      console.log(this.phyOrderData, "phyOrderData");
-      this.items.controls.forEach(element => {
+    } else {
+      console.log(this.phyOrderData, 'phyOrderData');
+      this.items.controls.forEach((element) => {
         if (element.value.physicianOrder != '') {
           var createTime = 'PT11H29M30S';
           if (element.value.orderTime.value) {
-            createTime = this.phyOrderControls.orderTime.value.split(':')
-            createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+            createTime = this.phyOrderControls.orderTime.value.split(':');
+            createTime =
+              'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
           }
           let json = {};
 
           if (this.phyOrderData.Einri) {
             json = {
-              "InstitutionId": this.phyOrderData.Einri,
-              "CaseId": this.phyOrderData.Falnr,
-              "CreationDate": element.value.orderDate.toISOString().split('.')[0],
-              "CreationTime": createTime,
-              "ZphysOrder": element.value.physicianOrder,
-              "EmployeeResp": this.phyOrderControls.physicianNumber.value,
-              "ProfessionalGroup": element.value.occupationalGroup,
-            }
+              InstitutionId: this.phyOrderData.Einri,
+              CaseId: this.phyOrderData.Falnr,
+              CreationDate: element.value.orderDate.toISOString().split('.')[0],
+              CreationTime: createTime,
+              ZphysOrder: element.value.physicianOrder,
+              EmployeeResp: this.phyOrderControls.physicianNumber.value,
+              ProfessionalGroup: element.value.occupationalGroup,
+            };
           }
 
           this._dataServices.createPhysicianOrder(json).subscribe(
@@ -685,12 +679,11 @@ copyToClipboard(text: string) {
               this.phyOrderform1.reset();
               // this.refreshModules();
             },
-            (_error: any) => { }
+            (_error: any) => {}
           );
         }
-      })
+      });
     }
-
   }
 
   get phyOrderControls() {
@@ -698,16 +691,16 @@ copyToClipboard(text: string) {
   }
   actionPhysicianSet(data) {
     const json = {
-      Einri:data.Einri,
-      Falnr:data.Falnr,
-      Lfdnr:data.Lfdbw,
-      Pernr:this.storageService.getGpart()
-    }
+      Einri: data.Einri,
+      Falnr: data.Falnr,
+      Lfdnr: data.Lfdbw,
+      Pernr: this.storageService.getGpart(),
+    };
     this.emergencyService.actionPhysicianSet(json).subscribe(
       (_success: any) => {
         this.onClickBox.emit();
-      // this.ERlistData = _success.d.results;
-      //this.redirectToTreatment(data);
+        // this.ERlistData = _success.d.results;
+        //this.redirectToTreatment(data);
       },
       (_error: any) => {}
     );
@@ -755,77 +748,76 @@ copyToClipboard(text: string) {
     );
   }
   // phy order
-openModalForPhysicianOrder(item) {
-  this.physicianOrderKardex.openModalForPhyOrder(item);
+  openModalForPhysicianOrder(item) {
+    this.physicianOrderKardex.openModalForPhyOrder(item);
   }
-    // progress notes
-    openModalForProgressNotes(item) {
-      this.progressNotesKardex.openProgressNotesModal(item);
-    }
-    // 
-    openModuleAdmissionProcessFromLDR(data) {
-      const newJson = {
-        Mrn:data.Patnr,
-        Institute:data.Einri,
-        CaseNumber:data.Falnr,
-        Lfdnr:data.Lfdbw,
-        Deptou:'OBYMDAMC'
-      }
-      this.openModuleAdmissionProcessEvent.emit(newJson);
-      localStorage.removeItem('tabName');
-    }
+  // progress notes
+  openModalForProgressNotes(item) {
+    this.progressNotesKardex.openProgressNotesModal(item);
+  }
+  //
+  openModuleAdmissionProcessFromLDR(data) {
+    const newJson = {
+      Mrn: data.Patnr,
+      Institute: data.Einri,
+      CaseNumber: data.Falnr,
+      Lfdnr: data.Lfdbw,
+      Deptou: 'OBYMDAMC',
+    };
+    this.openModuleAdmissionProcessEvent.emit(newJson);
+    localStorage.removeItem('tabName');
+  }
 
+  admissionStatusModel: any;
+  modalRefForRisk: BsModalRef;
+  public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
+    this.admissionStatusModel = data;
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl',
+      initialState: {
+        admissionStatusModel: this.admissionStatusModel, // Pass data into the modal
+      },
+    };
+    this.modalRefForRisk = this.modalService.show(template, config);
+    this.changeStatusForm = this.formBuilder.group({
+      Einri: [this.admissionStatusModel?.Einri],
+      Falnr: [this.admissionStatusModel?.Falnr],
+      Lfdnr: [this.admissionStatusModel?.Lfdbw],
+      AdmStatusCode: [''],
+      Bwidt: [new Date()],
+      Bwizt: [''],
+      Kztxt: [''],
+      Bwart: [''],
+      Pernr: [this.admissionStatusModel?.Behpersname],
+    });
 
-    admissionStatusModel: any;
-      modalRefForRisk: BsModalRef;
-      public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
-        this.admissionStatusModel = data;
-        const config: ModalOptions = {
-          class: 'modal-dialog-centered modal-xl',
-          initialState: {
-            admissionStatusModel: this.admissionStatusModel, // Pass data into the modal
-          },
-        };
-        this.modalRefForRisk = this.modalService.show(template, config);
-        this.changeStatusForm = this.formBuilder.group({
-          Einri: [this.admissionStatusModel?.Einri],
-          Falnr: [this.admissionStatusModel?.Falnr],
-          Lfdnr: [this.admissionStatusModel?.Lfdbw],
-          AdmStatusCode: [''],
-          Bwidt: [new Date()],
-          Bwizt: [''],
-          Kztxt: [''],
-          Bwart: [''],
-          Pernr: [this.admissionStatusModel?.Behpersname],
-        });
-    
-        this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
-          if (reason === 'backdrop-click') {
-            this.closeRiskModal();
-            this.admissionStatusModel = [];
-          }
-        });
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+        this.admissionStatusModel = [];
       }
-    
-      closeRiskModal() {
-        this.modalRefForRisk.hide();
-      }
-    
-      getStatusValue() {
-        let currentStatus = this.admissionStatusModel?.Besstattext;
-        if (currentStatus === 'Planned Arrival') {
-          return 'Actual Arrival';
-        } else if (currentStatus === 'Actual Arrival') {
-          return 'Planned Discharge';
-        } else if (currentStatus === 'Planned Discharge') {
-          return 'Actual Discharge';
-        } else {
-          return '';
-        }
-      }
-    
-      changeStatus(event: any) {
-          const json = {
+    });
+  }
+
+  closeRiskModal() {
+    this.modalRefForRisk.hide();
+  }
+
+  getStatusValue() {
+    let currentStatus = this.admissionStatusModel?.Besstattext;
+    if (currentStatus === 'Planned Arrival') {
+      return 'Actual Arrival';
+    } else if (currentStatus === 'Actual Arrival') {
+      return 'Planned Discharge';
+    } else if (currentStatus === 'Planned Discharge') {
+      return 'Actual Discharge';
+    } else {
+      return '';
+    }
+  }
+
+  changeStatus(event: any) {
+    const json = {
             "Einri": event.Einri,
             "Falnr": event.Falnr,
             "Patnr": event.Patnr,
@@ -833,36 +825,35 @@ openModalForPhysicianOrder(item) {
             "VisitStat": this.changeStatusForm.value.AdmStatusCode,
             "Sdate": new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0') + 'T00:00:00',
             "Stime": 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S'
-          };
-          this._dataServices.changeStatus(json).subscribe({
-            next: (_success: any) => {
-                Swal.fire({
-                  text: 'Change Status Successfully',
-                  icon: 'success',
-                  confirmButtonText: 'Ok',
-                  customClass: 'myalertpopup',
-                });
-              
-              this.modalRefForRisk?.hide();
-                this.onClickBox.emit();
-            },
-            error: (err: any) => {
-              Swal.fire({
-                text: `Error :${err.error.error.message.value}`,
-                icon: 'error',
-                confirmButtonText: 'Ok',
-                customClass: 'myalertpopup',
-              });
-            }
-          });
-      
-        }
-    
-      sanitizeSAPDateFormat(date: any) {
-        if (typeof date === 'string') {
-          return date;
-        } else {
-          return `\/Date(${date.getTime()})\/`;
-        }
-      }
+    };
+    this._dataServices.changeStatus(json).subscribe({
+      next: (_success: any) => {
+        Swal.fire({
+          text: 'Change Status Successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
+
+        this.modalRefForRisk?.hide();
+        this.onClickBox.emit();
+      },
+      error: (err: any) => {
+        Swal.fire({
+          text: `Error :${err.error.error.message.value}`,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
+      },
+    });
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
+  }
 }
