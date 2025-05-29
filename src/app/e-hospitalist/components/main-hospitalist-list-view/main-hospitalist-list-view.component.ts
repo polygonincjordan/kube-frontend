@@ -315,21 +315,35 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
     );
   }
 
-  copyToClipboard(text: string) {
-    if (!text) return;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          this.copyMsg = 'Copied to clipboard!';
-          setTimeout(() => (this.copyMsg = null), 2000);
-        })
-        .catch(() => {
-          this.copyMsg = 'Failed to copy!';
-          setTimeout(() => (this.copyMsg = null), 2000);
-        });
+copyToClipboard(text: string) {
+  if (!text) return;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        this.copyMsg = 'Copied to clipboard!';
+        setTimeout(() => (this.copyMsg = null), 2000);
+      })
+      .catch(() => {
+        this.copyMsg = 'Failed to copy!';
+        setTimeout(() => (this.copyMsg = null), 2000);
+      });
+  } else {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      const successful = document.execCommand('copy');
+      this.copyMsg = successful ? 'Copied to clipboard!' : 'Failed to copy!';
+    } catch (err) {
+      this.copyMsg = 'Copy not supported!';
     }
+    document.body.removeChild(textarea);
+    setTimeout(() => (this.copyMsg = null), 2000);
   }
+}
+
 
   openModuleEOrder(data) {
     window.open(
