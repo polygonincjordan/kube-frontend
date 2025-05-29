@@ -22,6 +22,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import Swal from 'sweetalert2';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { Subscription } from 'rxjs';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-physician-form',
@@ -108,6 +109,7 @@ export class PhysicianFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private admissionService: AdmissionService,
     private datePipe: DatePipe,
+    private sharedService: SharedService,
     public ePrescriptionService: EPrescriptionService,
   ) {}
 
@@ -1112,10 +1114,18 @@ export class PhysicianFormComponent implements OnInit {
           if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
-            this.admissionService.clearSoapEvent.next(true);
             this.realodEducationList.next(true);
           }
-      });
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isClonePhysicianForm = false;
+          this.admissionService.isEditPhysicianForm = false;
+          }, (error) => {
+            this.admissionService.isClonePhysicianForm = false;
+            this.admissionService.isEditPhysicianForm = false;
+            this.admissionService.clearSoapEvent.next(true);
+            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+            this.sharedService.waringSwallModel(`${errorMsg}`);
+          });
   }
   toPhyExamItems() {
     return this.physicianForm.value.TOPHYEXAM.results.filter(
@@ -1422,10 +1432,17 @@ export class PhysicianFormComponent implements OnInit {
          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
-            this.admissionService.clearSoapEvent.next(true);
             this.realodEducationList.next(true);
           }
- 
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isClonePhysicianForm = false;
+          this.admissionService.isEditPhysicianForm = false;
+      }, (error) => {
+          this.admissionService.isClonePhysicianForm = false;
+          this.admissionService.isEditPhysicianForm = false;
+          this.admissionService.clearSoapEvent.next(true);
+          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+          this.sharedService.waringSwallModel(`${errorMsg}`);
       });
   }
   async releasePhysicianDoc() {

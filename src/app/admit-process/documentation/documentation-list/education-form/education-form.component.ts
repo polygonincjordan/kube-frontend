@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AdmissionService } from '@services/admission/admission.service';
 import { PatientService } from '@services/e-kardex/patient.service';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { catchError, of } from 'rxjs';
@@ -140,6 +141,7 @@ export class EducationFormComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private patientService: PatientService,
     private datePipe: DatePipe,
+    private sharedService: SharedService,
     private storageService: StorageService
   ) {
     this.route.queryParams.subscribe((params) => {
@@ -400,11 +402,17 @@ export class EducationFormComponent implements OnInit, OnChanges {
         if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
           this.reloadTableList.next(true);
           this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
         }
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isEditEducationAsset = false;
+        this.admissionService.isCloneEducationAsset = false;
       },
       (err) => {
         this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isEditEducationAsset = false;
+        this.admissionService.isCloneEducationAsset = false;
+        const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
         this.admissionService.isSaveEducationData.next(false);
       }
     );

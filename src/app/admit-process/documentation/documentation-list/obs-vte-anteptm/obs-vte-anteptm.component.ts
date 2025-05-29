@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output, SimpleChanges, Input } from '@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class ObsVTEAnteptmComponent implements OnInit {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private storageService: StorageService,
+    private sharedService: SharedService,
     private admissionService: AdmissionService
   ) {
     this.route.queryParams.subscribe((res) => {
@@ -139,11 +141,18 @@ export class ObsVTEAnteptmComponent implements OnInit {
           if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.reloadTableList.next(true);
             this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
           }
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneObsVteAnt = false; 
+          this.admissionService.isEditObsVteAnt = false;
         }
       },
       (error) => {
+        this.admissionService.isCloneObsVteAnt = false; 
+        this.admissionService.isEditObsVteAnt = false;
+        this.admissionService.clearSoapEvent.next(true);
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
         this.admissionService.clearSoapEvent.next(true);
       }
     );
@@ -188,12 +197,19 @@ export class ObsVTEAnteptmComponent implements OnInit {
          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.reloadTableList.next(true);
             this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
           }
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneObsVteAnt = false; 
+          this.admissionService.isEditObsVteAnt = false;
       },
       (error) => {
+        this.admissionService.isCloneObsVteAnt = false; 
+        this.admissionService.isEditObsVteAnt = false;
         this.admissionService.clearSoapEvent.next(true);
-      }
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
+          this.admissionService.clearSoapEvent.next(true);
+       }
     );
   }
 
@@ -218,16 +234,23 @@ export class ObsVTEAnteptmComponent implements OnInit {
       .updateObsVteAntDoc(this.obsVteAnteptm.value)
       .subscribe(
         (resp) => {
-           if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.reloadTableList.next(true);
-            this.admissionService.cancelAllForm();
+          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+                this.reloadTableList.next(true);
+                this.admissionService.cancelAllForm();
+              }
+              this.admissionService.clearSoapEvent.next(true);
+              this.admissionService.isCloneObsVteAnt = false; 
+              this.admissionService.isEditObsVteAnt = false;
+          },
+          (error) => {
+            this.admissionService.isCloneObsVteAnt = false; 
+            this.admissionService.isEditObsVteAnt = false;
             this.admissionService.clearSoapEvent.next(true);
-          }
-        },
-        (error) => {
-          this.admissionService.clearSoapEvent.next(true);
-        }
-      );
+            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+            this.sharedService.waringSwallModel(`${errorMsg}`);
+              this.admissionService.clearSoapEvent.next(true);
+           }
+        );
   }
 
   totalValue(value, control) {

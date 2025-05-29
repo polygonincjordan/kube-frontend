@@ -5,6 +5,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { AdmissionService } from '@services/admission/admission.service';
 import { PatientVisitService } from '@services/e-kardex/patient-visit.service';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
+import { SharedService } from '@services/shared.service';
 
 @UntilDestroy()
 @Component({
@@ -24,6 +25,7 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     public admissionService: AdmissionService,
     private patientVisitService: PatientVisitService,
+    private sharedService: SharedService,
     private userConfigurationService: UserConfigurationService
   ) {
     this.route.queryParams.subscribe((params) => {
@@ -162,12 +164,20 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     await this.patientVisitService
       .savePatientVisitData(payload)
       .then((res: any) => {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
-            this.admissionService.clearSoapEvent.next(true);
             this.realodEducationList.next(true);
           }
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneSoapDoc = false;
+          this.admissionService.isEditSoapDoc = false;
+      }, (error) => {
+          this.admissionService.isCloneSoapDoc = false;
+          this.admissionService.isEditSoapDoc = false;
+          this.admissionService.clearSoapEvent.next(true);
+          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+          this.sharedService.waringSwallModel(`${errorMsg}`);
       });
   }
 
@@ -177,14 +187,20 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     await this.patientVisitService
       .updatePatientVisitData(this.soapDocForm.value)
       .then((res: any) => {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.soapFormEvent = '';
+        if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
             this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
+            this.admissionService.selectedCurrentDocDetails = '';
             this.realodEducationList.next(true);
           }
-
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneSoapDoc = false;
+          this.admissionService.isEditSoapDoc = false;
+      }, (error) => {
+          this.admissionService.isCloneSoapDoc = false;
+          this.admissionService.isEditSoapDoc = false;
+          this.admissionService.clearSoapEvent.next(true);
+          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+          this.sharedService.waringSwallModel(`${errorMsg}`);
       });
   }
 

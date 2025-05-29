@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdmissionService } from '@services/admission/admission.service';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
   @Output() realodEducationList = new EventEmitter();
   neoNatalForm: FormGroup;
   selectedPatientDetails: any;
-  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe) { }
+  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe, private sharedService: SharedService) { }
 
   ngOnInit() {
     this.initForm();
@@ -150,11 +151,18 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
       }
-    })
-  
+      this.admissionService.isEditNeonatal = false;
+      this.admissionService.isCloneNeonatal = false;
+      this.admissionService.clearSoapEvent.next(true);
+    }, (err) => {
+      this.admissionService.isEditNeonatal = false;
+      this.admissionService.isCloneNeonatal = false;
+      this.admissionService.clearSoapEvent.next(true);
+      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+      this.sharedService.waringSwallModel(`${errorMsg}`);
+    });
   }
   async updateNeoNatalDoc(){
     let updateJson = this.neoNatalForm.value;
@@ -167,13 +175,21 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
     createtime = updateJson.Timee.split(':');
     updateJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     await this.admissionService.updateNeoNatalDoc(updateJson).subscribe(()=>{
-       if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
       }
-    })
+      this.admissionService.isEditNeonatal = false;
+      this.admissionService.isCloneNeonatal = false;
+      this.admissionService.clearSoapEvent.next(true);
+    }, (err) => {
+      this.admissionService.isEditNeonatal = false;
+      this.admissionService.isCloneNeonatal = false;
+      this.admissionService.clearSoapEvent.next(true);
+      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
+      this.sharedService.waringSwallModel(`${errorMsg}`);
+    });
   } 
   async releaseNeoNatalDoc(){
    

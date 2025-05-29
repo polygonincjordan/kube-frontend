@@ -21,6 +21,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { StorageService } from '@services/storage.service';
 import Swal from 'sweetalert2';
 import { GynDiagnosisComponent } from '../obs-gyn/diagnosis/diagnosis.component';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -62,7 +63,9 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     private inPatientConfigurationService: InPatientConfigurationService,
     private modalService: BsModalService,
     public storageService: StorageService,
-    public ePrescriptionService: EPrescriptionService
+    public ePrescriptionService: EPrescriptionService,
+    public sharedService: SharedService,
+
   ) {
     this.route.queryParams.subscribe((res) => {
       this.paramsObj = res
@@ -181,10 +184,16 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         if (this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
           this.reloadTableList.next(true);
           this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
         }
-      }, (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isEditDischargeSummery = false;
+        this.admissionService.isCloneDischargeSummery = false;
+      }, (error: any) => {
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneNicuForm = false;
+          this.admissionService.isEditNicuForm = false;
+          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+          this.sharedService.waringSwallModel(`${errorMsg}`);
       });
     // this.updateEvent.emit(true);
   }
