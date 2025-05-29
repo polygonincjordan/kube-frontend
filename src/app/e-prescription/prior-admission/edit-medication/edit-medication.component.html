@@ -181,8 +181,8 @@
             </div>
           </div>
           <div class="d-flex align-items-center
-            position-relative ml-4" [popover]="hourPopover" [popoverContext]="{index: editdata}">
-            <input type="checkbox" class="mr-1 checkbox-panel">
+            position-relative ml-4">
+            <input type="checkbox" class="mr-1 checkbox-panel"   [checked]="editprofileForm.get('Pom')?.value !== '0' && editprofileForm.get('Pom')?.value !== ''" (change)="popCheck($event)" [popover]="hourPopover" [popoverContext]="{index: editdata}">
             <span class="mr-2 admin"></span>
             <label class="m-0">POM</label>
           </div>

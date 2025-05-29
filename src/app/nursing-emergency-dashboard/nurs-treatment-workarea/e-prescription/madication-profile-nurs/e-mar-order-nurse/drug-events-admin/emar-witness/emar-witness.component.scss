@@ -16,3 +16,16 @@
     font-size: 20px;
   }
   
+
+  input:-webkit-autofill,
+input:-internal-autofill-selected {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+
+.password-input {
+  font-family: sans-serif !important; /* Use a font that supports the bullet character */
+  -webkit-text-security: disc !important; /* Safari and Chrome */
+  text-security: disc !important; /* Standard property (not widely supported yet) */
+}
