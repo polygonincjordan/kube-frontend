@@ -280,6 +280,13 @@ export class EditMedicationComponent implements OnInit {
     }
   }
 
+ popCheck(event: Event): void {
+  const isChecked = (event.target as HTMLInputElement).checked;
+  if (!isChecked) {
+    this.editprofileForm.get('Pom')?.setValue('');
+  }
+}
+
   onUpdatedAdditionalInfoprn(event: any) {
     this.editprofileForm.patchValue({ Prncond: event.data })
   }
