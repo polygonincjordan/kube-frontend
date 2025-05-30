@@ -114,7 +114,10 @@
             <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>
             <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ? item.BehArztName:'--'}}</td>
-            <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td>
+            <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> 
+              <img *ngIf="item.DokIcon == 'Green'" (click)="openModalForAttechment(item)" src="assets/img/attachment_blue.png" style="width: 15px; cursor: pointer; height: 25px;" />
+              <span *ngIf="item.DokIcon == 'Red' || !item.DokIcon" (click)="openModalForAttechment(item)">N/A</span>
+            </td>            
             <!-- <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td> -->
             <td class="border-left text-center">
               <span>
@@ -321,6 +324,7 @@
 </ng-template>
 
 <app-nur-er-allergy #nurErAllergy (reloadCheckin)="reload($event)"></app-nur-er-allergy>
+<app-admin-attechment #nurErAttechment></app-admin-attechment>
 <app-er-triage #triageModal></app-er-triage>
 <ng-template #selectIconPdf>
   <div class="modal-body">

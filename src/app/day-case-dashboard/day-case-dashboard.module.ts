@@ -123,6 +123,7 @@ import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-card
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
+import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 
 const route: Routes = [
   {
@@ -241,6 +242,7 @@ const route: Routes = [
     VitalSignModule,
     HistoryAssessmentModule,
     CprDocumentModule,
+    AdminAttechmentModule,
     PreCardiacCathModule
   ],
 })

@@ -31,6 +31,7 @@ import { EEmrService } from '@services/e-emr.service';
 import { WardList } from '@services/e-hospitalist/interfaces/hospitalist';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentingDeliveryComponent } from './documenting-delivery/documenting-delivery.component';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -47,6 +48,7 @@ export class CheckInComponent implements OnInit {
     { value: '4', label: 'Level V Non Urgency', TriagePriorityCode: '05', TriageColor: 'white', isActive: false }
   ];
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @ViewChild('erBed') erBed: ErBedComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
@@ -944,6 +946,14 @@ export class CheckInComponent implements OnInit {
 
   getSelectedDates(dates, getConfigToolWardList?, getConfigToolSpecialtyList?) {
     this.getHospitalList(getConfigToolWardList, getConfigToolSpecialtyList, dates);
+  }
+
+  openModalForAttechment(data) {
+    data.Pnamec = data.Patname;
+    data.Patnr = data.Mrn;
+    data.Falnr = data.CaseNumber;
+    data.Bwidt = data.AdmissionDate;
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   commanSorting(keyName: string) {
@@ -1845,11 +1855,11 @@ export class CheckInComponent implements OnInit {
   getShapeClass(status: string): string {
     switch (status) {
       case 'Green':
-        return 'square';
+        return 'Green';
       case 'Red':
-        return 'circle';
+        return 'Red';
       case 'Yellow':
-        return 'triangle';
+        return 'Yellow';
       default:
         return '';
     }

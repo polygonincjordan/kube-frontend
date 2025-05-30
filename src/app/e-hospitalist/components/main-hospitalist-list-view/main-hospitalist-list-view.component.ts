@@ -23,6 +23,7 @@ import { PhysicianOrderKardexComponent } from './physician-order-kardex/physicia
 import { ProgressNotesKardexComponent } from './progress-notes-kardex/progress-notes-kardex.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentingDeliveryComponent } from './documenting-delivery/documenting-delivery.component';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +33,8 @@ import { DocumentingDeliveryComponent } from './documenting-delivery/documenting
 })
 export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   @ViewChild('scroll', { read: ElementRef }) public scroll: ElementRef<any>;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
+
   @ViewChild('physicianOrderKardexId')
   physicianOrderKardex: PhysicianOrderKardexComponent;
   @ViewChild('progressNotesKardexId')
@@ -264,7 +267,37 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
       return `${hours}:${minute}`;
     }
   }
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
 
+  openModalForAttechment(data) {
+    data.Pnamec = data.Patname;
+    data.Patnr = data.Mrn;
+    data.Falnr = data.CaseNumber;
+    data.Bwidt = data.AdmissionDate;
+    this.nurErAttechment.openModalForAttechment(data);
+  }
+
+  getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
+  }
   redirectToeKardexDialysis(data) {
     window.open(
       'e-kardex?patnr=' +

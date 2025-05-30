@@ -29,6 +29,7 @@ import { ProgressNotePopupComponent } from './progress-note-popup/progress-note-
 import { SessionStorageService } from '@services/session-storage.service';
 import { SharedService } from '@services/shared.service';
 import { EEmrService } from '@services/e-emr.service';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 @UntilDestroy()
 @Component({
   selector: 'app-check-in',
@@ -37,6 +38,7 @@ import { EEmrService } from '@services/e-emr.service';
 })
 export class CheckInComponent implements OnInit {
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
   @ViewChild('erBed') erBed: ErBedComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
@@ -846,6 +848,36 @@ export class CheckInComponent implements OnInit {
       },
       (_error: any) => { }
     );
+  }
+
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
+
+  openModalForAttechment(data) {
+    data.Pnamec = data.PatnrName;
+    data.Bwidt = data.Bwidt;
+    this.nurErAttechment.openModalForAttechment(data);
+  }
+
+  getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
   }
 
   getErList(date?: any) {

@@ -3274,6 +3274,8 @@ async deletePreCardiacCathDoc(docKey: string) {
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        console.log(this.pdfUrl, "---");
+        
         // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         //   'data:application/pdf;base64,' + data.d.AttachmentData
         // );

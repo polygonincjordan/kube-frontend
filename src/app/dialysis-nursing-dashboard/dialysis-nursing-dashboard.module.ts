@@ -138,6 +138,7 @@ import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.mo
 import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-plan-document/nursing-care-plan-document.module';
 import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
+import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 
 
 const route: Routes = [
@@ -291,7 +292,8 @@ const route: Routes = [
     HistoryAssessmentModule,
     CprDocumentModule,
     NursingCarePlanDocumentModule,
-    PreCardiacCathModule
+    PreCardiacCathModule,
+    AdminAttechmentModule
   ],
 })
 export class DialysisNursingDashboardModule {}
