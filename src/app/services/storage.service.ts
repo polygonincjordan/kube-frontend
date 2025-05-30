@@ -15,6 +15,7 @@ export class StorageService {
   gpartKey = 'gpart';
   kubeRuleKey = 'kubeRule';
   loggedInUserProfile = 'loggedInUserProfile';
+  orgUnitKey = 'initOrg';
   patientData: any;
   checkinPatientData: any;
   lastPassedDate: any;
@@ -33,6 +34,10 @@ export class StorageService {
 
   getKubeRule() {
     return this.getLocal(this.kubeRuleKey);
+  }
+
+  getOrgunit() {
+    return this.getLocal(this.orgUnitKey);
   }
 
   getClient() {

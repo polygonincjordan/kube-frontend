@@ -1,7 +1,8 @@
 <div class="edash-rightSide" style="background-color: white;border-radius: 0px 10px 10px 0px;">
   <div class="edash-mainContent" style="display: flex;">
     <div class="container-fluid">
-      <div class="row position-relative" style="font-weight: bold; padding: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: auto;">
+      <div class="row position-relative"
+        style="font-weight: bold; padding: 4px; flex-wrap: nowrap; white-space: nowrap; overflow: auto;">
         <div class="col-sm-1.5 tab-default"
           [ngClass]="this.emergencyService.patientProfile?'tab-change' : 'tab-default'"
           (click)="tabChange('patientProfile')" style="cursor: pointer;">
@@ -15,7 +16,7 @@
           Services
         </div>
         <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.ePrescription?'tab-change' : 'tab-default'"
-          style="cursor: pointer;" (click)="tabChange('ePrescription')" >
+          style="cursor: pointer;" (click)="tabChange('ePrescription')">
           <img src="assets/img/CPOE.svg" class="tab-img" *ngIf="!this.emergencyService.ePrescription">
           <img src="assets/img/white-CPOE.svg" class="tab-img" *ngIf="this.emergencyService.ePrescription">
           e-Prescription
@@ -73,40 +74,50 @@
           Consumables
         </div>
         <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.vitalSign?'tab-change' : 'tab-default'"
-        style="cursor: pointer;" (click)="tabChange('vitalSign')">
-        <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
-        <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
-        Vital Signs
-      </div>
-      <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOCharts ? 'tab-change' : 'tab-default'" style="cursor: pointer" (click)="tabChange('IOCharts')">
+          style="cursor: pointer;" (click)="tabChange('vitalSign')">
+          <img src="assets/img/OrdersSet.svg" class="tab-img" *ngIf="!this.emergencyService.vitalSign">
+          <img src="assets/img/white-OrdersSet.svg" class="tab-img" *ngIf="this.emergencyService.vitalSign">
+          Vital Signs
+        </div>
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOCharts ? 'tab-change' : 'tab-default'" style="cursor: pointer" (click)="tabChange('IOCharts')">
         <img src="assets/img/black-iochart.svg" class="tab-img" *ngIf="!this.emergencyService.IOCharts" />
         <img src="assets/img/iochart.svg" class="tab-img" *ngIf="this.emergencyService.IOCharts" />
           I & O Chart
       </div> -->
-      <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOChartsPlus ? 'tab-change' : 'tab-default'"
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.IOChartsPlus ? 'tab-change' : 'tab-default'"
         style="cursor: pointer" (click)="tabChange('IOChartsPlus')">
         <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.IOChartsPlus" />
         <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.IOChartsPlus"/>
           I & O Chart Plus
       </div> -->
-      <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrdering ? 'tab-change' : 'tab-default'"
-      style="cursor: pointer" (click)="tabChange('DietMealOrdering')">
-      <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrdering" />
-      <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrdering"/>
-        Diet Meal Ordering
-    </div>
-    <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrderingPlus ? 'tab-change' : 'tab-default'"
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrdering ? 'tab-change' : 'tab-default'"
+          style="cursor: pointer" (click)="tabChange('DietMealOrdering')">
+          <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrdering" />
+          <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrdering" />
+          Diet Meal Ordering
+        </div>
+        <!-- <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.DietMealOrderingPlus ? 'tab-change' : 'tab-default'"
       style="cursor: pointer" (click)="tabChange('DietMealOrderingPlus')">
       <img src="assets/img/diet-meal.svg" class="tab-img" *ngIf="!this.emergencyService.DietMealOrderingPlus" />
       <img src="assets/img/diet-meal-active.svg" class="tab-img" *ngIf="this.emergencyService.DietMealOrderingPlus"/>
         Diet Meal Ordering Plus
     </div> -->
-    <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.HistoryAssessment ? 'tab-change' : 'tab-default'"
-      style="cursor: pointer" (click)="tabChange('HistoryAssessment')">
-      <img src="assets/img/history_assessment.jfif" class="tab-img" *ngIf="!this.emergencyService.HistoryAssessment" />
-      <img src="assets/img/history_assessment.jfif" class="tab-img" *ngIf="this.emergencyService.HistoryAssessment"/>
-        History Assessment
-    </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.HistoryAssessment ? 'tab-change' : 'tab-default'"
+          style="cursor: pointer" (click)="tabChange('HistoryAssessment')">
+          <img src="assets/img/history_assessment.jfif" class="tab-img"
+            *ngIf="!this.emergencyService.HistoryAssessment" />
+          <img src="assets/img/history_assessment.jfif" class="tab-img"
+            *ngIf="this.emergencyService.HistoryAssessment" />
+          History Assessment
+        </div>
+        <div class="col-sm-1.5 ml-2" [ngClass]="this.emergencyService.BMDI ? 'tab-change' : 'tab-default'"
+          style="cursor: pointer" (click)="tabChange('BMDI')">
+          <img src="assets/img/monitor_white.png" class="tab-img"
+            *ngIf="!this.emergencyService.BMDI" />
+          <img src="assets/img/monitor_blue.png" class="tab-img"
+            *ngIf="this.emergencyService.BMDI" />
+          BMDI
+        </div>
         <span style="margin-left: auto;">
           <!-- <img src="assets/img/hidepatient.png" style="height: 30px;position: sticky;
           z-index: 999;cursor: pointer;" (click)="showhidePatients()" *ngIf="!showPatients">
@@ -900,13 +911,14 @@
           [physicianOrderList]="physicianOrderList"></app-orders-templates>
       </div>
       <ng-container *ngIf="this.emergencyService.ProgressNotes">
-        <app-physician-orders (onSetDateFilterEventForProgressNotes)="progressNotesFilterList($event)" (onSetDateFilterEvent)="progressNotesFilterList($event)"
-          [occupationalGroupData]="occupationalGroupData" (onSearchChangEvent)="onSearchChange($event)" (deletedProgressNote)="deletedProgressNote($event)"
+        <app-physician-orders (onSetDateFilterEventForProgressNotes)="progressNotesFilterList($event)"
+          (onSetDateFilterEvent)="progressNotesFilterList($event)" [occupationalGroupData]="occupationalGroupData"
+          (onSearchChangEvent)="onSearchChange($event)" (deletedProgressNote)="deletedProgressNote($event)"
           (onSearchChangEventForProgressNotes)="onSearchChange($event)"></app-physician-orders>
       </ng-container>
       <div class="order-templete-main mt-3" *ngIf="this.emergencyService.ProgressNotes">
-        <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList" (dataToParents)="dataGetEvent($event)"
-          [occupationalGroupData]="occupationalGroupData"></app-progress-notes>
+        <app-progress-notes [searchString]="searchString" [ProgressNotesList]="ProgressNotesList"
+          (dataToParents)="dataGetEvent($event)" [occupationalGroupData]="occupationalGroupData"></app-progress-notes>
       </div>
       <ng-container *ngIf="this.emergencyService.Diagnosis">
         <app-diagnosis (enCounterPatient)="checkPatientCounter($event)"

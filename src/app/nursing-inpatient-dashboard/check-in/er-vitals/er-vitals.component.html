@@ -28,6 +28,7 @@
           transform: rotate(180deg);" (click)="scrollRight()">
         </div>
         <ul class="list-simple">
+        <li (click)="redirectBMDI()"><img class="img-size-bmdi" src="assets/img/monitor_blue.png">BMDI</li>
         <li (click)="EditVitalList()" [class.disabled]="isEditAndDeleteAble" [attr.disabled]="isEditAndDeleteAble"><img class="img-size" src="assets/img/Examinations.svg">Change Examination</li>
         <li (click)="confirmationForDelete(deleteVitalSignModal)"[class.disabled]="isEditAndDeleteAble" [attr.disabled]="isEditAndDeleteAble"><img class="img-size" src="assets/img/CancelExamination.svg" >Cancel Examination</li>
         <li *ngIf="documentType == 'surgical'" (click)="Import()"><img class="img-size" src="assets/img/texteditor.png" style="margin-right: 5px;">Import</li>
