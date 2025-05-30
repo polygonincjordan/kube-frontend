@@ -53,12 +53,12 @@
                       <!-- {{element.Mesid}} -->
                       <h4 class="m-0 w-100">{{element.Descrlt}}</h4>
                       <p class="m-0 w-100"
-                        title="{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}} {{element.Unit}}{{'- ' + element.Routedescr}}{{'- ' + element.Formatdescr}}{{'- ' + element.N1ztxt}}{{'- ' + element.Userst}}{{element.Prncond ? '-' : '' }}{{element.Prncond}} {{element.Prn === true ? 'PRN ': ''}}{{element.Prncond ? '(' : '' }}{{element.Prncond}}{{element.Prncond ? ')' : '' }}">
+                        title="{{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}} {{element.Unit}}{{'- ' + element.Routedescr}}{{'- ' + element.Formatdescr}}{{'- ' + element.N1ztxt}}{{'- ' + element.Userst}}{{element.Prncond ? '-' : '' }}{{element.Prncond}} {{element.Prn === true ? 'PRN ': ''}}{{element.Prncond ? '(' : '' }}{{element.Prncond}}{{element.Prncond ? ')' : '' }}{{element?.Pom ? ' - ' : '' }}{{element?.Pom ? 'POM' : '' }}">
                         {{element.N1ztxt === 'DEFTIM' ? element.Dosdef : element.Quan}}{{element.Unit}}
                         {{element.Routedescr ? '-' : '' }} {{element.Routedescr}}
                         {{element.Formatdescr ? '-' : '' }}{{element.Formatdescr}}
                         {{element.N1ztxt ? '-' : '' }}{{element.N1ztxt}}
-                        {{element.Prncond ? '-' : '' }}{{element.Prn === true ? 'PRN ': ''}}{{element.Prncond ? '(' : '' }}{{element.Prncond}}{{element.Prncond ? ')' : '' }}</p>
+                        {{element.Prncond ? '-' : '' }}{{element.Prn === true ? 'PRN ': ''}}{{element.Prncond ? '(' : '' }}{{element.Prncond}}{{element.Prncond ? ')' : '' }}{{element?.Pom ? ' - ' : '' }}{{element?.Pom ? 'POM' : '' }}</p>
                     </div>
                   </div>
                   <div class="col-md-5 pl-1">
@@ -113,10 +113,9 @@
       </button>
     </div>
   </div>
-  
+
       <!-- <ng-template #hourPopover let-item>
         {{item | json}}
         <div class="abc"></div>
       </ng-template>  -->
    <app-drug-events-admin [medicationData]="ePrescriptionService.prescriptionList" #drugEvents></app-drug-events-admin>
-  

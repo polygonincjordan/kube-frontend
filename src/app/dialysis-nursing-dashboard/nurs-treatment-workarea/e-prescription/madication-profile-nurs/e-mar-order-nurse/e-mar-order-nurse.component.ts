@@ -51,7 +51,7 @@ export class EMarOrderNurseComponent {
 
 
   constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) { }
- 
+
 
   // filterEventsdata() {
   // if (this.filterConfigdata.Active || this.filterConfigdata.Suspended || this.filterConfigdata.Ended || this.filterConfigdata.Cancelled) {
@@ -105,7 +105,7 @@ export class EMarOrderNurseComponent {
       this.endDate = this.allEventData.reduce(function (a, b) { return a.ParsedDate > b.ParsedDate ? a : b; }).ParsedDate;
       console.log('this.startDate',this.startDate);
       console.log('this.endDate',this.endDate);
-      
+
       this.isMultidate = this.startDate !== this.endDate;
       this.currentDate = this.startDate;
     }
@@ -275,6 +275,13 @@ export class EMarOrderNurseComponent {
     // }
     // else{
     this.drugEvents.openModalForDrugsEvents(item, data)
+    this.drugEvents.onClose.subscribe((res) => {
+      this.ePrescriptionService.tabPanelNavigation('eEmar');
+      this.ePrescriptionService.selectedItems=[{ item_id: 1, item_text: 'Active' }]
+      this.processData(res.medicationData.medicationData, res.medicationData.eventData)
+      this.filterConfig = res.filterData;
+      this.setCurrentDateData();
+    })
     // }
   }
 

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
@@ -30,6 +30,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public FillSource: any[] = [];
   @ViewChild('drugEventMain', { static: true }) drugEventMain: TemplateRef<any>;
   @ViewChild('Witnessid') Witnessid: EmarWitnessComponent;
+  @Output() onClose: EventEmitter<any> = new EventEmitter<any>
   administered: boolean = true;
   qadministered: boolean = false;
   notadministered: boolean = false;
@@ -456,6 +457,10 @@ export class DrugEventsAdminComponent implements OnInit {
           icon: 'success'
         }).then(() => {
           this.modalRef.hide()
+          this.onClose.emit({
+            filterData: this.ePrescriptionService.checkedFilterData,
+            medicationData: this.ePrescriptionService.prescriptionList
+          });
         })
       },
       error: (error: any) => {

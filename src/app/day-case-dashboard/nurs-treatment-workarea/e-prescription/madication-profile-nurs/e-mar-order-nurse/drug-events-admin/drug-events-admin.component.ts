@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
@@ -46,6 +46,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public isEndedDisabled: boolean;
   emarActive: boolean = false;
   public RequestStatus: any;
+  @Output() onClose: EventEmitter<any> = new EventEmitter<any>
   @Input() set medicationData(data: PrescriptionList) {
     console.log(data);
 
@@ -462,6 +463,10 @@ export class DrugEventsAdminComponent implements OnInit {
           icon: 'success'
         }).then(() => {
           this.modalRef.hide()
+          this.onClose.emit({
+            filterData: this.ePrescriptionService.checkedFilterData,
+            medicationData: this.ePrescriptionService.prescriptionList
+          });
         })
       },
       error: (error: any) => {
