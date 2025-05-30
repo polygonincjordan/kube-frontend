@@ -6,12 +6,15 @@ import { ProgressNotesListModel } from '@services/admission/interfaces/template-
 import { DataShareService } from '@services/data-share.service';
 import { EEmrService } from '@services/e-emr.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { Patient } from '@services/e-kardex/interfaces/patient';
+import { PatientService } from '@services/e-kardex/patient.service';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { CpoeService } from '@services/emergency-dashboard/cpoe.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { eOrderService } from '@services/eorder.service';
 import { SidebarService } from '@services/sidebar.service';
+import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -95,6 +98,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
   EINRI: any;
   FALNR: any;
   LFDBW: any;
+  encounterId: any;
   firstIndex: number;
   actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
@@ -104,6 +108,8 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     private hospitalistService: HospitalistService,
     public eOrderService: eOrderService,
     public addministrationService: AddministrationService,
+    public patientService: PatientService,
+    public storageService:StorageService,
     private route: ActivatedRoute, private el: ElementRef, private modalService: BsModalService) {
     this.phyOrderform = this.formBuilder.group({
       phyOrderitems: new FormArray([]),
@@ -146,7 +152,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       }
     });
     let fullUrl = window.location.href;
-console.log('Full URL:', fullUrl);
+    console.log('Full URL:', fullUrl);
     // this.phyOrderTableList();
     // this.occupationalGroupList();
     this.myTag = this.el.nativeElement.querySelector("div");
@@ -381,6 +387,7 @@ console.log('Full URL:', fullUrl);
       this.addItemForServices(element);
     });
   }
+
   getPatientData() {
     this.emergencyService.getPatientData().subscribe(
       (_success: any) => {
@@ -985,10 +992,10 @@ console.log('Full URL:', fullUrl);
       .subscribe((data: any[]) => {
         this.physicianOrderList = data;
         this.physicianOrderListClone = data;
-        if(formFilter.value.selectStatus) {
-          this.physicianOrderList = this.physicianOrderListClone.filter((res) =>{
-            
-            if(res.StatusText == formFilter.value.selectStatus) {
+        if (formFilter.value.selectStatus) {
+          this.physicianOrderList = this.physicianOrderListClone.filter((res) => {
+
+            if (res.StatusText == formFilter.value.selectStatus) {
               return res;
             }
           })
@@ -1011,7 +1018,7 @@ console.log('Full URL:', fullUrl);
       )
       .subscribe((data: any[]) => {
         this.ProgressNotesListFilterValue = data;
-        const filter = data.filter(item=>!item.Cancelled);
+        const filter = data.filter(item => !item.Cancelled);
         this.ProgressNotesList = filter;
         // this.ProgressNotesList = data;
       });
@@ -1019,7 +1026,7 @@ console.log('Full URL:', fullUrl);
 
   deletedProgressNote(event: any) {
     console.log(event, "Nur Treatment");
-    if(event) {
+    if (event) {
       this.ProgressNotesList = this.ProgressNotesListFilterValue.filter(res => res.Cancelled == event)
     } else {
       this.ProgressNotesList = this.ProgressNotesListFilterValue;
@@ -1055,12 +1062,12 @@ console.log('Full URL:', fullUrl);
       });
     // }
   }
- 
-  dataGetEvent(data){
+
+  dataGetEvent(data) {
     this.unsavedProgressNote = data
   }
 
-  async  calltab(tabName){
+  async calltab(tabName) {
     if (this.unsavedProgressNote) {
       const result = await Swal.fire({
         title: 'Confirm',
@@ -1071,10 +1078,10 @@ console.log('Full URL:', fullUrl);
         cancelButtonText: 'No',
         customClass: 'myalertpopup'
       });
-      if (result.isConfirmed) { 
+      if (result.isConfirmed) {
         this.unsavedProgressNote = false;
         this.emergencyService.tabPanelNavigation(tabName);
-      console.log(this.emergencyService.vitalSign, "this.emergencyService.vitalSign");
+        console.log(this.emergencyService.vitalSign, "this.emergencyService.vitalSign");
 
       } else {
         return;
@@ -1083,13 +1090,13 @@ console.log('Full URL:', fullUrl);
       this.unsavedProgressNote = false;
       this.emergencyService.tabPanelNavigation(tabName);
       console.log(this.emergencyService.vitalSign, "this.emergencyService.vitalSign");
-      
+
     }
   }
-  
+
   tabChange(tabName?) {
     console.log("call");
-    
+
     if (tabName == 'ProgressNotes') {
       this.getProgressNotesData();
       this.calltab('ProgressNotes')
@@ -1120,18 +1127,28 @@ console.log('Full URL:', fullUrl);
       this.calltab('Consumables');
     } else if (tabName == 'Services') {
       this.calltab('Services');
-    }  else if(tabName == 'vitalSign'){
+    } else if (tabName == 'vitalSign') {
       this.calltab('VitalSign');
-    } else if(tabName == 'HistoryAssessment'){
+    } else if (tabName == 'HistoryAssessment') {
       this.calltab('HistoryAssessment');
-    }  else if (tabName == 'DietMealOrdering') {
+    } else if (tabName == 'DietMealOrdering') {
       this.calltab('DietMealOrdering');
-    }  else if (tabName == 'DietMealOrderingPlus') {
+    } else if (tabName == 'DietMealOrderingPlus') {
       this.calltab('DietMealOrderingPlus');
-    } 
+    } else if (tabName == 'BMDI') {
+      this.calltab('BMDI');
+      this.redirectBMDI();
+    }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;
+  }
+
+  redirectBMDI() {
+    const orgunit = localStorage.getItem('initOrg') ;
+    console.log("orgunit", orgunit,this.paramsObj);
+    
+    window.open("https://achemr01.ach.jo:5200/sap/bc/webdynpro/sap/n1prec_application_v2?caseid=" + this.caseid + "&fpm_work_protect_mode=APPLICATION_ONLY&institution=1000&movementid=" + this.lfdnr + "&orgunit="+ orgunit +"&patientid=" + this.paramsObj.patientId + "&precconfigid=&prof_grp=NURS&sap-client=300&sap-ep-tstamp=20250530165302149&sap-ep-version=7&sap-language=EN&sap-nwbc-context=03DA333035D633D33336348AF2B372F50DB2720BF5B30A700C0908F2773330343530B3D03330D0B334303274330001632FD700036363101300&sap-wd-tstamp=20250530165302149&unit=F9IIUAMC&sap-accessibility=", '_blank');
   }
 
   refreshPatientData(data) {

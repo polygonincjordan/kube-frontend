@@ -155,3 +155,6 @@ span.pn-input-title{
     opacity: 0.6; /* Reduce opacity to indicate it's disabled */
     cursor: not-allowed;
 }
+.img-size-bmdi{
+    width: 30px !important;
+}
