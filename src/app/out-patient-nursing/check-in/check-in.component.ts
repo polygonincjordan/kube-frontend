@@ -27,6 +27,7 @@ import { FilterType } from '@services/interfaces/common.enum';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { HelperService } from '@services/helper.service';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 
 @Component({
   selector: 'app-check-in',
@@ -40,6 +41,7 @@ export class CheckInComponent implements OnInit, OnDestroy {
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
 
@@ -603,6 +605,36 @@ export class CheckInComponent implements OnInit, OnDestroy {
     this.riskform.reset();
     this.riskFormitems.clear();
     this.riskItemsArr = [];
+  }
+
+  getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
+  }
+
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
+
+  openModalForAttechment(data) {
+    data.Pnamec = data.Patient;
+    data.Bwidt = data.Datum;
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   getRiskList(data) {

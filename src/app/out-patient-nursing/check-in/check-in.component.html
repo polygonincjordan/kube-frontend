@@ -47,6 +47,9 @@
             <th class="w-10" style="padding-left: 33px">
               Attending Doctor <i class="fa fa-sort" aria-hidden="true" (click)="sortPhysician()"></i>
             </th>
+            <th scope="col" style="padding-left: 0px;">
+              Attachment 
+            </th>
             <th class="w-15" style="text-align: center">Actions</th>
           </tr>
         </thead>
@@ -118,6 +121,10 @@
                 {{item.Behpersname}}
               </span>
             </td>
+            <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> 
+              <img *ngIf="item.DokIcon == 'Green'" (click)="openModalForAttechment(item)" src="assets/img/attachment_blue.png" style="width: 15px; cursor: pointer; height: 25px;" />
+              <span *ngIf="item.DokIcon == 'Red' || !item.DokIcon" (click)="openModalForAttechment(item)">N/A</span>
+            </td>
             <td class="border-left border-right p-2"
               [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">
               <div style="display: flex; justify-content: end; line-height: 14px">
@@ -150,6 +157,8 @@
 </div>
 <app-er-bed #erBed (reloadCheckin)="reload($event)"></app-er-bed>
 <app-er-vitals #erVitalsModal></app-er-vitals>
+<app-admin-attechment #nurErAttechment></app-admin-attechment>
+
 <ng-template #labPrintLabel>
   <div>
     <div class="allergy-header">

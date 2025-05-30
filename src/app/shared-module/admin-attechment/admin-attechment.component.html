@@ -1,0 +1,70 @@
+<ng-template #allergyModal>
+    <div class="allergy-header">
+        <div class="allergy-header-title">
+            <span>Attachments for Case</span>
+        </div>
+        <div class="allergy-header-details">
+            <ul class="allergy-header-ul d-flex">
+                <li class="allergy-header-item" style="margin-left: 10%">
+                    Patient Name : <span>{{ selectedERList.Pnamec }}</span>
+                </li>
+                <li class="allergy-header-item">MRN: {{ selectedERList.Patnr }}</li>
+                <li class="allergy-header-item">
+                    Admission date:
+                    {{ getDate(selectedERList.Bwidt) | date : "dd.MM.y" }}
+                </li>
+                <li class="close-icon allergy-header-item">
+                    <img src="assets/img/CloseTab.svg" class="img-size" />
+                </li>
+            </ul>
+        </div>
+    </div>
+    <table class="table table-bordered allergy-table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" style="white-space: nowrap;">Attachment Type</th>
+                <th scope="col">Created by</th>
+                <th scope="col">Created on </th>
+                <th scope="col">Created at</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody style="background: #fbfcff">
+            <tr *ngFor="let item of attechmentList; let i = index">
+                <td>{{ i+1 }}</td>
+                <td>{{ item?.Attachmentdescription }}</td>
+                <td>{{ item.Username }}</td>
+                <td>{{ getDate(item?.Createdon) | date : "dd.MM.y" }}</td>
+                <td>{{ getTime(item?.Createdby) }}</td>
+                <td>
+                    <img src="assets/img/eye-icon.svg" title="View Attached Document" class="cursor-pointer" (click)="openSurgicalAssPdf(item)" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
+
+
+<ng-template #releasepdfmodal>
+    <div class="modal-body">
+        <ngx-extended-pdf-viewer  *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
+            [zoom]="'80'" [sidebarVisible]="true" [showOpenFileButton]="false" [showBookmarkButton]="false">
+        </ngx-extended-pdf-viewer>
+        <!-- <div class="row">
+          <iframe [src]="pdfUrl" width="2000" height="600"> </iframe>
+        </div> -->
+        <!-- <div class="row justify-content-center" *ngIf="pdfUrlType == 'image'">
+            <img [src]="releaseDocumentImage" style="height: 70vh;" />
+        </div> -->
+        <div class="w-100" *ngIf="pdfUrlType == 'htm'">
+            <div [innerHTML]="htmlData"></div>
+        </div>
+        <div class="mt-2" style="text-align: center">
+            <button class="btn btn-primary" (click)="modalRefForPDF.hide()"
+                style="background-color: #0082c8; border: #0082c8">
+                Close
+            </button>
+        </div>
+    </div>
+</ng-template>

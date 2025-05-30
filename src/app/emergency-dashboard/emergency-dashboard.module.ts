@@ -126,6 +126,7 @@ import { HistoryAssessmentComponent } from './treatment-workarea/history-assessm
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { FeeListService } from '@services/fee-service/fee-list.service';
+import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 
 
 
@@ -222,6 +223,7 @@ export const emergencyDashboard: Routes = [
     NgMultiSelectDropDownModule.forRoot(),
     NgxExtendedPdfViewerModule,
     CorrespondenceDocumentModule,
+    AdminAttechmentModule,
     VitalSignModule
   ]
 })

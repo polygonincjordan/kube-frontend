@@ -29,6 +29,7 @@ import { NursTreatmentWorkareaComponent } from './nurs-treatment-workarea/nurs-t
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
+import { AdminAttechmentComponent } from '../shared-module/admin-attechment/admin-attechment.component';
 
 @UntilDestroy()
 @Component({
@@ -48,6 +49,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
   @ViewChild(SurgeryWorklistTabComponent) surgeryWorklistTabComponent;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
   
   getCheckInData: any;
   getCheckInStatusFilterData: any;
@@ -351,6 +353,10 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     if (this.AdministeredDoses) {
       return;
     }
+  }
+
+  openModalForAttechment(data) {
+    this.nurErAttechment.openModalForAttechment(data);
   }
   LDRListSet(fromdate?, todate?, physician?) {
     let fromdatevalue = '';

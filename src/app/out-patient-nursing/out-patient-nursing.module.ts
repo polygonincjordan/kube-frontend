@@ -84,6 +84,7 @@ import { CorrespondenceDocumentModule } from '../shared-module/correspondence-do
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 import { ReceiveCartComponent } from './e-prescription/receive-cart/receive-cart.component';
+import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 
 const route: Routes = [
   {
@@ -166,7 +167,8 @@ const route: Routes = [
     VitalSignModule,
     CorrespondenceDocumentModule,
     HistoryAssessmentModule,
-    CprDocumentModule
+    CprDocumentModule,
+    AdminAttechmentModule
   ],
 
 

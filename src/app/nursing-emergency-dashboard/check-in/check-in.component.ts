@@ -24,6 +24,7 @@ import { Subscription, forkJoin} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -40,7 +41,7 @@ export class CheckInComponent implements OnInit {
     { value: '4', label: 'Level V Non Urgency', TriagePriorityCode: '05', TriageColor: 'white', isActive: false }
   ];
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
-
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
   @ViewChild('erBed') erBed: ErBedComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
@@ -754,6 +755,36 @@ export class CheckInComponent implements OnInit {
     } else {
       this.ERlistData = this.ERlistDataClone;
       this.sendErPatientCount.emit(this.ERlistData.length);
+    }
+  }
+
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
+
+  openModalForAttechment(data) {
+    data.Pnamec = data.Patname;
+    data.Bwidt = data.Datum;
+    this.nurErAttechment.openModalForAttechment(data);
+  }
+
+  getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
     }
   }
 

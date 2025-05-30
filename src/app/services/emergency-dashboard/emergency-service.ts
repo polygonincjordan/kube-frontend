@@ -1958,4 +1958,16 @@ export class EmergencyService {
     //   });
     // });
   }
+
+  adminAttechmentList(Falnr) {
+    return this.http.get(this.url + `adminAttechmentList?Falnr=${Falnr}`, {
+      withCredentials: true,
+    });
+  }
+
+  openAttechmentDoc(data: any) {
+    return this.http.get(this.url + `openAttechmentData?attechment=${data?.Attachment}&type=${data?.Documenttype}`, {
+      withCredentials: true,
+    });
+  }
 }

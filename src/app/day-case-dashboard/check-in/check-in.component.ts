@@ -25,6 +25,7 @@ import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { SharedService } from '@services/shared.service';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 // import { dashboard } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -45,6 +46,7 @@ export class CheckInComponent implements OnInit {
   @ViewChild('erBed') erBed: ErBedComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('nurErAllergy') nurErAllergy: NurErAllergyComponent;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
   @ViewChild('triageModal') triageModal: ErTriageComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
@@ -1384,6 +1386,10 @@ export class CheckInComponent implements OnInit {
 
   openModalForAllergy(template, data) {
     this.nurErAllergy.openModalForAllergy(template, data);
+  }
+
+  openModalForAttechment(data) {
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   openModalForTriage(template, data) {

@@ -68,9 +68,9 @@
             <th scope="col" style="padding-left: 0px;">
               LOS <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('AdmissionDays')"></i>
             </th>
-            <!-- <th scope="col" style="padding-left: 0px;">
+            <th scope="col" style="padding-left: 0px;">
               Attachment 
-            </th> -->
+            </th>
             <!-- <th scope="col" style="padding-left: 0px">
               Fin.Clearance Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZzfinClear')"></i>
             </th> -->
@@ -140,7 +140,10 @@
               item.AttendingDoctorName ? item.AttendingDoctorName:'--'}}</td>
             <td style="padding-left: 0px" [title]="item.AdmissionDays" class="border-top-none">{{ item.AdmissionDays ?
               item.AdmissionDays:'--'}}</td>
-            <!-- <td style="padding-left: 0px" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> <span [ngClass]="getShapeClass(item.DokIcon)" class="shape"></span></td> -->
+            <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> 
+              <img *ngIf="item.DokIcon == 'Green'" (click)="openModalForAttechment(item)" src="assets/img/attachment_blue.png" style="width: 15px; cursor: pointer; height: 25px;" />
+              <span *ngIf="item.DokIcon == 'Red' || !item.DokIcon" (click)="openModalForAttechment(item)">N/A</span>
+            </td>
             <!-- <td style="padding-left: 0px" [title]="item.IsolationType" class="border-top-none">{{ item.IsolationType ? item.IsolationType:'--' }}</td> -->
             <!-- <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td> -->
             <td colspan="1"
@@ -454,6 +457,7 @@
     </div>
   </div>
 </ng-template>
+<app-admin-attechment #nurErAttechment></app-admin-attechment>
 
 <!-- change Status -->
 <ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">

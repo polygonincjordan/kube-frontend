@@ -1,0 +1,55 @@
+.allergy-table input {
+    width: 100%;
+    border: none;
+    background: #fbfcff;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.allergy-table ::ng-deep.ng-select {
+    .ng-select-container {
+        background: none !important;
+        border: 0;
+    }
+
+    .ng-clear-wrapper {
+        border: 1px solid;
+        border-radius: 20px;
+        background-color: #c6c8ca;
+        color: white;
+        text-align: center;
+        display: none;
+    }
+}
+
+.allergy-table {
+    thead {
+        background-color: #e4edf5;
+        color: black;
+    }
+}
+
+.allergy-header-title {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.allergy-header-details {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex: 1;
+}
+
+.img-size {
+    width: 35px;
+    float: right;
+}
+
+.close-icon {
+    border: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}

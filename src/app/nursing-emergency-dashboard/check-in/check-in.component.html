@@ -53,6 +53,9 @@
             <th scope="col" style="padding-left: 0px">
               Waiting Time <i class="fa fa-sort" aria-hidden="true" (click)="sortWaitTime()"></i>
             </th>
+            <th scope="col" style="padding-left: 0px;">
+              Attachment 
+            </th>
             <th scope="col" style="text-align: center">Actions</th>
           </tr>
         </thead>
@@ -118,6 +121,10 @@
               <div [ngClass]="item.assignedTime ? 'waiting-time-td':''" title="Waiting Time">
                 {{ item.assignedTime }}
               </div>
+            </td>
+            <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> 
+              <img *ngIf="item.DokIcon == 'Green'" (click)="openModalForAttechment(item)" src="assets/img/attachment_blue.png" style="width: 15px; cursor: pointer; height: 25px;" />
+              <span *ngIf="item.DokIcon == 'Red' || !item.DokIcon" (click)="openModalForAttechment(item)">N/A</span>
             </td>
             <td style="width: 1%" class="border-left border-right"
               [ngClass]="i === 0 ? 'border-top-action' :  lastIndex === i ? 'border-bottom-action' : ''  ">
@@ -290,6 +297,7 @@
     </form>
   </div>
 </ng-template>
+<app-admin-attechment #nurErAttechment></app-admin-attechment>
 
 <ng-template #commonColModal>
   <div class="modal-body p-0">

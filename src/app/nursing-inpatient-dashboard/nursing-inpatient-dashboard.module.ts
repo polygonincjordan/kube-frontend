@@ -181,6 +181,7 @@ import { LaborRoomFlowSheetComponent } from './nurs-treatment-workarea/patient-d
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 import { LdrViewComponent } from './ldr-view/ldr-view.component';
+import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 
 
 
@@ -377,7 +378,8 @@ const route: Routes = [
     RamsaySedationScaleModule,
     ConfusionAssessmentMethodModule,
     IcBundleAdultVentilatorModule,
-    IcuHoursFlowsheetModule
+    IcuHoursFlowsheetModule,
+    AdminAttechmentModule
 ],
 })
 export class NursingInpatientDashboardModule {}

@@ -232,3 +232,34 @@ table {
   width: 100% !important;
   min-width: 50% !important
 }
+
+.dot {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+
+.shape {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.square {
+  background-color: green;
+}
+
+.circle {
+  background-color: red;
+  border-radius: 50%;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid yellow;
+}

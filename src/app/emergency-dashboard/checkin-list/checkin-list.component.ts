@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { ErVitalsComponent } from './er-vitals/er-vitals.component';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { DatePipe } from '@angular/common';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 
 @Component({
   selector: 'app-checkin-list',
@@ -18,6 +19,8 @@ export class CheckinListComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
+
   ERlistData: any = [];
   modalRef: BsModalRef;
   modalRefForAllergy: BsModalRef;
@@ -1067,6 +1070,35 @@ export class CheckinListComponent implements OnInit {
   openModalVital(item) {
     item["admissionDate"] = this.getDate(item.Datum);
     this.erVitalsModal.openModalForErVital(item);
+  }
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
+
+  openModalForAttechment(data) {
+    data.Pnamec = data.Patient;
+    data.Bwidt = data.Datum;
+    this.nurErAttechment.openModalForAttechment(data);
+  }
+
+  getShapeClass(status: string): string {
+    switch (status) {
+      case 'Green':
+        return 'square';
+      case 'Red':
+        return 'circle';
+      case 'Yellow':
+        return 'triangle';
+      default:
+        return '';
+    }
   }
   openCommonModal(template: TemplateRef<any>, column) {
     const config: ModalOptions = { class: 'modal-dialog-centered' };
