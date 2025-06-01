@@ -182,7 +182,7 @@ export class AdmissionService {
     } else if (tabName && tabName === 'discharge') {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = true;
     } else if (tabName && tabName === 'vitalSign') {
-      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false;
+      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false,this.vitalSign = true;
     } else if (tabName && tabName === 'DietMealOrdering') {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false; this.isDietMealOrdering = true;
     }

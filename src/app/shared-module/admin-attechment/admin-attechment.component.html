@@ -14,7 +14,7 @@
                     {{ getDate(selectedERList.Bwidt) | date : "dd.MM.y" }}
                 </li>
                 <li class="close-icon allergy-header-item">
-                    <img src="assets/img/CloseTab.svg" class="img-size" />
+                    <img src="assets/img/CloseTab.svg" class="img-size" (click)="modalRefForAttechment?.hide()"/>
                 </li>
             </ul>
         </div>
