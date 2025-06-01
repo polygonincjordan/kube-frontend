@@ -77,6 +77,7 @@ export class DocumentingDeliveryComponent implements OnInit {
   deliveryForm: FormGroup;
   TOPATDEL: FormArray;
   isFormSubmitted: boolean = false;
+  headerData:any
   constructor(private emergencyService: EmergencyService, private storageService: StorageService,
     public formBuilder: FormBuilder, private modalService: BsModalService) { }
 
@@ -156,7 +157,7 @@ export class DocumentingDeliveryComponent implements OnInit {
   }
 
   public openModalForDelivery(text, data: any) {
-    this.data = data;
+    this.headerData = data;
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl allergy-modal-size',
     };
@@ -179,6 +180,21 @@ export class DocumentingDeliveryComponent implements OnInit {
       while (formArray.length !== 0) {
         formArray.removeAt(0)
       }
+    }
+  }
+
+    getGenderFromPatname(patname: string): string {
+    const match = patname.match(/\((M|F),/);
+    if (!match) return '';
+    return match[1] === 'F' ? 'Female' : 'Male';
+  }
+
+  getDate(value) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
     }
   }
 

@@ -131,8 +131,8 @@ export class EPrescriptionService implements OnDestroy {
     this.loadMAREventData(this.formgroupData.DateRange);
   }
 
-  loadEmarPanelData() {
-    this.selectedItems=[];
+  loadEmarPanelData(selectedItems?) {
+    this.selectedItems=selectedItems;
     this.checkedFilterData ={
       Administered:false,
       Cancelled:false,
@@ -220,7 +220,7 @@ export class EPrescriptionService implements OnDestroy {
     }
   }
 
-  prioradmissiondata(target: any) {
+  prioradmissiondata(target: any,key?:any) {
     const checked = target.item_text
     if (checked === 'Active') {
       this.MedicationdFilterData = { ...this.MedicationdFilterData, Active: checked };
@@ -233,6 +233,8 @@ export class EPrescriptionService implements OnDestroy {
     }
     else if (checked === 'Cancelled') {
       this.MedicationdFilterData = { ...this.MedicationdFilterData, Cancelled: checked };
+    }else if(target === 'Sorting'){
+       this.MedicationdFilterData = { ...this.MedicationdFilterData, Sorting: key };
     }
   }
 

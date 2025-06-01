@@ -1086,7 +1086,10 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       this.calltab('HistoryAssessment');
     }  else if (tabName == 'DietMealOrdering') {
       this.calltab('DietMealOrdering');
-    } 
+    } else if (tabName == 'clinicalOrders'){
+      this.calltab('clinicalOrders')
+      this.eOrderService.onNavigationClick('Clinical')
+    }
     this.onSearchChange('');
     //this.ProgressNotesList = this.ProgressNotesListFilterValue;
     this.physicianOrderList = this.physicianOrderListFilterValue;

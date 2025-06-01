@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -65,11 +65,15 @@ export class DocumentingDeliveryComponent implements OnInit {
     { value: '2', label: 'While transfer to other center' }
   ]
   getProfilePatientProfile:any
-  isFormDisable:boolean = false
-  documentingForm:FormGroup
+  isFormDisable:boolean = false;
+  documentingForm:FormGroup;
+  @Input() someInput:any
+  headerData:any
   constructor(public activeModal: NgbActiveModal,public storageService:StorageService) { }
 
   ngOnInit(): void {
+
+    this.headerData = this.someInput
     this.getProfilePatientProfile = this.storageService.getUserProfile();
     if(this.getProfilePatientProfile?.KubeRule === 'SeniorPhysician'){
      this.isFormDisable = true
@@ -80,6 +84,21 @@ export class DocumentingDeliveryComponent implements OnInit {
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+
+    getGenderFromPatname(patname: string): string {
+    const match = patname.match(/\((M|F),/);
+    if (!match) return '';
+    return match[1] === 'F' ? 'Female' : 'Male';
+  }
+
+  getDate(value) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
+    }
   }
 
 }

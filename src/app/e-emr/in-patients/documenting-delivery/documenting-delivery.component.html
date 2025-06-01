@@ -16,19 +16,19 @@
 </div>
 <div class="patient-info p-3">
   <div class="patient-header">
-    <strong>Farah, Lama Samir Abdul-Rahim,</strong><br />
-    <strong>20.03.1990</strong>
-  </div>
-  <div class="patient-details">
-    <div class="left">
-      <p><strong>Sex</strong> <span>Female</span></p>
-      <p><strong>Case</strong> <span>1353778</span></p>
+      <strong>{{headerData?.PatientName}},</strong><br />
+      <strong>{{getDate(headerData?.PatientDob) | date : 'dd.MM.y'}}</strong>
     </div>
-    <div class="right">
-      <p><strong>Admission Date</strong> <span>11.03.2025</span></p>
-      <p><strong> Discharge Date</strong> <span>11.03.2025</span></p>
+    <div class="patient-details">
+      <div class="left">
+        <p><strong>Sex</strong> <span>{{ getGenderFromPatname(headerData?.Patname) }}</span></p>
+        <p><strong>Case</strong> <span>{{headerData?.CaseNumber}}</span></p>
+      </div>
+      <div class="right">
+        <p><strong>Admission Date</strong> <span>{{getDate(headerData?.AdmissionDate) | date : 'dd.MM.y'}}</span></p>
+        <p><strong> Discharge Date</strong> <span>{{getDate(headerData?.DischargeDate) | date : 'dd.MM.y'}}</span></p>
+      </div>
     </div>
-  </div>
 </div>
 <div class="modal-body p-3 pb-3">
   <!--new design-->

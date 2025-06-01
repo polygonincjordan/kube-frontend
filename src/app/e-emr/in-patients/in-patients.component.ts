@@ -243,7 +243,7 @@ export class InPatientsComponent implements OnInit {
   openDocumentingDeliveryModel(data){
      console.log(data,"data")
      const modalRef  = this.modalServiceComp.open(DocumentingDeliveryComponent, { size: 'xl', backdrop: 'static', centered: true });
-     // modalRef.componentInstance.someInput = data;
+     modalRef.componentInstance.someInput = data;
    }
 
   addItem(): void {

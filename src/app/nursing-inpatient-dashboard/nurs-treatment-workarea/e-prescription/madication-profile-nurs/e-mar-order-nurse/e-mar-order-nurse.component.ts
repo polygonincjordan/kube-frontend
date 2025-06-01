@@ -153,6 +153,44 @@ export class EMarOrderNurseComponent {
     });
     this.filterEvents();
   }
+   asc: boolean;
+    commanSorting(keyName: string) {
+      if (!this.asc) {
+        this.asc = true;
+        console.log(this.configurationData,'1')
+        this.configurationData.sort((a, b) => {
+          const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+          const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+
+          // names must be equal
+          return 0;
+        });
+        console.log(this.configurationData,'2')
+      } else {
+        this.asc = false;
+        console.log(this.configurationData,'1')
+        this.configurationData.sort((a, b) => {
+          const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+          const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return 1;
+          }
+          if (nameA > nameB) {
+            return -1;
+          }
+
+          // names must be equal
+          return 0;
+        });
+          console.log(this.configurationData,'2')
+      }
+    }
 
   nextHours() {
     let hourStart = this.startHour + this.sliderhourslide;
