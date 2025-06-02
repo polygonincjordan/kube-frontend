@@ -181,6 +181,7 @@ export const ePrescriptionRoutes: Routes = [
     WebcamModule,
     ImageCropperModule,
     NgMultiSelectDropDownModule.forRoot(),
+    NgbCollapseModule
   ],
 
 
