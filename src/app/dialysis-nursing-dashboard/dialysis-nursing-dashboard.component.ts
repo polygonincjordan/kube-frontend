@@ -27,6 +27,7 @@ import { PatientWithoutDocumentsComponent } from './patient-without-documents/pa
 import { BedComponent } from './bed/bed.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { AdminAttechmentComponent } from '../shared-module/admin-attechment/admin-attechment.component';
 @UntilDestroy()
 
 @Component({
@@ -44,6 +45,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
   @ViewChild(PatientAssignmentComponent) PatientAssignmentComponent;
   @ViewChild(PatientWithoutConsumableComponent) PatientWithoutConsumableComponent;
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
@@ -601,6 +603,15 @@ export class DialysisNursingDashboardComponent implements OnInit {
     if (this.selectedModule === 'LabResults') {
       this.LabResultsComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }
+  }
+
+  openModalForAttechment(data) {
+     let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+    data.Falnr = data.case;
+    data.Pnamec = data.name;
+    data.Patnr = data.id;
+    data.Bwidt = checkindata.Bwidt
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   refreshCheckIn() {

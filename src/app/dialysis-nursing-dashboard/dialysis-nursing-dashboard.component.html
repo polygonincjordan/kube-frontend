@@ -649,8 +649,18 @@ font-size: 12px;
         </div>
       </div>
     </div>
-    <div class="button-group p-3" style="text-align: -webkit-center;">
-      <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+    <div class="button-group p-3 row m-0" style="text-align: -webkit-center;">
+      <div class="col-md-7" style="text-align: end; display: flex; justify-content: end;">
+        <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+      </div>
+      <div class="col-md-5" style="display: flex; justify-content: end;">
+        <div style="border: 1px solid #cacaca;padding: 6px 20px;width: 65%; display: flex;">
+          <label class="m-0 mr-3">Case Attachemnts</label>
+          <img (click)="openModalForAttechment(patient)" src="assets/img/attechment_blue.png" style="width: 22px; cursor: pointer;" />
+        </div>
+      </div>
     </div>
   </div>
 </ng-template>
+
+<app-admin-attechment #nurErAttechment></app-admin-attechment>

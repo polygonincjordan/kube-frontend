@@ -23,6 +23,7 @@ import { FilterType } from '@services/interfaces/common.enum';
 import { OutpatientNursingService } from '@services/outpatient-nursing.service';
 import { HistoryListComponent } from './reservation/history-list/history-list.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { AdminAttechmentComponent } from '../shared-module/admin-attechment/admin-attechment.component';
 
 @Component({
   selector: 'app-out-patient-nursing',
@@ -36,6 +37,8 @@ export class OutPatientNursingComponent implements OnInit {
   @ViewChild(PhysicianOrdersListComponent) PhysicianOrdersListComponent;
   @ViewChild(AdministeredDosesComponent) AdministeredDosesComponent;
   @ViewChild(HistoryListComponent) historyListComponent;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
+
   userConfiguration: any;
   clinicConfigDetail: any;
   @HostListener('document:click', ['$event'])
@@ -540,6 +543,15 @@ export class OutPatientNursingComponent implements OnInit {
     if (this.selectedModule === 'LabResults') {
       this.LabResultsComponent?.getErList("", this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]));
     }
+  }
+
+  openModalForAttechment(data) {
+    let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+    data.Falnr = data.case;
+    data.Pnamec = data.name;
+    data.Patnr = data.id;
+    data.Bwidt = checkindata.Datum
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   clickShowConfiguration() {

@@ -41,6 +41,7 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 import { LdrViewComponent } from './ldr-view/ldr-view.component';
+import { AdminAttechmentComponent } from '../shared-module/admin-attechment/admin-attechment.component';
 
 @UntilDestroy()
 @Component({
@@ -62,7 +63,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(NursTreatmentWorkareaComponent) nursTreatmentWorkareaComponent;
   @ViewChild(ArrivalMainListComponent) arrivalMainListComponent;
   @ViewChild(SurgeryWorklistTabComponent) surgeryWorklistTabComponent;
-  
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
+
   getCheckInData: any;
   getCheckInStatusFilterData: any; 
   getCaseTypeFilterData: any; 
@@ -1501,6 +1503,15 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.missedMedPatientList = res.d.results;
       });
+  }
+
+  openModalForAttechment(data) {
+    let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+    data.Falnr = data.case;
+    data.Pnamec = data.name;
+    data.Patnr = data.id;
+    data.Bwidt = checkindata.AdmissionDate
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   collectTreatmentPatientData(checkindata) {

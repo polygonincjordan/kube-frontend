@@ -22,6 +22,25 @@ export class ReceiveCartComponent implements OnInit {
   cardSection: boolean;
   selectedColData: any;
   childCartDetails: any;
+  nurseUnitList = [
+    '4THFL-C',
+    '4THFLVIP',
+    '6FL-NURS',
+    '6FL-OROU',
+    'CATTUAMC',
+    'F9GOTAMC',
+    'LDRASMTU',
+    'LDRINTOU',
+    'F21IUAMC',
+    'F31IUAMC',
+    'F3CIUAMC',
+    'F51IUAMC',
+    'F6CIUAMC',
+    'F7IIUAMC',
+    'F9DIUAMC',
+    'F9IIUAMC',
+    'EMEEUAMC'
+  ]
   constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private storageService: StorageService) { }
 
   ngOnInit(): void {
@@ -34,7 +53,7 @@ export class ReceiveCartComponent implements OnInit {
       dateTo: [new Date()],
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
-      nurseUnit: [this.storageService.patientData.deptOrgUnit]
+      nurseUnit: ['EMEEUAMC']
     })
   }
 

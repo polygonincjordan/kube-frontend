@@ -26,6 +26,7 @@ import { ConsumableService } from '@services/consumables/consumable.service';
 import { PatientWithoutDocumentsComponent } from './patient-without-documents/patient-without-documents.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { AdminAttechmentComponent } from '../shared-module/admin-attechment/admin-attechment.component';
 @UntilDestroy()
 @Component({
   selector: 'app-nursing-emergency-dashboard',
@@ -41,6 +42,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   @ViewChild(PatientAssignmentComponent) PatientAssignmentComponent;
   @ViewChild(PatientWithoutConsumableComponent) PatientWithoutConsumableComponent;
   @ViewChild(PatientWithoutDocumentsComponent) PatientWithoutDocumentsComponent;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
@@ -885,7 +887,14 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       this.missedMedPatientList = res.d.results;
     })
   }
-
+  openModalForAttechment(data) {
+     let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+    data.Falnr = data.case;
+    data.Pnamec = data.name;
+    data.Patnr = data.id;
+    data.Bwidt = checkindata.Datum
+    this.nurErAttechment.openModalForAttechment(data);
+  }
   collectTreatmentPatientData(checkindata) {
     this.navigateToTreatmentArea(checkindata);
   }
