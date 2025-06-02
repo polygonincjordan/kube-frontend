@@ -40,18 +40,26 @@
           </span>
         </span>
       </td>
-      <td class="align-middle border-0 w-15 p-1">
+      <td class="align-middle border-0 w-15 p-1" [attr.colspan]="!editprofileForm.value.IsFrequencyDeftim ? '1' : '2'"
+        *ngIf="editprofileForm.value.IsFrequencyDeftim || (editprofileForm.value.N1znr === '0000000100' || editprofileForm.value.N1znr === '0000000003')">
         <span class="d-flex align-items-center p-0
           position-relative pt-2">
           <span class="input-title z-indexlabel">Dosage</span>
-          <span class="input-text-field d-inline-block align-top
-            w-100">
-            <input type="textbox" class="evntdose form-control Medica-font-size" formControlName="Quan" appDigitDecimaNumber
-              [readonly]="editprofileForm.value.Indisdos === 'Apply'" />
+          <span class="input-text-field d-inline-block align-top w-100">
+            <input type="text" class="form-control w-100" formControlName="Dosdef" [ngClass]="editprofileForm.value.touched && editprofileForm.value.get('Dosdef').errors && isFormSubmitted ? 'ep-error-message': ''" />
           </span>
         </span>
       </td>
-      <td class="align-middle border-0 w-15 p-1">
+       <td class="align-middle border-0 w-15 p-1" *ngIf="!editprofileForm.value.IsFrequencyDeftim && !(editprofileForm.value.N1znr === '0000000100' || editprofileForm.value.N1znr === '0000000003')">
+        <span class="d-flex align-items-center p-0
+          position-relative pt-2">
+          <span class="input-title z-indexlabel">Dosage</span>
+          <span class="input-text-field d-inline-block align-top w-100">
+            <input type="textbox" class="form-control w-100" formControlName="Quan" [ngClass]="editprofileForm.touched && editprofileForm.get('Quan').errors && isFormSubmitted ? 'ep-error-message': ''" appDigitDecimaNumber />
+          </span>
+        </span>
+      </td>
+      <td class="align-middle border-0 w-15 p-1" *ngIf="!editprofileForm.value.IsFrequencyDeftim">
         <span class="d-flex align-items-center p-0
           position-relative pt-2">
           <span class="input-title z-indexlabel">Dosage unit</span>
@@ -77,7 +85,7 @@
           <span class="input-text-field d-inline-block align-top
             w-100 edit-select">
             <ng-select [searchable]="true" formControlName="N1znr" class="Medica-font-size editing-grid"
-              (change)="validFromTobaseonDuration(editprofileForm.value);">
+              (change)="validFromTobaseonDuration(editprofileForm.value);" (change)="onChangeFrequencySet(editprofileForm.get('N1znr').value)" (click)="onOpenFrequencySet()">
               <ng-option *ngFor=" let medicationFrequency of
                 addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
                 {{ medicationFrequency.OptionField}}
@@ -188,6 +196,27 @@
           </div>
         </div>
       </td>
+    </tr>
+    <tr>
+    <td colspan="8" class="align-middle border-0 w-15 p-1">
+      <div #collapse="ngbCollapse" [(ngbCollapse)]="IsFrequencyDeftimCheck" class="frequency-collapse">
+        <div class="d-flex m-3">
+          <ng-container *ngIf="editprofileForm.get('IsFrequencyDeftim')?.value">
+          <div>
+              <frequency-deftim [defaultfrequencydeftim]="editprofileForm.value" (frequencyDeftim)="FrequencySetcycle($event,
+                editprofileForm.get('AgentidResult').value)"></frequency-deftim>
+          </div>
+          <div>
+            <div class="d-flex w-62 m-2">
+              <div class="c-pointer">
+                <img src="assets/img/close.svg" (click)="closeCycle()" height="20" class="iconsminds-cursor-click mr-3 ml-2 c-pointer">
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        </div>
+      </div>
+    </td>
     </tr>
   </table>
 

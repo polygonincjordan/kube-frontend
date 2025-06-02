@@ -17,6 +17,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   public editprofileForm: FormGroup;
   public medicationEndReason: any[];
   public isFormSubmitted: boolean = false;
+  public IsFrequencyDeftimCheck: boolean = false
   public defaultAgentId: string;
   constructor(public route: ActivatedRoute, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, public addministrationService: AddministrationService) { }
 
@@ -49,6 +50,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
     StartT: "",
     EndD: "",
     EndT: "",
+    Dosdef: "",
   }
 
   ngOnInit(): void {
@@ -81,11 +83,15 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
       Result_Drug_Name: new FormControl(this.editdata.Result_Drug_Name, Validators.required),
       AgentidResult: new FormControl([]),
       Indisdos: new FormControl(this.editdata.Indisdos),
-      Descrlt: new FormControl(this.editdata.Descrlt)
+      Descrlt: new FormControl(this.editdata.Descrlt),
+      deftimcycleData: new FormControl([]),
+      Dosdef: new FormControl(this.editdata.Dosdef),
+      IsFrequencyDeftim: new FormControl(this.IsFrequencyDeftimCheck),
     })
     if (new Date() > this.editdata.StartD) {
       this.editprofileForm.patchValue({ StartD: new Date() });
     }
+     this.onChangeFrequencySet(this.editdata?.N1znr);
   }
 
   updateAdditionalInfo(event) {
@@ -93,7 +99,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   }
 
   onEditAction() {
-    if (this.editprofileForm.valid) {
+    // if (this.editprofileForm.valid) {
       delete this.editprofileForm.value.AgentidResult;
       delete this.editprofileForm.value.Rcodeid;
       delete this.editprofileForm.value.Pom;
@@ -110,7 +116,10 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
         EndD: this.editprofileForm.value.EndD ? `${formatDate(this.editprofileForm.value.EndD, "YYYY-MM-DD")}T${formatDate(this.editprofileForm.value.EndD, "HH:mm:ss")}` : null,
         Quan: `${this.editprofileForm.value.Quan}`,
         Pdur: `${this.editprofileForm.value.Pdur}`,
+        Dosdef: this.editprofileForm.value.deftimcycleData && this.editprofileForm.value.deftimcycleData.length ? this.editprofileForm.value.Dosdef : "",
       }
+      delete payloadData.deftimcycleData;
+      delete payloadData.IsFrequencyDeftim;
       this.ePrescriptionService.updateData(`e-prescription/EditAdmissionSet?Meordid=${this.editdata.Meordid}`, payloadData).subscribe((resp: any) => {
         swal.fire({
           title: 'Your order has been Edited !',
@@ -124,9 +133,10 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
           for (let i = 0; i < this.addministrationService.IsEditMode.length; i++) {
             this.addministrationService.IsEditMode[i] = false;
           }
+          window.location.reload();
         });
       });
-    }
+    // }
   }
 
   numberOnly(event): boolean {
@@ -262,6 +272,84 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
         if (data.N1znr !== null) { this.onFrequencyFilter(data) }
       }
     }
+  }
+  public onChangeFrequencySet(data?: any) {
+    if (data !== null || data !== "") {
+      this.editprofileForm.get('deftimcycleData').setValue([]);
+      if (this.editprofileForm.get('Result_Drug_Name').value === "" || this.editprofileForm.get('Result_Drug_Name').value === null) {
+        this.showErrorPopup('', 'Please select medicine', "Error").then((result) => {
+          if (result.value) {
+            this.editprofileForm.patchValue({ N1znr: null });
+          }
+        });
+      }
+      const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
+      if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT")) {
+        this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "020" });
+      }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
+        this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
+      } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
+        const defineDoses = this.editprofileForm.value.Dosdef ? this.editprofileForm.value.Dosdef.split(" ") : [];
+        if (defineDoses && defineDoses.length) {
+          let deftimDcycleData = [];
+          defineDoses.forEach((element) => {
+            const quanUnitDescription = element.split("(")[0];
+            const defineTime = element.match(/\(([^)]+)\)/)[1];
+            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.editprofileForm.value.Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
+            this.editprofileForm.get('deftimcycleData').setValue(deftimDcycleData)
+          });
+          deftimDcycleData = [];
+        } else {
+          this.editprofileForm.get('deftimcycleData').setValue([{ deftimDose: this.editprofileForm.value.Quan, deftimDosageUnit: this.editprofileForm.value.Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
+        }
+        const selectedData = [];
+        if (!this.editprofileForm.get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
+          selectedData.push("0(08:00)")
+        }
+        this.editprofileForm.get('deftimcycleData').value.forEach(element => {
+          selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
+        });
+        this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
+      } else {
+        this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false });
+      }
+      this.validFromTobaseonDuration(this.editprofileForm.value);
+    } else {
+      this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, IsmoDetails: false });
+    }
+  }
+  public onOpenFrequencySet() {
+    if (this.editprofileForm.get('deftimcycleData').value && this.editprofileForm.get('deftimcycleData').value.length) {
+      this.editprofileForm.patchValue({ IsFrequencyDeftim: true, IsmoDetails: false });
+      this.checkIsFrequencyDeftim()
+    }
+  }
+  public FrequencySetcycle(event, data: any) {
+    if (event && event.length) {
+      this.editprofileForm.get("deftimcycleData").setValue(event);
+      const selectedData = [];
+      if (!event.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
+        selectedData.push("0(08:00)")
+      }
+      event.forEach(element => {
+        selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
+        this.onChangeDosageUnit(data, element.deftimDosageUnit)
+      });
+      this.editprofileForm.patchValue({
+        Quan: Math.floor(event[0].deftimDose),
+        Quanunit: event[0].deftimDosageUnit,
+      })
+      this.editprofileForm.patchValue({
+        Dosdef: selectedData.join("-")
+      })
+    }
+  }
+  public closeCycle() {
+    this.editprofileForm.patchValue({ IsFrequencyDeftim: false })
+    this.checkIsFrequencyDeftim();
+  }
+  private checkIsFrequencyDeftim(): boolean {
+    return this.editprofileForm.get('IsFrequencyDeftim').value ? this.IsFrequencyDeftimCheck = false : this.IsFrequencyDeftimCheck = true;
   }
 
   onUpdatedAdditionalInfoprn(event: any) {
