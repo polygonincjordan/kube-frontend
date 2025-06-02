@@ -15,7 +15,7 @@ export class EMarOrderNurseComponent {
   startHour: number;
   endHour: number;
   currentHour: number = new Date().getHours();
-
+  asc: boolean;
   sliderhourslide: number = 1;
   isDesableArrow: boolean;
   allMedicationData: MedicationData[] = [];
@@ -153,44 +153,27 @@ export class EMarOrderNurseComponent {
     });
     this.filterEvents();
   }
-   asc: boolean;
-    commanSorting(keyName: string) {
-      if (!this.asc) {
-        this.asc = true;
-        console.log(this.configurationData,'1')
-        this.configurationData.sort((a, b) => {
-          const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
-          const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
 
-          // names must be equal
-          return 0;
-        });
-        console.log(this.configurationData,'2')
-      } else {
-        this.asc = false;
-        console.log(this.configurationData,'1')
-        this.configurationData.sort((a, b) => {
-          const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
-          const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return 1;
-          }
-          if (nameA > nameB) {
-            return -1;
-          }
+commanSorting(keyName: string) {
+  if (!this.configurationData) return;
+  const selectedStatuses = this.ePrescriptionService.selectedItems.map(item => item.item_text);
+  let newData = this.configurationData.filter(element =>
+    selectedStatuses.includes(element.Descr)
+  );
+  newData.sort((a, b) => {
+    const nameA = (a[keyName] || '').toString().toUpperCase();
+    const nameB = (b[keyName] || '').toString().toUpperCase();
 
-          // names must be equal
-          return 0;
-        });
-          console.log(this.configurationData,'2')
-      }
+    if (this.asc) {
+      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    } else {
+      return nameA > nameB ? -1 : nameA < nameB ? 1 : 0;
     }
+  });
+  this.asc = !this.asc;
+  this.configurationData = newData;
+}
+
 
   nextHours() {
     let hourStart = this.startHour + this.sliderhourslide;
