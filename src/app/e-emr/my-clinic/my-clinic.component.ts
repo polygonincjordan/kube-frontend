@@ -9,7 +9,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { Patient } from '@services/e-kardex/interfaces/patient';
+import { PatientService } from '@services/e-kardex/patient.service';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { catchError, of } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-my-clinic',
   templateUrl: './my-clinic.component.html',
@@ -80,7 +85,7 @@ export class MyClinicComponent implements OnInit {
   dateorder = '';
   maxDate = new Date()
   constructor(
-    private _dataServices: EEmrService, private modalService: BsModalService,
+    private _dataServices: EEmrService, private modalService: BsModalService, private patientService: PatientService,
     private storageService: StorageService,private datePipe: DatePipe) { 
 
       
@@ -916,6 +921,35 @@ export class MyClinicComponent implements OnInit {
       },
       (_error: any) => { }
     );
+  }
+
+  encounterId: any
+  patient: Patient = {} as Patient;
+  openPatientInfo(template: TemplateRef<any>,item) {
+    this.encounterId = item.EINRI + item.FALNR + item.LFDBW;
+    this.getDataPatient(template);
+  }
+
+  getDataPatient(template: TemplateRef<any>) {
+    this.patientService
+      .getDataPatient(this.encounterId)
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          // this.isError = true;
+          // this.isLoading = false;
+          return of({} as Patient);
+        })
+      )
+      .subscribe((patientData: Patient) => {
+        // this.isLoading = false;
+        this.patient = patientData;
+        const config: ModalOptions = { class: 'modal-dialog-centered patient-info-modal-size' };
+        this.modalRef = this.modalService.show(template, config);
+        // localStorage.setItem('initOrg', patientData.deptOrgUnit)
+        // this.titleService.setTitle(`${patientData?.name} | ${this._route.snapshot.parent.routeConfig.path}`);
+        // this.storageService.setPatientData(patientData);
+      });
   }
 
   filterDataConf() {

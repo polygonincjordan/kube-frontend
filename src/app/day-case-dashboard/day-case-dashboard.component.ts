@@ -356,6 +356,11 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   }
 
   openModalForAttechment(data) {
+    let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+    data.Falnr = data.case;
+    data.Pnamec = data.name;
+    data.Patnr = data.id;
+    data.Bwidt = checkindata.Bwidt
     this.nurErAttechment.openModalForAttechment(data);
   }
   LDRListSet(fromdate?, todate?, physician?) {

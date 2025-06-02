@@ -112,9 +112,8 @@
               {{ item.PernrName }}
             </td>
             <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> 
-              <img *ngIf="item.DokIcon == 'Green'" (click)="openModalForAttechment(item)" src="assets/img/attachment_blue.png" style="width: 15px; cursor: pointer; height: 25px;" />
-              <span *ngIf="item.DokIcon == 'Red' || !item.DokIcon" (click)="openModalForAttechment(item)">N/A</span>
-            </td>
+              <img (click)="openModalForAttechment(item)" src="assets/img/attechment_blue.png" style="width: 22px; cursor: pointer;" />
+            </td> 
             <td scope="row" style="width: 16%; cursor: pointer" [ngClass]="" [title]="item.Leitx" class="pl-2 w-12">
               {{ item.Leitx }}
             </td>

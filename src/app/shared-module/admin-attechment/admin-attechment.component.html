@@ -19,7 +19,7 @@
             </ul>
         </div>
     </div>
-    <table class="table table-bordered allergy-table">
+    <table class="table table-bordered allergy-table" *ngIf="attechmentList.length > 0">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -43,6 +43,9 @@
             </tr>
         </tbody>
     </table>
+    <div class="text-center pt-5 pb-5" *ngIf="attechmentList.length == 0">
+        <strong>No Attached Documents Found!</strong>
+    </div>
 </ng-template>
 
 

@@ -212,21 +212,11 @@
                   <ngx-material-timepicker #fullTime
                     style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
                 </div>
-                <div class="maintain-modal-inputs" style="width:37%;">
-                  <span class='pn-input-title z-indexlabel'>Nurse Unit </span>
-                  <span _ngcontent-ufq-c103="" style="
-                  position: relative;
-    top: 29px;
-    left: -7px;
-    float: right;
-              margin-top: -26px;
-              font-size: 18px;
-
-            ">
-                    <img src="assets/img/Nurse Unit.png" alt="" />
-                  </span>
-                  <input type="text" class="form-control"  formControlName="nurseUnit" readonly  placeholder="Enter Nurse Unit"  style="border-color: #0056b0;" />
-                </div>
+                <div class="maintain-modal-inputs" style="width:15%;">
+                      <ng-select formControlName="nurseUnit">
+                        <ng-option *ngFor="let item of nurseUnitList" [value]="item" >{{ item }}</ng-option>
+                      </ng-select>
+                  </div>
                 <div style="margin-left: auto;" (click)="refreshList()">
                   <img src="assets/img/DocRefresh.svg" class="cursor-pointer">
                 </div>
