@@ -131,8 +131,8 @@ export class EPrescriptionService implements OnDestroy {
     this.loadMAREventData(this.formgroupData.DateRange);
   }
 
-  loadEmarPanelData(selectedItems?) {
-    this.selectedItems=selectedItems;
+  resetFilter(){
+    this.selectedItems=[];
     this.checkedFilterData ={
       Administered:false,
       Cancelled:false,
@@ -141,6 +141,16 @@ export class EPrescriptionService implements OnDestroy {
     this.formDetailGroup.get('SearchData').patchValue(null);
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
 
+    this.prescriptionList = { medicationData: [], eventData: [] };
+    this.loadMARData();
+    if (this.formgroupData.DateRange && this.formgroupData.DateRange[0]) {
+      this.loadMAREventData(this.formgroupData.DateRange);
+    } else {
+      this.loadMAREventData([new Date(), new Date()])
+    }
+  }
+  loadEmarPanelData(selectedItems?) {
+    this.selectedItems=selectedItems;
     this.prescriptionList = { medicationData: [], eventData: [] };
     this.loadMARData();
     if (this.formgroupData.DateRange && this.formgroupData.DateRange[0]) {

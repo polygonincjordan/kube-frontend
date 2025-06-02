@@ -421,14 +421,8 @@
                     <div class="accordion w-100" id="accordionExample">
                         <div class="medication-table">
                             <div class="card-header cardheader" id="headingTwo"
-                                style="display: flex; justify-content: space-between; align-items: center; height: 30px;"
+                                style="display: flex; justify-content:end; align-items: center; height: 30px;"
                                 (click)="isCollapsed = !isCollapsed">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link btn-color" type="button"
-                                        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseTwo">
-                                        Test Patients For Demo
-                                    </button>
-                                </h2>
                                 <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
             font-size: 21px;color:#7a7f84" *ngIf="isCollapsed"></i>
                                 <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
@@ -473,10 +467,10 @@
                                                     <td class="border-top-none patient" style="padding-left: 1px;">
                                                         {{item.Patientid}}</td>
                                                     <td class="border-top-none patient" style="padding-left: 1px;">
-                                                        {{item.PrepstatNm}}
+                                                        {{item.PatientNm}}
                                                     </td>
                                                     <td class="border-top-none patient" style="padding-left: 1px;">
-                                                        {{item.Prepstat}}
+                                                        {{item.PrepstatNm}}
                                                     </td>
                                                     <td class="border-top-none patient" style="padding-left: 1px;">
                                                         {{item.Qtotal}}
@@ -485,7 +479,7 @@
                                                         title="Table, extended release">
                                                         {{item.Qunit}}
                                                     </td>
-                                                    <td class="border-top-none patient" style="padding-left: 1px;"
+                                                    <td class="border-top-none patients" style="padding-left: 1px;"
                                                         title="Voltaren 100 mg Oral Tablet (20)">
                                                         {{item.Descrlt}}
                                                     </td>
