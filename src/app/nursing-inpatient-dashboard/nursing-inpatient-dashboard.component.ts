@@ -1326,7 +1326,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.formDetailGroup
         .get('DateRange')
         .patchValue([new Date(), new Date()]);
-      this.headerLabel = 'Patient Administration';
+      this.headerLabel = 'Missed/Not Administered Medications';
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;

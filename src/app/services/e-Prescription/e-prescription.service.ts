@@ -131,8 +131,8 @@ export class EPrescriptionService implements OnDestroy {
     this.loadMAREventData(this.formgroupData.DateRange);
   }
 
-  resetFilter(){
-    this.selectedItems=[];
+  resetFilter(selectedItems){
+    this.selectedItems=selectedItems;
     this.checkedFilterData ={
       Administered:false,
       Cancelled:false,

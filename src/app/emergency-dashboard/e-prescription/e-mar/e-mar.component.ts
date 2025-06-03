@@ -50,13 +50,11 @@ addTagFn(addedName): { name: any; tag: true } {
 }
 
 resetFilter(){
-    this.selectedItems = [];
-    this.ePrescriptionService.selectedItems=[];
     this.ePrescriptionService.checkedFilterData = {
       Administered:false,
       Cancelled:false,
       NotAdministered:false
     }
-    this.ePrescriptionService.resetFilter();
+    this.ePrescriptionService.resetFilter(this.ePrescriptionService.selectedItems);
 }
 }

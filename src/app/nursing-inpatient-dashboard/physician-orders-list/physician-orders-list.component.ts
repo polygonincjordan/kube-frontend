@@ -625,7 +625,7 @@ export class PhysicianOrdersListComponent implements OnInit{
       date ?  date[1]  :new Date().setDate(new Date().getDate()),
       'yyyy-MM-dd'
     )}T00:00:00`,
-    Deptcode:'3',
+    Deptcode:'1',
   }
       this.dayCaseDashboardService.getNotPhysicionOrderList(jsonObj1).subscribe(
         (_success: any) => {

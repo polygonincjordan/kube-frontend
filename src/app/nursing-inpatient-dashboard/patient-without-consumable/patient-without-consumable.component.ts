@@ -50,7 +50,7 @@ export class PatientWithoutConsumableComponent implements OnInit {
 
   public getPatientWithoutConsumable(date?) {
     const json = {
-      Deptcode:'3',
+      Deptcode:'1',
       Datege :`${new DatePipe('en-US').transform(
         date ?  date[0] : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
