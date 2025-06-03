@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component,Input, OnInit, TemplateRef, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { EEmrService } from '@services/e-emr.service';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -26,6 +27,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
   radiologyList: any[] = [];
   madicationList: any[] = [];
   surgeryList: any[]=[];
+  consultationsOrdersList: any;
   searchString: any;
   patientCaseList: any;
   public modalRef: BsModalRef;
@@ -46,6 +48,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
   isRadiology: boolean = false;
   isMedication: boolean = false;
   isSurgery: boolean = false;
+  isConsultations: boolean = false;
   selectedTable: string;
   isCollpseOpen: boolean = false;
   
@@ -58,7 +61,8 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
     private modalService: BsModalService,
     public administrationService: AddministrationService,
     private datePipe: DatePipe,
-    public sharedService: SharedService
+    public sharedService: SharedService,
+    public _dataServices:EEmrService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.storageService.setEinri(params['einri']);
@@ -74,14 +78,16 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
     this.isRadiology = tableName === 'Radiology';
     this.isMedication = tableName === 'Medication';
     this.isSurgery = tableName === 'Surgery';
+    this.isConsultations = tableName === 'Consultations Orders';
   }
 
   selectedTableFun() {
-    if(!this.isLaboratory && !this.isMedication && !this.isRadiology && !this.isSurgery) {
+    if(!this.isLaboratory && !this.isMedication && !this.isRadiology && !this.isSurgery && !this.isConsultations) {
       this.isLaboratory = true;
       this.isMedication = true;
       this.isRadiology = true;
       this.isSurgery = true;
+      this.isConsultations = true;
     }
   }
   
@@ -96,6 +102,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
   ngOnInit(): void {
     this.getPatientCaseStepperData();
     this.getPatientTableList('', '', this.storageService.falnr);
+    this.initialPatientList();
     if(this.administrationService.durationUnitList) {
       this.durationUnit = this.patientCaseDetails?.Pduru !== null && this.patientCaseDetails?.Pduru !== "" ? this.administrationService?.durationUnitList.find(d => d.Unit == this.patientCaseDetails?.Pduru)?.Text : "";
     }
@@ -116,10 +123,12 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
     this.datRange ='';
     this.searchString = '';
     this.getPatientTableList('', '', this.storageService.falnr);
+    this.initialPatientList();
     this.isMedication = false;
     this.isLaboratory = false;
     this.isRadiology = false;
     this.isSurgery = false;
+    this.isConsultations = false;
   }
 
   parsePayloadFormateTime(data: string) {
@@ -156,6 +165,22 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
         }
       });
    }
+
+   initialPatientList() {
+         let jsonObj = {
+           Floor: '',
+           Patientstatus: '',
+           module: 'My_IP_consultations',
+         }
+       this._dataServices.getInPatientList(jsonObj).subscribe(
+         (_success: any) => {
+           if(_success){
+            this.consultationsOrdersList =  _success.result.d.results
+           }
+         },
+         (_error: any) => { }
+       );
+     }
 
   durationConvert(data: any) {
     if (data === 0) {

@@ -76,7 +76,7 @@ export class PatientWithoutDocumentsComponent implements OnInit, OnDestroy {
 
   public getPatientWithoutDocuments(date? :any) {
    const json = {
-      Deptcode:'3',
+      Deptcode:'1',
       Datege:`${new DatePipe('en-US').transform(
         date ?  date : new Date().setDate(new Date().getDate()),
         'yyyy-MM-dd'
