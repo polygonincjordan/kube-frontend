@@ -15,7 +15,7 @@ export class EMarOrderNurseComponent {
   startHour: number;
   endHour: number;
   currentHour: number = new Date().getHours();
-
+  asc:boolean;
   sliderhourslide: number = 1;
   isDesableArrow: boolean;
   allMedicationData: MedicationData[] = [];
@@ -328,4 +328,24 @@ export class EMarOrderNurseComponent {
     }
     return null;
   }
+
+  commanSorting(keyName: string) {
+  if (!this.configurationData) return;
+  const selectedStatuses = this.ePrescriptionService.selectedItems.map(item => item.item_text);
+  let newData = this.configurationData.filter(element =>
+    selectedStatuses.includes(element.Descr)
+  );
+  newData.sort((a, b) => {
+    const nameA = (a[keyName] || '').toString().toUpperCase();
+    const nameB = (b[keyName] || '').toString().toUpperCase();
+
+    if (this.asc) {
+      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    } else {
+      return nameA > nameB ? -1 : nameA < nameB ? 1 : 0;
+    }
+  });
+  this.asc = !this.asc;
+  this.configurationData = newData;
+}
 }
