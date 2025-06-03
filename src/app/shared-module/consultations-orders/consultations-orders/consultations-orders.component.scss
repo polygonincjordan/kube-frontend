@@ -1,0 +1,244 @@
+.patient-profile-main {
+    .patient-tab {
+      align-items: center;
+      .checkbox-margin {
+        padding: 4px 10px 4px 10px;
+        border: 1px solid #cacaca;
+        border-radius: 6px;
+      }
+    }
+  
+    .patient-list-main {
+      height: calc(100vh - 230px);
+      .visita-timeline {
+        border: 1px solid #cacaca;
+        padding: 10px;
+        border-radius: 10px;
+  
+        .visit-timeline-list {
+          padding: 6px;
+          border-radius: 6px;
+          border: 1px solid #cacaca;
+          background: aliceblue;
+          margin-top: 10px;
+          cursor: pointer;
+        }
+      }
+    }
+  
+    .table-list {
+      height: calc(100vh - 250px);
+      overflow: auto;
+      background: white;
+      width: 100%;
+    }
+  }
+  .collaspe-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: #455a64;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .table-action {
+    color: red;
+    padding: 5px 10px 5px 10px;
+    background: #fbe7ea;
+    border-radius: 50px;
+    text-align: center;
+  }
+  
+  .thead-back-color {
+    background: #293a4a;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+  .text-center {
+    text-align: center;
+  }
+  
+  .width-25 {
+    width: 25px !important;
+  }
+  
+  .table-medication {
+    td:nth-child(1) {
+      width: 240px !important;
+      max-width: 240px !important;
+      min-width: 240px !important;
+    }
+    td:nth-child(2) {
+      width: 150px !important;
+      max-width: 150px !important;
+      min-width: 150px !important;
+    }
+    td:nth-child(3) {
+      width: 100px !important;
+      max-width: 100px !important;
+      min-width: 100px !important;
+    }
+    td:nth-child(4) {
+      width: 110px !important;
+      max-width: 110px !important;
+      min-width: 110px !important;
+    }
+    td:nth-child(5) {
+      width: 160px !important;
+      max-width: 160px !important;
+      min-width: 160px !important;
+    }
+    td:nth-child(6) {
+      width: 160px !important;
+      max-width: 160px !important;
+      min-width: 160px !important;
+    }
+    td:nth-child(7) {
+      width: 160px !important;
+      max-width: 160px !important;
+      min-width: 160px !important;
+    }
+    td:nth-child(8) {
+      width: 90px !important;
+      max-width: 90px !important;
+      min-width: 90px !important;
+    }
+    td:nth-child(9) {
+      width: 150px !important;
+      max-width: 150px !important;
+      min-width: 150px !important;
+    }
+    td:nth-child(10) {
+      
+    }
+    td:nth-child(11) {
+      width: 160px !important;
+      max-width: 160px !important;
+      min-width: 160px !important;
+    }
+  }
+  
+  .visit-details {
+    p {
+      color: rgba(39, 42, 46, 1);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    span {
+      font-size: 12px;
+    }
+  }
+  
+  .toggle {
+    cursor: pointer !important;
+    img {
+      position: absolute !important;
+    }
+  }
+  
+  .toggle-left {
+    position: relative !important;
+    cursor: pointer;
+    img {
+      position: absolute;
+      top: 25px;
+      left: -6px;
+      z-index: 99;
+    }
+  }
+  
+  .visita-timeline {
+    width: 22%;
+    padding: 10px;
+    transition: 0.3s;
+    margin-left: 10px;
+  
+    .card-body {
+      height: calc(100vh - 300px);
+      overflow: auto;
+    }
+  
+    &.expanded {
+      width: 0;
+      border: none;
+    }
+  }
+  
+  .search-functionality {
+    img {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+    }
+  
+    input {
+      height: 38px;
+      font: 600 14px/1.5 Nunito, sans-serif;
+      color: #848f96;
+      border-radius: 8px !important;
+      box-shadow: none;
+      padding: 10px 10px 10px 42px;
+    }
+  }
+  
+  .date-function {
+    border-radius: 8px;
+    position: relative;
+    top: -10px;
+    min-width: 21%;
+  
+    img {
+      position: relative;
+      top: 37px;
+      right: 6px;
+      float: right;
+      transform: translateY(-50%);
+    }
+  }
+  
+  .white-space {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .width-300 {
+    width: 300px !important;
+    max-width: 300px !important;
+    min-width: 300px !important;
+  }
+  
+  .font-widht {
+    white-space: nowrap;
+  }
+  
+  .wrapper {
+    background: #fff;
+    border-radius: 50%;
+    width: 40px !important;
+    height: 40px;
+  }
+  
+  .image--cover {
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center right;
+    padding-top: 3px;
+  }
+  
+  .laboratory-list-table {
+    height: calc(100vh - 570px);
+    overflow-y: auto;
+    border-top: 1px solid #dee2e6;
+    padding: 0px 0px 0px 10px;
+  }
+  
+  .Medica-font-size {
+    font-size: 12px;
+  }
+  

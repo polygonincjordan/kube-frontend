@@ -45,6 +45,7 @@ import { LaboratoryTableListComponent } from './e-order-main/order-profile/labor
 import { RadiologyTableListComponent } from './e-order-main/order-profile/radiology-table-list/radiology-table-list.component';
 import { SurgeryTableListComponent } from './e-order-main/order-profile/surgery-table-list/surgery-table-list.component';
 import { FeeListService } from '@services/fee-service/fee-list.service';
+import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 
 export const eOrderRoutes: Routes = [
   { path: '**', component: EOrderComponent },
@@ -91,7 +92,8 @@ export const eOrderRoutes: Routes = [
     BsDropdownModule,
     BsDatepickerModule,
     NgbCollapseModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    ConsultationsOrdersModule
   ],
   providers: [eOrderService, WebService, DatePipe, EventService, HelperService, EPrescriptionService, AddministrationService, FeeListService],
 })
