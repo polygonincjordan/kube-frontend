@@ -770,7 +770,7 @@ export class CheckInComponent implements OnInit {
   }
 
   openModalForAttechment(data) {
-    data.Pnamec = data.Patname;
+    data.Pnamec = data.Patient;
     data.Bwidt = data.Datum;
     this.nurErAttechment.openModalForAttechment(data);
   }

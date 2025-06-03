@@ -234,6 +234,8 @@ export class EOrderMainComponent {
       dispensingItems: new FormArray([]),
     });
 
+    this.eOrderService.loadeOrderData();
+
     this.occupationalGroupList();
 
     this.route.queryParams.subscribe((params) => {

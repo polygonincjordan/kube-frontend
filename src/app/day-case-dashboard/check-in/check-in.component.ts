@@ -787,7 +787,7 @@ export class CheckInComponent implements OnInit {
         event.FCategory.forEach((statusValue) => {
           this.financialValueArr.push(
             filterValue.filter((element) => {
-              if (element.ZzfinCat == statusValue) {
+              if (element.KostrName == statusValue) {
                 return element;
               }
             })

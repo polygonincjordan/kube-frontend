@@ -98,11 +98,11 @@ export class MedicalReportComponent implements OnInit,OnChanges {
     let createJson = this.medReportForm.value;
     createJson['DocStatus'] = '1';
    await this.emergencyService.createMedDoc(createJson).subscribe(()=>{
-    if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.realodEducationList.next(true);
-      }
+    // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+    // }
+    this.admissionService.cancelAllForm();
+    this.admissionService.selectedCurrentDocDetails = '';
+    this.realodEducationList.next(true);
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditMedicalDoc = false;
       this.admissionService.isCloneMedicalDoc = false;
@@ -118,11 +118,11 @@ export class MedicalReportComponent implements OnInit,OnChanges {
     let updateJson = this.medReportForm.value;
     updateJson['DocStatus'] = '1';
     await this.emergencyService.updateMedDoc(updateJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.realodEducationList.next(true);
-      }
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // }
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.realodEducationList.next(true);
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditMedicalDoc = false;
       this.admissionService.isCloneMedicalDoc = false;

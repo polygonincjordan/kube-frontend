@@ -561,7 +561,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
         );
 
         this.attendingPhysicianList = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+          (acc: string[], cur) => pushIfValid(acc, cur?.Nnams), []
         );
 
         this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
@@ -576,6 +576,30 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
         );
 
+      } else if(this.checkin) {
+         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.AdmissionStatus), []
+        );
+
+        this.getCheckInRoomidTextFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Zimmkub), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.KostrName), []
+        );
+
+        this.getCheckInWardFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Floor), []
+        );
+
+        this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+        );
+
+        this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
+        );
       } else {
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.patientStatus), []

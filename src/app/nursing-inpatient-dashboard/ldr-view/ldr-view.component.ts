@@ -862,6 +862,8 @@ export class LdrViewComponent implements OnInit {
       CaseNumber: data.Falnr,
       Mrn: data.Patnr,
       Lfdnr: data.Lfdbw,
+      PatientName: data.Patient,
+      AdmissionDate: data.Datum,
     };
     this.deliveryModal.openModalForDelivery('', this.selectedDetails);
    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {

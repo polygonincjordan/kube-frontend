@@ -164,11 +164,11 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     await this.patientVisitService
       .savePatientVisitData(payload)
       .then((res: any) => {
-        if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.realodEducationList.next(true);
-          }
+        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneSoapDoc = false;
           this.admissionService.isEditSoapDoc = false;
@@ -187,11 +187,11 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     await this.patientVisitService
       .updatePatientVisitData(this.soapDocForm.value)
       .then((res: any) => {
-        if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.realodEducationList.next(true);
-          }
+        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneSoapDoc = false;
           this.admissionService.isEditSoapDoc = false;

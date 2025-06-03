@@ -115,7 +115,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
     data.Patnr = data.Patnr.padStart(10, '0');;
     data.Einri = data.Einri ? data.Einri : '1000';
     data.Falnr = data.Falnr.padStart(10, '0');;
-    data.Lfdnr = data.Lfdnr;
+    data.Lfdnr = data.Lfdbew;
 
     const json = {
       Patnr: data.Patnr,
@@ -598,7 +598,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
 
       if (event.Physician?.length) {
         filterValue = filterValue.filter(item =>
-          event.Physician.includes(item.BehArztName?.trimStart())
+          event.Physician.includes(item.Nnams?.trimStart())
         );
       }
 

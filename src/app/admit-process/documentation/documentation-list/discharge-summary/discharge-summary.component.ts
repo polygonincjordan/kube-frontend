@@ -181,10 +181,12 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         this.paramsObj
       )
       .subscribe((resp) => {
-        if (this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
-          this.reloadTableList.next(true);
-          this.admissionService.cancelAllForm();
-        }
+        // if (this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
+        //   this.reloadTableList.next(true);
+        //   this.admissionService.cancelAllForm();
+        // }
+        this.reloadTableList.next(true);
+        this.admissionService.cancelAllForm();
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditDischargeSummery = false;
         this.admissionService.isCloneDischargeSummery = false;

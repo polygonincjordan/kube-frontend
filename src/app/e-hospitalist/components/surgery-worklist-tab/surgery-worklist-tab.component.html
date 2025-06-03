@@ -5,14 +5,14 @@
             <th scope="col">MRN<i (click)="onSortClick($event,'Patnr')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Case<i (click)="onSortClick($event,'Falnr')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Procedure Room<i (click)="onSortClick($event,'Room')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col" class="set-width-3">Attending Physician<i (click)="onSortClick($event,'BEH_ARZT')" class="my-icon fa fa-chevron-up"></i></th>
+            <th scope="col" class="set-width-3">Attending Physician<i (click)="onSortClick($event,'Nnams')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col" class="set-width-3">Specialty<i (click)="onSortClick($event,'Anfoe')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col" class="set-width-3">Ward/Unit<i (click)="onSortClick($event,'Anpoe')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Admission Date/Time<i (click)="onSortClick($event,'Gbdat')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Procedure Name<i (click)="onSortClick($event,'SrvBez')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Planned Date/Time<i (click)="onSortClick($event,'Gbdat')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Performing Unit<i (click)="onSortClick($event,'Planoe')" class="my-icon fa fa-chevron-up"></i></th>
-            <th scope="col">Status<i (click)="onSortClick($event,'Zzprstatus')" class="my-icon fa fa-chevron-up"></i></th>
+            <!-- <th scope="col">Status<i (click)="onSortClick($event,'Zzprstatus')" class="my-icon fa fa-chevron-up"></i></th> -->
             <th scope="col">Financial Category<i (click)="onSortClick($event,'ZzfinCat')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Duration<i (click)="onSortClick($event,'Dauer')" class="my-icon fa fa-chevron-up"></i></th>
             <th scope="col">Diagnosis <i (click)="onSortClick($event,'Orgpfkb')" class="my-icon fa fa-chevron-up"></i></th>
@@ -28,7 +28,8 @@
             <td (click)="redirectToTreatByName(item)">{{item.Patnr}}</td>
             <td>{{item.Falnr}}</td>
             <td>{{item.Room}}</td>
-            <td></td>
+            <td>{{item.Nnams}}</td>
+            <!-- <td></td> -->
             <td>{{item.Anfoe}}</td>
             <td>{{item.Anpoe}}</td>
             <td>{{getDate(item.Gbdat) | date : "dd.MM.yyyy"}}</td>
@@ -36,7 +37,7 @@
             <td>{{getDate(item.Tmpdt) | date : "dd.MM.yyyy"}} / </td>
             <td>{{item.Planoe}}</td>
             <!-- <td>{{item.N1ptint}}</td> -->
-            <td>{{item.Zzprstatus}}</td>
+            <!-- <td>{{item.Zzprstatus}}</td> -->
             <td>{{item.ZzfinCat}}</td>
             <td>{{item.Dauer}}</td>
             <td class="border-left text-center">

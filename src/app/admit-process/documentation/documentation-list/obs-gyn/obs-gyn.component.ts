@@ -480,11 +480,11 @@ export class ObsGynComponent implements OnInit,OnChanges {
    createJson['TODIAGNOSES'] = this.toDiagnosisArr;
    createJson['TOPHYEXAM'] = this.toPhyExamResponse();
    await this.admissionService.createObsGyn(createJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.realodEducationList.next(true);
-      }
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // }
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.realodEducationList.next(true);
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditObsGynDoc = false; 
       this.admissionService.isCloneObsGynDoc = false;
@@ -516,11 +516,11 @@ export class ObsGynComponent implements OnInit,OnChanges {
     updateJson['TOPHYEXAM'] = this.toPhyExamResponse();
     updateJson['TODIAGNOSES'] = this.toDiagnosisArr;
     await this.admissionService.updateObsGynDoc(updateJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.realodEducationList.next(true);
-      }
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // }
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.realodEducationList.next(true);
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditObsGynDoc = false; 
       this.admissionService.isCloneObsGynDoc = false;

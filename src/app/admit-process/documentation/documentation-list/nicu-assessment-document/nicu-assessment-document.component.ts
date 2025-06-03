@@ -1068,11 +1068,11 @@ export class NicuAssessmentDocumentComponent implements OnInit {
    
       this.subscription = this.admissionService.createNicuSet(payload).subscribe({
         next: (data: any) => {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.realodEducationList.next(true);
-          }
+          // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
+          // }
+          this.admissionService.cancelAllForm();
+          this.admissionService.selectedCurrentDocDetails = '';
+          this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneNicuForm = false;
           this.admissionService.isEditNicuForm = false;

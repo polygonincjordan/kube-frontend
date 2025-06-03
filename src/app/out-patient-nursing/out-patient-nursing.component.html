@@ -524,7 +524,7 @@ font-size: 12px;
     </div>
   </div>
 
-  <app-check-in (sendErPatientCount)="collectErPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)"
+  <app-check-in (sendErPatientCount)="collectErHistPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)"
     style="width: calc(100% - 60px)" *ngIf="checkin"></app-check-in>
   <app-reservation style="width: calc(100% - 60px)" *ngIf="reservation"></app-reservation>
   <app-lab-results (dataToParent)="receiveDataFromChild($event)" (redirectCheckInData)="collectCheckInData($event)"
@@ -542,15 +542,20 @@ font-size: 12px;
   <appointments-list style="width: calc(100% - 55px);" *ngIf="appointments"></appointments-list>
 </div>
 <ng-template #additionalPatientInfo>
-  <div style="
-  border: 1px solid #3b82f6;
-  padding: 8px;
-  background: #3b82f6;
-  text-align: center;
-"><span style="
-  color: white;
-  font-size: 22px;
-">Patient's Information</span></div>
+  <div class="allergy-header">
+    <div class="allergy-header-title">
+      <span>Patient's Information</span>
+    </div>
+    <div class="allergy-header-details">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item">MRN: {{ patient.id }}</li>
+        
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="modalRef.hide()" />
+        </li>
+      </ul>
+    </div>
+  </div>
   <div class="modal-body patient-info">
     <div class="mb-3 row">
       <div class="col-md-6 row m-0">

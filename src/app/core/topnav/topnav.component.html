@@ -1,66 +1,43 @@
 <header class="app-header">
   <nav class="navbar h-auto bg-transparent">
-    <a
-      (click)="
+    <a (click)="
         mobileMenuButtonClick($event, sidebar.containerClassnames); (false)
-      "
-      href="javascript:;"
-      class="menu-button d-md-none d-block"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        style="width: 24px"
-      >
+      " href="javascript:;" class="menu-button d-md-none d-block">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px">
         <rect x="2" y="6" width="20" height="2"></rect>
         <rect x="2" y="11" width="20" height="2"></rect>
         <rect x="2" y="16" width="20" height="2"></rect>
       </svg>
     </a>
     <div class="header-avtar d-flex justify-content-center align-items-center">
-      <a
-        (click)="
+      <a (click)="
           menuButtonClick(
             $event,
             sidebar.menuClickCount,
             sidebar.containerClassnames
           );
           (false)
-        "
-        href="javascript:;"
-        class="menu-button d-none d-md-block"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          style="width: 24px"
-        >
+        " href="javascript:;" class="menu-button d-none d-md-block">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px">
           <rect x="2" y="6" width="20" height="2"></rect>
           <rect x="2" y="11" width="20" height="2"></rect>
           <rect x="2" y="16" width="20" height="2"></rect>
         </svg>
       </a>
-      <img
-        [src]="patient?.photo?.changingThisBreaksApplicationSecurity"
-        width="64"
-        height="64"
-        alt=""
-      />
+      <img [src]="patient?.photo?.changingThisBreaksApplicationSecurity" width="64" height="64" alt="" />
     </div>
     <div class="user-data d-flex flex-wrap align-items-center">
       <div class="user-detail col-md-4">
-        <h3 class="text-white m-0 c-pointer" title="{{patient?.name +'  '+ patient?.id}} MRN {{ patient?.id }} " (click)="openPatientInfo(additionalPatientInfo)">
+        <h3 class="text-white m-0 c-pointer" title="{{patient?.name +'  '+ patient?.id}} MRN {{ patient?.id }} "
+          (click)="openPatientInfo(additionalPatientInfo)">
           {{ patient?.name }}
-          <ng-container *ngIf="patient?.id"
-            >&nbsp;&nbsp;MRN {{ patient?.id }}</ng-container
-          >
+          <ng-container *ngIf="patient?.id">&nbsp;&nbsp;MRN {{ patient?.id }}</ng-container>
         </h3>
-        <span class="text-white w-100 d-inline-block align-top"
-          >{{ patient?.gender }}
+        <span class="text-white w-100 d-inline-block align-top">{{ patient?.gender }}
         </span>
         <span class="text-white w-100 d-inline-block align-top">{{
           patient?.financeCat
-        }}</span>
+          }}</span>
       </div>
       <div class="user-detail col-md-4">
         <span class="text-white w-100 d-inline-block align-top" title="{{getHeaderPatientDetail(patient)}}"><b>
@@ -68,68 +45,73 @@
             {{ getHeaderPatientDetail(patient) }}
           </b></span>
         <span class="text-white w-100 d-inline-block align-top">
-          <ng-container *ngIf="patient?.isInPatient"
-            >Admitted - {{ patient?.periodStart | date : "dd.MM.yyyy" }}
+          <ng-container *ngIf="patient?.isInPatient">Admitted - {{ patient?.periodStart | date : "dd.MM.yyyy" }}
             {{
-              patient?.lenghtOfStay
-                ? "- LOS " + patient?.lenghtOfStay + " Days"
-                : ""
+            patient?.lenghtOfStay
+            ? "- LOS " + patient?.lenghtOfStay + " Days"
+            : ""
             }}
           </ng-container>
-          <ng-container *ngIf="!patient?.isInPatient"
-            >Visit Date -
-            {{ patient?.periodStart | date : "dd.MM.yyyy" }}</ng-container
-          >
+          <ng-container *ngIf="!patient?.isInPatient">Visit Date -
+            {{ patient?.periodStart | date : "dd.MM.yyyy" }}</ng-container>
         </span>
-        <span class="text-white w-100 d-inline-block align-top"
-          >Attending Physician: {{ patient?.careManager }}</span
-        >
+        <span class="text-white w-100 d-inline-block align-top">Attending Physician: {{ patient?.careManager }}</span>
       </div>
       <div class="user-detail col-md-4">
-        <span class="text-white w-100 d-inline-block align-top"
-        title="Allergies - {{ patient?.allergyInfo }}"
-        >Allergies - {{ patient?.allergyInfo }}</span
-        >
-        <span class="text-white w-100 d-inline-block align-top"
-        title="Dx - {{patient?.primDiaTxt}}"
-          >Dx - {{ patient?.primDiaTxt }}</span
-        >
+        <span class="text-white w-100 d-inline-block align-top" title="Allergies - {{ patient?.allergyInfo }}">Allergies
+          - {{ patient?.allergyInfo }}</span>
+        <span class="text-white w-100 d-inline-block align-top" title="Dx - {{patient?.primDiaTxt}}">Dx - {{
+          patient?.primDiaTxt }}</span>
         <div class="w-100">
           <span class="text-white w-50 d-inline-block align-top"
-          title="Allergies - {{ caseNumberReturn(patient?.case) }}"
-          >Case# - {{ caseNumberReturn(patient?.case) }}</span
-          >
+            title="Allergies - {{ caseNumberReturn(patient?.case) }}">Case# - {{ caseNumberReturn(patient?.case)
+            }}</span>
           <span class="text-white w-50 d-inline-block align-top">{{
             patient?.bloodGrpTxt
-          }}</span>
+            }}</span>
         </div>
       </div>
     </div>
     <div class="header-tooltip d-flex justify-content-center ">
       <div class="header-tooltip-wrapper d-flex justify-content-between">
-          <div *ngIf="patient?.flagsIcons?.riskFactorInd?.active" [tooltip]="patient?.flagsIcons?.riskFactorInd?.text" placement="bottom">
-            <img src="assets/img/warning-icon.svg" width="24" height="24">
-          </div>
-          <div *ngIf="patient?.flagsIcons?.isolationInd?.active" [tooltip]="patient?.flagsIcons?.isolationInd?.text" placement="bottom">
-            <img src="assets/img/bed.svg" width="20" height="20">
-          </div>
-          <div *ngIf="patient?.flagsIcons?.patCatInd?.active" [tooltip]="patient?.flagsIcons?.patCatInd?.text" placement="bottom">
-            <img src="assets/img/manage-account.svg" width="20" height="20">
-          </div>
+        <div *ngIf="patient?.flagsIcons?.riskFactorInd?.active" [tooltip]="patient?.flagsIcons?.riskFactorInd?.text"
+          placement="bottom">
+          <img src="assets/img/warning-icon.svg" width="24" height="24">
+        </div>
+        <div *ngIf="patient?.flagsIcons?.isolationInd?.active" [tooltip]="patient?.flagsIcons?.isolationInd?.text"
+          placement="bottom">
+          <img src="assets/img/bed.svg" width="20" height="20">
+        </div>
+        <div *ngIf="patient?.flagsIcons?.patCatInd?.active" [tooltip]="patient?.flagsIcons?.patCatInd?.text"
+          placement="bottom">
+          <img src="assets/img/manage-account.svg" width="20" height="20">
         </div>
       </div>
+    </div>
   </nav>
 </header>
 <ng-template #additionalPatientInfo>
-  <div style="
-  border: 1px solid #3b82f6;
-  padding: 8px;
-  background: #3b82f6;
-  text-align: center;
-"><span style="
-  color: white;
-  font-size: 22px;
-">Patient's Information</span></div>
+  <!-- <div class="row m-0" style="border: 1px solid #3b82f6; padding: 8px; background: #3b82f6;">
+    <span class="col-md-6" style="color: white; font-size: 22px;">Patient's Information</span>
+    <div class="col-md-6">
+      <span style="color: white; font-size: 18px;">MRN : {{patient?.id}} </span>
+      <span style="color: white; font-size: 18px;">Case : {{patient?.case}} </span>
+    </div>
+  </div> -->
+  <div class="allergy-header">
+    <div class="allergy-header-title">
+      <span>Patient's Information</span>
+    </div>
+    <div class="allergy-header-details">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item">MRN: {{ patient.id }}</li>
+        
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="modalRef.hide()" />
+        </li>
+      </ul>
+    </div>
+  </div>
   <div class="modal-body patient-info">
     <div class="mb-3 row">
       <div class="col-md-6 row m-0">
@@ -206,8 +188,17 @@
         </div>
       </div>
     </div>
-    <div class="button-group p-3" style="text-align: -webkit-center;">
-      <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+    <div class="button-group p-3 row m-0" style="text-align: -webkit-center;">
+      <div class="col-md-7" style="text-align: end; display: flex; justify-content: end;">
+        <button class="save-risk" (click)="modalRef.hide()">Ok</button>
+      </div>
+      <div class="col-md-5" style="display: flex; justify-content: end;">
+        <div style="border: 1px solid #cacaca;padding: 6px 20px;width: 65%; display: flex;">
+          <label class="m-0 mr-3">Case Attachemnts</label>
+          <img (click)="openModalForAttechment(patient)" src="assets/img/attechment_blue.png" style="width: 22px; cursor: pointer;" />
+        </div>
+      </div>
     </div>
   </div>
 </ng-template>
+<app-admin-attechment #nurErAttechment></app-admin-attechment>

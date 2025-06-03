@@ -12,14 +12,14 @@
                          <th scope="col">MRN<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Patnr')"></i></th>
                          <th scope="col">Case<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Falnr')"></i></th>
                          <th scope="col">Procedure Room<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Room')"></i></th>
-                         <th scope="col" class="set-width-3">Attending Physician<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Pnamec1')"></i></th>
+                         <th scope="col" class="set-width-3">Attending Physician<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Nnams')"></i></th>
                          <th scope="col" class="set-width-3">Specialty<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Anfoe')"></i></th>
                          <th scope="col" class="set-width-3">Ward/Unit<i (click)="onSortClick($event,'Anpoe')" class="my-icon fa fa-chevron-up"></i></th>
                          <th scope="col">Admission Date/Time<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Gbdat')"></i></th>
                          <th scope="col">Procedure Name<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('SrvBez')"></i></th>
                          <th scope="col">Planned Date/Time<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Tmpdt')"></i></th>
                          <th scope="col">Performing Unit<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Planoe')"></i></th>
-                         <th scope="col">Status<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Zzprstatus')"></i></th>
+                         <!-- <th scope="col">Status<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Zzprstatus')"></i></th> -->
                          <th scope="col">Financial Category<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('ZzfinCat')"></i></th>
                          <th scope="col">Duration<i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('Dauer')"></i></th>
                          <th scope="col">Diagnosis</th>
@@ -36,7 +36,7 @@
                         <td (click)="redirectToTreatByName(item)">{{item.Patnr}}</td>
                         <td>{{item.Falnr}}</td>
                         <td>{{item.Room}}</td>
-                        <td></td>
+                        <td>{{item.Nnams}}</td>
                         <td>{{item.Anfoe}}</td>
                         <td>{{item.Anpoe}}</td>
                         <td>{{getDate(item.Gbdat) | date : "dd.MM.yyyy"}}</td>
@@ -44,7 +44,7 @@
                         <td>{{getDate(item.Tmpdt) | date : "dd.MM.yyyy"}} / </td>
                         <td>{{item.Planoe}}</td>
                         <!-- <td>{{item.N1ptint}}</td> -->
-                        <td>{{item.Zzprstatus}}</td>
+                        <!-- <td>{{item.Zzprstatus}}</td> -->
                         <td>{{item.ZzfinCat}}</td>
                         <td>{{item.Dauer}}</td>
                         <td class="border-left text-center">

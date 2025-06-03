@@ -284,10 +284,10 @@ export class OperationReportComponent implements OnInit, OnChanges {
         this.admissionService.selectedCurrentDocDetails.Dockey
       )
       .subscribe((res: any) => {
-         if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.reloadTableList.next(true);
-            this.admissionService.cancelAllForm();
-          }
+        //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.reloadTableList.next(true);
+        this.admissionService.cancelAllForm();
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneOperationReport = false;
           this.admissionService.isEditOperationReport = false;
