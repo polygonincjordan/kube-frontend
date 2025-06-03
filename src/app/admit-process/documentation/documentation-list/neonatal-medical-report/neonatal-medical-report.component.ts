@@ -170,13 +170,11 @@ export class NeonatalMedicalReportComponent implements OnInit {
     
     createJson.AdmTime = 'PT'+createatime[0] + 'H' + createatime[1] + 'M' + '00S';
    await this.admissionService.createNeoNatalMRDoc(createJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.realodEducationList.next(true);
-        this.admissionService.isEditNeonatalMR = false;
-        this.admissionService.isCloneNeonatalMR = false;
-      }
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // }
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.realodEducationList.next(true);
       this.admissionService.isEditNeonatalMR = false;
       this.admissionService.isCloneNeonatalMR = false;
       this.admissionService.clearSoapEvent.next(true);
@@ -214,11 +212,11 @@ export class NeonatalMedicalReportComponent implements OnInit {
     updateJson.BirthTime = 'PT'+createbtime[0] + 'H' + createbtime[1] + 'M' + '00S';
     updateJson.AdmTime = 'PT'+createatime[0] + 'H' + createatime[1] + 'M' + '00S';
     await this.admissionService.updateNeoNatalMRDoc(updateJson).subscribe(()=>{
-      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.realodEducationList.next(true);
-      }
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // }
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.realodEducationList.next(true);
       this.admissionService.isEditNeonatalMR = false;
       this.admissionService.isCloneNeonatalMR = false;
       this.admissionService.clearSoapEvent.next(true);

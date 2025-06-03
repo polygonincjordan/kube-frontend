@@ -7,7 +7,19 @@
           !this.filterConfig.Cancelled) ? 'This Case Medication Orders' : this.filterConfig.Active === true ? 'Active Orders' :
           this.filterConfig.Suspended === true ? 'Suspended Orders' : this.filterConfig.Ended === true? 'Ended Orders':this.filterConfig.Cancelled ===
           true?'Cancelled Orders':''}}</h4>
-        <div class="c-pointer">
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/xlsx-extension.png" alt="" style="width: 20px;" (click)="exportToExcel()"
+                title="Export to excel">
+            </span>
+          </div>
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/view_full.png" alt="" style="width: 20px;" (click)="opemModalForMedication(medicationTable)"
+                title="View All">
+            </span>
+          </div>
           <img src="assets/img/close.svg" alt="" height="20" (click)="closeActivedata()"  role="button" aria-expanded="false"
           aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
           ml-2
@@ -231,12 +243,25 @@
   </div>
 </form>
 
+
 <form [formGroup]="MedicationorderForm">
   <div class="mt-4">
     <div class="bg-order bg-border-color">
       <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
         <h3 class="m-0 pl-5 font-weight-bold">Prior to Admission</h3>
-        <div class="c-pointer">
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/xlsx-extension.png" alt="" style="width: 20px;" (click)="exportToExcelAdmission()"
+                title="Export to excel">
+            </span>
+          </div>
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/view_full.png" alt="" style="width: 20px;" (click)="opemModalForMedication(priortoAdmission)"
+                title="View All">
+            </span>
+          </div>
           <img src="assets/img/close.svg" alt="" height="20" (click)="closePriortodata()"  role="button" aria-expanded="false"
             aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
             ml-2
@@ -263,7 +288,19 @@
     <div class="bg-order bg-border-color">
       <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
         <h3 class="m-0 pl-5 font-weight-bold">Patient Profile History</h3>
-        <div class="c-pointer">
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/xlsx-extension.png" alt="" style="width: 20px;" (click)="exportToExcelProfileHistory()"
+                title="Export to excel">
+            </span>
+          </div>
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/view_full.png" alt="" style="width: 20px;" (click)="opemModalForMedication(profileHistory)"
+                title="View All">
+            </span>
+          </div>
           <img src="assets/img/close.svg" alt="" height="20" (click)="closePatientProfileHistory()"  role="button" aria-expanded="false"
             aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
             ml-2
@@ -440,4 +477,285 @@
         administration by the patient</label>
     </span>
   </div>
+</ng-template>
+
+
+
+<ng-template #medicationTable>
+  <div class="bg-order bg-border-color bg-border-grey">
+      <div class="p-2 madiborder-bottom d-flex m-0 justify-content-between
+        z-index-1 sticky-top bg-white">
+        <h4 class="m-0 font-weight-bold">{{ (!this.filterConfig.Active && !this.filterConfig.Suspended && !this.filterConfig.Ended &&
+          !this.filterConfig.Cancelled) ? 'This Case Medication Orders' : this.filterConfig.Active === true ? 'Active Orders' :
+          this.filterConfig.Suspended === true ? 'Suspended Orders' : this.filterConfig.Ended === true? 'Ended Orders':this.filterConfig.Cancelled ===
+          true?'Cancelled Orders':''}}</h4>
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/CloseTab.svg" alt="" style="width: 30px;" (click)="modalRef.hide()"
+                title="Export to excel">
+            </span>
+          </div>
+        </div>
+      </div>
+      <form action="" [formGroup]="MedicationorderForm">
+        <div class="mt-4">
+          <div class="bg-order bg-border-color bg-border-grey">
+            <ng-container *ngIf="drugArray.controls && drugArray.controls.length">
+              <div #collapse="ngbCollapse" [(ngbCollapse)]="MedicationorderForm.value.isActiveOrder" class="table-overfllow medication_table">
+                <table class="w-100">
+                  <thead class="z-index-1 sticky-top">
+                    <tr>
+                      <td class="p-2 bg-color-me ">
+                        <table class=" text-black-100 w-100">
+                          <tr class="text-center ml-5 mb-3 colorwhite">
+                            <th class="text-center w-2 "></th>
+                            <th class="text-center profile-width-19">Medication Name</th>
+                            <th class="text-center w-9 ">Dosage</th>
+                            <th class="text-center w-6 ">Duration</th>
+                            <th class="text-center w-8 ">Duration Unit</th>
+                            <th class="text-center w-8 ">Valid From</th>
+                            <th class="text-center w-9 ">Valid To</th>
+                            <th class="text-center w-4 "></th>
+                            <th class="text-center w-4 profile-width"></th>
+                            <th class=" w-1 ">Purpose</th>
+                            <th class="text-center w-7 ">Physician</th>
+                            <th class="text-center w-6 ">Status</th>
+                            <th class="text-center w-11 "></th>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </thead>
+                  <tbody class="mb-3" formArrayName="MedicationorderData">
+                    <tr *ngFor="let item of drugArray.controls | customSearch:
+                      addministrationService.searchMedicationProfile | filterPipe:
+                      filterConfig.Sorting:filterConfig.MedicationSorting; let i=
+                      index," [formGroupName]="i">
+                      <td>
+                        <table class="w-100 ">
+                          <tr>
+                            <td class=" w-2 pl-3">
+                              <input type="checkbox">
+                            </td>
+                            <td class="p-1 align-middle border-0 w-20">
+                              <span class="input-medication d-inline-block align-top
+                                w-100
+                                font-weight-bolder">
+                                <input type="text" class="form-control Medica-font-size text-overflow-ellipsis" formControlName="Descrlt" [ngClass]="item.touched &&
+                                  item.get('Descrlt').errors &&
+                                  isFormSubmitted ?
+                                  'ep-error-message': ''" [readOnly]="!item.value.isCollapsed" />
+                              </span>
+                            </td>
+                            <td class="w-9 p-1">
+                              <input type="text" *ngIf="item.value.Indisdos === 'Apply'" class="form-control Medica-font-size text-overflow-ellipsis"
+                                title="Apply {{item.value.Formatdescr}} {{item.value.N1id}}"
+                                value="{{item.value.Indisdos}} {{item.value.Formatdescr}} {{item.value.N1id}}" [readOnly]="!item.value.isCollapsed"/>
+                              <input type="text" *ngIf="item.value.Indisdos !== 'Apply'" class="form-control Medica-font-size text-overflow-ellipsis"
+                                title="{{item.value.N1id === 'DEFTIM' || item.value.N1id === 'DAILY' ? item.value.Dosdef : item.value.Quan | removeTrailingZeros}}{{' '+ item.value.Quanunit}} {{item.value.Routedescr}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                                value="{{item.value.N1id === 'DEFTIM' || item.value.N1id === 'DAILY' ? item.value.Dosdef : item.value.Quan | removeTrailingZeros}}{{' '+ item.value.Quanunit}} {{item.value.Routedescr}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                                [readOnly]="!item.value.isCollapsed" />
+                            </td>
+                            <td class="w-6 p-1">
+                              <span class="input-text-field
+                                d-inline-block align-top w-100">
+                                <input type="textbox" class="form-control
+                                  Medica-font-size" value="{{durationConvert(item.value.Pdur | customDecimal) }}"
+                                  (input)="validFromTobaseonDuration(i, item.value); pdurdata(item.value)" [readOnly]="!item.value.IsEditMode"
+                                  appDigitDecimaNumber>
+                              </span>
+                            </td>
+                            <td class="w-8 p-1 ">
+                              <span class="input-text-field d-inline-block align-top
+                                w-100 edit-select">
+                                <input type="text" formControlName="Durunittxt" class="form-control Medica-font-size" [readOnly]="!item.value.isCollapsed"
+                                  *ngIf="!item.value.IsEditMode ">
+                                <ng-select [searchable]="true" *ngIf="item.value.IsEditMode " formControlName="Pduru" class="Medica-font-size"
+                                  (change)="validFromTobaseonDuration(i, item.value)">
+                                  <ng-option *ngFor=" let medicationDurationUnit of
+                                  addministrationService.durationUnitList" [value]="medicationDurationUnit.Unit">
+                                    {{ medicationDurationUnit.Text }}
+                                  </ng-option>
+                                </ng-select>
+                              </span>
+
+                            </td>
+                            <td class="w-9 p-1 ">
+                              <input type="text" class="form-control font-weight-bolder
+                              Medica-font-size" formControlName="StartD" [ngClass]="item.touched &&
+                              item.get('StartD').errors &&
+                              isFormSubmitted ?
+                              'ep-error-message': ''" [bsConfig]="{withTimepicker:
+                              true,showWeekNumbers:false,
+                              dateInputFormat:
+                              'DD.MM.YYYY'}" bsDatepicker [isDisabled]="item.value" [readOnly]="!item.value.isCollapsed"
+                                *ngIf="item.value.MosidDesc !== 'Ended'" />
+                              <input type="text" class="form-control font-weight-bolder
+                                Medica-font-size" formControlName="StartD" [ngClass]="item.touched &&
+                                item.get('StartD').errors &&
+                                isFormSubmitted ?
+                                'ep-error-message': ''" [bsConfig]="{withTimepicker:
+                                true,showWeekNumbers:false,
+                                dateInputFormat:
+                                'DD.MM.YYYY HH:mm:ss'}" bsDatepicker [isDisabled]="item.value" [readOnly]="!item.value.isCollapsed"
+                                *ngIf="item.value.MosidDesc === 'Ended'" />
+                            </td>
+                            <td class=" w-9 p-1 ">
+                              <input type="text" class="form-control font-weight-bolder
+                                Medica-font-size" formControlName="EndD" [ngClass]="item.touched &&
+                                item.get('EndD').errors &&
+                                isFormSubmitted ?
+                                'ep-error-message': ''" [bsConfig]="{withTimepicker:
+                                true,showWeekNumbers:false,
+                                dateInputFormat:
+                                'DD.MM.YYYY'}" bsDatepicker [readOnly]="!item.value.IsEditMode " *ngIf="item.value.MosidDesc !== 'Ended'" />
+                              <input type="text" class="form-control font-weight-bolder
+                                Medica-font-size" formControlName="EndD" [ngClass]="item.touched &&
+                                item.get('EndD').errors &&
+                                isFormSubmitted ?
+                                'ep-error-message': ''" [bsConfig]="{withTimepicker:
+                                true,showWeekNumbers:false,
+                                dateInputFormat:
+                                'DD.MM.YYYY HH:mm:ss'}" bsDatepicker [readOnly]="!item.value.IsEditMode " *ngIf="item.value.MosidDesc === 'Ended'" />
+                            </td>
+                            <td class="w-4 p-1 text-center">
+                              <div>
+                                <div class="d-flex align-items-center
+                                  position-relative">
+                                  <input type="checkbox" class="mr-1 checkbox-panel" [checked]="item.get('Prn').value" disabled (change)="onOpenInfoPopupprn(item,
+                                    i)" title="{{item.get('Prncond').value}}">
+                                  <span class="mr-2 admin admin-gray"></span>
+                                  <label class="m-0">PRN</label>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="w-4 p-1 text-center">
+                              <div>
+                                <div class="d-flex align-items-center
+                                  position-relative">
+                                  <input type="checkbox" class="mr-1 checkbox-panel" [checked]="item.get('Pom')?.value !== '0' && item.get('Pom')?.value !== ''"
+                                    title="{{item.get('Pom').value === '1' ? 'Administration by the nurse':item.get('Pom').value === '2'? 'Self administration by the patient':''}}"
+                                    [popover]="hourPopover" [popoverContext]="{index: i}" disabled>
+                                  <span class="mr-2 admin admin-gray"></span>
+                                  <label class="m-0">POM</label>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="w-0 text-center Mp-hover">
+                              <div *ngIf="item.value.Purpose === '3'">
+                                <img src="assets/img/Administration.png" alt="" height="40" class="c-pointer" title="Administration">
+                              </div>
+                              <div *ngIf="item.value.Purpose === '1'">
+                                <img src="assets/img/Dispensing.png" alt="" height="30" class="c-pointer" title="Dispensing">
+                              </div>
+                              <div *ngIf="item.value.Purpose === '2'">
+                                <img src="assets/img/prescription-purpose.png" alt="" height="30" class="c-pointer" title="Print Prescription">
+                              </div>
+                            </td>
+                            <td class="w-9 p-1 ">
+                              <input class="form-control font-weight-bolder
+                                Medica-font-size" formControlName="EmpRespNm" [readOnly]="!item.value.isCollapsed">
+                            </td>
+                            <td class="w-9 p-1 ">
+                              <input type="text" class="form-control font-weight-bolder
+                                Medica-font-size" formControlName="MosidDesc" [readOnly]="!item.value.isCollapsed">
+                            </td>
+                            <td class="w-14 p-1 d-flex">
+                              <div class="p-2 Mp-hover">
+                                <img src="assets/img/Additional-Info.jpg" alt="" (click)="onOpenInfoPopup(item, i)" height="20" class="c-pointer"
+                                title="{{item.get('Descr').value}}">
+                              </div>
+                              <div class="p-2 c-pointer Mp-hover">
+                                <img src="assets/img/selected-icon.png" alt="" height="20" class="c-pointer" (click)="openMoDetailPanel(i, item.value)"
+                                  [ngClass]="item.value.IsmoDetails? 'open-mo-detail':
+                                  ''" [ngClass]=" isFormSubmitted ?
+                                  'ep-error-message':''" title="Events’ Actions">
+                              </div>
+                              <div class="p-2 c-pointer Mp-hover" [popover]="actionData" [popoverContext]="{item: item, index: item.value.Id}"
+                                placement="left">
+                                <img src="assets/img/more-line.png" alt="" height="20" title="Order’s Actions">
+                              </div>
+                              <div class="p-2 c-pointer Mp-hover" *ngIf="item.value.ValidationDate === null">
+                                <img src="assets/img/exclamation-mark.png" alt="" height="20" title="" [popover]=" NotValidationData"
+                                  [popoverContext]="{item: item, index: item.value.Id} " triggers="mouseenter:mouseleave" placement="left">
+                              </div>
+                              <div class="p-2 c-pointer Mp-hover" *ngIf="item.value.ValidationDate !== null">
+                                <img src="assets/img/check-data.png" alt="" height="20" title="" [popover]="ValidationData"
+                                  [popoverContext]="{item: item, index: item.value.Id} " triggers="mouseenter:mouseleave" placement="left">
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="13" class="p-0 border-0">
+                              <ng-container *ngIf="item.value.IsEditMode ">
+                                <div class="ma-tab-content
+                                  d-flex
+                                  edit-border">
+                                  <edit-medication [editdata]="updatedata(item.value.Id)" (onUpdateprnData)="updatePrnCondition($event, item.value.Id)"
+                                    class="w-100"></edit-medication>
+                                  <div class="mt-4 mr-3 c-pointer">
+                                    <img src="assets/img/close.svg" alt="" height="20px" (click)="closeeditModetail(item.value.Id)">
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-container>
+            <div class="form-btn text-right p-3 bg-color-me mt-2">
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+</ng-template>
+
+<ng-template #priortoAdmission>
+   <div class="bg-order bg-border-color">
+      <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
+        <h3 class="m-0 font-weight-bold">Prior to Admission</h3>
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/CloseTab.svg" alt="" style="width: 30px;" (click)="modalRef.hide()"
+                title="Export to excel">
+            </span>
+          </div>
+        </div>
+      </div>
+      <ng-container>
+        <div class="table-overfllow">
+          <priorto-admissionlist [filterData]="ePrescriptionService.MedicationdFilterData"></priorto-admissionlist>
+        </div>
+      </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #profileHistory>
+  <div class="bg-order bg-border-color">
+      <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
+        <h3 class="m-0 font-weight-bold">Patient Profile History</h3>
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/CloseTab.svg" alt="" style="width: 30px;" (click)="modalRef.hide()"
+                title="Export to excel">
+            </span>
+          </div>
+        </div>
+      </div>
+      <ng-container>
+        <div class="table-overfllow">
+          <patient-profile-history [filterData]="ePrescriptionService.MedicationdFilterData"></patient-profile-history>
+        </div>
+      </ng-container>
+      <div class="form-btn text-right p-3 bg-color-me mt-2">
+      </div>
+    </div>
 </ng-template>

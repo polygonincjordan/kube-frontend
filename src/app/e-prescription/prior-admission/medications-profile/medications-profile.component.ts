@@ -1,16 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { Component, DoCheck, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, DoCheck, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService, MedicationdFilterData } from '@services/e-Prescription/e-prescription.service';
 import { formatDate } from 'ngx-bootstrap/chronos';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
 import { MedicationsPopupComponent } from '../medications-popup/medications-popup.component';
 import { ModetailPanelComponent } from '../modetail-panel/modetail-panel.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'medications-profile',
@@ -102,7 +103,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
     EndD: "",
     EndT: ""
   }
-  constructor(public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService, public elementRef: ElementRef) { }
+  constructor(public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService, public elementRef: ElementRef, private modalService: BsModalService) { }
   ngDoCheck(): void {
     if (!!this.popovers) {
       this.popovers.forEach((popover: PopoverDirective) => {
@@ -469,6 +470,100 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
 
   updatedata(index: number) {
     return this.drugArray.controls.map(d => d.value).find(d => d.Id === index)
+  }
+
+
+  exportToExcel(nameofFile: string = 'medication', fileExtention: string = 'xlsx'): void {
+    const eventArray = this.drugArray.value;
+    console.log(eventArray, "eventArray");
+  
+    const mappedEvents = eventArray.map(event => {
+      return {
+        Descrlt: event.Descrlt,
+        Dosdef: event.Dosdef,
+        Pdur: event.Pdur,
+        Durunittxt: event.Durunittxt,
+        StartD: this.sanitizeSAPDateFormat(event.StartD, event.StartT),
+        EndD: this.sanitizeSAPDateFormat(event.EndD, event.EndT),
+        Prn: event.Prn,
+        Pom: event.Pom,
+        EmpRespNm: event.EmpRespNm,
+        MosidDesc: event.MosidDesc,
+      };
+    });
+  
+    const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician', 'Status']];
+    const workbook = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A1' });
+    XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: -1, skipHeader: true });
+    XLSX.utils.book_append_sheet(workbook, ws, "Medication Data");
+    XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
+  }
+
+  unSubscribe:Subscription;
+  exportToExcelAdmission(nameofFile: string = 'prior_to_admission', fileExtention: string = 'xlsx'): void {
+    let priorAdmission:any = []
+    this.unSubscribe = this.addministrationService.PriorToAdministrSubject.subscribe((data) => {
+      priorAdmission = data;
+    });
+    const eventArray = priorAdmission;
+    const mappedEvents = eventArray.map(event => {
+      return {
+        Descrlt: event.Descrlt,
+        Dosdef: event.Dosdef,
+        Pdur: event.Pdur,
+        Durunittxt: event.Durunittxt,
+        StartD: this.sanitizeSAPDateFormat(event.StartD, event.StartT),
+        EndD: this.sanitizeSAPDateFormat(event.EndD, event.EndT),
+        Prn: event.Prn,
+        Pom: event.Pom,
+        EmpRespNm: event.EmpRespNm,
+        MosidDesc: event.MosidDesc,
+      };
+    });
+  
+    const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
+    const workbook = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A1' });
+    XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: -1, skipHeader: true });
+    XLSX.utils.book_append_sheet(workbook, ws, "Medication Data");
+    XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
+  }
+  exportToExcelProfileHistory(nameofFile: string = 'patient_profile_history', fileExtention: string = 'xlsx'): void {
+    let priorAdmission:any = []
+    this.unSubscribe = this.addministrationService.PriorToAdministrSubject.subscribe((data) => {
+      priorAdmission = data;
+    });
+    const eventArray = priorAdmission;
+    const mappedEvents = eventArray.map(event => {
+      return {
+        Descrlt: event.Descrlt,
+        Dosdef: event.Dosdef,
+        Pdur: event.Pdur,
+        Durunittxt: event.Durunittxt,
+        StartD: this.sanitizeSAPDateFormat(event.StartD, event.StartT),
+        EndD: this.sanitizeSAPDateFormat(event.EndD, event.EndT),
+        Prn: event.Prn,
+        Pom: event.Pom,
+        EmpRespNm: event.EmpRespNm,
+        MosidDesc: event.MosidDesc,
+      };
+    });
+  
+    const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
+    const workbook = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A1' });
+    XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: -1, skipHeader: true });
+    XLSX.utils.book_append_sheet(workbook, ws, "Medication Data");
+    XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
+  }
+
+  opemModalForMedication(template: TemplateRef<any>) {
+    const config: ModalOptions = { class: 'modal-dialog-centered medicationtable' };
+    this.modalRef = this.modalService.show(template, config);
   }
 
   onSelectMedicine(event: any) {

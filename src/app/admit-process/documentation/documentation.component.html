@@ -66,10 +66,10 @@
     <strong>Education Assessment</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditEducationAsset">Save</button>
+        *ngIf="!this.admissionService.isEditEducationAsset">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditEducationAsset">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditEducationAsset">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -79,10 +79,10 @@
     <strong>Newborn Physician Assessment</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditBornForm">Save</button>
+        *ngIf="!this.admissionService.isEditBornForm">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditBornForm">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditBornForm">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -92,10 +92,10 @@
     <strong>NICU Admission Note</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditNicuForm">Save</button>
+        *ngIf="!this.admissionService.isEditNicuForm">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditNicuForm">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditNicuForm">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -106,10 +106,10 @@
     <strong>Medical report</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditMedicalDoc">Save</button>
+        *ngIf="!this.admissionService.isEditMedicalDoc">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditMedicalDoc">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditMedicalDoc">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -120,10 +120,10 @@
     <strong>Physician Assessment</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditPhysicianForm">Save</button>
+        *ngIf="!this.admissionService.isEditPhysicianForm">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditPhysicianForm">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditPhysicianForm">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -134,10 +134,10 @@
     <strong>Neonatal Discharge Summary</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditPhysicianForm">Save</button>
+        *ngIf="!this.admissionService.isEditPhysicianForm">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditPhysicianForm">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditPhysicianForm">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -147,9 +147,9 @@
   <div class="education-assess" *ngIf="admissionService.isAddEditSopaDocument">
     <strong>SOPA Documents</strong>
     <div>
-      <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditSoapDoc">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditSoapDoc">Save</button>
-      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+      <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditSoapDoc">Save & Close</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditSoapDoc">Save & Close</button>
+      <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -160,10 +160,10 @@
     <strong>Physician Discharge Summary</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditDischargeSummery">Save</button>
+        *ngIf="!this.admissionService.isEditDischargeSummery">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditDischargeSummery">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditDischargeSummery">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -174,10 +174,10 @@
     <strong>Obstetric VTE Risk Assess&Mgt Postaprtum</strong>
     <div *ngIf="!admissionService.isPDFObstetricRisk">
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditObstetricRisk">Save</button>
+        *ngIf="!this.admissionService.isEditObstetricRisk">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditObstetricRisk">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditObstetricRisk">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -192,9 +192,9 @@
     <strong>Obstetric VTE Risk Assess&Mgt Antepartum</strong>
     <div *ngIf="!admissionService.isPDFObsVteAnt">
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditObsVteAnt">Save</button>
-        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsVteAnt">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="!this.admissionService.isEditObsVteAnt">Save & Close</button>
+        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsVteAnt">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -208,9 +208,9 @@
     <strong>Obstetrics & Gynecology Physician Assessment</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditObsGynDoc">Save</button>
-        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsGynDoc">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="!this.admissionService.isEditObsGynDoc">Save & Close</button>
+        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditObsGynDoc">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -219,9 +219,9 @@
   <div class="education-assess" *ngIf="admissionService.isAddEditNeonatal">
     <strong>Neonatal Progress Note</strong>
     <div>
-      <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditNeonatal">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditNeonatal">Save</button>
-      <button class="sort-btn" (click)="addEditForm('saveClose')" >Save & Close</button>
+      <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditNeonatal">Save & Close</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditNeonatal">Save & Close</button>
+      <!-- <button class="sort-btn" (click)="addEditForm('saveClose')" >Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -231,10 +231,10 @@
     <strong>Neonatal Medical Report</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditNeonatalMR">Save</button>
+        *ngIf="!this.admissionService.isEditNeonatalMR">Save & Close</button>
         <button class="sort-btn" (click)="addEditForm('edit')"
-        *ngIf="this.admissionService.isEditNeonatalMR">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="this.admissionService.isEditNeonatalMR">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -245,9 +245,9 @@
     <strong>Visit Note Form</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')"
-        *ngIf="!this.admissionService.isEditVisitForm">Save</button>
-        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditVisitForm">Save</button>
-        <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+        *ngIf="!this.admissionService.isEditVisitForm">Save & Close</button>
+        <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditVisitForm">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
       <button class="sort-btn" (click)="addEditForm('release')">Release</button>
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
@@ -258,9 +258,9 @@
   <strong>Transer Assessment Form</strong>
   <div>
     <button class="sort-btn" (click)="addEditForm('save')"
-      *ngIf="!this.admissionService.isEditTransferAssestForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditTransferAssestForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+      *ngIf="!this.admissionService.isEditTransferAssestForm">Save & Close</button>
+      <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditTransferAssestForm">Save & Close</button>
+      <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
     <button class="sort-btn" (click)="addEditForm('release')">Release</button>
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>
@@ -272,10 +272,10 @@
   <strong>Operation Report</strong>
   <div>
     <button class="sort-btn" (click)="addEditForm('save')"
-      *ngIf="!this.admissionService.isEditOperationReport">Save</button>
+      *ngIf="!this.admissionService.isEditOperationReport">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('edit')"
-      *ngIf="this.admissionService.isEditOperationReport">Save</button>
-      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+      *ngIf="this.admissionService.isEditOperationReport">Save & Close</button>
+      <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
     <button class="sort-btn" (click)="addEditForm('release')">Release</button>
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>
@@ -287,10 +287,10 @@
   <strong>Paediatrics Admission Assessment</strong>
   <div>
     <button class="sort-btn" (click)="addEditForm('save')"
-      *ngIf="!this.admissionService.isEditPaediatricsAdmissionForm">Save</button>
+      *ngIf="!this.admissionService.isEditPaediatricsAdmissionForm">Save & Close</button>
       <button class="sort-btn" (click)="addEditForm('edit')"
-      *ngIf="this.admissionService.isEditPaediatricsAdmissionForm">Save</button>
-      <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button>
+      *ngIf="this.admissionService.isEditPaediatricsAdmissionForm">Save & Close</button>
+      <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
     <button class="sort-btn" (click)="addEditForm('release')">Release</button>
     <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
   </div>

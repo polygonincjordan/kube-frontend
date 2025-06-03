@@ -175,14 +175,14 @@ export class DocumentingDeliveryComponent implements OnInit {
 
   getPatientDeliveryDetails() {
     this.emergencyService
-      .fetchPatientDeliveryDetail(this.data?.CaseNumber)
+      .fetchPatientDeliveryDetail(this.data?.CaseNumber ? this.data?.CaseNumber : this.headerData?.CaseNumber)
       .subscribe((res) => {
         this.bindDeliveryData(res);
       });
   }
 
   getGenderFromPatname(patname: string): string {
-    const match = patname.match(/\((M|F),/);
+    const match = patname?.match(/\((M|F),/);
     if (!match) return '';
     return match[1] === 'F' ? 'Female' : 'Male';
   }
@@ -267,7 +267,7 @@ export class DocumentingDeliveryComponent implements OnInit {
 
   formatODataTime(odataTime: string): string {
     if (!odataTime) return '';
-    const match = odataTime.match(/PT(\d+)H(\d+)M(\d+)S/);
+    const match = odataTime?.match(/PT(\d+)H(\d+)M(\d+)S/);
     if (!match) return '';
     const hours = match[1].padStart(2, '0');
     const minutes = match[2].padStart(2, '0');
@@ -283,11 +283,6 @@ export class DocumentingDeliveryComponent implements OnInit {
   }
 
   saveDelivery() {
-    // this.isFormSubmitted = true;
-    // if(this.deliveryForm.invalid) {
-    //   return;
-    // }
-    // this.isFormSubmitted = false;
     let paylaod = this.deliveryForm.value;
     paylaod.Endat = this.sanitizeSAPDateFormat(paylaod.Endat);
     paylaod.Entim = this.convertToTime(paylaod.Entim);

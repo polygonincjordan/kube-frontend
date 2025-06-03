@@ -138,10 +138,10 @@ export class ObsVTEAnteptmComponent implements OnInit {
         if (type) {
           this.saveAndReleas(resp);
         } else {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.reloadTableList.next(true);
-            this.admissionService.cancelAllForm();
-          }
+          // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+          // }
+          this.reloadTableList.next(true);
+          this.admissionService.cancelAllForm();
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneObsVteAnt = false; 
           this.admissionService.isEditObsVteAnt = false;
@@ -194,10 +194,10 @@ export class ObsVTEAnteptmComponent implements OnInit {
     payload.DocStatus = '2';
     this.admissionService.updateObsVteAntDoc(payload).subscribe(
       (resp) => {
-         if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.reloadTableList.next(true);
-            this.admissionService.cancelAllForm();
-          }
+        //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.reloadTableList.next(true);
+        this.admissionService.cancelAllForm();
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneObsVteAnt = false; 
           this.admissionService.isEditObsVteAnt = false;
@@ -234,10 +234,10 @@ export class ObsVTEAnteptmComponent implements OnInit {
       .updateObsVteAntDoc(this.obsVteAnteptm.value)
       .subscribe(
         (resp) => {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-                this.reloadTableList.next(true);
-                this.admissionService.cancelAllForm();
-              }
+          // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+          // }
+          this.reloadTableList.next(true);
+          this.admissionService.cancelAllForm();
               this.admissionService.clearSoapEvent.next(true);
               this.admissionService.isCloneObsVteAnt = false; 
               this.admissionService.isEditObsVteAnt = false;

@@ -7,7 +7,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, Title } from '@angular/platform-browser';
@@ -27,6 +28,7 @@ import { getThemeColor, setThemeColor } from '@services/utiltiy.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { catchError, filter, map, of, Subscription, tap } from 'rxjs';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 import { environment } from 'src/environments/environment';
 @UntilDestroy()
 @Component({
@@ -37,6 +39,8 @@ import { environment } from 'src/environments/environment';
 export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ViewChild('formPopup', { static: true }) formPopup: DyFormPopupComponent;
   //resourceRequest: ResourceRequest = Resources.ChangePassword;
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
+  
   @Output() PatientData = new EventEmitter<any>();
   sidebarSubscription: Subscription;
   sidebar: ISidebar;
@@ -143,6 +147,8 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((patientData: Patient) => {
         this.isLoading = false;
         this.patient = patientData;
+        console.log(this.patient, "this.patient");
+        
         this.titleService.setTitle(`${patientData?.name} | ${this.route.snapshot.parent.routeConfig.path}`);
         this.PatientData.emit(patientData);
         this.storageService.setPatientData(patientData);
@@ -357,5 +363,14 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
 
   caseNumberReturn(caseNumber: any) {
     return parseInt(caseNumber, 10).toString()
+  }
+
+  openModalForAttechment(data) {
+    let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
+    data.Falnr = data.case;
+    data.Pnamec = data.name;
+    data.Patnr = data.id;
+    data.Bwidt = data.periodStart
+    this.nurErAttechment.openModalForAttechment(data);
   }
 }

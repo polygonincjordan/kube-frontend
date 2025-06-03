@@ -167,7 +167,7 @@ export class AdministeredDosesComponent implements OnInit{
       dateTo: [new Date()],
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
-      nurseUnit: ['']
+      nurseUnit: ['F9DIUAMC']
     })
   }
   ngOnInit(): void {

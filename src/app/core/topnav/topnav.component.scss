@@ -25,3 +25,28 @@
     width: 50% !important;
     min-width: 50% !important;
   }
+
+  
+.allergy-header-title {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.allergy-header-details {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex: 1;
+}
+
+.img-size {
+  width: 35px;
+  float: right;
+}
+
+.close-icon {
+  border: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}

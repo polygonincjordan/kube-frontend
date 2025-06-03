@@ -265,12 +265,12 @@ selectedOrgUnit: any;
       .createTansferAssessData(createJson)
       .subscribe((x) => {
         console.log(x);
-        if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-          this.admissionService.cancelAllForm();
-          this.admissionService.selectedCurrentDocDetails = '';
-          this.admissionService.clearSoapEvent.next(true);
-          this.realodEducationList.next(true);
-        }
+        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.admissionService.clearSoapEvent.next(true);
+        this.realodEducationList.next(true);
       });
   }
 
@@ -311,12 +311,12 @@ selectedOrgUnit: any;
       Datetimee: element.Datetimee,
     }));
     await this.admissionService.updateTransferDoc(updateJson).subscribe(() => {
-      if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        this.admissionService.cancelAllForm();
-        this.admissionService.selectedCurrentDocDetails = '';
-        this.admissionService.clearSoapEvent.next(true);
-        this.realodEducationList.next(true);
-      }
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // }
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.admissionService.clearSoapEvent.next(true);
+      this.realodEducationList.next(true);
     });
   }
   async releaseTransferAssessForm() {

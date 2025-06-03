@@ -1,15 +1,15 @@
 <div class="e-order-wrapper" >
-  <div class="container-fluid" >
-    <div class="row" >
-      <div class="col-4">
+  <div class="container-fluid">
+    <div class="row"  >
+      <div class="col-md-7">
         <div class="e-order-sidewrap pb-0">
           <div class="e-order-wrapper-main pb-0">
             <div class="clinic-order h-100" *ngIf="
                 eOrderService.navigationTab === 'Clinical'">
               <div class="e-order-search">
                 <div class="row">
-                  <div class="col-md-12">
-                    <!-- <div class="search-form d-flex">
+                  <div class="col-md-8">
+                    <div class="search-form d-flex">
                       <div class="search-icon d-flex align-items-center">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clip-path="url(#clip0_101_2)">
@@ -36,23 +36,9 @@
                         aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
                           eOrderService.searchlistData(searchString)
                         " (input)="eOrderService.searchlistData(searchString)" [(ngModel)]="searchString" />
-                    </div> -->
-
-                    <div class=" w-100  align-items-center">
-                      <div class="search-functionality pl-0">
-                        <img class="search-image" src="assets/img/pres-search-icon.svg" alt="search" />
-                        <!-- <input type="text" formControlName="SearchData" placeholder="Search" class="form-control w-75"
-                          (input)="searchForService($event)" id="searchFilter" /> -->
-                        <input placeholder="Search..." class="form-control" autocomplete="off" role="combobox"
-                        aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" (keydown.enter)="
-                          eOrderService.searchlistData(searchString)
-                        " (input)="eOrderService.searchlistData(searchString)" [(ngModel)]="searchString"/>
-                        <img class="reset-image" src="assets/img/close.png" alt="reset" width="24" height="24"
-                          *ngIf="searchFeestring" />
-                      </div>
                     </div>
                   </div>
-                  
+                  <div class="col-md-4"></div>
                 </div>
               </div>
               <div class="e-order-searchlist-wrap">
@@ -91,24 +77,48 @@
           </div>
         </div>
       </div>
-      <div class="col-8">
-        <div class="e-order-history-btn" *ngIf="
-              eOrderService.switchVal.name === 'eorders' &&
-              eOrderService.navigationTab !== 'Fees'
-            ">
-            <div class="btn-group-end text-right">
-              <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="eOrderService.onCreateOrder()">
-                Create e-Order
-              </button>
-              <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="eOrderService.onCancelOrder()">
-                Cancel
-              </button>
-            </div>
-            
-          </div>
-        <div class="e-order-sidewrap e-order-sidewrap-data" *ngIf="eOrderService.switchVal.name === 'eorders' || eOrderService.switchVal.name === 'history-data'">
+      <div class="col-md-5">
+        <div class="e-order-sidewrap e-order-sidewrap-data">
           <div class="e-order-wrapper-main h-auto active-order-panel" *ngIf="eOrderService.navigationTab !== 'Fees' && eOrderService.navigationTab !== 'Ordprofile'" >
             <div class="Clinical-Main h-100">
+              <div class="e-order-history"
+                *ngIf="eOrderService.switchVal.name === 'history' && eOrderService.navigationTab !== 'Fees'">
+                <div class="e-order-history-search">
+                  <div class="search-form d-flex">
+                    <div class="search-icon d-flex align-items-center">
+                      <svg width="18" height="18" viewBox="0 0 18
+                        18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_101_2)">
+                          <path d="M3.375 7.3125C3.375 8.92617
+                            3.89883 10.4168 4.78125 11.6262L0.330465
+                            16.0805C-0.108988 16.5199 -0.108988
+                            17.2336 0.330465 17.673C0.769918 18.1125
+                            1.48359 18.1125 1.92304 17.673L6.37383
+                            13.2187C7.5832 14.1047 9.07383 14.625
+                            10.6875 14.625C14.727 14.625 18 11.352
+                            18 7.3125C18 3.27305 14.727 0 10.6875
+                            0C6.64804 0 3.375 3.27305 3.375
+                            7.3125ZM10.6875 12.375C7.89258 12.375
+                            5.625 10.1074 5.625 7.3125C5.625 4.51758
+                            7.89258 2.25 10.6875 2.25C13.4824 2.25
+                            15.75 4.51758 15.75 7.3125C15.75 10.1074
+                            13.4824 12.375 10.6875 12.375Z" fill="white" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_101_2">
+                            <rect width="18" height="18" fill="white" transform="matrix(-1 0
+                              0 1 18 0)" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
+                    <input type="text" placeholder="Search..." class="form-control radius-none border-left-0 rounded-0"
+                      [(ngModel)]="eOrderService.historysearchString" />
+                  </div>
+                </div>
+                <app-e-order-history [orderHistory]="eOrderService.historyOrders"
+                  class="e-order-history-contentt"></app-e-order-history>
+              </div>
               <div class="e-order-list"
                 *ngIf="eOrderService.switchVal.name === 'eorders' || eOrderService.switchVal.name === 'history-data'">
                 <app-create-e-order [customData]="eOrderService.eOrders"></app-create-e-order>
@@ -133,9 +143,77 @@
                 </div>
               </div>
             </div>
-            
+            <div class="fee-order-history">
+              <div class="e-order-history">
+                <!-- <app-fee-order-history [orderHistory]="eOrderService.feeOrderHistory"></app-fee-order-history> -->
+              </div>
+              <div class="e-order-history-btn" *ngIf="eOrderService.navigationTab === 'Fees'">
+                <div class="btn-group-end text-right">
+                  <!-- <button type="button" class="btn btn-secondary rounded-sm ml-2">Print</button> -->
+                  <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                      eOrderService.onCopyFeeItem(eOrderService.feeOrderHistory)
+                    ">
+                    Copy
+                  </button>
+                  <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                      eOrderService.onEditFeeItem(eOrderService.feeOrderHistory)
+                    ">
+                    Edit
+                  </button>
+                  <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                      eOrderService.onDeleteFeeItem(
+                        eOrderService.feeOrderHistory
+                      )
+                    ">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          
+          <div class="e-order-history-btn" *ngIf="
+              eOrderService.switchVal.name === 'history' &&
+              eOrderService.navigationTab !== 'Fees' && eOrderService.navigationTab !== 'Ordprofile'
+            ">
+            <div class="btn-group-end text-right">
+              <button type="button" class="btn btn-secondary rounded-sm ml-2"
+                (click)="eOrderService.onPrintItem(eOrderService.historyOrders)">
+                Print
+              </button>
+              <button type="button" class="btn btn-secondary rounded-sm ml-2"
+                (click)="eOrderService.onCopyItem(eOrderService.historyOrders)">
+                Copy
+              </button>
+              <button type="button" class="btn btn-secondary rounded-sm ml-2"
+                (click)="eOrderService.onEditItem(eOrderService.historyOrders)">
+                Edit
+              </button>
+              <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="
+                  eOrderService.onDeleteItem(eOrderService.historyOrders)
+                ">
+                Delete
+              </button>
+            </div>
+          </div>
+          <div class="e-order-history-btn" *ngIf="
+              eOrderService.switchVal.name === 'eorders' &&
+              eOrderService.navigationTab !== 'Fees'
+            ">
+            <div class="btn-group-end text-right">
+              <!-- <button type="button" class="btn btn-secondary rounded-sm ml-2">Create Q. Order</button> -->
+              <button type="button"
+                *ngIf="eOrderService.eOrders && (eOrderService.eOrders[0].type === 'MED' || eOrderService.eOrders[0].type === 'TEMPLATE')"
+                class="btn btn-secondary rounded-sm ml-2"
+                (click)="eOrderService.openTemplatePopup(saveTemplate, eOrderService.eOrders)">Create Med
+                Template</button>
+              <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="eOrderService.onCreateOrder()">
+                Create e-Order
+              </button>
+              <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="eOrderService.onCancelOrder()">
+                Cancel
+              </button>
+            </div>
+          </div>
           <div class="e-order-history-btn" *ngIf="eOrderService.switchVal.name === 'history-data'">
             <div class="btn-group-end text-right">
               <button type="button" class="btn btn-secondary rounded-sm ml-2" (click)="eOrderService.onCreateOrder()">

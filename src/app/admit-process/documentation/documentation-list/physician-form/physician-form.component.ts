@@ -1111,11 +1111,11 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .createPhysicianData(createJson)
       .subscribe(() => {
-          if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.realodEducationList.next(true);
-          }
+          // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+          // }
+          this.admissionService.cancelAllForm();
+          this.admissionService.selectedCurrentDocDetails = '';
+          this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isClonePhysicianForm = false;
           this.admissionService.isEditPhysicianForm = false;
@@ -1429,11 +1429,11 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .updatePhysicianData(updateJson)
       .subscribe(() => {
-         if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.realodEducationList.next(true);
-          }
+        //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isClonePhysicianForm = false;
           this.admissionService.isEditPhysicianForm = false;

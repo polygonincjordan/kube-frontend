@@ -304,8 +304,8 @@
       gap: 10px;
     "
   >
-  <i class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px; font-size: 18px; cursor: pointer" (click)="previousDate()"></i>
-    <form [formGroup]="singleData">
+  <i *ngIf="isArrival" class="fa fa-chevron-left" aria-hidden="true" style="padding-top: 11px; font-size: 18px; cursor: pointer" (click)="previousDate()"></i>
+    <form [formGroup]="singleData" *ngIf="isArrival">
       <div class="date-function" style="
           background: #dee5ea;
           padding: 2px;
@@ -318,7 +318,7 @@
           [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
         </div>
       </form>
-      <i class="fa fa-chevron-right" aria-hidden="true"
+      <i *ngIf="isArrival" class="fa fa-chevron-right" aria-hidden="true"
         style="padding-top: 11px; font-size: 18px; cursor: pointer; z-index: 99" (click)="upcomingDate()"></i>
     <span *ngIf="ErHistoryPatientCount == 0 || ErHistoryPatientCount > 1">
       {{getHeaderTitleName()}} ({{ ErHistoryPatientCount }} Patients)
@@ -456,7 +456,7 @@
         <span style="margin-left: 68px; font-size: 20px"><i class="fa fa-times" aria-hidden="true"
             (click)="showFilterFn($event)"></i></span>
       </div>
-      <form [formGroup]="filterForm" class="p-2">
+      <form [formGroup]="filterForm" class="p-2" *ngIf="!isSurgeryWork">
         <p *ngIf="!isArrival && !LDRView" style="margin: auto; margin-top: 5px">Admission Status</p>
         <ng-select *ngIf="!isArrival && !LDRView" class="" id="inputGroupSelect01" formControlName="Status" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInStatusFilterData">
@@ -1237,7 +1237,7 @@
   ></app-lab-results>
 
   <app-arrival-main-list *ngIf="isArrival" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" (redirectCheckInData)="collectCheckInData($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-arrival-main-list>
-  <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
+  <app-surgery-worklist-tab *ngIf="isSurgeryWork" (sendErPatientCount)="collectErHistPatientCount($event)" (dataToParent)="receiveDatatoCheckIn($event)" (redirectCheckInData)="collectCheckInData($event)" [searchString]="searchString" style="width: calc(100% - 110px)"></app-surgery-worklist-tab>
   <app-ldr-view *ngIf="LDRView" (sendErPatientCount)="collectErHistPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)" (dataToParent)="receiveDatatoCheckIn($event)"  style="width: calc(100% - 110px)"></app-ldr-view>
   <app-physician-orders-list
     (sendErPatientCount)="collectErHistPatientCount($event)"
@@ -1400,15 +1400,20 @@
   </div>
 </div>
 <ng-template #additionalPatientInfo>
-  <div style="
-  border: 1px solid #3b82f6;
-  padding: 8px;
-  background: #3b82f6;
-  text-align: center;
-"><span style="
-  color: white;
-  font-size: 22px;
-">Patient's Information</span></div>
+  <div class="allergy-header">
+    <div class="allergy-header-title">
+      <span>Patient's Information</span>
+    </div>
+    <div class="allergy-header-details">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item">MRN: {{ patient.id }}</li>
+        
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="modalRef.hide()" />
+        </li>
+      </ul>
+    </div>
+  </div>
   <div class="modal-body patient-info">
     <div class="mb-3 row">
       <div class="col-md-6 row m-0">
