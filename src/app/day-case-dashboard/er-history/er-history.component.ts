@@ -20,6 +20,8 @@ export class ErHistoryComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() redirectVisitData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
+
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('patientSearchModal') patientSearchModal: PatientSearchComponent;
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: ERDiagnosisComponent;
@@ -409,6 +411,7 @@ export class ErHistoryComponent implements OnInit {
       this.ERlistDataClone = this.ERlistData;
       this.sendErPatientCount.emit( this.ERlistData.length);
       this.lastIndex = this.ERlistData.length - 1;
+       this.dataToParent.emit(this.ERlistDataClone); 
 
       },
       (_error: any) => {}

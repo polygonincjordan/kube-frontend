@@ -1,84 +1,90 @@
 <div class="edash-rightSide">
   <div class="edash-mainContent">
-    <div class="container-fluid check-in-table">
-      <table class="table checkin-table custom-table-striped">
-        <thead>
-          <tr class="checkin-table-header">
-        <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">MRN</th>
-        <th scope="col">Case#</th>
-        <th scope="col">Risk</th>
-        <th class="table-row-width allergy" scope="col">Allergy</th>
-        <th>Vital</th>
-        <!-- <th>Diagnosis</th> -->
-        <th class="table-row-width allergy" scope="col">Isolation</th>
-        <th  scope="col">Visit status <i (click)="onSortClick($event,'Besstattext')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">Date <i (click)="onSortClick($event,'Datum')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">Time <i (click)="onSortClick($event,'Zeit')"  class="my-icon fa fa-chevron-up"></i></th>
-        <!-- <th scope="col">Ward <i (click)="onSortClick($event,'RoomidName')"  class="my-icon fa fa-chevron-up"></i></th> -->
-        <th scope="col">Room <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">Specialty <i class="my-icon fa fa-chevron-up"></i></th>
-        <th scope="col">Financial Category <i (click)="onSortClick($event,'ZzfinCat')"  class="my-icon fa fa-chevron-up"></i></th>
-        <th  scope="col">Attending Doctor</th>
-        <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let item of inHospitalist;let i = index">
-      <tr>
-        <td [title]="item.Patient"  (click)="redirectToTreatByName(item)" style="cursor:pointer">{{ item.Patient }}</td>
-        <td>{{ item.Patnr}}</td>
-        <td>{{item.Falnr}}</td>
-        <td class="border-left" style="width: 3%;text-align:center" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
-              <span>
-                <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
-                  (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
-              </span>
-            </td>
-        <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"
-              [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  ">
-              <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'" (click)="openModalForAllergy('', item)"
-                style="width: 23px" />
-            </td>
-        <td class="border-right" scope="row" style="padding-left: 0px; text-align: center"
-              [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
-              <img src="assets/img/er-vital.png" style="width: 23px"  title="Vitals"  (click)="openModalVital(item)" />
-            </td>
-        <!-- <td class="table-row-width allergy">{{ item.Anfdiagnose }}</td> -->
-       <td class="border-left text-center">
-              <span>
-                <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon"
-                  [title]="item.IsolationType ? item.IsolationType : 'No Isolation'" />
-              </span>
-            </td>
-        <td>{{ item.Besstattext }}</td>
-        <td>{{ getDate(item.Datum) | date : "dd.MM.yyyy" }}</td>
-        <td>{{ item.Zeit}}</td>
-        <!-- <td  style="white-space:nowrap" [title]="item.BehraumKb">{{ item.BehraumKb }}</td> -->
-        <td style="white-space:nowrap" [title]="item.BehraumKb">{{ item.BehraumKb }}</td>
-        <td title="Obstetrics & Gynecology">Obstetrics & Gynecology</td>
-        <td [title]="item.ZzfinCat">{{ item.ZzfinCat }}</td>
-        <td [title]="item.Behpersname">{{ item.Behpersname }}</td>
-        <td colspan="1"
-              style="display: flex; align-items: center; text-align: center; overflow: visible !important">
-              <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
-                <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer"
-                  title="Print Patient Label" />
-              </div>
-              <div style="margin-left: 3px; margin-right: 3px"
-                (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
-                <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status" />
-              </div>
-              <div style="margin-left: 3px; margin-right: 3px" [class.disabled]="item.Patname?.includes('(M')"
-                [style.pointerEvents]="item.Patname?.includes('(M') ? 'none' : 'auto'"
-                [style.opacity]="item.Patname?.includes('(M') ? '0.5' : '1'"
-                (click)="openDocumentingDeliveryModel(item)">
-                <img src="assets/img/newbornbaby.png" style="width: 25px; cursor: pointer"
-                  title="Documenting Delivery" />
-              </div>
-            </td>
-      </tr>
-    </tbody>
-      </table>
+    <div class="container-fluid">
+      <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
+        <img src="assets/img/pres-search-icon.svg" alt="" />
+        <input type="text" placeholder="Search" [(ngModel)]="searchMainString" class="form-control w-100" />
+      </div>
+      <div class="check-in-table">
+        <table class="table checkin-table custom-table-striped">
+          <thead>
+            <tr class="checkin-table-header">
+              <th scope="col">Patient Name <i (click)="onSortClick($event,'Patient')"  class="my-icon fa fa-chevron-up"></i></th>
+              <th scope="col">MRN</th>
+              <th scope="col">Case#</th>
+              <th scope="col">Risk</th>
+              <th class="table-row-width allergy" scope="col">Allergy</th>
+              <th>Vital</th>
+              <!-- <th>Diagnosis</th> -->
+              <th class="table-row-width allergy" scope="col">Isolation</th>
+              <th  scope="col">Visit status <i (click)="onSortClick($event,'Besstattext')"  class="my-icon fa fa-chevron-up"></i></th>
+              <th scope="col">Date <i (click)="onSortClick($event,'Datum')"  class="my-icon fa fa-chevron-up"></i></th>
+              <th scope="col">Time <i (click)="onSortClick($event,'Zeit')"  class="my-icon fa fa-chevron-up"></i></th>
+              <!-- <th scope="col">Ward <i (click)="onSortClick($event,'RoomidName')"  class="my-icon fa fa-chevron-up"></i></th> -->
+              <th scope="col">Room <i (click)="onSortClick($event,'BehraumKb')"  class="my-icon fa fa-chevron-up"></i></th>
+              <th scope="col">Specialty <i class="my-icon fa fa-chevron-up"></i></th>
+              <th scope="col">Financial Category <i (click)="onSortClick($event,'ZzfinCat')"  class="my-icon fa fa-chevron-up"></i></th>
+              <th  scope="col">Attending Doctor</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let item of inHospitalist | filter:searchMainString; let i = index">
+            <tr>
+              <td [title]="item.Patient"  (click)="redirectToTreatByName(item)" style="cursor:pointer">{{ item.Patient }}</td>
+              <td>{{ item.Patnr}}</td>
+              <td>{{item.Falnr}}</td>
+              <td class="border-left" style="width: 3%;text-align:center" [ngClass]="i === 0 ? 'border-top-left' :  lastIndex === i ? 'border-bottom-left' : ''  ">
+                    <span>
+                      <img src="assets/img/Risk.svg" style="width: 23px; cursor: pointer;"
+                        (click)="openModalForRisk(riskModal,item)" [title]="item.RiskInformation" />
+                    </span>
+                  </td>
+              <td class="" style="padding-left: 0px; text-align: center; cursor: pointer;"
+                    [ngClass]="i === 0 ? 'border-top' :  lastIndex === i ? 'border-bottom' : ''  ">
+                    <img src="assets/img/Allergy.svg" [title]="item.Allergies ? item.Allergies : 'No known allergy'" (click)="openModalForAllergy('', item)"
+                      style="width: 23px" />
+                  </td>
+              <td class="border-right" scope="row" style="padding-left: 0px; text-align: center"
+                    [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
+                    <img src="assets/img/er-vital.png" style="width: 23px"  title="Vitals"  (click)="openModalVital(item)" />
+                  </td>
+              <!-- <td class="table-row-width allergy">{{ item.Anfdiagnose }}</td> -->
+              <td class="border-left text-center">
+                    <span>
+                      <img [src]="item.IsolationType ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon"
+                        [title]="item.IsolationType ? item.IsolationType : 'No Isolation'" />
+                    </span>
+              </td>
+              <td>{{ item.Besstattext }}</td>
+              <td>{{ getDate(item.Datum) | date : "dd.MM.yyyy" }}</td>
+              <td>{{ item.Zeit}}</td>
+              <!-- <td  style="white-space:nowrap" [title]="item.BehraumKb">{{ item.BehraumKb }}</td> -->
+              <td style="white-space:nowrap" [title]="item.BehraumKb">{{ item.BehraumKb }}</td>
+              <td title="Obstetrics & Gynecology">Obstetrics & Gynecology</td>
+              <td [title]="item.ZzfinCat">{{ item.ZzfinCat }}</td>
+              <td [title]="item.Behpersname">{{ item.Behpersname }}</td>
+              <td colspan="1"
+                    style="display: flex; align-items: center; text-align: center; overflow: visible !important">
+                    <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
+                      <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer"
+                        title="Print Patient Label" />
+                    </div>
+                    <div style="margin-left: 3px; margin-right: 3px"
+                      (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
+                      <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status" />
+                    </div>
+                    <div style="margin-left: 3px; margin-right: 3px" [class.disabled]="item.Patname?.includes('(M')"
+                      [style.pointerEvents]="item.Patname?.includes('(M') ? 'none' : 'auto'"
+                      [style.opacity]="item.Patname?.includes('(M') ? '0.5' : '1'"
+                      (click)="openDocumentingDeliveryModel(item)">
+                      <img src="assets/img/newbornbaby.png" style="width: 25px; cursor: pointer"
+                        title="Documenting Delivery" />
+                    </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div *ngIf="inHospitalist?.length == 0" style="text-align: center">
         No results
       </div>

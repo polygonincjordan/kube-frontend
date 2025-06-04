@@ -117,6 +117,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
   filterStatusList: any[];
   dropdownSettings = {}
   filterBehpersonList: any;
+  wardListWithout: any;
   filterBehraumList: any;
   headerLabel: string;
   inHospitalist: any[] = [];
@@ -239,7 +240,9 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
       Physician: [''],
+      CreatedBy: [''],
       ItemStatus: [''],
+      FWard: [''],
     });
     this.filterFormPatientWithNoConsumable = this.formBuilder.group({
       Status: [''],
@@ -501,8 +504,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       }, []);
 
       this.filterBehraumList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
-        if (!accumulator.includes(currentValue.Behraum)) {
-          accumulator.push(currentValue.Behraum);
+        if (!accumulator.includes(currentValue.RoomidText)) {
+          accumulator.push(currentValue.RoomidText);
         }
         return accumulator;
       }, []);
@@ -514,10 +517,28 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
         return accumulator;
       }, []);
 
+      this.wardListWithout = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.Erusr)) {
+          accumulator.push(currentValue.Erusr);
+        }
+        return accumulator;
+      }, []);
+
     }
   }
 
+  allFilterArrayClear() {
+    this.getCaseTypeFilterData = [];
+    this.getCheckInRoomidTextFilterData = [];
+    this.getCheckInFinancialFilterData = [];
+    this.getCheckInWardFilterData = [];
+    this.attendingPhysicianList = [];
+    this.getCheckInSpecialtyFilterData = [];
+    this.getPerformanceUnitFilterData = [];
+  }
+
   receiveDatatoCheckIn(data?: string) {
+    this.allFilterArrayClear();
     if (data && data.length) {
       this.getCheckInData = data;
 
@@ -599,6 +620,14 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
 
         this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
+        );
+      } else if(this.erhistory) {
+        this.attendingPhysicianList = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+        );
+
+        this.getCheckInFinancialFilterData = this.getCheckInData.reduce(
+          (acc: string[], cur) => pushIfValid(acc, cur?.KostrName), []
         );
       } else {
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
@@ -801,6 +830,8 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       Rooms: '',
       Physician: '',
       ItemStatus: '',
+      CreatedBy: '',
+      FWard: '',
     });
     this.form.patchValue({
       admittedFrom: '',

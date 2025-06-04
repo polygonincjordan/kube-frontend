@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   TemplateRef,
@@ -35,6 +36,7 @@ export class LdrViewComponent implements OnInit {
   @ViewChild('deliveryModal') deliveryModal: DocumentingDeliveryComponent;
    @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
   lastIndex: number;
+  searchMainString: any;
   changeStatusForm: FormGroup;
   inHospitalist: any[] = [];
   sortColumn: string = 'Descr';
@@ -144,7 +146,8 @@ export class LdrViewComponent implements OnInit {
   selectedERList: any;
   searchString: any;
   inHospitalistClone: any;
-  oldDate: any;
+  oldDate = new Date();
+  physicianList: any;
   constructor(
     private _dataServices: EEmrService,
     private storageService: StorageService,
@@ -175,6 +178,7 @@ export class LdrViewComponent implements OnInit {
     let fromdatevalue = '';
     let todatevalue = '';
     let physicianvalue = '';
+    this.physicianList = physician;
     if (date) {
       fromdatevalue = date?.length
         ? `${new DatePipe('en-US').transform(date[0], 'yyyy-MM-dd')}T00:00:00`
@@ -770,7 +774,7 @@ export class LdrViewComponent implements OnInit {
   }
 
   reload(event) {
-    this.LDRListSet();
+    this.LDRListSet(this.oldDate, this.physicianList);
   }
 
   public labPrintLabelModal(template: TemplateRef<any>, data: any) {

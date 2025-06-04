@@ -125,8 +125,8 @@
                     [title]="item.Erusr" />
                 </td>
                 <td class="align-middle border-0">
-                  <div class="trash-icon">
-                    <img src="./assets/img/Delete.svg">
+                  <div class="trash-icon cursor-pointer">
+                    <img src="./assets/img/Delete.svg" (click)="confirmationForRiskDelete(item)">
                   </div>
                 </td>
               </tr>

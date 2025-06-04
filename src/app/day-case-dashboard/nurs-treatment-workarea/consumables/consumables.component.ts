@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { StorageLocation, StorageLocationDetails } from '@services/emergency-dashboard/interface/storage-location.interface';
 import { getAlertConfig } from '@services/index';
-import { ActionType } from '@services/interfaces/common.enum';
-import { TabsetComponent, TabDirective } from 'ngx-bootstrap/tabs';
+import { ActionType, FilterType } from '@services/interfaces/common.enum';
+import { StorageService } from '@services/storage.service';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -20,11 +22,10 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public formDetailGroup: FormGroup;
   public disableSwitching: boolean;
-  // @ViewChild('tabset') tabset: TabsetComponent;
-  // @ViewChild('first') first: TabDirective;
-  // @ViewChild('second') second: TabDirective;k
+  public storageLocationList: Array<StorageLocationDetails> = [];
+  public selectedLocation: any = 'DCS9'; // Property to hold selected location
 
-  actionTypeSubscription$: Subscription;
+  private actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
 
   activeTab: string = '2'; // Initialize with the id of the second tab
@@ -33,18 +34,28 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
     { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
   ];
-
+  private paramsObject: any;
 
   constructor(
     public ePrescriptionService: EPrescriptionService,
     public emergencyService: EmergencyService,
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
+    private storageService: StorageService,
+    private _route: ActivatedRoute,
   ) {
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
         this.isConsumableAction = data;
       }
+    });
+
+    this.formDetailGroup = new FormGroup({
+      selectedLocation: new FormControl('DCS9') // Initialize form control
+    });
+
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
     });
 
   }
@@ -59,6 +70,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.consumablesFrom();
+    this.getStoragelocations();
     this.dataShareService.sendData('2');
   }
 
@@ -66,11 +78,40 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
     // Set the second tab as the active tab after the view has been initialized
   }
 
+  private getStoragelocations() {
+
+    const userType = this.storageService.getUserProfile();
+    const parms = {
+      Bname: userType.UserName,
+      Einri: this.paramsObject.einri,
+      Falnr: this.paramsObject.falnr,
+    };
+    this.emergencyService.getStoragelocationList(`${JSON.stringify(parms)}`).subscribe({
+      next: (data: StorageLocation) => {
+        // Handle successful data retrieval
+        this.storageLocationList = data.d.results;
+        // Set default selection if only one item in the list
+        if (this.storageLocationList.length === 1) {
+          // this.selectedLocation = this.storageLocationList[0];
+          this.formDetailGroup.get('selectedLocation').setValue(this.selectedLocation);
+          this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, this.selectedLocation);
+        }
+        // resolve(formValue); // Resolve the promise with formValue
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+      },
+    });
+  }
+  // Method to handle location change event
+  public onLocationChange(event: any) {
+    // Handle location change logic here if needed
+    this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, event);
+  }
+
   public consumablesFrom() {
     this.formDetailGroup = this.formBuilder.group({
-      SearchData: ['', [Validators.required]],
-      DateRange: [[], [Validators.required]],
-      SelectDropdown: [null, [Validators.required]],
+      selectedLocation: [null, [Validators.required]],
     });
   }
 

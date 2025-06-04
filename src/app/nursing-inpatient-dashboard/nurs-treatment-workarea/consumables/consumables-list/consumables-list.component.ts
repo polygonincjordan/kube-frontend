@@ -7,7 +7,7 @@ import { DataShareService } from '@services/data-share.service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { getAlertConfig } from '@services/index';
-import { ActionType, WordType } from '@services/interfaces/common.enum';
+import { ActionType, FilterType, WordType } from '@services/interfaces/common.enum';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { Subject, Subscription, debounceTime, filter, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -73,6 +73,12 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     this.UserDetails = JSON.parse(localStorage.getItem('amc_dev_loggedInUserProfile'));
     this.consumableHistoryForm = this.generateConsumableForm();
     this.generateDefaultForm();
+
+    this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
+      if (data != null && data.type === FilterType.ConsumableStorageLocation$ && data.isAllow === true) {
+        this.selectedStorageLocation = data?.value?.Lgort;
+      }
+    });
   }
 
   private generateDefaultForm() {

@@ -641,9 +641,47 @@ export class LabResultsComponent implements OnInit{
 
   
 
-  filterListDataLab(event) {
-    this.getErList(event,this.oldDate)
+  // filterListDataLab(event) {
+  //   this.getErList(event,this.oldDate)
+  // }
+
+filterListDataLab(event: any) {
+  // Reset main list
+  this.ERlistData = this.ERlistDataClone;
+
+  const hasFilter = event.Rooms || event.Physician || event.ItemStatus || event.CreatedBy;
+
+  if (!hasFilter) {
+    this.sendErPatientCount.emit(this.ERlistData.length);
+    return;
   }
+
+  let filteredData = [...this.ERlistDataClone];
+  // Room ID filter
+  if (event.Rooms?.length) {
+    filteredData = filteredData.filter(item =>
+      event.Rooms.includes(item.RoomidText?.trimStart())
+    );
+  }
+
+  // Physician filter
+  if (event.CreatedBy?.length) {
+    filteredData = filteredData.filter(item =>
+      event.CreatedBy.includes(item.Erusr?.trimStart())
+    );
+  }
+
+  if (event.ItemStatus?.length) {
+    filteredData = filteredData.filter(item =>
+      event.ItemStatus.includes(item.Posstatus?.trimStart())
+    );
+  }
+
+  // Update list and emit count
+  this.ERlistData = filteredData;
+  this.sendErPatientCount.emit(this.ERlistData.length);
+}
+
 
   getPrintUrl(){
     this.emergencyService.getPrintLabel().subscribe((res:any)=>{

@@ -406,18 +406,17 @@ font-size: 12px;
             (click)="showFilterFn($event)"></i></span>
       </div>
       <form [formGroup]="filterForm">
-        <p style="margin: auto; margin-top: 5px">Physician</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
-          <!-- <ng-option selected value="">Choose Physician</ng-option> -->
-          <ng-option [value]="item.NamString" *ngFor="let item of assignUsersList">
-            {{ item.NamString }}
+        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true" >
+          <ng-option [value]="item" *ngFor="let item of attendingPhysicianList">
+            {{ item }}
           </ng-option>
         </ng-select>
         <p style="margin: auto; margin-top: 5px">Financial Category</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="FCategory">
-          <ng-option value="">Choose</ng-option>
-          <ng-option value="Self Payer">Self Payer</ng-option>
-          <ng-option value="Insurance">Insurance</ng-option>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FCategory" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInFinancialFilterData">
+            {{ item }}
+          </ng-option>
         </ng-select>
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
@@ -457,30 +456,17 @@ font-size: 12px;
         </ng-select>
 
         <p style="margin: auto; margin-top: 5px">created by</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="Physician" [multiple]="true">
-          <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+        <ng-select class="" id="inputGroupSelect01" formControlName="CreatedBy" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of filterBehpersonList">
             {{item}}
           </ng-option>
         </ng-select>
+
         <p style="margin: auto; margin-top: 5px">Order Status</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="ItemStatus">
-          <ng-option value="">Choose</ng-option>
           <ng-option [value]="item" *ngFor="let item of filterStatusList"> {{item}}</ng-option>
-
         </ng-select>
-        <!-- <p style="margin: auto; margin-top: 5px">Creation Date</p>
-      <div class="date-function" style="background: #dee5ea;
 
-                border-radius: 8px;
-                display: flex;
-               ">
-                  <input #drp="bsDaterangepicker" bsDaterangepicker
-                    [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
-                    'DD.MM.YYYY', containerClass: 'daterangepickerlab ', showWeekNumbers:
-                    false}" class="form-control" formControlName="CreationDate" />
-
-                </div> -->
         <div class="mt-2" style="display: flex; justify-content: space-around ">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
@@ -718,7 +704,7 @@ font-size: 12px;
   <app-nurs-treatment-workarea style="width: calc(100% - 90px);" *ngIf="treatmentarea"
     (redirectTreatmentPatientData)="collectTreatmentPatientData($event)"></app-nurs-treatment-workarea>
   <app-er-history style="width: calc(100% - 78px);" *ngIf="erhistory" (redirectCheckInData)="collectCheckInData($event)"
-    (redirectVisitData)="collectErPatientSearchData($event)"
+    (redirectVisitData)="collectErPatientSearchData($event)" (dataToParent)="receiveDatatoCheckIn($event)"
     (sendErPatientCount)="collectErHistPatientCount($event)"></app-er-history>
   <app-patient-without-consumable style="width: calc(100% - 78px);" *ngIf="noConsumables"
     (sendErPatientCount)="collectErPatientCount($event)"  (dataToParent)="receiveDataFromPatientWithoutConsumableChild($event)"

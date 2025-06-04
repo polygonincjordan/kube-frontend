@@ -97,6 +97,7 @@ export class HeaderComponent implements OnInit {
       lastName: [''],
       telephone: [''],
       idNumber: [''],
+      sex: [''],
     });
     this.profileResponse = this.storageService.getUserProfile();
     if (this.route.url != '/emergencydashboard') {

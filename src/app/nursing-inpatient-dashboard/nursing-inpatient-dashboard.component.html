@@ -695,74 +695,27 @@
         ></span>
       </div>
       <form [formGroup]="filterFormLab">
-        <p style="margin: auto; margin-top: 5px">Rooms</p>
-        <ng-select
-          class=""
-          id="inputGroupSelect01"
-          formControlName="Rooms"
-          [multiple]="true"
-        >
+        <p style="margin: auto; margin-top: 5px">Room</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="Rooms" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of filterBehraumList">
-            {{ item }}
+            {{item}}
           </ng-option>
         </ng-select>
 
-        <p style="margin: auto; margin-top: 5px">Attending Physician</p>
-        <ng-select
-          class=""
-          id="inputGroupSelect01"
-          formControlName="Physician"
-          [multiple]="true"
-        >
-          <!-- <ng-option selected value="">Choose Physician</ng-option> -->
+        <p style="margin: auto; margin-top: 5px">created by</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="CreatedBy" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of filterBehpersonList">
-            {{ item }}
+            {{item}}
           </ng-option>
         </ng-select>
-        <div>
-          <p style="margin: auto; margin-top: 5px">Ward</p>
-          <ng-select
-            class=""
-            id="inputGroupSelect01"
-            formControlName="FWard"
-            [multiple]="true"
-          >
-            <ng-option [value]="item.Status" *ngFor="let item of wardListWithout">
-              {{ item.Status }}
-            </ng-option>
-          </ng-select>
-        </div>
-        <!-- <div>
-          <p style="margin: auto; margin-top: 5px">Room</p>
-          <ng-select
-            class=""
-            id="inputGroupSelect01"
-            formControlName="RoomidText"
-            [multiple]="true"
-          >
-            <ng-option [value]="item.Status" *ngFor="let item of roomListWithoutCon">
-              {{ item.Status }}
-            </ng-option>
-          </ng-select>
-        </div> -->
-        <!-- <p style="margin: auto; margin-top: 5px">Creation Date</p>
-      <div class="date-function" style="background: #dee5ea;
 
-                border-radius: 8px;
-                display: flex;
-               ">
-                  <input #drp="bsDaterangepicker" bsDaterangepicker
-                    [bsConfig]="{rangeInputFormat: 'DD.MM.YYYY', dateInputFormat:
-                    'DD.MM.YYYY', containerClass: 'daterangepickerlab ', showWeekNumbers:
-                    false}" class="form-control" formControlName="CreationDate" />
+        <p style="margin: auto; margin-top: 5px">Order Status</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="ItemStatus">
+          <ng-option [value]="item" *ngFor="let item of filterStatusList"> {{item}}</ng-option>
+        </ng-select>
 
-                </div> -->
-        <div class="mt-2" style="display: flex; justify-content: space-around">
-          <button
-            class="btn btn-primary"
-            style="background-color: #0082c8; border: #0082c8"
-            (click)="filterList()"
-          >
+        <div class="mt-2" style="display: flex; justify-content: space-around ">
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
           <!-- <button class="btn btn-primary" style="    background-color: #0082c8;

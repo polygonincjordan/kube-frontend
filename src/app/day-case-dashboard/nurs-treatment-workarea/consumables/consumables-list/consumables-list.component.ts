@@ -28,7 +28,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
   public batchNumberList: Array<any> = [];
   public PatMatCosmpNmm7HdToItmNav: FormArray;
   public searchTerm = new Subject<string>();
-  public selectedStorageLocation: string = 'ER01';
+  public selectedStorageLocation: string = 'DCS9';
 
   private searchSubject = new Subject<string>();
   private materialType: string;

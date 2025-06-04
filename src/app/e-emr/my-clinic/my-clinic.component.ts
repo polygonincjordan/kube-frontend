@@ -924,8 +924,10 @@ export class MyClinicComponent implements OnInit {
   }
 
   encounterId: any
+  selectedCheckoutListValue: any
   patient: Patient = {} as Patient;
   openPatientInfo(template: TemplateRef<any>,item) {
+    this.selectedCheckoutListValue = item;
     this.encounterId = item.EINRI + item.FALNR + item.LFDBW;
     this.getDataPatient(template);
   }

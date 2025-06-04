@@ -28,7 +28,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
   isConsumableAction: string = '1';
   
   public storageLocationList: Array<StorageLocationDetails> = [];
-  public selectedLocation: any; // Property to hold selected location
+  public selectedLocation: any = 'DI02'; // Property to hold selected location
   private paramsValue: any;
 
   activeTab: string = '2'; // Initialize with the id of the second tab
@@ -77,7 +77,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
       SearchData: ['', [Validators.required]],
       DateRange: [[], [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
-      selectedLocation: [null, [Validators.required]]
+      selectedLocation: ['DI02', [Validators.required]]
     });
   }
 
@@ -125,7 +125,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
         // Handle successful data retrieval
         this.storageLocationList = data.d.results;
         if (this.storageLocationList.length === 1) {
-          this.selectedLocation = this.storageLocationList[0];
+          // this.selectedLocation = this.storageLocationList[0];
           this.formDetailGroup.get('selectedLocation').setValue(this.selectedLocation);
           this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, this.selectedLocation);
         }
