@@ -9,25 +9,25 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { EEmrService } from '@services/e-emr.service';
-import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
-
+@UntilDestroy()
 @Component({
-  selector: 'app-consultations-orders',
-  templateUrl: './consultations-orders.component.html',
-  styleUrls: ['./consultations-orders.component.scss'],
+  selector: 'app-consultations-orders-list',
+  templateUrl: './consultations-orders-list.component.html',
+  styleUrls: ['./consultations-orders-list.component.scss'],
 })
-export class ConsultationsOrdersComponent implements OnInit {
-  @Output() reloadTableData = new EventEmitter();
-
+export class ConsultationsOrdersListComponent implements OnInit {
+  @Input() listItem: any;
   @Input() consultationsOrdersList: any;
   @Input() searchString: any;
+  @Output() openModuleKardex = new EventEmitter();
+    @Output() reloadTableData = new EventEmitter();
   modalRef: BsModalRef;
   profileRes: any;
   columnList: string[] = [
@@ -58,6 +58,7 @@ export class ConsultationsOrdersComponent implements OnInit {
   ProgressNotesList: any[];
   occupationalGroupData: any;
   copyProgressEntryData: any;
+  asc: any;
   constructor(
     public emergencyService: EmergencyService,
     private _dataServices: EEmrService,
@@ -131,7 +132,7 @@ export class ConsultationsOrdersComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'OK',
         });
-        this.reloadTableData.emit();
+        this.reloadTableData.emit()
       },
       (_error: any) => {
         this.modalRef.hide();
@@ -354,4 +355,42 @@ export class ConsultationsOrdersComponent implements OnInit {
       return date;
     }
   }
+   redirectToeKardex(data:any){
+    debugger
+       this.openModuleKardex.emit(data);
+  }
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.listItem.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.listItem.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    }
+  }
+ 
 }

@@ -44,6 +44,7 @@ import { ArrivalMainListComponent } from './components/arrival-main-list/arrival
 import { SurgeryWorklistTabComponent } from './components/surgery-worklist-tab/surgery-worklist-tab.component';
 import { NurErAllergyComponent } from './components/surgery-worklist-tab/nur-er-allergy/nur-er-allergy.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
+import { ConsultationsOrdersListComponent } from './components/consultations-orders-list/consultations-orders-list.component';
 
 export const eHospitalistRoutes: Routes = [
   { path: '**', component: InPatientDashboardComponent },
@@ -94,7 +95,8 @@ export const eHospitalistRoutes: Routes = [
     DocumentingDeliveryComponent,
     ArrivalMainListComponent,
     SurgeryWorklistTabComponent,
-    NurErAllergyComponent
+    NurErAllergyComponent,
+    ConsultationsOrdersListComponent
     // HeaderComponent
   ],
 })

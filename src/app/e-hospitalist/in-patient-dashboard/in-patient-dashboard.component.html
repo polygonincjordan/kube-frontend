@@ -429,14 +429,27 @@
                             (onSelect)="onItemSelect1($event)">
                           </ng-multiselect-dropdown>
                         </div>
-                        <p style="margin: auto; margin-top: 5px">
+                        <p style="margin: auto; margin-top: 5px" *ngIf="!this.consultationsOrders">
                           Attending Physician
                         </p>
-                        <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue != '07'" class="multiselect-adjust"
+                        <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue != '07' && !this.consultationsOrders" class="multiselect-adjust"
                           [settings]="dropdownSettingsForAttendPhy" [placeholder]="'Choose Physician'"
                           formControlName="patientStatus" [data]="inAttendPhyList" (onSelect)="onItemSelect1($event)">
                         </ng-multiselect-dropdown>
-
+                        <div *ngIf="consultationsOrders">
+                          <p style="margin: auto; margin-top: 5px">Patient's Status</p>
+                  <select
+                    class="custom-select"
+                    id="inputGroupSelect01"
+                    formControlName="patientStatusCon">
+                    <option selected value="">Choose status</option>
+                    <option value="Admitted">Admitted</option>
+                    <option value="New Admissions">New Admissions</option>
+                    <option value="Planned discharge">Planned Discharge</option>
+                    <option value="Recently discharged">Recently Discharged</option>
+                  </select>
+                        </div>
+                        
                         <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue == '07'" class="multiselect-adjust"
                           [settings]="dropdownSettingsForLDRAttendPhy" [placeholder]="'Choose Physician'"
                           formControlName="patient" [data]="inLDRAttendPhyList" (onSelect)="onItemSelect1($event)">
@@ -446,7 +459,7 @@
                           <option value="Physician 1">Physician 1</option>
                           <option value="Physician 2">Physician 2</option>
                         </select> -->
-                        <div *ngIf="navTabBoxActiveValue != '06' && navTabBoxActiveValue != '07'">
+                        <div *ngIf="navTabBoxActiveValue != '06' && navTabBoxActiveValue != '07' && !this.consultationsOrders">
                           <p style="margin: auto; margin-top: 5px">Speciality</p>
                           <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
                             [placeholder]="'Choose Speciality'" formControlName="specialty" [data]="getSpecialtyData"
@@ -455,11 +468,15 @@
                         </div>
                         <div style="display: flex; justify-content: space-around">
                           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
-                            (click)="inPatientListByFilter()" *ngIf="navTabBoxActiveValue != '07'">
+                            (click)="inPatientListByFilter()" *ngIf="navTabBoxActiveValue != '07' && !this.consultationsOrders">
                             Filter
                           </button>
                           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
                           (click)="inPatientLDRListByFilter()" *ngIf="navTabBoxActiveValue == '07'">
+                          Filter
+                        </button>
+                          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                          (click)="consultationsOrdersListByFilter()" *ngIf="navTabBoxActiveValue == '02' && this.consultationsOrders">
                           Filter
                         </button>
                         </div>
@@ -635,6 +652,12 @@
                 data-bs-placement="right" title="Not Executed Physician Order"
                 (click)="navModule('Not_Executed_Physician_Order')" />
             </div>
+            <div *ngIf="navTabBoxActiveValue == '02'" [ngClass]="consultationsOrders ? 'selected-notif-icon': ''" class="notif-icon">
+              <span class="rounded-circle notif-value" *ngIf="consultationsOrdersList?.length != 0">{{consultationsOrdersList?.length}}</span>
+              <img class="img-style cursor-pointer" src="assets/img/consultation.jpg" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="IP Consultations"
+                (click)="navModule('Consultations_Orders')" />
+            </div>
             <!-- <app-icon-box-side-menu title="Not Executed Physician Order"
               url="assets/img/phord.jpg"></app-icon-box-side-menu> -->
           </div>
@@ -675,6 +698,9 @@
               (openModuleKardex)="redirectToeKardex($event)" (reloadTableData)="realoadTable($event)"
               (openModuleAdmissionProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"
               (openModuleDischargeProcessEvent)="openModuleAdmissionProcess($event, 'admit-process')"></missed-medications-doses>
+          </div>
+          <div class="w-100" *ngIf="consultationsOrders && navTabBoxActiveValue == '02'" style="overflow: auto; max-height: 61vh; width: 100%">
+            <app-consultations-orders-list (openModuleKardex)="redirectToeKardex($event)" [listItem]="consultationsOrdersList" [searchString]="searchString" *ngIf="consultationsOrders" (reloadTableData)="realoadTable($event)"></app-consultations-orders-list>
           </div>
         </div>
 
