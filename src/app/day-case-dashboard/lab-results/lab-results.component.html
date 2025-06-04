@@ -1,83 +1,85 @@
 <div class="edash-rightSide">
   <div class="edash-mainContent">
-    <div class="container-fluid check-in-table">
+    <div class="container-fluid">
       <div class="search-functionality col-md-1 pl-0 pr-0 mb-2">
         <img src="assets/img/pres-search-icon.svg" alt="" />
         <input type="text" placeholder="Search" [(ngModel)]="searchString" class="form-control w-100" />
       </div>
-      <table class="table checkin-table custom-table-striped">
-        <thead>
-          <tr class="checkin-table-header">
-            <th scope="col" style="padding-left: 11px;">Patient Name <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatientName()"></i></th>
-            <th scope="col" style="padding-left: 0px;">MRN</th>
-            <th scope="col" style="padding-left: 0px;">Case #</th>
-            <th scope="col" style="padding-left: 0px;">Room</th>
-            <th scope="col" style="padding-left: 0px;">Order Description</th>
-            <th scope="col" style="padding-left: 0px;">
-              Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
-            </th>
-            <th scope="col" style="padding-left: 0px;">
-              Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDesiredAt()"></i>
-            </th>
-            <th scope="col" style="padding-left: 0px;">Order Status</th>
-            <th scope="col" style="padding-left: 0px;">Service Status</th>
-            <th scope="col" style="padding-left: 0px;">Order # <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortOrder()"></i></th>
-            <th scope="col" style="padding-left: 0px;">Created by</th>
-            <th scope="col">
-              Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTimeSince()"></i>
-            </th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-            <td scope="row" class="border-top-none" style="padding-left: 11px;">
-              {{ item.Patient }}
-            </td>
-            <td scope="row" class="border-top-none" style="padding-left: 1px;">
-              {{ item.Patnr }}
-            </td>
-            <td scope="row" class="border-top-none">
-              {{ item.Falnr }}
-            </td>
-            <td scope="row" class="border-top-none">
-              {{ item.RoomidText }}
-            </td>
-            <td scope="row" class="border-top-none" style="padding-left: 1px;">
-              {{ item.Leitx }}
-            </td>
-            <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" class="border-top-none" (click)="redirectToTreatByName(item)">
-              {{ getDate(item.Datum) | date : "dd.MM.y" }}
-            </td>
-            <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
-            <td class="border-top-none" style="padding-left: 1px;">
-              {{ item.Posstatus }}
-            </td>
-            <td class="border-top-none" style="padding-left: 1px;">
-              {{ item.Lststatus }}
-            </td>
-            <td scope="row" class="border-top-none" style="padding-left: 1px;">
-              {{ item.Prgnr }}
-            </td>
-            <td class="border-top-none" style="padding-left: 1px;">
-              {{ item.Erusr }}
-            </td>
-            <td class="border-top-none" [title]="getTimeSinceOrdered(item)">
-              {{ getTimeSinceOrdered(item) }}
-            </td>
-            <td style="width: 1%">
-              <div style="display: flex; justify-content: end; line-height: 14px">
-                <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel, item)">
-                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
+      <div class="check-in-table">
+        <table class="table checkin-table custom-table-striped">
+          <thead>
+            <tr class="checkin-table-header">
+              <th scope="col" style="padding-left: 11px;">Patient Name <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortPatientName()"></i></th>
+              <th scope="col" style="padding-left: 0px;">MRN</th>
+              <th scope="col" style="padding-left: 0px;">Case #</th>
+              <th scope="col" style="padding-left: 0px;">Room</th>
+              <th scope="col" style="padding-left: 0px;">Order Description</th>
+              <th scope="col" style="padding-left: 0px;">
+                Desired On <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTime()"></i>
+              </th>
+              <th scope="col" style="padding-left: 0px;">
+                Desired at <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortDesiredAt()"></i>
+              </th>
+              <th scope="col" style="padding-left: 0px;">Order Status</th>
+              <th scope="col" style="padding-left: 0px;">Service Status</th>
+              <th scope="col" style="padding-left: 0px;">Order # <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortOrder()"></i></th>
+              <th scope="col" style="padding-left: 0px;">Created by</th>
+              <th scope="col">
+                Time since ordered <i class="fa fa-sort ml-1" aria-hidden="true" (click)="sortTimeSince()"></i>
+              </th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
+              <td scope="row" class="border-top-none" style="padding-left: 11px;">
+                {{ item.Patient }}
+              </td>
+              <td scope="row" class="border-top-none" style="padding-left: 1px;">
+                {{ item.Patnr }}
+              </td>
+              <td scope="row" class="border-top-none">
+                {{ item.Falnr }}
+              </td>
+              <td scope="row" class="border-top-none">
+                {{ item.RoomidText }}
+              </td>
+              <td scope="row" class="border-top-none" style="padding-left: 1px;">
+                {{ item.Leitx }}
+              </td>
+              <td scope="row" [title]="getDate(item.Datum) | date : 'dd.MM.y'" class="border-top-none" (click)="redirectToTreatByName(item)">
+                {{ getDate(item.Datum) | date : "dd.MM.y" }}
+              </td>
+              <td class="border-top-none" [title]="item.Zeit"> {{ getTime(item.Zeit) }}</td>
+              <td class="border-top-none" style="padding-left: 1px;">
+                {{ item.Posstatus }}
+              </td>
+              <td class="border-top-none" style="padding-left: 1px;">
+                {{ item.Lststatus }}
+              </td>
+              <td scope="row" class="border-top-none" style="padding-left: 1px;">
+                {{ item.Prgnr }}
+              </td>
+              <td class="border-top-none" style="padding-left: 1px;">
+                {{ item.Erusr }}
+              </td>
+              <td class="border-top-none" [title]="getTimeSinceOrdered(item)">
+                {{ getTimeSinceOrdered(item) }}
+              </td>
+              <td style="width: 1%">
+                <div style="display: flex; justify-content: end; line-height: 14px">
+                  <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel, item)">
+                    <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
+                  </div>
+                  <div style="margin-left: 3px; margin-right: 3px" (click)="labSampleCollectedPrintModal(labSampleCollectedPrint, item)">
+                    <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
+                  </div>
                 </div>
-                <div style="margin-left: 3px; margin-right: 3px" (click)="labSampleCollectedPrintModal(labSampleCollectedPrint, item)">
-                  <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div *ngIf="ERlistData?.length == 0" style="text-align: center">
         No results
       </div>

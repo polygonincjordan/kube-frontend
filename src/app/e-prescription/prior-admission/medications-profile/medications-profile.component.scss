@@ -18,7 +18,8 @@
       height: calc(100vh - 50px) !important;
 
       .table-overfllow {
-        height: 90% !important;
+        // height: 90% !important;
+         height: calc(100vh - 170px) !important;
       }
     }
 }

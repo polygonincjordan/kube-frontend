@@ -264,7 +264,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       ItemStatus: [''],
       FWard: [''],
-      RoomidText: ['']
+      RoomidText: [''],
+      CreatedBy: ['']
     });
     this.filterFormPatientWithNoConsumable = this.formBuilder.group({
       Status: [''],
@@ -785,34 +786,34 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   receiveDataFromChild(data?: string) {
     if (data && data.length) {
       this.labReceivedData = data;
-      this.filterStatusList = this.labReceivedData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue.Posstatus)) {
-            accumulator.push(currentValue.Posstatus);
-          }
-          return accumulator;
-        },
-        []
-      );
-      this.filterBehraumList = this.labReceivedData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue.RoomidText)) {
-            accumulator.push(currentValue.RoomidText);
-          }
-          return accumulator;
-        },
-        []
-      );
+      this.filterStatusList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.Posstatus)) {
+          accumulator.push(currentValue.Posstatus);
+        }
+        return accumulator;
+      }, []);
 
-      this.filterBehpersonList = this.labReceivedData.reduce(
-        (accumulator: string[], currentValue) => {
-          if (!accumulator.includes(currentValue.Behperson)) {
-            accumulator.push(currentValue.Behperson);
-          }
-          return accumulator;
-        },
-        []
-      );
+      this.filterBehraumList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.RoomidText)) {
+          accumulator.push(currentValue.RoomidText);
+        }
+        return accumulator;
+      }, []);
+
+      this.filterBehpersonList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.Erusr)) {
+          accumulator.push(currentValue.Erusr);
+        }
+        return accumulator;
+      }, []);
+
+      this.wardListWithout = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.Erusr)) {
+          accumulator.push(currentValue.Erusr);
+        }
+        return accumulator;
+      }, []);
+
     }
   }
 
@@ -1120,7 +1121,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       Physician: '',
       ItemStatus: '',
        FWard: '',
-      RoomidText: ''
+      RoomidText: '',
+      CreatedBy: ''
     });
     this.form.patchValue({
       admittedFrom: '',

@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
+import { DataService } from '@services/data.service';
 @Component({
   selector: 'app-laboratory-table-list',
   templateUrl: './laboratory-table-list.component.html',
@@ -46,6 +47,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     private _dataServices: EEmrService,
     private sanitizer: DomSanitizer,
     private modalService: BsModalService,
+    private dataService: DataService,
     private hospitalistService: HospitalistService) {}
 
   ngOnInit(): void {
