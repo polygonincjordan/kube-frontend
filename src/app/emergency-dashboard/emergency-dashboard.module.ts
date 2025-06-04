@@ -127,6 +127,7 @@ import { CorrespondenceDocumentModule } from '../shared-module/correspondence-do
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { FeeListService } from '@services/fee-service/fee-list.service';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
+import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 
 
 
@@ -224,7 +225,8 @@ export const emergencyDashboard: Routes = [
     NgxExtendedPdfViewerModule,
     CorrespondenceDocumentModule,
     AdminAttechmentModule,
-    VitalSignModule
+    VitalSignModule,
+    ConsultationsOrdersModule
   ]
 })
 export class EmergencyDashboardModule { }

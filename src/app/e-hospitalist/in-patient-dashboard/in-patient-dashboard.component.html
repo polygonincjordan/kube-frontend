@@ -653,7 +653,7 @@
                 (click)="navModule('Not_Executed_Physician_Order')" />
             </div>
             <div *ngIf="navTabBoxActiveValue == '02'" [ngClass]="consultationsOrders ? 'selected-notif-icon': ''" class="notif-icon">
-              <span class="rounded-circle notif-value" *ngIf="consultationsOrdersList?.length != 0">{{consultationsOrdersList?.length}}</span>
+              <span class="rounded-circle notif-value" *ngIf="consultationsOrdersList?.length">{{consultationsOrdersList?.length}}</span>
               <img class="img-style cursor-pointer" src="assets/img/consultation.jpg" data-bs-toggle="tooltip"
                 data-bs-placement="right" title="IP Consultations"
                 (click)="navModule('Consultations_Orders')" />

@@ -356,8 +356,7 @@ export class ConsultationsOrdersListComponent implements OnInit {
     }
   }
    redirectToeKardex(data:any){
-    debugger
-       this.openModuleKardex.emit(data);
+     this.openModuleKardex.emit(data);
   }
   commanSorting(keyName: string) {
     if (!this.asc) {
