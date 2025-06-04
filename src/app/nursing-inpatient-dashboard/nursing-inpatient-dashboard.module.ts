@@ -182,6 +182,7 @@ import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 import { LdrViewComponent } from './ldr-view/ldr-view.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
+import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 
 
 
@@ -379,7 +380,8 @@ const route: Routes = [
     ConfusionAssessmentMethodModule,
     IcBundleAdultVentilatorModule,
     IcuHoursFlowsheetModule,
-    AdminAttechmentModule
+    AdminAttechmentModule,
+    ConsultationsOrdersModule
 ],
 })
 export class NursingInpatientDashboardModule {}

@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { ArrivalMainListComponent } from '../components/arrival-main-list/arrival-main-list.component';
+import { SharedService } from '@services/shared.service';
 @UntilDestroy()
 @Component({
   selector: 'in-patient-dashboard',
@@ -120,6 +121,7 @@ export class InPatientDashboardComponent implements OnInit {
   missedMediDoses = false;
   notReleasedDoc = false;
   notExecutedPhysicianOrder = false;
+  consultationsOrders = false;
   navModulesList = [
     // 'home',
     // 'My_IP_consultations',
@@ -162,6 +164,7 @@ export class InPatientDashboardComponent implements OnInit {
   inLDRAttendPhyList: any;
   attendingPhysicianList: any;
   inSurgeryWorklistClone: any[];
+  consultationsOrdersList: any;
   constructor(
     private _EMRServices: EEmrService,
     private hospitalistService: HospitalistService,
@@ -169,7 +172,8 @@ export class InPatientDashboardComponent implements OnInit {
     public missedMedicationService: MissedMedicationDosesService,
     public ePrescriptionService: EPrescriptionService,
     public patientService: PatientService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public sharedService: SharedService,
 
   ) {
   }
@@ -340,6 +344,7 @@ export class InPatientDashboardComponent implements OnInit {
       admittedTo: [''],
       wardNo: [''],
       patientStatus: [''],
+      patientStatusCon: [''],
       specialty: [''],
       patient: ['']
     });
@@ -716,6 +721,7 @@ export class InPatientDashboardComponent implements OnInit {
       admittedTo: [''],
       wardNo: [''],
       patientStatus: [''],
+      patientStatusCon: [''],
       specialty: [''],
       patient: ['']
     });
@@ -1165,7 +1171,7 @@ export class InPatientDashboardComponent implements OnInit {
 
   redirectToeKardex(data) {
     localStorage.setItem('admit_process', JSON.stringify(false));
-    if (this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03' || this.navTabBoxActiveValue == '08' || this.navTabBoxActiveValue == '09') {
+    if (!this.consultationsOrders && (this.navTabBoxActiveValue == '02' || this.navTabBoxActiveValue == '03' || this.navTabBoxActiveValue == '08' || this.navTabBoxActiveValue == '09')) {
       this.openModuleAdmissionProcess(data, 'admit-process')
       this.patientService.isAdmitProcessSection = true;
       localStorage.setItem('admit_process', JSON.stringify(true));
@@ -1323,6 +1329,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.abnormalRadFindings = false;
       this.missedMediDoses = false;
       this.notExecutedPhysicianOrder = false;
+      this.consultationsOrders = false;
       this.notReleasedDoc = false;
       this.inPatientListByFilter(this.getConfigToolWardList, this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       // this.initialPatientList(value);
@@ -1339,6 +1346,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.abnormalRadFindings = false;
       this.missedMediDoses = false;
       this.notExecutedPhysicianOrder = false;
+      this.consultationsOrders = false;
       this.notReleasedDoc = false;
       this.initialfilterData(this.getConfigToolWardList, '02', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
       // this.initialPatientList(value);
@@ -1355,6 +1363,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.abnormalLabResult = false;
       this.missedMediDoses = false;
       this.notExecutedPhysicianOrder = false;
+      this.consultationsOrders = false;
       this.notReleasedDoc = false;
       // this.initialPatientList(value);
       this.initialfilterData(this.getConfigToolWardList, '03', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
@@ -1373,6 +1382,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.abnormalRadFindings = false;
       this.missedMediDoses = true;
       this.notExecutedPhysicianOrder = false;
+      this.consultationsOrders = false;
       this.notReleasedDoc = false;
       // this.initialPatientList(value);
       this.initialfilterData(this.getConfigToolWardList, '04', this.getConfigToolSpecialtyList, this.getConfigToolPhysicianList);
@@ -1385,6 +1395,7 @@ export class InPatientDashboardComponent implements OnInit {
       this.selectTab = '';
       this.notReleasedDoc = true;
       this.notExecutedPhysicianOrder = false;
+      this.consultationsOrders = false;
       this.home = false;
       this.ipConsultation = false;
       this.abnormalLabResult = false;
@@ -1400,6 +1411,7 @@ export class InPatientDashboardComponent implements OnInit {
     if (value == 'Not_Executed_Physician_Order') {
       this.selectTab = '- Not Executed Physician Order';
       this.notExecutedPhysicianOrder = true;
+       this.consultationsOrders = false;
       this.home = false;
       this.ipConsultation = false;
       this.abnormalLabResult = false;
@@ -1414,9 +1426,46 @@ export class InPatientDashboardComponent implements OnInit {
       // this.showModuleName = this.convertModuleName(value);
 
     }
+    if (value == 'Consultations_Orders') {
+      this.selectTab = '- Consultations Orders';
+      this.notExecutedPhysicianOrder = false;
+      this.consultationsOrders = true;
+      this.home = false;
+      this.ipConsultation = false;
+      this.abnormalLabResult = false;
+      this.abnormalRadFindings = false;
+      this.missedMediDoses = false;
+      this.notReleasedDoc = false;
+      this.initialPatientConList();
+    }
   }
 
-
+  initialPatientConList() {
+    let jsonObj = {};
+         if (this.f.admittedFrom.value || this.f.admittedTo.value) {
+          jsonObj = {
+            AdmDateFrom: this.sharedService.getDateRangeFormat(this.f.admittedFrom.value),
+            AdmDateTo: this.sharedService.getDateRangeFormat(this.f.admittedTo.value),
+            Floor: this.f.wardNo.value,
+            Patientstatus: this.f.patientStatus.value,
+            module: 'My_IP_consultations',
+          };
+        } else {
+          jsonObj = {
+            Floor: this.f.wardNo.value,
+            Patientstatus: this.f.patientStatus.value,
+            module: 'My_IP_consultations',
+          };
+        }
+       this._EMRServices.getInPatientList(jsonObj).subscribe(
+         (_success: any) => {
+           if(_success){
+            this.consultationsOrdersList =  _success.result.d.results
+           }
+         },
+         (_error: any) => { }
+       );
+     }
 
   initialPatientList(selectedModule, floor) {
     let jsonObj = {
@@ -1452,6 +1501,8 @@ export class InPatientDashboardComponent implements OnInit {
     if (event === 'radTable') {
       this.initialfilterData(this.getConfigToolWardList, '03', this.getConfigToolPhysicianList);
     }
+
+    this.initialPatientConList()
   }
 
   reloadTable(event) {
@@ -1469,6 +1520,9 @@ export class InPatientDashboardComponent implements OnInit {
   }
   inPatientLDRListByFilter() {
     this.LDRListSet(this.form.controls.admittedFrom.value, this.form.controls.admittedTo.value, this.form.controls.patient.value);
+  }
+  consultationsOrdersListByFilter(){
+    this.initialPatientConList();
   }
   parsePayloadFormateTime(data: string) {
     if (data && data.length) {

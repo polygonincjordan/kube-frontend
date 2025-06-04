@@ -125,6 +125,7 @@ import { HistoryAssessmentModule } from '../shared-module/history-assessment/his
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
+import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 
 const route: Routes = [
   {
@@ -247,7 +248,8 @@ const route: Routes = [
     CorrespondenceDocumentModule,
     HistoryAssessmentModule,
     CprDocumentModule,
-    AdminAttechmentModule
+    AdminAttechmentModule,
+    ConsultationsOrdersModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

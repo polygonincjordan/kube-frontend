@@ -180,7 +180,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
          },
          (_error: any) => { }
        );
-     }
+   }
 
   durationConvert(data: any) {
     if (data === 0) {

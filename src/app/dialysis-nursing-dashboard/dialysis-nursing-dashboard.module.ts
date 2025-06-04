@@ -139,6 +139,7 @@ import { NursingCarePlanDocumentModule } from '../shared-module/nursing-care-pla
 import { PreCardiacCathModule } from '../shared-module/pre-cardiac-cath/pre-cardiac-cath.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
+import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 
 
 const route: Routes = [
@@ -293,7 +294,8 @@ const route: Routes = [
     CprDocumentModule,
     NursingCarePlanDocumentModule,
     PreCardiacCathModule,
-    AdminAttechmentModule
+    AdminAttechmentModule,
+    ConsultationsOrdersModule
   ],
 })
 export class DialysisNursingDashboardModule {}

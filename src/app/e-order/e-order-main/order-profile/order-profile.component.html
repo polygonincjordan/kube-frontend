@@ -119,7 +119,6 @@
                     </accordion>
                   </div>
                 </div>
-
                 <app-surgery-table-list *ngIf="isSurgery || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [surgeryList]="surgeryList" (reloadTableData)="resetAllFilter()"></app-surgery-table-list>
                 <app-consultations-orders *ngIf="isConsultations || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [consultationsOrdersList]="consultationsOrdersList" (reloadTableData)="resetAllFilter()"></app-consultations-orders>
               </div>

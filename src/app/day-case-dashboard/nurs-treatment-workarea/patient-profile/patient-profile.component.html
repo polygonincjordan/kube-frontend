@@ -23,6 +23,11 @@
           <span class="mr-2"></span>
           <label for="surgery" class="m-0 font-widht">Surgery</label>
         </li>
+        <li class="d-flex align-items-center m-0 mr-3 checkbox-margin">
+            <input type="checkbox" id="medication"  [(ngModel)]="isConsultations"/>
+            <span class="mr-2"></span>
+            <label for="Consultations" class="m-0 font-widht">Consultations Orders</label>
+          </li>
       </ul>
     </div>
     <div class="w-45">
@@ -48,9 +53,9 @@
         <div class="table-list" [ngClass]="{ expanded: isExpanded }">
           <div class="card">
             <div class="card-body p-1">
-              <app-laboratory-table-list *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [laboratoryList]="laboratoryList" ></app-laboratory-table-list>
-              <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()"></app-radiology-table-list>
-              <div class="card mt-2" *ngIf="isMedication || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)">
+              <app-laboratory-table-list *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [laboratoryList]="laboratoryList" ></app-laboratory-table-list>
+              <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()"></app-radiology-table-list>
+              <div class="card mt-2" *ngIf="isMedication || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)">
                 <div class="card-body p-0 medication-emer-table">
                   <accordion [closeOthers]="true">
                     <accordion-group #medication [isOpen]="isCollpseOpen">
@@ -122,7 +127,8 @@
                   </accordion>
                 </div>
               </div>
-              <app-surgery-table-list *ngIf="isSurgery || (!isLaboratory && !isRadiology && !isMedication && !isSurgery)" [searchString]="searchString" [surgeryList]="surgeryList" (reloadTableData)="resetAllFilter()"></app-surgery-table-list>
+              <app-surgery-table-list *ngIf="isSurgery || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [surgeryList]="surgeryList" (reloadTableData)="resetAllFilter()"></app-surgery-table-list>
+              <app-consultations-orders *ngIf="isConsultations || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [consultationsOrdersList]="consultationsOrdersList" (reloadTableData)="resetAllFilter()"></app-consultations-orders>
             </div>
           </div>
         </div>

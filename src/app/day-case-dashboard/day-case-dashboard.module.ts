@@ -124,6 +124,7 @@ import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/m
 import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.component';
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
+import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 
 const route: Routes = [
   {
@@ -243,7 +244,8 @@ const route: Routes = [
     HistoryAssessmentModule,
     CprDocumentModule,
     AdminAttechmentModule,
-    PreCardiacCathModule
+    PreCardiacCathModule,
+    ConsultationsOrdersModule
   ],
 })
 export class DayCaseDashboardModule { }
