@@ -97,7 +97,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.storageLocationList = data.d.results;
         // Set default selection if only one item in the list
         if (this.storageLocationList.length === 1) {
-          // this.selectedLocation = this.storageLocationList[0];
+          this.selectedLocation = this.storageLocationList[0];
           this.formDetailGroup.get('selectedLocation').setValue(this.selectedLocation);
           this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, this.selectedLocation);
         }

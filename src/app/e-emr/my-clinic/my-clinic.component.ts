@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import * as _ from 'lodash';
 import * as converter from 'xml-js';
@@ -13,6 +13,7 @@ import { Patient } from '@services/e-kardex/interfaces/patient';
 import { PatientService } from '@services/e-kardex/patient.service';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { catchError, of } from 'rxjs';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +23,8 @@ import { catchError, of } from 'rxjs';
 })
 export class MyClinicComponent implements OnInit {
   @Output() public dataCount = new EventEmitter<any>();
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
+  
   asc = false;
   Variantid: any;
 
@@ -83,7 +86,8 @@ export class MyClinicComponent implements OnInit {
   order = 'asc';
   patientorder = 'asc';
   dateorder = '';
-  maxDate = new Date()
+  maxDate = new Date();
+  selectedDetails: any;
   constructor(
     private _dataServices: EEmrService, private modalService: BsModalService, private patientService: PatientService,
     private storageService: StorageService,private datePipe: DatePipe) { 
@@ -952,6 +956,15 @@ export class MyClinicComponent implements OnInit {
         // this.titleService.setTitle(`${patientData?.name} | ${this._route.snapshot.parent.routeConfig.path}`);
         // this.storageService.setPatientData(patientData);
       });
+  }
+
+  openModalForAttechment(data) {
+    data.Pnamec = this.selectedCheckoutListValue.PATIENT;
+    data.Patnr = this.selectedCheckoutListValue.PATNR;
+    data.Falnr = this.selectedCheckoutListValue.FALNR;
+    data.Bwidt = this.selectedCheckoutListValue.DATUM;
+    this.selectedDetails = data;
+    this.nurErAttechment.openModalForAttechment(data);
   }
 
   filterDataConf() {

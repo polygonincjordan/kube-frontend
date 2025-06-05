@@ -47,6 +47,7 @@ import { MyFavoritePatientsComponent } from './my-favorite-patients/my-favorite-
 import { MainHospitalistListViewComponent } from './my-favorite-patients/main-hospitalist-list-view/main-hospitalist-list-view.component';
 import { MyEndoscopyComponent } from './my-endoscopy/my-endoscopy.component';
 import { DocumentingDeliveryComponent } from './in-patients/documenting-delivery/documenting-delivery.component';
+import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 export const emrRoutes: Routes = [
   // { path: '**', redirectTo: 'emr', pathMatch: 'full' },
   { path: '**', component: EmrComponent },
@@ -66,7 +67,8 @@ export const emrRoutes: Routes = [
     RouterModule.forChild(emrRoutes),
     NgSelectModule,
     NgbModule,
-    PopoverModule
+    PopoverModule,
+    AdminAttechmentModule
   ],
   declarations: [
     EmrComponent,

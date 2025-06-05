@@ -1741,6 +1741,32 @@ export class EmergencyService {
     );
   }
 
+  saveSBARNursingDoc(json) {
+    return this.http.post(this.url + 'saveSBARNursingDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchSBARNursingDocument(dockey) {
+    return this.http.get(this.url + `fetchSBARNursingDocument?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  SBARNursingLatestDoc(json) {
+    return this.http.get(
+      this.url + `SBARNursingLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  deleteSBARNursingDocument(json): Observable<any> {
+    return this.http.delete(this.url + `deleteSBARNursingDocument?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

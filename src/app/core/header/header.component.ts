@@ -55,6 +55,20 @@ export class HeaderComponent implements OnInit {
   passform: FormGroup;
   consultation: boolean = false;
   urlPath: any;
+  sexList: any = [
+    {
+      label: 'Male',
+      value: '1',
+    },
+    {
+      label: 'Female',
+      value: '2',
+    },
+    {
+      label: 'Unknown',
+      value: '3',
+    },
+  ]
   constructor(
     private modalService: BsModalService,
     private _dataServices: EEmrService,

@@ -74,6 +74,18 @@
               </div>
             </div>
           </div>
+          <div class="input-container">
+            <div class="input-card">
+              <div class="input-wrapper">
+                <ng-select formControlName="sex" class="w-100">
+                    <ng-option *ngFor="let item of sexList" [value]="item.value">{{ item.label }}</ng-option>
+                </ng-select>
+                <label for="input1" class="placeholder">
+                  Sex
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-md-6">
           <div class="input-container">
@@ -106,17 +118,6 @@
                   (keydown.enter)="patientSearch(patientsearchtemplate)">
                 <label for="input1" class="placeholder">
                   Phone Number
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="input-container">
-            <div class="input-card">
-              <div class="input-wrapper">
-                <input type="text" id="input1" required autocomplete="nope" formControlName="sex"
-                  (keydown.enter)="patientSearch(patientsearchtemplate)">
-                <label for="input1" class="placeholder">
-                  Sex
                 </label>
               </div>
             </div>

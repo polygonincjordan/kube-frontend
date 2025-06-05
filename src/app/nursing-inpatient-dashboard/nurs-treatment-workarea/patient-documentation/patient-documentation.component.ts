@@ -51,6 +51,7 @@ import { MaternityEarlyWarningSignComponent } from './maternity-early-warning-si
 import { IntraOperativeRecordComponent } from './intra-operative-record/intra-operative-record.component';
 import { PediatricsFallRiskAssessmentComponent } from './pediatrics-fall-risk-assessment/pediatrics-fall-risk-assessment.component';
 import { MalnutritionPaediatricsComponent } from './malnutrition-paediatrics/malnutrition-paediatrics.component';
+import { SbarNursingEndorsementComponent } from './sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -91,6 +92,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(PediatricsFallRiskAssessmentComponent) PediatricsFallRiskAssessmentComp: PediatricsFallRiskAssessmentComponent;
   @ViewChild(NursAssessmentRestraintsComponent) NurseAssMainComp: NursAssessmentRestraintsComponent;
   @ViewChild(MalnutritionPaediatricsComponent) MalnutritionPaediatricsComp: MalnutritionPaediatricsComponent;
+  @ViewChild(SbarNursingEndorsementComponent) SbarNursingEndorsementComp: SbarNursingEndorsementComponent;
 
  
 
@@ -646,6 +648,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getCVCInsertionDocDetails();
     this.getPedFallRiskDocDetails();
     this.getStampDocDetails();
+    this.getSBARNursingDocDetails();
   }
 
   LatestMFSSet() {
@@ -897,6 +900,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.fallRiskAssessmentLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.pediatricsFallList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // CVC Insertion Document Latest
+  getSBARNursingDocDetails() {
+    this.emergencyService.SBARNursingLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.sbarNurEndList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -5289,7 +5305,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openSbarNursingEnd) {
         let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+        this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             if(btnType == 'close') this.refresh();
           }
@@ -5813,13 +5829,15 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openSbarNursingEnd) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+        let docStatus = '1';
+        this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus, 'edit').then((formValue: any) => {
           if (formValue) {
             if(btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
-          console.error('Error modifying Glasgow coma scale:', error);
-        });
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
       }
       if (this.openDyingPatient) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
@@ -6231,13 +6249,15 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openSbarNursingEnd) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+        let docStatus = '3';
+        this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus, 'copy').then((formValue: any) => {
           if (formValue) {
-            this.refresh();
+            if(btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-        });
+          console.error('Error creating Glasgow coma scale:', error);
+        })
       }
       if (this.openDyingPatient) {
         this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
