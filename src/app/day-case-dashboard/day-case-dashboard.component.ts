@@ -1028,7 +1028,7 @@ export class DayCaseDashboardComponent implements OnInit, OnDestroy {
       this.reservation= false;
     } else if (module == 'AdministeredDoses') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-      this.headerLabel = 'Medications Administration'
+      this.headerLabel = 'Missed/Not Administered Medications'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;

@@ -780,7 +780,7 @@ export class OutPatientNursingComponent implements OnInit {
       this.reservation= false;
 
     } else if (module == 'AdministeredDoses') {
-      this.headerLabel = 'Medication Administration'
+      this.headerLabel = 'Missed/Not Administered Medications'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;

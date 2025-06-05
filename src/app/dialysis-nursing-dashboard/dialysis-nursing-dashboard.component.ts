@@ -878,7 +878,7 @@ export class DialysisNursingDashboardComponent implements OnInit {
     } else if (module == 'AdministeredDoses') {
       this.ErHistoryPatientCount = 0
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-      this.headerLabel = 'Medication Administration'
+      this.headerLabel = 'Missed/Not Administered Medications'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;
