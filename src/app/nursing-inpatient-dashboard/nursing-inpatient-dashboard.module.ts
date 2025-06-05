@@ -183,6 +183,8 @@ import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-work
 import { LdrViewComponent } from './ldr-view/ldr-view.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
+import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/er-vitals/er-vitals.component';
+import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
 
 
 
@@ -316,7 +318,9 @@ const route: Routes = [
     LaborRoomFlowSheetComponent,
     ArrivalMainListComponent,
     SurgeryWorklistTabComponent,
-    LdrViewComponent
+    LdrViewComponent,
+    ErVitalsForSBARComponent,
+    PhysicianPastSurgicalComponent
   ],
   providers: [
     EmergencyService,

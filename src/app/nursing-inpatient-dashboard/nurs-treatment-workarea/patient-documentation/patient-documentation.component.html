@@ -76,11 +76,11 @@
               Save & Close
             </button>
           </div>
-          <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
+          <!-- <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
             <button type="button" class="action-doc" (click)="saveDoc('save')">
               Save
             </button>
-          </div>
+          </div> -->
           <div class="header-btn" *ngIf="actionType == 'create'">
             <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
               Release
@@ -899,6 +899,27 @@
                 </div>
               </div>
 
+            <!-- SBAR Nursing Endorsement -->
+              <div [ngClass]="isSbarNursingEnd ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+               *ngIf="!selectedDocument || selectedDocument == 'SBARNE'" (click)="selectAssessment('isSbarNursingEnd',sbarNurEndList[0])">
+                <div class="col-md-4" >SBAR Nursing Endorsement {{sbarNurEndList[0]?.Zversion ?
+                  dockVer(sbarNurEndList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(sbarNurEndList[0]?.DocTime)}}">
+                  {{getDate(sbarNurEndList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{sbarNurEndList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                    <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openNurseAssMainsPdf(sbarNurEndList[0]?.Dockey)"
+                    *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'"></i>
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
+                      <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
               <!--  Pediatric Admission Assessment -->
                <div
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -1259,26 +1280,7 @@
                  </div>
              </div>
            </div>
-           <!-- SBAR Nursing Endorsement -->
-           <div [ngClass]="isSbarNursingEnd ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'SBARNE'" (click)="selectAssessment('isSbarNursingEnd',sbarNurEndList[0])">
-             <div class="col-md-4" >SBAR Nursing Endorsement {{sbarNurEndList[0]?.Zversion ?
-               dockVer(sbarNurEndList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-             <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(sbarNurEndList[0]?.DocTime)}}">
-               {{getDate(sbarNurEndList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{sbarNurEndList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(sbarNurEndList[0]?.Dockey)"
-                 *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
-                   <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
-           </div>
+
            <!-- Dying Patient -->
            <div [ngClass]="isDyingPatient ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'DPA'" (click)="selectAssessment('isDyingPatient',sbarNurEndList[0])">

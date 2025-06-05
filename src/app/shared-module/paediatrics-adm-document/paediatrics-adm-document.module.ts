@@ -49,7 +49,8 @@ import { OrietationPatientTabComponent } from './orietation-patient-tab/orietati
     NgxMaterialTimepickerModule
   ],
   exports: [
-    PaediatricsAdmDocumentComponent
+    PaediatricsAdmDocumentComponent,
+    PhysicianAllergyComponent
   ]
 })
 export class PaediatricsAdmDocumentModule { }
