@@ -799,7 +799,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       this.reservation= false;
     } else if (module == 'AdministeredDoses') {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
-      this.headerLabel = 'Medication Administration'
+      this.headerLabel = 'Missed/Not Administered Medications'
       this.treatmentarea = false;
       this.checkin = false;
       this.erhistory = false;
