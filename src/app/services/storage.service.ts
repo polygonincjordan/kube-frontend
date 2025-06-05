@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
-declare let sessionStorage: any;
+declare let localStorage: any;
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
@@ -51,7 +51,7 @@ export class StorageService {
   }
 
   getLocal(key: string, skipParse?) {
-    var data = sessionStorage.getItem(this.env['app_prefix'] + key);
+    var data = localStorage.getItem(this.env['app_prefix'] + key);
 
     if (data) {
       if (!skipParse) {
@@ -83,15 +83,15 @@ export class StorageService {
     if (!skipParse) {
       value = JSON.stringify(value);
     }
-    sessionStorage.setItem(this.env['app_prefix'] + key, value);
+    localStorage.setItem(this.env['app_prefix'] + key, value);
   }
 
   setUserConfig(key,value){
-    sessionStorage.setItem(this.env['app_prefix'] + key, value);
+    localStorage.setItem(this.env['app_prefix'] + key, value);
   }
 
   remLocal(key: any) {
-    sessionStorage.removeItem(this.env['app_prefix'] + key);
+    localStorage.removeItem(this.env['app_prefix'] + key);
   }
 
   setEinri(id: string) {
@@ -128,10 +128,10 @@ export class StorageService {
   }
 
   setMySurgerySelectedDate(date) {
-    sessionStorage.setItem(this.env['app_prefix'] + 'mySurgerySelectedDate', date);
+    localStorage.setItem(this.env['app_prefix'] + 'mySurgerySelectedDate', date);
   }
 
   getMySurgerySelectedDate() {
-    return sessionStorage.getItem(this.env['app_prefix'] + 'mySurgerySelectedDate')
+    return localStorage.getItem(this.env['app_prefix'] + 'mySurgerySelectedDate')
   }
 }
