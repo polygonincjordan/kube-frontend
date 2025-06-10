@@ -96,6 +96,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'SBAR Nursing Endorsement'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSBAR()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'IC Bundles for Urinary Catheter'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleasedIcBundle()">
               Release
@@ -910,9 +915,9 @@
                 </div>
                 <div class="col-md-3">{{sbarNurEndList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
-                    <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                    (click)="openNurseAssMainsPdf(sbarNurEndList[0]?.Dockey)"
-                    *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'"></i>
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(sbarNurEndList[0],RedirectionType.BRADEN$)"
+                    *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
                       <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>

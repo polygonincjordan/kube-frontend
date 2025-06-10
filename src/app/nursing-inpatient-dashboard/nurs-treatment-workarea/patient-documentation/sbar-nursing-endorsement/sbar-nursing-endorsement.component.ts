@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -13,6 +13,8 @@ import { PhysicianAllergyComponent } from 'src/app/shared-module/paediatrics-adm
 import { DatePipe } from '@angular/common';
 import { ErVitalsForSBARComponent } from './er-vitals/er-vitals.component';
 import { PhysicianPastSurgicalComponent } from './physician-past-surgical/physician-past-surgical.component';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @Component({
   selector: 'app-sbar-nursing-endorsement',
@@ -64,10 +66,10 @@ export class SbarNursingEndorsementComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   toPastSurgical: any = [];
+medicationImportDrugArray: any
 
-
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private storageService: StorageService, private emergencyService: EmergencyService,
-    private sharedService: SharedService, private dataShareService: DataShareService,) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, public storageService: StorageService, private emergencyService: EmergencyService, private datePipe: DatePipe,
+    private sharedService: SharedService, private dataShareService: DataShareService, private ePrescriptionService: EPrescriptionService, private modalService: BsModalService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -122,16 +124,18 @@ export class SbarNursingEndorsementComponent implements OnInit {
 
 
   initForm() {
+    let currentTime = this.datePipe.transform(new Date(), "hh:mm:ss");
+
     this.sbarNursingForm = this.formBuilder.group({
       Dockey: [''],
-      Dtid: [''],
-      Einri: [''],
-      Patnr: [''],
-      Falnr: [''],
-      Lfdnr: [''],
-      Orgdo: [''],
-      AttendPhy: [''],
-      DocStatus: [''],
+      Dtid: ['ZMED_SBAR'],
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
+      DocStatus: ['1'],
       ChiefComplaint: [''],
       FullCode: [false],
       Dnr: [false],
@@ -176,7 +180,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       PgeContinence: [false],
       PgeIncontinence: [false],
       PgeDevice: [false],
-      PgeDateInsertion: [''],
+      PgeDateInsertion: [new Date()],
       PgeSignificantFindings: [''],
       PsWounds: [false],
       PsDescribe: [''],
@@ -188,8 +192,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
       PmPeripheral: [false],
       PmCentral: [false],
       PmTypeAccess: [''],
-      PmInsertionDate: [''],
-      PmDressingDate: [''],
+      PmInsertionDate: [new Date()],
+      PmDressingDate: [new Date()],
       PmOtherAssessment: [''],
       PsFamilySupport: [false],
       PsAlone: [false],
@@ -231,7 +235,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       TOLABTEST: this.formBuilder.array(
         Array(4).fill(null).map(() => this.formBuilder.group({
           Dockey: [''],
-          DateTime: [''],
+          DateTime: [new Date()],
           Catalog: [''],
           Description: [''],
           Done: [''],
@@ -242,8 +246,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
       TOBLOOD: this.formBuilder.array(
         Array(4).fill(null).map(() => this.formBuilder.group({
           Dockey: [''],
-          Date: [''],
-          Time: [''],
+          Date: [new Date()],
+          Time: [currentTime],
           Code: [''],
           Description: [''],
           Requested: [''],
@@ -254,7 +258,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       TOCONSULTATION: this.formBuilder.array(
         Array(4).fill(null).map(() => this.formBuilder.group({
           Dockey: [''],
-          DateTime: [''],
+          DateTime: [new Date()],
           Consultation: [''],
           EmpResp: [''],
           Informed: [''],
@@ -272,6 +276,32 @@ export class SbarNursingEndorsementComponent implements OnInit {
         }))
       )
     });
+
+    console.log(this.sbarNursingForm, "---");
+    
+  }
+
+
+  TOLABTEST: FormArray;
+  TOBLOOD: FormArray;
+  TOCONSULTATION: FormArray;
+  addLabTestItem(): void {
+    if (this.sbarNursingForm) {    
+      this.TOLABTEST = this.sbarNursingForm.get('TOLABTEST') as FormArray;
+      this.TOLABTEST.push(this.createLabTestGroup());
+    }
+  }
+  addBloodItem(): void {
+    if (this.sbarNursingForm) {    
+      this.TOBLOOD = this.sbarNursingForm.get('TOBLOOD') as FormArray;
+      this.TOBLOOD.push(this.createBloodGroup());
+    }
+  }
+  addTOCONSULTATIONItem(): void {
+    if (this.sbarNursingForm) {    
+      this.TOCONSULTATION = this.sbarNursingForm.get('TOCONSULTATION') as FormArray;
+      this.TOCONSULTATION.push(this.createConsultationGroup());
+    }
   }
 
   getNurseDocDetail(docKey?: any) {
@@ -281,7 +311,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
 
         this.sbarNursingForm.patchValue({
           Dockey: result?.Dockey || '',
-          Dtid: result?.Dtid || '',
+          Dtid: result?.Dtid || 'ZMED_SBAR',
           Einri: result?.Einri || '',
           Patnr: result?.Patnr || '',
           Falnr: result?.Falnr || '',
@@ -331,7 +361,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
           PgeContinence: result?.PgeContinence ?? false,
           PgeIncontinence: result?.PgeIncontinence ?? false,
           PgeDevice: result?.PgeDevice ?? false,
-          PgeDateInsertion: result?.PgeDateInsertion || '',
+          PgeDateInsertion: this.getDate(result?.PgeDateInsertion) || new Date(),
           PgeSignificantFindings: result?.PgeSignificantFindings || '',
           PsWounds: result?.PsWounds ?? false,
           PsDescribe: result?.PsDescribe || '',
@@ -343,8 +373,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
           PmPeripheral: result?.PmPeripheral ?? false,
           PmCentral: result?.PmCentral ?? false,
           PmTypeAccess: result?.PmTypeAccess || '',
-          PmInsertionDate: result?.PmInsertionDate || '',
-          PmDressingDate: result?.PmDressingDate || '',
+          PmInsertionDate: this.getDate(result?.PmInsertionDate) || new Date(),
+          PmDressingDate: this.getDate(result?.PmDressingDate) || new Date(),
           PmOtherAssessment: result?.PmOtherAssessment || '',
           PsFamilySupport: result?.PsFamilySupport ?? false,
           PsAlone: result?.PsAlone ?? false,
@@ -365,14 +395,16 @@ export class SbarNursingEndorsementComponent implements OnInit {
           NursingRecommendations: result?.NursingRecommendations || '',
           PrLastTime: this.parseTime(result?.PrLastTime) || '',
           PgLastBowel: this.parseTime(result?.PgLastBowel) || '',
+          
         });
 
         this.toDiagnosisArr = result.TODIAGNOSIS?.results;
         this.toAllergyArr = result.TOALLERGY?.results;
         this.toVitalsArr = result.TOVITALSIGN?.results;
         this.toPastSurgical = result.TOSURGICALHIST?.results;
+        this.medicationImportDrugArray = result.TOMEDICATION?.results;
 
-        this.bindArray('TOMEDICATION', result.TOMEDICATION?.results, this.createMedicationGroup);
+        // this.bindArray('TOMEDICATION', result.TOMEDICATION?.results, this.createMedicationGroup);
         this.bindArray('TOLABTEST', result.TOLABTEST?.results, this.createLabTestGroup);
         this.bindArray('TOBLOOD', result.TOBLOOD?.results, this.createBloodGroup);
         this.bindArray('TOCONSULTATION', result.TOCONSULTATION?.results, this.createConsultationGroup);
@@ -441,7 +473,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   }
   createLabTestGroup(item: any = {}) {
     return this.formBuilder.group({
-      DateTime: [item.DateTime || ''],
+      DateTime: [item.DateTime || new Date()],
       Catalog: [item.Catalog || ''],
       Description: [item.Description || ''],
       Done: [item.Done || '0'],
@@ -450,7 +482,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   }
   createBloodGroup(item: any = {}) {
     return this.formBuilder.group({
-      Date: [item.Date || ''],
+      Date: [item.Date || new Date()],
       Time: [item.Time || ''],
       Code: [item.Code || ''],
       Description: [item.Description || ''],
@@ -460,7 +492,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   }
   createConsultationGroup(item: any = {}) {
     return this.formBuilder.group({
-      DateTime: [item.DateTime || ''],
+      DateTime: [item.DateTime || new Date()],
       Consultation: [item.Consultation || ''],
       EmpResp: [item.EmpResp || ''],
       Informed: [item.Informed || '0'],
@@ -593,6 +625,12 @@ export class SbarNursingEndorsementComponent implements OnInit {
     );
   }
 
+  convertToPTTime(time) {
+    var createTime = time.split(':')
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    return createTime;
+  }
+
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
   }
@@ -638,13 +676,134 @@ export class SbarNursingEndorsementComponent implements OnInit {
     });
   }
 
+  modalRefUpdateName: BsModalRef;
+  selectedMedicationOrder: any[] = [];
+  drugArray: any[] = [];
+
+  openModal(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefUpdateName = this.modalService.show(template, config);
+    this.loadMedicationHistoryData();
+    // this.medicationImportDrugArray=[];
+  }
+
+  loadMedicationHistoryData() {
+    this.selectedMedicationOrder = [];
+    this.drugArray = [];
+    const profileOrderHistory: Subscription = this.ePrescriptionService
+      .loadData(
+        `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`,
+        false,
+        false,
+        false,
+        false
+      )
+      .subscribe(
+        (resp: any) => {
+          if (
+            resp.body &&
+            resp.body.d &&
+            resp.body.d.results &&
+            resp.body.d.results.length
+          ) {
+            //this.configurationData = resp.body.d.results;
+            this.drugArray = resp.body.d.results;
+            // this.medicationImportDrugArray=[];
+          }
+          //   this.filterEvents();
+        },
+        () => {
+          profileOrderHistory.unsubscribe();
+        }
+      );
+  }
+
+  medicationImport() {
+    if (!this.medicationImportDrugArray) {
+      this.medicationImportDrugArray = [];
+    }
+
+    this.selectedMedicationOrder.forEach((element) => {
+      this.medicationImportDrugArray.push({
+        Dockey: '',
+        OrderType:
+          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        Description:
+          element.Descrlt +
+          element.Quan +
+          element.Quanunit +
+          element.Routedescr +
+          element.N1id,
+        HomeMedication: false,
+        PatientOwnMed: false,
+        Dose: element.Quan + element.Quanunit,
+        Validity: `${new DatePipe('en-US').transform(
+          this.getDate(element.StartD),
+          'dd.MM.yyyy'
+        )}-${new DatePipe('en-US').transform(
+          this.getDate(element.EndD),
+          'dd.MM.yyyy'
+        )}`,
+        Route: element.Routedescr,
+        Amount: '',
+        Rate: '',
+        Therapy: '00000',
+        Id: '',
+        OrderingPhysician: element.EmpRespNm,
+        Cycle: element.N1id,
+      });
+    });
+    this.modalRefUpdateName.hide();
+  }
+  collectAllMedicationIData(event: any) {
+    if (event.target.checked) {
+      this.selectedMedicationOrder = Object.assign([], this.drugArray);
+    } else {
+      this.selectedMedicationOrder = [];
+    }
+  }
+
+  collectMedicationIData(event, item) {
+    if (event.target.checked) {
+      this.selectedMedicationOrder.push(item);
+      // this.medicationImportDrugArray.push(item);
+    } else {
+      const indexOf = this.selectedMedicationOrder.findIndex(
+        (x) => x.Meordid == item.Meordid
+      );
+      if (indexOf !== -1) this.selectedMedicationOrder.splice(indexOf, 1);
+      // this.medicationImportDrugArray.splice(index, 1);
+    }
+  }
+
+  isCheckedMedical(item: any): boolean {
+    return this.selectedMedicationOrder.some((x) => x.Meordid == item.Meordid);
+  }
+
+
   createSbarNursingDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
-      let Payload = {...this.sbarNursingForm.value};
+      let Payload = { ...this.sbarNursingForm.value };
+      Payload.DocStatus = status;
+      Payload.PrLastTime = this.convertToPTTime(Payload.PrLastTime) || '',
+      Payload.PgLastBowel = this.convertToPTTime(Payload.PgLastBowel) || '',
+      Payload.PmDressingDate = this.sanitizeSAPDateFormat(Payload.PmDressingDate) || '',
+      Payload.PmInsertionDate = this.sanitizeSAPDateFormat(Payload.PmInsertionDate) || '',
+      // Payload.PmOtherAssessment = this.sanitizeSAPDateFormat(Payload.PmOtherAssessment) || '',
+      Payload.PgeDateInsertion = this.sanitizeSAPDateFormat(Payload.PgeDateInsertion) || '',
       Payload['TODIAGNOSIS'] = this.toDiagnosisArr;
       Payload['TOALLERGY'] = this.toAllergyArr;
       Payload['TOVITALSIGN'] = this.toVitalsArr;
       Payload['TOSURGICALHIST'] = this.toPastSurgical;
+      Payload['TOMEDICATION'] = this.medicationImportDrugArray;
+      
+      Payload['TOSCALE'] = [];
+      Payload['TOCONSULTATION'] = Payload.TOCONSULTATION.filter(res => res.Consultation || res.EmpResp);
+      Payload['TOBLOOD'] = Payload.TOBLOOD.filter(res => res.Code || res.Description);
+      Payload['TOLABTEST'] = Payload.TOLABTEST.filter(res => res.Catalog || res.Description);
       this.subscription = this.emergencyService.saveSBARNursingDoc(Payload).subscribe({
         next: (data: any) => {
 
@@ -665,6 +824,13 @@ export class SbarNursingEndorsementComponent implements OnInit {
     })
   }
 
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
+  }
 
   public getDate(value) {
     if (value) {

@@ -1767,6 +1767,33 @@ export class EmergencyService {
     });
   }
 
+  // Nursing Initial Assessment Gyno Obstetrics PMD Doc
+  saveNursingInitialGyno(json) {
+    return this.http.post(this.url + 'saveNursingInitialGyno', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchNursingInitialGynoDocument(dockey) {
+    return this.http.get(this.url + `fetchNursingInitialGynoDocument?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  NursingInitialGynoSetLatestDoc(json) {
+    return this.http.get(
+      this.url + `NursingInitialGynoSetLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  deleteNursingInitialGynoDocument(json): Observable<any> {
+    return this.http.delete(this.url + `deleteNursingInitialGynoDocument?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

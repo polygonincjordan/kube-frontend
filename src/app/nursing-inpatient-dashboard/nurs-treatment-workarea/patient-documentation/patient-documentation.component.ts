@@ -2164,6 +2164,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openisPediatricsFallDocument) {
       this.PediatricsFallRiskAssessmentComp.ngOnDestroy();
     }
+    if (this.openSbarNursingEnd) {
+      this.SbarNursingEndorsementComp.ngOnDestroy();
+    }
     this.getPatientProfile();
     this.getLatestAssessment();
     // this.getPhyAssessment();
@@ -2196,6 +2199,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getCVCInsertionDocDetails();
     this.getPedFallRiskDocDetails();
     this.getStampDocDetails();
+    this.getSBARNursingDocDetails();
   }
 
   openDocument(action) {
@@ -2898,7 +2902,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.openSbarNursingEnd = true;
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.openNurseInitAss = true;;
+          this.openSbarNursingEnd = true;;
           let valueObj = {
             type: WordType.EditNE,
             docKey: this.selectedDocData.Dockey
@@ -2907,7 +2911,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseAssMainDoc();
+          this.deleteSbarNursingDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -2915,7 +2919,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releaseSbarNursingMainDetail();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2928,13 +2932,13 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openSbarNursingEnd = true;
-        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+        this.SbarNursingEndorsementComp.createSbarNursingDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating education assessment:', error);
+          console.error('Error creating SBAR Nursing Endorsement Document:', error);
         });
       }
     }
@@ -6795,7 +6799,7 @@ export class PatientDocumentationComponent implements OnInit {
       });
     }
     else if (this.openSbarNursingEnd) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.SbarNursingEndorsementComp.createSbarNursingDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -7498,6 +7502,40 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  async deleteSbarNursingDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteSBARNursingDocument(this.sbarNurEndList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
   async deleteCriticalPainDoc() {
     Swal.fire({
       title: 'Confirm',
@@ -8011,6 +8049,22 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+
+  releaseSbarNursingMainDetail() {
+    this.emergencyService.fetchSBARNursingDocument(this.sbarNurEndList[0].Dockey).subscribe((res: any) => {
+      delete res?.d?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.saveSBARNursingDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
+
   releaseNursingIntraOperativeDetail() {
     this.admissionService.getIntraOpNurRecSetDetail(this.nurseIntraMainList[0].Dockey).subscribe((res: any) => {
       delete res?.results[0]?.__metadata;
@@ -8056,6 +8110,16 @@ export class PatientDocumentationComponent implements OnInit {
 
   newVersionDirectReleasedSurgical() {
     this.SurgicalPassComp.copySurgicalPassDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Glasgow coma scale:', error);
+    });
+  }
+  newVersionDirectReleasedSBAR() {
+    this.SbarNursingEndorsementComp.createSbarNursingDoc('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }
