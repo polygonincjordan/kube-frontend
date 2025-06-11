@@ -33,6 +33,7 @@ import { NursingCarePlansComponent } from './nursing-care-plans/nursing-care-pla
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
+import { SbarNursingEndorsementComponent } from './sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -56,6 +57,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(PediatricEarlyWarningComponent) PediatricWarningScaleComp: PediatricEarlyWarningComponent;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
   @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
+  @ViewChild(SbarNursingEndorsementComponent) SbarNursingEndorsementComp: SbarNursingEndorsementComponent;
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -127,6 +129,9 @@ export class PatientDocumentationComponent implements OnInit {
   openNurseEndorsement: boolean = false;
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
+  public isSbarNursingEnd: boolean = false;
+  openSbarNursingEnd: boolean = false;
+  sbarNurEndList: any = [];
   selectedDocData: any;
   medlatestDocList = [];
   medDocList = [];
@@ -276,6 +281,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSurgicalPass()
     this.getCorrespondenceDocDetails();
     this.getCPRDocDetails();
+    this.getSBARNursingDocDetails();
+
   }
 
   getLatestAssessmentPA() {
@@ -368,6 +375,18 @@ export class PatientDocumentationComponent implements OnInit {
       },
     });
 
+  }
+
+  getSBARNursingDocDetails() {
+    this.emergencyService.SBARNursingLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.sbarNurEndList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
   }
 
   getPatientProfile() {
@@ -660,6 +679,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isPainAssessment': { isPainAssessment: true, selectedDocName: 'Pain Assesment' },
       'isNursingCarePlans': { isNursingCarePlans: true, selectedDocName: 'Nursing Care Plan' },
       'isCPRDocument': { isCPRDocument: true, selectedDocName: 'CPR Document' },
+      'isSbarNursingEnd': { isSbarNursingEnd: true, selectedDocName: 'SBAR Nursing Endorsement' },
     };
 
     // Reset all flags to false initially
@@ -679,6 +699,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isPainAssessment = false;
     this.isNursingCarePlans = false;
     this.isCPRDocument = false;
+    this.isSbarNursingEnd = false;
 
     // Check if the provided name exists in the assessments mapping
     if (name in assessments) {
@@ -1020,6 +1041,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openCPRDocument) {
       this.CprDocumentComp.ngOnDestroy();
     }
+    if (this.openSbarNursingEnd) {
+      this.SbarNursingEndorsementComp.ngOnDestroy();
+    }
     // if (this.openNursingCarePlans) {
     //   this.NursingCarePlansComp.ngOnDestroy();
     // }
@@ -1036,6 +1060,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getLatestAssessmentPA();
     this.getSurgicalPass()
     this.fetchLatestDetails();
+    this.getSBARNursingDocDetails();
+
     this.nursAssess = false;
     this.glasgowcomascale = false;
     this.facepainscale = false;
@@ -1064,6 +1090,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.openNurseEndorsement = false
     this.openSurgicsalPassport = false
     this.openPediatricEarlyWarningScale = false
+    this.isSbarNursingEnd = false;
+    this.openSbarNursingEnd = false;
 
     this.searchString = '';
     this.dateRange = '';
@@ -1157,6 +1185,53 @@ export class PatientDocumentationComponent implements OnInit {
         // this.createAndReleaseMed();
       }
     }
+
+    if (this.isSbarNursingEnd) {
+      if (action == 'create') {
+        this.openSbarNursingEnd = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openSbarNursingEnd = true;;
+          let valueObj = {
+            type: WordType.EditNE,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deleteSbarNursingDoc();
+        } else {
+          this.sharedService.waringSwallModel(`The document is already released`);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releaseSbarNursingMainDetail();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openSbarNursingEnd = true;;
+          let valueObj = {
+            type: WordType.CopyEA,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openSbarNursingEnd = true;
+        this.SbarNursingEndorsementComp.createSbarNursingDoc('4').then((formValue: any) => {
+          if (formValue) {
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating SBAR Nursing Endorsement Document:', error);
+        });
+      }
+    }
+    
     // Surgical passport
     if (this.surgicalPassport) {
       if (action == 'create') {
@@ -2106,6 +2181,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating nursing assessment:', error);
         })
       }
+      if (this.openSbarNursingEnd) {
+        let docStatus = '1';
+        this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
     }
     else if (this.actionType == 'edit') {
       if (this.openGlasgowComaScale) {
@@ -2208,6 +2294,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         });
+      }
+      if (this.openSbarNursingEnd) {
+        let docStatus = '1';
+        this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus, 'edit').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
       }
     }
     else if (this.actionType == 'copy') {
@@ -2321,6 +2418,17 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Pre-Cardiac cath:', error);
         })
       }
+      if (this.openSbarNursingEnd) {
+        let docStatus = '3';
+        this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus, 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
     }
   }
 
@@ -2363,6 +2471,16 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating CPR Document:', error);
       });
     } 
+    else if (this.openSbarNursingEnd) {
+      this.SbarNursingEndorsementComp.createSbarNursingDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
   }
 
   newVersionDirectReleasedSurgical() {
@@ -2603,6 +2721,64 @@ export class PatientDocumentationComponent implements OnInit {
           (_error: any) => { }
         );
       }
+    });
+  }  
+  async deleteSbarNursingDoc() {
+      Swal.fire({
+        title: 'Confirm',
+        text: 'Do you want to delete?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      }).then(async (result) => {
+        if (result.value) {
+          (await this.emergencyService.deleteSBARNursingDocument(this.sbarNurEndList[0].Dockey)).subscribe(
+            (_success: any) => {
+              Swal.fire({
+                text: "Document is deleted successfully",
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            },
+            (_error: any) => {
+              Swal.fire({
+                text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+                customClass: 'myalertpopup'
+              })
+              this.refresh();
+            }
+          );
+        }
+      });
+    }
+  releaseSbarNursingMainDetail() {
+    this.emergencyService.fetchSBARNursingDocument(this.sbarNurEndList[0].Dockey).subscribe((res: any) => {
+      delete res?.d?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.saveSBARNursingDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
+ newVersionDirectReleasedSBAR() {
+    this.SbarNursingEndorsementComp.createSbarNursingDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Glasgow coma scale:', error);
     });
   }
   async updateMedDoc() {

@@ -105,7 +105,7 @@ export class ImportDiagnosisComponent implements OnInit {
     this.initForm();
     this.diagnosisCodeList();
     this.diagnosisFavoriteDetails();
-    this.getDiagnosisList(this.paramsObject.einri, this.paramsObject.falnr, '');
+    this.getDiagnosisList(this.paramsObject.einri, this.paramsObject.falnr, this.paramsObject.patnr);
     this.diagnosisArr = [];
   }
 

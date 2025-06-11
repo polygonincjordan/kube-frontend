@@ -126,6 +126,10 @@ import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.mo
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
+import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/er-vitals/er-vitals.component';
+import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
+import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/sbar-nursing-endorsement.component';
+import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
 
 const route: Routes = [
   {
@@ -222,7 +226,10 @@ const route: Routes = [
     HistoryListComponent,
     EmarWitnessComponent,
     DrugEventsAdminComponent,
-    ReceiveCartComponent
+    ReceiveCartComponent,
+    ErVitalsForSBARComponent,
+    PhysicianPastSurgicalComponent,
+    SbarNursingEndorsementComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [
@@ -249,6 +256,7 @@ const route: Routes = [
     HistoryAssessmentModule,
     CprDocumentModule,
     AdminAttechmentModule,
+    NursingDischargeSummaryModule,
     ConsultationsOrdersModule
   ],
 })

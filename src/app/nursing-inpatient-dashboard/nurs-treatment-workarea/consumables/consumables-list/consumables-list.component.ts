@@ -356,7 +356,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       delete element.Arktx;
       delete element.isSelected;
       delete element.Stock;
-      delete element.Lgort
+      // delete element.Lgort
     });
     let newpayload = payload.filter(item => item.Matnr !== '');
     this.consumableHistoryForm.patchValue({
