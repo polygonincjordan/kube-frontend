@@ -110,6 +110,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       Falnr: new FormControl(this.paramsValue.falnr),
       Anfoe: new FormControl("EMEMDAMC"),
       Anpoe: new FormControl("EMEEUAMC"),
+      Lgort: new FormControl(''),
       PatMatCosmpNmm7HdToItmNav: new FormGroup({
         // results: new FormArray([])
         results: this.formBuilder.array([]),
