@@ -50,7 +50,8 @@ import { OrietationPatientTabComponent } from './orietation-patient-tab/orietati
   ],
   exports: [
     PaediatricsAdmDocumentComponent,
-    PhysicianAllergyComponent
+    PhysicianAllergyComponent,
+    GlosGowCommaScalePopupComponent,
   ]
 })
 export class PaediatricsAdmDocumentModule { }

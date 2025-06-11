@@ -136,7 +136,8 @@ export class NeonatalDischDocumentComponent implements OnInit {
 
   initForm(data?) {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
-
+    console.log(this.storageService, "this.storageService?.patientData");
+    
     this.neonatalDischarge = this.formBuilder.group({
       Dockey: [data?.Dockey || ''],
       Dtid: "ZMED_NEODS",
@@ -148,7 +149,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       AttendPhy: this.storageService.getUserProfile()?.Gpart,
       Datee: [this.getDate(data?.Datee) || new Date()],
       Timee: [this.parseTime(data?.Timee) || currentTime],
-      Name: [data?.Name || ''],
+      Name: [data?.Name || this.storageService?.patientData?.name],
       Fname: [data?.Fname || ''],
       Ga: [data?.Ga || ''],
       GaDays: [data?.GaDays || ''],
@@ -156,15 +157,15 @@ export class NeonatalDischDocumentComponent implements OnInit {
       CgaDays: [data?.CgaDays || ''],
       ChronoAge: [data?.ChronoAge || ''],
       DischDate: [this.getDate(data?.DischDate) || new Date()],
-      AdmDate: [this.getDate(data?.AdmDate) || new Date()],
-      AdmTime: [this.parseTime(data?.AdmTime) || currentTime],
+      AdmDate: [this.getDate(data?.AdmDate) || null],
+      AdmTime: [this.parseTime(data?.AdmTime) || null],
       BirthWeight: [data?.BirthWeight || ''],
       BirthWgtUnit: [data?.BirthWgtUnit || ''],
       AdmWeight: [data?.AdmWeight || ''],
       AdmWgtUnit: [data?.AdmWgtUnit || ''],
       DischWeight: [data?.DischWeight || ''],
       DischWgtUnit: [data?.DischWgtUnit || ''],
-      Transfer: [data?.Transfer || ''],
+      Transfer: [data?.Transfer || '0'],
       TransferDate: [this.getDate(data?.TransferDate) || new Date()],
       TransferPlace: [data?.TransferPlace || ''],
       AttendingPhy: [data?.AttendingPhy || ''],
