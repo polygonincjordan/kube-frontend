@@ -17,7 +17,7 @@ export class EditMedicationComponent implements OnInit {
   public editprofileForm: FormGroup;
   public medicationEndReason: any[];
   public isFormSubmitted: boolean = false;
-  public IsFrequencyDeftimCheck: boolean = false
+  public isFrequencyDeftimCollapse: boolean = false
   public defaultAgentId: string;
   constructor(public route: ActivatedRoute, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, public addministrationService: AddministrationService) { }
 
@@ -88,12 +88,14 @@ export class EditMedicationComponent implements OnInit {
       Descrlt: new FormControl(this.editdata.Descrlt),
       deftimcycleData: new FormControl([]),
       Dosdef: new FormControl(this.editdata.Dosdef),
-      IsFrequencyDeftim: new FormControl(this.IsFrequencyDeftimCheck),
+      IsFrequencyDeftim: new FormControl(this.editdata?.N1znr === "0000000100"),
     })
     if (new Date() > this.editdata.StartD) {
       this.editprofileForm.patchValue({ StartD: new Date() });
     }
-    this.onChangeFrequencySet(this.editdata?.N1znr);
+    if(this.editdata?.N1znr === "0000000100"){
+      this.setIfDeftimcycleDataKey(this.editdata?.N1znr);
+    }
     // this.validFromTobaseonDuration(this.editprofileForm.value);
   }
 
@@ -102,7 +104,7 @@ export class EditMedicationComponent implements OnInit {
   }
 
   onEditAction() {
-    delete this.editprofileForm.value.IsFrequencyDeftim
+
     const genratePayload = {
       ...this.editprofileForm.value,
       Dosdef: this.editprofileForm.value.deftimcycleData && this.editprofileForm.value.deftimcycleData.length ? this.editprofileForm.value.Dosdef : "",
@@ -114,6 +116,7 @@ export class EditMedicationComponent implements OnInit {
       Quan: `${this.editprofileForm.value.Quan}`,
       Pdur: `${this.editprofileForm.value.Pdur}`,
     }
+    delete genratePayload.deftimcycleData;
     delete genratePayload.IsFrequencyDeftim;
     this.ePrescriptionService.loadData(`e-prescription/EndOrdReasonMedication?Einri=${this.ePrescriptionService.parameters.einri}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
@@ -288,6 +291,28 @@ export class EditMedicationComponent implements OnInit {
       }
     }
   }
+  private setIfDeftimcycleDataKey(data?: string) {
+    const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
+    if (this.editdata.N1znr === "0000000100" && frequencyData?.N1id == "DEFTIM") {
+      const defineDoses = this.editprofileForm.value?.Dosdef ? this.editprofileForm.value.Dosdef.split("-") : [];
+      if (defineDoses && defineDoses.length) {
+        let deftimDcycleData = [];
+        defineDoses.forEach((element) => {
+          const quanUnitDescription = element.split("(")[0];
+          const defineTimeMatch = element.match(/\(([^)]+)\)/);
+          if (defineTimeMatch && defineTimeMatch[1]) {
+            const defineTime = defineTimeMatch[1];
+            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.editprofileForm.value.Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
+          }
+        });
+        this.editprofileForm.get('deftimcycleData').setValue(deftimDcycleData)
+        const selectedData = deftimDcycleData.map(element => `${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`);
+        this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
+      }
+      this.validFromTobaseonDuration(this.editprofileForm.value);
+      this.checkIsFrequencyDeftim();
+    }
+  }
     public onChangeFrequencySet(data?: any) {
     if (data !== null || data !== "") {
       this.editprofileForm.get('deftimcycleData').setValue([]);
@@ -332,6 +357,7 @@ export class EditMedicationComponent implements OnInit {
     } else {
       this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, IsmoDetails: false });
     }
+    this.checkIsFrequencyDeftim()
   }
   public onOpenFrequencySet() {
     if (this.editprofileForm.get('deftimcycleData').value && this.editprofileForm.get('deftimcycleData').value.length) {
@@ -363,8 +389,8 @@ export class EditMedicationComponent implements OnInit {
     this.editprofileForm.patchValue({ IsFrequencyDeftim: false })
     this.checkIsFrequencyDeftim();
   }
-  private checkIsFrequencyDeftim(): boolean {
-    return this.editprofileForm.get('IsFrequencyDeftim').value ? this.IsFrequencyDeftimCheck = false : this.IsFrequencyDeftimCheck = true;
+  private checkIsFrequencyDeftim() {
+    this.editprofileForm.get('IsFrequencyDeftim').value ? this.isFrequencyDeftimCollapse = false : this.isFrequencyDeftimCollapse = true;
   }
 
  popCheck(event: Event): void {
