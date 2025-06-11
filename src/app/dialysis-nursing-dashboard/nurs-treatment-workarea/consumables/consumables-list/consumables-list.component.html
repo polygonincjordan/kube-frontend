@@ -1,4 +1,8 @@
 <div class="order-templete-main mt-3">
+  <!-- <alert *ngIf="showNotificationMessage" type="warning" (onClosed)="showNotificationMessage = false"
+    dismissOnTimeout="3000">
+    <div>Item Not found!</div>
+  </alert> -->
   <div class="toggle" (click)="addNewConsumable()">
     <img title="Visits & Admissions Timeline" src="assets/img/add-circle.svg" class="ng-star-inserted" />
   </div>
@@ -21,7 +25,6 @@
           <th colspan="1" scope="col">UoM</th>
           <th colspan="1" scope="col">Quantity</th>
           <th colspan="1" scope="col">Batch Number</th>
-          <th colspan="1" scope="col">Billable</th>
           <th colspan="1" scope="col">
             <div class="d-flex align-items-center justify-content-between">
               <div>Action</div>
@@ -48,13 +51,14 @@
               <td colspan="1">
                 <ng-select class="ng-select-dropdown width-100 product-code-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Matnr"
-                  (search)="searchMaterialByCode($event.term, wordType.MaterialCode$, i)"
+                  (search)="searchMaterial($event.term, wordType.MaterialCode$, i)"
                   (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Matnr">
                   <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
                     {{item.Maktx}}</ng-option>
                 </ng-select>
               </td>
               <td colspan="4">
+                <!-- <input class="form-control input-bg h-auto" type="text" formControlName="Arktx"  [title]="product.value.Arktx"> -->
                 <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Arktx"
                   (search)="searchMaterial($event.term, wordType.MaterialName$, i)"
@@ -85,16 +89,18 @@
                 </div>
               </td>
               <td colspan="1">
+                <!-- <input class="form-control" type="text" formControlName="Charg" [title]="product.value.Charg"> -->
                 <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Charg" [title]="product.value.Charg">
+                  <!-- <ng-option *ngFor="let item of batchNumberList" [value]="item">{{item.Matnr}} -
+                    {{item.Maktx}}</ng-option> -->
                 </ng-select>
+
               </td>
               <td colspan="1">
-                <div class="d-flex align-items-center">
-                    <input type="checkbox" class="form-control" style="height: 20px !important"  formControlName="NonBillable" [title]="product.value.NonBillable">
-                </div>
-              </td>
-              <td colspan="1">
+                <!-- <button type="button" class="all-notes" (click)="removeRow($event, i)">
+                  <i aria-hidden="true" class="fa fa-trash fa-lg cursor-pointer"></i>
+                </button> -->
                 <img [src]="'assets/img/Delete.svg'" class="all-notes cursor-pointer" (click)="removeRow($event, i)" />
               </td>
             </tr>
@@ -104,3 +110,110 @@
     </table>
   </form>
 </div>
+<!-- <ng-template #phyordertemplate>
+  <div *ngIf="phyOrderAction == 'execute'">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: white">
+        Executing a Physician Order
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="row" style="display: block; padding: 0 0 0 12px">
+        <p style="margin: 0; font-weight: bold; color: #82949e">
+          Are you sure you want to execute the Physician Order:
+        </p>
+        <p style="color: navy; font-weight: bold; word-break: break-word">
+          {{ phyOrderData.OrderShortText }}
+        </p>
+        <p>
+          <span style="font-weight: bold; color: #82949e">Created by</span>
+          <span style="color: navy; font-weight: bold; margin-left: 4px">{{
+            phyOrderData.CreationUser
+            }}</span>
+          on
+          <span style="color: navy; font-weight: bold">{{
+            getDate(phyOrderData.CreationDate) | date : "dd.MM.yyyy"
+            }}</span>
+        </p>
+      </div>
+      <div class="modal-footer" style="padding: 5px 0 0 0">
+        <div>
+          <span>
+            <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+              (click)="physicianOrderSet(phyOrderData, 'execute')">
+              Execute
+            </button>
+            <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+              (click)="modalRef.hide()">
+              Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="phyOrderAction == 'delete'">
+    <div class="modal-header" style="
+          display: flex;
+          padding: 17px;
+          background-color: #0082c8;
+          color: white;
+          border-radius: 16px 16px 0 0;
+        ">
+      <h4 class="modal-title" style="color: white">
+        Deleting a Physician Order
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="row" style="display: block; padding: 0 0 0 12px">
+        <p style="margin: 0; font-weight: bold; color: #82949e">
+          Are you sure you want to delete the Physician Order:
+        </p>
+        <p style="color: navy; font-weight: bold; word-break: break-word">
+          {{ phyOrderData.OrderShortText }}
+        </p>
+
+        <p>
+          <span style="font-weight: bold; color: #82949e">Created by</span>
+          <span style="color: navy; font-weight: bold; margin-left: 4px">{{
+            phyOrderData.CreationUser
+            }}</span>
+          on
+          <span style="color: navy; font-weight: bold">{{
+            getDate(phyOrderData.CreationDate) | date : "dd.MM.yyyy"
+            }}</span>
+        </p>
+      </div>
+      <div>
+        <select [(ngModel)]="cancelReasonValue" class="form-select" aria-label="Default select example">
+          <option selected value="">Reason for deletion</option>
+          <option [value]="item.Stoid" *ngFor="let item of cancelReasonListData">
+            {{ item.N1stotx }}
+          </option>
+        </select>
+        <p style="color: red" *ngIf="cancelReasonValue == ''">{{ errmsg }}</p>
+      </div>
+      <div class="modal-footer" style="padding: 5px 0 0 0">
+        <div style="display: flex">
+          <span style="
+                position: relative;
+                left: -3px;
+                top: 7px;
+                font-weight: bold;
+                color: #82949e;
+              ">Note: Deleting order will remove it Permanently</span>
+          <span style="display: flex">
+            <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+              (click)="physicianOrderSet(phyOrderData, 'delete')">
+              Delete
+            </button>
+            <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+              (click)="modalRef.hide()">
+              Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template> -->

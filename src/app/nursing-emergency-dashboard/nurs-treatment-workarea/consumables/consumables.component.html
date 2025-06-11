@@ -1,29 +1,29 @@
 <div class="search-functionalitypl-0 mt-2">
   <form action="" [formGroup]="formDetailGroup">
     <div class="tab-search-panel d-flex align-items-center justify-content-between">
-      <div class="tab-set w-100 d-flex align-items-center">
-        <!-- <tabset #tabset class="custom-tabset">
-          <tab tab1 heading="History" id="1" #first (selectTab)="changeTab('1')"></tab>
-          <tab tab2 heading="New Issue" id="2" #second (selectTab)="changeTab('2')"   ></tab>
-        </tabset> -->
+      <div class="tab-set w-25 d-flex align-items-center">
         <tabset>
-          <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="tabz.active = true"
-            (selectTab)="changeTab(tabz)">
-            {{tabz?.content}}
+          <tab *ngFor="let tabz of tabs" [heading]="tabz.title" [active]="tabz.active" (selectTab)="changeTab(tabz)">
+            {{ tabz?.content }}
           </tab>
         </tabset>
       </div>
-      <div class="d-flex align-items-center justify-content-between" *ngIf="isConsumableAction == '2'">
+      <div class="storage-box w-100 d-flex align-items-center">
+        <label class="location-label mr-2" for="storage-location">Storage Location</label>
+        <ng-select class="w-10 ng-select-dropdown" [placeholder]="'Storage Location'" [clearable]="true" [searchable]="true"
+          formControlName="selectedLocation" [(ngModel)]="selectedLocation" (change)="onLocationChange($event)">
+          <ng-option *ngFor="let item of storageLocationList" [value]="item">{{ item.Lgort }}</ng-option>
+        </ng-select>
+      </div>
+      <div class="d-flex align-items-center justify-content-between" *ngIf="isConsumableAction === '2'">
         <div>
           <button type="button" class="header-btn" (click)="resetForm()">
-            <!-- <i aria-hidden="true" class="fa fa-close fa-lg cursor-pointer"></i> -->
             <span>Cancel</span>
           </button>
         </div>
         <div class="spacer"></div>
         <div>
-          <button type="button" class="header-btn" (click)="saveConsumable()">
-            <!-- <i aria-hidden="true" class="fa fa-save fa-lg cursor-pointer"></i> -->
+          <button type="submit" class="header-btn" (click)="saveConsumable()"> 
             <span>Post</span>
           </button>
         </div>
