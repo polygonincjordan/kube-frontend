@@ -61,6 +61,7 @@ export class SurgicalPassportComponent implements OnInit {
     {  label: 'Not applicable', value: '2' },
   ]
   patientDetails: Patient;
+  loginUserDetails = this.storageService.getUserProfile();
   maritalStatus: any;
   duplicates: any[];
   private subscription: Subscription;
@@ -156,9 +157,9 @@ export class SurgicalPassportComponent implements OnInit {
       voided:  SurgicalPassData && SurgicalPassData.Voided ? SurgicalPassData.Voided : '',
       catheter:  SurgicalPassData && SurgicalPassData.Catheter ? SurgicalPassData.Catheter : '',
       ngt: SurgicalPassData && SurgicalPassData.Ngt ? SurgicalPassData.Ngt : '',
-      itime: [SurgicalPassData && SurgicalPassData.ITime ? this.convertDurationToTime(SurgicalPassData.ITime) : '',Validators.required],
+      itime: [SurgicalPassData && SurgicalPassData.ITime ? this.convertDurationToTime(SurgicalPassData.ITime) : ''],
       NoOfunit: SurgicalPassData && SurgicalPassData.Units ? SurgicalPassData.Units : '',
-      VTime: [SurgicalPassData && SurgicalPassData.VTime ? this.convertDurationToTime(SurgicalPassData.VTime) : '',Validators.required],
+      VTime: [SurgicalPassData && SurgicalPassData.VTime ? this.convertDurationToTime(SurgicalPassData.VTime) : ''],
       PreMedicationAdministred: SurgicalPassData && SurgicalPassData.PreMedication ? SurgicalPassData.PreMedication : '',
       skinTest: SurgicalPassData && SurgicalPassData.SkinTest ? SurgicalPassData.SkinTest : '',
       fullDose: SurgicalPassData && SurgicalPassData.FullDose ? SurgicalPassData.FullDose : '',
@@ -170,9 +171,9 @@ export class SurgicalPassportComponent implements OnInit {
       prosthesisImplant: SurgicalPassData && SurgicalPassData.Implant ? SurgicalPassData.Implant : '',
       comments: SurgicalPassData && SurgicalPassData.Comments ? SurgicalPassData.Comments : '',
       wardCheck: SurgicalPassData && SurgicalPassData.WardCheck ? SurgicalPassData.WardCheck : false,
-      nameOfAssignedStaff: SurgicalPassData && SurgicalPassData.WardCheckNm ? SurgicalPassData.WardCheckNm : '',
+      nameOfAssignedStaff: SurgicalPassData && SurgicalPassData.WardCheckNm ? SurgicalPassData.WardCheckNm : this.loginUserDetails.UserName,
       OrStaff: SurgicalPassData && SurgicalPassData.OrCheck ? SurgicalPassData.OrCheck : false,
-      NameOfOrStaff: SurgicalPassData && SurgicalPassData.OrCheckNm ? SurgicalPassData.OrCheckNm : '',
+      NameOfOrStaff: SurgicalPassData && SurgicalPassData.OrCheckNm ? SurgicalPassData.OrCheckNm : this.docKey ? this.loginUserDetails.UserName : '',
       commentslast: SurgicalPassData && SurgicalPassData.Comments1 ? SurgicalPassData.Comments1 : '',
       isVitals:[false],
       isDiagnosis:[false]
@@ -380,11 +381,11 @@ export class SurgicalPassportComponent implements OnInit {
         Npo: this.formSurgicalPaasDetailGroup.value.npo,
         Ngt: this.formSurgicalPaasDetailGroup.value.ngt,
         Isolationn: this.formSurgicalPaasDetailGroup.value.typeOfIsolation,
-        ITime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.itime),
+        ITime: this.formSurgicalPaasDetailGroup.value.itime ? this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.itime) : 'PT00H00M00S',
         BloodArranged: this.formSurgicalPaasDetailGroup.value.bloodArranged,
         Units: this.formSurgicalPaasDetailGroup.value.NoOfunit,
         Voided: this.formSurgicalPaasDetailGroup.value.voided,
-        VTime: this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.VTime),
+        VTime: this.formSurgicalPaasDetailGroup.value.VTime ? this.convertTimeToDuration(this.formSurgicalPaasDetailGroup.value.VTime) : 'PT00H00M00S',
         Catheter:  this.formSurgicalPaasDetailGroup.value.catheter,
         PreMedication: this.formSurgicalPaasDetailGroup.value.PreMedicationAdministred,
         SkinTest: this.formSurgicalPaasDetailGroup.value.skinTest,
