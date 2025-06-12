@@ -399,8 +399,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
           EnNursingCallBell: result?.EnNursingCallBell ?? false,
           EnSeizuresPrecautions: result?.EnSeizuresPrecautions ?? false,
           NursingRecommendations: result?.NursingRecommendations || '',
-          PrLastTime: this.parseTime(result?.PrLastTime) || '',
-          PgLastBowel: this.parseTime(result?.PgLastBowel) || '',
+          PrLastTime: result?.PrLastTime == 'PT00H00M00S' ? '' : this.parseTime(result?.PrLastTime),
+          PgLastBowel: result?.PgLastBowel == 'PT00H00M00S' ? '' : this.parseTime(result?.PgLastBowel),
 
         });
 
@@ -794,8 +794,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
     return new Promise((resolve, reject) => {
       let Payload = { ...this.sbarNursingForm.value };
       Payload.DocStatus = status;
-      Payload.PrLastTime = this.convertToPTTime(Payload.PrLastTime) || '',
-        Payload.PgLastBowel = this.convertToPTTime(Payload.PgLastBowel) || '',
+      Payload.PrLastTime = Payload.PrLastTime ? this.convertToPTTime(Payload.PrLastTime) : 'PT00H00M00S',
+        Payload.PgLastBowel = Payload.PgLastBowel ? this.convertToPTTime(Payload.PgLastBowel) : 'PT00H00M00S',
         Payload.PmDressingDate = this.sanitizeSAPDateFormat(Payload.PmDressingDate) || '',
         Payload.PmInsertionDate = this.sanitizeSAPDateFormat(Payload.PmInsertionDate) || '',
         // Payload.PmOtherAssessment = this.sanitizeSAPDateFormat(Payload.PmOtherAssessment) || '',

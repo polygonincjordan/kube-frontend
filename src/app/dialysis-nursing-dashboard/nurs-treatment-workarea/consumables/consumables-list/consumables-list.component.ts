@@ -8,6 +8,7 @@ import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { getAlertConfig } from '@services/index';
 import { ActionType, FilterType, WordType } from '@services/interfaces/common.enum';
+import { StorageService } from '@services/storage.service';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { Subject, Subscription, debounceTime, filter, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -45,6 +46,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     private consumableService: ConsumableService,
     private dataShareService: DataShareService,
     private route: ActivatedRoute,
+    private storageService: StorageService,
     private formBuilder: FormBuilder,
     private emergencyService: EmergencyService
   ) {
@@ -113,8 +115,8 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     return new FormGroup({
       Einri: new FormControl(this.paramsValue.einri),
       Falnr: new FormControl(this.paramsValue.falnr),
-      Anfoe: new FormControl("EMEMDAMC"),
-      Anpoe: new FormControl("EMEEUAMC"),
+      Anfoe: new FormControl(this.storageService.patientData.deptOrgUnit),
+      Anpoe: new FormControl("F2DTUAMC"),
       Lgort: new FormControl("DI02"),
       PatMatCosmpNmm7HdToItmNav: new FormGroup({
         // results: new FormArray([])

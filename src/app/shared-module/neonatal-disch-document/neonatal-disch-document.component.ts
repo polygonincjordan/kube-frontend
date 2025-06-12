@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { AdmissionService } from '@services/admission/admission.service';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @Component({
   selector: 'app-neonatal-disch-document',
@@ -22,10 +24,14 @@ export class NeonatalDischDocumentComponent implements OnInit {
   @Output() reloadTableList = new EventEmitter();
   neonatalDischarge: FormGroup;
   selectedTabName: string = 'Skin';
+  selectedTabNameMedication: string = 'Hospital Medication';
   isChecked: any;
   paramsObject: any;
   encounterId: any;
   public toVitalsArr: any = [];
+  drugArray: any = [];
+  selectedMedicationOrder: any = [];
+  modalRefUpdateName: BsModalRef;
   tabList = [
     'Skin',
     'Head & Neck',
@@ -36,6 +42,11 @@ export class NeonatalDischDocumentComponent implements OnInit {
     'Malformation',
     'General Impression',
   ];
+
+  public medicationTabList = [
+    'Hospital Medication',
+    'Dicharge Medication'
+  ];
   public modeOfDeliveryList = [
     { value: '0', label: 'Vaginal' },
     { value: '1', label: 'C-Section' },
@@ -44,6 +55,11 @@ export class NeonatalDischDocumentComponent implements OnInit {
     { value: '4', label: 'Head Pres.' },
     { value: '5', label: 'Breech' },
     { value: '6', label: 'Others' }
+  ];
+  public patientCondition = [
+    { value: '0', label: 'Stable' },
+    { value: '1', label: 'Tranferred' },
+    { value: '2', label: 'Deceased' }
   ];
 
   public weight = [
@@ -75,7 +91,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
   docKey: any;
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
-  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, private storageService: StorageService, private datePipe: DatePipe,
+  constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService, private datePipe: DatePipe, private modalService: BsModalService, private ePrescriptionService: EPrescriptionService,
     private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService, private admissionService: AdmissionService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -377,15 +393,15 @@ export class NeonatalDischDocumentComponent implements OnInit {
       MMalformation: [data?.MMalformation || ''],
       MMalformationT: [data?.MMalformationT || { value: '', disabled: true }],
       GeneralImpression: [data?.GeneralImpression || ''],
-      FinalDiagn: "",
-      Substances: "",
-      Consultations: "",
-      ConsultationsT: "",
-      Complications: "",
-      ComplicationsT: "",
-      PatCondition: "",
-      PatConditionT: "",
-      Instructions: "",
+      FinalDiagn: [data?.FinalDiagn || ''],
+      Substances: [data?.Substances || ''],
+      Consultations: [data?.Consultations || '0'],
+      ConsultationsT: [data?.ConsultationsT || ''],
+      Complications: [data?.Complications || '0'],
+      ComplicationsT: [data?.ComplicationsT || ''],
+      PatCondition: [data?.PatCondition || ''],
+      PatConditionT: [data?.PatConditionT || ''],
+      Instructions: [data?.Instructions || ''],
       DocStatus: "1",
     })
   }
@@ -693,8 +709,27 @@ export class NeonatalDischDocumentComponent implements OnInit {
 
       paylaod.AdmTime = paylaod.AdmTime ? this.convertTimeToDuration(paylaod.AdmTime) : '';
       paylaod.Timee = paylaod.Timee ? this.convertTimeToDuration(paylaod.Timee) : '';
-      paylaod['TOHOSPMED'] = []
-      paylaod['TODISCHMED'] = []
+      paylaod['TOHOSPMED'] = this.medicationImportDrugArrayForHosp.map(item => ({
+        Dockey: item.Dockey || '',
+        Meevtid: '',
+        Descr: item.Descr,
+        Dose: item.Dose,
+        Validity: item.Validity,
+        Route: item.Route,
+        Rate: item.Rate,
+        Cycle: item.Cycle
+      }));
+      paylaod['TODISCHMED'] = this.medicationImportDrugArray.map(item => ({
+        Dockey: item.Dockey || '',
+        Descr: item.Descr,
+        Dose: item.Dose,
+        CycleTxt: item.Cycle,
+        OrderType: item.OrderType,
+        Validity: item.Validity,
+        RespEmp: item.RespEmp,
+        Route: item.Route,
+        Rate: item.Rate,
+      }));
       paylaod['TOVITALSIGNS'] = this.toVitalsArr;
 
 
@@ -748,6 +783,166 @@ export class NeonatalDischDocumentComponent implements OnInit {
   assessmentTabSelect(tabName: string) {
     this.selectedTabName = tabName;
   }
+  assessmentTabSelectMedi(tabName: string) {
+    this.selectedTabNameMedication = tabName;
+  }
+  medicationImportDrugArray: any = [];
+  medicationImportDrugArrayForHosp: any = [];
+  medicationTye
+  openModal(template: TemplateRef<any>, medicationTye) {
+    this.medicationTye = medicationTye;
+      const config: ModalOptions = {
+        class:
+          'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+      };
+      this.modalRefUpdateName = this.modalService.show(template, config);
+      this.loadMedicationHistoryData();
+      // this.medicationImportDrugArray=[];
+    }
+  
+    loadMedicationHistoryData() {
+      this.selectedMedicationOrder = [];
+      this.drugArray = [];
+      const profileOrderHistory: Subscription = this.ePrescriptionService
+        .loadData(
+          `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`,
+          false,
+          false,
+          false,
+          false
+        )
+        .subscribe(
+          (resp: any) => {
+            if (
+              resp.body &&
+              resp.body.d &&
+              resp.body.d.results &&
+              resp.body.d.results.length
+            ) {
+              //this.configurationData = resp.body.d.results;
+              this.drugArray = resp.body.d.results;
+              // this.medicationImportDrugArray=[];
+            }
+            //   this.filterEvents();
+          },
+          () => {
+            profileOrderHistory.unsubscribe();
+          }
+        );
+    }
+
+ isCheckedMedi(item: any): boolean {
+    return this.selectedMedicationOrder.some((x) => x.Meordid == item.Meordid);
+  }
+
+  collectMedicationIData(event, item) {
+    if (event.target.checked) {
+      this.selectedMedicationOrder.push(item);
+      // this.medicationImportDrugArray.push(item);
+    } else {
+      const indexOf = this.selectedMedicationOrder.findIndex(
+        (x) => x.Meordid == item.Meordid
+      );
+      if (indexOf !== -1) this.selectedMedicationOrder.splice(indexOf, 1);
+      // this.medicationImportDrugArray.splice(index, 1);
+    }
+  }
+  // isCheckedScale(item: any): boolean {
+  //   return this.selectedScales.some((x) => x.Scaletype == item.Scaletype);
+  // }
+
+  medicationImportForHosp() {
+    if (!this.medicationImportDrugArrayForHosp) {
+      this.medicationImportDrugArrayForHosp = [];
+    }
+
+    this.selectedMedicationOrder.forEach((element) => {
+      this.medicationImportDrugArrayForHosp.push({
+        Dockey: '',
+        OrderType:
+          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        Descr:
+          element.Descrlt +
+          element.Quan +
+          element.Quanunit +
+          element.Routedescr +
+          element.N1id,
+        HomeMedication: false,
+        PatientOwnMed: false,
+        Dose: element.Quan + element.Quanunit,
+        Validity: `${new DatePipe('en-US').transform(
+          this.getDate(element.StartD),
+          'dd.MM.yyyy'
+        )}-${new DatePipe('en-US').transform(
+          this.getDate(element.EndD),
+          'dd.MM.yyyy'
+        )}`,
+        Route: element.Routedescr,
+        Amount: '',
+        Rate: '',
+        Therapy: '00000',
+        Id: '',
+        OrderingPhysician: element.EmpRespNm,
+        Cycle: element.N1id,
+        EmpResp: element.EmpResp,
+      });
+    });
+    this.modalRefUpdateName.hide();
+  }
+
+  medicationImport() {
+
+    if(this.medicationTye == 'Hospital') {
+      this.medicationImportForHosp();
+      return;
+    }
+
+    if (!this.medicationImportDrugArray) {
+      this.medicationImportDrugArray = [];
+    }
+
+    this.selectedMedicationOrder.forEach((element) => {
+      this.medicationImportDrugArray.push({
+        Dockey: '',
+        OrderType:
+          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        Descr:
+          element.Descrlt +
+          element.Quan +
+          element.Quanunit +
+          element.Routedescr +
+          element.N1id,
+        HomeMedication: false,
+        PatientOwnMed: false,
+        Dose: element.Quan + element.Quanunit,
+        Validity: `${new DatePipe('en-US').transform(
+          this.getDate(element.StartD),
+          'dd.MM.yyyy'
+        )}-${new DatePipe('en-US').transform(
+          this.getDate(element.EndD),
+          'dd.MM.yyyy'
+        )}`,
+        Route: element.Routedescr,
+        Amount: '',
+        Rate: '',
+        Therapy: '00000',
+        Id: '',
+        OrderingPhysician: element.EmpRespNm,
+        Cycle: element.N1id,
+        EmpResp: element.EmpResp,
+      });
+    });
+    this.modalRefUpdateName.hide();
+  }
+
+  collectAllMedicationIData(event: any) {
+    if (event.target.checked) {
+      this.selectedMedicationOrder = Object.assign([], this.drugArray);
+    } else {
+      this.selectedMedicationOrder = [];
+    }
+  }
+
 
   public parseTime(data: string) {
     // Check if data is valid and matches the expected format
