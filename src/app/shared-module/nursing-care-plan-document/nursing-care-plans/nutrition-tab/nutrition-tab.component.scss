@@ -25,3 +25,19 @@
     }
   }
 }
+
+
+
+.disabled-form {
+    img {
+      pointer-events: none;
+    }
+    input[type="checkbox"],
+    input[type="radio"],
+    input[type="text"],
+    textarea,
+    ng-select {
+        pointer-events: none !important;
+        cursor: not-allowed !important;
+    }
+}

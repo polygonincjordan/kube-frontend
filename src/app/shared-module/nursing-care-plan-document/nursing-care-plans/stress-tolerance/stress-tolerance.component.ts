@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class StressToleranceComponent implements OnInit {
   @Input() nursingCarePlanForm: FormGroup;
+  @Input() isReadOnly : boolean =false;
 
   constructor() {}
 

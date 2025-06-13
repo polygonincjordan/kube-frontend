@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class DiarrheaTabComponent implements OnInit {
   @Input() nursingCarePlanForm: FormGroup;
-
+  @Input() isReadOnly : boolean =false;
   constructor() { }
 
   ngOnInit(): void {

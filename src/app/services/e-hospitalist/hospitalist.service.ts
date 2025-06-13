@@ -276,8 +276,8 @@ export class HospitalistService {
       withCredentials: true,
     });
   }
-  getSurgeryWorkListSetAPI() {
-    const url = `${environment.eKardexApiUrl}/eHospitalist/getSurgeryWorkList`;
+  getSurgeryWorkListSetAPI(speciality?) {
+    const url = `${environment.eKardexApiUrl}/eHospitalist/getSurgeryWorkList?Anfoe=${speciality}`;
 
     return this.http.get(url, {
       withCredentials: true,

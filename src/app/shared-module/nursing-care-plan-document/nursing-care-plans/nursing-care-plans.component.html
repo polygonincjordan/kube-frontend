@@ -1,4 +1,4 @@
-<div class="tab-navigation-part">
+<div class="tab-navigation-part" [ngClass]="{'disabled-form p-3' :isReadOnly}">
   <div class="tab-navigate">
     <div class="tab-nav">
       <ul class="m-0 p-0 d-flex mb-2 tab-ui">
@@ -16,76 +16,76 @@
     </div>
     <div class="tab-contant">
       <div class="nutrition" *ngIf="selectedTabName == tabLabelList[0]">
-        <app-nutrition-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-nutrition-tab>
+        <app-nutrition-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-nutrition-tab>
       </div>
       <div class="Diarrhea" *ngIf="selectedTabName == tabLabelList[1]">
-        <app-diarrhea-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-diarrhea-tab>
+        <app-diarrhea-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-diarrhea-tab>
       </div>
       <div class="activity-rest" *ngIf="selectedTabName == tabLabelList[2]">
-        <app-activity-rest-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-activity-rest-tab>
+        <app-activity-rest-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-activity-rest-tab>
       </div>
       <div class="coping-stress-tolerance" *ngIf="selectedTabName == tabLabelList[3]">
-        <app-stress-tolerance [nursingCarePlanForm]="nursingCarePlanForm"></app-stress-tolerance>
+        <app-stress-tolerance [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-stress-tolerance>
       </div>
       <div class="comfort-acute-pain" *ngIf="selectedTabName == tabLabelList[4]">
-        <app-acute-pain-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-acute-pain-tab>
+        <app-acute-pain-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-acute-pain-tab>
       </div>
       <div class="safety-bleending" *ngIf="selectedTabName == tabLabelList[5]">
-        <app-bleending-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-bleending-tab>
+        <app-bleending-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-bleending-tab>
       </div>
       <div class="safety-tissue-integrity" *ngIf="selectedTabName == tabLabelList[6]">
-        <app-tissue-integrity-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-tissue-integrity-tab>
+        <app-tissue-integrity-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-tissue-integrity-tab>
       </div>
       <div class="safety-fall-risk" *ngIf="selectedTabName == tabLabelList[7]">
-        <app-fall-risk-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-fall-risk-tab>
+        <app-fall-risk-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-fall-risk-tab>
       </div>
       <div class="safety-hyperthermia" *ngIf="selectedTabName == tabLabelList[8]">
-        <app-hyperthermia-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-hyperthermia-tab>
+        <app-hyperthermia-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-hyperthermia-tab>
       </div>
       <div class="safety-hypothermia" *ngIf="selectedTabName == tabLabelList[9]">
-        <app-hypothermia-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-hypothermia-tab>
+        <app-hypothermia-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-hypothermia-tab>
       </div>
       <div class="safety-aspiration" *ngIf="selectedTabName == tabLabelList[10]">
-        <app-aspiration-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-aspiration-tab>
+        <app-aspiration-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-aspiration-tab>
       </div>
       <div class="safety-injection" *ngIf="selectedTabName == tabLabelList[11]">
-        <app-injection-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-injection-tab>
+        <app-injection-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-injection-tab>
       </div>
       <div class="activity-sleep-pattern-disturbance" *ngIf="selectedTabName == tabLabelList[12]">
-        <app-pattern-disturbance-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-pattern-disturbance-tab>
+        <app-pattern-disturbance-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-pattern-disturbance-tab>
       </div>
       <div class="activity-impaired-physical-mobility" *ngIf="selectedTabName == tabLabelList[13]">
-        <app-physical-mobility-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-physical-mobility-tab>
+        <app-physical-mobility-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-physical-mobility-tab>
       </div>
       <div class="activity-inffective-breathing-patterns" *ngIf="selectedTabName == tabLabelList[14]">
-        <app-breathing-patterns-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-breathing-patterns-tab>
+        <app-breathing-patterns-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-breathing-patterns-tab>
       </div>
       <div class="comfort-chest-pain" *ngIf="selectedTabName == tabLabelList[15]">
-        <app-chest-pain-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-chest-pain-tab>
+        <app-chest-pain-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-chest-pain-tab>
       </div>
       <div class="elimination_exchange_dehdration" *ngIf="selectedTabName == tabLabelList[16]">
-        <app-exchange-dehdration-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-exchange-dehdration-tab>
+        <app-exchange-dehdration-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-exchange-dehdration-tab>
       </div>
       <div class="elimination_exchange_nausea_vomating" *ngIf="selectedTabName == tabLabelList[17]">
-        <app-nausea-vomating-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-nausea-vomating-tab>
+        <app-nausea-vomating-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-nausea-vomating-tab>
       </div>
       <div class="safety_protection_vte_risk" *ngIf="selectedTabName == tabLabelList[18]">
-        <app-vte-risk-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-vte-risk-tab>
+        <app-vte-risk-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-vte-risk-tab>
       </div>
       <div class="safety_protection_disrhythmias" *ngIf="selectedTabName == tabLabelList[19]">
-        <app-protection-disrhythmias-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-protection-disrhythmias-tab>
+        <app-protection-disrhythmias-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-protection-disrhythmias-tab>
       </div>
       <div class="safety_protection_unstable_bGlucose" *ngIf="selectedTabName == tabLabelList[20]">
-        <app-unstable-b-glucose-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-unstable-b-glucose-tab>
+        <app-unstable-b-glucose-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-unstable-b-glucose-tab>
       </div>
       <div class="nutrition_ineffecive_infant_feeding_pattern" *ngIf="selectedTabName == tabLabelList[21]">
-        <app-infant-feeding-pattern-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-infant-feeding-pattern-tab>
+        <app-infant-feeding-pattern-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-infant-feeding-pattern-tab>
       </div>
       <div class="nutrition_electrolyte_imbalance" *ngIf="selectedTabName == tabLabelList[22]">
-        <app-electrolyte-imbalance-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-electrolyte-imbalance-tab>
+        <app-electrolyte-imbalance-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-electrolyte-imbalance-tab>
       </div>
       <div class="perception_cognition_knowledge_deficit" *ngIf="selectedTabName == tabLabelList[23]">
-        <app-knowledge-deficit-tab [nursingCarePlanForm]="nursingCarePlanForm"></app-knowledge-deficit-tab>
+        <app-knowledge-deficit-tab [nursingCarePlanForm]="nursingCarePlanForm" [isReadOnly]="isReadOnly"></app-knowledge-deficit-tab>
       </div>
     </div>
   </div>

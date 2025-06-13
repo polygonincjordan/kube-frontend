@@ -152,7 +152,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
 
   initForm(data?) {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
-    console.log(this.storageService, "this.storageService?.patientData");
+    console.log(this.storageService.patientData, "this.storageService?.patientData");
     
     this.neonatalDischarge = this.formBuilder.group({
       Dockey: [data?.Dockey || ''],
@@ -173,8 +173,8 @@ export class NeonatalDischDocumentComponent implements OnInit {
       CgaDays: [data?.CgaDays || ''],
       ChronoAge: [data?.ChronoAge || ''],
       DischDate: [this.getDate(data?.DischDate) || new Date()],
-      AdmDate: [this.getDate(data?.AdmDate) || null],
-      AdmTime: [this.parseTime(data?.AdmTime) || null],
+      AdmDate: [this.getDate(data?.AdmDate) || new Date(`${new DatePipe('en-US').transform(this.storageService.patientData.periodStart,'yyyy-MM-dd')}T00:00:00`)],
+      AdmTime: [this.parseTime(data?.AdmTime) || this.datePipe.transform(this.storageService.patientData.periodStart, "hh:mm:ss")],
       BirthWeight: [data?.BirthWeight || ''],
       BirthWgtUnit: [data?.BirthWgtUnit || ''],
       AdmWeight: [data?.AdmWeight || ''],

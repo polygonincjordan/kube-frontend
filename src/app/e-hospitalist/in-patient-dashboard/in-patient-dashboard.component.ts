@@ -249,6 +249,9 @@ export class InPatientDashboardComponent implements OnInit {
       PerformaceUnit: [''],
       FinCate: [''],
     });
+
+    this.getSurgeryList();
+    this.getArrivalAPI();
   }
 
   @HostListener('document:click', ['$event'])
@@ -813,7 +816,9 @@ export class InPatientDashboardComponent implements OnInit {
     }
 
     if (this.home) {
-      this.LDRListSet();
+      if (this.navTabBoxActiveValue != '08' && this.navTabBoxActiveValue != '09') {
+        this.LDRListSet();
+      }
       // this.form.patchValue({
       //   admittedFrom: '',
       // admittedTo: '',
@@ -1010,7 +1015,8 @@ export class InPatientDashboardComponent implements OnInit {
 
         })
     } else if (this.navTabBoxActiveValue == '09') {
-      this.hospitalistService.getSurgeryWorkListSetAPI()
+      let speciality = 'CATTUAMC,6FL-OROU,ENDTUAMC,F9GOTAMC';
+      this.hospitalistService.getSurgeryWorkListSetAPI(speciality)
         .subscribe((data: any) => {
           this.inSurgeryWorklistClone = [...data?.d?.results];
           this.inSurgeryWorklist = data?.d?.results;
@@ -1147,6 +1153,25 @@ export class InPatientDashboardComponent implements OnInit {
     //     }
     //   });
     this.countOfNavModules(wardNo);
+  }
+
+  getArrivalAPI() {
+    let dateFormate = `${new DatePipe('en-US').transform(this.arrivalDate, 'yyyy-MM-dd')}T00:00:00`;
+    this.hospitalistService.getArrivalListSetAPI('1', '', dateFormate)
+      .subscribe((data: any) => {
+        console.log(data, "data")
+        this.inArrivalslistListClone = [...data?.d?.results];
+        this.inArrivalslistList = data?.d?.results;
+    })
+  }
+
+  getSurgeryList() {
+      let speciality = 'CATTUAMC,6FL-OROU,ENDTUAMC,F9GOTAMC'
+      this.hospitalistService.getSurgeryWorkListSetAPI(speciality)
+      .subscribe((data: any) => {
+        this.inSurgeryWorklistClone = [...data?.d?.results];
+        this.inSurgeryWorklist = data?.d?.results;
+      })
   }
   getDate(value) {
     if (value) {
