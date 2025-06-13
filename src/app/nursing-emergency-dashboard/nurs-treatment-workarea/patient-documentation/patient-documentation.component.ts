@@ -223,6 +223,10 @@ export class PatientDocumentationComponent implements OnInit {
       label: 'CPR Document',
       value: 'CPD'
     },
+    {
+      label: 'SBAR Nursing Endorsement',
+      value: 'SBARNE'
+    },
   ]
   createdDocumentUserList: any = [];
   departmentOUList: any = [];
@@ -3152,6 +3156,15 @@ export class PatientDocumentationComponent implements OnInit {
       });
   }
 
+  openPDfModal(template, item: any) {
+    this.admissionService.selectedCurrentDocDetails = item;
+    let config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    this.modalService.show(template, config);
+  }
+
+  closePopup() { if (this.modalService) { this.modalService.hide(); } }
   dockVer(value) {
     return `(v${parseInt(value)})`;
   }

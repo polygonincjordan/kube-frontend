@@ -185,6 +185,7 @@ import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-a
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/er-vitals/er-vitals.component';
 import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
+import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
 
 
 
@@ -385,7 +386,8 @@ const route: Routes = [
     IcBundleAdultVentilatorModule,
     IcuHoursFlowsheetModule,
     AdminAttechmentModule,
-    ConsultationsOrdersModule
+    ConsultationsOrdersModule,
+    PatientProfileHeaderModule
 ],
 })
 export class NursingInpatientDashboardModule {}

@@ -552,6 +552,10 @@ export class PatientDocumentationComponent implements OnInit {
       label: 'NICU Nursing Flow Sheet',
       value: 'NNFS'
     },
+    {
+      label: 'STAMP',
+      value: 'STAMP'
+    },
   ]
 
   createdDocumentUserList: any = [];
@@ -8590,6 +8594,16 @@ export class PatientDocumentationComponent implements OnInit {
   dockVer(value) {
     return `(v${parseInt(value)})`;
   }
+
+  openPDfModal(template, item: any) {
+    this.admissionService.selectedCurrentDocDetails = item;
+    let config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl pdfmodal-size',
+    };
+    this.modalService.show(template, config);
+  }
+
+  closePopup() { if (this.modalService) { this.modalService.hide(); } }
 
   closePdfModal() {
     this.releaseDocumentImage = '';

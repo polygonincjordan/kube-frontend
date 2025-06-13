@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
@@ -18,6 +18,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { GlosGowCommaScalePopupComponent } from 'src/app/shared-module/paediatrics-adm-document/glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
 import { MorseFallScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/morse-fall-scale/morse-fall-scale.component';
 import { BradenScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/braden-scale/braden-scale.component';
+import { AdmissionService } from '@services/admission/admission.service';
 
 @Component({
   selector: 'app-sbar-nursing-endorsement',
@@ -29,6 +30,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsForSBARComponent;
   @ViewChild('pastSurgicalKardexId') pastSurgicalKardex: PhysicianPastSurgicalComponent;
+  @Input() isReadOnly : boolean =false;
+
   toVitalsArr: any = [];
   toAllergyArr: any = [];
   toDiagnosisArr: any = [];
@@ -75,7 +78,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   currentTime: any;
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, public storageService: StorageService, private emergencyService: EmergencyService, private datePipe: DatePipe,
-    private sharedService: SharedService, private dataShareService: DataShareService, private ePrescriptionService: EPrescriptionService, private modalService: BsModalService) {
+    private sharedService: SharedService, private dataShareService: DataShareService, private ePrescriptionService: EPrescriptionService, private modalService: BsModalService, private admissionService: AdmissionService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -125,6 +128,9 @@ export class SbarNursingEndorsementComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if(this.isReadOnly){
+      this.getNurseDocDetail(this.admissionService.selectedCurrentDocDetails.Dockey)
+    }
     this.initForm();
   }
 
@@ -292,18 +298,21 @@ export class SbarNursingEndorsementComponent implements OnInit {
   TOBLOOD: FormArray;
   TOCONSULTATION: FormArray;
   addLabTestItem(): void {
+    if(this.isReadOnly) return;
     if (this.sbarNursingForm) {
       this.TOLABTEST = this.sbarNursingForm.get('TOLABTEST') as FormArray;
       this.TOLABTEST.push(this.createLabTestGroup());
     }
   }
   addBloodItem(): void {
+    if(this.isReadOnly) return;
     if (this.sbarNursingForm) {
       this.TOBLOOD = this.sbarNursingForm.get('TOBLOOD') as FormArray;
       this.TOBLOOD.push(this.createBloodGroup());
     }
   }
   addTOCONSULTATIONItem(): void {
+    if(this.isReadOnly) return;
     if (this.sbarNursingForm) {
       this.TOCONSULTATION = this.sbarNursingForm.get('TOCONSULTATION') as FormArray;
       this.TOCONSULTATION.push(this.createConsultationGroup());
@@ -517,6 +526,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   }
 
   openModalForDiagnosis() {
+    if(this.isReadOnly) return;
     this.diagnosisNotesKardex.openModalForDiagnosisKardex();
   }
 
@@ -582,6 +592,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   }
 
   public openModalForAllergy() {
+    if(this.isReadOnly) return;
     this.createAllergyId.openModalForAllergy();
   }
 
@@ -648,6 +659,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
 
 
   public openModalVital() {
+    if(this.isReadOnly) return;
     if (this.isChecked) return;
     const item = {
       Einri: this.paramsObject.einri,
@@ -687,6 +699,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   drugArray: any[] = [];
 
   openModal(template: TemplateRef<any>) {
+    if(this.isReadOnly) return;
     const config: ModalOptions = {
       class:
         'modal-dialog modal-dialog-centered medication-order-case modal-xl',
@@ -870,6 +883,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
 
 
   openModalForScales(template: TemplateRef<any>) {
+    if(this.isReadOnly) return;
     const config: ModalOptions = {
       class:
         'modal-dialog modal-dialog-centered medication-order-case modal-xl',
@@ -1063,6 +1077,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   }
 
   openModalForPastSurgical() {
+    if(this.isReadOnly) return;
     this.pastSurgicalKardex.openModalForPastSurgical();
   }
 

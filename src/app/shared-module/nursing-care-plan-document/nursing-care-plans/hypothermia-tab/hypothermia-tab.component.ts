@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class HypothermiaTabComponent implements OnInit {
   @Input() nursingCarePlanForm: FormGroup;
+  @Input() isReadOnly : boolean =false;
   constructor() { }
 
   ngOnInit(): void {

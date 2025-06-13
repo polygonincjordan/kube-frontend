@@ -130,6 +130,7 @@ import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-docu
 import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
 import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
+import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
 
 const route: Routes = [
   {
@@ -257,7 +258,8 @@ const route: Routes = [
     CprDocumentModule,
     AdminAttechmentModule,
     NursingDischargeSummaryModule,
-    ConsultationsOrdersModule
+    ConsultationsOrdersModule,
+    PatientProfileHeaderModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

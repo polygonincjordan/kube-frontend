@@ -406,16 +406,8 @@
                 <div class="col-md-3">{{latestNurCarePlanList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
                   <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(latestNurCarePlanList[0],RedirectionType.BRADEN$)"
+                     (click)="openPDfModal(NursingCarePlanHTML, latestNurCarePlanList[0])"
                     *ngIf="latestNurCarePlanList[0]?.StatusTxt == 'Released'" />
-                    <!-- <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
-                      <select *ngIf="latestNurCarePlanList[0]?.StatusTxt !='N/A' && latestNurCarePlanList[0]?.Dokvr != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div> -->
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
-                      <select *ngIf="latestNurCarePlanList.length && latestNurCarePlanList[0]?.StatusTxt !='N/A' && latestNurCarePlanList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div>
                 </div>
               </div>
 
@@ -916,12 +908,8 @@
                 <div class="col-md-3">{{sbarNurEndList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
                   <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(sbarNurEndList[0],RedirectionType.BRADEN$)"
+                     (click)="openPDfModal(sbarDocumentHTML, sbarNurEndList[0])"
                     *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
-                      <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div>
                 </div>
               </div>
 
@@ -1624,6 +1612,31 @@
             </div>
           </div>
         </form>
+      </div>
+    </ng-template>
+
+    <ng-template #sbarDocumentHTML>
+      <div class="modal-body p-0" id="templatePrintID">
+        <div class="d-flex justify-content-between">
+          <div (click)="closePopup()" class="close-html">
+            <img src="assets/img/CloseTab.svg" style="width: 40px;">
+          </div>
+        </div>
+        <app-patient-profile-header></app-patient-profile-header>
+        <app-sbar-nursing-endorsement [isReadOnly]="true"></app-sbar-nursing-endorsement>
+        <!-- <app-hematology-bmt-unit [isReadOnly]="true"></app-hematology-bmt-unit> -->
+      </div>
+    </ng-template>
+    <ng-template #NursingCarePlanHTML>
+      <div class="modal-body p-0" id="templatePrintID">
+        <div class="d-flex justify-content-between">
+          <div (click)="closePopup()" class="close-html">
+            <img src="assets/img/CloseTab.svg" style="width: 40px;">
+          </div>
+        </div>
+        <app-patient-profile-header></app-patient-profile-header>
+        <app-nursing-care-plans [isReadOnly]="true" ></app-nursing-care-plans>
+        <!-- <app-hematology-bmt-unit [isReadOnly]="true"></app-hematology-bmt-unit> -->
       </div>
     </ng-template>
 

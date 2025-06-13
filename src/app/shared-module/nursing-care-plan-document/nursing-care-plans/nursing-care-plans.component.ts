@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { Patient } from '@services/e-kardex/interfaces/patient';
@@ -17,6 +18,8 @@ import { Subscription, catchError, of } from 'rxjs';
   styleUrls: ['./nursing-care-plans.component.scss'],
 })
 export class NursingCarePlansComponent implements OnInit {
+  @Input() isReadOnly : boolean =false;
+  
   tabLabelList = [
     'Nutrition',
     'Elimination & Exchange; Diarrhea',
@@ -64,6 +67,7 @@ export class NursingCarePlansComponent implements OnInit {
     private dayCaseDashboard: DayCaseDashboardService,
     private storageService: StorageService,
     private _route: ActivatedRoute,
+    private admissionService: AdmissionService,
     private patientService: PatientService
   ) {
     this._route.queryParams.subscribe((params) => {
@@ -132,6 +136,9 @@ export class NursingCarePlansComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.isReadOnly){
+      this.getNursingCarePlanDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey)
+    }
   }
 
   createNursingCarePlan(status: string, actiontype?: string) {

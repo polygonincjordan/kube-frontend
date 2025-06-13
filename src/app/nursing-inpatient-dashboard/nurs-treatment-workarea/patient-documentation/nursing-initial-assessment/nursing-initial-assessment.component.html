@@ -379,101 +379,108 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="no" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaDoYouHave" [value]="'Yes'"
+                  name="PaDoYouHave" />
                 <div class="label">Yes</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="no" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaDoYouHave" [value]="'No'" name="PaDoYouHave" />
                 <div class="label">No</div>
               </div>
             </div>
           </div>
+
+          <!-- Pain Locations -->
           <div class="row">
-            <div class="col-md-2">
-              <label>Specify Location</label>
-            </div>
+            <div class="col-md-2"><label>Specify Location</label></div>
+
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlHeadache" />
                 <div class="label">Headache</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlBreast" />
                 <div class="label">Breast</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlIncisionSite" />
                 <div class="label">Incision Site</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlLowBack" />
                 <div class="label">Low Back</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlLegCalf" />
                 <div class="label">Leg or calf</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlAbdominalCramps" />
                 <div class="label">Abdominal cramps</div>
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlPerineum" />
                 <div class="label">Perineum</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlAnal" />
                 <div class="label">Anal</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" formControlName="PaSlWholeBody" />
                 <div class="label">Whole body</div>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+              <div class="form-group d-flex">
+                <input type="checkbox" class="mr-1" formControlName="PaSlOther" />
                 <div class="label">Other</div>
-                <input type="text" class="ml-2 form-control" name="" />
+                <input type="text" class="ml-2 form-control" formControlName="PaSlOtherTxt" />
               </div>
             </div>
           </div>
-          <!--  -->
+
+          <!-- Pain Intensity -->
           <div class="row">
             <div class="col-md-2">
               <div class="d-flex">
-                <input type="checkbox" class="mr-1" name="" /><label>
-                  Pain Intensity</label>
+                <input type="checkbox" class="mr-1" formControlName="PaPainIntensity" />
+                <label>Pain Intensity</label>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <ng-select [items]="pain" bindLabel="label" bindValue="value" placeholder="Select " style="width: 100%">
+                <ng-select [items]="pain" bindLabel="label" bindValue="value" placeholder="Select"
+                  formControlName="PaPainIntensity1">
                 </ng-select>
               </div>
             </div>
           </div>
+
+          <!-- Sleep at Night -->
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
@@ -481,17 +488,21 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="pain" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaSleepingNight" [value]="'Yes'"
+                  name="PaSleepingNight" />
                 <div class="label">Yes</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="pain" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaSleepingNight" [value]="'No'"
+                  name="PaSleepingNight" />
                 <div class="label">No</div>
               </div>
             </div>
           </div>
+
+          <!-- Participating in activities -->
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
@@ -499,17 +510,21 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="pain1" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'Yes'"
+                  name="PaParticipatingActivities" />
                 <div class="label">Yes</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="pain1" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'No'"
+                  name="PaParticipatingActivities" />
                 <div class="label">No</div>
               </div>
             </div>
           </div>
+
+          <!-- Everyday Pain -->
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
@@ -517,18 +532,21 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="pain2" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaPainEveryday" [value]="'Yes'"
+                  name="PaPainEveryday" />
                 <div class="label">Yes</div>
               </div>
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="pain2" />
+                <input type="radio" class="mr-2 ml-0" formControlName="PaPainEveryday" [value]="'No'"
+                  name="PaPainEveryday" />
                 <div class="label">No</div>
               </div>
             </div>
           </div>
         </div>
+
 
         <div *ngIf="activeTab === 'sleep'">
           <div class="row">
@@ -537,31 +555,31 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="" />
+                <input type="radio" class="mr-2 ml-0" name="" value="0" formControlName="SSleepProblem"/>
                 <div class="label">No Problem</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="radio" class="mr-2 ml-0" name="" />
+                <input type="radio" class="mr-2 ml-0" name="" value="1" formControlName="SSleepProblem"/>
                 <div class="label">Problem</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" name="" formControlName="SSleepingDifficulty" />
                 <div class="label">Sleeping Difficulty</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" name="" formControlName="SAwakeFrequently" />
                 <div class="label">Awake Frequently</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" />
+                <input type="checkbox" class="mr-1" name="" formControlName="SSleepingAids" />
                 <div class="label">Sleeping Aids</div>
               </div>
             </div>

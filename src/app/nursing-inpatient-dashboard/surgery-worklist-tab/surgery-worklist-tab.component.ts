@@ -88,7 +88,8 @@ export class SurgeryWorklistTabComponent implements OnInit {
   }
 
   surgeryListData() {
-    this.hospitalistService.getSurgeryWorkListSetAPI()
+    let speciality = 'CATTUAMC,6FL-OROU,ENDTUAMC,F9GOTAMC';
+    this.hospitalistService.getSurgeryWorkListSetAPI(speciality)
       .subscribe((data: any) => {
         this.inSurgeryWorklistClone = data?.d?.results;
         this.inSurgeryWorklist = data?.d?.results;

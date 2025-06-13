@@ -1,4 +1,4 @@
-<form class="tab-contant" [formGroup]="nursingCarePlanForm">
+<form class="tab-contant" [formGroup]="nursingCarePlanForm" [ngClass]="{'disabled-form p-3' :isReadOnly}">
   <div class="nur-problem-details row">
     <div class="col-md-6">
       <div class="nutrotion-problem">
