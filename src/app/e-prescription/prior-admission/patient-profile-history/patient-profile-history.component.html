@@ -140,7 +140,10 @@
                 </div>
               </td>
               <td class="w-0 text-center Mp-hover">
-                <div *ngIf="item.value.Purpose === '3'">
+                <div *ngIf="item.value.Purpose === '3' && item.value.MotypId === '70'">
+                  <img src="assets/img/Anesthesia-administration.png" alt="" height="35" class="c-pointer" title="Anesthesia Administration">
+                </div>
+                <div *ngIf="item.value.Purpose === '3' && item.value.MotypId !== '70'">
                   <img src="assets/img/Administration.png" alt="" height="40" class="c-pointer" title="Administration">
                 </div>
                 <div *ngIf="item.value.Purpose === '1'">
