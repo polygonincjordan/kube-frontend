@@ -92,14 +92,14 @@ export class InPatientConfigurationService {
     localStorage.removeItem("data");
   }
 
-  async saveInPatientDocumentData(data: any, userConfiguration: UserConfig, documentType: boolean) {
+  async saveInPatientDocumentData(data: any, userConfiguration: UserConfig, documentType: boolean,status?:any) {
     const payloadData = {
       DocKey: data.patientFormData.DocKey !== undefined ? data.patientFormData.DocKey : "",
       Dtid: data.patientDtId,
       DtidText: "",
       Dodat: `\/Date(${new Date().getTime()})\/`,
       Dokst: "",
-      Dokvr: "",
+      Dokvr: status ? status : "",
       Einri: this.storageService.einri,
       Patnr: this.storageService.patnr,
       Falnr: this.storageService.falnr,

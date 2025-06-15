@@ -67,6 +67,7 @@ import { DislikePreferenceComponentNew } from './diet-meal-order-new/dislike-pre
 import { PatientsDietMealComponentNew } from './diet-meal-order-new/patients-diet-meal/patients-diet-meal.component';
 import { DietMealOrderComponentNew } from './diet-meal-order-new/diet-meal-order.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { SurgeryOperationNoteModule } from '../shared-module/surgery-operation-note/surgery-operation-note.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -137,7 +138,8 @@ export const ePrescriptionRoutes: Routes = [
     NewbornAssessmentModule,
     VitalSignModule,
     NeonatalDischDocumentModule,
-    PaediatricPhysicianAssessmentModule
+    PaediatricPhysicianAssessmentModule,
+    SurgeryOperationNoteModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

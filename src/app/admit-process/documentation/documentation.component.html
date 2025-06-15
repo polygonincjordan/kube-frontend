@@ -239,6 +239,19 @@
       <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
     </div>
   </div>
+  <!-- surgery opration note -->
+  <div class="education-assess" *ngIf="admissionService.isAddEditSurgeryOprationNoteForm">
+    <strong>Surgery/Operation Note</strong>
+    <div>
+      <button class="sort-btn" (click)="addEditForm('save')"
+        *ngIf="!this.admissionService.isEditSurgeryOprationNoteForm">Save & Close</button>
+        <button class="sort-btn" (click)="addEditForm('edit')"
+        *ngIf="this.admissionService.isEditSurgeryOprationNoteForm">Save & Close</button>
+        <!-- <button class="sort-btn" (click)="addEditForm('saveClose')">Save & Close</button> -->
+      <button class="sort-btn" (click)="addEditForm('release')">Release</button>
+      <button class="sort-btn" (click)="this.admissionService.cancelAllForm()">Cancel</button>
+    </div>
+  </div>
 
   <!-- Visit Note Form -->
   <div class="education-assess" *ngIf="admissionService.isAddEditDocVisitForm">

@@ -107,6 +107,10 @@ export class PatientService {
       primDiaTxt: _get(episodeOfCare, 'primDiaTxt', ''),
       bloodGrpTxt: _get(subject, 'bloodGrpTxt', ''),
       maritalStatus:_get(subject, 'maritalStatus[coding][0].display', ''),
+      kinName:subject?.KinName,
+      KinTelephone:subject?.KinTelephone,
+      Nationality:subject?.Nationality,
+      Treatmentou:data?.Treatmentou
     };
 
     this.patientSubject$.next(_patient);
