@@ -1,0 +1,137 @@
+<form [formGroup]="inPatientDataSet">
+  <div class="row align-items-center mb-2">
+    <label
+      for="operative-complication"
+      class="col-sm-4 col-form-label pt-0 mb-0"
+      >Operative Complication</label
+    >
+    <div class="col-sm-8">
+      <input
+        type="text"
+        class="form-control"
+        id="operative-complication"
+        formControlName="OperativeComplication"
+      />
+    </div>
+  </div>
+  <div class="row align-items-center mb-2">
+    <label for="specimen-removed" class="col-sm-4 col-form-label pt-0 mb-0"
+      >Specimen Removed</label
+    >
+    <div class="col-sm-8">
+      <input
+        type="text"
+        class="form-control"
+        id="specimen-removed"
+        formControlName="SpecimenRemoved"
+      />
+    </div>
+  </div>
+  <div class="row align-items-center mb-2">
+    <label for="blood-loss" class="col-sm-4 col-form-label pt-0 mb-0"
+      >Blood Loss (ml)</label
+    >
+    <div class="col-sm-3">
+      <input
+        type="text"
+        class="form-control"
+        id="blood-loss"
+        formControlName="BloodLoss"
+      />
+    </div>
+    <label
+      for="blood-transfused-amount"
+      class="col-sm-3 col-form-label p-0 mb-0"
+      style="max-width: 22%; flex: 0 0 22%"
+      >Blood Transfused Amount(ml)</label
+    >
+    <div class="col-sm-2" style="max-width: 19.66667%; flex: 0 0 19.66667%">
+      <input
+        type="text"
+        class="form-control"
+        id="blood-transfused-amount"
+        formControlName="BloodTransfused"
+      />
+    </div>
+  </div>
+  <div class="row align-items-center mb-2">
+    <label for="procedure" class="col-sm-4 col-form-label pt-0 pb-0 mb-0"
+      >Procedure</label
+    >
+    <div class="col-sm-8">
+      <input
+        type="text"
+        class="form-control"
+        id="procedure"
+        formControlName="ProcedureRemarks"
+      />
+    </div>
+  </div>
+  <div class="row align-items-center mb-2">
+    <label
+      for="anticapated-complications"
+      class="col-sm-4 col-form-label pt-0 mb-0"
+      >Anticipated Complications</label
+    >
+    <div class="col-sm-8">
+      <input
+        type="text"
+        class="form-control"
+        id="anticapated-complications"
+        formControlName="AnticipatedComplications"
+      />
+    </div>
+  </div>
+</form>
+<div class="border-between w-100 mt-3"></div>
+<div class="surgery-team-table">
+  <div
+    class="openPopup-btn d-flex justify-content-between py-1 align-items-center"
+  >
+    <span class="in-patient-title">Surgery Team</span>
+    <img
+      src="assets/img/texteditor.png"
+      width="28"
+      (click)="onOpenSurgeryPopup()"
+    />
+  </div>
+  <diagnosis-table
+    [tableHeader]="inPatientSurgeryHeaderData"
+    [tableConfigData]="surgeryTableData"
+  ></diagnosis-table>
+</div>
+<div class="border-between w-100 my-3"></div>
+<div class="row" style="display: flex; justify-content: space-around">
+  <div class="col-md-6">
+    <div
+      class="openPopup-btn d-flex justify-content-between py-1 align-items-center"
+    >
+      <span class="in-patient-title">Pre-Operative Diagnosis</span>
+      <img
+        src="assets/img/texteditor.png"
+        width="28"
+        (click)="onPreOperativePopup()"
+      />
+    </div>
+    <diagnosis-table
+      [tableHeader]="inPatientDiagnosisHeaderData"
+      [tableConfigData]="preDiagnosisTableData"
+    ></diagnosis-table>
+  </div>
+  <div class="col-md-6">
+    <div
+      class="openPopup-btn d-flex justify-content-between py-1 align-items-center"
+    >
+      <span class="in-patient-title">Post-Operative Diagnosis</span>
+      <img
+        src="assets/img/texteditor.png"
+        width="28"
+        (click)="onPostOperativePopup()"
+      />
+    </div>
+    <diagnosis-table
+      [tableHeader]="inPatientDiagnosisHeaderData"
+      [tableConfigData]="postDiagnosisTableData"
+    ></diagnosis-table>
+  </div>
+</div>

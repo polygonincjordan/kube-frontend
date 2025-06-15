@@ -1,0 +1,32 @@
+.in-patient-table {
+  border: none;
+
+  th,
+  td {
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    &:not(:last-child) {
+      border-right: 1px solid #fff !important;
+    }
+  }
+
+  td {
+    border: none !important;
+  }
+
+  thead {
+    background: #0082c8 !important;
+    color: white;
+    position: sticky;
+    top: 0;
+  }
+
+  tbody {
+    tr {
+      background: #f6f7fb;
+      border-top: 5px solid #fff;
+    }
+  }
+}

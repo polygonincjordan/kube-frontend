@@ -1114,10 +1114,11 @@ export class PhysicianFormComponent implements OnInit {
           // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
           // }
           this.admissionService.cancelAllForm();
+          this.sharedService.successSwallModel('Physician Assessment Create Successfully')
           this.admissionService.selectedCurrentDocDetails = '';
           this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isClonePhysicianForm = false;
+          this.admissionService.isClonePhysicianForm = false;         
           this.admissionService.isEditPhysicianForm = false;
           }, (error) => {
             this.admissionService.isClonePhysicianForm = false;
@@ -1432,6 +1433,7 @@ export class PhysicianFormComponent implements OnInit {
         //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         // }
         this.admissionService.cancelAllForm();
+        this.sharedService.successSwallModel('Physician Assessment Update Successfully')
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);

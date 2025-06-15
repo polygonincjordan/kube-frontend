@@ -110,8 +110,11 @@ export class AdmissionService {
   public isEditVisitForm: boolean = false;
 
   public isAddEditDocPaediatricsAdmissionForm: boolean = false;
+  public isAddEditSurgeryOprationNoteForm: boolean = false;
   public isClonePaediatricsAdmissionForm: boolean = false;
+  public isCloneSurgeryOprationNoteForm: boolean = false;
   public isEditPaediatricsAdmissionForm: boolean = false;
+  public isEditSurgeryOprationNoteForm: boolean = false;
 
   public isAddEditTransferAssestForm: boolean = false;
   public isAddEditNewbornAssessment: boolean = false;
@@ -818,6 +821,25 @@ export class AdmissionService {
           this.isClonePaediatricsAdmissionForm = false;
         }
       }
+      else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_OPERT') {
+        if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') {
+          return;
+        }
+
+        if (actionType == 'edit') {
+          this.isEditSurgeryOprationNoteForm = true;
+        } else {
+          this.isCloneSurgeryOprationNoteForm = false;
+        }
+
+        if (actionType == 'clone' && this.selectedCurrentDocDetails.DokstText != 'Released') return;
+        this.isAddEditSurgeryOprationNoteForm = !this.isAddEditSurgeryOprationNoteForm;
+        if (actionType == 'clone') {
+          this.isCloneSurgeryOprationNoteForm = true;
+        } else {
+          this.isCloneSurgeryOprationNoteForm = false;
+        }
+      }
       else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_ATCHM') {
         this.document.next(true);
       }
@@ -881,9 +903,11 @@ export class AdmissionService {
     this.isCloneNewBornForm = false;
 
     this.isEditPaediatricsAdmissionForm = false;
+    this.isEditSurgeryOprationNoteForm = false;
     this.isAddEditDocPaediatricsAdmissionForm = false;
-    this.isClonePaediatricsAdmissionForm = false;
-
+    this.isAddEditSurgeryOprationNoteForm = false;
+    this.isCloneSurgeryOprationNoteForm = false;
+    this.isClonePaediatricsAdmissionForm = false
   }
 
   clearVarValue() {
@@ -927,8 +951,11 @@ export class AdmissionService {
     this.isAddEditNeonatalDischarge = false;
 
     this.isEditPaediatricsAdmissionForm = false;
+    this.isEditSurgeryOprationNoteForm = false;
     this.isAddEditDocPaediatricsAdmissionForm = false;
+    this.isAddEditSurgeryOprationNoteForm = false;
     this.isClonePaediatricsAdmissionForm = false;
+    this.isCloneSurgeryOprationNoteForm = false;
   }
 
   //getDocumentDetails

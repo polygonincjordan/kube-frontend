@@ -187,7 +187,9 @@ export class PhysicianFamilyHistoryComponent implements OnInit {
     this.familyHistoryFormItems.removeAt(this.familyHistoryFormItems.length - 1);
   }
   resetFamilyHistroyForm():void{
+    this.isRiskUpdate = false;
     this.updateSurgForm.reset();
+    this.initForm();
   }
 
   saveFamilyHistroyForm() {

@@ -38,6 +38,10 @@ export interface Patient {
   maritalStatus?: string;
   telephone?: string;
   admissionDate?: string;
+  Nationality?:string;
+  KinTelephone?:string;
+  kinName?:string;
+  Treatmentou?:string;
 }
 
 export interface FlagIcons {

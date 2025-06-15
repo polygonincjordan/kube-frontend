@@ -117,7 +117,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       Einri: new FormControl(this.paramsValue.einri),
       Falnr: new FormControl(this.paramsValue.falnr),
       Anfoe: new FormControl(this.storageService.patientData.deptOrgUnit),
-      Anpoe: new FormControl("EMEEUAMC"),
+      Anpoe: new FormControl(this.storageService.patientData?.Treatmentou),
       Lgort: new FormControl(''),
       PatMatCosmpNmm7HdToItmNav: new FormGroup({
         // results: new FormArray([])
