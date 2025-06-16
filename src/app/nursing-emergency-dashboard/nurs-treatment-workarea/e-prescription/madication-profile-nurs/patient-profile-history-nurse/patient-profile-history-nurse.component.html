@@ -76,7 +76,7 @@
                       </ng-option>
                     </ng-select>
                   </span>
-  
+
                 </td>
                 <td class="w-9 p-1 ">
                   <input type="text" class="form-control font-weight-bolder
@@ -140,7 +140,11 @@
                   </div>
                 </td>
                 <td class="w-0 text-center Mp-hover">
-                  <div *ngIf="item.value.Purpose === '3'">
+                  <div *ngIf="item.value.Purpose === '3'  && item.value.MotypId === '70'">
+                    <img src="assets/img/Anesthesia-administration.png" alt="" height="35" class="c-pointer"
+                            title="Anesthesia Administration">
+                 </div>
+                  <div *ngIf="item.value.Purpose === '3'  && item.value.MotypId !== '70'">
                     <img src="assets/img/Administration.png" alt="" height="40" class="c-pointer" title="Administration">
                   </div>
                   <div *ngIf="item.value.Purpose === '1'">
@@ -207,9 +211,9 @@
       </tbody>
     </table>
   </form>
-  
-  
-  
+
+
+
   <ng-template #actionData let-item="item" let-index="index">
     <div class="d-flex justify-content-between position-relative p-0">
       <button class="p-2 c-pointer Mp-hover button-color border-0"  [disabled]="item.value.Purpose === '' ? true : false" [ngClass]="item.value.Purpose === '' ? 'Purpose-color' : ''" [popover]="endActionRef"
@@ -234,7 +238,7 @@
       </button>
     </div>
   </ng-template>
-  
+
   <ng-template #hourPopover let-index="index">
     <div class="p-3 medication-widht">
       <span class="position-relative d-flex align-items-center w-100 mb-3">
@@ -253,13 +257,13 @@
       </span>
     </div>
   </ng-template>
-  
+
   <ng-template #NotValidationData let-item="item" let-index="index">
     <div [formGroup]="item" class="p-3">
       <div>Not Validated</div>
     </div>
   </ng-template>
-  
+
   <ng-template #ValidationData let-item="item" let-index="index">
     <div [formGroup]="item" class="p-3">
       <div class="d-flex align-items-center gap-data mb-1">
@@ -286,8 +290,8 @@
       </div>
     </div>
   </ng-template>
-  
-  
+
+
   <ng-template #endActionRef let-item="item" let-index="index" let-data="data" class="end">
     <form [formGroup]="item">
       <div class="ma-template p-3">
@@ -339,7 +343,7 @@
       </div>
     </form>
   </ng-template>
-  
+
   <ng-template #cancelActionRef let-item="item" let-index="index">
     <form action="" [formGroup]="item">
       <div class="ma-template p-3">
@@ -363,4 +367,3 @@
   <!-- <addition-infoprn-popup #additionalPopup (onUpdateprnData)="onUpdatedAdditionalInfoprn($event)"
     [editPrncond]="this.MedicationorderForm"></addition-infoprn-popup>
   <modetail-panel #modetailpanel></modetail-panel> -->
-  
