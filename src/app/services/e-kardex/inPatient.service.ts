@@ -128,6 +128,11 @@ export class InPatientConfigurationService {
     await lastValueFrom(savePatientConfig$)
   }
 
+  saveSurgery(payload:any){
+    const url = `${environment.eKardexApiUrl}/inpatientData/saveInPatientDataSet`;
+    return this.http.post(url, payload, { withCredentials: true })
+  }
+
   getDischargeSummarySet() {
     return this.http.get(`${environment.eKardexApiUrl}/inpatientData/getDischargeSummarySet?Einri=${this.storageService.einri}&Falnr=${this.storageService.falnr}`, { withCredentials: true })
   }
@@ -214,13 +219,19 @@ export class InPatientConfigurationService {
     await lastValueFrom(createPatientConfig$);
   }
 
-  getSurgeryPopupData() {
-    const url = `${environment.eKardexApiUrl}/inPatientData/getSurgeryTeamData?SequenceNumberMovem=${this.storageService.lfdnr}&CaseNumber=${this.storageService.falnr}`
+  // getSurgeryPopupData() {
+  //   debugger
+  //   const url = `${environment.eKardexApiUrl}/inPatientData/getSurgeryTeamData?SequenceNumberMovem=${this.storageService.lfdnr}&CaseNumber=${this.storageService.falnr}`
+  //   return this.http.get(url, { withCredentials: true })
+  // }
+
+  getSurgeryPopupData(obj: any) {
+    const url = `${environment.eKardexApiUrl}/inPatientData/getSurgeryTeamData?SequenceNumberMovem=${obj.lfdnr}&CaseNumber=${obj.falnr}`
     return this.http.get(url, { withCredentials: true })
   }
 
-  getDiagnosisPopupData() {
-    const url = `${environment.eKardexApiUrl}/inPatientData/getDiagnosisData?Institution=${this.storageService.einri}&PatientNumber=${this.storageService.patnr}&CaseNumber=${this.storageService.falnr}`
+  getDiagnosisPopupData(obj:any) {
+    const url = `${environment.eKardexApiUrl}/inPatientData/getDiagnosisData?Institution=${obj.einri}&PatientNumber=${obj.patnr}&CaseNumber=${obj.falnr}`
     return this.http.get(url, { withCredentials: true }).pipe(
       map((data: any) => { return data.d.results }),
       catchError((error: HttpErrorResponse) => {
@@ -234,10 +245,10 @@ export class InPatientConfigurationService {
     await lastValueFrom(this.getPatientVisitDataByDocKey(docKey));
   }
 
-  getPatientVisitDataByDocKey(docKey: string): Observable<InPatientDataResult> {
+  getPatientVisitDataByDocKey(docKey: string,params?:any): Observable<InPatientDataResult> {
     const url = this.getUrlInPatientVisitDataByDocKey(
-      this.storageService.einri,
-      this.storageService.patnr,
+      this.storageService.einri ?  this.storageService.einri :params?.einri,
+      this.storageService.patnr ?  this.storageService.patnr :params?.patnr ,
       docKey
     );
     return this.http.get(url, { withCredentials: true }).pipe(

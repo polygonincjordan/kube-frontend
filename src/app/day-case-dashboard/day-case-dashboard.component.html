@@ -777,7 +777,7 @@ font-size: 12px;
   </div>
 </div>
 <ng-template #additionalPatientInfo>
-    <div class="allergy-header">
+  <div class="allergy-header">
     <div class="allergy-header-title">
       <span>Patient's Information</span>
     </div>
@@ -824,7 +824,7 @@ font-size: 12px;
       <div class="col-md-6 row m-0">
         <label for="staticEmail" class="col-sm-5">Nationality:</label>
         <div class="col-sm-7">
-          <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          <span>{{patient?.Nationality || 'N/A'}}</span>
         </div>
       </div>
       <div class="col-md-6 row m-0">
@@ -848,13 +848,13 @@ font-size: 12px;
         <div class="col-md-6 row m-0">
           <label for="staticEmail" class="col-sm-5">Name:</label>
           <div class="col-sm-7">
-            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+            <span>{{patient?.kinName || 'N/A'}}</span>
           </div>
         </div>
         <div class="col-md-6 row m-0">
           <label for="staticEmail" class="col-sm-5">Relationship:</label>
           <div class="col-sm-7">
-            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+            <span>{{patient?.maritalStatus || 'N/A'}}</span>
           </div>
         </div>
       </div>
@@ -862,12 +862,12 @@ font-size: 12px;
         <div class="col-md-6 row m-0">
           <label for="staticEmail" class="col-sm-5">Mobile #:</label>
           <div class="col-sm-7">
-            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+            <span>{{patient?.KinTelephone || 'N/A'}}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="button-group p-3 row m-0" style="text-align: -webkit-center;">
+  <div class="button-group p-3 row m-0" style="text-align: -webkit-center;">
       <div class="col-md-7" style="text-align: end; display: flex; justify-content: end;">
         <button class="save-risk" (click)="modalRef.hide()">Ok</button>
       </div>

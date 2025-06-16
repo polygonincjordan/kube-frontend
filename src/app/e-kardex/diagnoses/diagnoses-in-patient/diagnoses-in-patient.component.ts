@@ -70,6 +70,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
   @Output() updateEvent: EventEmitter<any> = new EventEmitter<any>();
+  paramsObject: any;
 
 
   @Input() set userConfigSet(data: UserConfig) { this.userConfig = data; }
@@ -229,7 +230,10 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
       Substances: new FormControl(""),
       NoMedordAppl: new FormControl(false)
     })
-
+    this.route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+      console.log(this.paramsObject);
+    });
   }
 
   ngOnInit(): void {
@@ -568,7 +572,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   // [region] start SurgeryData
 
   loadSurgeyPopupData() {
-    this.inPatientConfigurationService.getSurgeryPopupData().subscribe((surgeryData: any) => {
+    this.inPatientConfigurationService.getSurgeryPopupData(this.paramsObject).subscribe((surgeryData: any) => {
       if (surgeryData && surgeryData.d && surgeryData.d.results && surgeryData.d.results.length) {
         surgeryData.d.results.forEach((item) => {
           item.DocKey = item.Dockey;
@@ -608,7 +612,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
 
   // [region] start Diagnosis
   loadDiagnosisData() {
-    this.inPatientConfigurationService.getDiagnosisPopupData().subscribe((diagnosesData: DiagnosesData[]) => {
+    this.inPatientConfigurationService.getDiagnosisPopupData(this.paramsObject).subscribe((diagnosesData: DiagnosesData[]) => {
       diagnosesData.forEach((item, index) => {
         item.DocKey = "";
         item.Remarks = "";

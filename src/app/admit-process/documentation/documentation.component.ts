@@ -176,6 +176,9 @@ export class DocumentationComponent implements OnInit {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_ORRPT') {
             this.deleteForm();
           }
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_OPERT') {
+            this.deleteForm();
+          }
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEOPN') {
             this.deleteNeoNatalDoc();
           }
@@ -381,8 +384,10 @@ export class DocumentationComponent implements OnInit {
       this.directReleaseNeonatalDischargeDoc();
     }
      if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_TRFAS') {
-  this.releasePhysicianDoc() 
-          
+       this.releasePhysicianDoc()     
+    }
+     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_OPERT') {
+       this.releaseSurgaryDoc()    
     }
   }
 
@@ -429,6 +434,52 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.releaseTransferDoc(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
+        }
+      );
+    })
+  }
+  releaseSurgaryDoc() {
+    let json = {
+      Dockey:this.admissionService.selectedCurrentDocDetails.Dockey
+    }
+    this.inPatientConfigurationService.getPatientVisitDataByDocKey(json.Dockey,this.paramsObject).subscribe((res: any) => {
+      console.log(res, "--");
+
+      let d: any = {
+        d: res,
+      };
+      d .d.Released = true;
+      if (d.d.Erdattim != '') {
+  // Extract timestamp from "/Date(1747785600000)/"
+  const match = /\/Date\((\d+)\)\//.exec(d.d.Erdattim);
+  if (match && match[1]) {
+    const dateObj = new Date(+match[1]); // convert to Date
+    d.d.Erdattim = `${new DatePipe('en-US').transform(
+      dateObj,
+      'yyyy-MM-dd'
+    )}T00:00:00`;
+  } else {
+    d.d.Erdattim = ''; // fallback or handle invalid case
+  }
+      }
+      if (d.d.Dodat != '') {
+  // Extract timestamp from "/Date(1747785600000)/"
+  const match = /\/Date\((\d+)\)\//.exec(d.d.Dodat);
+  if (match && match[1]) {
+    const dateObj = new Date(+match[1]); // convert to Date
+    d.d.Dodat = `${new DatePipe('en-US').transform(
+      dateObj,
+      'yyyy-MM-dd'
+    )}T00:00:00`;
+  } else {
+    d.d.Dodat = ''; // fallback or handle invalid case
+  }
+      }
+      delete d.d.__metadata;
+      this.inPatientConfigurationService.saveSurgery(d.d).subscribe(
+        (result) => {
+          this.admissionService.isRealoadData.next(true);
+           this.sharedService.successSwallModel('Department of Surgery - Operation Notes Release Successfully')
         }
       );
     })
@@ -819,6 +870,7 @@ export class DocumentationComponent implements OnInit {
             .createPhysicianData(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
+              this.sharedService.successSwallModel('Physician Assessment Release Successfully')
             });
         }
       });

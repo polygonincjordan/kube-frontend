@@ -257,10 +257,10 @@ export class UserConfigurationService {
   getSoapUrlPatientVisitData(einri: string, falnr: string, docKey: string) {
     return `${environment.eKardexApiUrl}/patientData/getSoapPatientVisitData?einri=${einri}&falnr=${falnr}&docKey=${docKey}`;
   }
-  getPatientVisitData(docKey: string): Observable<PatientVisitDataResult> {
+  getPatientVisitData(docKey: string,param?:any): Observable<PatientVisitDataResult> {
     const url = this.getUrlPatientVisitData(
-      this.storageService.einri,
-      this.storageService.patnr,
+      this.storageService.einri ? this.storageService.einri:param?.einri,
+      this.storageService.patnr ? this.storageService.patnr:param?.patnr,
       docKey
     );
     return this.http.get(url, { withCredentials: true }).pipe(

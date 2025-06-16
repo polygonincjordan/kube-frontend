@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { ConsumablesHistory, ConsumablesHistoryResult, MaterialDetails, MaterialDetailsResult } from '@services/consumables/interfaces/consumables.interface';
 import { DataShareService } from '@services/data-share.service';
-import { Subject, debounceTime } from 'rxjs';
+import { Subject, Subscription, debounceTime } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-consumables-history',
@@ -24,23 +25,48 @@ export class ConsumablesHistoryComponent implements OnInit {
   // Sorting properties
   public sortColumn: string = '';
   public sortDirection: string = 'asc'; // Default sorting direction
-
-
+  actionTypeSubscription$: Subscription;
+  slocData:any
   constructor(
     private consumableService: ConsumableService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
+     private dataShareService: DataShareService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsValue = params;
     });
+
+    this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data)=>{
+      if(data != null){
+        this.slocData = data?.value?.Lgort
+        if(this.slocData){
+            this.getConsumableHistory();
+        }
+      }
+    })
   }
 
   ngOnInit(): void {
     this.consumablesFrom();
-    this.getConsumableHistory();
+    if(this.slocData){
+      this.getConsumableHistory();
+    }else{
+      Swal.fire({
+                  text:'Please select a storage location',
+                  icon: 'warning',
+                  confirmButtonText: 'Ok',
+                  customClass: 'myalertpopup'
+                }).then((result) => {})
+    }
     this.subscribeToFormChanges();
 
+  }
+
+    ngOnDestroy(): void {
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+    }
   }
 
   //#region "Filter Function"
@@ -106,7 +132,8 @@ export class ConsumablesHistoryComponent implements OnInit {
 
 
   private getConsumableHistory() {
-    this.consumableService.getConsumablesHistory(this.paramsValue.falnr).subscribe({
+    this.consumableHistoryList=[];
+    this.consumableService.getConsumablesHistory(this.paramsValue.falnr,this.slocData).subscribe({
       next: (resp: ConsumablesHistory) => {
         if (resp && resp.d.results) {
           // console.log(resp.d.results);
@@ -118,6 +145,7 @@ export class ConsumablesHistoryComponent implements OnInit {
           });
           this.materialCodeList = Array.from(new Set(this.materialCodeList));
           this.materiNameList = Array.from(new Set(this.materiNameList));
+          this.slocData = null
           // console.log(this.consumableHistoryList);
         }
       }
