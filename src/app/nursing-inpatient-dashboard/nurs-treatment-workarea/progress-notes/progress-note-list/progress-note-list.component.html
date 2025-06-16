@@ -26,14 +26,13 @@
         </div>
         
         <div class="action-img ml-4">
-          <img
+          <img (click)="copyProgressNotesBind(item, 'replace')"
             width="20px"
-            class="mr-2 cursor-pointer"
-            src="assets/img/Information.svg"
-            title="Info"
-            (click)="openModalForProgressTextInfo(informationModal, item)"
+            class="mr-3 cursor-pointer"
+            src="assets/img/progress_replace.jpg"
+            title="Replace"
           />
-          <img (click)="copyProgressNotesBind(item)"
+          <img (click)="copyProgressNotesBind(item, 'copy')"
             width="20px"
             class="mr-3 cursor-pointer"
             src="assets/img/ActionCopy.svg"
@@ -45,6 +44,13 @@
             src="assets/img/Delete.svg"
             title="Delete"
             (click)="deleteProgressNotePopup(deleteProgressNoteModal,item)"
+          />
+          <img
+            width="20px"
+            class="mr-2 cursor-pointer"
+            src="assets/img/Information.svg"
+            title="Info"
+            (click)="openModalForProgressTextInfo(informationModal, item)"
           />
         </div>
       </div>

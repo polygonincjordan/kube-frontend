@@ -38,6 +38,7 @@ export class ProgressNotesKardexComponent implements OnInit {
   physicianOrderListFilterValue: any[];
   occupationalGroupData: any;
   lfdnr: any;
+  unsavedProgressNote: any = false;
   constructor(private modalServiceForAllergy: BsModalService,
     private formBuilder: FormBuilder,public storageService: StorageService,public emergencyService:EmergencyService,private patientHistoryService:PatientHistoryService,private sanitizer: DomSanitizer,private hospitalistService: HospitalistService,private _dataServices: EEmrService,private route: ActivatedRoute) {
        //phy order
@@ -68,11 +69,41 @@ export class ProgressNotesKardexComponent implements OnInit {
   ngOnInit() {}
   openProgressNotesModal(){
     this.emergencyService.tabPanelNavigation('ProgressNotes');
-    const config: ModalOptions = { class: 'modal-dialog-centered allergy-modal-size' };
-    this.modalRef = this.modalServiceForAllergy.show(this.progressNotesKardexModal, config);
+    const config: ModalOptions = { class: 'modal-dialog-centered allergy-modal-size', backdrop: true, ignoreBackdropClick: true };
+    this.modalRef = this.modalServiceForAllergy.show(this.progressNotesKardexModal, config)
     this.occupationalGroupList();
     this.getProgressNotesData();
   }
+
+  async  calltab(){
+    console.log(this.unsavedProgressNote, "this.unsavedProgressNote");
+    
+    if (this.unsavedProgressNote) {
+      const result = await Swal.fire({
+        title: 'Confirm',
+        text: 'Are you sure you want to leave without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: 'myalertpopup'
+      });
+      if (result.isConfirmed) { 
+        this.unsavedProgressNote = false;
+        this.modalRef?.hide()
+      } else {
+        return;
+      }
+    } else {
+      this.modalRef?.hide()
+      this.unsavedProgressNote = false;
+    }
+  }
+  
+  dataGetEvent(data){
+    this.unsavedProgressNote = data
+  }
+
  //phy order
  phyOrderTableList() {
   const res = this.emergencyService.getPhyOrderSetDataSet(

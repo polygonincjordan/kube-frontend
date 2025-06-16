@@ -22,26 +22,35 @@
       </div>
     </div>
     <div class="action-img mr-3">
+      <img (click)="copyProgressNotesBind(item, 'replace')"
+        width="20px"
+        class="mr-3 cursor-pointer"
+        src="assets/img/progress_replace.jpg"
+        title="Replace"
+      />
+      <img (click)="copyProgressNotesBind(item, 'copy')"
+        width="30px"
+        class="mr-3 cursor-pointer"
+        src="assets/img/copyImg.jfif"
+        title="Copy"
+      />
+      <img (click)="deleteProgressNotePopup(deleteProgressNoteModal,item)"
+        width="20px"
+        class="cursor-pointer mr-2"
+        src="assets/img/Delete.svg"
+        title="Delete"
+      />
       <img (click)="openModalForProgressTextInfo(informationModal, item)"
         width="35px"
         class="mr-2 cursor-pointer"
         src="assets/img/information.jfif"
-      />
-      <img (click)="copyProgressNotesBind(item)"
-        width="30px"
-        class="mr-3 cursor-pointer"
-        src="assets/img/copyImg.jfif"
+        title="Information"
       />
       <!-- <img *ngIf="userProfileDetail.UserName != item.CreationUserName"
         width="25px"
         class="cursor-pointer mr-2"
         src="assets/img/delete-icon-gray.svg"
       /> -->
-      <img (click)="deleteProgressNotePopup(deleteProgressNoteModal,item)"
-        width="20px"
-        class="cursor-pointer mr-2"
-        src="assets/img/Delete.svg"
-      />
     </div>
   </div>
 </div>

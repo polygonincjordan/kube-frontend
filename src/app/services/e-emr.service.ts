@@ -398,6 +398,16 @@ export class EEmrService {
       withCredentials: true,
     });
   }
+  // replaceProgressEntry(json) {
+  //   return this.http.post(this.url + 'replaceProgressNote', json, {
+  //     withCredentials: true,
+  //   });
+  // }
+
+  replaceProgressEntry(obj) {
+    const url = `${environment.eKardexApiUrl}/admission/replaceProgressNote?notekey=${obj.Notekey}&patientId=${obj.PatientId}`;
+    return this.http.post(url, obj, { withCredentials: true });
+  }
   occupationalGroupList() {
     return this.http.get(this.url + 'occupationalGroupList', {
       withCredentials: true,

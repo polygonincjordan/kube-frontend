@@ -86,6 +86,7 @@ import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.mo
 import { ReceiveCartComponent } from './e-prescription/receive-cart/receive-cart.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
+import { SharedModuleModule } from '../shared-module/shared-module.module';
 
 const route: Routes = [
   {
@@ -170,7 +171,8 @@ const route: Routes = [
     HistoryAssessmentModule,
     CprDocumentModule,
     AdminAttechmentModule,
-    ConsultationsOrdersModule
+    ConsultationsOrdersModule,
+    SharedModuleModule
   ],
 
 

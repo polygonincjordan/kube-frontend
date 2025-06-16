@@ -13,7 +13,7 @@ import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
 
-
+@UntilDestroy()
 @Component({
   selector: 'progress-notes-nursing',
   templateUrl: './progress-notes-nursing.component.html',

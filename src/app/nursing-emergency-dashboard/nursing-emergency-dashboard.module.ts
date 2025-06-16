@@ -131,6 +131,7 @@ import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patien
 import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
 import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
+import { SharedModuleModule } from '../shared-module/shared-module.module';
 
 const route: Routes = [
   {
@@ -259,7 +260,8 @@ const route: Routes = [
     AdminAttechmentModule,
     NursingDischargeSummaryModule,
     ConsultationsOrdersModule,
-    PatientProfileHeaderModule
+    PatientProfileHeaderModule,
+    SharedModuleModule
   ],
 })
 export class NursingEmergencyDashboardModule { }

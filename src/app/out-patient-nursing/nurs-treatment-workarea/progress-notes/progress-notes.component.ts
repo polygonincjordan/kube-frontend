@@ -1,9 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AdmissionService } from '@services/admission/admission.service';
 import {
   ProgressNotesCategoryModel,
   ProgressNotesListModel,
@@ -12,9 +11,8 @@ import {
 import { EEmrService } from '@services/e-emr.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import Swal from 'sweetalert2';
 
 @UntilDestroy()
 @Component({
@@ -24,10 +22,9 @@ import Swal from 'sweetalert2';
 })
 export class ProgressNotesComponent implements OnInit {
   @Input() occupationalGroupData: any = new EventEmitter();
-  @Output() dataToParents = new EventEmitter<any>();
-
   @Input() ProgressNotesList: ProgressNotesListModel[];
   @Input() searchString: any;
+  @Output() dataToParents = new EventEmitter<any>();
   progressNoteForm: FormGroup;
   paramsObj: any = {};
   reloadPhyOrderList: boolean = false;
@@ -35,17 +32,11 @@ export class ProgressNotesComponent implements OnInit {
   templateList: ProgressNotesTemplateModel[];
   templteContent: any;
   userProfileDetail: any;
-  modalRefForTemp: BsModalRef;
-  saveTemplateForm1: FormGroup;
-  notAuthUpdateTemp: boolean = true;
-  modalRefUpdateName: BsModalRef;
-  templateRefName: TemplateRef<any>;
-  unsavedProgressNote: boolean = false;
-
+  selectedProgressNote: any;
+  actionType: any;
   constructor(
     private formBuider: FormBuilder,
     public emergencyService: EmergencyService,
-    private admissionService: AdmissionService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
     private _dataServices: EEmrService,
@@ -54,14 +45,18 @@ export class ProgressNotesComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.paramsObj.patientId = params.patnr;
       this.paramsObj.caseid = params.falnr;
+      this.paramsObj.tretmentOU = params.tretmentOU;
     });
   }
+  unsavedProgressNote: boolean = false;
 
+  ngOnChange() {
+    console.log(this.ProgressNotesList, "ProgressNotesList");
+  }
   ngOnInit(): void {
     this.userProfileDetail = this._storageService.getUserProfile();
     this.initForm();
-    this.saveTemplateForm();
-    this.getProgressNotesData();
+    // this.getProgressNotesData();
     this.getCategoryList();
     this.getProgressNotesTemplateList();
     this.progressNoteForm.get('Text')?.valueChanges.subscribe(value => {
@@ -79,6 +74,7 @@ export class ProgressNotesComponent implements OnInit {
       ActionDate: [new Date()],
       ActionTime: [new Date().getHours() + ':' + new Date().getMinutes()],
       DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
+      // DocumentOu: [this.paramsObj.tretmentOU],
       Text: ['', [Validators.required]],
       Category: [],
       EmployeeResp: ['9000000000'],
@@ -139,23 +135,84 @@ export class ProgressNotesComponent implements OnInit {
       });
   }
 
-  onDateChange() {}
+  onDateChange() { }
 
   onTempleteSelect() {
     this.progressNoteForm.controls.Text.setValue(this.templteContent.N2Content);
   }
 
   createProgressNote() {
+
+    if (this.actionType == 'replace') {
+      let formGroup = {...this.progressNoteForm.value};
+      let createTime = formGroup.ActionTime.split(':');
+      formGroup.ActionTime =
+        'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
+      const actionDate = new Date(formGroup.ActionDate);
+      formGroup.ActionDate = this.dateConvertToSecond(actionDate);
+      console.log(formGroup);
+
+      let payload = {
+        Notekey: this.selectedProgressNote.Notekey,
+        PatientId: this.selectedProgressNote.PatientId,
+        CaseId: this.selectedProgressNote.CaseId,
+        MovementId: this.selectedProgressNote.MovementId,
+        ActionDate: formGroup.ActionDate,
+        ActionTime: formGroup.ActionTime,
+        DocumentOu: this.progressNoteForm.value.DocumentOu,
+        DocumentOuName: this.selectedProgressNote.DocumentOuName,
+        EmployeeResp: this.progressNoteForm.value.EmployeeResp,
+        EmployeeRespName: this.selectedProgressNote.EmployeeRespName,
+        ProfGroup: this.progressNoteForm.value.ProfGroup,
+        ProfGroupName: this.selectedProgressNote.ProfGroupName,
+        Text: this.progressNoteForm.value.Text,
+        Category: this.progressNoteForm.value.Category,
+        CategoryText: this.selectedProgressNote.CategoryText,
+        Cancelled: this.selectedProgressNote.Cancelled,
+        CancelCause: this.selectedProgressNote.CancelCause,
+        CancelCauseText: this.selectedProgressNote.CancelCauseText,
+        CancelDate: this.selectedProgressNote.CancelDate,
+        CancelUser: this.selectedProgressNote.CancelUser,
+        CancelUserName: this.selectedProgressNote.CancelUserName,
+        CreationDate: this.selectedProgressNote.CreationDate,
+        CreationTime: this.selectedProgressNote.CreationTime,
+        CreationUser: this.selectedProgressNote.CreationUser,
+        CreationUserName: this.selectedProgressNote.CreationUserName,
+        DeleteAuth: true
+      }
+
+      console.log(payload);
+       this._dataServices.replaceProgressEntry(payload)
+          .subscribe(
+            (_success: any) => {
+              // if (_success) {
+                this.initForm();
+                this.getProgressNotesData();
+                this.templteContent = '';
+                this.unsavedProgressNote = false;
+                this.dataToParents.emit(this.unsavedProgressNote);
+                this.emergencyService.successSwalModel(
+                  'Progress note is replace successfully'
+                );
+              // }
+            },
+            (_error: any) => { }
+          );
+      
+      return;
+    }
+
     if (this.progressNoteForm.value.ProfGroup) {
       if (this.progressNoteForm.value.Text) {
-        let createTime = this.progressNoteForm.value.ActionTime.split(':');
-        this.progressNoteForm.value.ActionTime =
+        let formGroup = {...this.progressNoteForm.value};
+        let createTime = formGroup.ActionTime.split(':');
+        formGroup.ActionTime =
           'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
-        const actionDate = new Date(this.progressNoteForm.value.ActionDate);
+        const actionDate = new Date(formGroup.ActionDate);
         actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
-        this.progressNoteForm.value.ActionDate = actionDate.toISOString().split('.')[0];
+        formGroup.ActionDate = actionDate.toISOString().split('.')[0];
   
-        this._dataServices.createProgressEntry(this.progressNoteForm.value)
+        this._dataServices.createProgressEntry(formGroup)
           .subscribe(
             (_success: any) => {
               if (_success) {
@@ -169,7 +226,7 @@ export class ProgressNotesComponent implements OnInit {
                 );
               }
             },
-            (_error: any) => {}
+            (_error: any) => { }
           );
       } else {
         this.emergencyService.errorSwalModel('Please add note text');
@@ -186,14 +243,16 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   copyProgressNotesEvent(event: any) {
+    this.selectedProgressNote = event.value;
+    this.actionType = event.type;
     this.progressNoteForm.patchValue({
-      PatientId: event.PatientId,
-      CaseId: event.CaseId,
-      MovementId: event.MovementId,
-      DocumentOu: event.DocumentOu,
-      Text: event.Text,
-      Category: event.Category,
-      EmployeeResp: event.EmployeeResp,
+      PatientId: event.value.PatientId,
+      CaseId: event.value.CaseId,
+      MovementId: event.value.MovementId,
+      DocumentOu: event.value.DocumentOu,
+      Text: event.value.Text,
+      Category: event.value.Category,
+      EmployeeResp: event.value.EmployeeResp,
     });
   }
 
@@ -223,96 +282,8 @@ export class ProgressNotesComponent implements OnInit {
     this.initForm();
     this.templteContent = null;
   }
-  showOrderTemplateModal(template: TemplateRef<any>, typeModal: any) {
-    if(this.progressNoteForm.controls.Text.value == ''){
-      Swal.fire({
-        title: 'Please enter Text',
-        icon: 'error',
-        confirmButtonText: 'OK',
-        customClass: 'swal-class'
-      });
-    }else{
-        const config: ModalOptions = {
-          class: 'modal-dialog-centered execute-delete-modal-kardex update-template-name',
-        };
-        this.modalRefForTemp = this.modalService.show(template, config);
-      }
-  }
-  // template
-  saveTemplateForm() {
-    this.saveTemplateForm1 = this.formBuider.group({
-      Templatetxt: ['', [Validators.required]],
-      Templatelevel: ['User Level', [Validators.required]],
-    });
-  }
-  saveProgressTemplateData(template: TemplateRef<any>,updateTempName?) {
-    this.templateRefName = template;
-    if (!this.saveTemplateForm1.valid) {
-      this.admissionService.errorSwalModel('Please add template name');
-      return;
-    }
 
-    let TemplateData = this.saveTemplateForm1.value;
-
-    let saveTemplateData: any = {
-      "Keyword" : TemplateData.Templatetxt,
-       "Category" : "",
-        "Description" : TemplateData.Templatetxt,
-        "N2Content" : this.progressNoteForm.controls.Text.value,
-        "Statuscode" : "000",
-        "Action" : ""
-    };
-    if (updateTempName == 'updateTempName') {
-      saveTemplateData.Action = 'M';
-    }
-    this.admissionService.saveProgressNotesTemplate(saveTemplateData).subscribe(
-      (data: any) => {
-        this.notAuthUpdateTemp = true;
-       this.saveTemplateResponse(data,template);
-      },
-      (_error: any) => {}
-    );
-
-  }
-  updateExsitingTempName() {
-    this.saveProgressTemplateData(this.templateRefName,'updateTempName');
-  }
-  saveTemplateResponse(data: any, template: any) {
-    if (data?.d.Statuscode == '403') {
-      this.updatePopupShow(template);
-    } else if (data?.d.Statuscode === '000') {
-     // this.modalService.hide();
-     this.modalRefForTemp.hide();
-      this.saveTemplateForm();
-      this.templteContent = '';
-      this.userProfileDetail = this._storageService.getUserProfile();
-    this.initForm();
-    this.saveTemplateForm();
-    // this.getProgressNotesData();
-    this.getCategoryList();
-    this.getProgressNotesTemplateList();
-      this.admissionService.successSwalModel('Template save successfully');
-      this.modalRefUpdateName.hide();
-    } else if (data?.d.Statuscode === '200') {
-      //this.modalService.hide();
-      this.modalRefForTemp.hide();
-      this.saveTemplateForm();
-      this.admissionService.successSwalModel('Template is updated successfully');
-    } else if (data?.d.Statuscode === '404') {
-      this.notAuthUpdateTemp = false;
-      this.updatePopupShow(template);
-
-    } else if (data?.d.Statuscode === '404') {
-      this.notAuthUpdateTemp = false;
-      this.updatePopupShow(template);
-    } else {
-    }
-  }
-  updatePopupShow(template: TemplateRef<any>) {
-    const config: ModalOptions = {
-      class: 'modal-dialog-centered update-save-temp',
-    };
-    this.modalRefUpdateName = this.modalService.show(template, config);
-
+  dateConvertToSecond(current) {
+    return `/Date(${current.getTime()})/`;
   }
 }
