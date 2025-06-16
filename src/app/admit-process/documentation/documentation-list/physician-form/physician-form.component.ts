@@ -1114,7 +1114,8 @@ export class PhysicianFormComponent implements OnInit {
           // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
           // }
           this.admissionService.cancelAllForm();
-          this.sharedService.successSwallModel('Physician Assessment Create Successfully')
+           const message = createJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
+          this.sharedService.successSwallModel(message)
           this.admissionService.selectedCurrentDocDetails = '';
           this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
@@ -1433,7 +1434,8 @@ export class PhysicianFormComponent implements OnInit {
         //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         // }
         this.admissionService.cancelAllForm();
-        this.sharedService.successSwallModel('Physician Assessment Update Successfully')
+       const message = updateJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
+        this.sharedService.successSwallModel(message)
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
           this.admissionService.clearSoapEvent.next(true);
@@ -1472,6 +1474,7 @@ export class PhysicianFormComponent implements OnInit {
     updateJson['TOMEDICATION'] = this.medicationImportDrugArray;
     this.admissionService.releasePhysicianDoc(updateJson).subscribe(() => {
       this.admissionService.cancelAllForm();
+      this.sharedService.successSwallModel('Physician Assessment Release Successfully')
       this.admissionService.selectedCurrentDocDetails = '';
       this.admissionService.clearSoapEvent.next(true);
       this.realodEducationList.next(true);

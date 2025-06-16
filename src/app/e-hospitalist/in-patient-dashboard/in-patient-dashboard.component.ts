@@ -1029,23 +1029,23 @@ export class InPatientDashboardComponent implements OnInit {
             return acc;
           };
 
-          this.getCheckInWardFilterData = this.inArrivalslistList.reduce(
+          this.getCheckInWardFilterData = this.inSurgeryWorklist.reduce(
             (acc: string[], cur) => pushIfValid(acc, cur?.Anpoe), []
           );
 
-          this.attendingPhysicianList = this.inArrivalslistList.reduce(
-            (acc: string[], cur) => pushIfValid(acc, cur?.BehArztName), []
+          this.attendingPhysicianList = this.inSurgeryWorklist.reduce(
+            (acc: string[], cur) => pushIfValid(acc, cur?.Nnams), []
           );
 
-          this.getCheckInSpecialtyFilterData = this.inArrivalslistList.reduce(
+          this.getCheckInSpecialtyFilterData = this.inSurgeryWorklist.reduce(
             (acc: string[], cur) => pushIfValid(acc, cur?.Anfoe), []
           );
 
-          this.getPerformanceUnitFilterData = this.inArrivalslistList.reduce(
+          this.getPerformanceUnitFilterData = this.inSurgeryWorklist.reduce(
             (acc: string[], cur) => pushIfValid(acc, cur?.Planoe), []
           );
 
-          this.getFinancialCateFilterData = this.inArrivalslistList.reduce(
+          this.getFinancialCateFilterData = this.inSurgeryWorklist.reduce(
             (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
           );
         })

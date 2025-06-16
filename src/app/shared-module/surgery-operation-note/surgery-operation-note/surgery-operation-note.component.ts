@@ -1,13 +1,15 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
 import { InPatientConfigurationService } from '@services/e-kardex/inPatient.service';
@@ -18,9 +20,11 @@ import {
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 import { ActionType } from '@services/interfaces/common.enum';
+import { SharedService } from '@services/shared.service';
+import { StorageService } from '@services/storage.service';
 import { catchError, of, Subscription } from 'rxjs';
 import { ConfigPopup } from 'src/app/core/config-popup/config-popup.component';
-
+@UntilDestroy()
 @Component({
   selector: 'app-surgery-operation-note',
   templateUrl: './surgery-operation-note.component.html',
@@ -39,16 +43,19 @@ export class SurgeryOperationNoteComponent implements OnInit {
   preDiagnosisSubscription: Subscription;
   postDiagnosisSubscription: Subscription;
   preDiagnosisTableData: DiagnosesData[] = [];
-   private actionTypeSubscription$: Subscription;
+  private actionTypeSubscription$: Subscription;
   @ViewChild('inPatientPopup', { static: true }) configPopup: ConfigPopup;
-  postDiagnosisTableData: any;
+  postDiagnosisTableData: DiagnosesData[] = [];
   docKey: any;
+  paramsObject: any;
   constructor(
     private inPatientConfigurationService: InPatientConfigurationService,
     private route: ActivatedRoute,
     private admissionService: AdmissionService,
     public userConfigurationService: UserConfigurationService,
-     private dataShareService: DataShareService
+    private dataShareService: DataShareService,
+    public storageService: StorageService,
+    public sharedService:SharedService
   ) {
     this.inPatientDataSet = new FormGroup({
       DocKey: new FormControl(''),
@@ -59,6 +66,10 @@ export class SurgeryOperationNoteComponent implements OnInit {
       BloodTransfused: new FormControl(''),
       ProcedureRemarks: new FormControl(''),
       AnticipatedComplications: new FormControl(''),
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
     });
   }
 
@@ -90,44 +101,44 @@ export class SurgeryOperationNoteComponent implements OnInit {
     });
 
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
-          (data) => {
-            if (data != null) {
-              if (data.type == ActionType.Add$ && data.value == '') {
-                this.docKey = data.value.Dockey;
-              }
-              if (data.type == ActionType.Update$ && data.value) {
-                this.docKey = data.value.docKey;
-                this.getSurgeryOprationList(data.value.docKey);
-              }
-              if (data.type == ActionType.Copy$ && data.value) {
-                this.docKey = data.value.docKey;
-                this.getSurgeryOprationList(data.value.docKey);
-              }
-            }
+      (data) => {
+        if (data != null) {
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
           }
-        );
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getSurgeryOprationList(data.value.docKey);
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getSurgeryOprationList(data.value.docKey);
+          }
+        }
+      }
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.soapFormEvent.currentValue == 'add') {
       if (this.admissionService.isCloneSurgeryOprationNoteForm) {
-        this.saveForm('3');
+        this.saveForm(false);
       } else {
-        this.saveForm('1');
+        this.saveForm(false);
       }
     }
     if (changes.soapFormEvent.currentValue == 'edit') {
-      this.saveForm('1');
+      this.saveForm(false);
     }
 
     if (changes.soapFormEvent.currentValue == 'release') {
       if (this.admissionService.isCloneSurgeryOprationNoteForm) {
-        this.saveForm('5');
+        this.saveForm(true);
       } else {
-        if (this.admissionService.isEditNeonatalDischarge) {
-          this.saveForm('2');
+        if (this.admissionService.isEditSurgeryOprationNoteForm) {
+        this.releaseForm(true);
         } else {
-          this.saveForm('4');
+          this.saveForm(true);
         }
       }
     }
@@ -143,8 +154,8 @@ export class SurgeryOperationNoteComponent implements OnInit {
   }
   patientVisitRecord: any;
   getSurgeryOprationList(Dockey) {
-    this.userConfigurationService
-      .getPatientVisitData(Dockey)
+    this.inPatientConfigurationService
+      .getPatientVisitDataByDocKey(Dockey,this.paramsObject)
       .pipe(
         untilDestroyed(this),
         catchError((err) => {
@@ -153,6 +164,31 @@ export class SurgeryOperationNoteComponent implements OnInit {
       )
       .subscribe((patientResult: any) => {
         this.patientVisitRecord = patientResult;
+        if (patientResult && patientResult.PATDOCTOOPERRPTDOCDETAIL && patientResult.PATDOCTOOPERRPTDOCDETAIL.results && patientResult.PATDOCTOOPERRPTDOCDETAIL.results.length) {
+      patientResult.PATDOCTOOPERRPTDOCDETAIL.results.forEach((obj) => {
+        if (patientResult.Dtid === "ZMED_OPERT") {
+          this.inPatientDataSet.patchValue({
+            DocKey: obj.DocKey,
+            OperationPerformed: obj.OperationPerformed,
+            OperativeComplication: obj.OperativeComplication,
+            SpecimenRemoved: obj.SpecimenRemoved,
+            BloodLoss: obj.BloodLoss,
+            BloodTransfused: obj.BloodTransfused,
+            ProcedureRemarks: obj.ProcedureRemarks,
+            AnticipatedComplications: obj.AnticipatedComplications,
+          });
+        }
+      })
+    }
+    if (patientResult && patientResult.PATDOCTOPREOPERATIVEDX && patientResult.PATDOCTOPREOPERATIVEDX.results && patientResult.PATDOCTOPREOPERATIVEDX.results.length) {
+      this.preDiagnosisTableData = patientResult.PATDOCTOPREOPERATIVEDX.results;
+    }
+    if (patientResult && patientResult.PATDOCTOPOSTOPERATIVEDX && patientResult.PATDOCTOPOSTOPERATIVEDX.results && patientResult.PATDOCTOPOSTOPERATIVEDX.results.length) {
+      this.postDiagnosisTableData = patientResult.PATDOCTOPOSTOPERATIVEDX.results;
+    }
+    if (patientResult && patientResult.PATDOCTOSURGICALTEAM && patientResult.PATDOCTOSURGICALTEAM.results && patientResult.PATDOCTOSURGICALTEAM.results.length) {
+      this.surgeryTableData = patientResult.PATDOCTOSURGICALTEAM.results;
+    }
       });
   }
 
@@ -169,8 +205,21 @@ export class SurgeryOperationNoteComponent implements OnInit {
   }
   userConfig: UserConfig = {} as UserConfig;
 
+  releaseForm(status:any) {
+    this.saveReleaseGeneratePayload();
+    const saveDataList = {
+      patientFormData: this.inPatientDataSet.value,
+      surgeryData: this.surgeryTableData && this.surgeryTableData.length ? this.surgeryTableData : [],
+      preDiganosisData: this.preDiagnosisTableData && this.preDiagnosisTableData.length ? this.preDiagnosisTableData : [],
+      postDiagnosisData: this.postDiagnosisTableData && this.postDiagnosisTableData.length ? this.postDiagnosisTableData : [],
+      patientDtId: 'ZMED_OPERT'
+    };
+    this.saveInPatientDocumentData(saveDataList, this.userConfig, true,status)
+  }
+
   saveForm(status) {
     this.saveReleaseGeneratePayload();
+    const loginUserData:any = this.storageService.getUserProfile()
     const saveDataList = {
       patientFormData: this.inPatientDataSet.value,
       surgeryData:
@@ -187,13 +236,69 @@ export class SurgeryOperationNoteComponent implements OnInit {
           : [],
       patientDtId: 'ZMED_OPERT',
     };
-    this.inPatientConfigurationService.saveInPatientDocumentData(
+  this.saveInPatientDocumentData(
       saveDataList,
       this.userConfig,
       false,
-      status
+      status,
+      this.paramsObject,
+      loginUserData
     );
   }
+  @Output() reloadTableList = new EventEmitter();
+  async saveInPatientDocumentData(data: any, userConfiguration: UserConfig, documentType: boolean,status?:any,params?:any,loginUserData?:any) {
+      const payloadData = {
+        DocKey: data.patientFormData.DocKey !== undefined ? data.patientFormData.DocKey : "",
+        Dtid: data.patientDtId,
+        DtidText: "",
+        Dodat: `\/Date(${new Date().getTime()})\/`,
+        Dokst:"",
+        Dokvr: "",
+        Einri: this.storageService.einri ? this.storageService.einri : params.einri,
+        Patnr: this.storageService.patnr ? this.storageService.patnr : params.patnr,
+        Falnr: this.storageService.falnr ? this.storageService.falnr : params.falnr,
+        Orgdo: localStorage.getItem('initOrg'),
+        Lfdnr: this.storageService.lfdnr ? this.storageService.lfdnr : params.lfdnr,
+        Visitdate: null,
+        Referredby: "",
+        Mitarbname: userConfiguration.UserId ?  userConfiguration.UserId : loginUserData?.Gpart,
+        Mitarb: userConfiguration.VMA  ?  userConfiguration.UserId : loginUserData?.UserName,
+        Released: status ? status : documentType,
+        Etag: "",
+        Erdattim: `\/Date(${new Date().getTime()})\/`,
+      }
+      const payload = { ...payloadData, PATDOCTOOPERRPTDOCDETAIL: { results: [data.patientFormData] }, DOCCATTOATTACHMENTS: { results: [] }, PATDOCTOPOSTOPERATIVEDX: { results: data.postDiagnosisData }, PATDOCTOPREOPERATIVEDX: { results: data.preDiganosisData }, PATDOCTOSURGICALTEAM: { results: data.surgeryData } };
+      this.inPatientConfigurationService.saveSurgery(payload).subscribe({
+          next: (data: any) => { },
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(
+              `PUT Error at Department of Surgery - Operation Notes : ${err}`
+            );
+          },
+          complete: () => {
+            this.reloadTableList.next(true);
+            this.admissionService.cancelAllForm();
+            this.admissionService.selectedCurrentDocDetails = '';
+            this.admissionService?.clearSoapEvent?.next(true);
+            if(payload?.Released){
+               this.sharedService.successSwallModel(
+                'Department of Surgery - Operation Notes Release successfully'
+              );
+              return
+            }
+            if (status === '2') {
+              this.sharedService.successSwallModel(
+                'Department of Surgery - Operation Notes updated successfully'
+              );
+            } else {
+              this.sharedService.successSwallModel(
+                'Department of Surgery - Operation Notes created successfully'
+              );
+            }
+          },
+        });
+    }
 
   saveReleaseGeneratePayload() {
     if (this.surgeryTableData && this.surgeryTableData.length) {
@@ -265,6 +370,9 @@ export class SurgeryOperationNoteComponent implements OnInit {
     }
     this.surgerySubscription = this.configPopup.onClose.subscribe((data) => {
       if (data && data.length) {
+        if (!this.surgeryTableData) {
+          this.surgeryTableData = []; // 🔐 safety fallback
+        }
         data.forEach((item) => {
           this.surgeryTableData.push(item);
         });
@@ -274,7 +382,7 @@ export class SurgeryOperationNoteComponent implements OnInit {
   }
   loadSurgeyPopupData() {
     this.inPatientConfigurationService
-      .getSurgeryPopupData()
+      .getSurgeryPopupData(this.paramsObject)
       .subscribe((surgeryData: any) => {
         if (
           surgeryData &&
@@ -328,6 +436,9 @@ export class SurgeryOperationNoteComponent implements OnInit {
     this.preDiagnosisSubscription = this.configPopup.onClose.subscribe(
       (data) => {
         if (data && data.length) {
+          if (!this.preDiagnosisTableData) {
+            this.preDiagnosisTableData = []; // 🔐 safety fallback
+          }
           data.forEach((item) => {
             this.preDiagnosisTableData.push(item);
           });
@@ -371,6 +482,9 @@ export class SurgeryOperationNoteComponent implements OnInit {
     this.postDiagnosisSubscription = this.configPopup.onClose.subscribe(
       (data) => {
         if (data && data.length) {
+          if (!this.postDiagnosisTableData) {
+            this.postDiagnosisTableData = []; // 🔐 safety fallback
+          }
           data.forEach((item) => {
             this.postDiagnosisTableData.push(item);
           });
@@ -382,7 +496,7 @@ export class SurgeryOperationNoteComponent implements OnInit {
 
   loadDiagnosisData() {
     this.inPatientConfigurationService
-      .getDiagnosisPopupData()
+      .getDiagnosisPopupData(this.paramsObject)
       .subscribe((diagnosesData: DiagnosesData[]) => {
         diagnosesData.forEach((item, index) => {
           item.DocKey = '';

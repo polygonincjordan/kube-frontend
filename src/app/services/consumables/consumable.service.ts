@@ -32,8 +32,8 @@ export class ConsumableService {
     return this.http.post(url, payload, { withCredentials: true });
   }
 
-  getConsumablesHistory(data: any) {
-    return this.http.get(`${environment.eKardexApiUrl}/getConsumablesHistory?searchstring=${data}`, { withCredentials: true })
+  getConsumablesHistory(data: any,loc?:any) {
+    return this.http.get(`${environment.eKardexApiUrl}/getConsumablesHistory?searchstring=${data}&sloc=${loc}`, { withCredentials: true })
   }
 
   getNoConsumablesSet() {

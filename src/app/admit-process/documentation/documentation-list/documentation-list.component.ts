@@ -822,6 +822,48 @@ export class DocumentationListComponent implements OnInit {
         this.pdfTemplateRef = this.modalService.show(template, config);
       });
     }
+    else if(item.Dtid == 'ZMED_OPERT') {
+      this.admissionService
+      .getPatientVisitDataByDocKey(item.Dockey, this.paramsObject.einri, this.paramsObject.patnr)
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((patientResult: InPatientDataResult) => {
+        let postFileData;
+        if (patientResult && patientResult.DOCCATTOATTACHMENTS) {
+          if (
+            patientResult.DOCCATTOATTACHMENTS?.results.length > 0 &&
+            patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
+              return obj.FileId === '';
+            }) != null
+          )
+            if (
+              patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
+                return obj.AttMimeType === 'PDF';
+              }) != null
+            ) {
+              let pdfAttechemnt =  patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+                return obj.FileId === '';
+              }).AttachmentData
+              this.pdfUrlConvertToBlob(pdfAttechemnt);
+            } else {
+              this.isImageFrame = true;
+              postFileData = this.sanitizer.bypassSecurityTrustResourceUrl(
+                `data:application/image;base64, ${
+                  patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+                    return obj.FileId === '';
+                  }).AttachmentData
+                }`
+              );
+            }
+        }
+        // this.pdfUrl = postFileData;
+        this.pdfTemplateRef = this.modalService.show(template, config);
+      });
+    }
     // Neonatal Progress Note
     else if (item.Dtid == 'ZMED_NEOPN') {
       const json = {
@@ -1077,7 +1119,8 @@ export class DocumentationListComponent implements OnInit {
       !this.admissionService.isAddNicuForm &&
       !this.admissionService.isNewBornForm && 
       !this.admissionService.isAddEditDocPaediatricsAdmissionForm && 
-      !this.admissionService.isAddEditNeonatalDischarge
+      !this.admissionService.isAddEditNeonatalDischarge &&
+      !this.admissionService.isAddEditSurgeryOprationNoteForm
     ) {
       return true;
     }

@@ -7,6 +7,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SharedModuleModule } from '../shared-module.module';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [SurgeryOperationNoteComponent, DiagnosisTableComponent],
@@ -18,6 +19,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BsDatepickerModule.forRoot(),
     SharedModuleModule,
     NgxMaterialTimepickerModule,
+    CoreModule
   ],
   exports: [SurgeryOperationNoteComponent],
 })

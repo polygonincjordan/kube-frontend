@@ -146,7 +146,7 @@
   <app-paediatric-physician-assessment [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatric-physician-assessment>
 </div>
 <div *ngIf="admissionService.isAddEditSurgeryOprationNoteForm">
-  <app-surgery-operation-note [soapFormEvent]="soapFormEvent"></app-surgery-operation-note>
+  <app-surgery-operation-note [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-surgery-operation-note>
 </div>
 
 <ng-template #labpdfmodal>
