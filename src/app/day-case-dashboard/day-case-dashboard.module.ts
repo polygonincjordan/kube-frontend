@@ -125,6 +125,7 @@ import { ArrivalMainListComponent } from './arrival-main-list/arrival-main-list.
 import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-worklist-tab.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
+import { SharedModuleModule } from '../shared-module/shared-module.module';
 
 const route: Routes = [
   {
@@ -245,7 +246,8 @@ const route: Routes = [
     CprDocumentModule,
     AdminAttechmentModule,
     PreCardiacCathModule,
-    ConsultationsOrdersModule
+    ConsultationsOrdersModule,
+    SharedModuleModule
   ],
 })
 export class DayCaseDashboardModule { }

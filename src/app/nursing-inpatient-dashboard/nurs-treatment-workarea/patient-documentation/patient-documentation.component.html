@@ -151,6 +151,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Post Anesthesia Care Record '">
+            <button type="button" class="action-doc" (click)="copyDirectReleasePostAnesthCareSetDoc()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Assessment'">
             <button type="button" class="action-doc" (click)="copyDirectReleaseNursingAssessmentDoc()">
               Release
@@ -1166,7 +1171,7 @@
              <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
              <div class="col-md-1 d-flex">
                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(PostAnesthesiaList[0]?.Dockey)"
+                 (click)="openPostCareRecordPDF(PostAnesthesiaList[0]?.Dockey)"
                  *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
                    <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""

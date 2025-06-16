@@ -52,6 +52,7 @@ import { IntraOperativeRecordComponent } from './intra-operative-record/intra-op
 import { PediatricsFallRiskAssessmentComponent } from './pediatrics-fall-risk-assessment/pediatrics-fall-risk-assessment.component';
 import { MalnutritionPaediatricsComponent } from './malnutrition-paediatrics/malnutrition-paediatrics.component';
 import { SbarNursingEndorsementComponent } from './sbar-nursing-endorsement/sbar-nursing-endorsement.component';
+import { PostAnesthesiaCareRecordComponent } from './post-anesthesia-care-record/post-anesthesia-care-record.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -91,6 +92,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(CvcInsertionComponent) CvcInsertionDocumentComp: CvcInsertionComponent;
   @ViewChild(PediatricsFallRiskAssessmentComponent) PediatricsFallRiskAssessmentComp: PediatricsFallRiskAssessmentComponent;
   @ViewChild(NursAssessmentRestraintsComponent) NurseAssMainComp: NursAssessmentRestraintsComponent;
+  @ViewChild(PostAnesthesiaCareRecordComponent) PostAnesthesiaCareRecordComp: PostAnesthesiaCareRecordComponent;
   @ViewChild(MalnutritionPaediatricsComponent) MalnutritionPaediatricsComp: MalnutritionPaediatricsComponent;
   @ViewChild(SbarNursingEndorsementComponent) SbarNursingEndorsementComp: SbarNursingEndorsementComponent;
 
@@ -2082,7 +2084,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.maternityEarlyWarningSignComp?.ngOnDestroy();
     }
     if (this.openPostAnesthesia) {
-      this.NurseAssMainComp?.ngOnDestroy();
+      this.PostAnesthesiaCareRecordComp?.ngOnDestroy();
     }
     if (this.openNurseInitAss) {
       this.NurseAssMainComp?.ngOnDestroy();
@@ -2645,7 +2647,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseAssMainDoc();
+          this.deletePostCareRecordDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -2653,7 +2655,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releasePostCareRecordDetail();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2676,6 +2678,8 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
     }
+
+
     if (this.isNurseInitAss) {
       if (action == 'create') {
         this.openNurseInitAss = true;
@@ -5247,7 +5251,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openPostAnesthesia) {
         let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+        this.PostAnesthesiaCareRecordComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             if(btnType == 'close') this.refresh();
           }
@@ -5783,7 +5787,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openPostAnesthesia) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+        this.PostAnesthesiaCareRecordComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
             if(btnType == 'close') this.refresh();
           }
@@ -6203,7 +6207,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openPostAnesthesia) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+        this.PostAnesthesiaCareRecordComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6743,7 +6747,7 @@ export class PatientDocumentationComponent implements OnInit {
       });
     }
     else if (this.openPostAnesthesia) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.PostAnesthesiaCareRecordComp.createDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -7506,6 +7510,41 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+
+   async deletePostCareRecordDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deletePostCareRecordDocument(this.PostAnesthesiaList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
   async deleteSbarNursingDoc() {
     Swal.fire({
       title: 'Confirm',
@@ -8053,6 +8092,20 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  releasePostCareRecordDetail() {
+    this.emergencyService.fetchPostCareRecord(this.PostAnesthesiaList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.savePostCareRecord(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
 
   releaseSbarNursingMainDetail() {
     this.emergencyService.fetchSBARNursingDocument(this.sbarNurEndList[0].Dockey).subscribe((res: any) => {
@@ -8220,6 +8273,17 @@ export class PatientDocumentationComponent implements OnInit {
   // Copy + Release Nursing Admission Document
   copyDirectReleaseNursingAdmissionDoc() {
     this.NursingAdmissionComp.createNursingAdmissionDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing admission document:', error);
+    });
+  }
+
+  copyDirectReleasePostAnesthCareSetDoc() {
+    this.PostAnesthesiaCareRecordComp.createDoc('5', 'copy').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }
@@ -8427,6 +8491,22 @@ export class PatientDocumentationComponent implements OnInit {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .getNurseAssMainPdf(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+  openPostCareRecordPDF(Dockey) {
+    this.pdfUrl = '';
+    this.emergencyService
+      .getPostCareRecordPdf(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);

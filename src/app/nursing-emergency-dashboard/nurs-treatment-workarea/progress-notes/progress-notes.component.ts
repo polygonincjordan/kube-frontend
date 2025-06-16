@@ -32,8 +32,10 @@ export class ProgressNotesComponent implements OnInit {
   templateList: ProgressNotesTemplateModel[];
   templteContent: any;
   userProfileDetail: any;
-  unsavedProgressNote: boolean = false;
+    unsavedProgressNote: boolean = false;
 
+  selectedProgressNote: any;
+  actionType: any;
   constructor(
     private formBuider: FormBuilder,
     public emergencyService: EmergencyService,
@@ -45,6 +47,7 @@ export class ProgressNotesComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.paramsObj.patientId = params.patnr;
       this.paramsObj.caseid = params.falnr;
+      this.paramsObj.tretmentOU = params.tretmentOU;
     });
   }
 
@@ -70,6 +73,7 @@ export class ProgressNotesComponent implements OnInit {
       ActionDate: [new Date()],
       ActionTime: [new Date().getHours() + ':' + new Date().getMinutes()],
       DocumentOu: [this._storageService?.patientData?.deptOrgUnit],
+      // DocumentOu: [this.paramsObj.tretmentOU],
       Text: ['', [Validators.required]],
       Category: [],
       EmployeeResp: [EmployeeResp],
@@ -130,23 +134,84 @@ export class ProgressNotesComponent implements OnInit {
       });
   }
 
-  onDateChange() {}
+  onDateChange() { }
 
   onTempleteSelect() {
     this.progressNoteForm.controls.Text.setValue(this.templteContent.N2Content);
   }
 
- createProgressNote() {
+  createProgressNote() {
+
+    if (this.actionType == 'replace') {
+      let formGroup = {...this.progressNoteForm.value};
+      let createTime = formGroup.ActionTime.split(':');
+      formGroup.ActionTime =
+        'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
+      const actionDate = new Date(formGroup.ActionDate);
+      formGroup.ActionDate = this.dateConvertToSecond(actionDate);
+      console.log(formGroup);
+
+      let payload = {
+        Notekey: this.selectedProgressNote.Notekey,
+        PatientId: this.selectedProgressNote.PatientId,
+        CaseId: this.selectedProgressNote.CaseId,
+        MovementId: this.selectedProgressNote.MovementId,
+        ActionDate: formGroup.ActionDate,
+        ActionTime: formGroup.ActionTime,
+        DocumentOu: this.progressNoteForm.value.DocumentOu,
+        DocumentOuName: this.selectedProgressNote.DocumentOuName,
+        EmployeeResp: this.progressNoteForm.value.EmployeeResp,
+        EmployeeRespName: this.selectedProgressNote.EmployeeRespName,
+        ProfGroup: this.progressNoteForm.value.ProfGroup,
+        ProfGroupName: this.selectedProgressNote.ProfGroupName,
+        Text: this.progressNoteForm.value.Text,
+        Category: this.progressNoteForm.value.Category,
+        CategoryText: this.selectedProgressNote.CategoryText,
+        Cancelled: this.selectedProgressNote.Cancelled,
+        CancelCause: this.selectedProgressNote.CancelCause,
+        CancelCauseText: this.selectedProgressNote.CancelCauseText,
+        CancelDate: this.selectedProgressNote.CancelDate,
+        CancelUser: this.selectedProgressNote.CancelUser,
+        CancelUserName: this.selectedProgressNote.CancelUserName,
+        CreationDate: this.selectedProgressNote.CreationDate,
+        CreationTime: this.selectedProgressNote.CreationTime,
+        CreationUser: this.selectedProgressNote.CreationUser,
+        CreationUserName: this.selectedProgressNote.CreationUserName,
+        DeleteAuth: true
+      }
+
+      console.log(payload);
+       this._dataServices.replaceProgressEntry(payload)
+          .subscribe(
+            (_success: any) => {
+              // if (_success) {
+                this.initForm();
+                this.getProgressNotesData();
+                this.templteContent = '';
+                this.unsavedProgressNote = false;
+                this.dataToParents.emit(this.unsavedProgressNote);
+                this.emergencyService.successSwalModel(
+                  'Progress note is replace successfully'
+                );
+              // }
+            },
+            (_error: any) => { }
+          );
+      
+      return;
+    }
+
     if (this.progressNoteForm.value.ProfGroup) {
       if (this.progressNoteForm.value.Text) {
-        let createTime = this.progressNoteForm.value.ActionTime.split(':');
-        this.progressNoteForm.value.ActionTime =
+        let formGroup = {...this.progressNoteForm.value};
+        let createTime = formGroup.ActionTime.split(':');
+        formGroup.ActionTime =
           'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';
-        const actionDate = new Date(this.progressNoteForm.value.ActionDate);
+        const actionDate = new Date(formGroup.ActionDate);
         actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
-        this.progressNoteForm.value.ActionDate = actionDate.toISOString().split('.')[0];
-
-        this._dataServices.createProgressEntry(this.progressNoteForm.value)
+        formGroup.ActionDate = actionDate.toISOString().split('.')[0];
+  
+        this._dataServices.createProgressEntry(formGroup)
           .subscribe(
             (_success: any) => {
               if (_success) {
@@ -160,7 +225,7 @@ export class ProgressNotesComponent implements OnInit {
                 );
               }
             },
-            (_error: any) => {}
+            (_error: any) => { }
           );
       } else {
         this.emergencyService.errorSwalModel('Please add note text');
@@ -177,14 +242,16 @@ export class ProgressNotesComponent implements OnInit {
   }
 
   copyProgressNotesEvent(event: any) {
+    this.selectedProgressNote = event.value;
+    this.actionType = event.type;
     this.progressNoteForm.patchValue({
-      PatientId: event.PatientId,
-      CaseId: event.CaseId,
-      MovementId: event.MovementId,
-      DocumentOu: event.DocumentOu,
-      Text: event.Text,
-      Category: event.Category,
-      EmployeeResp: event.EmployeeResp,
+      PatientId: event.value.PatientId,
+      CaseId: event.value.CaseId,
+      MovementId: event.value.MovementId,
+      DocumentOu: event.value.DocumentOu,
+      Text: event.value.Text,
+      Category: event.value.Category,
+      EmployeeResp: event.value.EmployeeResp,
     });
   }
 
@@ -213,5 +280,9 @@ export class ProgressNotesComponent implements OnInit {
   cancelProgressNote() {
     this.initForm();
     this.templteContent = null;
+  }
+
+  dateConvertToSecond(current) {
+    return `/Date(${current.getTime()})/`;
   }
 }

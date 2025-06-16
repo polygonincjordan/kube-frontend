@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 })
 export class ProgressNoteListComponent implements OnInit {
   @Input() ProgressNotesList: any;
+  @Input() searchString: any;
   progressNoteTextInfoModal: any;
   modalRef: BsModalRef;
   modalRefForDelete:BsModalRef;
@@ -33,7 +34,7 @@ export class ProgressNoteListComponent implements OnInit {
     private modalService: BsModalService,
     private _admissionservice: AdmissionService,
     private formBuilder: FormBuilder,
-     public storageService:StorageService
+    public storageService:StorageService
   ) {}
 
   ngOnInit(): void {
@@ -132,8 +133,12 @@ export class ProgressNoteListComponent implements OnInit {
     );
   }
 
-  copyProgressNotesBind(note: any) {    
-    this.copyProgressNotes.next(note);
+  copyProgressNotesBind(note: any, type: string) {
+    let obj = {
+      value : note,
+      type: type
+    }    
+    this.copyProgressNotes.next(obj);
   }
   getCancelReason() {
     this._admissionservice.cancelReasonList().subscribe(
@@ -148,17 +153,9 @@ export class ProgressNoteListComponent implements OnInit {
       reason : ['', [Validators.required]]
     })
   }
-   warningSwalModel(message: string) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Not Allowed',
-      text: message
-    });
-  }
-  
   deleteProgressNotePopup(template: TemplateRef<any>, note: any) {
     this.selectProgressNote = note;
-    let gpart = this.storageService.getGpart()
+    let gpart =  this.storageService.getGpart()
     if (note.EmployeeResp !== gpart)  {
       this.warningSwalModel("You are not allowed to delete others' notes");
       return; 
@@ -170,12 +167,18 @@ export class ProgressNoteListComponent implements OnInit {
     this.progressNoteForm();
     this.isFormSubmitted = false;
   }
+  warningSwalModel(message: string) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Not Allowed',
+    text: message
+  });
+}
   deleteProgressNoteAPI() {
     this.isFormSubmitted = true;
      if (this.deleteProgressNoteForm.invalid) {
       return;
     }
-
     this._admissionservice
       .deleteProgressNoteForAdmit(this.selectProgressNote, this.deleteProgressNoteForm.value.reason)
       .subscribe(

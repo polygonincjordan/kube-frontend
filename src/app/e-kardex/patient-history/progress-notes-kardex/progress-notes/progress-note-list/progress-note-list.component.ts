@@ -179,7 +179,11 @@ export class ProgressNoteListComponent implements OnInit {
       );
   }
 
-  copyProgressNotesBind(note: any) {
-    this.copyProgressNotes.next(note);
+  copyProgressNotesBind(note: any, type: string) {
+    let obj = {
+      value : note,
+      type: type
+    }    
+    this.copyProgressNotes.next(obj);
   }
 }

@@ -1794,6 +1794,41 @@ export class EmergencyService {
     });
   }
 
+
+  // Nursing Initial Assessment Gyno Obstetrics PMD Doc
+  savePostCareRecord(json) {
+    return this.http.post(this.url + 'savePostCareRecord', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchPostCareRecord(dockey) {
+    return this.http.get(this.url + `fetchPostCareRecord?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  PostCareRecordLatestDoc(json) {
+    return this.http.get(
+      this.url + `PostCareRecordLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  deletePostCareRecordDocument(json): Observable<any> {
+    return this.http.delete(this.url + `deletePostCareRecordDocument?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  getPostCareRecordPdf(dockey: string) {
+    const url = `${this.url}getPostCareRecordPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
   createAssessment(data: any) {
     console.log(data);
 
