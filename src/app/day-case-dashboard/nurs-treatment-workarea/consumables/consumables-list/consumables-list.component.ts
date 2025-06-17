@@ -7,7 +7,7 @@ import { DataShareService } from '@services/data-share.service';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { getAlertConfig } from '@services/index';
-import { ActionType, WordType } from '@services/interfaces/common.enum';
+import { ActionType, FilterType, WordType } from '@services/interfaces/common.enum';
 import { StorageService } from '@services/storage.service';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 import { Subject, Subscription, debounceTime, filter, switchMap } from 'rxjs';
@@ -75,6 +75,12 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     this.UserDetails = JSON.parse(localStorage.getItem('amc_dev_loggedInUserProfile'));
     this.consumableHistoryForm = this.generateConsumableForm();
     this.generateDefaultForm();
+
+    this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
+      if (data != null && data.type === FilterType.ConsumableStorageLocation$ && data.isAllow === true) {
+        this.selectedStorageLocation = data?.value?.Lgort;
+      }
+    });
   }
 
   private generateDefaultForm() {
@@ -111,7 +117,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       Einri: new FormControl(this.paramsValue.einri),
       Falnr: new FormControl(this.paramsValue.falnr),
       Anfoe: new FormControl(this.storageService.patientData.deptOrgUnit),
-      Anpoe: new FormControl("F9DIUAMC"),
+      Anpoe: new FormControl(this.storageService.patientData?.Treatmentou),
       Lgort: new FormControl(''),
       PatMatCosmpNmm7HdToItmNav: new FormGroup({
         // results: new FormArray([])
@@ -333,75 +339,75 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     this.resultsFormArray.removeAt(index);
   }
 
-  private saveRecords(): void {
-    var payload;
-    var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
-      return (val.isSelected === true);
-    }).length > 0;
-    if (hasMatch) {
-      payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-        .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
-        .map(d => d.value);
-    } else {
-      payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-        .filter(d => d.valid && d.value.Matnr.trim() !== '')
-        .map(d => d.value);
-    }
-
-    payload.forEach(element => {
-      delete element.Id;
-      delete element.Arktx;
-      delete element.isSelected;
-      delete element.Stock;
-      delete element.Lgort
-    });
-    let newpayload = payload.filter(item => item.Matnr !== '');
-    this.consumableHistoryForm.patchValue({
-      Lgort: this.selectedStorageLocation,
-    })
-    delete this.consumableHistoryForm.value.isAllSelected;
-    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
-    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
-    if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
-      Swal.fire({
-        text: "Please filed all the required values",
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+    private saveRecords(): void {
+      var payload;
+      var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
+        return (val.isSelected === true);
+      }).length > 0;
+      if (hasMatch) {
+        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
+          .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
+          .map(d => d.value);
+      } else {
+        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
+          .filter(d => d.valid && d.value.Matnr.trim() !== '')
+          .map(d => d.value);
+      }
+  
+      payload.forEach(element => {
+        delete element.Id;
+        delete element.Arktx;
+        delete element.isSelected;
+        delete element.Stock;
+        delete element.Lgort
+      });
+      let newpayload = payload.filter(item => item.Matnr !== '');
+      this.consumableHistoryForm.patchValue({
+        Lgort: this.selectedStorageLocation,
       })
-      return;
-    }
-    this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
-      Swal.fire({
-        text: "Saved Successully",
-        icon: 'success',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
-      }).then((result) => {
-        if (result.value) {
-          this.actionTypeSubscription$.unsubscribe();
-          this.consumableHistoryForm.reset();
-        }
-      })
-    }, (error: any) => {
-      let messageError = error.error.error.innererror.errordetails;
-      let message: any = '';
-      messageError.forEach((e, index) => {
-        if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
-          if (message) {
-            message = `${message} <br> ${index + 1}) ${e.message}`;
-          } else {
-            message = `${index + 1}) ${e.message}`;
+      delete this.consumableHistoryForm.value.isAllSelected;
+      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
+      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
+      if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
+        Swal.fire({
+          text: "Please filed all the required values",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        return;
+      }
+      this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
+        Swal.fire({
+          text: "Saved Successully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        }).then((result) => {
+          if (result.value) {
+            this.actionTypeSubscription$.unsubscribe();
+            this.consumableHistoryForm.reset();
           }
-        }
+        })
+      }, (error: any) => {
+        let messageError = error.error.error.innererror.errordetails;
+        let message: any = '';
+        messageError.forEach((e, index) => {
+          if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
+            if (message) {
+              message = `${message} <br> ${index + 1}) ${e.message}`;
+            } else {
+              message = `${index + 1}) ${e.message}`;
+            }
+          }
+        });
+        Swal.fire({
+          title: message,
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: 'diagnosis-error',
+        });
       });
-      Swal.fire({
-        title: message,
-        icon: 'error',
-        confirmButtonText: 'OK',
-        customClass: 'diagnosis-error',
-      });
-    });
-  }
+    }
 }
 

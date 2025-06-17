@@ -29,14 +29,14 @@
               [ngClass]="{'fa-sort': sortColumn !== 'Maktx', 'fa-sort-up': sortColumn === 'Maktx' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Maktx' && sortDirection === 'desc'}"
               aria-hidden="true"></i>
           </th>
-          <th colspan="1" scope="col" (click)="sortTable('Menge')">UoM
-            <i class="fa"
-              [ngClass]="{'fa-sort': sortColumn !== 'Menge', 'fa-sort-up': sortColumn === 'Menge' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Menge' && sortDirection === 'desc'}"
-              aria-hidden="true"></i>
-          </th>
-          <th colspan="1" scope="col" (click)="sortTable('Meins')">Quantity Issue
+          <th colspan="1" scope="col" (click)="sortTable('Meins')">UoM
             <i class="fa"
               [ngClass]="{'fa-sort': sortColumn !== 'Meins', 'fa-sort-up': sortColumn === 'Meins' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Meins' && sortDirection === 'desc'}"
+              aria-hidden="true"></i>
+          </th>
+          <th colspan="1" scope="col" (click)="sortTable('Menge')">Quantity Issue
+            <i class="fa"
+              [ngClass]="{'fa-sort': sortColumn !== 'Menge', 'fa-sort-up': sortColumn === 'Menge' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Menge' && sortDirection === 'desc'}"
               aria-hidden="true"></i>
           </th>
           <th colspan="1" scope="col" (click)="sortTable('Erdat')">Date & Time
@@ -65,8 +65,8 @@
         <tr *ngFor="let phyOrder of consumableHistoryList" style="font-weight: 600">
           <td colspan="1">{{ phyOrder.Matnr }}</td>
           <td colspan="4">{{ phyOrder.Maktx }}</td>
-          <td colspan="1">{{ phyOrder?.Menge }}</td>
           <td colspan="1">{{ phyOrder.Meins }}</td>
+          <td colspan="1">{{ phyOrder?.Menge }}</td>
           <td colspan="1">{{ getDate(phyOrder.Erdat) | date : "d.MM.y" }}</td>
           <td colspan="1">{{ phyOrder.Sloc }}</td>
           <td colspan="1">{{ phyOrder.Erusr }}</td>

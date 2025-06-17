@@ -307,3 +307,10 @@
   width: 90px;
   border: none;
 }
+
+.vital_sign_table {
+  th {
+    width: 100px !important;
+    min-width: 100px !important;
+  }
+}

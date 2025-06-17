@@ -24,12 +24,12 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
   public disableSwitching: boolean;
   public storageLocationList: Array<StorageLocationDetails> = [];
   public selectedLocation: any; // Property to hold selected location
-
+  
   private actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
-
+  
   activeTab: string = '2'; // Initialize with the id of the second tab
-
+  
   tabs = [
     { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
@@ -50,14 +50,20 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.formDetailGroup = new FormGroup({
-      selectedLocation: new FormControl(null) // Initialize form control
+    this.formDetailGroup = this.formBuilder.group({
+      SearchData: ['', [Validators.required]],
+      DateRange: [[], [Validators.required]],
+      SelectDropdown: [null, [Validators.required]],
+      selectedLocation: [null],
     });
+
+    // this.formDetailGroup = new FormGroup({
+    //    selectedLocation: new FormControl(null) // Initialize form control
+    //  });
 
     this._route.queryParams.subscribe((params) => {
-      this.paramsObject = params;
-    });
-
+       this.paramsObject = params;
+     });
   }
 
 
@@ -69,7 +75,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.consumablesFrom();
+    // this.consumablesFrom();
     this.getStoragelocations();
     this.dataShareService.sendData('2');
   }
@@ -103,7 +109,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       },
     });
   }
-  // Method to handle location change event
+
   public onLocationChange(event: any) {
     // Handle location change logic here if needed
     this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, event);
@@ -111,7 +117,9 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public consumablesFrom() {
     this.formDetailGroup = this.formBuilder.group({
-      selectedLocation: [null, [Validators.required]],
+      SearchData: ['', [Validators.required]],
+      DateRange: [[], [Validators.required]],
+      SelectDropdown: [null, [Validators.required]],
     });
   }
 

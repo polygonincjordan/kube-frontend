@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConsumableService } from '@services/consumables/consumable.service';
@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./consumables-list.component.scss'],
   providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }],
 })
-export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
+export class ConsumablesListComponent implements OnInit, OnDestroy {
 
   public consumableHistoryForm: FormGroup;
   public UserDetails: any;
@@ -65,10 +65,6 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
     this.route.queryParams.subscribe((params) => {
       this.paramsValue = params;
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes);
   }
 
   ngOnDestroy(): void {
@@ -121,7 +117,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
       Einri: new FormControl(this.paramsValue.einri),
       Falnr: new FormControl(this.paramsValue.falnr),
       Anfoe: new FormControl(this.storageService.patientData.deptOrgUnit),
-      Anpoe: new FormControl("EMEEUAMC"),
+      Anpoe: new FormControl(this.storageService.patientData?.Treatmentou),
       Lgort: new FormControl(''),
       PatMatCosmpNmm7HdToItmNav: new FormGroup({
         // results: new FormArray([])
@@ -171,7 +167,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
       Matnr: new FormControl(""),
       Arktx: new FormControl(""),
       Stock: new FormControl(""),
-      Menge: new FormControl("", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
+      Menge: new FormControl("", Validators.required),
       Meins: new FormControl(""),
       Lfdat: new FormControl(this.isFormatDate(new Date())),
       Lfsta: new FormControl("3"),
@@ -187,16 +183,8 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
       PrioUrg: new FormControl(""),
       PrioReq: new FormControl(""),
       Gernr: new FormControl(""),
-      Lgort: new FormControl(""),
       isSelected: new FormControl(false),
     })
-  }
-
-  allowDecimalsOnly(event: KeyboardEvent): void {
-    const char = String.fromCharCode(event.which || event.keyCode);
-    if (!/[\d\.]/.test(char) || (char === '.' && (event.target as HTMLInputElement).value.includes('.'))) {
-      event.preventDefault();
-    }
   }
 
   public isAllchecked(event: any): void {
@@ -287,7 +275,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
   //   });
   // }
 
-  public getUnitTextList(event: any, index: number){
+    public getUnitTextList(event: any, index: number){
     if(event){
      this.emergencyService.getUnitList(event).subscribe({
        next:(resp:any)=>{
@@ -303,7 +291,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
     const enteredValue = event;
     let parms = {
       enteredValue: event,
-      location: this.selectedStorageLocation
+      location: this.selectedStorageLocation,
     }
     this.consumableService.getMaterialStockDetails(`${JSON.stringify(parms)}`).subscribe({
       next: (resp: MaterialStockDetails) => {
@@ -330,25 +318,13 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
             customClass: 'myalertpopup'
           }).then((result) => {
             if (result.value) {
-              // if (this.materialType === this.wordType.MaterialName$) {
-              //   const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx');
-              //   control.reset();
-              // } else {
-              //   const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr');
-              //   control.reset();
-              // }
-
-              this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'][index].patchValue({
-                Matnr: "",
-                Arktx: "",
-                Stock: "",
-                Meins: "",
-                Werks: "",
-                Vfdat: "",
-                Lgort: "",
-                Charg: "",
-                Menge: ''
-              });
+              if (this.materialType === this.wordType.MaterialName$) {
+                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx');
+                control.reset();
+              } else {
+                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr');
+                control.reset();
+              }
             }
           })
         }
@@ -360,76 +336,76 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
     this.resultsFormArray.removeAt(index);
   }
 
-  private saveRecords(): void {
-    var payload;
-
-    var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
-      return (val.isSelected === true);
-    }).length > 0;
-    if (hasMatch) {
-      payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-        .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
-        .map(d => d.value);
-    } else {
-      payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-        .filter(d => d.valid && d.value.Matnr.trim() !== '')
-        .map(d => d.value);
-    }
-
-    payload.forEach(element => {
-      delete element.Id;
-      delete element.Arktx;
-      delete element.isSelected;
-      delete element.Stock;
-      delete element.Lgort
-    });
-
-    let newpayload = payload.filter(item => item.Matnr !== '');
-    this.consumableHistoryForm.patchValue({
-      Lgort: this.selectedStorageLocation,
-    })
-    delete this.consumableHistoryForm.value.isAllSelected;
-    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
-    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
-    if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
-      Swal.fire({
-        text: "Please filed all the required values",
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+    private saveRecords(): void {
+      var payload;
+  
+      var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
+        return (val.isSelected === true);
+      }).length > 0;
+      if (hasMatch) {
+        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
+          .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
+          .map(d => d.value);
+      } else {
+        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
+          .filter(d => d.valid && d.value.Matnr.trim() !== '')
+          .map(d => d.value);
+      }
+  
+      payload.forEach(element => {
+        delete element.Id;
+        delete element.Arktx;
+        delete element.isSelected;
+        delete element.Stock;
+        delete element.Lgort
+      });
+  
+      let newpayload = payload.filter(item => item.Matnr !== '');
+      this.consumableHistoryForm.patchValue({
+        Lgort: this.selectedStorageLocation,
       })
-      return;
-    }
-    this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
-      Swal.fire({
-        text: "Saved Successully",
-        icon: 'success',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
-      }).then((result) => {
-        if (result.value) {
-          this.actionTypeSubscription$.unsubscribe();
-          this.consumableHistoryForm.reset();
-        }
-      })
-    }, (error: any) => {
-      let messageError = error.error.error.innererror.errordetails;
-      let message: any = '';
-      messageError.forEach((e, index) => {
-        if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
-          if (message) {
-            message = `${message} <br> ${index + 1}) ${e.message}`;
-          } else {
-            message = `${index + 1}) ${e.message}`;
+      delete this.consumableHistoryForm.value.isAllSelected;
+      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
+      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
+      if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
+        Swal.fire({
+          text: "Please filed all the required values",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        return;
+      }
+      this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
+        Swal.fire({
+          text: "Saved Successully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        }).then((result) => {
+          if (result.value) {
+            this.actionTypeSubscription$.unsubscribe();
+            this.consumableHistoryForm.reset();
           }
-        }
+        })
+      }, (error: any) => {
+        let messageError = error.error.error.innererror.errordetails;
+        let message: any = '';
+        messageError.forEach((e, index) => {
+          if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
+            if (message) {
+              message = `${message} <br> ${index + 1}) ${e.message}`;
+            } else {
+              message = `${index + 1}) ${e.message}`;
+            }
+          }
+        });
+        Swal.fire({
+          title: message,
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: 'diagnosis-error',
+        });
       });
-      Swal.fire({
-        title: message,
-        icon: 'error',
-        confirmButtonText: 'OK',
-        customClass: 'diagnosis-error',
-      });
-    });
-  }
+    }
 }
