@@ -10,6 +10,9 @@ import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { ErVitalsForSBARComponent } from '../sbar-nursing-endorsement/er-vitals/er-vitals.component';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { ActionType } from '@services/interfaces/common.enum';
+import { observationList } from 'src/app/shared-module/cpr-document/dropdown-values';
 
 @Component({
   selector: 'app-post-anesthesia-care-record',
@@ -57,6 +60,9 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
       Dockey: '',
     },
   ];
+  tableHeading = ['Time', 'Vital Signs', '2 min', '4 min', '6 min', '8 min', '10 min', '12 min', '14 min', '16 min', '18 min', '20 min', '22 min', '24 min', '26 min', '28 min', '30 min', '32 min', '34 min', '36 min', '38 min', '40 min', 'Comments']
+  observationList = observationList;
+
   vitalSigns = [
     { value: 0, label: 'Heart Rate/mt' },
     { value: 1, label: 'Respirations/mt' },
@@ -84,6 +90,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   currentTime: any;
   isChecked: any;
   encounterId: any;
+  docKey: any;
+  apiJson: any;
   medicationImportDrugArray: any = [];
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
@@ -97,6 +105,7 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private datePipe: DatePipe,
     private dataShareService: DataShareService,
+    private emergencyService: EmergencyService,
     private modalService: BsModalService
   ) {
     const now = new Date();
@@ -115,10 +124,38 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
       this.storageService.setLfdnr(this.paramsObject.lfdnr);
       this.storageService.setPatnr(this.paramsObject.patnr);
     });
+
+    this.apiJson = {
+      Einri: this.storageService.einri,
+      Falnr: this.storageService.falnr,
+      Patnr: this.storageService.patnr,
+      Lfdnr: this.storageService.lfdnr,
+      Lfdbw: this.storageService.lfdnr
+    }
+    this.initForm();
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
+      if (data != null) {
+        if (data.type == ActionType.Add$ && data.value == '') {
+          this.docKey = data.value.Dockey
+        }
+        if (data.type == ActionType.Update$ && data.value) {
+          this.docKey = data.value.docKey
+          this.getNurseDocDetail(data.value.docKey)
+        }
+        if (data.type == ActionType.Copy$ && data.value) {
+          this.docKey = data.value.docKey
+          this.getNurseDocDetail(data.value.docKey)
+        }
+      } else if (data.type == ActionType.Copy$ && data.value) {
+        this.docKey = data.value.docKey
+        this.getNurseDocDetail(data.value.docKey)
+      } else {
+        // for after code
+      }
+    })
   }
 
   ngOnInit(): void {
-    this.initForm();
   }
 
   initForm() {
@@ -126,14 +163,14 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
 
     this.postAssForm = this.formBuilder.group({
       Dockey: [''],
-      Dtid: [''],
-      Einri: [''],
-      Patnr: [''],
-      Falnr: [''],
-      Lfdnr: [''],
-      Orgdo: [''],
-      AttendPhy: [''],
-      DocStatus: [''],
+      Dtid: ['ZMED_PACR'],
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
+      DocStatus: ['1'],
       Datee: [new Date()],
       AGeneral: [false],
       ASpinal: [false],
@@ -192,11 +229,13 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
       TOSCALE: this.formBuilder.array([]),
       TOOUTPUT: this.formBuilder.array([]),
       TOINTAKE: this.formBuilder.array([]),
+      TOVITALSIGNOBS: this.formBuilder.array([]),
     });
 
     for (let i = 0; i < 5; i++) {
       this.addDrain();
       this.addOut();
+      this.addItemVital();
     }
   }
 
@@ -218,43 +257,171 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   }
 
 
-  get inputArr(): FormArray {
+  get TOINTAKE(): FormArray {
     return this.postAssForm.get('TOINTAKE') as FormArray;
   }
-  get outputArr(): FormArray {
+  get TOOUTPUT(): FormArray {
     return this.postAssForm.get('TOOUTPUT') as FormArray;
   }
 
-  addDrain() {
+  addDrain(item?) {
     const drainGroup = this.formBuilder.group({
-      time: [''],
-      date: [''],
-      type: [''],
-      amount: [''],
+      Dockey: [item?.Dockey ?? ''],
+      Datee: [this.getDate(item?.Datee) ?? ''],
+      Timee: [this.parseTime(item?.Timee) ?? ''],
+      TypeIntake: [item?.TypeIntake ?? ''],
+      Amount: [item?.Amount ?? '']
     });
-    this.inputArr.push(drainGroup);
+    this.TOINTAKE.push(drainGroup);
   }
 
   removeDrain(index: number) {
-    this.inputArr.removeAt(index);
+    this.TOINTAKE.removeAt(index);
   }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  addOut() {
+  addOut(item?) {
     const drainGroup = this.formBuilder.group({
-      time: [''],
-      date: [''],
-      type: [''],
-      amount: [''],
+      Dockey: [item?.Dockey ?? ''],
+      Datee: [this.getDate(item?.Datee) ?? ''],
+      Timee: [this.parseTime(item?.Timee) ?? ''],
+      TypeOutput: [item?.TypeOutput ?? ''],
+      Amount: [item?.Amount ?? '']
     });
-    this.outputArr.push(drainGroup);
+    this.TOOUTPUT.push(drainGroup);
+  }
+
+  TOVITALSIGNOBS: FormArray
+  addItemVital(data?: any): void {
+    if (this.postAssForm) {
+      this.TOVITALSIGNOBS = this.postAssForm.get('TOVITALSIGNOBS') as FormArray;
+      this.TOVITALSIGNOBS.push(this.createObservation(data));
+    }
+  }
+
+  createObservation(item): FormGroup {
+    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
+    return this.formBuilder.group({
+      Dockey: [item?.Dockey ?? ''],
+      Timee: [this.parseTime(item?.Timee) ?? currentTime],  // Default to current time
+      VitalSigns: [item?.VitalSigns ?? ''],
+      M0: [item?.M0 ?? ''],
+      M10: [item?.M10 ?? ''],
+      M20: [item?.M20 ?? ''],
+      M30: [item?.M30 ?? ''],
+      M40: [item?.M40 ?? ''],
+      M50: [item?.M50 ?? ''],
+      M60: [item?.M60 ?? ''],
+      M70: [item?.M70 ?? ''],
+      M80: [item?.M80 ?? ''],
+      M90: [item?.M90 ?? ''],
+      M100: [item?.M100 ?? ''],
+      M110: [item?.M110 ?? ''],
+      M120: [item?.M120 ?? ''],
+    });
   }
 
   removeOut(index: number) {
-    this.outputArr.removeAt(index);
+    this.TOOUTPUT.removeAt(index);
+  }
+
+  getNurseDocDetail(docKey?: any) {
+    this.subscription = this.emergencyService.fetchPostCareRecord(docKey).subscribe({
+      next: (apiResponse: any) => {
+        const payload = apiResponse?.d?.results?.[0] || {};
+
+        const patchData = {
+          Dockey: payload.Dockey,
+          Dtid: payload.Dtid,
+          Einri: payload.Einri,
+          Patnr: payload.Patnr,
+          Falnr: payload.Falnr,
+          Lfdnr: payload.Lfdnr,
+          Orgdo: payload.Orgdo,
+          AttendPhy: payload.AttendPhy,
+          DocStatus: payload.DocStatus,
+          Datee: this.getDate(payload.Datee),
+          AGeneral: payload.AGeneral,
+          ASpinal: payload.ASpinal,
+          AEpidural: payload.AEpidural,
+          AIvBlock: payload.AIvBlock,
+          AConsciousSedation: payload.AConsciousSedation,
+          AOtherRegional: payload.AOtherRegional,
+          Anaesthesiologist: payload.Anaesthesiologist,
+          Surgeon: payload.Surgeon,
+          Proceduree: payload.Proceduree,
+          Received: payload.Received,
+          TimeIn: this.parseTime(payload.TimeIn),
+          TimeOut: this.parseTime(payload.TimeOut),
+          VtPreOpBp: payload.VtPreOpBp,
+          VtOrBp: payload.VtOrBp,
+          VtUrineCatheter: payload.VtUrineCatheter,
+          VtWoundDrainage: payload.VtWoundDrainage,
+          VtBloodGiven: payload.VtBloodGiven,
+          VtIvFluid: payload.VtIvFluid,
+          VtBiopsy: payload.VtBiopsy,
+          VtOther: payload.VtOther,
+          IoGrandTotalIntake: payload.IoGrandTotalIntake,
+          IoGrandTotalOutput: payload.IoGrandTotalOutput,
+          IoFluidBalance: payload.IoFluidBalance,
+          PacAllergy: payload.PacAllergy,
+          PacDyspnoea: payload.PacDyspnoea,
+          PacBleeding: payload.PacBleeding,
+          PacArrhythmia: payload.PacArrhythmia,
+          PacLaryngoSpasm: payload.PacLaryngoSpasm,
+          PacNausea: payload.PacNausea,
+          PacAirwayObst: payload.PacAirwayObst,
+          PacHoarseness: payload.PacHoarseness,
+          PacVomiting: payload.PacVomiting,
+          PacHypoxemia: payload.PacHypoxemia,
+          PacShivering: payload.PacShivering,
+          PacHypertension: payload.PacHypertension,
+          PacConfusion: payload.PacConfusion,
+          PacHypotension: payload.PacHypotension,
+          PacAgitation: payload.PacAgitation,
+          PacOther: payload.PacOther,
+          PacOtherTxt: payload.PacOtherTxt,
+          PacIntervention: payload.PacIntervention,
+          PacSignature: payload.PacSignature,
+          NnNursingNotes: payload.NnNursingNotes,
+          NnNursingInitials: payload.NnNursingInitials,
+          DTpWard: payload.DTpWard,
+          DTpIcu: payload.DTpIcu,
+          DTpOther: payload.DTpOther,
+          DTpOtherTxt: payload.DTpOtherTxt,
+          DAnaesthesiologist: payload.DAnaesthesiologist,
+          DTransferred: payload.DTransferred,
+          DEvaluatedBy: payload.DEvaluatedBy,
+          DReceived: payload.DReceived,
+          DDischargeFrom: payload.DDischargeFrom
+        };
+
+        this.toVitalsArr = payload.TOVITALSIGNOBS.results;
+        this.medicationImportDrugArray = payload.TOMEDICATION.results;
+        console.log(this.toVitalsArr, this.medicationImportDrugArray, "this.medicationImportDrugArray");
+
+
+        this.postAssForm.patchValue(patchData);
+        (this.postAssForm.get('TOOUTPUT') as FormArray).clear();
+        payload.TOOUTPUT.results.forEach(group => this.addOut(group));
+
+        (this.postAssForm.get('TOINTAKE') as FormArray).clear();
+        payload.TOINTAKE.results.forEach(group => this.addDrain(group));
+
+        (this.postAssForm.get('TOVITALSIGNOBS') as FormArray).clear();
+        payload.TOVITALSIGNOBS.results.forEach(group => this.addItemVital(group));
+
+        console.log(this.postAssForm, "-----");
+
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+      },
+    });
   }
 
 
@@ -408,58 +575,148 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   }
 
 
+  selectedScales: any[] = [];
+  scalesArray: any[] = [];
+  toScaleArr: any[];
+  modalRefScales: BsModalRef;
+  noScaleAppicable: any;
+
+  openModalForScales(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefScales = this.modalService.show(template, config);
+    this.loadScalesData();
+    // this.medicationImportDrugArray=[];
+  }
+
+  loadScalesData() {
+    // this.selectedScales = [];
+    this.toScaleArr = [];
+    const scalesOrders: Subscription = this.ePrescriptionService
+      .loadData(
+        `e-prescription/ScalesList?Patnr=${this.ePrescriptionService.parameters.patnr}`,
+        false,
+        false,
+        false,
+        false
+      )
+      .subscribe(
+        (resp: any) => {
+          console.log(resp);
+          if (
+            resp.body &&
+            resp.body.d &&
+            resp.body.d.results &&
+            resp.body.d.results.length
+          ) {
+            //this.configurationData = resp.body.d.results;
+            this.toScaleArr = resp.body.d.results;
+            // this.medicationImportDrugArray=[];
+            //http://amcqaemr01.ach.jo:8000/sap/opu/odata/sap/ZN_TRANSFER_ASSES_SRV/PatScalesSet?$filter=Patnr
+          }
+          //   this.filterEvents();
+        },
+        () => {
+          scalesOrders.unsubscribe();
+        }
+      );
+  }
+
+  collectAllScalesData(event: any) {
+    if (event.target.checked) {
+      this.selectedScales = (Object.assign([], this.toScaleArr));
+    } else {
+      this.selectedScales = [];
+    }
+  }
+
+  scalesImport() {
+    this.selectedScales.forEach((element) => {
+      console.log(element);
+      this.scalesArray = this.scalesArray.concat({
+        Dockey: '',
+        ScaleType: element.Scaletype,
+        ScoreDesc: element.ScoreDesc,
+        Datetimee: element.DateTime,
+        LastScore: element.Score,
+      });
+    });
+    this.modalRefScales.hide();
+  }
+
+  isCheckedScale(item: any): boolean {
+    return this.selectedScales.some((x) => x.Scaletype == item.Scaletype);
+  }
+
+  collectScalesIData(event, item) {
+    if (event.target.checked) {
+      this.selectedScales.push(item);
+    } else {
+      const indexOf = this.selectedScales.findIndex(
+        (x) => x.Scaletype == item.Scaletype
+      );
+      if (indexOf !== -1) this.selectedScales.splice(indexOf, 1);
+    }
+  }
+
+
   public createDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
       let formData = this.postAssForm.value;
-      console.log(formData, "formData");
-      
-      // formData.PhysicianNotified = formData.PhysicianNotified ? this.convertTimeToDuration(formData.PhysicianNotified) : null;
-      // formData.SupervisorNotified = formData.SupervisorNotified ? this.convertTimeToDuration(formData.SupervisorNotified) : null;
-      // const checkedRows = this.nurseAssMainForm.value.TORESTRAINTS
-      //   .filter((row: any) => row.checkboxSelected)
-      //   .map((row: any) => ({
-      //     Dockey: '', // always blank
-      //     Datee: row.Datee ? this.dateFormateString(row.Datee) : null,
-      //     Timee: row.Timee ? this.convertTimeToDuration(row.Timee) : null,
-      //     RespiratoryRate: row.RespiratoryRate,
-      //     Circulation: String(row.Circulation),
-      //     CareGiven: String(row.CareGiven),
-      //     Behaviour: String(row.Behaviour),
-      //     Signature: row.Signature
-      //   }));
-      // delete formData.isAllSelected
-      // let payload = {
-      //   ...formData,
-      //   TORESTRAINTS: checkedRows,
-      //   Dockey: actionType === 'edit' || actionType === 'copy' ? this.docKey : '',
-      //   Dtid: 'ZMED_NRRST',
-      //   Einri: this.paramsObject.einri,
-      //   Patnr: this.paramsObject.patnr,
-      //   Falnr: this.paramsObject.falnr,
-      //   Lfdnr: this.paramsObject.lfdnr,
-      //   Orgdo: 'F21IUAMC',
-      //   AttendPhy: this.storageService.getUserProfile().Gpart,
-      //   DocStatus: status,
-      // }
+      formData.DocStatus = status;
+      formData.Datee = this.sanitizeSAPDateFormat(formData.Datee);
+      formData.TimeIn = this.parsePayloadFormateTime(formData.TimeIn);
+      formData.TimeOut = this.parsePayloadFormateTime(formData.TimeOut);
+      formData['TOINTAKE'] = formData.TOINTAKE.filter(res => res.Amount || res.TypeIntake).map(res => ({
+        ...res,
+        Datee: this.sanitizeSAPDateFormat(res.Datee),
+        Timee: this.parsePayloadFormateTime(res.Timee)
+      }));
+      formData['TOOUTPUT'] = formData.TOOUTPUT.filter(res => res.Amount || res.TypeOutput).map(res => ({
+        ...res,
+        Datee: this.sanitizeSAPDateFormat(res.Datee),
+        Timee: this.parsePayloadFormateTime(res.Timee)
+      }));
 
-      // this.subscription = this.admissionService.createNurseAssMainDoc(payload).subscribe({
-      //   next: (data: any) => {
-      //   },
-      //   error: (err: any) => {
-      //     this.sharedService.waringSwallModel(`Error ${err}`);
-      //     this.sharedService.waringSwallModel(`PUT Error at Nurse Assessment for Restraints : ${err}`);
-      //   },
-      //   complete: () => {
-      //     resolve(true);
-      //     if (status === 'edit') {
-      //       this.sharedService.successSwallModel('Nurse Assessment for Restraints updated successfully');
-      //     } else {
-      //       this.sharedService.successSwallModel('Nurse Assessment for Restraints created successfully');
-      //     }
-      //     this.successEvent.next(true)
-      //   }
-      // });
+      formData['TOMEDICATION'] = this.medicationImportDrugArray;
+      formData['TOSCALE'] = this.scalesArray;
+      let processedData: any[] = this.postAssForm.value.TOVITALSIGNOBS
+        .filter(item => item.VitalSigns !== "")
+        .map(item => ({
+          ...item,
+          Timee: this.parsePayloadFormateTime(item.Timee)
+        }));
+
+      formData['TOVITALSIGNOBS'] = processedData;
+
+      this.subscription = this.emergencyService.savePostCareRecord(formData).subscribe({
+        next: (data: any) => {
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at Nurse Assessment for Restraints : ${err}`);
+        },
+        complete: () => {
+          resolve(true);
+          if (status === 'edit') {
+            this.sharedService.successSwallModel('Nurse Assessment for Restraints updated successfully');
+          } else {
+            this.sharedService.successSwallModel('Nurse Assessment for Restraints created successfully');
+          }
+          // this.successEvent.next(true)
+        }
+      });
     })
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
   }
 
   public getDate(value) {

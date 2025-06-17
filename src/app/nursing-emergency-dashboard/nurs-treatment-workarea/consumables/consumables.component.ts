@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -23,13 +23,13 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public formDetailGroup: FormGroup;
   public disableSwitching: boolean;
-
+  
   actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
-  
+
   public storageLocationList: Array<StorageLocationDetails> = [];
   public selectedLocation: any = 'ER01'; // Property to hold selected location
-  private paramsValue: any;
+  public paramsObject: any;
 
   activeTab: string = '2'; // Initialize with the id of the second tab
 
@@ -45,22 +45,23 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private storageService: StorageService,
-    private route: ActivatedRoute
+    private _route: ActivatedRoute,
   ) {
-    
+
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
         this.isConsumableAction = data;
       }
     });
 
-    this.route.queryParams.subscribe((params) => {
-      this.paramsValue = params;
-    });
+    this._route.queryParams.subscribe((params) => {
+       this.paramsObject = params;
+     });
   }
 
 
   ngOnDestroy(): void {
+    // this.dataShareService.sendActionType(null);
     if (JSON.parse(localStorage.getItem('forConsumable'))) {
       localStorage.removeItem('forConsumable');
     }
@@ -79,7 +80,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       SearchData: ['', [Validators.required]],
       DateRange: [[], [Validators.required]],
       SelectDropdown: [null, [Validators.required]],
-      selectedLocation: ['ER01', [Validators.required]]
+       selectedLocation: ['ER01', [Validators.required]]
     });
   }
 
@@ -110,17 +111,17 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Method to handle location change event
-  public onLocationChange(event: any) {
+    public onLocationChange(event: any) {
     // Handle location change logic here if needed
     this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, event);
   }
-
+  
   private getStoragelocations() {
     const userType = this.storageService.getUserProfile();
     const parms = {
       Bname: userType.UserName,
-      Einri: this.paramsValue.einri,
-      Falnr: this.paramsValue.falnr,
+      Einri: this.paramsObject.einri,
+      Falnr: this.paramsObject.falnr,
     };
     this.emergencyService.getStoragelocationList(`${JSON.stringify(parms)}`).subscribe({
       next: (data: StorageLocation) => {

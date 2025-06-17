@@ -1,4 +1,8 @@
 <div class="order-templete-main mt-3">
+  <!-- <alert *ngIf="showNotificationMessage" type="warning" (onClosed)="showNotificationMessage = false"
+    dismissOnTimeout="3000">
+    <div>Item Not found!</div>
+  </alert> -->
   <div class="toggle" (click)="addNewConsumable()">
     <img title="Visits & Admissions Timeline" src="assets/img/add-circle.svg" class="ng-star-inserted" />
   </div>
@@ -54,10 +58,11 @@
                 </ng-select>
               </td>
               <td colspan="4">
+                <!-- <input class="form-control input-bg h-auto" type="text" formControlName="Arktx"  [title]="product.value.Arktx"> -->
                 <ng-select class="ng-select-dropdown width-250 product-description-width hide-dropdown-x-icon"
                   [clearable]="true" [searchable]="true" formControlName="Arktx"
                   (search)="searchMaterial($event.term, wordType.MaterialName$, i)"
-                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Matnr + '' + product.value.Arktx">
+                  (change)="getDetailsOfMaterial($event.Matnr, i)" [title]="product.value.Arktx">
                   <ng-option *ngFor="let item of materialList" [value]="item">{{item.Matnr}} -
                     {{item.Maktx}}</ng-option>
                 </ng-select>
@@ -75,7 +80,7 @@
                 </ng-select>
               </td>
               <td colspan="1">
-                <input class="form-control" type="text" (keypress)="allowDecimalsOnly($event)"  formControlName="Menge"
+                <input class="form-control" type="text" numbersOnly formControlName="Menge"
                   [title]="product.value.Menge" required>
                 <div *ngIf="consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').invalid &&
               consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav.results')['controls'][i].get('Menge').touched"

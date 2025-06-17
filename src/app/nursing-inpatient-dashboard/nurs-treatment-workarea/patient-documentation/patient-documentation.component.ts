@@ -655,6 +655,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPedFallRiskDocDetails();
     this.getStampDocDetails();
     this.getSBARNursingDocDetails();
+    this.getPostCareRecordDetails();
   }
 
   LatestMFSSet() {
@@ -919,6 +920,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.SBARNursingLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.sbarNurEndList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Post Anesthesia Care Record
+  getPostCareRecordDetails() {
+    this.emergencyService.PostCareRecordLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.PostAnesthesiaList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -2206,6 +2220,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPedFallRiskDocDetails();
     this.getStampDocDetails();
     this.getSBARNursingDocDetails();
+    this.getPostCareRecordDetails();
   }
 
   openDocument(action) {
@@ -8509,7 +8524,7 @@ export class PatientDocumentationComponent implements OnInit {
       .getPostCareRecordPdf(Dockey)
       .subscribe((data: any) => {
         this.pdfUrlType = 'pdf';
-        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentDataStr);
         // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         //   'data:application/pdf;base64,' + data.d.AttachmentData
         // );

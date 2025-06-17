@@ -1181,20 +1181,20 @@
            </div>
            <!-- Nursing Initial Assessment Gyno Obstetrics -->
            <div [ngClass]="isNurseInitAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'NIAGO'" (click)="selectAssessment('isNurseInitAss',PostAnesthesiaList[0])">
-             <div class="col-md-4">Nursing Initial Assessment Gyno Obstetrics {{PostAnesthesiaList[0]?.Zversion ?
-               dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-             <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
-               {{getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+            *ngIf="!selectedDocument || selectedDocument == 'NIAGO'" (click)="selectAssessment('isNurseInitAss',latestNursingInitialList[0])">
+             <div class="col-md-4">Nursing Initial Assessment Gyno Obstetrics {{latestNursingInitialList[0]?.Zversion ?
+               dockVer(latestNursingInitialList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+             <div class="col-md-2 status-color">{{latestNursingInitialList[0]?.StatusTxt || 'N/A'}}</div>
+             <div class="col-md-2" title="{{getTime(latestNursingInitialList[0]?.DocTime)}}">
+               {{getDate(latestNursingInitialList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
              </div>
-             <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
+             <div class="col-md-3">{{latestNursingInitialList[0]?.PhyNm || '-'}}</div>
              <div class="col-md-1 d-flex">
                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(PostAnesthesiaList[0]?.Dockey)"
-                 *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
-                   <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
+                 (click)="openNurseAssMainsPdf(latestNursingInitialList[0]?.Dockey)"
+                 *ngIf="latestNursingInitialList[0]?.StatusTxt == 'Released'"></i>
+                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNursingInitialList[0]?.Dockey, latestNursingInitialList[0])">
+                   <select *ngIf="latestNursingInitialList.length && latestNursingInitialList[0]?.StatusTxt !='N/A' && latestNursingInitialList[0]?.Zversion != '00'" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
