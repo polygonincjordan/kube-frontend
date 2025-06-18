@@ -542,6 +542,9 @@ export class DocumentationListComponent implements OnInit {
             if(res.Dtid === 'ZMED_PDASM') {
               res.DtidText = 'Paediatrics Physician Admission Assessment'
             }
+            if(res.Dtid === 'ZMED_OPERT') {
+              res.DtidText = 'Department of Surgery - Operation Notes'
+            }
           })
           this.currentVisitDocumetClone = data?.d.results;
           this.currentVisitDocumet = data?.d.results;

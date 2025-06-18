@@ -1032,7 +1032,7 @@
                 [ngClass]="isNewScaleDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'APGARS'" (click)="selectAssessment('isNewScaleDocument',latestNewScaleDocumentList[0])">
                 <div class="col-md-4"> APGAR Scale {{latestNewScaleDocumentList[0]?.Zversion ?
-                  dockVer(latestNewScaleDocumentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                  dockVer(latestNewScaleDocumentList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNewScaleDocumentList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNewScaleDocumentList[0]?.DocTime)}}">
                   {{getDate(latestNewScaleDocumentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -1163,7 +1163,7 @@
            <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'PACR'" (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
              <div class="col-md-4"> Post Anesthesia Care Record {{PostAnesthesiaList[0]?.Zversion ?
-               dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+               dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} :</div>
              <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
              <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
                {{getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y" || '-'}}

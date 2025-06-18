@@ -9,8 +9,7 @@
                             <div class="col-6 px-0 mb-2">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Scale Name</label>
-                                    <input type="text" class="col-6" value="APGAR Scale" style="width: 100%;"
-                                        disabled>
+                                    <input type="text" class="col-6" value="APGAR Scale" style="width: 100%;" disabled>
                                 </div>
                             </div>
                             <div class="col-6 px-0 ">
@@ -42,23 +41,19 @@
                             <label for="" class="common-label m-0">Skin color</label>
                             <div class="custom-input mr-5 ">
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="A" name="HistoryFalls" formControlName="HistoryFalls"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="A" name="SkinColor" formControlName="SkinColor">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="1" name="HistoryFalls" formControlName="HistoryFalls"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="2" name="SkinColor" formControlName="SkinColor">
                                     <label for="" class="mx-3">Normal color all over (hands and feet are pink)</label>
                                 </div>
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="0" name="HistoryFalls" formControlName="HistoryFalls"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="1" name="SkinColor" formControlName="SkinColor">
                                     <label for="" class="mx-3">Normal color (hands and feet are bluish)</label>
                                 </div>
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="0" name="HistoryFalls" formControlName="HistoryFalls"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="0" name="SkinColor" formControlName="SkinColor">
                                     <label for="" class="mx-3">Bluish-gray or pale all over </label>
                                 </div>
                             </div>
@@ -67,23 +62,19 @@
                             <label for="" class="common-label m-0">Pulse rate</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <input type="radio" value="A" name="PulseRate" formControlName="PulseRate">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="1" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <input type="radio" value="2" name="PulseRate" formControlName="PulseRate">
                                     <label for="" class="mx-3">Normal (above 100 beats per minute)</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="0" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <input type="radio" value="1" name="PulseRate" formControlName="PulseRate">
                                     <label for="" class="mx-3">Below 100 beats per minute</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="0" name="SecondaryDiagnosis"
-                                        formControlName="SecondaryDiagnosis" (change)="calculateTotal()">
+                                    <input type="radio" value="0" name="PulseRate" formControlName="PulseRate">
                                     <label for="" class="mx-3">Absent (no pulse)</label>
                                 </div>
                             </div>
@@ -92,24 +83,20 @@
                             <label for="" class="common-label m-0">Reflex irritability grimace</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="AmbulatoryAid" formControlName="AmbulatoryAid"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="A" name="Grimace" formControlName="Grimace">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="F" name="AmbulatoryAid" formControlName="AmbulatoryAid"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="2" name="Grimace" formControlName="Grimace">
                                     <label for="" class="mx-3">Pulls away, sneezes, coughs, or cries with
                                         stimulation</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="C" name="AmbulatoryAid" formControlName="AmbulatoryAid"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="1" name="Grimace" formControlName="Grimace">
                                     <label for="" class="mx-3">facial movement only (grimace) with stimulation</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="N" name="AmbulatoryAid" formControlName="AmbulatoryAid"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="0" name="Grimace" formControlName="Grimace">
                                     <label for="" class="mx-3">Absent (no response to stimulation)</label>
                                 </div>
                             </div>
@@ -118,23 +105,19 @@
                             <label for="" class="common-label m-0">Activity</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="IvAccess" formControlName="IvAccess"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="A" name="Activity" formControlName="Activity">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="1" name="IvAccess" formControlName="IvAccess"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="2" name="Activity" formControlName="Activity">
                                     <label for="" class="mx-3">Active, spontaneous movement</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="0" name="IvAccess" formControlName="IvAccess"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="1" name="Activity" formControlName="Activity">
                                     <label for="" class="mx-3">Arms and legs flexed with little movement</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="0" name="IvAccess" formControlName="IvAccess"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="0" name="Activity" formControlName="Activity">
                                     <label for="" class="mx-3">No movement, "floppy" tone</label>
                                 </div>
                             </div>
@@ -143,23 +126,23 @@
                             <label for="" class="common-label m-0">Respiratory effort</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="A" name="Gait" formControlName="Gait"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="A" name="RespiratoryEffort"
+                                        formControlName="RespiratoryEffort">
                                     <label for="" class="mx-3">Unanswered</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="I" name="Gait" formControlName="Gait"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="2" name="RespiratoryEffort"
+                                        formControlName="RespiratoryEffort">
                                     <label for="" class="mx-3">Normal rate and effort, good cry</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="W" name="Gait" formControlName="Gait"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="1" name="RespiratoryEffort"
+                                        formControlName="RespiratoryEffort">
                                     <label for="" class="mx-3">Slow or irregular breathing, weak cry</label>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="N" name="Gait" formControlName="Gait"
-                                        (change)="calculateTotal()">
+                                    <input type="radio" value="0" name="RespiratoryEffort"
+                                        formControlName="RespiratoryEffort">
                                     <label for="" class="mx-3">Absent (no breathing)</label>
                                 </div>
                             </div>
@@ -172,8 +155,10 @@
                         <div class="col-6 px-0">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-2">Total score</label>
-                                <input type="text" class="col-2" [value]="totalScore" readonly>
-                                <input type="text" class="col-7" [value]="description" readonly>
+                                <input type="text" class="col-2" formControlName="TotalScore" [value]="totalScore"
+                                    readonly>
+                                <input type="text" class="col-7" formControlName="ScoreDesc" [value]="description"
+                                    readonly>
                             </div>
                         </div>
                     </div>

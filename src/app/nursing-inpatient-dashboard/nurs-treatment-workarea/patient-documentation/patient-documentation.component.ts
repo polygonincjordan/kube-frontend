@@ -53,6 +53,7 @@ import { PediatricsFallRiskAssessmentComponent } from './pediatrics-fall-risk-as
 import { MalnutritionPaediatricsComponent } from './malnutrition-paediatrics/malnutrition-paediatrics.component';
 import { SbarNursingEndorsementComponent } from './sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 import { PostAnesthesiaCareRecordComponent } from './post-anesthesia-care-record/post-anesthesia-care-record.component';
+import { NewScaleDocumentComponent } from 'src/app/shared-module/new-scale-document/new-scale-document.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -95,6 +96,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(PostAnesthesiaCareRecordComponent) PostAnesthesiaCareRecordComp: PostAnesthesiaCareRecordComponent;
   @ViewChild(MalnutritionPaediatricsComponent) MalnutritionPaediatricsComp: MalnutritionPaediatricsComponent;
   @ViewChild(SbarNursingEndorsementComponent) SbarNursingEndorsementComp: SbarNursingEndorsementComponent;
+  @ViewChild(NewScaleDocumentComponent) NewScaleDocumentComp: NewScaleDocumentComponent;
 
  
 
@@ -656,6 +658,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getStampDocDetails();
     this.getSBARNursingDocDetails();
     this.getPostCareRecordDetails();
+    this.getApgarScaleDoc();
   }
 
   LatestMFSSet() {
@@ -933,6 +936,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.PostCareRecordLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.PostAnesthesiaList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  // Post Anesthesia Care Record
+  getApgarScaleDoc() {
+    this.emergencyService.ApgarScaleLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestNewScaleDocumentList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -2221,6 +2236,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getStampDocDetails();
     this.getSBARNursingDocDetails();
     this.getPostCareRecordDetails();
+    this.getApgarScaleDoc();
   }
 
   openDocument(action) {
@@ -4401,7 +4417,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openNewScaleDocumentDocument = true;
           let valueObj = {
-            type: WordType.EditBS,
+            type: WordType.EditNRS,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
@@ -4426,7 +4442,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.openNewScaleDocumentDocument = true;
           let valueObj = {
-            type: WordType.CopyBS,
+            type: WordType.CopyNRS,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
@@ -5667,6 +5683,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openNewScaleDocumentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if(btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -5695,6 +5723,18 @@ export class PatientDocumentationComponent implements OnInit {
           }
         }).catch((error: any) => {
           console.error('Error modifying numeric rating Scale:', error);
+        });
+      }
+      if (this.openNewScaleDocumentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if(btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
         });
       }
       if (this.openFacePainScale) {
@@ -6517,6 +6557,19 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
 
+      if (this.openNewScaleDocumentDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if(btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
       if (this.openMorseFallScale) {
         const formData = {
           ...this.morseFallScaleC.getFormData(),
@@ -6900,7 +6953,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         });
-    }
+    } else if (this.openNewScaleDocumentDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
   }
 
   newVersionDirectReleased() {

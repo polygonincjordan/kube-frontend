@@ -91,13 +91,6 @@
   </nav>
 </header>
 <ng-template #additionalPatientInfo>
-  <!-- <div class="row m-0" style="border: 1px solid #3b82f6; padding: 8px; background: #3b82f6;">
-    <span class="col-md-6" style="color: white; font-size: 22px;">Patient's Information</span>
-    <div class="col-md-6">
-      <span style="color: white; font-size: 18px;">MRN : {{patient?.id}} </span>
-      <span style="color: white; font-size: 18px;">Case : {{patient?.case}} </span>
-    </div>
-  </div> -->
   <div class="allergy-header">
     <div class="allergy-header-title">
       <span>Patient's Information</span>
@@ -145,7 +138,7 @@
       <div class="col-md-6 row m-0">
         <label for="staticEmail" class="col-sm-5">Nationality:</label>
         <div class="col-sm-7">
-          <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+          <span>{{patient?.Nationality || 'N/A'}}</span>
         </div>
       </div>
       <div class="col-md-6 row m-0">
@@ -169,13 +162,13 @@
         <div class="col-md-6 row m-0">
           <label for="staticEmail" class="col-sm-5">Name:</label>
           <div class="col-sm-7">
-            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+            <span>{{patient?.kinName || 'N/A'}}</span>
           </div>
         </div>
         <div class="col-md-6 row m-0">
           <label for="staticEmail" class="col-sm-5">Relationship:</label>
           <div class="col-sm-7">
-            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+            <span>{{patient?.maritalStatus || 'N/A'}}</span>
           </div>
         </div>
       </div>
@@ -183,12 +176,12 @@
         <div class="col-md-6 row m-0">
           <label for="staticEmail" class="col-sm-5">Mobile #:</label>
           <div class="col-sm-7">
-            <!-- <span>{{patient?.maritalStatus || 'N/A'}}</span> -->
+            <span>{{patient?.KinTelephone || 'N/A'}}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="button-group p-3 row m-0" style="text-align: -webkit-center;">
+  <div class="button-group p-3 row m-0" style="text-align: -webkit-center;">
       <div class="col-md-7" style="text-align: end; display: flex; justify-content: end;">
         <button class="save-risk" (click)="modalRef.hide()">Ok</button>
       </div>
