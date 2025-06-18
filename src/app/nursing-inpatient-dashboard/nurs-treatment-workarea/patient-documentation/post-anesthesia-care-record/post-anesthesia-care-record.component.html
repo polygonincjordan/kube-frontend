@@ -2,7 +2,7 @@
   <div class="border p-3">
     <!-- Date and Checkboxes -->
     <div class="row align-items-center mb-2">
-      <div class="col-md-3 col-6 d-flex align-items-end">
+      <div class="col-md-12 d-flex align-items-end">
         <label for="date" class="mr-2">Date:</label>
         <div class="header-date p-0">
           <span>
@@ -15,7 +15,9 @@
         </div>
       </div>
 
-      <div class="col-md-9 col-12 d-flex flex-wrap align-items-center">
+      <div class="col-md-12 d-flex flex-wrap align-items-center mt-3">
+        <label for="date" class="col-form-label-sm m-0" style="margin-right: 12% !important;">Anesthesia </label>
+
         <div class="form-check mr-3">
           <input type="checkbox" class="form-check-input" formControlName="AGeneral" id="general" />
           <label class="form-check-label" for="general">General</label>
@@ -118,7 +120,7 @@
                 </div>
               </div> -->
               <div class="vital_sign_table mt-3" style="height: 300px; overflow: auto;">
-                <div class="scale-box-checkbox justify-content-between ">
+                <div class="scale-box-checkbox d-flex justify-content-between ">
                   <label class="admitting-physician" style="font-size: 15px; font-weight: 700"
                     for="noScaleAppicable">Vital Sign</label>
                   <button class="review-btn mb-2" (click)="addItemVital()">
@@ -280,18 +282,21 @@
                         <th>Display</th>
                       </tr>
                     </thead>
-                    <tbody style="background-color: hsl(225, 100%, 99%)">
-                      <tr *ngFor="let item of scalesArray; let i = index" style="text-align: center">
-                        <td>{{ item.ScaleType }}</td>
-                        <td style="width: 270px">{{ item.LastScore }}</td>
-                        <td style="text-align: center; pointer-events: none">
-                          {{ item.ScoreDesc }}
+                    <tbody style="background-color: #fbfcff;">
+                      <tr class="past-med-input" *ngFor="let item of scalesList;let i=index">
+                        <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.ScaleType}}</td>
+                        <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.LastScore}}</td>
+                        <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.description}}</td>
+                        <td style="    padding: 10px !important;
+                  width: 15%;pointer-events: none;">{{item.Datetimee}}</td>
+                        <td style="    padding: 10px !important;
+                  width: 3%;text-align: center;" class="cursor-pointer" (click)="openGlosgowComaModel(item)">Create
                         </td>
-                        <td style="text-align: center; pointer-events: none">
-                          {{ item.Datetimee }}
-                        </td>
-                        <td></td>
-                        <td></td>
+                        <td style="    padding: 10px !important;            width: 3%;text-align: center;"
+                          class="cursor-pointer" (click)="viewGlosgowModel(item)">View</td>
                       </tr>
                     </tbody>
                   </table>
@@ -421,19 +426,22 @@
       <div class="row mt-2 mb-2">
         <div class="col-md-6 d-flex align-items-center mb-2">
           <label class="col-md-4 col-form-label-sm pl-0">Grand Total Intake(ml)</label>
-          <input type="text" class="form-control form-control-sm col-md-2" />
+          <input type="text" class="form-control form-control-sm col-md-2" formControlName="IoGrandTotalIntake"
+            [disabled]="true" />
         </div>
       </div>
       <div class="row mb-2">
         <div class="col-md-6 d-flex align-items-center mb-2">
           <label class="col-md-4 col-form-label-sm pl-0">Grand Total Output(ml)</label>
-          <input type="text" class="form-control form-control-sm col-md-2" />
+          <input type="text" class="form-control form-control-sm col-md-2" formControlName="IoGrandTotalOutput"
+            [disabled]="true" />
         </div>
       </div>
       <div class="row mb-2">
         <div class="col-md-6 d-flex align-items-center mb-2">
           <label class="col-md-4 col-form-label-sm pl-0">Fluid Balance(ml)</label>
-          <input type="text" class="form-control form-control-sm col-md-2" />
+          <input type="text" class="form-control form-control-sm col-md-2" formControlName="IoFluidBalance"
+            [disabled]="true" />
         </div>
       </div>
     </div>
@@ -591,7 +599,7 @@
     </div>
   </div>
 
-  <div class="border mt-3">
+  <div class="border mt-3 p-3">
     <!-- Nursing Notes -->
     <div class="section-title pl-0">Nursing Notes</div>
 
@@ -599,11 +607,6 @@
       <div class="col-md-2 col-sm-12">Nursing Notes</div>
       <div class="col-md-9 col-sm-10">
         <input type="text" class="form-control" formControlName="NnNursingNotes" />
-      </div>
-      <div class="col-md-1 col-sm-2">
-        <button class="btn btn-light p-1 w-100">
-          <!-- <i class="fa fa-edit"></i> -->
-        </button>
       </div>
     </div>
 
@@ -619,23 +622,30 @@
 
     <div class="row align-items-center mb-2">
       <div class="col-md-3 col-sm-12">Transfer patient to :</div>
+
       <div class="col-md-1 col-sm-3">
-        <input type="checkbox" class="mr-1" id="ward" formControlName="DTpWard" />
+        <input type="checkbox" class="mr-1" id="ward" formControlName="DTpWard"
+          (change)="onTransferChange('DTpWard')" />
         <label for="ward">Ward</label>
       </div>
+
       <div class="col-md-1 col-sm-3">
-        <input type="checkbox" class="mr-1" id="icu" formControlName="DTpIcu" />
+        <input type="checkbox" class="mr-1" id="icu" formControlName="DTpIcu" (change)="onTransferChange('DTpIcu')" />
         <label for="icu">ICU</label>
       </div>
+
       <div class="col-md-1 col-sm-3">
-        <input type="checkbox" class="mr-1" id="other" formControlName="DTpOther" (change)="onOtherChange()" />
+        <input type="checkbox" class="mr-1" id="other" formControlName="DTpOther"
+          (change)="onTransferChange('DTpOther')" />
         <label for="other">Other</label>
       </div>
+
       <div class="col-md-6 col-sm-12 mt-2 mt-md-0">
-        <input type="text" class="form-control" [readOnly]="!postAssForm.get('DTpOther')?.value"
-          formControlName="DTpOtherTxt" />
+        <input type="text" class="form-control" formControlName="DTpOtherTxt"
+          [readOnly]="!postAssForm.get('DTpOther')?.value" />
       </div>
     </div>
+
 
     <!-- Info Fields -->
     <div class="row mb-2">
@@ -824,3 +834,7 @@
     </form>
   </div>
 </ng-template>
+
+<app-scales-glosgow-coma #scalesGlosgow (glasgowValue)="glasgowValue($event)"></app-scales-glosgow-coma>
+<app-scales-face-pain #scalesFacePain (facePainValue)="facePainValue($event)"></app-scales-face-pain>
+<app-scales-numeric-rating #scalesNumericRating (numericValue)="numericValue($event)"></app-scales-numeric-rating>

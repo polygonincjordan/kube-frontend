@@ -1829,6 +1829,27 @@ export class EmergencyService {
     });
   }
 
+   // Nursing Initial Assessment Gyno Obstetrics PMD Doc
+  saveApgarScaleDoc(json) {
+    return this.http.post(this.url + 'saveApgarScaleDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchApgarScaleDoc(dockey) {
+    return this.http.get(this.url + `fetchApgarScaleDoc?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  ApgarScaleLatestDoc(json) {
+    return this.http.get(
+      this.url + `ApgarScaleLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

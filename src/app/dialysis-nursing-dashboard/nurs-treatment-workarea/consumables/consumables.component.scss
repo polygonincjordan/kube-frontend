@@ -50,6 +50,24 @@
   .tab-search-panel {
     padding: 10px;
 
+    .storage-box {
+      margin-left: 20px;
+      /* Adjust the left margin to create space */
+    }
+
+    .location-label {
+      margin-right: 10px;
+      margin-top: 8px;
+      font-weight: bold;
+      /* Add right margin to the label */
+    }
+
+    .ng-select-dropdown {
+      width: 200px;
+      /* Set desired width for the ng-select dropdown */
+    }
+
+
     .search-functionality {
       min-width: 26%;
 
@@ -142,12 +160,5 @@
 
   span {
     // padding-left: 10px;
-  }
-}
-
-.stronge-wrap{
-  ng-select{
-    max-width: 200px;
-    min-width:200px;
   }
 }

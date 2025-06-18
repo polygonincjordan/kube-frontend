@@ -101,8 +101,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.storageLocationList.length === 1) {
           // this.selectedLocation = this.storageLocationList[0];
           this.formDetailGroup.get('selectedLocation').setValue(this.selectedLocation);
-          this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, this.selectedLocation);
         }
+         this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, {Lgort: this.selectedLocation});
         // resolve(formValue); // Resolve the promise with formValue
       },
       error: (err: any) => {

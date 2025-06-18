@@ -16,7 +16,7 @@
           <div class="document-list m-1 p-2" [ngClass]="selectedIndex == i? 'selected-item': ''" >
             <div class="row mr-0 ml-0 align-items-center">
               <div class="col-md-4 p-0" (click)="selectDocument(item, i)">
-                <strong class="" [title]="getTitleName(item)">{{ item.DtidText == 'Operation Report' ? 'Department of Surgery - Operation Notes' : item.DtidText }} {{item.Dokvr ? dockVer(item.Dokvr) : ''}}</strong>
+                <strong class="" [title]="getTitleName(item)">{{ item.DtidText }} {{item.Dokvr ? dockVer(item.Dokvr) : ''}}</strong>
               </div>
               <div class="col-md-2 p-0" (click)="selectDocument(item, i)">
                 <strong class="color-43aee7" [title]="item.NodocText">{{ item.NodocText ? item.NodocText : item.DokstText }}</strong>

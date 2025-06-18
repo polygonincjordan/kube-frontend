@@ -38,6 +38,7 @@ export class ConsumablesHistoryComponent implements OnInit {
     });
 
     this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data)=>{
+      console.log("Get Storage Location");
       if(data != null){
         this.slocData = data?.value?.Lgort
         if(this.slocData){
@@ -52,6 +53,7 @@ export class ConsumablesHistoryComponent implements OnInit {
     if(this.slocData){
       this.getConsumableHistory();
     }else{
+      console.log("Check Storage Location");
       Swal.fire({
                   text:'Please select a storage location',
                   icon: 'warning',

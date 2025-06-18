@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -19,25 +19,24 @@ import Swal from 'sweetalert2';
   styleUrls: ['./consumables.component.scss'],
   providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }],
 })
-export class ConsumablesComponent implements OnInit, OnDestroy {
+export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public formDetailGroup: FormGroup;
   public disableSwitching: boolean;
-
+  
   actionTypeSubscription$: Subscription;
   isConsumableAction: string = '1';
   
   public storageLocationList: Array<StorageLocationDetails> = [];
   public selectedLocation: any = 'DI02'; // Property to hold selected location
-  private paramsValue: any;
-
+  
   activeTab: string = '2'; // Initialize with the id of the second tab
-
+  
   tabs = [
     { id: 1, title: 'History', content: '' },
     { id: 2, title: 'New Issue', content: '', active: true },
   ];
-
+  private paramsObject: any;
 
   constructor(
     public ePrescriptionService: EPrescriptionService,
@@ -45,31 +44,46 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private dataShareService: DataShareService,
     private storageService: StorageService,
-    private route: ActivatedRoute
+    private _route: ActivatedRoute,
   ) {
-    
     this.actionTypeSubscription$ = this.dataShareService.data$.subscribe((data) => {
       if (data != null) {
         this.isConsumableAction = data;
       }
     });
 
-    this.route.queryParams.subscribe((params) => {
-      this.paramsValue = params;
+    this.formDetailGroup = this.formBuilder.group({
+      SearchData: ['', [Validators.required]],
+      DateRange: [[], [Validators.required]],
+      SelectDropdown: [null, [Validators.required]],
+      selectedLocation: ['DI02'],
     });
+
+    // this.formDetailGroup = new FormGroup({
+    //    selectedLocation: new FormControl(null) // Initialize form control
+    //  });
+
+    this._route.queryParams.subscribe((params) => {
+       this.paramsObject = params;
+     });
   }
 
 
   ngOnDestroy(): void {
+    // this.dataShareService.sendActionType(null);
     if (JSON.parse(localStorage.getItem('forConsumable'))) {
       localStorage.removeItem('forConsumable');
     }
   }
 
   ngOnInit(): void {
-    this.consumablesFrom();
-    this.dataShareService.sendData('2');
+    // this.consumablesFrom();
     this.getStoragelocations();
+    this.dataShareService.sendData('2');
+  }
+
+  ngAfterViewInit() {
+    // Set the second tab as the active tab after the view has been initialized
   }
 
   public consumablesFrom() {
@@ -112,13 +126,13 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
     // Handle location change logic here if needed
     this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, event);
   }
-
+  
   private getStoragelocations() {
     const userType = this.storageService.getUserProfile();
     const parms = {
       Bname: userType.UserName,
-      Einri: this.paramsValue.einri,
-      Falnr: this.paramsValue.falnr,
+      Einri: this.paramsObject.einri,
+      Falnr: this.paramsObject.falnr,
     };
     this.emergencyService.getStoragelocationList(`${JSON.stringify(parms)}`).subscribe({
       next: (data: StorageLocation) => {
@@ -127,8 +141,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy {
         if (this.storageLocationList.length === 1) {
           // this.selectedLocation = this.storageLocationList[0];
           this.formDetailGroup.get('selectedLocation').setValue(this.selectedLocation);
-          this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, this.selectedLocation);
         }
+         this.dataShareService.sendFilterType(FilterType.ConsumableStorageLocation$, true, {Lgort: this.selectedLocation});
       },
       error: (err: any) => {
         // Handle errors if the request fails
