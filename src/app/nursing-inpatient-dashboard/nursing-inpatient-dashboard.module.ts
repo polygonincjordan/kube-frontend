@@ -186,6 +186,7 @@ import { ConsultationsOrdersModule } from '../shared-module/consultations-orders
 import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/er-vitals/er-vitals.component';
 import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
 import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
+import { ModifiedAldreteDocumentForInportComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/modified-aldrete-document/modified-aldrete-document.component';
 
 
 
@@ -321,6 +322,7 @@ const route: Routes = [
     SurgeryWorklistTabComponent,
     LdrViewComponent,
     ErVitalsForSBARComponent,
+    ModifiedAldreteDocumentForInportComponent,
     PhysicianPastSurgicalComponent
   ],
   providers: [

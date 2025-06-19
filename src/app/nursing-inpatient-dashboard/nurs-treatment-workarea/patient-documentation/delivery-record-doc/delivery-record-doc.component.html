@@ -1,645 +1,573 @@
-<div class="data_body">
-  <form class="border m-2 p-3">
-    <h5 class="title-main pb-2">Labor Data</h5>
-    <div class="row align-items-center mb-2">
-      <div class="col-md-2">
-        <div class="label">Attending Doctor</div>
-      </div>
-      <div class="col-md-5"><input type="text" class="form-control" /></div>
-      <div class="col-md-1"></div>
-      <div class="col-md-1">
-        <div class="label">Delivery Date</div>
-      </div>
-      <div class="col-md-2">
-        <div class="header-date p-0">
-        <span _ngcontent-ufq-c103="" style="
-        position: relative;
-        top: 32px;
-        right: 15px;
-        float: right;
-        margin-top: -26px;
-        font-size: 18px;
-        z-index: 1;
-      ">
-          <img src="assets/img/Calender.svg" alt="" />
-        </span>
-        <input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text" placeholder=""
-          [minDate]="" [maxDate]=""  #dp="bsDatepicker" [bsValue]="CurrentDateAndTime"
-          style="min-width: 235px; height: 40px !important"  bsDatepicker [bsConfig]="{
-        showWeekNumbers: false,
-        dateInputFormat: 'DD.MM.YYYY'
-      }" />
-      </div>
-      </div>
-    </div>
-    <div class="row align-items-center mb-3">
-      <div class="col-md-2">
-        <div class="label">Attending Mildwife</div>
-      </div>
-      <div class="col-md-5"><input type="text" class="form-control" /></div>
-      <div class="col-md-1"></div>
-      <div class="col-md-1">
-        <div class="label">Delivery Hour</div>
-      </div>
-      <div class="col-md-2">
-        <input
-          type="time"
-          class="form-control"
-          naria-label="24hr format"
-          [value]="currentTime"
-        />
-      </div>
-    </div>
-    <div class="row align-items-center">
-      <div class="col-md-2">
-        <label class="mr-3">Labor Signs</label>
-      </div>
-      <div class="col-md-1">
-        <div class="form-group">
-          <input type="checkbox" class="mr-1" name="" />
-          <div class="label">None</div>
+<form [formGroup]="deliveryRecordeForm">
+  <div class="data_body">
+    <div class="border m-2 p-3">
+      <h5 class="title-main pb-2">Labor Data</h5>
+      <div class="row align-items-center mb-2">
+        <div class="col-md-2">
+          <div class="label">Attending Doctor</div>
         </div>
-      </div>
-      <div class="col-md-1">
-        <div class="form-group">
-          <input type="checkbox" class="mr-1" name="" />
-          <div class="label">Contraction</div>
+        <div class="col-md-5"><input type="text" class="form-control" formControlName="AttendDoctor" /></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1">
+          <div class="label">Delivery Date</div>
         </div>
-      </div>
-      <div class="col-md-1">
-        <div class="form-group">
-          <input type="checkbox" class="mr-1" name="" />
-          <div class="label">Bleeding</div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="form-group">
-          <input type="checkbox" class="mr-1" name="" />
-          <div class="label">Rupture of Membrane</div>
-        </div>
-      </div>
-      <div class="col-md-1">
-        <div class="form-group">
-          <input type="checkbox" class="mr-1" name="" />
-          <div class="label">Other</div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="form-group">
-          <input type="text" class="form-control" name="" />
-        </div>
-      </div>
-    </div>
-  </form>
-
-  <form class="border m-2 p-3">
-    <div id="exTab1">
-      <ul class="nav nav-pills title-main mb-3">
-        <li
-          [class.active]="activeTab === 'firstStage'"
-          (click)="setActiveTab('firstStage')"
-        >
-          First Stage
-        </li>
-        <li
-          [class.active]="activeTab === 'secondStage'"
-          (click)="setActiveTab('secondStage')"
-        >
-          Second Stage
-        </li>
-        <li
-          [class.active]="activeTab === 'thirdStage'"
-          (click)="setActiveTab('thirdStage')"
-        >
-          Third Stage
-        </li>
-      </ul>
-    </div>
-    <div class="tab-content px-3 clearfix mt-3">
-      <div *ngIf="activeTab === 'firstStage'">
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Approximate Duration</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
+        <div class="col-md-2">
+          <div class="header-date p-0">
+            <span _ngcontent-ufq-c103="" style="
+          position: relative;
+          top: 32px;
+          right: 45px;
+          float: right;
+          margin-top: -26px;
+          font-size: 18px;
+          z-index: 1;
+        ">
+              <img src="assets/img/Calender.svg" alt="" />
+            </span>
+            <input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text" placeholder=""
+              [minDate]="" [maxDate]="" #dp="bsDatepicker" [bsValue]="CurrentDateAndTime"
+              style="min-width: 235px; height: 40px !important" bsDatepicker [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+        }" formControlName="DeliveryDate" />
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Spontaneous</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
+      </div>
+      <div class="row align-items-center mb-3">
+        <div class="col-md-2">
+          <div class="label">Attending Mildwife</div>
+        </div>
+        <div class="col-md-5"><input type="text" class="form-control" formControlName="AttendMidwife" /></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1">
+          <div class="label">Delivery Hour</div>
+        </div>
+        <div class="col-md-2">
+          <input type="time" class="form-control" naria-label="24hr format" step="2"
+            formControlName="DeliveryHour" />
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-md-2">
+          <label class="mr-3">Labor Signs</label>
+        </div>
+        <div class="col-md-1">
+          <div class="form-group">
+            <input type="checkbox" class="mr-1" name="" formControlName="LsNone" />
+            <div class="label">None</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Induced</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="label">Amniotomy</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
+        <div class="col-md-1">
+          <div class="form-group">
+            <input type="checkbox" class="mr-1" name="" formControlName="LsContraction" />
+            <div class="label">Contraction</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Oxytocin</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
+        <div class="col-md-1">
+          <div class="form-group">
+            <input type="checkbox" class="mr-1" name="" formControlName="LsBleeding" />
+            <div class="label">Bleeding</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Prostin</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
+        <div class="col-md-2">
+          <div class="form-group">
+            <input type="checkbox" class="mr-1" name="" formControlName="LsRupture" />
+            <div class="label">Rupture of Membrane</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
+        <div class="col-md-1">
+          <div class="form-group">
+            <input type="checkbox" class="mr-1" name="" formControlName="LsOther" />
             <div class="label">Other</div>
           </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
         </div>
-        <div class="row">
-          <div class="col-md-2">
-            <div class="label">Remarks</div>
-          </div>
-          <div class="col-md-8 d-flex">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="activeTab === 'secondStage'">
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Duration</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Normal</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Force/Vac Extr.</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="label">Low</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Mild</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Duration</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Episiotomy</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Midline</div>
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Mediolateral</div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Laceration Degree</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="label">Cervix</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Vagina</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Perineum</div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Present & Position</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">A</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">B</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">
-            <div class="label">Remarks</div>
-          </div>
-          <div class="col-md-8 d-flex">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-      </div>
-      <div *ngIf="activeTab === 'thirdStage'">
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Duration</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Placenta Spon</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Expressed</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Manual Removal</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">
-            <div class="label">Remarks</div>
-          </div>
-          <div class="col-md-8 d-flex">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Estimated blood Loss</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Infusion</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="label">Type</div>
-          </div>
-          <div class="col-md-3">
-            <input type="text" class="form-control" name="" />
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Transfusion</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="label">Type</div>
-          </div>
-          <div class="col-md-2">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="label">Amount</div>
-          </div>
-          <div class="col-md-3">
-            <input type="text" class="form-control" name="" />
-          </div>
-          <div class="col-md-1"></div>
-          <div class="col-md-1">
-            <div class="label">Amount</div>
-          </div>
-          <div class="col-md-2">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <h6>Maternal Condition at the end of Labor</h6>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-8 d-flex">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-            <div class="label">Anesthesia Type</div>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">None</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Local</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">General</div>
-            </div>
-          </div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Epidural</div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">Other</div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <input type="text" class="form-control" name="" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2">
-            <label class="">Neonatal Data</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-10">
-            <table class="table table-bordered table-responsive max-height300">
-              <thead
-                style="
-                  position: sticky;
-                  top: -10px;
-                  z-index: 9;
-                  background: #e4edf5;
-                "
-              >
-                <tr>
-                  <!-- <th></th> -->
-                  <th>No.</th>
-                  <th>Time</th>
-                  <th>Sex</th>
-                  <th>Wt(in gm)</th>
-                  <th>APGAR Score(1)</th>
-                  <th>APGAR Score(5)</th>
-                  <th>APGAR Score(10)</th>
-                  <th style="width:15%">Status Description</th>
-                </tr>
-              </thead>
-              <tbody style="background: #fbfcff">
-                <tr class="c-pointer">
-                  <!-- <td></td> -->
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td>
-                    <ng-select
-                      [items]="status"
-                      bindLabel="label"
-                      bindValue="value"
-                      placeholder="Select"
-                      style="width: 100%"
-                    ></ng-select>
-                  </td>
-                </tr>
-                <tr class="c-pointer">
-                  <!-- <td></td> -->
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td>
-                    <ng-select
-                      [items]="status"
-                      bindLabel="label"
-                      bindValue="value"
-                      placeholder="Select"
-                      style="width: 100%"
-                    ></ng-select>
-                  </td>
-                </tr>
-                <tr class="c-pointer">
-                  <!-- <td></td> -->
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td>
-                    <ng-select
-                      [items]="status"
-                      bindLabel="label"
-                      bindValue="value"
-                      placeholder="Select"
-                      style="width: 100%"
-                    ></ng-select>
-                  </td>
-                </tr>
-                <tr class="c-pointer">
-                  <!-- <td></td> -->
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td>
-                    <ng-select
-                      [items]="status"
-                      bindLabel="label"
-                      bindValue="value"
-                      placeholder="Select"
-                      style="width: 100%"
-                    ></ng-select>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" />
-              <div class="label">If Asyphyxiated Methods of Resuscitation</div>
-            </div>
-          </div>
-          <div class="col-md-5 d-flex">
-            <input type="text" class="form-control" name="" />
+        <div class="col-md-2">
+          <div class="form-group">
+            <input type="text" class="form-control" name="" formControlName="LsOtherTxt" />
           </div>
         </div>
       </div>
     </div>
-  </form>
-</div>
+  
+    <div class="border m-2 p-3">
+      <div id="exTab1">
+        <ul class="nav nav-pills title-main mb-3">
+          <li [class.active]="activeTab === 'firstStage'" (click)="setActiveTab('firstStage')">
+            First Stage
+          </li>
+          <li [class.active]="activeTab === 'secondStage'" (click)="setActiveTab('secondStage')">
+            Second Stage
+          </li>
+          <li [class.active]="activeTab === 'thirdStage'" (click)="setActiveTab('thirdStage')">
+            Third Stage
+          </li>
+        </ul>
+      </div>
+      <div class="tab-content px-3 clearfix mt-3">
+        <div *ngIf="activeTab === 'firstStage'">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="FsApproximate" />
+                <div class="label">Approximate Duration</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="FsApproximateTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="FsSpontaneous" />
+                <div class="label">Spontaneous</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="FsSpontaneousTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="FsInduced" />
+                <div class="label">Induced</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="label">Amniotomy</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="FsAmniotomy" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Oxytocin</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="FsOxytocin" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Prostin</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="FsProstin" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Other</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="FsOther" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="label">Remarks</div>
+            </div>
+            <div class="col-md-8 d-flex">
+              <input type="text" class="form-control" name="" formControlName="FsRemarks" />
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="activeTab === 'secondStage'">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsDuration" />
+                <div class="label">Duration</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsDurationTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsNormal" />
+                <div class="label">Normal</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsNormalTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsForceps" />
+                <div class="label">Force/Vac Extr.</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="label">Low</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsForcepsLow" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Mild</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsForcepsMild" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Duration</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsForcepsDur" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsEpisiotomy" />
+                <div class="label">Episiotomy</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsMidline" />
+                <div class="label">Midline</div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsMediolateral" />
+                <div class="label">Mediolateral</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsLaceration" />
+                <div class="label">Laceration Degree</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="label">Cervix</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsLacCervix" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Vagina</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsLacVagina" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Perineum</div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsLacPerineum" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsPresent" />
+                <div class="label">Present & Position</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsPresentA" />
+                <div class="label">A</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsPresentATxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="SsPresentB" />
+                <div class="label">B</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="SsPresentBTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="label">Remarks</div>
+            </div>
+            <div class="col-md-8 d-flex">
+              <input type="text" class="form-control" name="" formControlName="SsRemarks" />
+            </div>
+          </div>
+        </div>
+        <div *ngIf="activeTab === 'thirdStage'">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsDuration" />
+                <div class="label">Duration</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="TsDurationTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsPlacenta" />
+                <div class="label">Placenta Spon</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="TsPlacentaTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsExpressed" />
+                <div class="label">Expressed</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="TsExpressedTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsManual" />
+                <div class="label">Manual Removal</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="TsManualTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="label">Remarks</div>
+            </div>
+            <div class="col-md-8 d-flex">
+              <input type="text" class="form-control" name="" formControlName="TsRemarks" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsEstimated" />
+                <div class="label">Estimated blood Loss</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="" formControlName="TsEstimatedTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsInfusion" />
+                <div class="label">Infusion</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="label">Type</div>
+            </div>
+            <div class="col-md-3">
+              <input type="text" class="form-control" name="" formControlName="TsIType" />
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsTransfusion" />
+                <div class="label">Transfusion</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="label">Type</div>
+            </div>
+            <div class="col-md-2">
+              <input type="text" class="form-control" name="" formControlName="TsTType" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="label">Amount</div>
+            </div>
+            <div class="col-md-3">
+              <input type="text" class="form-control" name="" formControlName="TsIAmount" />
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <div class="label">Amount</div>
+            </div>
+            <div class="col-md-2">
+              <input type="text" class="form-control" name="" formControlName="TsTAmount" />
+            </div>
+          </div>
+          <div class="row">
+            <h6>Maternal Condition at the end of Labor</h6>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 d-flex">
+              <input type="text" class="form-control" name="" formControlName="TsMaternalCond" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <div class="label">Anesthesia Type</div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtNone" />
+                <div class="label">None</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtLocal" />
+                <div class="label">Local</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtGeneral" />
+                <div class="label">General</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtEpidural" />
+                <div class="label">Epidural</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtOther" />
+                <div class="label">Other</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <input type="text" class="form-control" name="" formControlName="TsAtOtherTxt" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <label class="">Neonatal Data</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+              <table class="table table-bordered table-responsive max-height300">
+                <thead style="
+                    position: sticky;
+                    top: -10px;
+                    z-index: 9;
+                    background: #e4edf5;
+                  ">
+                  <tr>
+                    <!-- <th></th> -->
+                    <th>No.</th>
+                    <th>Time</th>
+                    <th>Sex</th>
+                    <th>Wt(in gm)</th>
+                    <th>APGAR Score(1)</th>
+                    <th>APGAR Score(5)</th>
+                    <th>APGAR Score(10)</th>
+                    <th style="width:15%">Status Description</th>
+                  </tr>
+                </thead>
+                <tbody style="background: #fbfcff">
+                  <ng-container formArrayName="TONEONATAL"
+                    *ngFor=" let item of deliveryRecordeForm.get('TONEONATAL')['controls']; let i = index">
+                    <tr [formGroupName]="i" class="c-pointer">
+                      <!-- <td></td> -->
+                      <td><input type="text" class="form-control" formControlName="Noo" /></td>
+                      <td><input type="text" class="form-control" formControlName="Timee" /></td>
+                      <td><input type="text" class="form-control" formControlName="Sex" /></td>
+                      <td><input type="text" class="form-control" formControlName="Wt" /></td>
+                      <td><input type="text" class="form-control" formControlName="ApgarScore1" /></td>
+                      <td><input type="text" class="form-control" formControlName="ApgarScore5" /></td>
+                      <td><input type="text" class="form-control" formControlName="ApgarScore10" /></td>
+                      <td>
+                        <ng-select [items]="status" bindLabel="label" bindValue="value" placeholder="Select"
+                          style="width: 100%" formControlName="StatusDesc"></ng-select>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAsyphyxiated" />
+                <div class="label">If Asyphyxiated Methods of Resuscitation</div>
+              </div>
+            </div>
+            <div class="col-md-5 d-flex">
+              <input type="text" class="form-control" name="" formControlName="TsAsyphyxiatedTxt" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

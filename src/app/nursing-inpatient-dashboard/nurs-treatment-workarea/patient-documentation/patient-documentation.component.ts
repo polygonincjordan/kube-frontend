@@ -54,6 +54,8 @@ import { MalnutritionPaediatricsComponent } from './malnutrition-paediatrics/mal
 import { SbarNursingEndorsementComponent } from './sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 import { PostAnesthesiaCareRecordComponent } from './post-anesthesia-care-record/post-anesthesia-care-record.component';
 import { NewScaleDocumentComponent } from 'src/app/shared-module/new-scale-document/new-scale-document.component';
+import { ObsFallRiskAssessmentComponent } from 'src/app/shared-module/obs-fall-risk-assessment/obs-fall-risk-assessment.component';
+import { DeliveryRecordDocComponent } from './delivery-record-doc/delivery-record-doc.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -97,8 +99,10 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(MalnutritionPaediatricsComponent) MalnutritionPaediatricsComp: MalnutritionPaediatricsComponent;
   @ViewChild(SbarNursingEndorsementComponent) SbarNursingEndorsementComp: SbarNursingEndorsementComponent;
   @ViewChild(NewScaleDocumentComponent) NewScaleDocumentComp: NewScaleDocumentComponent;
+  @ViewChild(ObsFallRiskAssessmentComponent) ObsFallRiskAssessmentComp: ObsFallRiskAssessmentComponent;
+  @ViewChild(DeliveryRecordDocComponent) DeliveryRecordDocComp: DeliveryRecordDocComponent;
 
- 
+
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
@@ -315,8 +319,8 @@ export class PatientDocumentationComponent implements OnInit {
   openDyingPatient: boolean = false;
   openPostCathFemoral: boolean = false;
   openPostCathRedial: boolean = false;
-  openLaborRoomFlow : boolean = false;
-  openNicuNurFlowSheet : boolean = false;
+  openLaborRoomFlow: boolean = false;
+  openNicuNurFlowSheet: boolean = false;
   openNurseIntra: boolean = false;
   openCriticalPain: boolean = false;
   openNursingCarePlans: boolean = false;
@@ -659,6 +663,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSBARNursingDocDetails();
     this.getPostCareRecordDetails();
     this.getApgarScaleDoc();
+    this.getObsFallRiskDoc();
+    this.getDeliveryRecordDoc();
   }
 
   LatestMFSSet() {
@@ -948,6 +954,32 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.ApgarScaleLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestNewScaleDocumentList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Post Anesthesia Care Record
+  getObsFallRiskDoc() {
+    this.emergencyService.ObsFallRiskScaleLatest(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestObstetricFallRiskAssessmentList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // Delivery Record
+  getDeliveryRecordDoc() {
+    this.emergencyService.DeliveryRecordLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.deliverRecordList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -1489,7 +1521,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isLaborRoomFlow', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -1497,7 +1529,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.getPatientProfileData(this.CriticalPainList[0]);
-    }else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
       this.selectAssessment('isNicuNurFlowSheet', this.CriticalPainList[0])
       this.openDocument('create');
     } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
@@ -2128,7 +2160,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openisDeliverRecord) {
-      this.NurseAssMainComp?.ngOnDestroy();
+      this.DeliveryRecordDocComp?.ngOnDestroy();
     }
     if (this.openSbarNursingEnd) {
       this.NurseAssMainComp?.ngOnDestroy();
@@ -2237,6 +2269,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSBARNursingDocDetails();
     this.getPostCareRecordDetails();
     this.getApgarScaleDoc();
+    this.getObsFallRiskDoc();
+    this.getDeliveryRecordDoc();
   }
 
   openDocument(action) {
@@ -2896,7 +2930,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.openisDeliverRecord = true;
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.openNurseInitAss = true;;
+          this.openisDeliverRecord = true;;
           let valueObj = {
             type: WordType.EditNE,
             docKey: this.selectedDocData.Dockey
@@ -2905,7 +2939,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseAssMainDoc();
+          this.deleteDeliveryRecordDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -2913,7 +2947,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releseDeliveryRecordMain();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -2926,7 +2960,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openisDeliverRecord = true;
-        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+        this.DeliveryRecordDocComp.createDeliveryRecordDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
@@ -3128,7 +3162,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -3173,7 +3207,7 @@ export class PatientDocumentationComponent implements OnInit {
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
         }
-      }else if (action == 'delete') {
+      } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.deleteNurseAssMainDoc();
         } else {
@@ -5181,7 +5215,7 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.actionType == 'create') {
       if (this.openEducationAssessment) {
         this.educationAssessmentComp.saveEducationFormValue('1').then((res: any) => {
-          if(btnType == 'close') this.refresh();
+          if (btnType == 'close') this.refresh();
         }, (_error: any) => {
           Swal.fire({
             text: `Education assessment has error, contact your administrator`,
@@ -5194,7 +5228,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5206,7 +5240,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.SurgicalPassComp.createSurgicalPassDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5217,7 +5251,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.newBornComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5229,7 +5263,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.ICBundlesComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5240,7 +5274,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.ICCvcMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5251,7 +5285,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5262,7 +5296,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseIntraComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5273,7 +5307,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.maternityEarlyWarningSignComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5284,7 +5318,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.PostAnesthesiaCareRecordComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5295,7 +5329,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5306,7 +5340,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5328,7 +5362,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5337,9 +5371,9 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openisDeliverRecord) {
         let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+        this.DeliveryRecordDocComp.createDeliveryRecordDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5350,7 +5384,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5361,7 +5395,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5372,7 +5406,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5383,7 +5417,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5394,7 +5428,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5405,7 +5439,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5416,7 +5450,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.CriticalCarePainComp.createDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5428,7 +5462,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingCarePlansComp.createNursingCarePlan(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5441,7 +5475,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingDischargeComp.createNursingDischargeDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5454,7 +5488,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5485,7 +5519,7 @@ export class PatientDocumentationComponent implements OnInit {
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup'
           })
-          if(btnType == 'close') this.refresh();
+          if (btnType == 'close') this.refresh();
         }, (error) => {
           this.sharedService.errorSwallModel(error?.error?.error.message.value)
         })
@@ -5494,7 +5528,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating Glasgow coma scale:', error);
@@ -5506,7 +5540,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.PainAssessmentComp.savePainAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5516,7 +5550,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openPediatricEarlyWarningScale) {
         this.PediatricWarningScaleComp.savePediatricEarlyWarningScale().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5526,7 +5560,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNurseEndorsement) {
         this.NurseEndorsmentComp.saveNurseEnd('1').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5536,7 +5570,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNumericRatingScale) {
         this.NumericRatingScaleComp.saveNumericRight().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating numeric rating Scale:', error);
@@ -5546,7 +5580,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openFacePainScale) {
         this.FacePainScaleComp.createFacePain().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating Face pain scale:', error);
@@ -5558,7 +5592,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5571,7 +5605,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5584,7 +5618,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.ModifiedAldreteComp.createModifiedAldreteDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5597,7 +5631,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5611,7 +5645,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5625,7 +5659,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.TimeOutCheckListComp.createTimeOutDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5638,7 +5672,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5652,7 +5686,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5664,7 +5698,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.PediatricsFallRiskAssessmentComp.createFallRiskPed(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5676,7 +5710,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5688,7 +5722,19 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+      if (this.openObstetricFallRiskAssessmentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.ObsFallRiskAssessmentComp.saveObsFallRiskDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5701,7 +5747,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5710,7 +5756,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5719,7 +5765,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNumericRatingScale) {
         this.NumericRatingScaleComp.saveNumericRight().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying numeric rating Scale:', error);
@@ -5730,7 +5776,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5740,7 +5786,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openFacePainScale) {
         this.FacePainScaleComp.createFacePain().then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Face pain scale:', error);
@@ -5749,7 +5795,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNurseEndorsement) {
         this.NurseEndorsmentComp.editNurseEndDoc('edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5758,7 +5804,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openPainAssement) {
         this.PainAssessmentComp.savePainAssessmentDoc('1').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5767,7 +5813,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openEducationAssessment) {
         this.educationAssessmentComp.saveEducationFormValue('1').then((res: any) => {
-          if(btnType == 'close') this.refresh();
+          if (btnType == 'close') this.refresh();
         }, (_error: any) => {
           Swal.fire({
             text: `Education assessment has error, contact your administrator`,
@@ -5781,7 +5827,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openSurgicsalPassport) {
         this.SurgicalPassComp.createSurgicalPassDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5790,7 +5836,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNewBorn) {
         this.newBornComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5799,7 +5845,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openBundles) {
         this.ICBundlesComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5808,7 +5854,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openCvcMain) {
         this.ICCvcMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5817,7 +5863,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNurseAssRes) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5826,7 +5872,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNurseIntra) {
         this.NurseIntraComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5835,7 +5881,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openMaternitySign) {
         this.maternityEarlyWarningSignComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5844,7 +5890,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openPostAnesthesia) {
         this.PostAnesthesiaCareRecordComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5853,7 +5899,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNurseInitAss) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5862,7 +5908,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openDailyNurseAss) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5880,16 +5926,16 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openRichmondScale) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
       if (this.openisDeliverRecord) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+        this.DeliveryRecordDocComp.createDeliveryRecordDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5899,7 +5945,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus, 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5909,7 +5955,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openDyingPatient) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5918,7 +5964,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openPostCathFemoral) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5927,7 +5973,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openPostCathRedial) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5936,7 +5982,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openLaborRoomFlow) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5945,7 +5991,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNicuNurFlowSheet) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5954,7 +6000,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openCriticalPain) {
         this.CriticalCarePainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
@@ -5965,7 +6011,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingCarePlansComp.createNursingCarePlan(docStatus, 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5978,7 +6024,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingDischargeComp.createNursingDischargeDoc(docStatus, 'edit').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -5991,7 +6037,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingAdmissionComp.createNursingAdmissionDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6004,7 +6050,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.PreCardiacCathComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6016,7 +6062,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6029,7 +6075,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.ModifiedAldreteComp.createModifiedAldreteDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6040,7 +6086,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.NursingAssessmentComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6054,7 +6100,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6068,7 +6114,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.TimeOutCheckListComp.createTimeOutDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6082,7 +6128,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.NeonatalDischDocumentComp.createNeonatalDischargeDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6096,7 +6142,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.CvcInsertionDocumentComp.createCvcInsertionDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6108,7 +6154,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.PediatricsFallRiskAssessmentComp.createFallRiskPed(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6120,7 +6166,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6307,7 +6353,7 @@ export class PatientDocumentationComponent implements OnInit {
         });
       }
       if (this.openisDeliverRecord) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+        this.DeliveryRecordDocComp.createDeliveryRecordDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6319,7 +6365,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '3';
         this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus, 'copy').then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6549,7 +6595,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6562,7 +6608,20 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if(btnType == 'close') this.refresh();
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+      if (this.openObstetricFallRiskAssessmentDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.ObsFallRiskAssessmentComp.saveObsFallRiskDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -6865,7 +6924,7 @@ export class PatientDocumentationComponent implements OnInit {
       });
     }
     else if (this.openisDeliverRecord) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.DeliveryRecordDocComp.createDeliveryRecordDoc('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -6939,32 +6998,43 @@ export class PatientDocumentationComponent implements OnInit {
         if (formValue) {
           this.refresh();
         }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        });
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
     }
     else if (this.openMalnutritionAss) {
       this.MalnutritionPaediatricsComp.createStampDocument('3').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        });
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
     } else if (this.openNewScaleDocumentDocument) {
-        let docStatus = '3';
-        // if(this.selectedDocData?.Dockey) docStatus = '3';
-        this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
-          if (formValue) {
-            this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        });
-      }
+      let docStatus = '3';
+      // if(this.selectedDocData?.Dockey) docStatus = '3';
+      this.NewScaleDocumentComp.saveApgarScaleDoc(docStatus).then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openObstetricFallRiskAssessmentDocument) {
+      let docStatus = '3';
+      // if(this.selectedDocData?.Dockey) docStatus = '3';
+      this.ObsFallRiskAssessmentComp.saveObsFallRiskDoc(docStatus).then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Obstetric Fall Risk Assessment:', error);
+      });
+    }
   }
 
   newVersionDirectReleased() {
@@ -7589,8 +7659,42 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  async deleteDeliveryRecordDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteDeliveryRecordDoc(this.deliverRecordList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
 
-   async deletePostCareRecordDoc() {
+  async deletePostCareRecordDoc() {
     Swal.fire({
       title: 'Confirm',
       text: 'Do you want to delete?',
@@ -8171,6 +8275,20 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  releseDeliveryRecordMain() {
+    this.emergencyService.fetchDeliveryRecordDoc(this.deliverRecordList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.saveDeliveryRecordDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
   releasePostCareRecordDetail() {
     this.emergencyService.fetchPostCareRecord(this.PostAnesthesiaList[0].Dockey).subscribe((res: any) => {
       delete res?.results[0]?.__metadata;
@@ -8432,6 +8550,18 @@ export class PatientDocumentationComponent implements OnInit {
     });
   }
 
+  // Copy + Release Post Anesthesia Care Record
+  copyDirectReleasePostCareRecord() {
+    this.PostAnesthesiaCareRecordComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing assessment document:', error);
+    });
+  }
+
   // Copy + Release Nursing Admission Document
   copyDirectReleaseEducationAssessment() {
     // this.NursingAdmissionComp.createNursingAdmissionDoc('5','copy').then((formValue: any) => {
@@ -8582,6 +8712,23 @@ export class PatientDocumentationComponent implements OnInit {
         this.modalRef = this.modalService.show(this.releasepdfmodal, config);
       });
   }
+
+  openDeliveryRecordPDF(Dockey) {
+    this.pdfUrl = '';
+    this.emergencyService
+      .getDeliveryRecordPDF(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
   openPostCareRecordPDF(Dockey) {
     this.pdfUrl = '';
     this.emergencyService
@@ -8615,7 +8762,7 @@ export class PatientDocumentationComponent implements OnInit {
       });
   }
 
-   getMewsSetMainPdf(Dockey) {
+  getMewsSetMainPdf(Dockey) {
     this.pdfUrl = '';
     this.dayCaseDashboardService
       .getMewsSetMainPdf(Dockey)
@@ -8857,7 +9004,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openCVCInsertionDocument ||
       // this.openisPediatricsFallDocument ||
       this.openPediatricAdmissionDocument ||
-      this.openObstetricFallRiskAssessmentDocument ||
+      // this.openObstetricFallRiskAssessmentDocument ||
       this.openpostPatientFallAssessmentDocument ||
       this.openInitialNursingNewbornDocument ||
       this.openNurseInitAss ||

@@ -821,6 +821,12 @@ export class NeonatalDischDocumentComponent implements OnInit {
             ) {
               //this.configurationData = resp.body.d.results;
               this.drugArray = resp.body.d.results;
+              if(this.medicationTye == 'Hospital') {
+                this.drugArray = this.drugArray.filter(res => res.MotypId == '30');
+              }
+              if(this.medicationTye == 'Discharge') {
+                this.drugArray = this.drugArray.filter(res => res.MotypId != '30');
+              }
               // this.medicationImportDrugArray=[];
             }
             //   this.filterEvents();

@@ -19,27 +19,27 @@
         <label for="date" class="col-form-label-sm m-0" style="margin-right: 12% !important;">Anesthesia </label>
 
         <div class="form-check mr-3">
-          <input type="checkbox" class="form-check-input" formControlName="AGeneral" id="general" />
+          <input type="checkbox" class="form-check-input" formControlName="AGeneral" id="general" (change)="AnesthesiaCheck('AGeneral')" />
           <label class="form-check-label" for="general">General</label>
         </div>
         <div class="form-check mr-3">
-          <input type="checkbox" class="form-check-input" formControlName="ASpinal" id="spinal" />
+          <input type="checkbox" class="form-check-input" formControlName="ASpinal" id="spinal" (change)="AnesthesiaCheck('ASpinal')"/>
           <label class="form-check-label" for="spinal">Spinal</label>
         </div>
         <div class="form-check mr-3">
-          <input type="checkbox" class="form-check-input" formControlName="AEpidural" id="epidural" />
+          <input type="checkbox" class="form-check-input" formControlName="AEpidural" id="epidural" (change)="AnesthesiaCheck('AEpidural')"/>
           <label class="form-check-label" for="epidural">Epidural</label>
         </div>
         <div class="form-check mr-3">
-          <input type="checkbox" class="form-check-input" formControlName="AIvBlock" id="ivBlock" />
+          <input type="checkbox" class="form-check-input" formControlName="AIvBlock" id="ivBlock" (change)="AnesthesiaCheck('AIvBlock')"/>
           <label class="form-check-label" for="ivBlock">I.V Block</label>
         </div>
         <div class="form-check mr-3">
-          <input type="checkbox" class="form-check-input" formControlName="AConsciousSedation" id="conscious" />
+          <input type="checkbox" class="form-check-input" formControlName="AConsciousSedation" id="conscious" (change)="AnesthesiaCheck('AConsciousSedation')"/>
           <label class="form-check-label" for="conscious">Conscious Sedation</label>
         </div>
         <div class="form-check mr-3">
-          <input type="checkbox" class="form-check-input" formControlName="AOtherRegional" id="otherRegional" />
+          <input type="checkbox" class="form-check-input" formControlName="AOtherRegional" id="otherRegional" (change)="AnesthesiaCheck('AOtherRegional')"/>
           <label class="form-check-label" for="otherRegional">Other regional</label>
         </div>
       </div>
@@ -838,3 +838,4 @@
 <app-scales-glosgow-coma #scalesGlosgow (glasgowValue)="glasgowValue($event)"></app-scales-glosgow-coma>
 <app-scales-face-pain #scalesFacePain (facePainValue)="facePainValue($event)"></app-scales-face-pain>
 <app-scales-numeric-rating #scalesNumericRating (numericValue)="numericValue($event)"></app-scales-numeric-rating>
+<app-modified-aldrete-import-document #aldreteScaleModalRef (aldreteScaleDoc)="aldreteScale($event)"></app-modified-aldrete-import-document>
