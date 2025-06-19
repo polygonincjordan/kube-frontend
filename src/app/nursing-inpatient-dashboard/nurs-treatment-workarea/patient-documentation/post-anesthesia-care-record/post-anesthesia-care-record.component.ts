@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { ScalesGlosgowComaComponent } from 'src/app/nursing-inpatient-dashboard/check-in/er-triage/scales-glosgow-coma/scales-glosgow-coma.component';
 import { ScalesFacePainComponent } from 'src/app/nursing-inpatient-dashboard/check-in/er-triage/scales-face-pain/scales-face-pain.component';
 import { ScalesNumericRatingComponent } from 'src/app/nursing-inpatient-dashboard/check-in/er-triage/scales-numeric-rating/scales-numeric-rating.component';
+import { ModifiedAldreteDocumentForInportComponent } from './modified-aldrete-document/modified-aldrete-document.component';
 
 @Component({
   selector: 'app-post-anesthesia-care-record',
@@ -29,6 +30,7 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   @ViewChild('scalesGlosgow') scalesGlosgow: ScalesGlosgowComaComponent;
   @ViewChild('scalesFacePain') scalesFacePain: ScalesFacePainComponent;
   @ViewChild('scalesNumericRating') scalesNumericRating: ScalesNumericRatingComponent;
+  @ViewChild('aldreteScaleModalRef') aldreteScaleModalRef: ModifiedAldreteDocumentForInportComponent;
   public CurrentDateAndTime: Date = new Date();
   postAssForm: FormGroup;
   paramsObject: any;
@@ -45,8 +47,9 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     { ScaleType: 'Glasgow Coma Scale', LastScore: '', description: '', Datetimee: '', value: '1', Dockey: '', },
     { ScaleType: 'Face pain scale', LastScore: '', description: '', Datetimee: '', value: '2', Dockey: '', },
     { ScaleType: 'Numeric rating scale(more than 8 years)', LastScore: '', description: '', Datetimee: '', value: '3', Dockey: '', },
+    { ScaleType: 'Modified Aldrete Score (MAS)', LastScore: '', description: '', Datetimee: '', value: '4', Dockey: '', },
   ];
-  tableHeading = ['Time', 'Vital Signs', '2 min', '4 min', '6 min', '8 min', '10 min', '12 min', '14 min', '16 min', '18 min', '20 min', '22 min', '24 min', '26 min', '28 min', '30 min', '32 min', '34 min', '36 min', '38 min', '40 min', 'Comments']
+  tableHeading = ['Time', 'Vital Signs', '0 min', '10 min', '20 min', '30 min', '40 min', '50 min', '60 min', '70 min', '80 min', '90 min', '100 min', '110 min', '120 min']
   observationList = observationList;
 
   vitalSigns = [
@@ -272,6 +275,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     }, 0);
 
     this.postAssForm.get('IoGrandTotalIntake').setValue(total);
+    let mainTotal = parseFloat(this.postAssForm.value.IoGrandTotalIntake || 0) - parseFloat(this.postAssForm.value.IoGrandTotalOutput || 0);
+    this.postAssForm.get('IoFluidBalance').setValue(mainTotal);
   }
 
 
@@ -304,6 +309,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     }, 0);
 
     this.postAssForm.get('IoGrandTotalOutput').setValue(total);
+    let mainTotal = parseFloat(this.postAssForm.value.IoGrandTotalIntake || 0) - parseFloat(this.postAssForm.value.IoGrandTotalOutput || 0);
+    this.postAssForm.get('IoFluidBalance').setValue(mainTotal);
   }
 
 
@@ -414,21 +421,34 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
 
         this.toVitalsArr = payload.TOVITALSIGNOBS.results;
         this.medicationImportDrugArray = payload.TOMEDICATION.results;
-        console.log(this.toVitalsArr, this.medicationImportDrugArray, "this.medicationImportDrugArray");
-
 
         this.postAssForm.patchValue(patchData);
-        (this.postAssForm.get('TOOUTPUT') as FormArray).clear();
-        payload.TOOUTPUT.results.forEach(group => this.addOut(group));
+        if(payload.TOOUTPUT.results.length) {
+          (this.postAssForm.get('TOOUTPUT') as FormArray).clear();
+          payload.TOOUTPUT.results.forEach(group => this.addOut(group));
+        }
 
-        (this.postAssForm.get('TOINTAKE') as FormArray).clear();
-        payload.TOINTAKE.results.forEach(group => this.addDrain(group));
+        if(payload.TOINTAKE.results.length) {
+          (this.postAssForm.get('TOINTAKE') as FormArray).clear();
+          payload.TOINTAKE.results.forEach(group => this.addDrain(group));
+        }
 
-        (this.postAssForm.get('TOVITALSIGNOBS') as FormArray).clear();
-        payload.TOVITALSIGNOBS.results.forEach(group => this.addItemVital(group));
+        if(payload.TOVITALSIGNOBS.results.length) {
+          (this.postAssForm.get('TOVITALSIGNOBS') as FormArray).clear();
+          payload.TOVITALSIGNOBS.results.forEach(group => this.addItemVital(group));
+        }
 
-        console.log(this.postAssForm, "-----");
-
+        payload?.TOSCALE?.results.forEach((element) => {
+        this.scalesList.forEach((res: any) => {
+          if (element.ScaleType == res.ScaleType && element.LastScore) {
+            res.Datetimee = element.Datetimee,
+              res.Dockey = element.Dockey,
+              res.description = element.ScoreDesc,
+              res.LastScore = element.LastScore,
+              res.ScaleType = element.ScaleType
+          }
+        })
+      })
       },
       error: (err: any) => {
         this.sharedService.waringSwallModel(`Error ${err}`);
@@ -613,7 +633,7 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
         //this.configurationData = resp.body.d.results;
         // this.toScaleArr = resp.body.d.results;
         if (resp.body?.d?.results.length) {
-          let requiredScales = ["Glasgow Coma Scale", "Morse Fall Scale (MFS)", "Braden scale for predicting pressure ulcers"];
+          let requiredScales = ["Glasgow Coma Scale", "Braden scale for predicting pressure ulcers", "Face pain scale", 'Modified Aldrete Score (MAS)'];
           this.toScaleArr = resp.body.d.results.filter(scale => requiredScales.includes(scale.Scaletype)).map(scale => ({ ...scale, isSelected: false }));
         }
         // this.medicationImportDrugArray=[];
@@ -643,6 +663,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
         }
       })
     })
+    console.log(this.scalesList, this.selectedScales, "-");
+    
     this.modalRefScales.hide();
   }
 
@@ -683,6 +705,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
           this.scalesFacePain.openModalForFacePain('');
         } else if (item.value == '3') {
           this.scalesNumericRating.openModalForNumericRating('');
+        } else if (item.value == '4') {
+          this.aldreteScaleModalRef.openModalForAldreteDocument('');
         }
       }
     });
@@ -708,6 +732,13 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
       } else {
         this.sharedService.waringSwallModel('No data found');
       }
+    } else if (item.value == '4') {
+      // item.Dockey = 'SCA000000000000001000003278000000'
+      if (item.Dockey) {
+        this.aldreteScaleModalRef.openModalForAldreteDocument(item.Dockey);
+      } else {
+        this.sharedService.waringSwallModel('No data found');
+      }
     }
   }
 
@@ -729,6 +760,17 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     this.scalesList[2].description = event?.description;
     this.scalesList[2].Dockey = event?.dockey;
     this.scalesList[2].Datetimee = `${new DatePipe('en-US').transform(
+      event?.date,
+      'dd.MM.yyyy'
+    )}/${event?.time}`;
+  }
+
+  // Set Numberic Scale Value In Table List
+  aldreteScale(event) {
+    this.scalesList[3].LastScore = event?.totalScore;
+    this.scalesList[3].description = event?.description;
+    this.scalesList[3].Dockey = event?.dockey;
+    this.scalesList[3].Datetimee = `${new DatePipe('en-US').transform(
       event?.date,
       'dd.MM.yyyy'
     )}/${event?.time}`;
@@ -761,11 +803,23 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     
   }
 
+  AnesthesiaCheck(selected: 'AGeneral' | 'ASpinal' | 'AEpidural' | 'AIvBlock' | 'AConsciousSedation' | 'AOtherRegional') {
+    const controls = ['AGeneral', 'ASpinal', 'AEpidural', 'AIvBlock', 'AConsciousSedation', 'AOtherRegional'];
+
+    controls.forEach(ctrl => {
+      this.postAssForm.get(ctrl).setValue(ctrl === selected);
+    });
+
+  }
+
 
   public createDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
       let formData = this.postAssForm.value;
       formData.DocStatus = status;
+      formData.IoFluidBalance = formData?.IoFluidBalance?.toString();
+      formData.IoGrandTotalIntake = formData?.IoGrandTotalIntake?.toString();
+      formData.IoGrandTotalOutput = formData?.IoGrandTotalOutput?.toString();
       formData.Datee = this.sanitizeSAPDateFormat(formData.Datee);
       formData.TimeIn = formData.TimeIn ? this.parsePayloadFormateTime(formData.TimeIn) : 'PT00H00M00S';
       formData.TimeOut = formData.TimeOut ? this.parsePayloadFormateTime(formData.TimeOut) : 'PT00H00M00S';

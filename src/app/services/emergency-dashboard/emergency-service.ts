@@ -1850,6 +1850,61 @@ export class EmergencyService {
     );
   }
 
+   // Obs Fall Risk Document
+  saveObsFallRiskScale(json) {
+    return this.http.post(this.url + 'saveObsFallRiskScale', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchObsFallRiskScale(dockey) {
+    return this.http.get(this.url + `fetchObsFallRiskScale?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  ObsFallRiskScaleLatest(json) {
+    return this.http.get(
+      this.url + `ObsFallRiskScaleLatest?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  // Delivery Record Document
+  saveDeliveryRecordDoc(json) {
+    return this.http.post(this.url + 'saveDeliveryRecordDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchDeliveryRecordDoc(dockey) {
+    return this.http.get(this.url + `fetchDeliveryRecordDoc?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  DeliveryRecordLatestDoc(json) {
+    return this.http.get(
+      this.url + `DeliveryRecordLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  deleteDeliveryRecordDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteDeliveryRecordDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
+  getDeliveryRecordPDF(dockey: string) {
+    const url = `${this.url}getDeliveryRecordPDF?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

@@ -201,10 +201,15 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Post Anesthesia Care Record'">
+            <button type="button" class="action-doc" (click)="copyDirectReleasePostCareRecord()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openMalnutritionAss || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument || openisPediatricsFallDocument"
+        *ngIf="openGlasgowComaScale || openFacePainScale || openMalnutritionAss || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument || openisPediatricsFallDocument || openObstetricFallRiskAssessmentDocument"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -918,6 +923,112 @@
                 </div>
               </div>
 
+              <!-- Screening Tool for the Assessment of Malnutrition in Paediatrics -->
+              <div [ngClass]="isMalnutritionAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+               *ngIf="!selectedDocument || selectedDocument == 'STAMP'" (click)="selectAssessment('isMalnutritionAss',malnutritionAssList[0])">
+                <div class="col-md-4" [title]="'Screening Tool for the Assessment of Malnutrition in Paediatrics' + (malnutritionAssList[0]?.Zversion ? dockVer(CriticalPainList[0]?.Zversion) : '')">STAMP {{malnutritionAssList[0]?.Zversion ?
+                  dockVer(malnutritionAssList[0]?.Zversion) : ''}} <span class="under-deve"></span> :</div>
+                <div class="col-md-2 status-color">{{malnutritionAssList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(malnutritionAssList[0]?.DocTime)}}">
+                  {{getDate(malnutritionAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{malnutritionAssList[0]?.PhyNm || '-'}}</div>
+                 <div class="col-md-1 d-flex">
+                     <img src="assets/img/document-html.png" width="18px" height="18px"
+                       (click)="getScaleDetails(malnutritionAssList[0],RedirectionType.NMRTSC$)" *ngIf="malnutritionAssList[0]?.StatusTxt == 'Released'" />
+                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(malnutritionAssList[0]?.Dockey, malnutritionAssList[0])">
+                       <select *ngIf="malnutritionAssList.length && malnutritionAssList[0]?.StatusTxt !='N/A' && malnutritionAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                         id=""></select>
+                     </div>
+                   </div>
+              </div>
+
+              <!--  APGAR Scale Document -->
+               <div
+                [ngClass]="isNewScaleDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'APGARS'" (click)="selectAssessment('isNewScaleDocument',latestNewScaleDocumentList[0])">
+                <div class="col-md-4"> APGAR Scale {{latestNewScaleDocumentList[0]?.Zversion ?
+                  dockVer(latestNewScaleDocumentList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{latestNewScaleDocumentList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestNewScaleDocumentList[0]?.DocTime)}}">
+                  {{getDate(latestNewScaleDocumentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestNewScaleDocumentList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestNewScaleDocumentList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestNewScaleDocumentList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNewScaleDocumentList[0]?.Dockey, latestNewScaleDocumentList[0])">
+                      <select *ngIf="latestNewScaleDocumentList.length && latestNewScaleDocumentList[0]?.StatusTxt !='N/A' && latestNewScaleDocumentList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
+              <!-- Post Anesthesia Care Record -->
+               <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+                *ngIf="!selectedDocument || selectedDocument == 'PACR'" (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
+                 <div class="col-md-4"> Post Anesthesia Care Record {{PostAnesthesiaList[0]?.Zversion ?
+                   dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} :</div>
+                 <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
+                 <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
+                   {{getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                 </div>
+                 <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
+                 <div class="col-md-1 d-flex">
+                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                     (click)="openPostCareRecordPDF(PostAnesthesiaList[0]?.Dockey)"
+                     *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
+                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
+                       <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
+                         id=""></select>
+                     </div>
+                 </div>
+               </div>
+
+              <!--  Pediatric Admission Assessment -->
+               <div
+                [ngClass]="isObstetricFallRiskAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'OFRA'" (click)="selectAssessment('isObstetricFallRiskAssessment',latestObstetricFallRiskAssessmentList[0])">
+                <div class="col-md-4"> Obstetric Fall Risk Assessment {{latestObstetricFallRiskAssessmentList[0]?.Zversion ?
+                  dockVer(latestObstetricFallRiskAssessmentList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{latestObstetricFallRiskAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestObstetricFallRiskAssessmentList[0]?.DocTime)}}">
+                  {{getDate(latestObstetricFallRiskAssessmentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestObstetricFallRiskAssessmentList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestObstetricFallRiskAssessmentList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestObstetricFallRiskAssessmentList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestObstetricFallRiskAssessmentList[0]?.Dockey, latestObstetricFallRiskAssessmentList[0])">
+                      <select *ngIf="latestObstetricFallRiskAssessmentList.length && latestObstetricFallRiskAssessmentList[0]?.StatusTxt !='N/A' && latestObstetricFallRiskAssessmentList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
+
+              <!-- Delivery Record -->
+               <div [ngClass]="isDeliverRecord ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+                *ngIf="!selectedDocument || selectedDocument == 'DR'" (click)="selectAssessment('isDeliverRecord',deliverRecordList[0])">
+                 <div class="col-md-4" >Delivery Record {{deliverRecordList[0]?.Zversion ?
+                   dockVer(deliverRecordList[0]?.Zversion) : ''}} :</div>
+                 <div class="col-md-2 status-color">{{deliverRecordList[0]?.StatusTxt || 'N/A'}}</div>
+                 <div class="col-md-2" title="{{getTime(deliverRecordList[0]?.DocTime)}}">
+                   {{getDate(deliverRecordList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                 </div>
+                 <div class="col-md-3">{{deliverRecordList[0]?.PhyNm || '-'}}</div>
+                 <div class="col-md-1 d-flex">
+                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                     (click)="openDeliveryRecordPDF(deliverRecordList[0]?.Dockey)"
+                     *ngIf="deliverRecordList[0]?.StatusTxt == 'Released'"></i>
+                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(deliverRecordList[0]?.Dockey, deliverRecordList[0])">
+                       <select *ngIf="deliverRecordList.length && deliverRecordList[0]?.StatusTxt !='N/A' && deliverRecordList[0]?.Zversion != '00'" class="mr-2" name=""
+                         id=""></select>
+                     </div>
+                 </div>
+               </div>
+
               <!--  Pediatric Admission Assessment -->
                <div
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -961,27 +1072,6 @@
                 </div>
               </div> -->
 
-              <!--  Pediatric Admission Assessment -->
-               <div
-                [ngClass]="isObstetricFallRiskAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'OFRA'" (click)="selectAssessment('isObstetricFallRiskAssessment',latestObstetricFallRiskAssessmentList[0])">
-                <div class="col-md-4"> Obstetric Fall Risk Assessment {{latestObstetricFallRiskAssessmentList[0]?.Zversion ?
-                  dockVer(latestObstetricFallRiskAssessmentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-                <div class="col-md-2 status-color">{{latestObstetricFallRiskAssessmentList[0]?.StatusTxt || 'N/A'}}</div>
-                <div class="col-md-2" title="{{getTime(latestObstetricFallRiskAssessmentList[0]?.DocTime)}}">
-                  {{getDate(latestObstetricFallRiskAssessmentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                </div>
-                <div class="col-md-3">{{latestObstetricFallRiskAssessmentList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1 d-flex">
-                  <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(latestObstetricFallRiskAssessmentList[0],RedirectionType.BRADEN$)"
-                    *ngIf="latestObstetricFallRiskAssessmentList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestObstetricFallRiskAssessmentList[0]?.Dockey, latestObstetricFallRiskAssessmentList[0])">
-                      <select *ngIf="latestObstetricFallRiskAssessmentList.length && latestObstetricFallRiskAssessmentList[0]?.StatusTxt !='N/A' && latestObstetricFallRiskAssessmentList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div>
-                </div>
-              </div>
 
               <!--  Post Patient Fall Assessment -->
                <div
@@ -1022,28 +1112,6 @@
                     *ngIf="latestInitialNursingNewbornList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestInitialNursingNewbornList[0]?.Dockey, latestInitialNursingNewbornList[0])">
                       <select *ngIf="latestInitialNursingNewbornList.length && latestInitialNursingNewbornList[0]?.StatusTxt !='N/A' && latestInitialNursingNewbornList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div>
-                </div>
-              </div>
-
-              <!--  APGAR Scale Document -->
-               <div
-                [ngClass]="isNewScaleDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'APGARS'" (click)="selectAssessment('isNewScaleDocument',latestNewScaleDocumentList[0])">
-                <div class="col-md-4"> APGAR Scale {{latestNewScaleDocumentList[0]?.Zversion ?
-                  dockVer(latestNewScaleDocumentList[0]?.Zversion) : ''}} :</div>
-                <div class="col-md-2 status-color">{{latestNewScaleDocumentList[0]?.StatusTxt || 'N/A'}}</div>
-                <div class="col-md-2" title="{{getTime(latestNewScaleDocumentList[0]?.DocTime)}}">
-                  {{getDate(latestNewScaleDocumentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                </div>
-                <div class="col-md-3">{{latestNewScaleDocumentList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1 d-flex">
-                  <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(latestNewScaleDocumentList[0],RedirectionType.BRADEN$)"
-                    *ngIf="latestNewScaleDocumentList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNewScaleDocumentList[0]?.Dockey, latestNewScaleDocumentList[0])">
-                      <select *ngIf="latestNewScaleDocumentList.length && latestNewScaleDocumentList[0]?.StatusTxt !='N/A' && latestNewScaleDocumentList[0]?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1159,26 +1227,7 @@
                 </div>
               </div>
 
-           <!-- Post Anesthesia Care Record -->
-           <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'PACR'" (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
-             <div class="col-md-4"> Post Anesthesia Care Record {{PostAnesthesiaList[0]?.Zversion ?
-               dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} :</div>
-             <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
-               {{getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openPostCareRecordPDF(PostAnesthesiaList[0]?.Dockey)"
-                 *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
-                   <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
-           </div>
+
            <!-- Nursing Initial Assessment Gyno Obstetrics -->
            <div [ngClass]="isNurseInitAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'NIAGO'" (click)="selectAssessment('isNurseInitAss',latestNursingInitialList[0])">
@@ -1219,25 +1268,7 @@
                  </div>
              </div>
            </div>
-           <!-- Screening Tool for the Assessment of Malnutrition in Paediatrics -->
-           <div [ngClass]="isMalnutritionAss ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'STAMP'" (click)="selectAssessment('isMalnutritionAss',malnutritionAssList[0])">
-             <div class="col-md-4" [title]="'Screening Tool for the Assessment of Malnutrition in Paediatrics' + (malnutritionAssList[0]?.Zversion ? dockVer(CriticalPainList[0]?.Zversion) : '')">STAMP {{malnutritionAssList[0]?.Zversion ?
-               dockVer(malnutritionAssList[0]?.Zversion) : ''}} <span class="under-deve"></span> :</div>
-             <div class="col-md-2 status-color">{{malnutritionAssList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(malnutritionAssList[0]?.DocTime)}}">
-               {{getDate(malnutritionAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{malnutritionAssList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1 d-flex">
-                  <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(malnutritionAssList[0],RedirectionType.NMRTSC$)" *ngIf="malnutritionAssList[0]?.StatusTxt == 'Released'" />
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(malnutritionAssList[0]?.Dockey, malnutritionAssList[0])">
-                    <select *ngIf="malnutritionAssList.length && malnutritionAssList[0]?.StatusTxt !='N/A' && malnutritionAssList[0]?.Zversion != '00'" class="mr-2" name=""
-                      id=""></select>
-                  </div>
-                </div>
-           </div>
+
            <!-- Richmond Scale -->
            <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'RS'" (click)="selectAssessment('isRichmondScale',richmondList[0])">
@@ -1258,27 +1289,7 @@
                  </div>
              </div>
            </div>
-           <!-- Delivery Record -->
-           <div [ngClass]="isDeliverRecord ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'DR'" (click)="selectAssessment('isDeliverRecord',deliverRecordList[0])">
-             <div class="col-md-4" >Delivery Record {{deliverRecordList[0]?.Zversion ?
-               dockVer(deliverRecordList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-             <div class="col-md-2 status-color">{{deliverRecordList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(deliverRecordList[0]?.DocTime)}}">
-               {{getDate(deliverRecordList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{deliverRecordList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(deliverRecordList[0]?.Dockey)"
-                 *ngIf="deliverRecordList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(deliverRecordList[0]?.Dockey, deliverRecordList[0])">
-                   <select *ngIf="deliverRecordList.length && deliverRecordList[0]?.StatusTxt !='N/A' && deliverRecordList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
-           </div>
-
+           
            <!-- Dying Patient -->
            <div [ngClass]="isDyingPatient ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'DPA'" (click)="selectAssessment('isDyingPatient',sbarNurEndList[0])">
