@@ -120,40 +120,40 @@ export class NeonatalDischDocumentComponent implements OnInit {
     this.initForm();
   }
 
-    ngOnChanges(changes: SimpleChanges) {
-      if(changes.soapFormEvent.currentValue == 'add') {
-        if(this.admissionService.isCloneNeonatalDischarge) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.soapFormEvent.currentValue == 'add') {
+      if (this.admissionService.isCloneNeonatalDischarge) {
         this.createNeonatalDischargeDocument('3')
-        }
-        else {
-          this.createNeonatalDischargeDocument('1')
-        }
       }
-      if(changes.soapFormEvent.currentValue == 'edit') {
+      else {
         this.createNeonatalDischargeDocument('1')
       }
-  
-      if(changes.soapFormEvent.currentValue == 'release') {
-        if(this.admissionService.isCloneNeonatalDischarge) {
-          this.createNeonatalDischargeDocument('5')
+    }
+    if (changes.soapFormEvent.currentValue == 'edit') {
+      this.createNeonatalDischargeDocument('1')
+    }
+
+    if (changes.soapFormEvent.currentValue == 'release') {
+      if (this.admissionService.isCloneNeonatalDischarge) {
+        this.createNeonatalDischargeDocument('5')
+      } else {
+        if (this.admissionService.isEditNeonatalDischarge) {
+          this.createNeonatalDischargeDocument('2')
         } else {
-          if(this.admissionService.isEditNeonatalDischarge) {
-            this.createNeonatalDischargeDocument('2')
-          } else {
-            this.createNeonatalDischargeDocument('4')
-          }
+          this.createNeonatalDischargeDocument('4')
         }
       }
-  
-      if (this.admissionService.isEditNeonatalDischarge || this.admissionService.isCloneNeonatalDischarge) {
-        this.getNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey);
-      }
     }
+
+    if (this.admissionService.isEditNeonatalDischarge || this.admissionService.isCloneNeonatalDischarge) {
+      this.getNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey);
+    }
+  }
 
   initForm(data?) {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
     console.log(this.storageService.patientData, "this.storageService?.patientData");
-    
+
     this.neonatalDischarge = this.formBuilder.group({
       Dockey: [data?.Dockey || ''],
       Dtid: "ZMED_NEODS",
@@ -173,7 +173,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       CgaDays: [data?.CgaDays || ''],
       ChronoAge: [data?.ChronoAge || ''],
       DischDate: [this.getDate(data?.DischDate) || new Date()],
-      AdmDate: [this.getDate(data?.AdmDate) || new Date(`${new DatePipe('en-US').transform(this.storageService.patientData.periodStart,'yyyy-MM-dd')}T00:00:00`)],
+      AdmDate: [this.getDate(data?.AdmDate) || new Date(`${new DatePipe('en-US').transform(this.storageService.patientData.periodStart, 'yyyy-MM-dd')}T00:00:00`)],
       AdmTime: [this.parseTime(data?.AdmTime) || this.datePipe.transform(this.storageService.patientData.periodStart, "hh:mm:ss")],
       BirthWeight: [data?.BirthWeight || ''],
       BirthWgtUnit: [data?.BirthWgtUnit || ''],
@@ -791,53 +791,53 @@ export class NeonatalDischDocumentComponent implements OnInit {
   medicationTye
   openModal(template: TemplateRef<any>, medicationTye) {
     this.medicationTye = medicationTye;
-      const config: ModalOptions = {
-        class:
-          'modal-dialog modal-dialog-centered medication-order-case modal-xl',
-      };
-      this.modalRefUpdateName = this.modalService.show(template, config);
-      this.loadMedicationHistoryData();
-      // this.medicationImportDrugArray=[];
-    }
-  
-    loadMedicationHistoryData() {
-      this.selectedMedicationOrder = [];
-      this.drugArray = [];
-      const profileOrderHistory: Subscription = this.ePrescriptionService
-        .loadData(
-          `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`,
-          false,
-          false,
-          false,
-          false
-        )
-        .subscribe(
-          (resp: any) => {
-            if (
-              resp.body &&
-              resp.body.d &&
-              resp.body.d.results &&
-              resp.body.d.results.length
-            ) {
-              //this.configurationData = resp.body.d.results;
-              this.drugArray = resp.body.d.results;
-              if(this.medicationTye == 'Hospital') {
-                this.drugArray = this.drugArray.filter(res => res.MotypId == '30');
-              }
-              if(this.medicationTye == 'Discharge') {
-                this.drugArray = this.drugArray.filter(res => res.MotypId != '30');
-              }
-              // this.medicationImportDrugArray=[];
-            }
-            //   this.filterEvents();
-          },
-          () => {
-            profileOrderHistory.unsubscribe();
-          }
-        );
-    }
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefUpdateName = this.modalService.show(template, config);
+    this.loadMedicationHistoryData();
+    // this.medicationImportDrugArray=[];
+  }
 
- isCheckedMedi(item: any): boolean {
+  loadMedicationHistoryData() {
+    this.selectedMedicationOrder = [];
+    this.drugArray = [];
+    const profileOrderHistory: Subscription = this.ePrescriptionService
+      .loadData(
+        `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`,
+        false,
+        false,
+        false,
+        false
+      )
+      .subscribe(
+        (resp: any) => {
+          if (
+            resp.body &&
+            resp.body.d &&
+            resp.body.d.results &&
+            resp.body.d.results.length
+          ) {
+            //this.configurationData = resp.body.d.results;
+            this.drugArray = resp.body.d.results;
+            if (this.medicationTye == 'Hospital') {
+              this.drugArray = this.drugArray.filter(res => res.MotypId == '30');
+            }
+            if (this.medicationTye == 'Discharge') {
+              this.drugArray = this.drugArray.filter(res => res.MotypId != '30');
+            }
+            // this.medicationImportDrugArray=[];
+          }
+          //   this.filterEvents();
+        },
+        () => {
+          profileOrderHistory.unsubscribe();
+        }
+      );
+  }
+
+  isCheckedMedi(item: any): boolean {
     return this.selectedMedicationOrder.some((x) => x.Meordid == item.Meordid);
   }
 
@@ -898,7 +898,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
 
   medicationImport() {
 
-    if(this.medicationTye == 'Hospital') {
+    if (this.medicationTye == 'Hospital') {
       this.medicationImportForHosp();
       return;
     }
@@ -944,6 +944,37 @@ export class NeonatalDischDocumentComponent implements OnInit {
   collectAllMedicationIData(event: any) {
     if (event.target.checked) {
       this.selectedMedicationOrder = Object.assign([], this.drugArray);
+    } else {
+      this.selectedMedicationOrder = [];
+    }
+  }
+  // Check if item is selected
+  isSelected(item: any): boolean {
+    return this.selectedMedicationOrder.some(x => x.Meordid === item.Meordid);
+  }
+
+  // Toggle individual selection
+  toggleSelection(event: Event, item: any): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.selectedMedicationOrder.push(item);
+    } else {
+      this.selectedMedicationOrder = this.selectedMedicationOrder.filter(x => x.Meordid !== item.Meordid);
+    }
+  }
+
+  // Check if all items are selected
+  isAllSelected(): boolean {
+    return this.drugArray.length > 0 && this.selectedMedicationOrder.length === this.drugArray.length;
+  }
+
+  // Toggle select all
+  toggleAllSelection(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.selectedMedicationOrder = [...this.drugArray];
     } else {
       this.selectedMedicationOrder = [];
     }

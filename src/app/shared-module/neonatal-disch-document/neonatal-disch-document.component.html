@@ -63,7 +63,8 @@
         <div class="col-md-6">
           <div class="header-date">
             <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
-            <input formControlName="AdmDate" class="form-control" style="color: #000; border-radius: 8px" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+            <input formControlName="AdmDate" class="form-control" style="color: #000; border-radius: 8px"
+              #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                   showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
@@ -86,7 +87,8 @@
         <div class="col-md-4">
           <div class="header-date">
             <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
-            <input formControlName="DischDate" class="form-control" style="color: #000; border-radius: 8px" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+            <input formControlName="DischDate" class="form-control" style="color: #000; border-radius: 8px"
+              #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                   showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
@@ -209,7 +211,8 @@
         <div class="col-md-4">
           <div class="header-date">
             <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
-            <input formControlName="TransferDate" class="form-control" style="color: #000; border-radius: 8px" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+            <input formControlName="TransferDate" class="form-control" style="color: #000; border-radius: 8px"
+              #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                   showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
@@ -890,7 +893,8 @@
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-control" type="text" id="sucking" formControlName="CrBreathSoundt"
-                          [disabled]="neonatalDischarge.get('CrBreathSounds')?.value != '3'" [readOnly]="neonatalDischarge.get('CrBreathSounds')?.value != '3'" />
+                          [disabled]="neonatalDischarge.get('CrBreathSounds')?.value != '3'"
+                          [readOnly]="neonatalDischarge.get('CrBreathSounds')?.value != '3'" />
                       </div>
                     </div>
                   </div>
@@ -977,7 +981,7 @@
 
                                   <input formControlName="CrIintubation" class="form-control"
                                     style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                    [maxDate]=""  #dp="bsDatepicker" bsDatepicker [bsConfig]="{
+                                    [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
                                       }" [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
@@ -1007,7 +1011,7 @@
 
                                   <input formControlName="CrIextubation" class="form-control"
                                     style="color: #000; border-radius: 8px" type="text" placeholder="" [minDate]=""
-                                    [maxDate]="" #dp="bsDatepicker"  bsDatepicker [bsConfig]="{
+                                    [maxDate]="" #dp="bsDatepicker" bsDatepicker [bsConfig]="{
                                         showWeekNumbers: false,
                                         dateInputFormat: 'DD.MM.YYYY'
                                       }" [disabled]="!neonatalDischarge.get('CrBreathSounds')?.value" />
@@ -1999,16 +2003,10 @@
           <div>
             <div *ngIf="selectedTabNameMedication === 'Hospital Medication'">
               <div class="section">
-                <div
-                  class="d-flex mb-2"
-                  style="justify-content: space-between; padding-right: 22px"
-                >
+                <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
                   <div style="display: flex; align-items: center; gap: 10px">
-                   <input
-                      type="checkbox"
-                      style="width: 36px; height: 22px"
-                      [attr.disabled]="medicationImportDrugArrayForHosp?.length > 0 ? true : null"
-                    />
+                    <input type="checkbox" style="width: 36px; height: 22px"
+                      [attr.disabled]="medicationImportDrugArrayForHosp?.length > 0 ? true : null" />
                     <label class="admitting-physician">No Medication Order Applicable</label>
                   </div>
                   <div class="secound-bar-vital-sign" (click)="openModal(medicationOrderCase, 'Hospital')">
@@ -2028,33 +2026,22 @@
                       <th>Rate</th>
                       <th>The</th>
                       <th>ID</th>
-                    
+
                       <th>Ordering Physician</th>
                       <th>Cycle</th>
                     </tr>
                   </thead>
                   <tbody style="background-color: hsl(225, 100%, 99%)">
-                    <tr
-                      *ngFor="let item of medicationImportDrugArrayForHosp; let i = index"
-                      style="text-align: center"
-                    >
+                    <tr *ngFor="let item of medicationImportDrugArrayForHosp; let i = index" style="text-align: center">
                       <td>{{ item.OrderType }}</td>
                       <td style="width: 270px">{{ item.Descr }}</td>
                       <td style="text-align: center; pointer-events: none">
-                        <input
-                          type="checkbox"
-                          style="width: 18px"
-                          [(ngModel)]="item.HomeMedication"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
+                        <input type="checkbox" style="width: 18px" [(ngModel)]="item.HomeMedication"
+                          [ngModelOptions]="{ standalone: true }" />
                       </td>
                       <td style="text-align: center; pointer-events: none">
-                        <input
-                          type="checkbox"
-                          style="width: 18px"
-                          [(ngModel)]="item.PatientOwnMed"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
+                        <input type="checkbox" style="width: 18px" [(ngModel)]="item.PatientOwnMed"
+                          [ngModelOptions]="{ standalone: true }" />
                       </td>
                       <td>{{ item.Dose }}</td>
                       <td>{{ item.Validity }}</td>
@@ -2072,16 +2059,10 @@
             </div>
             <div *ngIf="selectedTabNameMedication === 'Dicharge Medication'">
               <div class="section">
-                <div
-                  class="d-flex mb-2"
-                  style="justify-content: space-between; padding-right: 22px"
-                >
+                <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
                   <div style="display: flex; align-items: center; gap: 10px">
-                   <input
-                      type="checkbox"
-                      style="width: 36px; height: 22px"
-                      [attr.disabled]="medicationImportDrugArray?.length > 0 ? true : null"
-                    />
+                    <input type="checkbox" style="width: 36px; height: 22px"
+                      [attr.disabled]="medicationImportDrugArray?.length > 0 ? true : null" />
                     <label class="admitting-physician">No Medication Order Applicable</label>
                   </div>
                   <div class="secound-bar-vital-sign" (click)="openModal(medicationOrderCase, 'Discharge')">
@@ -2101,33 +2082,22 @@
                       <th>Rate</th>
                       <th>The</th>
                       <th>ID</th>
-                    
+
                       <th>Ordering Physician</th>
                       <th>Cycle</th>
                     </tr>
                   </thead>
                   <tbody style="background-color: hsl(225, 100%, 99%)">
-                    <tr
-                      *ngFor="let item of medicationImportDrugArray; let i = index"
-                      style="text-align: center"
-                    >
+                    <tr *ngFor="let item of medicationImportDrugArray; let i = index" style="text-align: center">
                       <td>{{ item.OrderType }}</td>
                       <td style="width: 270px">{{ item.Descr }}</td>
                       <td style="text-align: center; pointer-events: none">
-                        <input
-                          type="checkbox"
-                          style="width: 18px"
-                          [(ngModel)]="item.HomeMedication"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
+                        <input type="checkbox" style="width: 18px" [(ngModel)]="item.HomeMedication"
+                          [ngModelOptions]="{ standalone: true }" />
                       </td>
                       <td style="text-align: center; pointer-events: none">
-                        <input
-                          type="checkbox"
-                          style="width: 18px"
-                          [(ngModel)]="item.PatientOwnMed"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
+                        <input type="checkbox" style="width: 18px" [(ngModel)]="item.PatientOwnMed"
+                          [ngModelOptions]="{ standalone: true }" />
                       </td>
                       <td>{{ item.Dose }}</td>
                       <td>{{ item.Validity }}</td>
@@ -2179,15 +2149,16 @@
                       <div class="col-8">
                         <div class="row m-0">
                           <div class="col-md-3 d-flex align-items-center">
-                            <input type="radio" value="0" formControlName="Consultations"/>
+                            <input type="radio" value="0" formControlName="Consultations" />
                             <label class="m-0 ml-3">No</label>
                           </div>
                           <div class="col-md-3 d-flex align-items-center">
-                            <input type="radio" value="1" formControlName="Consultations"/>
+                            <input type="radio" value="1" formControlName="Consultations" />
                             <label class="m-0 ml-3">Yes</label>
                           </div>
                         </div>
-                        <textarea class="form-control" rows="2" formControlName="ConsultationsT" [readOnly]="neonatalDischarge.get('Consultations')?.value == '0'"></textarea>
+                        <textarea class="form-control" rows="2" formControlName="ConsultationsT"
+                          [readOnly]="neonatalDischarge.get('Consultations')?.value == '0'"></textarea>
                       </div>
                     </div>
                   </div>
@@ -2215,15 +2186,16 @@
                       <div class="col-8">
                         <div class="row m-0">
                           <div class="col-md-3 d-flex align-items-center">
-                            <input type="radio" value="0" formControlName="Complications"/>
+                            <input type="radio" value="0" formControlName="Complications" />
                             <label class="m-0 ml-3">No</label>
                           </div>
                           <div class="col-md-3 d-flex align-items-center">
-                            <input type="radio" value="1" formControlName="Complications"/>
+                            <input type="radio" value="1" formControlName="Complications" />
                             <label class="m-0 ml-3">Yes</label>
                           </div>
                         </div>
-                        <textarea class="form-control" rows="2" formControlName="ComplicationsT" [readOnly]="neonatalDischarge.get('Complications')?.value == '0'"></textarea>
+                        <textarea class="form-control" rows="2" formControlName="ComplicationsT"
+                          [readOnly]="neonatalDischarge.get('Complications')?.value == '0'"></textarea>
                       </div>
                     </div>
                   </div>
@@ -2241,7 +2213,7 @@
       </div>
       <div class="col-md-2">
         <ng-select formControlName="PatCondition">
-          <ng-option *ngFor="let item of patientCondition" [value]="item.value"  >{{ item.label }}</ng-option>
+          <ng-option *ngFor="let item of patientCondition" [value]="item.value">{{ item.label }}</ng-option>
         </ng-select>
       </div>
     </div>
@@ -2268,18 +2240,14 @@
   <div>
     <div class="allergy-header">
       <div style="font-size: 23px; font-weight: bold">
-        <span
-          >Import Current Medication Order for
-          {{ storageService.patientData.name }}</span
-        >
+        <span>Import Current Medication Order for
+          {{ storageService.patientData.name }}</span>
       </div>
     </div>
   </div>
   <div class="modal-body" style="padding: 0 11px 0px">
     <div style="display: flex; justify-content: end; padding-right: 1rem">
-      <button
-        (click)="medicationImport()"
-        style="
+      <button (click)="medicationImport()" style="
           border: 1px solid;
           background: #3b82f6;
           color: #ffffff;
@@ -2287,66 +2255,37 @@
           border-radius: 4px;
           font-weight: 700;
           margin-top: 4px;
-        "
-      >
+        ">
         Import
       </button>
     </div>
     <form style="max-height: 296px; overflow: auto">
       <table class="table table-bordered allergy-table mt-3">
-        <thead
-          style="
-            background-color: #e4edf5;
-            color: black;
-            text-align: center;
-            position: sticky;
-            top: 0;
-          "
-        >
+        <thead style="background-color: #e4edf5; color: black; text-align: center; position: sticky; top: 0;">
           <tr>
-            <th scope="col" style="text-align: -webkit-center">
-              <input
-                type="checkbox"
-                [checked]="selectedMedicationOrder.length === drugArray.length"
-                class="form-control"
-                (change)="collectAllMedicationIData($event)"
-                style="width: 20px"
-              />
+            <th style="text-align: center;">
+              <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAllSelection($event)"
+                style="width: 20px;" />
             </th>
-            <th scope="col">Medication Order - Case</th>
-            <th scope="col">Dose</th>
-            <th scope="col">Frequency</th>
-            <th scope="col">Status</th>
-            <th scope="col">Order type</th>
-            <th scope="col">MO Valid</th>
+            <th>Medication Order - Case</th>
+            <th>Dose</th>
+            <th>Frequency</th>
+            <th>Status</th>
+            <th>Order type</th>
+            <th>MO Valid</th>
           </tr>
         </thead>
         <tbody style="background: #fbfcff">
-          <tr *ngFor="let item of drugArray; let i = index">
-            <td style="text-align: -webkit-center">
-              <span class="input-text-field d-inline-block align-top w-100">
-                <ng-container>
-                  <input
-                    type="checkbox"
-                    class="form-control"
-                    (change)="collectMedicationIData($event, item)"
-                    style="width: 20px"
-                  />
-                </ng-container>
-              </span>
+          <tr *ngFor="let item of drugArray">
+            <td style="text-align: center;">
+              <input type="checkbox" [checked]="isSelected(item)" (change)="toggleSelection($event, item)"
+                style="width: 20px;" />
             </td>
-            <td>
-              {{ item.Descrlt }} {{ item.Quan }} {{ item.Quanunit }}
-              {{ item.Routedescr }} {{ item.N1id }}
-            </td>
+            <td>{{ item.Descrlt }} {{ item.Quan }} {{ item.Quanunit }} {{ item.Routedescr }} {{ item.N1id }}</td>
             <td>{{ item.Quan }} {{ item.Quanunit }}</td>
             <td></td>
             <td>{{ item.MosidDesc }}</td>
-            <td>
-              {{
-                item.MotypId == "30" ? "Planned Administration" : "Discharge"
-              }}
-            </td>
+            <td>{{ item.MotypId == '30' ? 'Planned Administration' : 'Discharge' }}</td>
             <td></td>
           </tr>
         </tbody>

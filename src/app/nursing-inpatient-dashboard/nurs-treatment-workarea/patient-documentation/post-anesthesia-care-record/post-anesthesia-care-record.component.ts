@@ -257,8 +257,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   addDrain(item?) {
     const drainGroup = this.formBuilder.group({
       Dockey: [item?.Dockey ?? ''],
-      Datee: [this.getDate(item?.Datee) ?? ''],
-      Timee: [this.parseTime(item?.Timee) ?? ''],
+      Datee: [this.getDate(item?.Datee) ?? new Date()],
+      Timee: [this.parseTime(item?.Timee) ?? this.currentTime],
       TypeIntake: [item?.TypeIntake ?? ''],
       Amount: [item?.Amount ?? '']
     });
@@ -282,6 +282,7 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
 
   removeDrain(index: number) {
     this.TOINTAKE.removeAt(index);
+    this.calculateTotalAmountForIntake();
   }
 
   setActiveTab(tab: string): void {
@@ -291,8 +292,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   addOut(item?) {
     const drainGroup = this.formBuilder.group({
       Dockey: [item?.Dockey ?? ''],
-      Datee: [this.getDate(item?.Datee) ?? ''],
-      Timee: [this.parseTime(item?.Timee) ?? ''],
+      Datee: [this.getDate(item?.Datee) ?? new Date()],
+      Timee: [this.parseTime(item?.Timee) ?? this.currentTime],
       TypeOutput: [item?.TypeOutput ?? ''],
       Amount: [item?.Amount ?? '']
     });
@@ -346,6 +347,7 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
 
   removeOut(index: number) {
     this.TOOUTPUT.removeAt(index);
+    this.calculateTotalAmount();
   }
 
   getNurseDocDetail(docKey?: any) {

@@ -48,6 +48,7 @@ export class DeliveryRecordDocComponent implements OnInit {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     this.currentTime = `${hours}:${minutes}:${seconds}`;
+    this.initForm();
 
     this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
       if (data != null) {
@@ -72,7 +73,6 @@ export class DeliveryRecordDocComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initForm();
   }
 
   setActiveTab(tab: string): void {
@@ -176,28 +176,128 @@ export class DeliveryRecordDocComponent implements OnInit {
     });
 
     for (let i = 0; i < 5; i++) {
-      this.addDrain()
+      this.addDrain('', i)
     }
+
+    this.getPatientDeliveryDetails();
+  }
+
+  getPatientDeliveryDetails() {
+    this.emergencyService
+      .fetchPatientDeliveryDetail(this.paramsObject.falnr)
+      .subscribe((response: any) => {
+        const deliveryDetails = response?.d?.results[0];
+        const neonatalArray = deliveryDetails.TOPATDEL.results || [];
+
+        const formArray = this.TONEONATAL;
+        formArray.clear();
+
+        // Loop and add each neonatal entry
+        neonatalArray.forEach((item, index) => {
+          const convertedItem = {
+            Dockey: deliveryDetails.Faln1,
+            Noo: (index + 1).toString(),
+            Timee: item.Gbtim,
+            Sex: item.Gschl,
+            Wt: item.Gbgew,
+            ApgarScore1: item.Bwert,
+            ApgarScore5: item.Bwert5,
+            ApgarScore10: item.Bwert10,
+            StatusDesc: item.Kztxt
+          };
+          this.addDrain(convertedItem, index);
+        });
+      });
   }
 
   get TONEONATAL(): FormArray {
     return this.deliveryRecordeForm.get('TONEONATAL') as FormArray;
   }
 
-  addDrain(item?) {
+  addDrain(item?, index?) {
     const drainGroup = this.formBuilder.group({
-      Dockey: [''],
-      Noo: [''],
-      Timee: [''],
-      Sex: [''],
-      Wt: [''],
-      ApgarScore1: [''],
-      ApgarScore5: [''],
-      ApgarScore10: [''],
-      StatusDesc: ['']
+      Dockey: [item?.Dockey ?? ''],
+      Noo: [item?.Noo ?? (this.TONEONATAL.length + 1).toString()],
+      Timee: [this.parseTime(item?.Timee) ?? this.currentTime],
+      Sex: [item?.Sex ?? ''],
+      Wt: [item?.Wt ?? ''],
+      ApgarScore1: [item?.ApgarScore1 ?? ''],
+      ApgarScore5: [item?.ApgarScore5 ?? ''],
+      ApgarScore10: [item?.ApgarScore10 ?? ''],
+      StatusDesc: [item?.StatusDesc ?? '']
     });
 
     this.TONEONATAL.push(drainGroup);
+  }
+
+  isOtherChecked(): boolean {
+    return (
+      this.deliveryRecordeForm.get('LsContraction')?.value ||
+      this.deliveryRecordeForm.get('LsBleeding')?.value ||
+      this.deliveryRecordeForm.get('LsRupture')?.value ||
+      this.deliveryRecordeForm.get('LsOther')?.value
+    );
+  }
+
+  // When "None" is checked
+  onNoneChange(): void {
+    if (this.deliveryRecordeForm.get('LsNone')?.value) {
+      this.deliveryRecordeForm.patchValue({
+        LsContraction: false,
+        LsBleeding: false,
+        LsRupture: false,
+        LsOther: false,
+        LsOtherTxt: ''
+      });
+    }
+  }
+
+  // When any other checkbox is checked
+  onOtherChange(): void {
+    if (this.isOtherChecked()) {
+      this.deliveryRecordeForm.get('LsNone')?.setValue(false);
+    }
+  }
+
+  onAnesthesiaChange(selected: string): void {
+    const controls = ['TsAtNone', 'TsAtLocal', 'TsAtGeneral', 'TsAtEpidural', 'TsAtOther'];
+    controls.forEach(ctrl => {
+      if (ctrl !== selected) {
+        this.deliveryRecordeForm.get(ctrl)?.setValue(false, { emitEvent: false });
+      }
+    });
+  }
+
+  setupLaborSignsLogic(): void {
+    // Watch for changes to "None"
+    this.deliveryRecordeForm.get('LsNone')?.valueChanges.subscribe((noneSelected: boolean) => {
+      if (noneSelected) {
+        this.deliveryRecordeForm.get('LsContraction')?.disable();
+        this.deliveryRecordeForm.get('LsBleeding')?.disable();
+        this.deliveryRecordeForm.get('LsRupture')?.disable();
+        this.deliveryRecordeForm.get('LsOther')?.disable();
+        this.deliveryRecordeForm.get('LsOtherTxt')?.disable();
+      } else {
+        this.deliveryRecordeForm.get('LsContraction')?.enable();
+        this.deliveryRecordeForm.get('LsBleeding')?.enable();
+        this.deliveryRecordeForm.get('LsRupture')?.enable();
+        this.deliveryRecordeForm.get('LsOther')?.enable();
+        this.deliveryRecordeForm.get('LsOtherTxt')?.enable();
+      }
+    });
+
+    // Watch for other checkboxes
+    ['LsContraction', 'LsBleeding', 'LsRupture', 'LsOther'].forEach(controlName => {
+      this.deliveryRecordeForm.get(controlName)?.valueChanges.subscribe(() => {
+        const anyOtherChecked = ['LsContraction', 'LsBleeding', 'LsRupture', 'LsOther']
+          .some(name => this.deliveryRecordeForm.get(name)?.value);
+        if (anyOtherChecked) {
+          this.deliveryRecordeForm.get('LsNone')?.disable();
+        } else {
+          this.deliveryRecordeForm.get('LsNone')?.enable();
+        }
+      });
+    });
   }
 
   ngOnDestroy() {
@@ -212,14 +312,110 @@ export class DeliveryRecordDocComponent implements OnInit {
 
 
   getNurseDocDetail(docKey?: any) {
-    this.subscription = this.emergencyService.fetchPostCareRecord(docKey).subscribe({
+    this.subscription = this.emergencyService.fetchDeliveryRecordDoc(docKey).subscribe({
       next: (apiResponse: any) => {
-        const payload = apiResponse?.d?.results?.[0] || {};
+        const data = apiResponse?.d?.results[0] || {};
+        const deliveryDate = data.DeliveryDate
+          ? new Date(parseInt(data.DeliveryDate.replace('/Date(', '').replace(')/', ''), 10))
+          : null;
 
-        this.deliveryRecordeForm.patchValue(payload);
-        if (payload.TONEONATAL.results.length) {
+        // Convert PT14H09M01S → 14:09 or keep as-is depending on your need
+        const deliveryHour = data.DeliveryHour
+          ? data.DeliveryHour.replace('PT', '').replace('H', ':').replace('M', ':').replace('S', '').slice(0, 5)
+          : '';
+        this.deliveryRecordeForm.patchValue({
+          Dockey: data.Dockey,
+          Dtid: data.Dtid,
+          Einri: data.Einri,
+          Patnr: data.Patnr,
+          Falnr: data.Falnr,
+          Lfdnr: data.Lfdnr,
+          Orgdo: data.Orgdo,
+          AttendPhy: data.AttendPhy,
+          DocStatus: data.DocStatus,
+          AttendDoctor: data.AttendDoctor,
+          AttendMidwife: data.AttendMidwife,
+          DeliveryDate: deliveryDate,
+          DeliveryHour: this.parseTime(data.DeliveryHour),
+
+          LsNone: data.LsNone,
+          LsContraction: data.LsContraction,
+          LsBleeding: data.LsBleeding,
+          LsRupture: data.LsRupture,
+          LsOther: data.LsOther,
+          LsOtherTxt: data.LsOtherTxt,
+
+          FsApproximate: data.FsApproximate,
+          FsApproximateTxt: data.FsApproximateTxt,
+          FsSpontaneous: data.FsSpontaneous,
+          FsSpontaneousTxt: data.FsSpontaneousTxt,
+          FsInduced: data.FsInduced,
+          FsAmniotomy: data.FsAmniotomy,
+          FsOxytocin: data.FsOxytocin,
+          FsProstin: data.FsProstin,
+          FsOther: data.FsOther,
+          FsRemarks: data.FsRemarks,
+
+          SsDuration: data.SsDuration,
+          SsDurationTxt: data.SsDurationTxt,
+          SsNormal: data.SsNormal,
+          SsNormalTxt: data.SsNormalTxt,
+          SsForceps: data.SsForceps,
+          SsForcepsLow: data.SsForcepsLow,
+          SsForcepsMild: data.SsForcepsMild,
+          SsForcepsDur: data.SsForcepsDur,
+          SsEpisiotomy: data.SsEpisiotomy,
+          SsMidline: data.SsMidline,
+          SsMediolateral: data.SsMediolateral,
+          SsLaceration: data.SsLaceration,
+          SsLacCervix: data.SsLacCervix,
+          SsLacVagina: data.SsLacVagina,
+          SsLacPerineum: data.SsLacPerineum,
+          SsPresent: data.SsPresent,
+          SsPresentA: data.SsPresentA,
+          SsPresentATxt: data.SsPresentATxt,
+          SsPresentB: data.SsPresentB,
+          SsPresentBTxt: data.SsPresentBTxt,
+          SsRemarks: data.SsRemarks,
+
+          TsDuration: data.TsDuration,
+          TsDurationTxt: data.TsDurationTxt,
+          TsPlacenta: data.TsPlacenta,
+          TsPlacentaTxt: data.TsPlacentaTxt,
+          TsExpressed: data.TsExpressed,
+          TsExpressedTxt: data.TsExpressedTxt,
+          TsManual: data.TsManual,
+          TsManualTxt: data.TsManualTxt,
+          TsRemarks: data.TsRemarks,
+          TsEstimated: data.TsEstimated,
+          TsEstimatedTxt: data.TsEstimatedTxt,
+          TsInfusion: data.TsInfusion,
+          TsIType: data.TsIType,
+          TsIAmount: data.TsIAmount,
+          TsTransfusion: data.TsTransfusion,
+          TsTType: data.TsTType,
+          TsTAmount: data.TsTAmount,
+          TsMaternalCond: data.TsMaternalCond,
+
+          TsAtNone: data.TsAtNone,
+          TsAtLocal: data.TsAtLocal,
+          TsAtGeneral: data.TsAtGeneral,
+          TsAtEpidural: data.TsAtEpidural,
+          TsAtOther: data.TsAtOther,
+          TsAtOtherTxt: data.TsAtOtherTxt,
+
+          TsAsyphyxiated: data.TsAsyphyxiated,
+          TsAsyphyxiatedTxt: data.TsAsyphyxiatedTxt
+        });
+
+        // this.deliveryRecordeForm.patchValue({
+        //   DeliveryDate: this.getDate(payload.DeliveryDate),
+        //   DeliveryHour: this.parseTime(payload.DeliveryHour),
+        // });
+        // this.deliveryRecordeForm.patchValue(data);
+        if (data.TONEONATAL.results.length) {
           (this.deliveryRecordeForm.get('TONEONATAL') as FormArray).clear();
-          payload.TONEONATAL.results.forEach(group => this.addDrain(group));
+          data.TONEONATAL.results.forEach((group, i) => this.addDrain(group, i));
         }
 
       },
@@ -234,6 +430,7 @@ export class DeliveryRecordDocComponent implements OnInit {
     return new Promise((resolve, reject) => {
       let formData = this.deliveryRecordeForm.value;
       formData.DeliveryDate = this.sanitizeSAPDateFormat(formData.DeliveryDate);
+      formData.DocStatus = status;
       formData.DeliveryHour = formData.DeliveryHour ? this.parsePayloadFormateTime(formData.DeliveryHour) : 'PT00H00M00S';
       formData['TONEONATAL'] = formData.TONEONATAL.filter(res => res.Wt).map(res => ({
         ...res,
@@ -313,6 +510,7 @@ export class DeliveryRecordDocComponent implements OnInit {
   }
 
   parsePayloadFormateTime(data: string) {
+    console.log(data, "---")
     if (data && data.length) {
       const strArr: string[] = data.split(':');
       if (data && data.length === 8) {

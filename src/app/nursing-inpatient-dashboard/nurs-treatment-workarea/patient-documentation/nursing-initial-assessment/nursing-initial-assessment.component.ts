@@ -10,6 +10,8 @@ import { PhysicianAllergyComponent } from 'src/app/shared-module/paediatrics-adm
 import Swal from 'sweetalert2';
 import { ErVitalsForSBARComponent } from '../sbar-nursing-endorsement/er-vitals/er-vitals.component';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { DataShareService } from '@services/data-share.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @Component({
   selector: 'app-nursing-initial-assessment',
@@ -60,8 +62,11 @@ export class NursingInitialAssessmentComponent implements OnInit {
   currentTime: any;
   paramsObject: any;
   apiJson: any;
+  private subscription: Subscription;
+  private actionTypeSubscription$: Subscription;
+
   constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, public storageService: StorageService,
-    private sharedService: SharedService, private route: ActivatedRoute, private fb: FormBuilder
+    private sharedService: SharedService, private route: ActivatedRoute, private fb: FormBuilder, private dataShareService: DataShareService, private emergencyService: EmergencyService
   ) {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
@@ -90,15 +95,15 @@ export class NursingInitialAssessmentComponent implements OnInit {
     this.nursingFormGroup = this.fb.group({
       Dockey: [''],
       Dtid: ['ZMED_NIAGO'],
-      Einri: ['1000'],
-      Patnr: ['1101'],
-      Falnr: ['1402'],
-      Lfdnr: ['00001'],
-      Orgdo: ['F21IUAMC'],
-      AttendPhy: ['9000000020'],
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
       DocStatus: ['1'],
-      Datee: [''],
-      Timee: [''],
+      Datee: [new Date()],
+      Timee: [this.currentTime],
 
       RObservation: [false],
       RLabour: [false],
@@ -309,7 +314,121 @@ export class NursingInitialAssessmentComponent implements OnInit {
       SBNormalNursery: [false],
       SBNicu: [false],
 
-      // Continue adding rest of the fields...
+      PpaNotApplicable: false,
+      PpaUterineMassage: "",
+      PpaUterineMassageTxt: "",
+      PpaFAboveUmbilicus: false,
+      PpaFUnderUmbilicus: false,
+      PpaFUmbilicalLevel: false,
+      PpaUContracted: false,
+      PpaUFirm: false,
+      PpaUAtony: false,
+      PpaVMild: false,
+      PpaVModerate: false,
+      PpaVSevere: false,
+      PpaSDone: false,
+      PpaSNotDone: false,
+      PpaVpNoVaginalPack: false,
+      PpaVpSoaked: false,
+      PpaVpDry: false,
+      PpaEpisiotomy: "",
+      PpaBNormal: false,
+      PpaBEngorged: false,
+      PpaBWarm: false,
+      PpaBSoreNipple: false,
+      PpaBFullTender: false,
+      PpaBPainful: false,
+      PpaBmNormal: false,
+      PpaBmPassGases: false,
+      PpaBmConstipated: false,
+      PpaBmNeedLaxative: false,
+      PpaAAmbulated: false,
+      PpaANeedAssistance: false,
+      PpaABedRest: false,
+      PpaInNotApplicable: false,
+      PpaInWithDrains: false,
+      PpaInCleanIntact: false,
+      PpaInDressingApplied: false,
+      PpaInRedness: false,
+      PpaInDischarge: false,
+      PpaInOozingDressing: false,
+      PpaInSoakedDressing: false,
+      PpaBladder: "",
+      PpaVoid: "",
+      PpaPaNormal: false,
+      PpaPaEdema: false,
+      PpaPaHematoma: false,
+      EdCoLanguage: false,
+      EdCoBeliefs: false,
+      EdCoLiteracy: false,
+      EdCoCultural: false,
+      EdCoOthers: false,
+      EdCoOthersTxt: "",
+      EdPatientReadiness: "",
+      EdPrOthers: false,
+      EdPrOthersTxt: "",
+      EdFamilyReadiness: "",
+      EdFrOthers: false,
+      EdFrOthersTxt: "",
+      EdMeOral: false,
+      EdMeVideo: false,
+      EdMeHandout: false,
+      EdMeOthers: false,
+      EdMeOthersTxt: "",
+      EdMedicationTeaching: "",
+      EdMtRemarks: false,
+      EdMtRemarksTxt: "",
+      EdModeIncision: "",
+      EdMiRemarks: false,
+      EdMiRemarksTxt: "",
+      EdFamilyTeaching: "",
+      EdFtRemarks: false,
+      PpaCatheter: '',
+      EdFtRemarksTxt: "",
+      EdChronicIllness: "",
+      EdCiRemarks: false,
+      EdCiRemarksTxt: "",
+      EdTeachingEquipment: "",
+      EdTeRemarks: false,
+      EdTeRemarksTxt: "",
+      EdBreastFeeding: "",
+      EdBfRemarks: false,
+      EdBfRemarksTxt: "",
+      EdCareNewborn: "",
+      EdCnRemarks: false,
+      EdCnRemarksTxt: "",
+      EdSitzBath: "",
+      EdSbRemarks: false,
+      EdSbRemarksTxt: "",
+      EdEpisiotomyCare: "",
+      EdEcRemarks: false,
+      EdEcRemarksTxt: "",
+      EdNeedRest: "",
+      EdNrRemarks: false,
+      EdNrRemarksTxt: "",
+      EdCircumcisionCare: "",
+      EdCcRemarks: false,
+      EdCcRemarksTxt: "",
+      DpDischargePlan: "",
+      DpAnticipated: "",
+      DpMedications: "",
+      DpWoundSiteCare: "",
+      DpBabyCare: "",
+      DpBreastFeeding: "",
+      DpNutrition: "",
+      DpOthers: "",
+      DcEnsurePatient: "",
+      DcEnsureRelatives: "",
+      DcPatientFamily: "",
+      DcMedicationGiven: "",
+      DcIvCannula: "",
+      DcTransportArranged: "",
+      DcOutPatientApp: "",
+      DcGiveRelevant: "",
+      DcMedicalReport: "",
+      DcSpecialNeeds: "",
+      DcOthers: "",
+      DcAdditionalRemarks: "",
 
       TOALLERGY: this.fb.array([]),
       TOVITALSIGN: this.fb.array([]),
@@ -620,6 +739,41 @@ export class NursingInitialAssessmentComponent implements OnInit {
         Vunit: el.UnitTxt,
       });
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
+
+
+  public createDoc(status?: any, actionType?: any) {
+    return new Promise((resolve, reject) => {
+      let formData = this.nursingFormGroup.value;
+
+      this.subscription = this.emergencyService.saveNursingInitialGyno(formData).subscribe({
+        next: (data: any) => {
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at Nursing Initial Assessment Gyno Obstetrics PMD : ${err}`);
+        },
+        complete: () => {
+          resolve(true);
+          if (status === 'edit') {
+            this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD updated successfully');
+          } else {
+            this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD created successfully');
+          }
+          // this.successEvent.next(true)
+        }
+      });
+    })
   }
 
   parseDate(date: string) {

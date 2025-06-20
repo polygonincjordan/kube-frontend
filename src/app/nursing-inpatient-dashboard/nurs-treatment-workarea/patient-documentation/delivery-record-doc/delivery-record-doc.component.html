@@ -43,52 +43,69 @@
           <div class="label">Delivery Hour</div>
         </div>
         <div class="col-md-2">
-          <input type="time" class="form-control" naria-label="24hr format" step="2"
-            formControlName="DeliveryHour" />
+          <input type="time" class="form-control" naria-label="24hr format" step="2" formControlName="DeliveryHour" />
         </div>
       </div>
       <div class="row align-items-center">
         <div class="col-md-2">
           <label class="mr-3">Labor Signs</label>
         </div>
+
+        <!-- None -->
         <div class="col-md-1">
           <div class="form-group">
-            <input type="checkbox" class="mr-1" name="" formControlName="LsNone" />
+            <input type="checkbox" class="mr-1" formControlName="LsNone" (change)="onNoneChange()"
+              [readOnly]="isOtherChecked()" />
             <div class="label">None</div>
           </div>
         </div>
+
+        <!-- Contraction -->
         <div class="col-md-1">
           <div class="form-group">
-            <input type="checkbox" class="mr-1" name="" formControlName="LsContraction" />
+            <input type="checkbox" class="mr-1" formControlName="LsContraction" (change)="onOtherChange()"
+              [readOnly]="deliveryRecordeForm.get('LsNone')?.value" />
             <div class="label">Contraction</div>
           </div>
         </div>
+
+        <!-- Bleeding -->
         <div class="col-md-1">
           <div class="form-group">
-            <input type="checkbox" class="mr-1" name="" formControlName="LsBleeding" />
+            <input type="checkbox" class="mr-1" formControlName="LsBleeding" (change)="onOtherChange()"
+              [readOnly]="deliveryRecordeForm.get('LsNone')?.value" />
             <div class="label">Bleeding</div>
           </div>
         </div>
+
+        <!-- Rupture -->
         <div class="col-md-2">
           <div class="form-group">
-            <input type="checkbox" class="mr-1" name="" formControlName="LsRupture" />
+            <input type="checkbox" class="mr-1" formControlName="LsRupture" (change)="onOtherChange()"
+              [readOnly]="deliveryRecordeForm.get('LsNone')?.value" />
             <div class="label">Rupture of Membrane</div>
           </div>
         </div>
+
+        <!-- Other -->
         <div class="col-md-1">
           <div class="form-group">
-            <input type="checkbox" class="mr-1" name="" formControlName="LsOther" />
+            <input type="checkbox" class="mr-1" formControlName="LsOther" (change)="onOtherChange()"
+              [readOnly]="deliveryRecordeForm.get('LsNone')?.value" />
             <div class="label">Other</div>
           </div>
         </div>
+
+        <!-- Other Text -->
         <div class="col-md-2">
           <div class="form-group">
-            <input type="text" class="form-control" name="" formControlName="LsOtherTxt" />
+            <input type="text" class="form-control" formControlName="LsOtherTxt"
+              [readOnly]="deliveryRecordeForm.get('LsNone')?.value" />
           </div>
         </div>
       </div>
     </div>
-  
+
     <div class="border m-2 p-3">
       <div id="exTab1">
         <ul class="nav nav-pills title-main mb-3">
@@ -114,7 +131,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="FsApproximateTxt" />
+              <input type="text" class="form-control" formControlName="FsApproximateTxt"
+                [readOnly]="!deliveryRecordeForm.get('FsApproximate').value" />
             </div>
           </div>
           <div class="row">
@@ -126,7 +144,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="FsSpontaneousTxt" />
+              <input type="text" class="form-control" name="" formControlName="FsSpontaneousTxt"
+                [readOnly]="!deliveryRecordeForm.get('FsSpontaneous').value" />
             </div>
           </div>
           <div class="row">
@@ -141,7 +160,8 @@
               <div class="label">Amniotomy</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="FsAmniotomy" />
+              <input type="text" class="form-control" name="" formControlName="FsAmniotomy"
+                [readOnly]="!deliveryRecordeForm.get('FsInduced').value" />
             </div>
           </div>
           <div class="row">
@@ -151,7 +171,8 @@
               <div class="label">Oxytocin</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="FsOxytocin" />
+              <input type="text" class="form-control" name="" formControlName="FsOxytocin"
+                [readOnly]="!deliveryRecordeForm.get('FsInduced').value" />
             </div>
           </div>
           <div class="row">
@@ -161,7 +182,8 @@
               <div class="label">Prostin</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="FsProstin" />
+              <input type="text" class="form-control" name="" formControlName="FsProstin"
+                [readOnly]="!deliveryRecordeForm.get('FsInduced').value" />
             </div>
           </div>
           <div class="row">
@@ -171,7 +193,8 @@
               <div class="label">Other</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="FsOther" />
+              <input type="text" class="form-control" name="" formControlName="FsOther"
+                [readOnly]="!deliveryRecordeForm.get('FsInduced').value" />
             </div>
           </div>
           <div class="row">
@@ -183,7 +206,7 @@
             </div>
           </div>
         </div>
-  
+
         <div *ngIf="activeTab === 'secondStage'">
           <div class="row">
             <div class="col-md-2"></div>
@@ -194,7 +217,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsDurationTxt" />
+              <input type="text" class="form-control" name="" formControlName="SsDurationTxt"
+                [readOnly]="!deliveryRecordeForm.get('SsDuration').value" />
             </div>
           </div>
           <div class="row">
@@ -206,7 +230,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsNormalTxt" />
+              <input type="text" class="form-control" name="" formControlName="SsNormalTxt"
+                [readOnly]="!deliveryRecordeForm.get('SsNormal').value" />
             </div>
           </div>
           <div class="row">
@@ -221,7 +246,8 @@
               <div class="label">Low</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsForcepsLow" />
+              <input type="text" class="form-control" name="" formControlName="SsForcepsLow"
+                [readOnly]="!deliveryRecordeForm.get('SsForceps').value" />
             </div>
           </div>
           <div class="row">
@@ -231,7 +257,8 @@
               <div class="label">Mild</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsForcepsMild" />
+              <input type="text" class="form-control" name="" formControlName="SsForcepsMild"
+                [readOnly]="!deliveryRecordeForm.get('SsForceps').value" />
             </div>
           </div>
           <div class="row">
@@ -241,7 +268,8 @@
               <div class="label">Duration</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsForcepsDur" />
+              <input type="text" class="form-control" name="" formControlName="SsForcepsDur"
+                [readOnly]="!deliveryRecordeForm.get('SsForceps').value" />
             </div>
           </div>
           <div class="row">
@@ -277,7 +305,8 @@
               <div class="label">Cervix</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsLacCervix" />
+              <input type="text" class="form-control" name="" formControlName="SsLacCervix"
+                [readOnly]="!deliveryRecordeForm.get('SsLaceration').value" />
             </div>
           </div>
           <div class="row">
@@ -287,7 +316,8 @@
               <div class="label">Vagina</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsLacVagina" />
+              <input type="text" class="form-control" name="" formControlName="SsLacVagina"
+                [readOnly]="!deliveryRecordeForm.get('SsLaceration').value" />
             </div>
           </div>
           <div class="row">
@@ -297,7 +327,8 @@
               <div class="label">Perineum</div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsLacPerineum" />
+              <input type="text" class="form-control" name="" formControlName="SsLacPerineum"
+                [readOnly]="!deliveryRecordeForm.get('SsLaceration').value" />
             </div>
           </div>
           <div class="row">
@@ -310,12 +341,14 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="SsPresentA" />
+                <input type="checkbox" class="mr-1" name="" formControlName="SsPresentA"
+                  [disabled]="!deliveryRecordeForm.get('SsPresent').value" />
                 <div class="label">A</div>
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsPresentATxt" />
+              <input type="text" class="form-control" name="" formControlName="SsPresentATxt"
+                [readOnly]="!deliveryRecordeForm.get('SsPresent').value && !deliveryRecordeForm.get('SsPresent').value" />
             </div>
           </div>
           <div class="row">
@@ -323,12 +356,14 @@
             <div class="col-md-2"></div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="SsPresentB" />
+                <input type="checkbox" class="mr-1" name="" formControlName="SsPresentB"
+                  [disabled]="!deliveryRecordeForm.get('SsPresent').value" />
                 <div class="label">B</div>
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="SsPresentBTxt" />
+              <input type="text" class="form-control" name="" formControlName="SsPresentBTxt"
+                [readOnly]="!deliveryRecordeForm.get('SsPresentB').value && !deliveryRecordeForm.get('SsPresent').value" />
             </div>
           </div>
           <div class="row">
@@ -350,7 +385,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="TsDurationTxt" />
+              <input type="text" class="form-control" name="" formControlName="TsDurationTxt"
+                [readOnly]="!deliveryRecordeForm.get('TsDuration').value" />
             </div>
           </div>
           <div class="row">
@@ -362,7 +398,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="TsPlacentaTxt" />
+              <input type="text" class="form-control" name="" formControlName="TsPlacentaTxt"
+                [readOnly]="!deliveryRecordeForm.get('TsPlacenta').value" />
             </div>
           </div>
           <div class="row">
@@ -374,7 +411,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="TsExpressedTxt" />
+              <input type="text" class="form-control" name="" formControlName="TsExpressedTxt"
+                [readOnly]="!deliveryRecordeForm.get('TsExpressed').value" />
             </div>
           </div>
           <div class="row">
@@ -386,7 +424,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="TsManualTxt" />
+              <input type="text" class="form-control" name="" formControlName="TsManualTxt"
+                [readOnly]="!deliveryRecordeForm.get('TsManual').value" />
             </div>
           </div>
           <div class="row">
@@ -406,7 +445,8 @@
               </div>
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" name="" formControlName="TsEstimatedTxt" />
+              <input type="text" class="form-control" name="" formControlName="TsEstimatedTxt"
+                [readOnly]="!deliveryRecordeForm.get('TsEstimated').value" />
             </div>
           </div>
           <div class="row">
@@ -421,7 +461,8 @@
               <div class="label">Type</div>
             </div>
             <div class="col-md-3">
-              <input type="text" class="form-control" name="" formControlName="TsIType" />
+              <input type="text" class="form-control" name="" formControlName="TsIType"
+                [readOnly]="!deliveryRecordeForm.get('TsInfusion').value" />
             </div>
             <div class="col-md-1">
               <div class="form-group">
@@ -433,7 +474,8 @@
               <div class="label">Type</div>
             </div>
             <div class="col-md-2">
-              <input type="text" class="form-control" name="" formControlName="TsTType" />
+              <input type="text" class="form-control" name="" formControlName="TsTType"
+                [readOnly]="!deliveryRecordeForm.get('TsTransfusion').value" />
             </div>
           </div>
           <div class="row">
@@ -443,14 +485,16 @@
               <div class="label">Amount</div>
             </div>
             <div class="col-md-3">
-              <input type="text" class="form-control" name="" formControlName="TsIAmount" />
+              <input type="text" class="form-control" name="" formControlName="TsIAmount"
+                [readOnly]="!deliveryRecordeForm.get('TsInfusion').value" />
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-1">
               <div class="label">Amount</div>
             </div>
             <div class="col-md-2">
-              <input type="text" class="form-control" name="" formControlName="TsTAmount" />
+              <input type="text" class="form-control" name="" formControlName="TsTAmount"
+                [readOnly]="!deliveryRecordeForm.get('TsTransfusion').value" />
             </div>
           </div>
           <div class="row">
@@ -467,47 +511,61 @@
             <div class="col-md-2">
               <div class="label">Anesthesia Type</div>
             </div>
+
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="TsAtNone" />
+                <input type="checkbox" class="mr-1" formControlName="TsAtNone"
+                  (change)="onAnesthesiaChange('TsAtNone')" />
                 <div class="label">None</div>
               </div>
             </div>
+
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="TsAtLocal" />
+                <input type="checkbox" class="mr-1" formControlName="TsAtLocal"
+                  (change)="onAnesthesiaChange('TsAtLocal')" />
                 <div class="label">Local</div>
               </div>
             </div>
+
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="TsAtGeneral" />
+                <input type="checkbox" class="mr-1" formControlName="TsAtGeneral"
+                  (change)="onAnesthesiaChange('TsAtGeneral')" />
                 <div class="label">General</div>
               </div>
             </div>
+
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="TsAtEpidural" />
+                <input type="checkbox" class="mr-1" formControlName="TsAtEpidural"
+                  (change)="onAnesthesiaChange('TsAtEpidural')" />
                 <div class="label">Epidural</div>
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-2"></div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="TsAtOther" />
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtOther" (change)="onAnesthesiaChange('TsAtOther')"/>
                 <div class="label">Other</div>
               </div>
             </div>
             <div class="col-md-3">
-              <input type="text" class="form-control" name="" formControlName="TsAtOtherTxt" />
+              <input type="text" class="form-control" name="" formControlName="TsAtOtherTxt" [readOnly]="!deliveryRecordeForm.get('TsAtOther').value"/>
             </div>
           </div>
           <div class="row">
             <div class="col-md-2">
               <label class="">Neonatal Data</label>
+            </div>
+            <div class="col-md-8" style="text-align: end">
+              <button class="review-btn mb-2" (click)="addDrain()">
+                <i class="fa fa-plus"></i> Add
+              </button>
             </div>
           </div>
           <div class="row">
@@ -538,7 +596,7 @@
                     <tr [formGroupName]="i" class="c-pointer">
                       <!-- <td></td> -->
                       <td><input type="text" class="form-control" formControlName="Noo" /></td>
-                      <td><input type="text" class="form-control" formControlName="Timee" /></td>
+                      <td><input type="time" step="2" class="form-control" formControlName="Timee" /></td>
                       <td><input type="text" class="form-control" formControlName="Sex" /></td>
                       <td><input type="text" class="form-control" formControlName="Wt" /></td>
                       <td><input type="text" class="form-control" formControlName="ApgarScore1" /></td>

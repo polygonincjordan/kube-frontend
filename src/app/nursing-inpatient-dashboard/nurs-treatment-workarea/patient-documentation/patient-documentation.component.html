@@ -206,6 +206,16 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Delivery Record'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseDeliveryRecord()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Initial Assessment Gyno Obstetrics'">
+            <button type="button" class="action-doc" (click)="copyDirectReleaseDeliveryRecord()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
