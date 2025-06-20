@@ -44,7 +44,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     private hospitalistService: HospitalistService) {}
 
   ngOnInit(): void {
-   
+   this.getPrintUrl();
   }
   
   ngOnChanges(changes: SimpleChanges): void {

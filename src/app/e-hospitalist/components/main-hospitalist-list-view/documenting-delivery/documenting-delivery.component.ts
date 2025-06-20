@@ -89,8 +89,8 @@ export class DocumentingDeliveryComponent implements OnInit {
     let currentTime = new Date().getHours() + ':' + new Date().getMinutes();
 
     this.deliveryForm = this.formBuilder.group({
-      Faln1: this.data?.CaseNumber,
-      Patnr: this.data?.Mrn,
+      Faln1: this.headerData?.CaseNumber,
+      Patnr: this.headerData?.Mrn,
       Endat: new Date(),
       Entim: currentTime,
       Fgtyp: "",
@@ -112,7 +112,7 @@ export class DocumentingDeliveryComponent implements OnInit {
     let currentTime = new Date().getHours() + ':' + new Date().getMinutes();
 
     return this.formBuilder.group({
-      Faln1: this.data?.CaseNumber,
+      Faln1: this.headerData?.CaseNumber,
       Lfdnr: '',
       Faln2: "",
       Gbdat: new Date(),
@@ -170,7 +170,7 @@ export class DocumentingDeliveryComponent implements OnInit {
   }
 
   getPatientDeliveryDetails() {
-    this.emergencyService.fetchPatientDeliveryDetail(this.data?.CaseNumber).subscribe((res) => {
+    this.emergencyService.fetchPatientDeliveryDetail(this.headerData?.CaseNumber).subscribe((res) => {
       this.bindDeliveryData(res);
     })
   }
