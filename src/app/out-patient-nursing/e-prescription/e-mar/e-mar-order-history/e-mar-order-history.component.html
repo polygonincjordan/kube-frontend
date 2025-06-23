@@ -81,7 +81,7 @@
                     <div class="drug-data-table d-flex w-100 m-0 h-100">
                       <ng-container *ngFor="let item of element.Schedule">
                         <div class="drug-data-td align-middle text-center"
-                          *ngIf="item.Hour>= startHour && item.Hour<=endHour">
+                          *ngIf="item.Hour>= startHour && item.Hour<=endHour  && shouldDisplayEvent(item)">
                             <div class="drug-inner-data drugtime-data m-0 h-100
                               align-content-center d-flex flex-wrap
                               justify-content-center"
