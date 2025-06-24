@@ -348,4 +348,17 @@ export class EMarOrderNurseComponent {
   this.asc = !this.asc;
   this.configurationData = newData;
 }
+
+  public shouldDisplayEvent(eventData: any): boolean{
+    if(eventData.Color === 'red-data'){
+      if(this.ePrescriptionService.checkedFilterData.Cancelled){
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
 }

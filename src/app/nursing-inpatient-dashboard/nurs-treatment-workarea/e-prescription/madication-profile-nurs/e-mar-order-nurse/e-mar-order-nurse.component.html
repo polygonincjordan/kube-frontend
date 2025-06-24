@@ -77,7 +77,8 @@
                   <div class="drug-data drug-daytime pt-0 pb-0 h-100">
                     <div class="drug-data-table d-flex w-100 m-0 h-100">
                       <ng-container *ngFor="let item of element.Schedule">
-                        <div class="drug-data-td align-middle text-center" *ngIf="item.Hour>= startHour && item.Hour<=endHour">
+                    <!-- this container is of showing events -->
+                        <div class="drug-data-td align-middle text-center" *ngIf="item.Hour>= startHour && item.Hour<=endHour && shouldDisplayEvent(item)" >
                           <div class="drug-inner-data drugtime-data m-0 h-100
                                 align-content-center d-flex flex-wrap
                                 justify-content-center c-pointer" [ngClass]="item.Color" (click)="openModalForDrugEvent(item,element)">
