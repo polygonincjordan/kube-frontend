@@ -36,31 +36,24 @@ export class ConsumablesHistoryComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.paramsValue = params;
     });
-
-    this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
-      if (data != null) {
-        this.slocData = data?.value?.Lgort
-        if (this.slocData) {
-          this.getConsumableHistory();
-        }
-      }
-    })
   }
 
   ngOnInit(): void {
     this.consumablesFrom();
-    if (this.slocData) {
-      this.getConsumableHistory();
-    } else {
-      Swal.fire({
-        text: 'Please select a storage location',
-        icon: 'warning',
-        confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
-      }).then((result) => { })
-    }
+    this.actionTypeSubscription$ = this.dataShareService.filterType$.subscribe((data) => {
+      if (data != null && data?.value?.Lgort) {
+        this.slocData = data?.value?.Lgort;
+        this.getConsumableHistory();
+      } else {
+        Swal.fire({
+          text: 'Please select a storage location',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+      }
+    })
     this.subscribeToFormChanges();
-
   }
 
   ngOnDestroy(): void {

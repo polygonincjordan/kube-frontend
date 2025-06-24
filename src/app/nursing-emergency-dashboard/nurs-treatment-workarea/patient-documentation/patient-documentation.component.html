@@ -327,7 +327,7 @@
           </div>
 
             <!-- Pain Assessment -->
-            <div *ngIf="!selectedDocument || selectedDocument == 'PAA'" [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+            <div *ngIf="!selectedDocument || selectedDocument == 'PAA'" [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
               (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
               <div class="col-md-4">Pain Assessment {{painAssessmentLaestDoc[0]?.Zversion ?
                 dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
@@ -420,7 +420,7 @@
           </div>
           <div class="col-md-3">{{latestCorrespondenceList[0]?.PhyNm || '-'}}</div>
           <div class="col-md-1">
-          
+
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
             (click)="openCorrespondenceDocumentPdf(latestCorrespondenceList[0]?.Dockey)"
             *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
@@ -428,7 +428,7 @@
         </div> -->
 
       <!-- Pain Assessment -->
-        <!-- <div [ngClass]="isNursingCarePlans ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+        <!-- <div [ngClass]="isNursingCarePlans ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
           (click)="selectAssessment('isNursingCarePlans',nursingCarePlanDoc[0])">
           <div class="col-md-4">Nursing care plans {{nursingCarePlanDoc[0]?.Zversion ?
             dockVer(nursingCarePlanDoc[0]?.Zversion) : ''}} :</div>
@@ -446,7 +446,7 @@
             </div>
         </div>
         <!-- Patient Profile Document -->
- 
+
       </div>
       <div class="col-md-6">
         <div class="box-col document-overflow">

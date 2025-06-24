@@ -31,6 +31,7 @@ import { NursingAdmissionAssessmentComponent } from 'src/app/shared-module/nursi
 import { GlasgowComaScaleComponent } from './glasgow-coma-scale/glasgow-coma-scale.component';
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
+import { PostAnesthesiaCareRecordComponent } from './post-anesthesia-care-record/post-anesthesia-care-record.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -51,7 +52,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(GlasgowComaScaleComponent) GlasgowComaScaleComp: GlasgowComaScaleComponent;
   @ViewChild(CprDocumentComponent) CprDocumentComp: CprDocumentComponent;
   @ViewChild(PreCardiacCathComponent) PreCardiacCathComp: PreCardiacCathComponent;
-
+  @ViewChild(PostAnesthesiaCareRecordComponent) PostAnesthesiaCareRecordComp: PostAnesthesiaCareRecordComponent;
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
   @ViewChild('releasepdfmodal') releasepdfmodal: TemplateRef<HTMLDivElement>;
   @ViewChild('notreleasedmodal') notreleasedmodal: TemplateRef<HTMLDivElement>;
@@ -94,8 +95,9 @@ export class PatientDocumentationComponent implements OnInit {
   public isObstetricsFallRisk: boolean = false;
   public isCPRDocument: boolean = false;
   public openCPRDocument: boolean = false;
+  public isPostAnesthesia: boolean = false;
   latestMorseFallScaleData: any;
-  
+
   latestCprList = [];
   phyDocList = [];
   latestDocList = [];
@@ -118,6 +120,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestPreCardiacCathList = [];
   latestNursingInitialList = [];
   latestObstetricsList = [];
+  PostAnesthesiaList = []
 
   educationAssList = [];
   documentTypeFilter = []
@@ -130,6 +133,7 @@ export class PatientDocumentationComponent implements OnInit {
   pdfUrl: any;
   openPhyAssess = false;
   openGlasgowComaScale = false;
+  openPostAnesthesia: boolean = false;
   openFacePainScale = false;
   openNumericRatingScale = false;
   openBradenScale = false;
@@ -233,6 +237,10 @@ export class PatientDocumentationComponent implements OnInit {
       value: 'CPD'
     },
     {
+      label: 'Post Anesthesia Care Record',
+      value: 'PACR'
+    },
+    {
       label: 'Glasgow Coma Scale',
       value: 'GCS'
     },
@@ -293,7 +301,7 @@ export class PatientDocumentationComponent implements OnInit {
     // this.getLatestAssessmentPA(); not using this document
     // this.getTriageLatestDocuments(); not using this document
     // this.getPhyAssessment(); not using this document
-    // this.getMedLatestAssessment(); 
+    // this.getMedLatestAssessment();
     this.getNurseEndorsement()
     this.getSurgicalPass()
     this.getPediatricWarningScore();
@@ -303,6 +311,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNursingAdmissionLatestDoc();
     this.getCPRDocDetails();
     this.getPreCardiecCathDocDetails();
+    this.getPostCareRecordDetails();
     // this.fetchLatestDetails();
   }
 
@@ -350,6 +359,19 @@ export class PatientDocumentationComponent implements OnInit {
       },
       error: (err: any) => {
         // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+    // Post Anesthesia Care Record
+  getPostCareRecordDetails() {
+    this.emergencyService.PostCareRecordLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.PostAnesthesiaList = _success.d.results
+      },
+      error: (err: any) => {
         console.error('Error  Data:', err);
         this.sharedService.waringSwallModel(`GET Error : ${err}`);
       },
@@ -404,7 +426,7 @@ export class PatientDocumentationComponent implements OnInit {
       next: (_success: any) => {
         console.log('_success21212121',_success);
         this.pediatricEarlyWarningList = _success.d.results
-        
+
         // this.nurseEndorsementList = _success.d.results
       },
       error: (err: any) => {
@@ -416,7 +438,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
   getSurgicalPass(){
     this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
-      next: (_success: any) => {        
+      next: (_success: any) => {
         this.surgicalPassportList = _success.d.results
         },
       error: (err: any) => {
@@ -441,8 +463,8 @@ export class PatientDocumentationComponent implements OnInit {
   // Nursing Plan Care Document Latest
   getNursingPlanCareDocDetails(){
     this.dayCaseDashboardService.getNursingCarePlanLatestDoc(this.apiJson).subscribe({
-      next: (_success: any) => {        
-        this.latestNurCarePlanList = _success.d.results        
+      next: (_success: any) => {
+        this.latestNurCarePlanList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -454,7 +476,7 @@ export class PatientDocumentationComponent implements OnInit {
   // Nursing Discharge Assessment Document Latest
   getNursingDischargeDocDeatils(){
     this.dayCaseDashboardService.nursingDischargeLatestDoc(this.apiJson).subscribe({
-      next: (_success: any) => {        
+      next: (_success: any) => {
         this.latestNurDischargeSummeryList = _success.d.results
       },
       error: (err: any) => {
@@ -601,7 +623,13 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.TRASM$) {
       this.selectAssessment('emergencynursingdoc', this.latestEmergencyNursingDocList[0])
       this.openDocument('create');
-    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.TRASM$) {
+    } else if (this.paramsObject.action == 'Add' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isPostAnesthesia', this.PostAnesthesiaList[0])
+      this.openDocument('create');
+    } else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.Critical$) {
+      this.selectAssessment('isPostAnesthesia', this.PostAnesthesiaList[0])
+      this.openDocument('edit');
+    }  else if (this.paramsObject.action == 'Update' && this.paramsObject.doctype == RedirectionType.TRASM$) {
       this.selectAssessment('emergencynursingdoc', this.latestEmergencyNursingDocList[0])
       this.openDocument('edit');
     } else if (this.paramsObject.action == 'View' && this.paramsObject.doctype == RedirectionType.TRASM$) {
@@ -715,6 +743,7 @@ export class PatientDocumentationComponent implements OnInit {
     // Define a mapping between assessment names and corresponding properties
     const assessments = {
       'isSurgicalPassport': { isSurgicalPassport: true, selectedDocName: 'Surgical Passport' },
+      'isPostAnesthesia': { isPostAnesthesia: true, selectedDocName: 'Post Anesthesia Care Record' },
       'isEducationAssement': { isEducationAssement: true, selectedDocName: 'Education Assessment' },
       'isNursingCarePlan': { isNursingCarePlan: true, selectedDocName: 'Nursing Care Plan' },
       'isNursingDischarge': { isNursingDischarge: true, selectedDocName: 'Nursing Discharge Summary' },
@@ -733,6 +762,7 @@ export class PatientDocumentationComponent implements OnInit {
     };
 
     // Reset all flags to false initially
+    this.isPostAnesthesia = false;
     this.isSurgicalPassport = false;
     this.isEducationAssement = false;
     this.isNursingCarePlan = false;
@@ -1091,10 +1121,15 @@ export class PatientDocumentationComponent implements OnInit {
     this.medDocList = [];
     this.openPreCardiacCath = false;
     this.isPreCardiacCath = false;
+    this.openPostAnesthesia = false
+    this.isPostAnesthesia = false;
 
 
     if (this.openBradenScale) {
       this.BradenScaleComp?.ngOnDestroy();
+    }
+    if (this.openPostAnesthesia) {
+      this.PostAnesthesiaCareRecordComp?.ngOnDestroy();
     }
     if (this.openEducationAssessment) {
       this.educationAssessmentComp?.ngOnDestroy();
@@ -1134,6 +1169,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.LatestMFSSet();
     this.getCPRDocDetails();
     this.getPreCardiecCathDocDetails();
+    this.getPostCareRecordDetails();
 
   }
 
@@ -1278,15 +1314,15 @@ export class PatientDocumentationComponent implements OnInit {
         });;
       }
     }
-    // pediatric early warning 
-    
+    // pediatric early warning
+
     // attachment...
     else if (this.attachments) {
       if (action == 'create') {
         this.openModalForAttachment();
       }
     }
-   
+
     // Braden Scale
     else if (this.isBradenScale) {
       if (action == 'create') {
@@ -1376,7 +1412,57 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
-    
+
+    }
+
+    else if (this.isPostAnesthesia) {
+      if (action == 'create') {
+        this.openPostAnesthesia = true;
+      } else if (action == 'edit') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.openPostAnesthesia = true;
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'N/A') {
+          this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
+        }
+      } else if (action == 'delete') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.deletePostCareRecordDoc(this.selectedDocData.Dockey);
+        }
+      } else if (action == 'release') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.sharedService.waringSwallModel(`The document is already released`)
+        } else if(this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
+          this.releasePostCareRecordDetail();
+        }
+      } else if (action == 'copy') {
+        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
+          this.openPostAnesthesia = true;
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
+      } else if (action == 'createandrelease') {
+        this.openPostAnesthesia = true;
+        this.PostAnesthesiaCareRecordComp?.createDoc('4').then((formValue)=>{
+          if(formValue){
+            this.refresh()
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
 
     // Nursing Discharge Summery
@@ -1428,7 +1514,7 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Nursing discharge summary:', error);
         });
       }
-    
+
     }
 
      // Glasgow Coma Scale...
@@ -1499,9 +1585,9 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.waringSwallModel(`You can't edit the document, due to N/A.`)
         }
       }
-      
-    } 
-    
+
+    }
+
     else if (this.isNursingAdmission) {
       if (action == 'create') {
         this.openNurseAdmission = true;
@@ -1550,9 +1636,9 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Nursing discharge summary:', error);
         });
       }
-    
+
     }
-  
+
     // CPR Document
     else if (this.isCPRDocument) {
       if (action == 'create') {
@@ -1656,15 +1742,15 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
-   
+
   }
   private subscription: Subscription;
   directReleasePainAss() {
     this.subscription = this.emergencyService
     .getPainAssesmentDetails(this.selectedDocData.Dockey).subscribe({
       next: (data: any) => {
-        let paylaod = data.d.results[0] 
-        paylaod.DocStatus = '2'; 
+        let paylaod = data.d.results[0]
+        paylaod.DocStatus = '2';
         this.subscription = this.emergencyService.createPainAssessmentDoc({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {
@@ -1692,7 +1778,7 @@ export class PatientDocumentationComponent implements OnInit {
       next: (data: any) => {
         let paylaod = data.d.results[0];
         delete paylaod.__metadata
-        paylaod.DocStatus = '2'; 
+        paylaod.DocStatus = '2';
         this.subscription = this.dayCaseDashboardService.createNursingCarePlan({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {
@@ -1713,6 +1799,33 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+  //post anesthesia care record
+  private releasePostCareRecordDetail() {
+    this.subscription = this.emergencyService.fetchPostCareRecord(this.selectedDocData.Dockey).subscribe({
+      next: (data: any) => {
+        let paylaod = data.d.results[0];
+        delete paylaod.__metadata
+        paylaod.DocStatus = '2';
+        this.subscription = this.emergencyService.savePostCareRecord({ d: paylaod }).subscribe({
+          next: (data: any) => {},
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(`POST Error at Post Anesthesia Care Record : ${err}`);
+          },
+          complete: () => {
+            this.sharedService.successSwallModel('Post Anesthesia Care Record released successfully');
+            this.refresh();
+          }
+        });
+      },
+      error: (err: any) => {
+        this.sharedService.waringSwallModel(`Error ${err}`);
+        this.sharedService.waringSwallModel(
+          `POST Error at Post Anesthesia Care Record : ${err}`
+        );
+      }
+    });
+  }
 
   directReleaseNursingDischargePlanDoc() {
     this.subscription = this.dayCaseDashboardService
@@ -1720,7 +1833,7 @@ export class PatientDocumentationComponent implements OnInit {
       next: (data: any) => {
         let paylaod = data.d.results[0];
         delete paylaod.__metadata
-        paylaod.DocStatus = '2'; 
+        paylaod.DocStatus = '2';
         this.subscription = this.dayCaseDashboardService.createNursingDischargeDoc({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {
@@ -1748,7 +1861,7 @@ export class PatientDocumentationComponent implements OnInit {
       next: (data: any) => {
         let paylaod = data.d.results[0];
         delete paylaod.__metadata
-        paylaod.DocStatus = '2'; 
+        paylaod.DocStatus = '2';
         this.subscription = this.dayCaseDashboardService.createNursingAdmissionDoc({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {
@@ -1986,15 +2099,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
-     
-      
+
+
       if (this.openSurgicsalPassport) {
         let docStatus = '1';
         this.SurgicalPassComp.createSurgicalPassDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2006,7 +2119,20 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+
+      //post-anesthesia-care-record
+      if (this.openPostAnesthesia) {
+        let docStatus = '1';
+        this.PostAnesthesiaCareRecordComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2019,7 +2145,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2032,7 +2158,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2055,7 +2181,7 @@ export class PatientDocumentationComponent implements OnInit {
         if(this.morseFallScaleC.getFormData().AmbulatoryAid === 'A' || this.morseFallScaleC.getFormData().Gait === 'A' || this.morseFallScaleC.getFormData().HistoryFalls === 'A' || this.morseFallScaleC.getFormData().IvAccess === 'A' || this.morseFallScaleC.getFormData().MentalStatus === 'A' || this.morseFallScaleC.getFormData().SecondaryDiagnosis === 'A'){
           return this.sharedService.waringSwallModel('All Questions must be answered in order to release this document')
         }
-        
+
         const formData = {
           ...this.morseFallScaleC.getFormData(),
           Dockey: '',
@@ -2066,7 +2192,7 @@ export class PatientDocumentationComponent implements OnInit {
           DocStatus: '1',
           Dtid: 'SCA_MORSE',
         };
-        
+
         this.emergencyService.postMFSSet(formData).subscribe((resp)=>{
           Swal.fire({
             text: "Document is created successfully",
@@ -2124,7 +2250,21 @@ export class PatientDocumentationComponent implements OnInit {
           })
         });
       }
-     
+
+      //post-anesthesia-care-record
+      if (this.openPostAnesthesia) {
+        this.PostAnesthesiaCareRecordComp.createDoc('1', 'edit').then((res: any) => {
+          this.refresh();
+        }, (_error: any) => {
+          Swal.fire({
+            text: `Education assessment has error, contact your administrator`,
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup'
+          })
+        });
+      }
+
       if (this.openSurgicsalPassport) {
         this.SurgicalPassComp.createSurgicalPassDoc('1','edit').then((formValue: any) => {
           if (formValue) {
@@ -2141,7 +2281,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2154,7 +2294,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2167,7 +2307,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2218,7 +2358,7 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error copy numeric rating Scale:', error);
         });
       }
-      
+
       if (this.openEducationAssessment) {
         this.educationAssessmentComp.saveEducationFormValue('3', 'copy').then((res: any) => {
           this.refresh();
@@ -2231,7 +2371,18 @@ export class PatientDocumentationComponent implements OnInit {
           })
         });
       }
-      
+
+      //post-anesthesia-care-record
+      if (this.openPostAnesthesia) {
+        this.PostAnesthesiaCareRecordComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
+
       if (this.openSurgicsalPassport) {
         this.SurgicalPassComp.copySurgicalPassDoc('3','copy').then((formValue: any) => {
           if (formValue) {
@@ -2247,7 +2398,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2259,7 +2410,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2272,7 +2423,7 @@ export class PatientDocumentationComponent implements OnInit {
           if (formValue) {
             this.refresh();
           }
-        }).catch((error: any) => { 
+        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2386,6 +2537,15 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Glasgow coma scale:', error);
       });
+    } else if(this.openPostAnesthesia) {
+      this.PostAnesthesiaCareRecordComp.createDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
     } else if (this.openCPRDocument) {
       this.CprDocumentComp.createCPRDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
@@ -2404,7 +2564,7 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Pre-Cardiac cath:', error);
       });
-    } 
+    }
   }
 
     // Copy + Release CPR Document
@@ -2419,6 +2579,18 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating CPR Document:', error);
       });
     }
+
+      // Copy + Release Post Anesthesia Care Record
+  copyDirectReleasePostCareRecord() {
+    this.PostAnesthesiaCareRecordComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Nursing assessment document:', error);
+    });
+  }
 
   newVersionDirectReleased() {
   }
@@ -2471,9 +2643,9 @@ export class PatientDocumentationComponent implements OnInit {
     let startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
     let yesterday = new Date(startOfDay);
     yesterday.setDate(startOfDay.getDate() - 1);
-  
+
     let filteredArray = [];
-    
+
     switch (this.previousPeriodValue) {
       case "Current Day":
         filteredArray = this.documentTypeFilterValueClone.filter(item => this.isSameDate(this.parseODataDate(item.Dodat), startOfDay));
@@ -2528,11 +2700,11 @@ export class PatientDocumentationComponent implements OnInit {
     let timestamp = parseInt(odataDate.match(/\/Date\((\d+)\)\//)?.[1] || "0", 10);
     return new Date(timestamp);
   }
-  
+
   isSameDate(date1: Date, date2: Date): boolean {
     return date1.toDateString() === date2.toDateString();
   }
-  
+
   sort() {
     this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
     this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
@@ -2911,7 +3083,7 @@ async deletePreCardiacCathDoc(docKey: string) {
       }
     });
   }
-  async deleteSurgicalPassDoc() {    
+  async deleteSurgicalPassDoc() {
     Swal.fire({
       title: 'Confirm',
       text: 'Do you want to delete?',
@@ -3088,6 +3260,42 @@ async deletePreCardiacCathDoc(docKey: string) {
       }
     });
   }
+
+async deletePostCareRecordDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deletePostCareRecordDocument(docKey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
   async deleteCPRDoc(docKey: string) {
     Swal.fire({
       title: 'Confirm',
@@ -3145,7 +3353,7 @@ async deletePreCardiacCathDoc(docKey: string) {
       next: (data: any) => {
         let paylaod = data.d.results[0];
         delete paylaod.__metadata
-        paylaod.DocStatus = '2'; 
+        paylaod.DocStatus = '2';
         this.subscription = this.admissionService.saveEducationData({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {
@@ -3275,7 +3483,24 @@ async deletePreCardiacCathDoc(docKey: string) {
         this.pdfUrlType = 'pdf';
         this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
         console.log(this.pdfUrl, "---");
-        
+
+        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   'data:application/pdf;base64,' + data.d.AttachmentData
+        // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+    openPostCareRecordPDF(Dockey) {
+    this.pdfUrl = '';
+    this.emergencyService
+      .getPostCareRecordPdf(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentDataStr);
         // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         //   'data:application/pdf;base64,' + data.d.AttachmentData
         // );
